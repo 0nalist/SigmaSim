@@ -7,8 +7,6 @@ var tsla_owned: int = 0
 @onready var tsla_label: Label = %TSLALabel
 @onready var owned_tsla_label: Label = $GridContainer/OwnedTSLALabel
 
-#hi
-
 
 func _on_timer_timeout() -> void:
 	tsla_price += randi_range(-tsla_price/100*tsla_volatility, tsla_price/100*tsla_volatility)
