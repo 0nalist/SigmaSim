@@ -1,0 +1,44 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://cesgvqexxaqev"]
+
+[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/Chicago.ttf" id="1_cm3wh"]
+[ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/buttonhovered.png" id="2_7ynwi"]
+[ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/button1.png" id="3_cej8x"]
+[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/button2.png" id="3_oollr"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sp5ca"]
+texture = ExtResource("2_7ynwi")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_owvul"]
+texture = ExtResource("3_oollr")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h6wug"]
+texture = ExtResource("3_cej8x")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hhclm"]
+texture = ExtResource("3_oollr")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[resource]
+default_font = ExtResource("1_cm3wh")
+Button/fonts/font = ExtResource("1_cm3wh")
+Button/styles/hover = SubResource("StyleBoxTexture_sp5ca")
+Button/styles/hover_pressed = SubResource("StyleBoxTexture_owvul")
+Button/styles/normal = SubResource("StyleBoxTexture_h6wug")
+Button/styles/pressed = SubResource("StyleBoxTexture_hhclm")
+Label/font_sizes/font_size = 12
+Label/fonts/font = ExtResource("1_cm3wh")

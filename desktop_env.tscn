@@ -1,0 +1,615 @@
+[gd_scene load_steps=31 format=3 uid="uid://dkhodakv1x0h7"]
+
+[ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
+[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/Chicago.ttf" id="1_lx1wk"]
+[ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/buttonhovered.png" id="1_ovitq"]
+[ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/Bliss_(Windows_XP) (2).png" id="2_5eiy6"]
+[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/button2.png" id="2_75kf8"]
+[ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/trashcan.png" id="3_05goa"]
+[ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/button1.png" id="3_lx1wk"]
+[ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="4_75kf8"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="7_o42ww"]
+[ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://scripts/clock.gd" id="9_dc0b5"]
+[ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://scripts/grinderr.gd" id="10_3uyqq"]
+[ext_resource type="Texture2D" uid="uid://dyx0l0aa6l0at" path="res://assets/folder.png" id="10_4e5iv"]
+[ext_resource type="Script" uid="uid://bd7olnjl4dfv4" path="res://scripts/broke_rage.gd" id="10_5k3ml"]
+[ext_resource type="Texture2D" uid="uid://mpip7wcjjyrr" path="res://assets/pdficon.png" id="11_6x3lq"]
+[ext_resource type="Texture2D" uid="uid://ulcids0e12dp" path="res://assets/worker.png" id="12_0utxc"]
+[ext_resource type="Script" uid="uid://bq3i6eu2isf1d" path="res://scripts/stock_market.gd" id="14_bnui0"]
+[ext_resource type="Script" uid="uid://du7g6y35nj384" path="res://scripts/sigma_mail.gd" id="14_g75lf"]
+[ext_resource type="Script" uid="uid://jj0g0vk3lpc2" path="res://scripts/trash.gd" id="14_m483i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lpqk7"]
+border_width_top = 1
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o42ww"]
+texture = ExtResource("1_ovitq")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5eiy6"]
+texture = ExtResource("2_75kf8")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_05goa"]
+texture = ExtResource("3_lx1wk")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_75kf8"]
+texture = ExtResource("2_75kf8")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o42ww"]
+bg_color = Color(0.219501, 0.219501, 0.219501, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6x3lq"]
+bg_color = Color(0.306923, 0.306923, 0.306923, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_o42ww"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e5iv"]
+bg_color = Color(0.6, 0.6, 0.6, 0.427451)
+border_width_top = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5k3ml"]
+bg_color = Color(0.6, 0.6, 0.6, 0.627451)
+border_width_top = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3uyqq"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
+
+[node name="DesktopEnv" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lpqk7")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -371.0
+offset_top = -213.0
+offset_right = 372.0
+offset_bottom = 77.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5eiy6")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+layout_mode = 2
+columns = 16
+
+[node name="TrashButton" type="Button" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_4e5iv")
+icon = ExtResource("3_05goa")
+icon_alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/TrashButton"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -24.0
+offset_top = -6.0
+offset_right = 23.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = "Trash"
+
+[node name="TaskbarPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -49.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lpqk7")
+
+[node name="StartButton" type="Button" parent="TaskbarPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 10.0
+offset_top = -16.5
+offset_right = 80.0
+offset_bottom = 17.5
+grow_vertical = 2
+focus_mode = 0
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_lx1wk")
+theme_override_styles/hover = SubResource("StyleBoxTexture_o42ww")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5eiy6")
+theme_override_styles/normal = SubResource("StyleBoxTexture_05goa")
+text = "Sigma  "
+icon = ExtResource("4_75kf8")
+
+[node name="TimePanel" type="Panel" parent="TaskbarPanel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -95.0
+offset_top = -19.5
+offset_right = -5.0
+offset_bottom = 20.5
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_75kf8")
+script = ExtResource("9_dc0b5")
+
+[node name="TimeLabel" type="Label" parent="TaskbarPanel/TimePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = " 11:11 AM "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 291.0
+offset_right = 272.0
+offset_bottom = 600.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_o42ww")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StartPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="StartPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6x3lq")
+
+[node name="Label" type="Label" parent="StartPanel/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.5
+offset_top = -10.0
+offset_right = 38.5
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = "S I G M A"
+
+[node name="MarginContainer" type="MarginContainer" parent="StartPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="StartPanel/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StartPanel/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="BrokeRageButton" type="Button" parent="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+focus_mode = 0
+theme = ExtResource("7_o42ww")
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = "BrokeRage"
+icon = ExtResource("4_75kf8")
+
+[node name="GrinderrButton" type="Button" parent="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+theme = ExtResource("7_o42ww")
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = "Grinderr
+"
+icon = ExtResource("4_75kf8")
+
+[node name="SigmaMailButton" type="Button" parent="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+theme = ExtResource("7_o42ww")
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = "Σ-Mail"
+icon = ExtResource("4_75kf8")
+
+[node name="GrinderrWindow" type="Window" parent="."]
+unique_name_in_owner = true
+title = "Grinderr"
+initial_position = 1
+size = Vector2i(250, 250)
+theme_override_fonts/title_font = ExtResource("1_lx1wk")
+script = ExtResource("10_3uyqq")
+
+[node name="MarginContainer" type="MarginContainer" parent="GrinderrWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="GrinderrWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GrinderrWindow/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+
+[node name="GrindButton" type="Button" parent="GrinderrWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme = ExtResource("7_o42ww")
+text = "Grind"
+
+[node name="SubcontractThirdWorldGrinderButton" type="Button" parent="GrinderrWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme = ExtResource("7_o42ww")
+theme_override_font_sizes/font_size = 11
+text = "Subcontract Third World Grinder
+$1/s for $10"
+icon = ExtResource("12_0utxc")
+
+[node name="SubcontractorLabel" type="Label" parent="GrinderrWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Subcontractors: 0"
+
+[node name="SubcontractorTimer" type="Timer" parent="GrinderrWindow"]
+autostart = true
+
+[node name="BrokeRageWindow" type="Window" parent="."]
+unique_name_in_owner = true
+title = "BrokeRage"
+initial_position = 2
+size = Vector2i(400, 300)
+theme_override_fonts/title_font = ExtResource("1_lx1wk")
+script = ExtResource("10_5k3ml")
+
+[node name="MarginContainer" type="MarginContainer" parent="BrokeRageWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BrokeRageWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+current_tab = 1
+
+[node name="Summary" type="HBoxContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="TextureRect" type="TextureRect" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Summary"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_o42ww")
+expand_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Summary"]
+layout_mode = 2
+columns = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Summary"]
+layout_mode = 2
+
+[node name="BalanceLabel" type="Label" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("7_o42ww")
+text = "Balance: $ "
+horizontal_alignment = 2
+
+[node name="CashLabel" type="Label" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("7_o42ww")
+text = "Cash: $ "
+horizontal_alignment = 2
+
+[node name="InvestedLabel" type="Label" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Summary/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("7_o42ww")
+text = "Invested: $ "
+horizontal_alignment = 2
+
+[node name="DebtLabel" type="Label" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Summary/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("7_o42ww")
+text = "Debt: $ "
+horizontal_alignment = 2
+
+[node name="PassiveIncomeLabel" type="Label" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("7_o42ww")
+text = "Passive Income: $0"
+horizontal_alignment = 2
+
+[node name="Stocks" type="VBoxContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+script = ExtResource("14_bnui0")
+metadata/_tab_index = 1
+
+[node name="GridContainer" type="GridContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks"]
+layout_mode = 2
+columns = 4
+
+[node name="TSLALabel" type="Label" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " $TSLA: $420 "
+
+[node name="BuyTeslaButton" type="Button" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "BUY"
+
+[node name="SellTeslaButton" type="Button" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks/GridContainer"]
+layout_mode = 2
+text = "SELL"
+
+[node name="OwnedTSLALabel" type="Label" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks/GridContainer"]
+layout_mode = 2
+text = " 0"
+
+[node name="Timer" type="Timer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks"]
+autostart = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StocksButton" type="Button" parent="BrokeRageWindow/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("7_o42ww")
+text = "Stocks"
+icon = ExtResource("4_75kf8")
+
+[node name="SigmaMailWindow" type="Window" parent="."]
+unique_name_in_owner = true
+title = "Σ-Mail"
+initial_position = 2
+size = Vector2i(250, 150)
+visible = false
+script = ExtResource("14_g75lf")
+
+[node name="TrashWindow" type="Window" parent="."]
+unique_name_in_owner = true
+title = "Trash"
+initial_position = 2
+size = Vector2i(300, 180)
+visible = false
+theme_override_fonts/title_font = ExtResource("1_lx1wk")
+script = ExtResource("14_m483i")
+
+[node name="MarginContainer" type="MarginContainer" parent="TrashWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TrashWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TrashWindow/MarginContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "beta_memes_for_betas"
+icon = ExtResource("10_4e5iv")
+alignment = 0
+
+[node name="Button2" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "the_wolf_ecology_and_behavior.pdf"
+icon = ExtResource("11_6x3lq")
+alignment = 0
+
+[node name="Button3" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "the_game.pdf"
+icon = ExtResource("11_6x3lq")
+alignment = 0
+
+[node name="Button4" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "the_will_to_power.pdf"
+icon = ExtResource("11_6x3lq")
+alignment = 0
+
+[node name="Button5" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "12_rules_for_life.pdf"
+icon = ExtResource("11_6x3lq")
+alignment = 0
+
+[node name="Button7" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "homework"
+icon = ExtResource("10_4e5iv")
+alignment = 0
+
+[node name="Button6" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "how_to_win_friends_and_influence_people.pdf"
+icon = ExtResource("11_6x3lq")
+alignment = 0
+
+[node name="Button9" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "the_fountainhead.pdf"
+icon = ExtResource("11_6x3lq")
+alignment = 0
+
+[node name="Button8" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
+text = "mrs_incredible_rule_34"
+icon = ExtResource("10_4e5iv")
+alignment = 0
+
+[connection signal="pressed" from="MarginContainer/TrashButton" to="." method="_on_trash_button_pressed"]
+[connection signal="pressed" from="TaskbarPanel/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/BrokeRageButton" to="." method="_on_broke_rage_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/SigmaMailButton" to="." method="_on_sigma_mail_button_pressed"]
+[connection signal="pressed" from="GrinderrWindow/MarginContainer/ScrollContainer/VBoxContainer/GrindButton" to="GrinderrWindow" method="_on_grind_button_pressed"]
+[connection signal="pressed" from="GrinderrWindow/MarginContainer/ScrollContainer/VBoxContainer/SubcontractThirdWorldGrinderButton" to="GrinderrWindow" method="_on_subcontract_third_world_grinder_button_pressed"]
+[connection signal="timeout" from="GrinderrWindow/SubcontractorTimer" to="GrinderrWindow" method="_on_subcontractor_timer_timeout"]
+[connection signal="pressed" from="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks/GridContainer/BuyTeslaButton" to="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks" method="_on_buy_tesla_button_pressed"]
+[connection signal="pressed" from="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks/GridContainer/SellTeslaButton" to="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks" method="_on_sell_tesla_button_pressed"]
+[connection signal="timeout" from="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks/Timer" to="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/Stocks" method="_on_timer_timeout"]
