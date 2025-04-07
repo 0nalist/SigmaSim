@@ -36,7 +36,11 @@ func _on_timer_timeout() -> void:
 
 		# Clamp and apply price
 		stock.price = max(stock.price + delta, 1)
-
+		
+		if stock.price < 3:
+			if randf_range(0.00, 1.00) < stock.sentiment:
+				stock.price += 1
+		
 		# Update the stock's UI row
 		stock_rows[stock.symbol].update_display()
 		#stock_rows[stock.symbol].update_sentiment_arrow(stock.sentiment) #moved into udpate_display()

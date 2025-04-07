@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=39 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/Chicago.ttf" id="1_lx1wk"]
@@ -24,6 +24,8 @@
 [ext_resource type="Resource" uid="uid://hpmpyxom1uik" path="res://resources/stocks/tsla_stock.tres" id="16_sqvqh"]
 [ext_resource type="Resource" uid="uid://ddsoa3sffia8j" path="res://resources/stocks/gme_stock.tres" id="17_6nq0o"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://start_panel_window.gd" id="23_dik0q"]
+[ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://settings_window.gd" id="25_fty7x"]
+[ext_resource type="Script" uid="uid://cbsrn6pfu31n4" path="res://scripts/folder_window.gd" id="25_sfr4l"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
 
@@ -79,6 +81,8 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
+[sub_resource type="ButtonGroup" id="ButtonGroup_jjwhp"]
+
 [node name="DesktopEnv" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -94,7 +98,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -371.0
-offset_top = -213.0
+offset_top = -207.0
 offset_right = 372.0
 offset_bottom = 77.0
 grow_horizontal = 2
@@ -292,6 +296,7 @@ unique_name_in_owner = true
 title = "BrokeRage"
 initial_position = 2
 size = Vector2i(400, 300)
+visible = false
 theme = ExtResource("7_o42ww")
 theme_override_fonts/title_font = ExtResource("1_lx1wk")
 script = ExtResource("10_5k3ml")
@@ -572,7 +577,16 @@ size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("1_lx1wk")
 text = "S I G M A"
 
-[node name="MarginContainer" type="MarginContainer" parent="StartPanel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StartPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -580,14 +594,15 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="StartPanel/VBoxContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="StartPanel/VBoxContainer/MarginContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
+theme_override_constants/separation = 4
 
-[node name="BrokeRageButton" type="Button" parent="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(200, 0)
+[node name="BrokeRageButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 focus_mode = 0
 theme = ExtResource("7_o42ww")
@@ -595,8 +610,8 @@ theme_override_fonts/font = ExtResource("1_lx1wk")
 text = "BrokeRage"
 icon = ExtResource("4_75kf8")
 
-[node name="GrinderrButton" type="Button" parent="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(200, 0)
+[node name="GrinderrButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
@@ -606,8 +621,8 @@ text = "Grinderr
 "
 icon = ExtResource("4_75kf8")
 
-[node name="SigmaMailButton" type="Button" parent="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(200, 0)
+[node name="SigmaMailButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
@@ -616,15 +631,89 @@ theme_override_fonts/font = ExtResource("1_lx1wk")
 text = "Σ-Mail"
 icon = ExtResource("4_75kf8")
 
+[node name="VBoxContainer2" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("7_o42ww")
+icon = ExtResource("4_75kf8")
+
 [node name="DesktopWindow" type="Window" parent="."]
 title = "Window"
 initial_position = 2
 visible = false
 transient_to_focused = true
-borderless = true
 theme = ExtResource("7_o42ww")
 theme_override_constants/resize_margin = 5
 script = ExtResource("11_sqvqh")
+
+[node name="SettingsWindow" type="Window" parent="."]
+unique_name_in_owner = true
+auto_translate_mode = 1
+title = "Window"
+initial_position = 2
+size = Vector2i(300, 250)
+transient_to_focused = true
+theme = ExtResource("7_o42ww")
+theme_override_constants/resize_margin = 5
+script = ExtResource("25_fty7x")
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingsWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SettingsWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SettingsWindow/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullscreenCheckBox" type="CheckBox" parent="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_jjwhp")
+text = "Fullscreen"
+
+[node name="WindowedCheckBox" type="CheckBox" parent="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_jjwhp")
+text = "Windowed"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FolderWindow" type="Window" parent="."]
+auto_translate_mode = 1
+title = "Window"
+initial_position = 2
+visible = false
+transient_to_focused = true
+theme = ExtResource("7_o42ww")
+theme_override_constants/resize_margin = 5
+script = ExtResource("25_sfr4l")
 
 [connection signal="pressed" from="MarginContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="pressed" from="TaskbarPanel/StartButton" to="." method="_on_start_button_pressed"]
@@ -632,6 +721,8 @@ script = ExtResource("11_sqvqh")
 [connection signal="pressed" from="GrinderrWindow/MarginContainer/ScrollContainer/VBoxContainer/SubcontractThirdWorldGrinderButton" to="GrinderrWindow" method="_on_subcontract_third_world_grinder_button_pressed"]
 [connection signal="timeout" from="GrinderrWindow/SubcontractorTimer" to="GrinderrWindow" method="_on_subcontractor_timer_timeout"]
 [connection signal="timeout" from="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/StockMarket/Timer" to="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/StockMarket" method="_on_timer_timeout"]
-[connection signal="pressed" from="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/BrokeRageButton" to="." method="_on_broke_rage_button_pressed"]
-[connection signal="pressed" from="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]
-[connection signal="pressed" from="StartPanel/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/SigmaMailButton" to="." method="_on_sigma_mail_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/BrokeRageButton" to="." method="_on_broke_rage_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/SigmaMailButton" to="." method="_on_sigma_mail_button_pressed"]
+[connection signal="pressed" from="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer/FullscreenCheckBox" to="SettingsWindow" method="_on_fullscreen_check_box_pressed"]
+[connection signal="pressed" from="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer/WindowedCheckBox" to="SettingsWindow" method="_on_windowed_check_box_pressed"]

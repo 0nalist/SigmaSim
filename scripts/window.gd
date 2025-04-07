@@ -2,6 +2,7 @@ extends Window
 
 class_name DesktopWindow
 
+@export var id: String
 
 func _ready() -> void:
 	print("DesktopWindow ready")

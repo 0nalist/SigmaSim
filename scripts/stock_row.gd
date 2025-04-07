@@ -29,19 +29,18 @@ func update_display():
 func update_sentiment_arrow(sentiment: float) -> void:
 	var arrow = $SentimentArrow
 
-	# Make sure pivot is centered
+	# Ensure pivot is centered
 	arrow.set_pivot_offset(arrow.size / 2)
 
-	# Clamp and map sentiment to rotation from -90 (up) to +90 (down)
+	# Clamp and convert sentiment to angle (down to up)
 	sentiment = clamp(sentiment, -1.0, 1.0)
-	var angle_deg = -sentiment * 90.0  # <-- Negate it to rotate correctly
-
+	var angle_deg = lerp(180.0, 0.0, (sentiment + 1.0) / 2.0)
 	arrow.rotation_degrees = angle_deg
 
-	# Set color
+	# Color based on direction
 	if sentiment > 0.05:
 		arrow.modulate = Color.GREEN
 	elif sentiment < -0.05:
 		arrow.modulate = Color.RED
 	else:
-		arrow.modulate = Color(0.6, 0.6, 0.6)
+		arrow.modulate = Color(0.6, 0.6, 0.6)  # Neutral gray
