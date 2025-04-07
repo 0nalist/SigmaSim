@@ -20,8 +20,8 @@ func _input(event):
 
 func hide_all_windows_and_panels():
 	%StartPanel.hide()
-	%BrokeRageWindow.hide()
-	%GrinderrWindow.hide()
+#	%BrokeRageWindow.hide()
+#	%GrinderrWindow.hide()
 	%TrashWindow.hide()
 	%SigmaMailWindow.hide()
 
@@ -36,21 +36,21 @@ func hide_all_windows_and_panels():
 func _on_start_button_pressed() -> void:
 	%StartPanel.toggle_start_panel()
 
-func _on_broke_rage_button_pressed() -> void:
-	open_broke_rage()
+#func _on_broke_rage_button_pressed() -> void:
+#	open_broke_rage()
 
-func open_broke_rage():
-	%StartPanel.close_start_panel()
-	%BrokeRageWindow.show()
-	%BrokeRageWindow.grab_focus()
+#func open_broke_rage():
+#	%StartPanel.close_start_panel()
+#	%BrokeRageWindow.show()
+#	%BrokeRageWindow.grab_focus()
 
-func _on_grinderr_button_pressed() -> void:
-	open_grinderr()
+#func _on_grinderr_button_pressed() -> void:
+#	open_grinderr()
 
-func open_grinderr():
-	%StartPanel.close_start_panel()
-	%GrinderrWindow.show()
-	%GrinderrWindow.grab_focus()
+#func open_grinderr():
+#	%StartPanel.close_start_panel()
+#	%GrinderrWindow.show()
+#	%GrinderrWindow.grab_focus()
 
 func _on_sigma_mail_button_pressed() -> void:
 	open_sigma_mail()

@@ -4,6 +4,8 @@ var open_windows: Dictionary = {} # key: window unique ID or name
 var taskbar_container: Node = null # set this from UI
 var start_panel: Node = null # set this from main scene or via singleton
 
+var focused_window: Window = null
+
 func register_window(window: Window, id: String) -> void:
 	# Avoid duplicate windows
 	if open_windows.has(id):
@@ -39,12 +41,13 @@ func _create_taskbar_icon(id: String, window: Window) -> void:
 	var icon_button = Button.new()
 	icon_button.text = id
 	icon_button.toggle_mode = true
+	icon_button.focus_mode = Control.FOCUS_NONE
 	icon_button.pressed.connect(func():
 		if window.visible:
-			window.hide()
+			_focus_window(window)
 		else:
 			window.show()
-			window.grab_focus()
+			_focus_window(window)
 	)
 	taskbar_container.add_child(icon_button)
 	window.visibility_changed.connect(func():
@@ -54,6 +57,10 @@ func _create_taskbar_icon(id: String, window: Window) -> void:
 		close_window(id)
 	)
 
+func _focus_window(window: Window):
+	if focused_window != window:
+		focused_window = window
+		window.grab_focus()
 
 func _remove_taskbar_icon(id: String) -> void:
 	for child in taskbar_container.get_children():

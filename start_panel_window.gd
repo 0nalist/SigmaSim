@@ -64,3 +64,7 @@ func toggle_start_panel():
 
 func close_start_panel():
 	%StartPanel.hide()
+
+
+func _on_settings_button_pressed() -> void:
+	%SettingsWindow.show()
