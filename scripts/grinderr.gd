@@ -1,4 +1,7 @@
-extends Window
+extends DesktopWindow
+class_name GrinderrWindow
+
+#@export_var
 
 var subcontract_price: int = 10
 var subcontractor_dps: int = 1
@@ -7,9 +10,12 @@ var subcontractors: int = 0
 
 
 func _ready() -> void:
-	self.close_requested.connect(_on_close_requested)
+	super._ready()
+	for i in 10:
+		add_subcontractor(subcontractor_dps)
 
-func _on_close_requested():
+func _on_window_close():
+	print("closegrinder")
 	hide()
 
 
@@ -21,7 +27,7 @@ func _on_subcontract_third_world_grinder_button_pressed() -> void:
 	if MoneyManager.cash < subcontract_price:
 		print("insufficient cash!")
 		return
-	MoneyManager.spend_cash(10)
+	MoneyManager.spend_cash(subcontract_price)
 	add_subcontractor(subcontractor_dps)
 
 func add_subcontractor(dps):
@@ -30,7 +36,7 @@ func add_subcontractor(dps):
 	subcontract_price *= 1.5
 	%SubcontractThirdWorldGrinderButton.text = "Subcontract Third World Grinder
 $" + str(subcontractor_dps) + "/s for $" + str(subcontract_price)
-	MoneyManager.add_passive_income(dps)
+	MoneyManager.add_employee_income(dps)
 
 func _on_subcontractor_timer_timeout() -> void:
 	if subcontractor_dps < 1:

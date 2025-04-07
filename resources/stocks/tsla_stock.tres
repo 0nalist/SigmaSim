@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Stock" load_steps=2 format=3 uid="uid://hpmpyxom1uik"]
+
+[ext_resource type="Script" uid="uid://prlirycaaf1k" path="res://resources/stocks/stock.gd" id="1_ri6ga"]
+
+[resource]
+script = ExtResource("1_ri6ga")
+symbol = "TSLA"
+price = 420
+volatility = 1.2
+shares_outstanding = 4000000
+sentiment = 1.0
+owned = 0
+metadata/_custom_type_script = "uid://prlirycaaf1k"

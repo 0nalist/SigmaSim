@@ -1,37 +1,49 @@
-#stock_market.gd
+# stock_market.gd
 extends VBoxContainer
 
-var tsla_price: int = 420
-var tsla_volatility: float = 1.45
-var tsla_owned: int = 0
-@onready var tsla_label: Label = %TSLALabel
-@onready var owned_tsla_label: Label = $GridContainer/OwnedTSLALabel
+@export var stock_list: Array[Stock]
+@export var stock_row_scene: PackedScene  # Drag in StockRow.tscn here
 
+var stock_rows: Dictionary = {}  # key: symbol, value: StockRow instance
+
+func _ready():
+	for stock in stock_list:
+		var row = stock_row_scene.instantiate() as StockRow
+		add_child(row)
+		row.setup(stock)
+
+		row.buy_pressed.connect(_on_buy_button_pressed)
+		row.sell_pressed.connect(_on_sell_button_pressed)
+
+		
+		stock_rows[stock.symbol] = row
 
 func _on_timer_timeout() -> void:
-	tsla_price += randi_range(-tsla_price/100*tsla_volatility, tsla_price/100*tsla_volatility)
-	update_stock_labels()
+	for stock in stock_list:
+		var delta = randi_range(-stock.price / 100 * stock.volatility, stock.price / 100 * stock.volatility)
+		stock.price += int(delta)
+		stock_rows[stock.symbol].update_display()
 
-func update_stock_labels():
-	%TSLALabel.text = " $TSLA: $" + str(tsla_price)
-
-
-func _on_buy_tesla_button_pressed() -> void:
-	if MoneyManager.cash < tsla_price:
-		print("insufficient funds!")
+func _on_buy_button_pressed(symbol: String):
+	var stock = get_stock(symbol)
+	if MoneyManager.cash < stock.price:
+		print("Insufficient funds!")
 		return
-	MoneyManager.spend_cash(tsla_price)
-	tsla_owned += 1
-	update_owned_tsla()
+	MoneyManager.spend_cash(stock.price)
+	stock.owned += 1
+	stock_rows[symbol].update_display()
 
-
-func _on_sell_tesla_button_pressed() -> void:
-	if tsla_owned < 1:
-		print("no stocks owned!")
+func _on_sell_button_pressed(symbol: String):
+	var stock = get_stock(symbol)
+	if stock.owned < 1:
+		print("No stocks owned!")
 		return
-	MoneyManager.add_cash(tsla_price)
-	tsla_owned -= 1
-	update_owned_tsla()
+	MoneyManager.add_cash(stock.price)
+	stock.owned -= 1
+	stock_rows[symbol].update_display()
 
-func update_owned_tsla():
-	owned_tsla_label.text = str(tsla_owned)
+func get_stock(symbol: String) -> Stock:
+	for stock in stock_list:
+		if stock.symbol == symbol:
+			return stock
+	return null

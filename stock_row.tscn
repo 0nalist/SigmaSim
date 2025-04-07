@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://m61kgxdhy7hc"]
+
+[ext_resource type="Script" uid="uid://ck1gmmsrevnw4" path="res://scripts/stock_row.gd" id="1_gyggh"]
+
+[node name="StockRow" type="HBoxContainer"]
+script = ExtResource("1_gyggh")
+
+[node name="StockLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = " $TSLA: $420 "
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(40, 10)
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "BUY"
+
+[node name="Control2" type="Control" parent="."]
+custom_minimum_size = Vector2(5, 10)
+layout_mode = 2
+
+[node name="SellButton" type="Button" parent="."]
+layout_mode = 2
+text = "SELL"
+
+[node name="Control3" type="Control" parent="."]
+custom_minimum_size = Vector2(15, 10)
+layout_mode = 2
+
+[node name="OwnedLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+text = " 0"

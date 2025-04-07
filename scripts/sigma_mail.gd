@@ -1,4 +1,4 @@
-extends Window
+extends DesktopWindow
 
 func _ready() -> void:
 	self.close_requested.connect(_on_close_requested)
