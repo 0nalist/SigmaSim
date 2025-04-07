@@ -20,9 +20,26 @@ func _ready():
 
 func _on_timer_timeout() -> void:
 	for stock in stock_list:
-		var delta = randi_range(-stock.price / 100 * stock.volatility, stock.price / 100 * stock.volatility)
-		stock.price += int(delta)
+		# Decrease momentum, possibly reset sentiment
+		stock.momentum -= 1
+		if stock.momentum <= 0:
+			stock.sentiment = randf_range(-1.0, 1.0)
+			stock.momentum = randi_range(5, 20)  # e.g., hold sentiment for 5–20 ticks
+			
+
+		# Calculate random noise and sentiment bias
+		var noise = randf_range(-1.0, 1.0)
+		var base_fluctuation = stock.price / 100.0 * stock.volatility
+	
+		var total_fluctuation = base_fluctuation * (noise + stock.sentiment)
+		var delta = round(total_fluctuation)
+
+		# Clamp and apply price
+		stock.price = max(stock.price + delta, 1)
+
+		# Update the stock's UI row
 		stock_rows[stock.symbol].update_display()
+		#stock_rows[stock.symbol].update_sentiment_arrow(stock.sentiment) #moved into udpate_display()
 
 func _on_buy_button_pressed(symbol: String):
 	var stock = get_stock(symbol)
@@ -32,6 +49,7 @@ func _on_buy_button_pressed(symbol: String):
 	MoneyManager.spend_cash(stock.price)
 	stock.owned += 1
 	stock_rows[symbol].update_display()
+	MoneyManager.update_investments.emit(MoneyManager.get_investments())
 
 func _on_sell_button_pressed(symbol: String):
 	var stock = get_stock(symbol)

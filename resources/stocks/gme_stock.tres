@@ -6,7 +6,7 @@
 script = ExtResource("1_khog6")
 symbol = "GME"
 price = 12
-volatility = 1.2
+volatility = 15.0
 shares_outstanding = 4000000
 sentiment = 1.0
 owned = 0

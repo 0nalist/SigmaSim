@@ -11,6 +11,7 @@ var passive_income: int = 0
 
 signal update_cash(delta: int)
 signal update_passive_income(total)
+signal update_investments(total)
 
 func add_cash(amount: int):
 	if amount < 0:
@@ -31,6 +32,10 @@ func get_passive_income() -> int:
 
 func get_balance() -> int:
 	return cash + investments - debt 
+
+func get_investments() -> int:
+	return 0
+ 
 
 func add_employee_income(amount):
 	employee_income += amount

@@ -1,37 +1,77 @@
-[gd_scene load_steps=2 format=3 uid="uid://m61kgxdhy7hc"]
+[gd_scene load_steps=13 format=3 uid="uid://m61kgxdhy7hc"]
 
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_ejhyi"]
 [ext_resource type="Script" uid="uid://ck1gmmsrevnw4" path="res://scripts/stock_row.gd" id="1_gyggh"]
+[ext_resource type="Texture2D" uid="uid://cpph6qmmgf2p3" path="res://assets/greenbuttonpressed.png" id="3_mnbqp"]
+[ext_resource type="Texture2D" uid="uid://bexdrhb3xo3ro" path="res://assets/redarrow.png" id="3_uody6"]
+[ext_resource type="Texture2D" uid="uid://ctlorutr8vm1m" path="res://assets/greenbutton.png" id="4_uody6"]
+[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/redbuttonpressed.png" id="5_2utg5"]
+[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/redbutton.png" id="6_35ya2"]
 
-[node name="StockRow" type="HBoxContainer"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t6o0i"]
+texture = ExtResource("3_mnbqp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1g05d"]
+texture = ExtResource("3_mnbqp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cvu5h"]
+texture = ExtResource("4_uody6")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8c4aw"]
+texture = ExtResource("5_2utg5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lqo4w"]
+texture = ExtResource("6_35ya2")
+
+[node name="StockRow" type="GridContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 2.0
+offset_right = 2.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme = ExtResource("1_ejhyi")
+columns = 7
 script = ExtResource("1_gyggh")
 
 [node name="StockLabel" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-text = " $TSLA: $420 "
+size_flags_horizontal = 3
+text = " $TSLA: $420"
 
-[node name="Control" type="Control" parent="."]
-custom_minimum_size = Vector2(40, 10)
+[node name="SentimentArrow" type="TextureRect" parent="."]
+layout_mode = 2
+size_flags_horizontal = 6
+texture = ExtResource("3_uody6")
+expand_mode = 3
+
+[node name="Control2" type="Control" parent="."]
 layout_mode = 2
 
 [node name="BuyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 8
-text = "BUY"
-
-[node name="Control2" type="Control" parent="."]
-custom_minimum_size = Vector2(5, 10)
-layout_mode = 2
+size_flags_stretch_ratio = 0.25
+focus_mode = 0
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_t6o0i")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1g05d")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cvu5h")
+text = " BUY "
 
 [node name="SellButton" type="Button" parent="."]
 layout_mode = 2
-text = "SELL"
+size_flags_stretch_ratio = 0.25
+focus_mode = 0
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8c4aw")
+theme_override_styles/normal = SubResource("StyleBoxTexture_lqo4w")
+text = " SELL "
 
-[node name="Control3" type="Control" parent="."]
-custom_minimum_size = Vector2(15, 10)
+[node name="Control" type="Control" parent="."]
 layout_mode = 2
 
 [node name="OwnedLabel" type="Label" parent="."]
 layout_mode = 2
-size_flags_horizontal = 8
-text = " 0"
+size_flags_horizontal = 3
+text = " 0 : $0"
+horizontal_alignment = 1

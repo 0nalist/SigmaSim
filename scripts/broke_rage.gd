@@ -1,6 +1,10 @@
 #BrokeRage.gd
 extends DesktopWindow
 
+
+@onready var stock_market: VBoxContainer = $MarginContainer/VBoxContainer/TabContainer/StockMarket
+
+
 func _ready() -> void:
 	MoneyManager.update_cash.connect(_on_cash_updated)
 	MoneyManager.update_cash.emit(MoneyManager.cash)

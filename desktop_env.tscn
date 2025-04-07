@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=36 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/Chicago.ttf" id="1_lx1wk"]
@@ -54,9 +54,6 @@ texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_75kf8"]
 texture = ExtResource("2_75kf8")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dik0q"]
-bg_color = Color(0.0901961, 0.6, 0.6, 1)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_o42ww"]
 
@@ -297,7 +294,6 @@ initial_position = 2
 size = Vector2i(400, 300)
 theme = ExtResource("7_o42ww")
 theme_override_fonts/title_font = ExtResource("1_lx1wk")
-theme_override_styles/embedded_unfocused_border = SubResource("StyleBoxFlat_dik0q")
 script = ExtResource("10_5k3ml")
 
 [node name="MarginContainer" type="MarginContainer" parent="BrokeRageWindow"]
@@ -313,13 +309,15 @@ theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="BrokeRageWindow/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="TabContainer" type="TabContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer"]
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 tab_focus_mode = 0
 
 [node name="Summary" type="HBoxContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer"]
+visible = false
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 metadata/_tab_index = 0
@@ -372,8 +370,8 @@ text = "Passive Income: $0"
 horizontal_alignment = 2
 
 [node name="StockMarket" type="VBoxContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
+theme_override_constants/separation = 5
 script = ExtResource("14_bnui0")
 stock_list = Array[ExtResource("15_tb8qf")]([ExtResource("16_sqvqh"), ExtResource("17_6nq0o")])
 stock_row_scene = ExtResource("15_xcmse")
@@ -381,6 +379,9 @@ metadata/_tab_index = 1
 
 [node name="Timer" type="Timer" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/StockMarket"]
 autostart = true
+
+[node name="Control" type="Control" parent="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/StockMarket"]
+layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="BrokeRageWindow/MarginContainer/VBoxContainer"]
 layout_mode = 2
