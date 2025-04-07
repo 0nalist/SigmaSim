@@ -12,6 +12,12 @@ func _ready() -> void:
 	if OS.has_feature("editor") or DisplayServer.get_name() == "headless":
 		fullscreen_check_box.disabled = true
 
+	self.close_requested.connect(_on_close_requested)
+
+func _on_close_requested():
+	hide()
+
+
 func update_checked_mode() -> void:
 	var mode = DisplayServer.window_get_mode()
 	match mode:

@@ -6,6 +6,8 @@ extends Control
 
 func _ready() -> void:
 	hide_all_windows_and_panels()
+	WindowManager.taskbar_container = %Taskbar
+	WindowManager.start_panel = %StartPanel
 
 func _input(event):
 	if event:

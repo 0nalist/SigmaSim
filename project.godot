@@ -18,6 +18,7 @@ config/icon="res://assets/icon.svg"
 [autoload]
 
 MoneyManager="*res://autoloads/money_manager.gd"
+WindowManager="*res://autoloads/window_manager.gd"
 
 [display]
 

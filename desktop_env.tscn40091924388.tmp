@@ -244,7 +244,6 @@ visible = false
 theme = ExtResource("7_o42ww")
 theme_override_fonts/title_font = ExtResource("1_lx1wk")
 script = ExtResource("10_3uyqq")
-icon = ExtResource("4_75kf8")
 
 [node name="MarginContainer" type="MarginContainer" parent="GrinderrWindow"]
 anchors_preset = 15
@@ -302,7 +301,6 @@ visible = false
 theme = ExtResource("7_o42ww")
 theme_override_fonts/title_font = ExtResource("1_lx1wk")
 script = ExtResource("10_5k3ml")
-icon = ExtResource("4_75kf8")
 
 [node name="MarginContainer" type="MarginContainer" parent="BrokeRageWindow"]
 anchors_preset = 15
@@ -600,12 +598,11 @@ theme_override_constants/margin_bottom = 10
 [node name="ScrollContainer" type="ScrollContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="AppListContainer" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="BrokeRageButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/AppListContainer"]
+[node name="BrokeRageButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 focus_mode = 0
@@ -614,7 +611,7 @@ theme_override_fonts/font = ExtResource("1_lx1wk")
 text = "BrokeRage"
 icon = ExtResource("4_75kf8")
 
-[node name="GrinderrButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/AppListContainer"]
+[node name="GrinderrButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -625,7 +622,7 @@ text = "Grinderr
 "
 icon = ExtResource("4_75kf8")
 
-[node name="SigmaMailButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/AppListContainer"]
+[node name="SigmaMailButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -729,8 +726,8 @@ script = ExtResource("25_sfr4l")
 [connection signal="pressed" from="GrinderrWindow/MarginContainer/ScrollContainer/VBoxContainer/SubcontractThirdWorldGrinderButton" to="GrinderrWindow" method="_on_subcontract_third_world_grinder_button_pressed"]
 [connection signal="timeout" from="GrinderrWindow/SubcontractorTimer" to="GrinderrWindow" method="_on_subcontractor_timer_timeout"]
 [connection signal="timeout" from="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/StockMarket/Timer" to="BrokeRageWindow/MarginContainer/VBoxContainer/TabContainer/StockMarket" method="_on_timer_timeout"]
-[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/AppListContainer/BrokeRageButton" to="." method="_on_broke_rage_button_pressed"]
-[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/AppListContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]
-[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/AppListContainer/SigmaMailButton" to="." method="_on_sigma_mail_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/BrokeRageButton" to="." method="_on_broke_rage_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/SigmaMailButton" to="." method="_on_sigma_mail_button_pressed"]
 [connection signal="pressed" from="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer/FullscreenCheckBox" to="SettingsWindow" method="_on_fullscreen_check_box_pressed"]
 [connection signal="pressed" from="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer/WindowedCheckBox" to="SettingsWindow" method="_on_windowed_check_box_pressed"]

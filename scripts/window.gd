@@ -3,6 +3,7 @@ extends Window
 class_name DesktopWindow
 
 @export var id: String
+@export var icon: Texture
 
 func _ready() -> void:
 	print("DesktopWindow ready")
