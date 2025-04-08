@@ -29,6 +29,7 @@ var min_window_size := Vector2(50, 10)
 ##         UI Elements         ##
 ## ---------------------------- ##
 
+@onready var favicon: TextureRect = %Favicon
 @onready var title_label: Label = %TitleLabel
 @onready var header: HBoxContainer = $VBoxContainer/MarginContainer/Header
 @onready var minimize_button: Button = $VBoxContainer/MarginContainer/Header/MinimizeButton
@@ -46,7 +47,10 @@ func _ready() -> void:
 	maximize_button.pressed.connect(toggle_maximize)
 	close_button.pressed.connect(_on_close_pressed)
 	header.gui_input.connect(_on_header_input)
-
+	
+	if icon:
+		favicon.texture = icon
+	
 	call_deferred("_apply_default_window_size_and_position")
 
 func _apply_default_window_size_and_position():
