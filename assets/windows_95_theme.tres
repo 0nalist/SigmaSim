@@ -1,9 +1,10 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://cesgvqexxaqev"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://cesgvqexxaqev"]
 
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/Chicago.ttf" id="1_cm3wh"]
 [ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/buttonhovered.png" id="2_7ynwi"]
 [ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/button1.png" id="3_cej8x"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/button2.png" id="3_oollr"]
+[ext_resource type="Texture2D" uid="uid://224bqpxn4g0n" path="res://assets/panel.png" id="5_bqcnq"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sp5ca"]
 texture = ExtResource("2_7ynwi")
@@ -33,6 +34,13 @@ texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w21ee"]
+texture = ExtResource("5_bqcnq")
+texture_margin_left = 1.0
+texture_margin_top = 1.0
+texture_margin_right = 1.0
+texture_margin_bottom = 1.0
+
 [resource]
 default_font = ExtResource("1_cm3wh")
 Button/constants/icon_max_width = 32
@@ -43,3 +51,4 @@ Button/styles/normal = SubResource("StyleBoxTexture_h6wug")
 Button/styles/pressed = SubResource("StyleBoxTexture_hhclm")
 Label/font_sizes/font_size = 12
 Label/fonts/font = ExtResource("1_cm3wh")
+Panel/styles/panel = SubResource("StyleBoxTexture_w21ee")

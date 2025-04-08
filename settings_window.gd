@@ -1,5 +1,5 @@
 #settings_window.gd
-extends Window
+extends BaseAppUI
 
 @onready var fullscreen_check_box: CheckBox = %FullscreenCheckBox
 @onready var windowed_check_box: CheckBox = %WindowedCheckBox
@@ -12,10 +12,6 @@ func _ready() -> void:
 	if OS.has_feature("editor") or DisplayServer.get_name() == "headless":
 		fullscreen_check_box.disabled = true
 
-	self.close_requested.connect(_on_close_requested)
-
-func _on_close_requested():
-	hide()
 
 
 func update_checked_mode() -> void:

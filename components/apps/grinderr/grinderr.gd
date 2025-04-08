@@ -1,16 +1,16 @@
-extends DesktopWindow
-class_name GrinderrWindow
-
-#@export_var
+extends BaseAppUI
+class_name GrinderrUI
 
 var subcontract_price: int = 10
 var subcontractor_dps: int = 1
 var subcontractors: int = 0
-@onready var subcontractor_timer: Timer = $SubcontractorTimer
+@onready var subcontractor_timer: Timer = %SubcontractorTimer
 
 
 func _ready() -> void:
-	super._ready()
+	app_title = "Grinderr"
+	app_icon = preload("res://assets/Tralalero_tralala.png")
+	emit_signal("title_updated", app_title)
 	for i in 10:
 		add_subcontractor(subcontractor_dps)
 

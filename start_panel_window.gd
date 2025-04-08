@@ -2,69 +2,65 @@ extends Window
 class_name StartPanelWindow
 
 @onready var app_list_container: VBoxContainer = %AppListContainer
+#@onready var settings_window: BaseAppUI = %SettingsWindow
 
-@export var app_list: Array[Dictionary] = [
-	{
-		"name": "Grinderr",
-		"scene": preload("res://components/apps/grinderr/grinderr_window.tscn")
-	},
-	{
-		"name": "BrokeRage",
-		"scene": preload("res://components/apps/broke_rage/broke_rage_window.tscn")
-	}
+@export var app_list: Array[PackedScene] = [
+	preload("res://components/apps/grinderr/grinderr_window.tscn"),
+	preload("res://components/apps/broke_rage/broke_rage_ui.tscn"),
+	preload("res://components/apps/sigma_mail/sigma_mail_window.tscn"),
+	#preload("res://settings_window.tscn"),
+
 ]
 
-func _ready():
-	for app in app_list:
-		var button = Button.new()
-		button.text = app.name
+func _ready() -> void:
+	for app_scene in app_list:
+		var preview = app_scene.instantiate()
 
-		var preview_instance = app.scene.instantiate()
-		if preview_instance is DesktopWindow:
-			button.icon = preview_instance.icon
-			button.theme = preload("res://assets/windows_95_theme.tres")
-			preview_instance.queue_free()
+		if not (preview is BaseAppUI):
+			push_error("App scene must extend BaseAppUI: " + str(app_scene))
+			continue
 
-		#button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.pressed.connect(func():
-			launch_or_focus_app(app.name, app.scene)
-		)
+		var button := Button.new()
+		button.text = preview.app_title
+		button.icon = preview.app_icon
+		button.theme = preload("res://assets/windows_95_theme.tres")
+		button.pressed.connect(func(): launch_app(app_scene))
 		app_list_container.add_child(button)
 
+		preview.queue_free()
 
-
-func _input(event):
-	if event.is_action_pressed("select"):
-		if %StartPanel.visible:
-			await get_tree().create_timer(.21).timeout
-			close_start_panel()
-
-func launch_or_focus_app(id: String, scene: PackedScene):
-	close_start_panel()
-	
-	if WindowManager.open_windows.has(id):
-		var win = WindowManager.open_windows[id]
-		win.show()
-		win.raise()
-		win.grab_focus()
+func toggle_start_panel() -> void:
+	if visible:
+		hide()
 	else:
-		var window = scene.instantiate() as Window
-		WindowManager.register_window(window, id)
+		popup()
+		position = Vector2(0, 259)
 
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("select") and visible:
+		await get_tree().create_timer(0.21).timeout
+		hide()
 
+func launch_app(app_scene: PackedScene) -> void:
+	hide()
 
-func toggle_start_panel():
-	if %StartPanel.visible:
-		%StartPanel.hide()
-	else:
-		%StartPanel.popup()
-		%StartPanel.position = Vector2(0, 259)
+	var app_ui = app_scene.instantiate()
 
+	if not (app_ui is BaseAppUI):
+		push_error("App UI must extend BaseAppUI: " + str(app_ui))
+		return
 
-func close_start_panel():
-	%StartPanel.hide()
+	var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+	win.call_deferred("set_window_title", app_ui.app_title)
+	win.icon = app_ui.app_icon
+
+	if app_ui.has_signal("title_updated"):
+		app_ui.title_updated.connect(win.set_window_title)
+
+	win.get_node("%ContentPanel").add_child(app_ui)
+	WindowManager.register_window(win)
 
 
 func _on_settings_button_pressed() -> void:
-	%SettingsWindow.show()
+	launch_app(preload("res://settings_window.tscn"))

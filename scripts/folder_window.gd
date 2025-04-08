@@ -1,2 +1,0 @@
-extends Window
-class_name FolderWindow

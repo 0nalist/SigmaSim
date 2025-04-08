@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=26 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/Chicago.ttf" id="1_lx1wk"]
@@ -9,16 +9,12 @@
 [ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/button1.png" id="3_lx1wk"]
 [ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="4_75kf8"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="7_o42ww"]
-[ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://scripts/clock.gd" id="9_dc0b5"]
+[ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://dyx0l0aa6l0at" path="res://assets/folder.png" id="10_4e5iv"]
 [ext_resource type="Texture2D" uid="uid://mpip7wcjjyrr" path="res://assets/pdficon.png" id="11_6x3lq"]
-[ext_resource type="Script" uid="uid://du7g6y35nj384" path="res://scripts/sigma_mail.gd" id="14_g75lf"]
-[ext_resource type="Script" uid="uid://jj0g0vk3lpc2" path="res://scripts/trash.gd" id="14_m483i"]
+[ext_resource type="Script" uid="uid://jj0g0vk3lpc2" path="res://components/trash.gd" id="14_m483i"]
 [ext_resource type="Texture2D" uid="uid://mb2q2hy3djdx" path="res://assets/cog.png" id="16_xcmse"]
-[ext_resource type="PackedScene" uid="uid://cybbgx17lvr07" path="res://desktop_window.tscn" id="17_xcmse"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://start_panel_window.gd" id="23_dik0q"]
-[ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://settings_window.gd" id="25_fty7x"]
-[ext_resource type="Script" uid="uid://cbsrn6pfu31n4" path="res://scripts/folder_window.gd" id="25_sfr4l"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
 
@@ -71,8 +67,6 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_jjwhp"]
 
 [node name="DesktopEnv" type="Control"]
 layout_mode = 3
@@ -189,23 +183,20 @@ icon = ExtResource("4_75kf8")
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="Taskbar" type="HBoxContainer" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
+[node name="ScrollContainer" type="ScrollContainer" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Taskbar" type="HBoxContainer" parent="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 alignment = 2
 
-[node name="IconButton" type="Button" parent="TaskbarWrapper/MarginContainer/TaskbarRow/Taskbar"]
+[node name="SettingsButton2" type="Button" parent="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar"]
 layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("1_lx1wk")
-theme_override_styles/hover = SubResource("StyleBoxTexture_o42ww")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_5eiy6")
-theme_override_styles/normal = SubResource("StyleBoxTexture_05goa")
-icon = ExtResource("4_75kf8")
+theme = ExtResource("7_o42ww")
+icon = ExtResource("16_xcmse")
 
 [node name="TimePanel" type="Panel" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
 custom_minimum_size = Vector2(84.615, 0)
@@ -226,26 +217,21 @@ text = " 11:11 AM "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SigmaMailWindow" type="Window" parent="."]
+[node name="TrashWindow" type="Panel" parent="."]
 unique_name_in_owner = true
-title = "Σ-Mail"
-initial_position = 2
-size = Vector2i(250, 150)
 visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("7_o42ww")
-script = ExtResource("14_g75lf")
-
-[node name="TrashWindow" type="Window" parent="."]
-unique_name_in_owner = true
-title = "Trash"
-initial_position = 2
-size = Vector2i(300, 180)
-visible = false
-theme = ExtResource("7_o42ww")
-theme_override_fonts/title_font = ExtResource("1_lx1wk")
 script = ExtResource("14_m483i")
+metadata/_custom_type_script = "uid://c1qvasiiw126v"
 
 [node name="MarginContainer" type="MarginContainer" parent="TrashWindow"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -366,6 +352,7 @@ unique_name_in_owner = true
 title = "Sigma Menu"
 position = Vector2i(0, 39)
 size = Vector2i(300, 340)
+visible = false
 unresizable = true
 borderless = true
 always_on_top = true
@@ -425,16 +412,6 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="SigmaMailButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/AppListContainer"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-focus_mode = 0
-theme = ExtResource("7_o42ww")
-theme_override_fonts/font = ExtResource("1_lx1wk")
-text = "Σ-Mail"
-icon = ExtResource("4_75kf8")
-
 [node name="VBoxContainer2" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
@@ -450,74 +427,7 @@ layout_mode = 2
 theme = ExtResource("7_o42ww")
 icon = ExtResource("16_xcmse")
 
-[node name="DesktopWindow" parent="." instance=ExtResource("17_xcmse")]
-
-[node name="SettingsWindow" type="Window" parent="."]
-unique_name_in_owner = true
-auto_translate_mode = 1
-title = "Settings"
-initial_position = 2
-size = Vector2i(300, 250)
-visible = false
-transient_to_focused = true
-theme = ExtResource("7_o42ww")
-theme_override_constants/resize_margin = 5
-script = ExtResource("25_fty7x")
-
-[node name="MarginContainer" type="MarginContainer" parent="SettingsWindow"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="ScrollContainer" type="ScrollContainer" parent="SettingsWindow/MarginContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="SettingsWindow/MarginContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FullscreenCheckBox" type="CheckBox" parent="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-button_group = SubResource("ButtonGroup_jjwhp")
-text = "Fullscreen"
-
-[node name="WindowedCheckBox" type="CheckBox" parent="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-button_group = SubResource("ButtonGroup_jjwhp")
-text = "Windowed"
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="FolderWindow" type="Window" parent="."]
-auto_translate_mode = 1
-title = "Window"
-initial_position = 2
-visible = false
-transient_to_focused = true
-theme = ExtResource("7_o42ww")
-theme_override_constants/resize_margin = 5
-script = ExtResource("25_sfr4l")
-
 [connection signal="pressed" from="MarginContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/AppListContainer/SigmaMailButton" to="." method="_on_sigma_mail_button_pressed"]
+[connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="StartPanel" method="_on_settings_button_pressed"]
 [connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer/SettingsButton" to="StartPanel" method="_on_settings_button_pressed"]
-[connection signal="pressed" from="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer/FullscreenCheckBox" to="SettingsWindow" method="_on_fullscreen_check_box_pressed"]
-[connection signal="pressed" from="SettingsWindow/MarginContainer/ScrollContainer/HBoxContainer/VBoxContainer/WindowedCheckBox" to="SettingsWindow" method="_on_windowed_check_box_pressed"]

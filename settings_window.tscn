@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://s5d0e4c7s6cc"]
+
+[ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://settings_window.gd" id="2_7ni1d"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_jjwhp"]
+
+[node name="MarginContainer" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+script = ExtResource("2_7ni1d")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullscreenCheckBox" type="CheckBox" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+button_group = SubResource("ButtonGroup_jjwhp")
+text = "Fullscreen"
+
+[node name="WindowedCheckBox" type="CheckBox" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+button_group = SubResource("ButtonGroup_jjwhp")
+text = "Windowed"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
