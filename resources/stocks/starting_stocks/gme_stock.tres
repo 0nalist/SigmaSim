@@ -6,7 +6,7 @@
 script = ExtResource("1_q1po3")
 symbol = "GME"
 price = 0.0
-volatility = 9.0
+volatility = 2.0
 shares_outstanding = 4000000
 sentiment = 1.0
 momentum = 0

@@ -7,7 +7,7 @@ extends BaseAppUI
 
 func _ready() -> void:
 	update_checked_mode()
-
+	app_title = "Settings"
 	# Disable fullscreen if running in embedded mode
 	if OS.has_feature("editor") or DisplayServer.get_name() == "headless":
 		fullscreen_check_box.disabled = true

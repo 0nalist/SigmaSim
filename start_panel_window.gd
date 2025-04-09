@@ -52,8 +52,8 @@ func launch_app(app_scene: PackedScene) -> void:
 		return
 
 	var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-	win.call_deferred("set_window_title", app_ui.app_title)
 	win.icon = app_ui.app_icon
+	win.set_window_title(app_ui.app_title)
 
 	if app_ui.has_signal("title_updated"):
 		app_ui.title_updated.connect(win.set_window_title)
@@ -63,4 +63,8 @@ func launch_app(app_scene: PackedScene) -> void:
 
 
 func _on_settings_button_pressed() -> void:
-	launch_app(preload("res://settings_window.tscn"))
+	var app_scene = preload("res://settings_window.tscn")
+	var test_app = app_scene.instantiate()
+	print("Title from script:", test_app.app_title)  # Should print "Settings"
+	test_app.queue_free()
+	launch_app(app_scene)

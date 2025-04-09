@@ -98,11 +98,18 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	taskbar_container.add_child(icon_button)
 	return icon_button
 
+# Helper functions
+
 func get_taskbar_icon_center(window: WindowFrame) -> Vector2:
 	var btn = open_windows.get(window)
 	if btn and is_instance_valid(btn):
 		return btn.get_global_position() + btn.size / 2
 	return window.global_position  # fallback
+
+func get_taskbar_height() -> int:
+	if is_instance_valid(taskbar_container):
+		return taskbar_container.size.y
+	return 0
 
 func find_window_by_app(app_class_name: String) -> WindowFrame:
 	for win in open_windows.keys():
