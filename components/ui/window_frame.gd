@@ -4,6 +4,10 @@ class_name WindowFrame
 @export var icon: Texture # Optional, for taskbar or title bar
 @export var default_size: Vector2 = Vector2(640, 480)
 
+@export var minimized_size: Vector2 = Vector2(200, 40)
+@export var minimized_position: Vector2 = Vector2(10, 10)
+@export var animation_duration: float = 0.1
+
 var window_title: String = "Window"
 
 enum WindowState { NORMAL, MINIMIZED, MAXIMIZED }
@@ -42,8 +46,15 @@ var min_window_size := Vector2(50, 10)
 ## ---------------------------- ##
 
 func _ready() -> void:
+	
 	# UI Setup
-	minimize_button.pressed.connect(minimize)
+	minimize_button.pressed.connect(func():
+		if WindowManager and WindowManager.has_method("get_taskbar_icon_center"):
+			var icon_center := WindowManager.get_taskbar_icon_center(self)
+			minimize(icon_center)
+		else:
+			minimize()  # fallback if manager not available
+	)
 	maximize_button.pressed.connect(toggle_maximize)
 	close_button.pressed.connect(_on_close_pressed)
 	header.gui_input.connect(_on_header_input)
@@ -193,10 +204,28 @@ func _gui_input(event: InputEvent) -> void:
 ##       Window Behaviors      ##
 ## ---------------------------- ##
 
-func minimize() -> void:
+func minimize(target_position: Vector2 = global_position) -> void:
+	print("Saving last position:", global_position)
+	if window_state == WindowState.MINIMIZED:
+		return
+
+	# 🧠 Use global_position instead of position
+	last_position = global_position
+	last_size = size
 	previous_state = window_state
-	hide()
+
 	window_state = WindowState.MINIMIZED
+
+	var tween = create_tween()
+	tween.tween_property(self, "size", minimized_size, animation_duration)
+	tween.parallel().tween_property(self, "global_position", target_position - minimized_size / 2, animation_duration)
+	tween.finished.connect(_on_minimize_animation_finished)
+
+
+func _on_minimize_animation_finished():
+	hide()
+
+
 
 func toggle_maximize() -> void:
 	# Special case: if we just unminimized from maximized
@@ -218,16 +247,28 @@ func toggle_maximize() -> void:
 
 
 func restore() -> void:
-	if window_state == WindowState.MINIMIZED:
-		show()
-		window_state = previous_state
-	elif window_state == WindowState.MAXIMIZED:
-		unmaximize()
+	print("Restoring to:", last_position)
+
+	if window_state != WindowState.MINIMIZED:
+		return
+
+	show()
+	window_state = previous_state
+
+	if previous_state == WindowState.NORMAL:
+		global_position = last_position
+		size = last_size
+	elif previous_state == WindowState.MAXIMIZED:
+		# Restore to full-screen if we minimized from maximized
+		position = Vector2.ZERO
+		size = get_viewport_rect().size
+		window_state = WindowState.MAXIMIZED
 
 	_clamp_to_viewport()
 
+
 func unmaximize() -> void:
-	position = last_position
+	global_position = last_position
 	size = last_size
 	window_state = WindowState.NORMAL
 	_clamp_to_viewport()

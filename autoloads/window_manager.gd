@@ -76,12 +76,16 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	icon_button.focus_mode = Control.FOCUS_NONE
 
 	icon_button.pressed.connect(func():
-		if window.visible:
-			focus_window(window)
+		if window.visible and focused_window == window:
+			var center = icon_button.get_global_position() + icon_button.size / 2
+			window.minimize(center)
+			icon_button.button_pressed = false
+			focused_window = null
 		else:
-			window.show()
+			window.restore()
 			focus_window(window)
 	)
+
 
 	window.visibility_changed.connect(func():
 		icon_button.button_pressed = window.visible and focused_window == window
@@ -93,6 +97,12 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 
 	taskbar_container.add_child(icon_button)
 	return icon_button
+
+func get_taskbar_icon_center(window: WindowFrame) -> Vector2:
+	var btn = open_windows.get(window)
+	if btn and is_instance_valid(btn):
+		return btn.get_global_position() + btn.size / 2
+	return window.global_position  # fallback
 
 func find_window_by_app(app_class_name: String) -> WindowFrame:
 	for win in open_windows.keys():
