@@ -1,12 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://cci5lph7o8fg5"]
 
-[ext_resource type="Script" uid="uid://c1qvasiiw126v" path="res://components/ui/window_frame.gd" id="1_e01l8"]
+[ext_resource type="Script" uid="uid://c2u2e7rvja8k" path="res://components/apps/minerr/minerr_ui.gd" id="1_e01l8"]
 
-[node name="Minerr" type="Panel"]
+[node name="Minerr" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_e01l8")
-metadata/_custom_type_script = "uid://c1qvasiiw126v"

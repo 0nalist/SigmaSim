@@ -1,34 +1,58 @@
 extends Node
-#Autoload name MarketManager
+# Autoload name: MarketManager
 
 @export var tick_interval: float = 1.0
-var tick_timer: Timer
+@export var crypto_tick_offset: float = 0.5  # Offset from market tick
 
-## Market storage
 var stock_market: Dictionary = {}  # symbol: Stock
-# TODO: Add contractor_market, crypto_market, etc.
+var crypto_market: Dictionary = {}  # name: Crypto (if needed later)
 
-## Signals
+var tick_timer: Timer
+var crypto_timer: Timer
+
 signal market_tick()
+signal crypto_tick()
 signal stock_price_updated(symbol: String, stock: Stock)
+signal crypto_price_updated(name: String, crypto: Cryptocurrency)
 
 func _ready():
+	# Market tick
 	tick_timer = Timer.new()
 	tick_timer.wait_time = tick_interval
 	tick_timer.one_shot = false
 	tick_timer.autostart = true
-	tick_timer.timeout.connect(_on_tick)
+	tick_timer.timeout.connect(_on_market_tick)
 	add_child(tick_timer)
 
-func _on_tick() -> void:
+	# Crypto tick (staggered)
+	crypto_timer = Timer.new()
+	crypto_timer.wait_time = tick_interval
+	crypto_timer.one_shot = false
+	crypto_timer.autostart = true
+	crypto_timer.timeout.connect(_on_crypto_tick)
+	add_child(crypto_timer)
+
+	# Start crypto timer slightly delayed
+	await get_tree().create_timer(crypto_tick_offset).timeout
+	crypto_timer.start()
+
+
+func _on_market_tick() -> void:
 	emit_signal("market_tick")
 	_update_stock_prices()
+
+
+func _on_crypto_tick() -> void:
+	_update_crypto_prices()
+	emit_signal("crypto_tick")  # Let miners do their thing after prices shift
 
 func register_stock(stock: Stock) -> void:
 	stock_market[stock.symbol] = stock
 
+
 func get_stock(symbol: String) -> Stock:
 	return stock_market.get(symbol)
+
 
 func _update_stock_prices():
 	for stock in stock_market.values():
@@ -49,3 +73,20 @@ func _update_stock_prices():
 
 		if abs(stock.price - old_price) > 0.001:
 			emit_signal("stock_price_updated", stock.symbol, stock)
+
+func _update_crypto_prices():
+	for crypto in crypto_market.values():
+		var old_price = crypto.price
+
+		var volatility = crypto.volatility
+		var noise = randf_range(-1.0, 1.0)
+		var sentiment = crypto.sentiment if crypto.has("sentiment") else 0.0
+		var delta = crypto.price * 0.01 * volatility * (noise + sentiment)
+
+		crypto.last_price = crypto.price
+		crypto.price = max(0.01, snapped(crypto.price + delta, 0.01))
+
+		if abs(crypto.price - old_price) > 0.001:
+			emit_signal("crypto_price_updated", crypto.symbol, crypto)
+			# Schedule power requirement update for next frame
+			crypto.call_deferred("update_power_required")

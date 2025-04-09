@@ -17,10 +17,10 @@ config/icon="res://assets/icon.svg"
 
 [autoload]
 
-MoneyManager="*res://autoloads/money_manager.gd"
 WindowManager="*res://autoloads/window_manager.gd"
 PortfolioManager="*res://autoloads/portfolio_manager.gd"
 MarketManager="*res://autoloads/market_manager.gd"
+GpuManager="*res://autoloads/gpu_manager.gd"
 
 [display]
 

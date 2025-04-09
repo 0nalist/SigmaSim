@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Cryptocurrency" load_steps=2 format=3 uid="uid://bjah3mncmmb8"]
+
+[ext_resource type="Script" uid="uid://llcvncktu5" path="res://resources/crypto/cryptocurrency.gd" id="1_kuior"]
+
+[resource]
+script = ExtResource("1_kuior")
+symbol = "$HAWK"
+display_name = ""
+price = 69.0
+volatility = 1.0
+power_required = 100
+reward_per_mine = 1.0
+price_history = Array[float]([])
+metadata/_custom_type_script = "uid://llcvncktu5"
