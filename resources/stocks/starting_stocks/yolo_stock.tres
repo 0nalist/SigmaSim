@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Stock" load_steps=2 format=3 uid="uid://ccl1m5pudt7l4"]
+
+[ext_resource type="Script" uid="uid://prlirycaaf1k" path="res://resources/stocks/stock.gd" id="1_ec2ko"]
+
+[resource]
+script = ExtResource("1_ec2ko")
+symbol = "YOLO"
+price = 10000.0
+volatility = 6.9
+shares_outstanding = 999999999999
+sentiment = 0.0
+momentum = 0
+metadata/_custom_type_script = "uid://prlirycaaf1k"

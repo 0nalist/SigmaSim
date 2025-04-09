@@ -55,6 +55,3 @@ text = "Subcontractors: 0"
 [node name="SubcontractorTimer" type="Timer" parent="."]
 unique_name_in_owner = true
 autostart = true
-
-[connection signal="pressed" from="ScrollContainer/VBoxContainer/GrindButton" to="." method="_on_grind_button_pressed"]
-[connection signal="pressed" from="ScrollContainer/VBoxContainer/SubcontractThirdWorldGrinderButton" to="." method="_on_subcontract_third_world_grinder_button_pressed"]

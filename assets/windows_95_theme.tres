@@ -34,12 +34,12 @@ texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w21ee"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bqcnq"]
 texture = ExtResource("5_bqcnq")
-texture_margin_left = 1.0
-texture_margin_top = 1.0
-texture_margin_right = 1.0
-texture_margin_bottom = 1.0
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [resource]
 default_font = ExtResource("1_cm3wh")
@@ -51,4 +51,4 @@ Button/styles/normal = SubResource("StyleBoxTexture_h6wug")
 Button/styles/pressed = SubResource("StyleBoxTexture_hhclm")
 Label/font_sizes/font_size = 12
 Label/fonts/font = ExtResource("1_cm3wh")
-Panel/styles/panel = SubResource("StyleBoxTexture_w21ee")
+Panel/styles/panel = SubResource("StyleBoxTexture_bqcnq")

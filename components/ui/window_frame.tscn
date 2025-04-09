@@ -1,16 +1,37 @@
-[gd_scene load_steps=5 format=3 uid="uid://du042xu4xssrm"]
+[gd_scene load_steps=6 format=3 uid="uid://du042xu4xssrm"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_i8u7u"]
 [ext_resource type="Script" uid="uid://c1qvasiiw126v" path="res://components/ui/window_frame.gd" id="2_ogx7f"]
 [ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="3_ogx7f"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bvj5f"]
-bg_color = Color(0.144063, 0.144063, 0.144062, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0quwa"]
+bg_color = Color(0.529067, 0.529067, 0.529067, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqsno"]
+bg_color = Color(0.931993, 0.854211, 0.671275, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.907942, 0.907942, 0.907942, 1)
 
 [node name="WindowFrame" type="Panel"]
 auto_translate_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_i8u7u")
-theme_override_styles/panel = SubResource("StyleBoxFlat_bvj5f")
+theme_override_styles/panel = SubResource("StyleBoxFlat_0quwa")
 script = ExtResource("2_ogx7f")
 icon = ExtResource("3_ogx7f")
 default_size = Vector2(400, 300)
@@ -58,6 +79,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.0
+focus_mode = 0
 theme_override_constants/icon_max_width = 16
 text = "_"
 
@@ -66,6 +88,7 @@ layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.0
+focus_mode = 0
 theme_override_constants/icon_max_width = 16
 text = "□"
 
@@ -73,6 +96,7 @@ text = "□"
 layout_mode = 2
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.0
+focus_mode = 0
 theme_override_constants/icon_max_width = 16
 text = "x"
 
@@ -81,3 +105,4 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_i8u7u")
+theme_override_styles/panel = SubResource("StyleBoxFlat_aqsno")

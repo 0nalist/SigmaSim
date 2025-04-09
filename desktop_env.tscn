@@ -196,6 +196,8 @@ alignment = 2
 
 [node name="SettingsButton2" type="Button" parent="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("7_o42ww")
 icon = ExtResource("16_xcmse")
 

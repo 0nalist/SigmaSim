@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="Stock" load_steps=2 format=3 uid="uid://ddsoa3sffia8j"]
 
-[ext_resource type="Script" uid="uid://prlirycaaf1k" path="res://resources/stocks/stock.gd" id="1_khog6"]
+[ext_resource type="Script" uid="uid://prlirycaaf1k" path="res://resources/stocks/stock.gd" id="1_q1po3"]
 
 [resource]
-script = ExtResource("1_khog6")
+script = ExtResource("1_q1po3")
 symbol = "GME"
-price = 12
-volatility = 15.0
+price = 0.0
+volatility = 9.0
 shares_outstanding = 4000000
 sentiment = 1.0
-owned = 0
+momentum = 0
 metadata/_custom_type_script = "uid://prlirycaaf1k"
