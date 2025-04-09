@@ -8,6 +8,7 @@ class_name StartPanelWindow
 	preload("res://components/apps/grinderr/grinderr_window.tscn"),
 	preload("res://components/apps/broke_rage/broke_rage_ui.tscn"),
 	preload("res://components/apps/sigma_mail/sigma_mail_window.tscn"),
+	preload("res://components/apps/minerr/minerr.tscn"),
 	#preload("res://settings_window.tscn"),
 
 ]

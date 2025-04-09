@@ -19,8 +19,15 @@ func setup(_stock: Stock) -> void:
 	last_price = stock.price
 	update_display(stock)
 
-	buy_button.pressed.connect(func(): emit_signal("buy_pressed", stock.symbol))
-	sell_button.pressed.connect(func(): emit_signal("sell_pressed", stock.symbol))
+	buy_button.pressed.connect(func():
+		emit_signal("buy_pressed", stock.symbol)
+		update_display(stock)
+	)
+	sell_button.pressed.connect(func():
+		emit_signal("sell_pressed", stock.symbol)
+		update_display(stock)
+	)
+
 
 func update_display(updated_stock: Stock) -> void:
 	var previous_price = last_price

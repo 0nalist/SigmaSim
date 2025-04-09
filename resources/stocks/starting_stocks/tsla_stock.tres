@@ -6,8 +6,8 @@
 script = ExtResource("1_ri6ga")
 symbol = "TSLA"
 price = 420
-volatility = 1.2
+volatility = 0.8
 shares_outstanding = 4000000
 sentiment = 1.0
-owned = 0
+momentum = 0
 metadata/_custom_type_script = "uid://prlirycaaf1k"

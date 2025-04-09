@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="Cryptocurrency" load_steps=2 format=3 uid="uid://bjah3mncmmb8"]
+[gd_resource type="Resource" script_class="Cryptocurrency" load_steps=3 format=3 uid="uid://bjah3mncmmb8"]
 
 [ext_resource type="Script" uid="uid://llcvncktu5" path="res://resources/crypto/cryptocurrency.gd" id="1_kuior"]
+[ext_resource type="Texture2D" uid="uid://bw7dnfkddu22m" path="res://assets/moneytoburn.png" id="1_m5feu"]
 
 [resource]
 script = ExtResource("1_kuior")
 symbol = "$HAWK"
 display_name = ""
+icon = ExtResource("1_m5feu")
 price = 69.0
 volatility = 1.0
 power_required = 100

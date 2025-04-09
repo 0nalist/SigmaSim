@@ -1,6 +1,7 @@
-extends Node
+extends BaseAppUI
 # Autoload name: GPUManager
 
+signal gpus_changed
 signal gpu_burned_out(index: int)
 
 @export var base_power: int = 100
@@ -24,6 +25,8 @@ func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 
 	var power := int(base_power * overclock_power_multiplier) if overclocked else base_power
 	total_power += power
+
+	emit_signal("gpus_changed")
 
 
 func set_overclocked(index: int, overclocked: bool) -> void:
@@ -82,3 +85,15 @@ func _cleanup_burned_gpus() -> void:
 		burnout_chances.remove_at(index)
 
 	to_remove.clear()
+	emit_signal("gpus_changed")
+
+
+func get_total_gpu_count() -> int:
+	return gpu_cryptos.size()
+
+func get_free_gpu_count() -> int:
+	var assigned := 0
+	for symbol in gpu_cryptos:
+		if symbol != "":
+			assigned += 1
+	return gpu_cryptos.size() - assigned

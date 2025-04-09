@@ -6,7 +6,7 @@
 script = ExtResource("1_ec2ko")
 symbol = "YOLO"
 price = 10000.0
-volatility = 3.0
+volatility = 1.0
 shares_outstanding = 999999999999
 sentiment = 0.0
 momentum = 0
