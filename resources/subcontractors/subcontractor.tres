@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Subcontractor" load_steps=2 format=3 uid="uid://dx54jyv6m4168"]
 
-[ext_resource type="Script" uid="uid://qliotabstugs" path="res://resources/subcontractor.gd" id="1_5kpeh"]
+[ext_resource type="Script" uid="uid://qliotabstugs" path="res://resources/subcontractors/subcontractor.gd" id="1_5kpeh"]
 
 [resource]
 script = ExtResource("1_5kpeh")
