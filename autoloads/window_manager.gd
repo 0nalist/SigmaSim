@@ -71,6 +71,7 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	var icon_button := Button.new()
 	icon_button.text = window.window_title
 	icon_button.icon = window.icon if window.icon else null
+	icon_button.add_theme_constant_override("icon_max_width", 32)
 	icon_button.toggle_mode = true
 	icon_button.focus_mode = Control.FOCUS_NONE
 

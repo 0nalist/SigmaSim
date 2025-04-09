@@ -40,3 +40,7 @@ func _on_windowed_check_box_pressed() -> void:
 	if windowed_check_box.button_pressed:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		fullscreen_check_box.button_pressed = false
+
+
+func _on_check_button_toggled(toggled_on: bool) -> void:
+	pass # Replace with function body.
