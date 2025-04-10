@@ -15,6 +15,9 @@ var passive_income: float = 0.0
 var stock_data: Dictionary = {}     # symbol: Stock
 var stocks_owned: Dictionary = {}   # symbol: int
 
+## --- Crypto and owned counts
+var crypto_owned: Dictionary = {}  # symbol: float
+
 ## --- Future complex resources
 var subcontractors: Array[Dictionary] = []
 var miners: Dictionary = {}
@@ -55,7 +58,7 @@ func get_passive_income() -> float:
 	return snapped(rent + employee_income + interest / 365.0 / 24.0 / 60.0 / 60.0, 0.01)
 
 ## --- Stock Methods
-func buy_stock(symbol: String) -> bool:
+func buy_stock(symbol: String, amount: int = 1) -> bool:
 	var stock = stock_data.get(symbol)
 	if stock == null or cash < stock.price:
 		return false
@@ -66,7 +69,7 @@ func buy_stock(symbol: String) -> bool:
 	#emit_investment_update()
 	return true
 
-func sell_stock(symbol: String) -> bool:
+func sell_stock(symbol: String, amount: int = 1) -> bool:
 	if stocks_owned.get(symbol, 0) <= 0:
 		return false
 
@@ -112,6 +115,30 @@ func get_total_dps() -> float:
 
 func get_subcontractor_count() -> int:
 	return subcontractors.size()
+
+## Crypto
+
+func get_crypto_amount(symbol: String) -> float:
+	return crypto_owned.get(symbol, 0.0)
+
+func add_crypto(symbol: String, amount: float) -> void:
+	crypto_owned[symbol] = crypto_owned.get(symbol, 0.0) + amount
+	emit_signal("resource_changed", symbol, crypto_owned[symbol])
+
+func sell_crypto(symbol: String, amount: float = 1) -> bool:
+	var owned := get_crypto_amount(symbol)
+	if owned < amount:
+		return false
+
+	var crypto = MarketManager.crypto_market.get(symbol)
+	if not crypto:
+		return false
+
+	crypto_owned[symbol] = owned - amount
+	add_cash(amount * crypto.price)
+	emit_signal("resource_changed", symbol, crypto_owned[symbol])
+	return true
+
 
 
 # Emit signal methods

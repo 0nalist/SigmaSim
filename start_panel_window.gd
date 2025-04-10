@@ -54,7 +54,7 @@ func launch_app(app_scene: PackedScene) -> void:
 
 	var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 	win.icon = app_ui.app_icon
-	win.set_window_title(app_ui.app_title)
+	win.call_deferred("set_window_title", app_ui.app_title)
 
 	if app_ui.has_signal("title_updated"):
 		app_ui.title_updated.connect(win.set_window_title)

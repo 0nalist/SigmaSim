@@ -5,10 +5,10 @@
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/apps/grinderr/grinderr.gd" id="3_ssc06"]
 [ext_resource type="Texture2D" uid="uid://ulcids0e12dp" path="res://assets/worker.png" id="4_ljbn4"]
 
-[node name="GrinderrWindow" type="Panel"]
+[node name="GrinderrUI" type="Panel"]
 auto_translate_mode = 1
 offset_right = 250.0
-offset_bottom = 250.0
+offset_bottom = 150.0
 theme = ExtResource("1_whgi6")
 script = ExtResource("3_ssc06")
 app_title = "Grinderr"

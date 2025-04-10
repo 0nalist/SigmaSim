@@ -87,6 +87,19 @@ func _cleanup_burned_gpus() -> void:
 	to_remove.clear()
 	emit_signal("gpus_changed")
 
+func remove_gpu_from(symbol: String, count: int = 1) -> void:
+	var removed := 0
+	var i := gpu_cryptos.size() - 1
+	while i >= 0 and removed < count:
+		if gpu_cryptos[i] == symbol:
+			gpu_cryptos.remove_at(i)
+			is_overclocked.remove_at(i)
+			burnout_chances.remove_at(i)
+			removed += 1
+		i -= 1
+	
+	if removed > 0:
+		emit_signal("gpus_changed")
 
 func get_total_gpu_count() -> int:
 	return gpu_cryptos.size()
@@ -97,3 +110,20 @@ func get_free_gpu_count() -> int:
 		if symbol != "":
 			assigned += 1
 	return gpu_cryptos.size() - assigned
+
+func get_gpu_count_for(symbol: String) -> int:
+	var count := 0
+	for assigned_symbol in gpu_cryptos:
+		if assigned_symbol == symbol:
+			count += 1
+	return count
+
+func get_power_for(symbol: String) -> int:
+	var total := 0
+	for i in gpu_cryptos.size():
+		if gpu_cryptos[i] == symbol:
+			var power = base_power
+			if is_overclocked[i]:
+				power = int(round(base_power * overclock_power_multiplier))
+			total += power
+	return total

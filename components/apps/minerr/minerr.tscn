@@ -1,10 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://cci5lph7o8fg5"]
+[gd_scene load_steps=9 format=3 uid="uid://cci5lph7o8fg5"]
 
 [ext_resource type="Script" uid="uid://c2u2e7rvja8k" path="res://components/apps/minerr/minerr_ui.gd" id="1_e01l8"]
+[ext_resource type="Texture2D" uid="uid://d5uirljm8cmi" path="res://assets/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png" id="1_vkipi"]
 [ext_resource type="PackedScene" uid="uid://b2lni5gfy28ds" path="res://components/apps/minerr/crypto_row.tscn" id="2_7ylgc"]
+[ext_resource type="Script" uid="uid://llcvncktu5" path="res://resources/crypto/cryptocurrency.gd" id="2_x77g4"]
+[ext_resource type="Resource" uid="uid://bjah3mncmmb8" path="res://resources/crypto/hawk_crypto.tres" id="3_ceoer"]
 [ext_resource type="Texture2D" uid="uid://chkl2i2bg50da" path="res://assets/mine.png" id="3_x77g4"]
+[ext_resource type="Resource" uid="uid://cwce8c107rab6" path="res://resources/crypto/bitc_crypto.tres" id="4_7eb2h"]
 
-[node name="Minerr" type="MarginContainer"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rcqoh"]
+texture = ExtResource("1_vkipi")
+
+[node name="Minerr" type="Panel"]
+offset_right = 1152.0
+offset_bottom = 648.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_rcqoh")
+script = ExtResource("1_e01l8")
+crypto_list = Array[ExtResource("2_x77g4")]([ExtResource("4_7eb2h"), ExtResource("3_ceoer")])
+crypto_row_scene = ExtResource("2_7ylgc")
+app_title = "Minerr"
+app_icon = ExtResource("3_x77g4")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,63 +33,68 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_e01l8")
-app_title = "Minerr"
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Minerr"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="CryptoContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CryptoRow" parent="VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("2_7ylgc")]
-layout_mode = 2
-
-[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_stretch_ratio = 0.0
-
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/HBoxContainer/VBoxContainer3"]
-custom_minimum_size = Vector2(10, 300)
-layout_mode = 2
-size_flags_vertical = 2
-value = 50.0
-allow_greater = true
-fill_mode = 3
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
 size_flags_stretch_ratio = 0.35
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="SelectedCryptoTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 texture = ExtResource("3_x77g4")
 expand_mode = 5
 stretch_mode = 4
 
-[node name="SelectedCryptoLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="SelectedCryptoLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 text = "$HAWK
 "
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="GPUsLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "GPUs: 0/0"
+text = "GPUs Free/Owned: 0/0"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+
+[node name="PowerBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(10, 300)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+value = 50.0
+allow_greater = true
+fill_mode = 3

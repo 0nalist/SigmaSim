@@ -21,6 +21,7 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 script = ExtResource("2_hf7up")
 app_title = "Sigma Mail"
+app_icon = ExtResource("3_648ex")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

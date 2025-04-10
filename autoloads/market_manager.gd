@@ -80,13 +80,13 @@ func _update_crypto_prices():
 
 		var volatility = crypto.volatility
 		var noise = randf_range(-1.0, 1.0)
-		var sentiment = crypto.sentiment if crypto.has("sentiment") else 0.0
-		var delta = crypto.price * 0.01 * volatility * (noise + sentiment)
+		var delta = crypto.price * 0.01 * volatility * noise
 
 		crypto.last_price = crypto.price
 		crypto.price = max(0.01, snapped(crypto.price + delta, 0.01))
 
+		# 🚀 Update power_required based on old_price
+		crypto.update_power_required(old_price)
+
 		if abs(crypto.price - old_price) > 0.001:
 			emit_signal("crypto_price_updated", crypto.symbol, crypto)
-			# Schedule power requirement update for next frame
-			crypto.call_deferred("update_power_required")

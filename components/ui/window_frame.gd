@@ -51,6 +51,11 @@ func _ready() -> void:
 	if icon:
 		favicon.texture = icon
 	call_deferred("_apply_default_window_size_and_position")
+	if icon:
+		favicon.texture = icon
+		favicon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		favicon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		favicon.custom_minimum_size = Vector2(16, 16)
 
 func _apply_default_window_size_and_position():
 	if size == Vector2.ZERO or size == Vector2(1, 1):
@@ -193,7 +198,7 @@ func toggle_maximize() -> void:
 		var taskbar_height = 0
 
 		if WindowManager and WindowManager.has_method("get_taskbar_height"):
-			taskbar_height = WindowManager.get_taskbar_height()
+			taskbar_height = WindowManager.get_taskbar_height() + 14
 
 		global_position = Vector2.ZERO
 		size = Vector2(viewport_size.x, viewport_size.y - taskbar_height)

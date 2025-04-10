@@ -7,6 +7,7 @@
 [node name="CryptoRow" type="GridContainer"]
 custom_minimum_size = Vector2(0, 50)
 size_flags_horizontal = 3
+size_flags_vertical = 4
 theme = ExtResource("1_4uak2")
 columns = 6
 script = ExtResource("2_xojw8")
@@ -29,6 +30,7 @@ size_flags_horizontal = 3
 text = "Owned: 1 ($1)"
 
 [node name="SellButton" type="Button" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -44,11 +46,16 @@ layout_mode = 2
 text = "GPUs: "
 
 [node name="RemoveGPUButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "-"
 
 [node name="AddGPUButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "+"
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
