@@ -80,7 +80,9 @@ func _process(delta: float) -> void:
 func update_gpu_label() -> void:
 	var total_gpus: int = GPUManager.get_total_gpu_count()
 	var free_gpus: int = GPUManager.get_free_gpu_count()
-	gpus_label.text = "GPUs Free/Owned: %d / %d" % [free_gpus, total_gpus]
+	gpus_label.text = "GPUs 
+Free/Owned: 
+%d / %d" % [free_gpus, total_gpus]
 
 	for symbol in crypto_rows.keys():
 		crypto_rows[symbol].update_display()

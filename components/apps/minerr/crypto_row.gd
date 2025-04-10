@@ -1,4 +1,4 @@
-extends GridContainer
+extends Panel
 class_name CryptoRow
 
 signal sell_pressed(symbol: String)
@@ -26,12 +26,23 @@ func setup(crypto_data: Cryptocurrency) -> void:
 	remove_gpu_button.pressed.connect(func(): emit_signal("remove_gpu_pressed", crypto.symbol))
 
 func update_display() -> void:
+	# Update the token label text
 	token_label.text = "%s  $%.2f" % [crypto.symbol, crypto.price]
 
+	# Color the price based on change since last tick
+	if crypto.price > crypto.last_price:
+		token_label.add_theme_color_override("font_color", Color.GREEN)
+	elif crypto.price < crypto.last_price:
+		token_label.add_theme_color_override("font_color", Color.RED)
+	else:
+		token_label.add_theme_color_override("font_color", Color.WHITE)  # Or whatever your default is
+
+	# Update ownership label
 	var owned: float = PortfolioManager.get_crypto_amount(crypto.symbol)
 	var value: float = crypto.price * owned
 	owned_label.text = "%.4f owned ($%.2f)" % [owned, value]
 
+	# Update GPU label
 	var count: int = GPUManager.get_gpu_count_for(crypto.symbol)
 	gpus_label.text = "GPUs: %d" % count
 

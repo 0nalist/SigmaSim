@@ -1,61 +1,108 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2lni5gfy28ds"]
+[gd_scene load_steps=5 format=3 uid="uid://b2lni5gfy28ds"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_4uak2"]
 [ext_resource type="Texture2D" uid="uid://chkl2i2bg50da" path="res://assets/mine.png" id="1_q4sjg"]
 [ext_resource type="Script" uid="uid://bq6co0sbj6hi" path="res://components/apps/minerr/crypto_row.gd" id="2_xojw8"]
 
-[node name="CryptoRow" type="GridContainer"]
-custom_minimum_size = Vector2(0, 50)
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme = ExtResource("1_4uak2")
-columns = 6
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xojw8"]
+bg_color = Color(0.10748, 0.10748, 0.10748, 1)
+
+[node name="CryptoRow" type="Panel"]
+custom_minimum_size = Vector2(0, 87.87)
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_xojw8")
 script = ExtResource("2_xojw8")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="CryptoRow" type="GridContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_direction = 2
 layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_4uak2")
+columns = 4
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/CryptoRow"]
+layout_mode = 2
+size_flags_vertical = 3
 texture = ExtResource("1_q4sjg")
 expand_mode = 2
 
-[node name="TokenLabel" type="Label" parent="."]
+[node name="TokenLabel" type="Label" parent="MarginContainer/CryptoRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "$HAWK"
 
-[node name="OwnedLabel" type="Label" parent="."]
+[node name="Control2" type="Control" parent="MarginContainer/CryptoRow"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="OwnedLabel" type="Label" parent="MarginContainer/CryptoRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Owned: 1 ($1)"
 
-[node name="SellButton" type="Button" parent="."]
+[node name="SellButton" type="Button" parent="MarginContainer/CryptoRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_vertical = 6
+focus_mode = 0
 text = " Sell "
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="Control" type="Control" parent="MarginContainer/CryptoRow"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 3
 
-[node name="GPUsLabel" type="Label" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CryptoRow"]
+custom_minimum_size = Vector2(79.575, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="GPUsLabel" type="Label" parent="MarginContainer/CryptoRow/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "GPUs: "
 
-[node name="RemoveGPUButton" type="Button" parent="HBoxContainer"]
+[node name="RemoveGPUButton" type="Button" parent="MarginContainer/CryptoRow/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
+focus_mode = 0
 text = "-"
 
-[node name="AddGPUButton" type="Button" parent="HBoxContainer"]
+[node name="AddGPUButton" type="Button" parent="MarginContainer/CryptoRow/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
+focus_mode = 0
 text = "+"
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Button" type="Button" parent="MarginContainer/CryptoRow"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 11
+toggle_mode = true
+text = " Overclock "

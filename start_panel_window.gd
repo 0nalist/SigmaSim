@@ -25,6 +25,8 @@ func _ready() -> void:
 		button.text = preview.app_title
 		button.icon = preview.app_icon
 		button.theme = preload("res://assets/windows_95_theme.tres")
+	#	button.add_theme_font_size_override("theme_override_font_sizes/font_size", 4) Not working TODO make taskbar text smaller
+		
 		button.pressed.connect(func(): launch_app(app_scene))
 		app_list_container.add_child(button)
 
@@ -56,11 +58,15 @@ func launch_app(app_scene: PackedScene) -> void:
 	win.icon = app_ui.app_icon
 	win.call_deferred("set_window_title", app_ui.app_title)
 
+	# 👇 Apply default size if defined
+	win.default_size = app_ui.default_window_size
+
 	if app_ui.has_signal("title_updated"):
 		app_ui.title_updated.connect(win.set_window_title)
 
 	win.get_node("%ContentPanel").add_child(app_ui)
 	WindowManager.register_window(win)
+
 
 
 func _on_settings_button_pressed() -> void:
