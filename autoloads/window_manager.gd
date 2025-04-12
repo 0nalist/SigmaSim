@@ -13,6 +13,7 @@ var app_registry := {
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
 	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
 	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
+	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
 	
 }
 

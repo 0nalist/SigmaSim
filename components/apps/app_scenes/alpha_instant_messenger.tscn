@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cj4esi0q3mf2"]
+
+[ext_resource type="Script" uid="uid://cvvi4t7jawoa5" path="res://components/apps/alpha_instant_messenger/alpha_instant_messenger.gd" id="1_44ejv"]
+[ext_resource type="Texture2D" uid="uid://uqtfjtuq1dgm" path="res://assets/AlphaOnline.png" id="2_j6onp"]
+
+[node name="AlphaInstantMessenger" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_44ejv")
+app_title = "Alpha Instant Messenger"
+app_icon = ExtResource("2_j6onp")
+default_window_size = Vector2(190, 480)
+default_position = "left"
+only_one_instance_allowed = true
