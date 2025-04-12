@@ -65,7 +65,3 @@ func _on_resource_changed(name: String, _value: float) -> void:
 		_on_cash_updated(PortfolioManager.cash)
 	elif name == "passive_income":
 		_on_passive_income_updated(PortfolioManager.get_passive_income())
-
-
-func _on_launch_grinderr_button_pressed() -> void:
-	WindowManager.launch_app_by_name("Minerr")
