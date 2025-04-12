@@ -1,18 +1,18 @@
 [gd_scene load_steps=14 format=3 uid="uid://1jylhdkewo5k"]
 
-[ext_resource type="Texture2D" uid="uid://bvtogb730mnxk" path="res://assets/dollarbillcloseup.png" id="1_tbif6"]
-[ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_wbijn"]
-[ext_resource type="Texture2D" uid="uid://bw7dnfkddu22m" path="res://assets/moneytoburn.png" id="3_u5t53"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="4_mllrd"]
-[ext_resource type="Script" uid="uid://bq3i6eu2isf1d" path="res://components/apps/broke_rage/stock_market.gd" id="5_6mnx0"]
-[ext_resource type="Script" uid="uid://prlirycaaf1k" path="res://resources/stocks/stock.gd" id="6_rbvym"]
-[ext_resource type="Resource" uid="uid://hpmpyxom1uik" path="res://resources/stocks/starting_stocks/tsla_stock.tres" id="7_gsl6e"]
-[ext_resource type="Resource" uid="uid://ddsoa3sffia8j" path="res://resources/stocks/starting_stocks/gme_stock.tres" id="8_y7sja"]
-[ext_resource type="Resource" uid="uid://ccl1m5pudt7l4" path="res://resources/stocks/starting_stocks/yolo_stock.tres" id="9_7oixe"]
-[ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_mnd1l"]
+[ext_resource type="Texture2D" uid="uid://bvtogb730mnxk" path="res://assets/dollarbillcloseup.png" id="1_gnfo0"]
+[ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
+[ext_resource type="Texture2D" uid="uid://bw7dnfkddu22m" path="res://assets/moneytoburn.png" id="3_wfbhr"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="4_2rri8"]
+[ext_resource type="Script" uid="uid://bq3i6eu2isf1d" path="res://components/apps/broke_rage/stock_market.gd" id="5_lgac0"]
+[ext_resource type="Script" uid="uid://prlirycaaf1k" path="res://resources/stocks/stock.gd" id="6_gyd05"]
+[ext_resource type="Resource" uid="uid://hpmpyxom1uik" path="res://resources/stocks/starting_stocks/tsla_stock.tres" id="7_xgsqg"]
+[ext_resource type="Resource" uid="uid://ddsoa3sffia8j" path="res://resources/stocks/starting_stocks/gme_stock.tres" id="8_6pj30"]
+[ext_resource type="Resource" uid="uid://ccl1m5pudt7l4" path="res://resources/stocks/starting_stocks/yolo_stock.tres" id="9_bek8l"]
+[ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_htng3"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcm1f"]
-texture = ExtResource("1_tbif6")
+texture = ExtResource("1_gnfo0")
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
@@ -31,9 +31,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_tcm1f")
-script = ExtResource("2_wbijn")
+script = ExtResource("2_o2yqo")
 app_title = "BrokeRage"
-app_icon = ExtResource("3_u5t53")
+app_icon = ExtResource("3_wfbhr")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -100,14 +100,14 @@ layout_mode = 2
 [node name="BalanceLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("4_mllrd")
+theme = ExtResource("4_2rri8")
 text = "Balance: $ "
 horizontal_alignment = 2
 
 [node name="CashLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("4_mllrd")
+theme = ExtResource("4_2rri8")
 theme_override_font_sizes/font_size = 21
 text = "Cash: $ "
 horizontal_alignment = 2
@@ -115,20 +115,20 @@ horizontal_alignment = 2
 [node name="InvestedLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("4_mllrd")
+theme = ExtResource("4_2rri8")
 text = "Invested: $ "
 horizontal_alignment = 2
 
 [node name="DebtLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("4_mllrd")
+theme = ExtResource("4_2rri8")
 text = "Debt: $ "
 horizontal_alignment = 2
 
 [node name="PassiveIncomeLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("4_mllrd")
+theme = ExtResource("4_2rri8")
 text = "Passive Income: $0"
 horizontal_alignment = 2
 
@@ -138,9 +138,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
-script = ExtResource("5_6mnx0")
-stock_list = Array[ExtResource("6_rbvym")]([ExtResource("7_gsl6e"), ExtResource("8_y7sja"), ExtResource("9_7oixe")])
-stock_row_scene = ExtResource("10_mnd1l")
+script = ExtResource("5_lgac0")
+stock_list = Array[ExtResource("6_gyd05")]([ExtResource("7_xgsqg"), ExtResource("8_6pj30"), ExtResource("9_bek8l")])
+stock_row_scene = ExtResource("10_htng3")
 
 [node name="Control" type="Control" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/StockMarket2"]
 custom_minimum_size = Vector2(0, 5)
@@ -156,9 +156,9 @@ visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 5
-script = ExtResource("5_6mnx0")
-stock_list = Array[ExtResource("6_rbvym")]([ExtResource("7_gsl6e"), ExtResource("8_y7sja"), ExtResource("9_7oixe")])
-stock_row_scene = ExtResource("10_mnd1l")
+script = ExtResource("5_lgac0")
+stock_list = Array[ExtResource("6_gyd05")]([ExtResource("7_xgsqg"), ExtResource("8_6pj30"), ExtResource("9_bek8l")])
+stock_row_scene = ExtResource("10_htng3")
 metadata/_tab_index = 1
 
 [node name="Control" type="Control" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/StockMarket"]

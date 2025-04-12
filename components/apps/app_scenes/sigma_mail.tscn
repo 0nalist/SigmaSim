@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://s5xw8m1ptgdq"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_hnj64"]
-[ext_resource type="Script" uid="uid://du7g6y35nj384" path="res://components/apps/sigma_mail/sigma_mail.gd" id="2_ny311"]
-[ext_resource type="Texture2D" uid="uid://c3tog5y8fjq0c" path="res://assets/Lost in south.png" id="3_ky31g"]
-[ext_resource type="FontFile" uid="uid://2gcfbogatx7a" path="res://assets/GALSB.ttf" id="4_mg7ny"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_8wqna"]
+[ext_resource type="Script" uid="uid://du7g6y35nj384" path="res://components/apps/sigma_mail/sigma_mail.gd" id="2_wwi5a"]
+[ext_resource type="Texture2D" uid="uid://c3tog5y8fjq0c" path="res://assets/Lost in south.png" id="3_unqnx"]
+[ext_resource type="FontFile" uid="uid://2gcfbogatx7a" path="res://assets/GALSB.ttf" id="4_l4inh"]
 
 [node name="SigmaMailWindow" type="MarginContainer"]
 auto_translate_mode = 1
@@ -14,14 +14,14 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource("1_hnj64")
+theme = ExtResource("1_8wqna")
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
-script = ExtResource("2_ny311")
+script = ExtResource("2_wwi5a")
 app_title = "Sigma Mail"
-app_icon = ExtResource("3_ky31g")
+app_icon = ExtResource("3_unqnx")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -30,7 +30,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("4_mg7ny")
+theme_override_fonts/font = ExtResource("4_l4inh")
 theme_override_font_sizes/font_size = 28
 text = "Σ-Mail"
 
@@ -41,7 +41,7 @@ custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("3_ky31g")
+texture = ExtResource("3_unqnx")
 expand_mode = 2
 stretch_mode = 5
 

@@ -9,10 +9,10 @@ var focused_window: WindowFrame = null
 # Preloaded app scenes, manually assigned
 var app_registry := {
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
-	"Grinderr": preload("res://components/apps/app_scenes/grinderr_window.tscn"),
-	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage_ui.tscn"),
-	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail_window.tscn"),
-	"Settings": preload("res://components/apps/app_scenes/settings_window.tscn"),
+	"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
+	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
+	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
+	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
 	
 }
 
@@ -74,8 +74,6 @@ func focus_window(window: WindowFrame) -> void:
 
 func launch_app_by_name(app_name: String) -> void:
 	var scene: PackedScene = app_registry.get(app_name)
-	print("Launching app '%s': %s" % [app_name, str(scene)])
-
 	if scene:
 		var instance = scene.instantiate()
 		var win = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
@@ -83,14 +81,35 @@ func launch_app_by_name(app_name: String) -> void:
 		win.icon = instance.app_icon
 		win.call_deferred("set_window_title", instance.app_title)
 		win.default_size = instance.default_window_size
-
-		if instance.has_signal("title_updated"):
-			instance.title_updated.connect(win.set_window_title)
-
 		win.get_node("%ContentPanel").add_child(instance)
+
+		# Calculate smart default position
+		var screen_size := get_viewport().get_visible_rect().size
+		var window_size = instance.default_window_size
+
+		var x := 0.0
+		match instance.default_position:
+			"left":
+				x = -screen_size.x / 3.0
+			"right":
+				x = screen_size.x / 3.0
+			"center", _:
+				x = 0.0
+
+		# Subtract half the window width to center it on that x coordinate
+		x -= window_size.x / 2.0
+
+		# Vertically center the window as well
+		var y = -window_size.y / 2.0
+
+		win.position = Vector2(x, y)
+
 		register_window(win)
 	else:
 		push_error("App not found in registry: '%s'" % app_name)
+
+
+
 
 
 func _create_taskbar_icon(window: WindowFrame) -> Button:
