@@ -1,11 +1,11 @@
 extends BaseAppUI
-class_name GrinderrUI
+class_name Grinderr
 
 @onready var subcontractor_timer: Timer = %SubcontractorTimer
 var subcontractor_template := preload("res://resources/subcontractors/subcontractor.tres")
 
 func _ready() -> void:
-	default_window_size = Vector2(350, 420)
+	#default_window_size = Vector2(350, 420)
 	
 	app_title = "Grinderr"
 	app_icon = preload("res://assets/Tralalero_tralala.png")

@@ -1,0 +1,121 @@
+[gd_scene load_steps=5 format=3 uid="uid://s5xw8m1ptgdq"]
+
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_hnj64"]
+[ext_resource type="Script" uid="uid://du7g6y35nj384" path="res://components/apps/sigma_mail/sigma_mail.gd" id="2_ny311"]
+[ext_resource type="Texture2D" uid="uid://c3tog5y8fjq0c" path="res://assets/Lost in south.png" id="3_ky31g"]
+[ext_resource type="FontFile" uid="uid://2gcfbogatx7a" path="res://assets/GALSB.ttf" id="4_mg7ny"]
+
+[node name="SigmaMailWindow" type="MarginContainer"]
+auto_translate_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_hnj64")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("2_ny311")
+app_title = "Sigma Mail"
+app_icon = ExtResource("3_ky31g")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("4_mg7ny")
+theme_override_font_sizes/font_size = 28
+text = "Σ-Mail"
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_ky31g")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Panel" type="Panel" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Panel"]
+layout_mode = 2
+offset_left = 4.0
+offset_right = 1045.0
+offset_bottom = 628.0
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Inbox" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+size_flags_stretch_ratio = 4.0
+alignment = 2
+
+[node name="Button" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = " from: jamie95@horizon.net Subject: "
+alignment = 0
+
+[node name="Button2" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = " from: jamie95@horizon.net Subject: "
+alignment = 0
+
+[node name="Button3" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = " from: jamie95@horizon.net Subject: "
+alignment = 0
+
+[node name="Button4" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = " from: jamie95@horizon.net Subject: "
+alignment = 0
+
+[node name="Button5" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = " from: jamie95@horizon.net Subject: "
+alignment = 0
+
+[node name="Button6" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = " from: jamie95@horizon.net Subject: "
+alignment = 0
+
+[node name="Button7" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = " from: jamie95@horizon.net Subject: "
+alignment = 0
+
+[node name="Button8" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = " from: jamie95@horizon.net Subject: "
+alignment = 0

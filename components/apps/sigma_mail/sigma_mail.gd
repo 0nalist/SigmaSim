@@ -1,5 +1,5 @@
 extends BaseAppUI
-class_name SigmaMailUI
+class_name SigmaMail
 
 func _ready() -> void:
 	app_title = "Sigma Mail"

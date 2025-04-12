@@ -1,5 +1,5 @@
 extends BaseAppUI
-class_name BrokeRageUI
+class_name BrokeRage
 
 @onready var stock_market: VBoxContainer = %StockMarket
 @onready var cash_label: Label = %CashLabel
@@ -36,6 +36,8 @@ func _on_cash_updated(_cash: float) -> void:
 	await get_tree().create_timer(0.2).timeout
 	emit_signal("title_updated", "BrokeRage - $%.2f" % cash)
 
+
+
 func _on_passive_income_updated(_amount: float) -> void:
 	passive_income_label.text = "Passive Income: $%.2f" % PortfolioManager.get_passive_income()
 
@@ -44,7 +46,9 @@ func _on_investments_updated(amount: float):
 	last_invested = amount
 
 	invested_label.text = "Invested: $%.2f" % amount
-
+	balance_label.text = "Balance: $%.2f" % PortfolioManager.get_balance()
+		
+	
 	if delta > 0.01:
 		flash_invested_label(Color.GREEN)
 	elif delta < -0.01:
@@ -61,3 +65,7 @@ func _on_resource_changed(name: String, _value: float) -> void:
 		_on_cash_updated(PortfolioManager.cash)
 	elif name == "passive_income":
 		_on_passive_income_updated(PortfolioManager.get_passive_income())
+
+
+func _on_launch_grinderr_button_pressed() -> void:
+	WindowManager.launch_app_by_name("Minerr")

@@ -5,10 +5,10 @@ class_name StartPanelWindow
 #@onready var settings_window: BaseAppUI = %SettingsWindow
 
 @export var app_list: Array[PackedScene] = [
-	preload("res://components/apps/grinderr/grinderr_window.tscn"),
-	preload("res://components/apps/broke_rage/broke_rage_ui.tscn"),
-	preload("res://components/apps/sigma_mail/sigma_mail_window.tscn"),
-	preload("res://components/apps/minerr/minerr.tscn"),
+	preload("res://components/apps/app_scenes/broke_rage_ui.tscn"),
+	preload("res://components/apps/app_scenes/grinderr_window.tscn"),
+	preload("res://components/apps/app_scenes/minerr.tscn"),
+	preload("res://components/apps/app_scenes/sigma_mail_window.tscn"),
 	#preload("res://settings_window.tscn"),
 
 ]
@@ -70,8 +70,9 @@ func launch_app(app_scene: PackedScene) -> void:
 
 
 func _on_settings_button_pressed() -> void:
-	var app_scene = preload("res://settings_window.tscn")
-	var test_app = app_scene.instantiate()
-	print("Title from script:", test_app.app_title)  # Should print "Settings"
-	test_app.queue_free()
-	launch_app(app_scene)
+	WindowManager.launch_app_by_name("Settings")
+	#var app_scene = 
+	#var test_app = app_scene.instantiate()
+	#print("Title from script:", test_app.app_title)  # Should print "Settings"
+	#test_app.queue_free()
+	#launch_app(app_scene)
