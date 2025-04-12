@@ -75,39 +75,53 @@ func focus_window(window: WindowFrame) -> void:
 
 func launch_app_by_name(app_name: String) -> void:
 	var scene: PackedScene = app_registry.get(app_name)
-	if scene:
-		var instance = scene.instantiate()
-		var win = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-
-		win.icon = instance.app_icon
-		win.call_deferred("set_window_title", instance.app_title)
-		win.default_size = instance.default_window_size
-		win.get_node("%ContentPanel").add_child(instance)
-
-		# Calculate smart default position
-		var screen_size := get_viewport().get_visible_rect().size
-		var window_size = instance.default_window_size
-
-		var x := 0.0
-		match instance.default_position:
-			"left":
-				x = -screen_size.x / 3.0
-			"right":
-				x = screen_size.x / 3.0
-			"center", _:
-				x = 0.0
-
-		# Subtract half the window width to center it on that x coordinate
-		x -= window_size.x / 2.0
-
-		# Vertically center the window as well
-		var y = -window_size.y / 2.0
-
-		win.position = Vector2(x, y)
-
-		register_window(win)
-	else:
+	if scene == null:
 		push_error("App not found in registry: '%s'" % app_name)
+		return
+
+	# Instantiate a temporary preview to check metadata (like only_one_instance_allowed)
+	var preview := scene.instantiate()
+	if not (preview is BaseAppUI):
+		push_error("App '%s' does not extend BaseAppUI" % app_name)
+		return
+
+	# ✅ If only one instance is allowed, check for an existing window
+	if preview.only_one_instance_allowed:
+		var existing_window := find_window_by_app(app_name)
+		if existing_window:
+			focus_window(existing_window)
+			preview.queue_free()
+			return
+
+	preview.queue_free()
+
+	# --- Instantiate actual app ---
+	var instance = scene.instantiate()
+	var win = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+
+	win.icon = instance.app_icon
+	win.window_title = instance.app_title
+	win.call_deferred("set_window_title", instance.app_title)
+	win.default_size = instance.default_window_size
+	win.get_node("%ContentPanel").add_child(instance)
+
+	# ✅ Position logic (center-relative)
+	var screen_size := get_viewport().get_visible_rect().size
+	var window_size = instance.default_window_size
+
+	var x := 0.0
+	match instance.default_position:
+		"left":   x = -screen_size.x / 3.0
+		"right":  x =  screen_size.x / 3.0
+		"center", _: x = 0.0
+
+	x -= window_size.x / 2.0
+	var y = -window_size.y / 2.0
+
+	win.position = Vector2(x, y)
+
+	register_window(win)
+
 
 
 
@@ -160,9 +174,9 @@ func get_taskbar_height() -> int:
 	return taskbar_container.size.y if is_instance_valid(taskbar_container) else 0
 
 
-func find_window_by_app(app_name: String) -> WindowFrame:
+func find_window_by_app(title: String) -> WindowFrame:
 	for win in open_windows.keys():
 		var content = win.get_node("VBoxContainer/ContentPanel").get_child(0)
-		if content and content.has_variable("app_title") and content.app_title == app_name:
+		if content != null and "app_title" in content and content.app_title == title:
 			return win
 	return null
