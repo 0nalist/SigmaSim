@@ -21,6 +21,7 @@ func _ready() -> void:
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		#button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		#button.add_theme_constant_override("icon_margin", 16)
+		button.add_theme_font_size_override("font_size", 10)
 		button.expand_icon = false
 		button.focus_mode = Control.FOCUS_NONE
 		button.theme = preload("res://assets/windows_95_theme.tres")

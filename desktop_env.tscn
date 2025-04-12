@@ -412,6 +412,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="ScrollContainer" type="ScrollContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
+horizontal_scroll_mode = 0
 
 [node name="AppListContainer" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
 unique_name_in_owner = true
