@@ -1,0 +1,180 @@
+[gd_scene load_steps=9 format=3 uid="uid://c4tt0mgxvgw5g"]
+
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_nmwu1"]
+[ext_resource type="Texture2D" uid="uid://c8wi7d4203jib" path="res://assets/gigachad.png" id="1_ym4ii"]
+[ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
+[ext_resource type="Texture2D" uid="uid://gl0rjxkrh4wh" path="res://assets/logos/AOLlogoMaster.png" id="4_6fwkw"]
+[ext_resource type="FontFile" uid="uid://deimmaj7ejh4l" path="res://assets/fonts/CapitalisTypOasis.ttf" id="5_hcclx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
+bg_color = Color(0, 0.435981, 0.736537, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0.616993, 0.765051, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmwu1"]
+bg_color = Color(0, 0.670588, 0.968627, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.129492, 0.365382, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fwkw"]
+bg_color = Color(0, 0.669403, 0.96699, 1)
+
+[node name="LogInUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_nmwu1")
+script = ExtResource("2_eyvdy")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_nfsrt")
+
+[node name="LoggingInPanel" type="Panel" parent="Panel"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmwu1")
+
+[node name="LoggingInLabel" type="Label" parent="Panel/LoggingInPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = -7.5
+offset_right = 38.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 18
+text = "Locking in"
+
+[node name="ProfileVBoxContainer" type="VBoxContainer" parent="Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.5
+offset_top = -83.5
+offset_right = 85.5
+offset_bottom = 83.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/ProfileVBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Panel" type="Panel" parent="Panel/ProfileVBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_6fwkw")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextureRect" type="TextureRect" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("1_ym4ii")
+
+[node name="Label" type="Label" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "@Giga Chad"
+
+[node name="PasswordTextEdit" type="TextEdit" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+placeholder_text = "password"
+
+[node name="LogInButton" type="Button" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+focus_mode = 0
+text = "Lock in"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 507.0
+offset_top = 38.0
+offset_right = 635.0
+offset_bottom = 166.0
+texture = ExtResource("4_6fwkw")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.023
+anchor_right = 0.5
+anchor_bottom = 0.023
+offset_left = -155.0
+offset_top = 136.096
+offset_right = 163.0
+offset_bottom = 174.096
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("5_hcclx")
+theme_override_font_sizes/font_size = 36
+text = "Alpha OnLine"
+
+[connection signal="gui_input" from="Panel/ProfileVBoxContainer/HBoxContainer/Panel" to="." method="_on_panel_gui_input"]
+[connection signal="pressed" from="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer/LogInButton" to="." method="_on_log_in_button_pressed"]

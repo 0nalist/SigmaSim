@@ -5,6 +5,7 @@ extends Control
 @onready var trash_window: BaseAppUI = %TrashWindow
 
 func _ready() -> void:
+	#%LogInUI.show()
 	hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
 	WindowManager.start_panel = start_panel

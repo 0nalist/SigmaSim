@@ -7,12 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/button2.png" id="2_75kf8"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
 [ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/button1.png" id="3_lx1wk"]
-[ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="4_75kf8"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="7_o42ww"]
 [ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://dyx0l0aa6l0at" path="res://assets/logos/folder.png" id="10_4e5iv"]
 [ext_resource type="Texture2D" uid="uid://mpip7wcjjyrr" path="res://assets/logos/pdficon.png" id="11_6x3lq"]
 [ext_resource type="Script" uid="uid://jj0g0vk3lpc2" path="res://components/trash.gd" id="14_m483i"]
+[ext_resource type="PackedScene" uid="uid://c4tt0mgxvgw5g" path="res://components/ui/log_in_ui.tscn" id="16_m483i"]
 [ext_resource type="Texture2D" uid="uid://mb2q2hy3djdx" path="res://assets/logos/cog.png" id="16_xcmse"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://start_panel_window.gd" id="23_dik0q"]
 
@@ -175,11 +175,11 @@ theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_lx1wk")
+theme_override_font_sizes/font_size = 24
 theme_override_styles/hover = SubResource("StyleBoxTexture_o42ww")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_5eiy6")
 theme_override_styles/normal = SubResource("StyleBoxTexture_05goa")
-text = "Sigma  "
-icon = ExtResource("4_75kf8")
+text = " Σ Start "
 
 [node name="Control" type="Control" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
 custom_minimum_size = Vector2(20, 0)
@@ -205,7 +205,7 @@ icon = ExtResource("16_xcmse")
 
 [node name="TimePanel" type="Panel" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(84.615, 0)
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxTexture_75kf8")
@@ -439,6 +439,11 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("7_o42ww")
 icon = ExtResource("16_xcmse")
+
+[node name="LogInUI" parent="." instance=ExtResource("16_m483i")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
 
 [connection signal="pressed" from="MarginContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/StartButton" to="." method="_on_start_button_pressed"]

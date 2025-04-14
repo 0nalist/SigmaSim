@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_bs2ud")
-symbol = ""
+symbol = "BRO"
 price = 100.0
 volatility = 0.1
 shares_outstanding = 100000000
