@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=11 format=3 uid="uid://cesgvqexxaqev"]
 
-[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/Chicago.ttf" id="1_cm3wh"]
+[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_cm3wh"]
 [ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/buttonhovered.png" id="2_7ynwi"]
 [ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/button1.png" id="3_cej8x"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/button2.png" id="3_oollr"]

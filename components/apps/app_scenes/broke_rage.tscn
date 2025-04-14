@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://1jylhdkewo5k"]
+[gd_scene load_steps=15 format=3 uid="uid://1jylhdkewo5k"]
 
 [ext_resource type="Texture2D" uid="uid://bvtogb730mnxk" path="res://assets/dollarbillcloseup.png" id="1_gnfo0"]
 [ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://ddsoa3sffia8j" path="res://resources/stocks/starting_stocks/gme_stock.tres" id="8_6pj30"]
 [ext_resource type="Resource" uid="uid://ccl1m5pudt7l4" path="res://resources/stocks/starting_stocks/yolo_stock.tres" id="9_bek8l"]
 [ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_htng3"]
+[ext_resource type="Resource" uid="uid://d2o0186c8tpu1" path="res://resources/stocks/starting_stocks/bro_stock.tres" id="10_o2yqo"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcm1f"]
 texture = ExtResource("1_gnfo0")
@@ -51,6 +52,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="Panel" type="Panel" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_m3g8w")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
@@ -132,8 +134,33 @@ theme = ExtResource("4_2rri8")
 text = "Passive Income: $0"
 horizontal_alignment = 2
 
-[node name="StockMarket2" type="VBoxContainer" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StockMarket2" type="VBoxContainer" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/ScrollContainer"]
 unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+script = ExtResource("5_lgac0")
+stock_list = Array[ExtResource("6_gyd05")]([ExtResource("7_xgsqg"), ExtResource("8_6pj30"), ExtResource("9_bek8l"), ExtResource("10_o2yqo"), ExtResource("10_o2yqo"), ExtResource("10_o2yqo"), ExtResource("10_o2yqo"), ExtResource("10_o2yqo")])
+stock_row_scene = ExtResource("10_htng3")
+
+[node name="Control" type="Control" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/ScrollContainer/StockMarket2"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_tab_index = 1
+
+[node name="StockMarket2" type="VBoxContainer" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/ScrollContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -142,25 +169,6 @@ script = ExtResource("5_lgac0")
 stock_list = Array[ExtResource("6_gyd05")]([ExtResource("7_xgsqg"), ExtResource("8_6pj30"), ExtResource("9_bek8l")])
 stock_row_scene = ExtResource("10_htng3")
 
-[node name="Control" type="Control" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary/StockMarket2"]
-custom_minimum_size = Vector2(0, 5)
-layout_mode = 2
-
-[node name="StockMarketScrollContainer" type="ScrollContainer" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/Summary"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="StockMarket" type="VBoxContainer" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 5
-script = ExtResource("5_lgac0")
-stock_list = Array[ExtResource("6_gyd05")]([ExtResource("7_xgsqg"), ExtResource("8_6pj30"), ExtResource("9_bek8l")])
-stock_row_scene = ExtResource("10_htng3")
-metadata/_tab_index = 1
-
-[node name="Control" type="Control" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/StockMarket"]
+[node name="Control" type="Control" parent="MarginContainer/MarginContainer/VBoxContainer/TabContainer/ScrollContainer2/StockMarket2"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2

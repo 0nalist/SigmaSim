@@ -55,7 +55,6 @@ func _ready() -> void:
 		favicon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		favicon.custom_minimum_size = Vector2(16, 16)
 
-	# Defer position/size setup to allow layout processing to finish
 	call_deferred("_apply_default_window_size_and_position")
 
 
@@ -63,18 +62,15 @@ func _apply_default_window_size_and_position():
 	if size == Vector2.ZERO or size == Vector2(1, 1):
 		size = default_size
 
-	# ✅ Only clamp if position wasn't manually set first
 	if position == Vector2.ZERO:
 		call_deferred("_clamp_to_screen")
 
 
-
 func _clamp_to_screen() -> void:
-	await get_tree().process_frame  # wait for layout to complete
+	await get_tree().process_frame
 	var screen_size = get_viewport().get_visible_rect().size
 	var window_size = size
 	position = position.clamp(Vector2.ZERO, screen_size - window_size)
-
 
 
 func _process(_delta: float) -> void:
@@ -104,19 +100,21 @@ func _process(_delta: float) -> void:
 		if new_size.y <= min_window_size.y:
 			new_pos.y = resize_start_pos.y + (resize_start_size.y - min_window_size.y)
 
-	new_size.x = max(new_size.x, min_window_size.x)
-	new_size.y = max(new_size.y, min_window_size.y)
+	# Clamp resizing so that no edge can go off-screen
+	if new_pos.x < 0:
+		var overshoot_x = -new_pos.x
+		new_pos.x = 0
+		new_size.x = max(min_window_size.x, new_size.x - overshoot_x)
 
-	var min_visible_x = MIN_VISIBLE_AREA.x
-	var min_visible_y = MIN_VISIBLE_AREA.y
+	if new_pos.y < 0:
+		var overshoot_y = -new_pos.y
+		new_pos.y = 0
+		new_size.y = max(min_window_size.y, new_size.y - overshoot_y)
 
-	if resize_dir.x == -1 and new_pos.x + new_size.x < min_visible_x:
-		new_pos.x = min_visible_x - new_size.x
-	if resize_dir.y == -1 and new_pos.y + new_size.y < min_visible_y:
-		new_pos.y = min_visible_y - new_size.y
-	if resize_dir.x == 1 and new_pos.x > viewport_size.x - min_visible_x:
+	if new_pos.x + new_size.x > viewport_size.x:
 		new_size.x = max(min_window_size.x, viewport_size.x - new_pos.x)
-	if resize_dir.y == 1 and new_pos.y > viewport_size.y - min_visible_y:
+
+	if new_pos.y + new_size.y > viewport_size.y:
 		new_size.y = max(min_window_size.y, viewport_size.y - new_pos.y)
 
 	size = new_size
@@ -148,7 +146,8 @@ func _clamp_to_viewport() -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
-	if window_state != WindowState.NORMAL:
+	#if window_state != WindowState.NORMAL:
+	if window_state == WindowState.MINIMIZED:
 		return
 
 	if event is InputEventMouseButton and event.pressed:

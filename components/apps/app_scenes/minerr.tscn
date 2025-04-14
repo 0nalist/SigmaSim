@@ -7,7 +7,7 @@
 [ext_resource type="Resource" uid="uid://bjah3mncmmb8" path="res://resources/crypto/hawk_crypto.tres" id="5_px5v3"]
 [ext_resource type="PackedScene" uid="uid://b2lni5gfy28ds" path="res://components/apps/minerr/crypto_row.tscn" id="6_86lpv"]
 [ext_resource type="Texture2D" uid="uid://chkl2i2bg50da" path="res://assets/mine.png" id="7_72mkv"]
-[ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/GALS.ttf" id="8_x88rl"]
+[ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="8_x88rl"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rcqoh"]
 texture = ExtResource("1_wupxk")

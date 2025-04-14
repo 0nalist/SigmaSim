@@ -69,3 +69,7 @@ func launch_app(app_name: String) -> void:
 
 func _on_settings_button_pressed() -> void:
 	launch_app("Settings")
+
+
+func _on_sleep_button_pressed() -> void:
+	TimeManager.sleep_for(480)

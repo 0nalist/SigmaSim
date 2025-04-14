@@ -18,6 +18,7 @@ theme_override_constants/margin_bottom = 25
 script = ExtResource("1_wlela")
 app_title = "Settings"
 app_icon = ExtResource("2_wxdtm")
+only_one_instance_allowed = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

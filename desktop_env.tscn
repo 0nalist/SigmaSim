@@ -1,7 +1,7 @@
 [gd_scene load_steps=26 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
-[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/Chicago.ttf" id="1_lx1wk"]
+[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
 [ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/buttonhovered.png" id="1_ovitq"]
 [ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/Bliss_(Windows_XP) (2).png" id="2_5eiy6"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/button2.png" id="2_75kf8"]
@@ -204,6 +204,7 @@ theme = ExtResource("7_o42ww")
 icon = ExtResource("16_xcmse")
 
 [node name="TimePanel" type="Panel" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(84.615, 0)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -224,12 +225,11 @@ vertical_alignment = 1
 
 [node name="TrashWindow" type="Panel" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("7_o42ww")
@@ -358,7 +358,6 @@ unique_name_in_owner = true
 title = "Sigma Menu"
 position = Vector2i(0, 39)
 size = Vector2i(300, 340)
-visible = false
 unresizable = true
 borderless = true
 always_on_top = true
@@ -419,22 +418,30 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="Favorites" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="StartPanel/VBoxContainer/HBoxContainer/Favorites"]
+[node name="MarginContainer" type="MarginContainer" parent="StartPanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
-[node name="SettingsButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/Favorites/MarginContainer"]
+[node name="Favorites" type="VBoxContainer" parent="StartPanel/VBoxContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
+alignment = 2
+
+[node name="SleepButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = " sleep "
+
+[node name="SettingsButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+size_flags_horizontal = 4
 theme = ExtResource("7_o42ww")
 icon = ExtResource("16_xcmse")
 
 [connection signal="pressed" from="MarginContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="StartPanel" method="_on_settings_button_pressed"]
-[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/Favorites/MarginContainer/SettingsButton" to="StartPanel" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton" to="StartPanel" method="_on_sleep_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SettingsButton" to="StartPanel" method="_on_settings_button_pressed"]

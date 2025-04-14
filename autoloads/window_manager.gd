@@ -14,7 +14,7 @@ var app_registry := {
 	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
 	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
-	
+	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn")
 }
 
 
@@ -135,6 +135,11 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	icon_button.text = window.window_title
 	icon_button.icon = window.icon if window.icon else null
 	icon_button.add_theme_constant_override("icon_max_width", 32)
+	icon_button.add_theme_font_size_override("font_size", 12)
+	icon_button.custom_minimum_size = Vector2(100, 32)
+	icon_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	icon_button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	icon_button.clip_text = true
 	icon_button.toggle_mode = true
 	icon_button.focus_mode = Control.FOCUS_NONE
 
