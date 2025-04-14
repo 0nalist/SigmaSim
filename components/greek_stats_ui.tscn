@@ -1,0 +1,140 @@
+[gd_scene load_steps=3 format=3 uid="uid://bo7jj5gh57d4n"]
+
+[ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="1_bm8w8"]
+[ext_resource type="Script" uid="uid://cbm3r6xd66kat" path="res://components/greek_stats_ui.gd" id="1_opk4u"]
+
+[node name="GreekStatsUI" type="Control"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_opk4u")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+
+[node name="ALabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_bm8w8")
+text = "A"
+horizontal_alignment = 1
+
+[node name="BLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_bm8w8")
+text = "B"
+horizontal_alignment = 1
+
+[node name="GLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_bm8w8")
+text = "Γ"
+horizontal_alignment = 1
+
+[node name="DLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_bm8w8")
+text = "Δ"
+horizontal_alignment = 1
+
+[node name="OLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_bm8w8")
+text = "Ω"
+horizontal_alignment = 1
+
+[node name="SLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_bm8w8")
+text = "Σ"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="AlphaProgressBar" type="ProgressBar" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_vertical = 1
+value = 1.0
+fill_mode = 3
+show_percentage = false
+
+[node name="BetaProgressBar" type="ProgressBar" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_vertical = 1
+value = 7.0
+fill_mode = 3
+show_percentage = false
+
+[node name="GammaProgressBar" type="ProgressBar" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_vertical = 1
+value = 34.0
+fill_mode = 3
+show_percentage = false
+
+[node name="DeltaProgressBar" type="ProgressBar" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_vertical = 1
+value = 63.0
+fill_mode = 3
+show_percentage = false
+
+[node name="OmegaProgressBar" type="ProgressBar" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_vertical = 1
+value = 25.0
+fill_mode = 3
+show_percentage = false
+
+[node name="SigmaProgressBar" type="ProgressBar" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_vertical = 1
+value = 5.0
+fill_mode = 3
+show_percentage = false

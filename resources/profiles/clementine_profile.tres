@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Profile" load_steps=2 format=3 uid="uid://b6whv7yjc37gr"]
+
+[ext_resource type="Script" uid="uid://dw5uloklpikdx" path="res://resources/profiles/profile.gd" id="1_negh4"]
+
+[resource]
+script = ExtResource("1_negh4")
+full_name = "Clementine C"
+username = "@"
+bio = ""
+occupation = ""
+relationship_status = "Single"
+affinity = 0.0
+alpha = 0.0
+beta = 0.0
+gamma = 0.0
+delta = 0.0
+omega = 0.0
+sigma = 0.0
+wall_posts = Array[String]([])
+tags = Array[String]([])
+metadata/_custom_type_script = "uid://dw5uloklpikdx"

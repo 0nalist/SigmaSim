@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://co0hj3xwk0a8l"
-path="res://.godot/imported/AlphaOnlineSquareLogo.png-52385e0bf57e4895785a866a8e99dba4.ctex"
+uid="uid://crn8fnvyp4qgp"
+path="res://.godot/imported/trashcan.png-f5db58b6a4e32f8342126f699e515ae6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/AlphaOnlineSquareLogo.png"
-dest_files=["res://.godot/imported/AlphaOnlineSquareLogo.png-52385e0bf57e4895785a866a8e99dba4.ctex"]
+source_file="res://assets/logos/trashcan.png"
+dest_files=["res://.godot/imported/trashcan.png-f5db58b6a4e32f8342126f699e515ae6.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crn8fnvyp4qgp"
-path="res://.godot/imported/trashcan.png-f464e2c8347f8fa58ca4331488f8fdfd.ctex"
+uid="uid://c3tog5y8fjq0c"
+path="res://.godot/imported/Lost in south.png-44c0ba7a00e79eb98a4bd06083405225.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/trashcan.png"
-dest_files=["res://.godot/imported/trashcan.png-f464e2c8347f8fa58ca4331488f8fdfd.ctex"]
+source_file="res://assets/logos/Lost in south.png"
+dest_files=["res://.godot/imported/Lost in south.png-44c0ba7a00e79eb98a4bd06083405225.ctex"]
 
 [params]
 

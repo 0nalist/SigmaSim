@@ -13,7 +13,7 @@ config_version=5
 config/name="Sigma"
 run/main_scene="uid://dkhodakv1x0h7"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://assets/icon.svg"
+config/icon="res://assets/logos/icon.svg"
 
 [autoload]
 

@@ -13,7 +13,7 @@ var last_invested: float = 0.0
 
 func _ready() -> void:
 	app_title = "BrokeRage"
-	app_icon = preload("res://assets/AlphaOnline.png")
+	#app_icon = preload("res://assets/AlphaOnline.png")
 	emit_signal("title_updated", app_title)
 
 	# Connect signals from PortfolioManager

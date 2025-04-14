@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhk1m8h1q7exf"
-path="res://.godot/imported/AIMLogoMaster.png-bf2029ee20d1f6c8c58acd8c3c2726b8.ctex"
+path="res://.godot/imported/AIMLogoMaster.png-0f4efc5236e1e6269fe070c16092dc68.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/AIMLogoMaster.png"
-dest_files=["res://.godot/imported/AIMLogoMaster.png-bf2029ee20d1f6c8c58acd8c3c2726b8.ctex"]
+source_file="res://assets/logos/AIMLogoMaster.png"
+dest_files=["res://.godot/imported/AIMLogoMaster.png-0f4efc5236e1e6269fe070c16092dc68.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3tog5y8fjq0c"
-path="res://.godot/imported/Lost in south.png-031d14a916642bc6f0f437841fdf7abf.ctex"
+uid="uid://gl0rjxkrh4wh"
+path="res://.godot/imported/AOLlogoMaster.png-cdf1cf0161439cb8b8d00606e7b2a28a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Lost in south.png"
-dest_files=["res://.godot/imported/Lost in south.png-031d14a916642bc6f0f437841fdf7abf.ctex"]
+source_file="res://assets/logos/AOLlogoMaster.png"
+dest_files=["res://.godot/imported/AOLlogoMaster.png-cdf1cf0161439cb8b8d00606e7b2a28a.ctex"]
 
 [params]
 

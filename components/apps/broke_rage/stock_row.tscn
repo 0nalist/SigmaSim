@@ -3,10 +3,10 @@
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_vmdvm"]
 [ext_resource type="Script" uid="uid://ck1gmmsrevnw4" path="res://components/apps/broke_rage/stock_row.gd" id="2_2mfh4"]
 [ext_resource type="Texture2D" uid="uid://bexdrhb3xo3ro" path="res://assets/redarrow.png" id="3_wagdg"]
-[ext_resource type="Texture2D" uid="uid://cpph6qmmgf2p3" path="res://assets/greenbuttonpressed.png" id="4_2elvt"]
-[ext_resource type="Texture2D" uid="uid://ctlorutr8vm1m" path="res://assets/greenbutton.png" id="5_3jwjh"]
-[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/redbuttonpressed.png" id="6_2022p"]
-[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/redbutton.png" id="7_rdy7d"]
+[ext_resource type="Texture2D" uid="uid://cpph6qmmgf2p3" path="res://assets/ui/greenbuttonpressed.png" id="4_2elvt"]
+[ext_resource type="Texture2D" uid="uid://ctlorutr8vm1m" path="res://assets/ui/greenbutton.png" id="5_3jwjh"]
+[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/redbuttonpressed.png" id="6_2022p"]
+[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/redbutton.png" id="7_rdy7d"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t6o0i"]
 texture = ExtResource("4_2elvt")

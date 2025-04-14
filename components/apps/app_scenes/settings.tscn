@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://s5d0e4c7s6cc"]
 
 [ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://settings_window.gd" id="1_wlela"]
-[ext_resource type="Texture2D" uid="uid://mb2q2hy3djdx" path="res://assets/cog.png" id="2_wxdtm"]
+[ext_resource type="Texture2D" uid="uid://mb2q2hy3djdx" path="res://assets/logos/cog.png" id="2_wxdtm"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_jjwhp"]
 
