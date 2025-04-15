@@ -7,9 +7,11 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4nn1u"]
 
 [node name="Profile" type="Panel"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -57,28 +59,15 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
+focus_mode = 0
 text = "AIM @username"
+flat = true
 
 [node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="AffinityProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 8
-value = 50.0
-
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(25, 0)
-layout_mode = 2
-
-[node name="GreekStatsUI" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_0c1jh")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
@@ -87,10 +76,31 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Name McNamerson is creating lifelong b2b partnerships"
 
-[node name="RelationshipLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RelationshipLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Name McNamerson is Single"
+
+[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
+[node name="AffinityProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 25)
+layout_mode = 2
+size_flags_vertical = 8
+value = 50.0
+show_percentage = false
+
+[node name="GreekStatsUI" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_0c1jh")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
@@ -99,6 +109,7 @@ layout_mode = 2
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+size_flags_vertical = 6
 text = "Name McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnerships"
 autowrap_mode = 3
 

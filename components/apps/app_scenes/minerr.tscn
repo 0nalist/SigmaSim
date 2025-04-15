@@ -17,8 +17,11 @@ axis_stretch_vertical = 1
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6dwf"]
 
 [node name="Minerr" type="Panel"]
-offset_right = 1152.0
-offset_bottom = 648.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
@@ -87,7 +90,7 @@ size_flags_stretch_ratio = 0.35
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
-text = "
+text = "Select a cryptocurrency to mine 
 "
 horizontal_alignment = 1
 
@@ -123,3 +126,7 @@ mouse_filter = 1
 value = 50.0
 allow_greater = true
 fill_mode = 3
+
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_gui_input"]
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_mouse_exited"]

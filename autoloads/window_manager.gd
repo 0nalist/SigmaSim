@@ -63,6 +63,7 @@ func close_window(window: WindowFrame) -> void:
 
 func focus_window(window: WindowFrame) -> void:
 	if focused_window == window:
+		print("focused_window == window")
 		return
 
 	if is_instance_valid(focused_window):
@@ -70,8 +71,10 @@ func focus_window(window: WindowFrame) -> void:
 		var prev_btn = open_windows.get(focused_window)
 		if is_instance_valid(prev_btn):
 			prev_btn.button_pressed = false
-
+	
+	print("focused window before: " + str(focused_window))
 	focused_window = window
+	print("focused window after: " + str(focused_window))
 	window.on_focus()
 
 	# 🛠️ Re-add to root and move to front
@@ -210,6 +213,7 @@ func open_stock_popup(stock: Stock) -> void:
 	var existing = popup_registry.get(key)
 	if existing and is_instance_valid(existing):
 		focus_window(existing)
+		print("focusing popup window: " + str(existing))
 		return
 
 	var popup := preload("res://components/popups/stock_popup_ui.tscn").instantiate()

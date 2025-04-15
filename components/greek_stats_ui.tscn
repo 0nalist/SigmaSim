@@ -41,6 +41,7 @@ size_flags_stretch_ratio = 0.0
 [node name="ALabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_bm8w8")
 text = "A"
 horizontal_alignment = 1
@@ -48,6 +49,7 @@ horizontal_alignment = 1
 [node name="BLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_bm8w8")
 text = "B"
 horizontal_alignment = 1
@@ -55,6 +57,7 @@ horizontal_alignment = 1
 [node name="GLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_bm8w8")
 text = "Γ"
 horizontal_alignment = 1
@@ -62,6 +65,7 @@ horizontal_alignment = 1
 [node name="DLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_bm8w8")
 text = "Δ"
 horizontal_alignment = 1
@@ -69,6 +73,7 @@ horizontal_alignment = 1
 [node name="OLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_bm8w8")
 text = "Ω"
 horizontal_alignment = 1
@@ -76,6 +81,7 @@ horizontal_alignment = 1
 [node name="SLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_bm8w8")
 text = "Σ"
 horizontal_alignment = 1
