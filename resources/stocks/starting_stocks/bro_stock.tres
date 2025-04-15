@@ -6,8 +6,11 @@
 script = ExtResource("1_bs2ud")
 symbol = "BRO"
 price = 100.0
-volatility = 0.1
 shares_outstanding = 100000000
-sentiment = 0.0
+intrinsic_value = 100.0
+trailing_average = 1.0
+smoothing_factor = 0.05
+volatility = 0.1
+sentiment = 0.1
 momentum = 0
 metadata/_custom_type_script = "uid://prlirycaaf1k"

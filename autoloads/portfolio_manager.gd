@@ -60,24 +60,23 @@ func get_passive_income() -> float:
 ## --- Stock Methods
 func buy_stock(symbol: String, amount: int = 1) -> bool:
 	var stock = stock_data.get(symbol)
-	if stock == null or cash < stock.price:
+	if stock == null or cash < stock.price * amount:
 		return false
 
-	spend_cash(stock.price)
-	stocks_owned[symbol] = stocks_owned.get(symbol, 0) + 1
-	emit_signal("stock_updated", symbol, stock)
-	#emit_investment_update()
+	spend_cash(stock.price * amount)
+	stocks_owned[symbol] = stocks_owned.get(symbol, 0) + amount
+	MarketManager.apply_stock_transaction(symbol, amount)
 	return true
 
+
 func sell_stock(symbol: String, amount: int = 1) -> bool:
-	if stocks_owned.get(symbol, 0) <= 0:
+	if stocks_owned.get(symbol, 0) < amount:
 		return false
 
 	var stock = stock_data.get(symbol)
-	add_cash(stock.price)
-	stocks_owned[symbol] -= 1
-	emit_signal("stock_updated", symbol, stock)
-	#emit_investment_update()
+	add_cash(stock.price * amount)
+	stocks_owned[symbol] -= amount
+	MarketManager.apply_stock_transaction(symbol, -amount)
 	return true
 
 func get_total_investments() -> float:

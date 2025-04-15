@@ -1,6 +1,8 @@
 extends Node
 
 var open_windows: Dictionary = {} # key: WindowFrame, value: taskbar Button
+var popup_registry: Dictionary = {}
+
 var taskbar_container: Control = null
 var start_panel: Window = null
 
@@ -22,22 +24,28 @@ func _ready() -> void:
 	print("✅ Registered apps:", app_registry.keys())
 
 
-func register_window(window: WindowFrame) -> void:
+func register_window(window: WindowFrame, add_taskbar_icon := true) -> void:
 	if open_windows.has(window):
 		window.restore()
-		focus_window(window)
+		call_deferred("focus_window", window)
 		return
 
 	if not window.is_inside_tree():
 		get_tree().root.add_child(window)
 
 	window.show()
-	var icon_button := _create_taskbar_icon(window)
+
+	var icon_button = null
+	if add_taskbar_icon:
+		icon_button = _create_taskbar_icon(window)
+	else:
+		window.get_node("%MinimizeButton").visible = false
 	open_windows[window] = icon_button
-	focus_window(window)
+	call_deferred("focus_window", window)
 
 	if start_panel and start_panel.visible:
 		start_panel.hide()
+
 
 
 func close_window(window: WindowFrame) -> void:
@@ -185,3 +193,40 @@ func find_window_by_app(title: String) -> WindowFrame:
 		if content != null and "app_title" in content and content.app_title == title:
 			return win
 	return null
+
+
+## Specific subwindow launchers
+
+func open_stock_popup(stock: Stock) -> void:
+	var key = "stock:" + stock.symbol
+	var existing = popup_registry.get(key)
+	if existing and is_instance_valid(existing):
+		focus_window(existing)
+		return
+
+	var popup := preload("res://components/popups/stock_popup_ui.tscn").instantiate()
+	popup.call_deferred("setup", stock)
+
+	var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+	win.window_title = "Stock: %s" % stock.symbol
+	win.call_deferred("set_window_title", "Stock: $" + stock.symbol)
+	win.icon = null
+	win.default_size = popup.default_window_size
+	win.get_node("%ContentPanel").add_child(popup)
+
+	register_window(win, false)
+	win.get_node("%MinimizeButton").visible = false
+	
+	var mouse_pos := get_viewport().get_mouse_position()
+	var popup_size := win.default_size
+	var screen_size := get_viewport().get_visible_rect().size
+	var target_pos := mouse_pos.clamp(Vector2.ZERO, screen_size - popup_size)
+
+	win.position = target_pos
+
+	popup_registry[key] = win
+	win.tree_exited.connect(func():
+		if popup_registry.get(key) == win:
+			popup_registry.erase(key)
+	)
+	call_deferred("focus_window", win)

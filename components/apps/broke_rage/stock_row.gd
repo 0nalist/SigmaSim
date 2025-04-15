@@ -27,7 +27,7 @@ func setup(_stock: Stock) -> void:
 		emit_signal("sell_pressed", stock.symbol)
 		update_display(stock)
 	)
-
+	
 
 func update_display(updated_stock: Stock) -> void:
 	var previous_price = last_price
@@ -66,3 +66,8 @@ func update_sentiment_arrow(sentiment: float) -> void:
 		arrow.modulate = Color.RED
 	else:
 		arrow.modulate = Color(0.6, 0.6, 0.6)  # Neutral
+
+
+func _on_stock_label_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		WindowManager.open_stock_popup(stock)
