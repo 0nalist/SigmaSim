@@ -49,7 +49,7 @@ func apply_stock_transaction(symbol: String, shares_delta: int) -> void:
 
 func _update_stock_prices():
 	for stock in stock_market.values():
-		stock.intrinsic_value += randf_range(0.01, 0.1)
+		stock.intrinsic_value += randf_range(0.0001, 0.001)
 
 		stock.momentum -= 1
 		if stock.momentum <= 0:

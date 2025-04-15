@@ -43,8 +43,8 @@ func register_window(window: WindowFrame, add_taskbar_icon := true) -> void:
 	open_windows[window] = icon_button
 	call_deferred("focus_window", window)
 
-	if start_panel and start_panel.visible:
-		start_panel.hide()
+	#if start_panel and start_panel.visible:
+	#	start_panel.hide()
 
 
 
@@ -73,12 +73,20 @@ func focus_window(window: WindowFrame) -> void:
 
 	focused_window = window
 	window.on_focus()
-	get_tree().root.move_child(window, get_tree().root.get_child_count() - 1)
+
+	# 🛠️ Re-add to root and move to front
+	var root = get_tree().root
+	if window.get_parent() != root:
+		window.get_parent().remove_child(window)
+		root.add_child(window)
+	root.move_child(window, root.get_child_count() - 1)
+
 	window.grab_focus()
 
 	var btn = open_windows.get(window)
 	if is_instance_valid(btn):
 		btn.button_pressed = true
+
 
 
 func launch_app_by_name(app_name: String) -> void:

@@ -22,9 +22,8 @@ axis_stretch_vertical = 1
 bg_color = Color(0, 0, 0, 0.713726)
 
 [node name="BrokeRage" type="Panel"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -35,13 +34,16 @@ script = ExtResource("2_o2yqo")
 app_title = "BrokeRage"
 app_icon = ExtResource("3_wfbhr")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
@@ -49,12 +51,12 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Panel" type="Panel" parent="MarginContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_m3g8w")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,51 +68,53 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TabContainer" type="TabContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 2
 current_tab = 0
 tab_focus_mode = 0
 
-[node name="Summary" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer"]
+[node name="Summary" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="Summary" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer"]
+[node name="Summary" type="HBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 texture = ExtResource("4_wfbhr")
 expand_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary"]
 layout_mode = 2
 columns = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary"]
 layout_mode = 2
+size_flags_horizontal = 2
 
-[node name="BalanceLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+[node name="BalanceLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("4_2rri8")
 text = "Balance: $ "
 horizontal_alignment = 2
 
-[node name="CashLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+[node name="CashLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("4_2rri8")
@@ -118,32 +122,32 @@ theme_override_font_sizes/font_size = 21
 text = "Cash: $ "
 horizontal_alignment = 2
 
-[node name="InvestedLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+[node name="InvestedLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("4_2rri8")
 text = "Invested: $ "
 horizontal_alignment = 2
 
-[node name="DebtLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+[node name="DebtLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("4_2rri8")
 text = "Debt: $ "
 horizontal_alignment = 2
 
-[node name="PassiveIncomeLabel" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+[node name="PassiveIncomeLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("4_2rri8")
 text = "Passive Income: $0"
 horizontal_alignment = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="StockMarket" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/ScrollContainer"]
+[node name="StockMarket" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -153,18 +157,19 @@ script = ExtResource("5_lgac0")
 stock_list = Array[ExtResource("6_gyd05")]([ExtResource("7_xgsqg"), ExtResource("8_6pj30"), ExtResource("9_bek8l"), ExtResource("10_o2yqo")])
 stock_row_scene = ExtResource("10_htng3")
 
-[node name="Control" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/ScrollContainer/StockMarket"]
+[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/ScrollContainer/StockMarket"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="Stocks" type="ScrollContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer"]
+[node name="Stocks" type="ScrollContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/_tab_index = 1
 
-[node name="StockMarket2" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Stocks"]
+[node name="StockMarket2" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Stocks"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -173,6 +178,6 @@ script = ExtResource("5_lgac0")
 stock_list = Array[ExtResource("6_gyd05")]([ExtResource("7_xgsqg"), ExtResource("8_6pj30"), ExtResource("9_bek8l"), ExtResource("10_o2yqo")])
 stock_row_scene = ExtResource("10_htng3")
 
-[node name="Control" type="Control" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Stocks/StockMarket2"]
+[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Stocks/StockMarket2"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2

@@ -31,7 +31,7 @@ func _on_cash_updated(_cash: float) -> void:
 	var balance = PortfolioManager.get_balance()
 
 	cash_label.text = "Cash: $%.2f" % cash
-	balance_label.text = "Balance: $%.2f" % balance
+	balance_label.text = "Net Worth: $%.2f" % balance
 
 	await get_tree().create_timer(0.2).timeout
 	emit_signal("title_updated", "BrokeRage - $%.2f" % cash)
@@ -46,7 +46,7 @@ func _on_investments_updated(amount: float):
 	last_invested = amount
 
 	invested_label.text = "Invested: $%.2f" % amount
-	balance_label.text = "Balance: $%.2f" % PortfolioManager.get_balance()
+	balance_label.text = "Net Worth: $%.2f" % PortfolioManager.get_balance()
 		
 	
 	if delta > 0.01:

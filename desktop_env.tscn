@@ -431,6 +431,8 @@ alignment = 2
 
 [node name="SleepButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
 theme_override_fonts/font = ExtResource("1_lx1wk")
 text = " sleep "
 
@@ -448,5 +450,6 @@ layout_mode = 1
 [connection signal="pressed" from="MarginContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="StartPanel" method="_on_settings_button_pressed"]
+[connection signal="mouse_exited" from="StartPanel" to="StartPanel" method="_on_mouse_exited"]
 [connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton" to="StartPanel" method="_on_sleep_button_pressed"]
 [connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SettingsButton" to="StartPanel" method="_on_settings_button_pressed"]

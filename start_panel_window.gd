@@ -57,13 +57,14 @@ func toggle_start_panel() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("select") and visible:
-		await get_tree().create_timer(0.21).timeout
-		hide()
+	#if event.is_action_pressed("select") and visible:
+	#	await get_tree().create_timer(0.21).timeout
+	#	hide()
+	pass
 
 
 func launch_app(app_name: String) -> void:
-	hide()
+	#hide()
 	WindowManager.launch_app_by_name(app_name)
 
 
@@ -73,3 +74,8 @@ func _on_settings_button_pressed() -> void:
 
 func _on_sleep_button_pressed() -> void:
 	TimeManager.sleep_for(480)
+
+
+func _on_mouse_exited() -> void:
+	if visible:
+		hide()
