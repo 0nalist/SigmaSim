@@ -37,3 +37,8 @@ func set_day(day_number: int, is_in_past: bool, bills: Array):
 		circle.color = bill_colors.get(bill_type, Color.GRAY)
 		circle.custom_minimum_size = Vector2(10, 10)
 		icon_row.add_child(circle)
+
+
+func set_empty() -> void:
+	day_label.text = ""
+	modulate = Color(0.45, 0.45, 0.45, 1.0) 

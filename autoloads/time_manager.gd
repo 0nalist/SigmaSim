@@ -8,7 +8,7 @@ var in_game_minutes := 4 * 60  # Start at 4:00 AM
 var time_accumulator := 0.0
 
 var current_day := 1
-var current_month := 1
+var current_month := 3
 var current_year := 2025
 var day_of_week := 0  # 0 = Monday, 6 = Sunday
 
@@ -16,7 +16,10 @@ var is_fast_forwarding := false
 var fast_forward_minutes_left := 0
 
 var day_names := ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-
+var month_names := [
+	"January", "February", "March", "April", "May", "June",
+	"July", "August", "September", "October", "November", "December"
+]
 
 func _process(delta: float) -> void:
 	if is_fast_forwarding:
@@ -97,7 +100,6 @@ func get_today() -> Dictionary:
 
 
 func get_first_weekday_of_month(month: int, year: int) -> int:
-	# Returns 0 = Monday, 6 = Sunday to match day_names[]
 	var m = month
 	var y = year
 	if m < 3:
@@ -107,22 +109,15 @@ func get_first_weekday_of_month(month: int, year: int) -> int:
 	var K = y % 100
 	var J = y / 100
 	var h = (q + int((13 * (m + 1)) / 5) + K + int(K / 4) + int(J / 4) + 5 * J) % 7
-	var weekday_sun0 = (h + 6) % 7  # Zeller's: 0 = Sunday → convert to 0 = Monday
-	return (weekday_sun0 + 6) % 7
-
+	return (h + 5) % 7  # 0 = Monday
 
 func get_weekday_for_date(day: int, month: int, year: int) -> int:
 	var m = month
 	var y = year
-
 	if m < 3:
 		m += 12
 		y -= 1
-
 	var K = y % 100
 	var J = y / 100
-
 	var h = (day + int((13 * (m + 1)) / 5) + K + int(K / 4) + int(J / 4) + 5 * J) % 7
-	# h: 0 = Saturday, 1 = Sunday, ..., 6 = Friday (Zeller’s original)
-	var weekday_sun0 = (h + 6) % 7  # Zeller adjusted to 0 = Sunday, 6 = Saturday
-	return (weekday_sun0 + 6) % 7   # Shift to 0 = Monday, 6 = Sunday
+	return (h + 5) % 7  # 0 = Monday
