@@ -22,6 +22,7 @@ PortfolioManager="*res://autoloads/portfolio_manager.gd"
 MarketManager="*res://autoloads/market_manager.gd"
 GPUManager="*res://autoloads/gpu_manager.gd"
 TimeManager="*res://autoloads/time_manager.gd"
+BillManager="*res://autoloads/bill_manager.gd"
 
 [display]
 
