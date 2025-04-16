@@ -32,11 +32,9 @@ func populate_calendar(month: int, year: int) -> void:
 		var panel := day_panel_scene.instantiate()
 
 		if i < first_weekday:
-			print("Padding at cell", i)
 			panel.call_deferred("set_empty")
 
 		elif day_number <= days_in_month:
-			print("Placing day", day_number, "at cell", i)
 			var is_past = (
 				year < today.year or
 				(year == today.year and month < today.month) or
@@ -56,3 +54,7 @@ func populate_calendar(month: int, year: int) -> void:
 			panel.call_deferred("set_empty")
 
 		grid_container.add_child(panel)
+
+
+func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
+	BillManager.autopay_enabled = toggled_on

@@ -117,7 +117,10 @@ func launch_app_by_name(app_name: String) -> void:
 	# --- Instantiate actual app ---
 	var instance = scene.instantiate()
 	var win = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-
+	win.window_can_close = instance.window_can_close
+	win.window_can_minimize = instance.window_can_minimize
+	win.window_can_maximize = instance.window_can_maximize
+	
 	win.icon = instance.app_icon
 	win.window_title = instance.app_title
 	win.call_deferred("set_window_title", instance.app_title)

@@ -12,3 +12,7 @@ signal title_updated(title: String)
 
 @export var show_in_taskbar: bool = true
 @export var only_one_instance_allowed: bool = false
+
+var window_can_close = true
+var window_can_minimize = true
+var window_can_maximize = true

@@ -2,6 +2,7 @@ extends Node
 # Autoload: BillManager
 
 var autopay_enabled: bool = false
+var active_bills: Dictionary = {}  # key: date_str → Array[BillPopupUI]
 
 # Ordered list: Week 0 → Rent, Week 1 → Insurance, etc.
 var weekly_bill_cycle := [
@@ -15,23 +16,93 @@ var base_bill_amounts := {
 	"Rent": 1200.0,
 	"Medical Insurance": 300.0,
 	"Student Loan": 400.0,
-	"Credit Card": 0.0  # Dynamically calculated
+	"Credit Card": 0.0  # dynamically calculated elsewhere
 }
+
+
+func _ready() -> void:
+	TimeManager.hour_passed.connect(_on_hour_passed)
+	print("active bills: " + str(active_bills))
+
+func _on_hour_passed(hour: int) -> void:
+	if hour != 0:
+		return
+	print("hour passed")
+	# Resolve yesterday’s bills
+	var yesterday = _get_yesterday()
+	var yesterday_key = _format_date_key(yesterday)
+	auto_resolve_bills_for_date(yesterday_key)
+
+	# Trigger today’s bills
+	var today = TimeManager.get_today()
+	var bills_today = get_due_bills_for_date(today.day, today.month, today.year)
+
+	if not active_bills.has(_format_date_key(today)):
+		active_bills[_format_date_key(today)] = []
+	
+	
+	for bill_name in bills_today:
+		print("bill due today!")
+		var popup := preload("res://components/bill_popup_ui.tscn").instantiate()
+		popup.init(bill_name)
+
+		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+		win.window_title = "Bill: %s" % bill_name
+		win.call_deferred("set_window_title", "Bill: %s" % bill_name)
+		win.icon = null
+		win.default_size = popup.default_window_size if "default_window_size" in popup else Vector2(400, 200)
+		win.window_can_close = false
+		win.window_can_minimize = false
+		win.get_node("%ContentPanel").add_child(popup)
+
+		WindowManager.register_window(win, false)
+
+		# Optional: center the bill popup
+		var screen_size := get_viewport().get_visible_rect().size
+		win.position = (screen_size - win.size) / 2.0
+
+		# Track the popup by date
+		if not active_bills.has(_format_date_key(today)):
+			active_bills[_format_date_key(today)] = []
+		active_bills[_format_date_key(today)].append(popup)
+
+
+
+func get_due_bills_for_date(day: int, month: int, year: int) -> Array[String]:
+	var weekday = TimeManager.get_weekday_for_date(day, month, year)
+	print("Day %d/%d/%d = weekday index %d (%s)" % [
+	day, month, year, weekday, TimeManager.day_names[weekday]
+])
+	if weekday != 6:
+		return []
+
+	var week_index = int((day - 1) / 7)
+	var bill_index = week_index % weekly_bill_cycle.size()
+	var bill_info = weekly_bill_cycle[bill_index]
+	return [bill_info.name]
+
 
 func get_due_bills_for_month(month: int, year: int) -> Dictionary:
 	var output: Dictionary = {}
 	var days = TimeManager.get_days_in_month(month, year)
 
 	for day in range(1, days + 1):
-		var weekday = TimeManager.get_weekday_for_date(day, month, year)
-		print("Day", day, "weekday =", weekday, "→", TimeManager.day_names[weekday])
-		if weekday == 6:  # 6 = Sunday
-			var week_index = int((day - 1) / 7)
-			var bill_index = week_index % weekly_bill_cycle.size()
-			var bill_info = weekly_bill_cycle[bill_index]
-			output[day] = [bill_info.name]
+		var bills = get_due_bills_for_date(day, month, year)
+		if not bills.is_empty():
+			output[day] = bills
 
 	return output
+
+
+func auto_resolve_bills_for_date(date_str: String) -> void:
+	for popup in active_bills.get(date_str, []):
+		if popup and popup.visible:
+			if PortfolioManager.can_pay_with_credit(popup.amount):
+				PortfolioManager.pay_with_credit(popup.amount)
+				popup.close()
+			else:
+				print("GAME OVER")
+				#GameManager.trigger_game_over("Unpaid bill: %s" % popup.bill_name)
 
 
 func get_bill_color(bill_name: String) -> Color:
@@ -40,5 +111,25 @@ func get_bill_color(bill_name: String) -> Color:
 			return bill.color
 	return Color.GRAY
 
+
 func get_bill_amount(bill_name: String) -> float:
 	return base_bill_amounts.get(bill_name, 0.0)
+
+
+func _format_date_key(date: Dictionary) -> String:
+	return "%d/%d/%d" % [date.day, date.month, date.year]
+
+
+func _get_yesterday() -> Dictionary:
+	var day = TimeManager.current_day - 1
+	var month = TimeManager.current_month
+	var year = TimeManager.current_year
+
+	if day < 1:
+		month -= 1
+		if month < 1:
+			month = 12
+			year -= 1
+		day = TimeManager.get_days_in_month(month, year)
+
+	return { "day": day, "month": month, "year": year }

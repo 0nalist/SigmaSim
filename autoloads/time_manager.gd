@@ -4,7 +4,7 @@ signal minute_passed(current_time_minutes: int)
 signal hour_passed(current_hour: int)
 signal day_passed(new_day: int, new_month: int, new_year: int)
 
-var in_game_minutes := 4 * 60  # Start at 4:00 AM
+var in_game_minutes := 23 * 60 
 var time_accumulator := 0.0
 
 var current_day := 1
@@ -20,6 +20,11 @@ var month_names := [
 	"January", "February", "March", "April", "May", "June",
 	"July", "August", "September", "October", "November", "December"
 ]
+
+func _ready() -> void:
+	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
+
+
 
 func _process(delta: float) -> void:
 	if is_fast_forwarding:

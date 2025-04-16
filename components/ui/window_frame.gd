@@ -7,6 +7,10 @@ class_name WindowFrame
 @export var minimized_position: Vector2 = Vector2(10, 10)
 @export var animation_duration: float = 0.1
 
+@export var window_can_close: bool = true
+@export var window_can_minimize: bool = true
+@export var window_can_maximize: bool = true
+
 var window_title: String = "Window"
 
 enum WindowState { NORMAL, MINIMIZED, MAXIMIZED }
@@ -37,6 +41,10 @@ var min_window_size := Vector2(120, 50)
 
 
 func _ready() -> void:
+	minimize_button.visible = window_can_minimize
+	maximize_button.visible = window_can_maximize
+	close_button.visible = window_can_close
+	
 	minimize_button.pressed.connect(func():
 		if WindowManager and WindowManager.has_method("get_taskbar_icon_center"):
 			var icon_center := WindowManager.get_taskbar_icon_center(self)
