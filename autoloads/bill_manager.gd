@@ -21,34 +21,34 @@ var base_bill_amounts := {
 
 
 func _ready() -> void:
-	TimeManager.hour_passed.connect(_on_hour_passed)
+	TimeManager.day_passed.connect(_on_day_passed)
 	print("active bills: " + str(active_bills))
 
-func _on_hour_passed(hour: int) -> void:
-	if hour != 0:
-		return
-	print("hour passed")
+func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	# Resolve yesterday’s bills
 	var yesterday = _get_yesterday()
-	var yesterday_key = _format_date_key(yesterday)
-	auto_resolve_bills_for_date(yesterday_key)
+	auto_resolve_bills_for_date(_format_date_key(yesterday))
 
-	# Trigger today’s bills
-	var today = TimeManager.get_today()
-	var bills_today = get_due_bills_for_date(today.day, today.month, today.year)
+	# Spawn today’s bills
+	var today := {
+		"day": new_day,
+		"month": new_month,
+		"year": new_year
+	}
+	var today_key = _format_date_key(today)
+	if not active_bills.has(today_key):
+		active_bills[today_key] = []
 
-	if not active_bills.has(_format_date_key(today)):
-		active_bills[_format_date_key(today)] = []
-	
-	
+	var bills_today = get_due_bills_for_date(new_day, new_month, new_year)
+
 	for bill_name in bills_today:
-		print("bill due today!")
-		var popup := preload("res://components/bill_popup_ui.tscn").instantiate()
+		print("📅 Bill due today: %s" % bill_name)
+		var popup = preload("res://components/bill_popup_ui.tscn").instantiate()
 		popup.init(bill_name)
 
 		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 		win.window_title = "Bill: %s" % bill_name
-		win.call_deferred("set_window_title", "Bill: %s" % bill_name)
+		win.call_deferred("set_window_title", win.window_title)
 		win.icon = null
 		win.default_size = popup.default_window_size if "default_window_size" in popup else Vector2(400, 200)
 		win.window_can_close = false
@@ -57,14 +57,12 @@ func _on_hour_passed(hour: int) -> void:
 
 		WindowManager.register_window(win, false)
 
-		# Optional: center the bill popup
-		var screen_size := get_viewport().get_visible_rect().size
-		win.position = (screen_size - win.size) / 2.0
+		call_deferred("center_bill_window", win)
+		active_bills[today_key].append(popup)
 
-		# Track the popup by date
-		if not active_bills.has(_format_date_key(today)):
-			active_bills[_format_date_key(today)] = []
-		active_bills[_format_date_key(today)].append(popup)
+func center_bill_window(win: WindowFrame) -> void:
+	WindowManager.center_window(win)
+
 
 
 

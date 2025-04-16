@@ -7,7 +7,7 @@ var amount: int = 0
 func init(name: String) -> void:
 	bill_name = name
 	amount = BillManager.get_bill_amount(name)
-	%BillLabel.text = "Bill Due: %s — $%.2f" % [bill_name, amount]
+	%BillLabel.text = "%s — $%.2f" % [bill_name, amount]
 
 
 func _ready() -> void:

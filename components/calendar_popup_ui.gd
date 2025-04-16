@@ -9,8 +9,12 @@ extends BasePopupUI
 func _ready():
 	autopay_checkbox.button_pressed = BillManager.autopay_enabled
 	autopay_checkbox.toggled.connect(_on_autopay_toggled)
+	TimeManager.day_passed.connect(_on_day_passed)
 	populate_calendar(TimeManager.current_month, TimeManager.current_year)
 	month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
+
+func _on_day_passed(_day: int, month: int, year: int):
+	populate_calendar(month, year)
 
 func _on_autopay_toggled(pressed: bool) -> void:
 	BillManager.autopay_enabled = pressed
@@ -54,6 +58,14 @@ func populate_calendar(month: int, year: int) -> void:
 			panel.call_deferred("set_empty")
 
 		grid_container.add_child(panel)
+	for panel in grid_container.get_children():
+		if not panel.has_method("set_today_indicator"):
+			continue
+
+		if panel.day == today.day and month == today.month and year == today.year:
+			panel.set_today_indicator(true)
+		else:
+			panel.set_today_indicator(false)
 
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:

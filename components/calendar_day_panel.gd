@@ -3,6 +3,8 @@ class_name CalendarDayPanel
 
 @onready var day_label: Label = %DayLabel
 @onready var icon_row: HBoxContainer = %IconRow
+@onready var today_indicator: ColorRect = %TodayIndicator
+
 
 var day: int = 0
 var is_past: bool = false
@@ -52,6 +54,8 @@ func set_tooltip(bills: Array) -> void:
 
 	set_tooltip_text(tooltip_text.strip_edges())
 
+func set_today_indicator(show: bool) -> void:
+	%TodayIndicator.visible = show
 
 func set_empty() -> void:
 	day_label.text = ""

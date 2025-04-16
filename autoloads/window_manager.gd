@@ -209,6 +209,15 @@ func find_window_by_app(title: String) -> WindowFrame:
 	return null
 
 
+func center_window(win: WindowFrame) -> void:
+	var screen_size := get_viewport().get_visible_rect().size
+	var window_size := win.size
+	if window_size == Vector2.ZERO:
+		window_size = win.default_size
+	win.position = (screen_size - window_size) / 2.0
+
+
+
 ## Specific subwindow launchers
 
 func open_stock_popup(stock: Stock) -> void:

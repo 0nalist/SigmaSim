@@ -24,7 +24,9 @@ var month_names := [
 func _ready() -> void:
 	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
 
-
+func sleep_for(minutes: int) -> void:
+	is_fast_forwarding = true
+	fast_forward_minutes_left = minutes
 
 func _process(delta: float) -> void:
 	if is_fast_forwarding:
