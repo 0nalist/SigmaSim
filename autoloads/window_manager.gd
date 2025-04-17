@@ -19,7 +19,6 @@ var app_registry := {
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn")
 }
 
-
 func _ready() -> void:
 	print("✅ Registered apps:", app_registry.keys())
 
@@ -44,8 +43,6 @@ func register_window(window: WindowFrame, add_taskbar_icon := true) -> void:
 	call_deferred("focus_window", window)
 	print("📌 Registering window:", window.window_title)
 	print("🪟 open_windows now:", open_windows.keys())
-	#if start_panel and start_panel.visible:
-	#	start_panel.hide()
 
 
 
@@ -103,7 +100,7 @@ func launch_app_by_name(app_name: String) -> void:
 		push_error("App '%s' does not extend BaseAppUI" % app_name)
 		return
 
-	# ✅ If only one instance is allowed, check for an existing window
+	# If only one instance is allowed, check for an existing window
 	if preview.only_one_instance_allowed:
 		var existing_window := find_window_by_app(app_name)
 		if existing_window:
@@ -195,10 +192,8 @@ func get_taskbar_icon_center(window: WindowFrame) -> Vector2:
 		return btn.get_global_position() + btn.size / 2
 	return window.global_position
 
-
 func get_taskbar_height() -> int:
 	return taskbar_container.size.y if is_instance_valid(taskbar_container) else 0
-
 
 func find_window_by_app(title: String) -> WindowFrame:
 	for win in open_windows.keys():
@@ -206,7 +201,6 @@ func find_window_by_app(title: String) -> WindowFrame:
 		if content != null and "app_title" in content and content.app_title == title:
 			return win
 	return null
-
 
 func center_window(win: WindowFrame) -> void:
 	var screen_size := get_viewport().get_visible_rect().size
