@@ -1,8 +1,6 @@
 extends BaseAppUI
 class_name AlphaInstantMessenger
 
-func _init():
-	set_meta("class_name", "AlphaInstantMessenger")
 
 func _ready() -> void:
 	#default_window_size = Vector2(350, 420)

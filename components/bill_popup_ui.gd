@@ -9,7 +9,6 @@ var total_with_interest: float = 0.0
 
 
 func init(name: String) -> void:
-	set_meta("class_name", "BillPopupUI")
 	bill_name = name
 	amount = BillManager.get_bill_amount(name)
 	interest_rate = PortfolioManager.credit_interest_rate

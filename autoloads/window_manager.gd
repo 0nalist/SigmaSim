@@ -263,13 +263,16 @@ func get_save_data() -> Array:
 
 	for win in open_windows.keys():
 		var app = win.get_node("VBoxContainer/ContentPanel").get_child(0)
-		if app == null or not app.has_meta("class_name"):
+		if app == null:
 			continue
 
-		# Instead of using app_title, derive registry key
+		# Identify the app by matching scene path
+		var scene_path = app.scene_file_path if app.has_method("get_scene_file_path") else app.get_script().resource_path
+
+		# Find registry key from scene path
 		var app_name := ""
 		for key in app_registry:
-			if app_registry[key].resource_path == app.scene_file_path:
+			if app_registry[key].resource_path == scene_path:
 				app_name = key
 				break
 
@@ -285,8 +288,10 @@ func get_save_data() -> Array:
 
 	return window_data
 
+
 func load_from_data(window_data: Array) -> void:
 	close_all_windows()
+
 	for entry in window_data:
 		var app_name = entry.get("app_name", "")
 		if not app_registry.has(app_name):
@@ -295,20 +300,18 @@ func load_from_data(window_data: Array) -> void:
 		var scene = app_registry[app_name]
 		var instance = scene.instantiate()
 		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+
 		print("🔁 Restoring app:", app_name)
 
 		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), instance.default_window_size)
 		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
 
-		# Add the window to the scene before positioning
 		get_tree().root.add_child(win)
 
-		# Set size and position AFTER it's in the scene
 		win.size = restored_size
 		win.position = restored_position
 		win.default_size = restored_size
 
-		# Metadata
 		win.icon = instance.app_icon
 		win.window_title = instance.app_title
 		win.call_deferred("set_window_title", instance.app_title)

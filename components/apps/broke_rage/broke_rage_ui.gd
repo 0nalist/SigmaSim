@@ -12,8 +12,6 @@ class_name BrokeRage
 
 var last_invested: float = 0.0
 
-func _init():
-	set_meta("class_name", "BrokeRage")
 
 func _ready() -> void:
 	app_title = "BrokeRage"

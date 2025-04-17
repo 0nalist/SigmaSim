@@ -1,8 +1,7 @@
 extends BaseAppUI
 class_name Minerr
 
-func _init():
-	set_meta("class_name", "Minerr")
+
 
 @export var crypto_list: Array[Cryptocurrency]
 @export var crypto_row_scene: PackedScene

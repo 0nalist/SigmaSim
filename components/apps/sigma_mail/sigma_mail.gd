@@ -1,8 +1,7 @@
 extends BaseAppUI
 class_name SigmaMail
 
-func _init():
-	set_meta("class_name", "SigmaMail")
+
 
 func _ready() -> void:
 	app_title = "Sigma Mail"
