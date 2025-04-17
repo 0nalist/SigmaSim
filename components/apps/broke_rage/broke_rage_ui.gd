@@ -5,6 +5,8 @@ class_name BrokeRage
 @onready var cash_label: Label = %CashLabel
 @onready var balance_label: Label = %BalanceLabel
 @onready var invested_label: Label = %InvestedLabel
+@onready var debt_label: Label = %DebtLabel
+
 
 @onready var passive_income_label: Label = %PassiveIncomeLabel
 
@@ -65,3 +67,8 @@ func _on_resource_changed(name: String, _value: float) -> void:
 		_on_cash_updated(PortfolioManager.cash)
 	elif name == "passive_income":
 		_on_passive_income_updated(PortfolioManager.get_passive_income())
+	elif name == "debt":
+		_on_debt_updated()
+
+func _on_debt_updated() -> void:
+	debt_label.text = "Debt: $%.2f" % PortfolioManager.debt

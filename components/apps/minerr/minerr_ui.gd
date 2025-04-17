@@ -159,8 +159,9 @@ func _on_resource_changed(resource_name: String, _value: float) -> void:
 
 const PICKAXE = preload("res://assets/pickaxe.png")
 const PICKAXE_2 = preload("res://assets/pickaxe2.png")
+
 func _on_selected_crypto_texture_mouse_entered() -> void:
-	Input.set_custom_mouse_cursor(PICKAXE,0, Vector2(10,10))
+	Input.set_custom_mouse_cursor(PICKAXE, 0, Vector2(10,10))
 
 
 func _on_selected_crypto_texture_mouse_exited() -> void:

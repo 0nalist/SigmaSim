@@ -1,0 +1,90 @@
+[gd_scene load_steps=4 format=3 uid="uid://5euld8tsq4yj"]
+
+[ext_resource type="Texture2D" uid="uid://xm8tdrmlmymx" path="res://assets/siggy.png" id="1_qdwsr"]
+[ext_resource type="Script" uid="uid://3bhjirdktw5e" path="res://components/siggy.gd" id="1_v5hgp"]
+[ext_resource type="Texture2D" uid="uid://d1wp0emq6hqk6" path="res://assets/speechbubble.png" id="4_lgbmc"]
+
+[node name="Siggy" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_v5hgp")
+
+[node name="SiggySprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-43, 99)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("1_qdwsr")
+
+[node name="TalkButton" type="Button" parent="."]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 0
+offset_left = 59.0
+offset_top = 93.0
+offset_right = 79.0
+offset_bottom = 113.0
+
+[node name="SpeechBubble" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -25.0
+offset_right = 50.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_lgbmc")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SpeechBubble"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="SpeechLabel" type="Label" parent="SpeechBubble/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 10
+text = "Hi! I'm Siggy the Sigma !!!"
+autowrap_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = -127.0
+offset_top = 184.0
+offset_right = 57.0
+offset_bottom = 208.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 8
+text = "Never ever show \"Siggy\" ever again"
+flat = true
+
+[connection signal="pressed" from="TalkButton" to="." method="_on_talk_button_pressed"]
+[connection signal="pressed" from="CheckButton" to="." method="_on_check_button_pressed"]

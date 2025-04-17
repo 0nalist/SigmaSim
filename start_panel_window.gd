@@ -79,3 +79,7 @@ func _on_sleep_button_pressed() -> void:
 func _on_mouse_exited() -> void:
 	if visible:
 		hide()
+
+
+func _on_sleep_button_2_pressed() -> void:
+	TimeManager.sleep_for(8640)

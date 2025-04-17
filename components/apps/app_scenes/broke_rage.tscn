@@ -130,6 +130,7 @@ text = "Invested: $ "
 horizontal_alignment = 2
 
 [node name="DebtLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/VBoxContainer/TabContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("4_2rri8")
 text = "Debt: $ "

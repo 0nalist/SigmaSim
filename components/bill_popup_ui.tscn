@@ -18,6 +18,7 @@ mouse_filter = 1
 theme = ExtResource("1_hspxj")
 theme_override_styles/panel = SubResource("StyleBoxFlat_vdl5f")
 script = ExtResource("1_nf6q5")
+default_window_size = Vector2(420, 320)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -39,17 +40,20 @@ size_flags_vertical = 4
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 1
 theme_override_font_sizes/font_size = 36
 text = "Due Today!"
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 1
 text = "MUST pay by 11:59 PM"
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
+mouse_filter = 1
 
 [node name="BillLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -57,10 +61,12 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 36
 text = "Rent: $0,000"
+horizontal_alignment = 1
 
 [node name="Control2" type="Control" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+mouse_filter = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -69,14 +75,25 @@ size_flags_horizontal = 4
 [node name="PayNowButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
 text = " PAY WITH CASH "
 
 [node name="PayByCreditButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
 text = " PAY WITH CREDIT "
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "*Paying by credit imposes a 30% fee"
+
+[node name="InterestLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "*Paying by credit imposes a 30% fee"

@@ -1,5 +1,7 @@
 extends BasePopupUI
 
+@export var click_catcher: Control = null
+
 @onready var autopay_checkbox: CheckBox = %AutopayCheckBox
 @onready var grid_container: GridContainer = %GridContainer
 @onready var day_panel_scene: PackedScene = preload("res://components/calendar_day_panel.tscn")
@@ -12,6 +14,31 @@ func _ready():
 	TimeManager.day_passed.connect(_on_day_passed)
 	populate_calendar(TimeManager.current_month, TimeManager.current_year)
 	month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
+	call_deferred("move_to_front")
+
+
+func add_click_catcher() -> void:
+	click_catcher = preload("res://components/ui/click_catcher.tscn").instantiate()
+	click_catcher.clicked_outside.connect(_on_click_outside)
+	get_tree().root.add_child(click_catcher)
+	move_to_front()
+
+
+func _on_click_outside(pos: Vector2) -> void:
+	if not get_global_rect().has_point(pos):
+		close()
+
+
+func open() -> void:
+	add_click_catcher()
+	show()
+	set_z_index(1000)  # Ensure it's above any regular window
+
+func close() -> void:
+	if click_catcher:
+		click_catcher.queue_free()
+		click_catcher = null
+	hide()
 
 func _on_day_passed(_day: int, month: int, year: int):
 	populate_calendar(month, year)
@@ -66,7 +93,7 @@ func populate_calendar(month: int, year: int) -> void:
 			panel.set_today_indicator(true)
 		else:
 			panel.set_today_indicator(false)
-
+	month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
 	BillManager.autopay_enabled = toggled_on

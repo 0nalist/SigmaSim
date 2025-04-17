@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4vexyoqueml6"]
+
+[ext_resource type="Script" uid="uid://bh76jvpo02oo" path="res://components/ui/click_catcher.gd" id="1_bflh5"]
+
+[node name="ClickCatcher" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("1_bflh5")

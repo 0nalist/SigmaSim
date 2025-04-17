@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=28 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
@@ -15,9 +15,24 @@
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="PackedScene" uid="uid://c4tt0mgxvgw5g" path="res://components/ui/log_in_ui.tscn" id="16_m483i"]
 [ext_resource type="Texture2D" uid="uid://mb2q2hy3djdx" path="res://assets/logos/cog.png" id="16_xcmse"]
+[ext_resource type="PackedScene" uid="uid://5euld8tsq4yj" path="res://components/siggy.tscn" id="17_g75lf"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://start_panel_window.gd" id="23_dik0q"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e5iv"]
+bg_color = Color(0.6, 0.6, 0.6, 0.427451)
+border_width_top = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5k3ml"]
+bg_color = Color(0.6, 0.6, 0.6, 0.627451)
+border_width_top = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3uyqq"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lpqk7"]
 border_width_top = 1
@@ -46,20 +61,6 @@ texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_75kf8"]
 texture = ExtResource("2_75kf8")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e5iv"]
-bg_color = Color(0.6, 0.6, 0.6, 0.427451)
-border_width_top = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5k3ml"]
-bg_color = Color(0.6, 0.6, 0.6, 0.627451)
-border_width_top = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3uyqq"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_bottom = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6x3lq"]
 bg_color = Color(0.306923, 0.306923, 0.306923, 1)
@@ -138,91 +139,6 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = ExtResource("1_lx1wk")
 text = "Trash"
-
-[node name="TaskbarWrapper" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -49.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_lpqk7")
-
-[node name="MarginContainer" type="MarginContainer" parent="TaskbarWrapper"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.1
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="TaskbarRow" type="HBoxContainer" parent="TaskbarWrapper/MarginContainer"]
-layout_mode = 2
-
-[node name="StartButton" type="Button" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-focus_mode = 0
-theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("1_lx1wk")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/hover = SubResource("StyleBoxTexture_o42ww")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_5eiy6")
-theme_override_styles/normal = SubResource("StyleBoxTexture_05goa")
-text = " Σ Start "
-
-[node name="Control" type="Control" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Taskbar" type="HBoxContainer" parent="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 2
-size_flags_vertical = 6
-alignment = 2
-
-[node name="SettingsButton2" type="Button" parent="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("7_o42ww")
-icon = ExtResource("16_xcmse")
-
-[node name="TimePanel" type="Panel" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-theme_override_styles/panel = SubResource("StyleBoxTexture_75kf8")
-script = ExtResource("9_dc0b5")
-
-[node name="TimeLabel" type="Label" parent="TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("1_lx1wk")
-text = " 11:11 AM "
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="TrashWindow" type="Panel" parent="."]
 unique_name_in_owner = true
@@ -354,6 +270,99 @@ text = "mrs_incredible_rule_34"
 icon = ExtResource("10_4e5iv")
 alignment = 0
 
+[node name="Siggy" parent="." instance=ExtResource("17_g75lf")]
+layout_mode = 1
+offset_left = 15.0
+offset_top = -28.0
+offset_right = 15.0
+offset_bottom = -28.0
+
+[node name="TaskbarWrapper" type="Panel" parent="."]
+z_index = 1024
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -49.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lpqk7")
+
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarWrapper"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TaskbarRow" type="HBoxContainer" parent="TaskbarWrapper/MarginContainer"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_lx1wk")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxTexture_o42ww")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5eiy6")
+theme_override_styles/normal = SubResource("StyleBoxTexture_05goa")
+text = " Σ Start "
+
+[node name="Control" type="Control" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Taskbar" type="HBoxContainer" parent="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 6
+alignment = 2
+
+[node name="SettingsButton2" type="Button" parent="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("7_o42ww")
+icon = ExtResource("16_xcmse")
+
+[node name="TimePanel" type="Panel" parent="TaskbarWrapper/MarginContainer/TaskbarRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxTexture_75kf8")
+script = ExtResource("9_dc0b5")
+
+[node name="TimeLabel" type="Label" parent="TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = " 11:11 AM "
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="StartPanel" type="Window" parent="."]
 unique_name_in_owner = true
 title = "Sigma Menu"
@@ -437,16 +446,18 @@ mouse_filter = 1
 theme_override_fonts/font = ExtResource("1_lx1wk")
 text = " sleep "
 
+[node name="SleepButton2" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = "long sleep "
+
 [node name="SettingsButton" type="Button" parent="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("7_o42ww")
 icon = ExtResource("16_xcmse")
-
-[node name="LogInUI" parent="." instance=ExtResource("16_m483i")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
 
 [node name="CalendarPopupUI" parent="." instance=ExtResource("16_g75lf")]
 unique_name_in_owner = true
@@ -457,10 +468,16 @@ offset_top = 397.0
 offset_right = -1.0
 offset_bottom = -49.0
 
+[node name="LogInUI" parent="." instance=ExtResource("16_m483i")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
 [connection signal="pressed" from="MarginContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="StartPanel" method="_on_settings_button_pressed"]
 [connection signal="gui_input" from="TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel" to="TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel" method="_on_gui_input"]
 [connection signal="mouse_exited" from="StartPanel" to="StartPanel" method="_on_mouse_exited"]
 [connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton" to="StartPanel" method="_on_sleep_button_pressed"]
+[connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton2" to="StartPanel" method="_on_sleep_button_2_pressed"]
 [connection signal="pressed" from="StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SettingsButton" to="StartPanel" method="_on_settings_button_pressed"]

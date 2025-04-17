@@ -14,7 +14,7 @@ var weekly_bill_cycle := [
 
 var base_bill_amounts := {
 	"Rent": 1200.0,
-	"Medical Insurance": 300.0,
+	"Medical Insurance": 850.0,
 	"Student Loan": 400.0,
 	"Credit Card": 0.0  # dynamically calculated elsewhere
 }
@@ -42,7 +42,8 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	var bills_today = get_due_bills_for_date(new_day, new_month, new_year)
 
 	for bill_name in bills_today:
-		print("📅 Bill due today: %s" % bill_name)
+		if autopay_enabled and attempt_to_autopay(bill_name):
+			continue
 		var popup = preload("res://components/bill_popup_ui.tscn").instantiate()
 		popup.init(bill_name)
 
@@ -50,7 +51,7 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 		win.window_title = "Bill: %s" % bill_name
 		win.call_deferred("set_window_title", win.window_title)
 		win.icon = null
-		win.default_size = popup.default_window_size if "default_window_size" in popup else Vector2(400, 200)
+		win.default_size = popup.default_window_size if "default_window_size" in popup else Vector2(550, 290)
 		win.window_can_close = false
 		win.window_can_minimize = false
 		win.get_node("%ContentPanel").add_child(popup)
@@ -63,14 +64,25 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 func center_bill_window(win: WindowFrame) -> void:
 	WindowManager.center_window(win)
 
+func attempt_to_autopay(bill_name: String) -> bool:
+	var amount := get_bill_amount(bill_name)
 
+	if PortfolioManager.pay_with_cash(amount):
+		print("✅ Autopaid %s with cash" % bill_name)
+		return true
+	elif PortfolioManager.can_pay_with_credit(amount):
+		PortfolioManager.pay_with_credit(amount)
+		print("✅ Autopaid %s with credit" % bill_name)
+		return true
+	else:
+		print("❌ Autopay failed for %s" % bill_name)
+		#Siggy.activate("bill_unpayable")
+		return false
 
 
 func get_due_bills_for_date(day: int, month: int, year: int) -> Array[String]:
 	var weekday = TimeManager.get_weekday_for_date(day, month, year)
-	print("Day %d/%d/%d = weekday index %d (%s)" % [
-	day, month, year, weekday, TimeManager.day_names[weekday]
-])
+	
 	if weekday != 6:
 		return []
 

@@ -2,10 +2,15 @@ extends Node
 #Autoload name PortfolioManager
 
 ## --- Basic numeric resources
-var cash: float = 0.0
+var cash: float = 201.0
 var debt: float = 0.0
 var rent: float = 0.0
 var interest: float = 0.0
+
+## --- Credit Card resources
+var credit_limit: float = 2000.0
+var credit_used: float = 0.0
+var credit_interest_rate: float = 0.3  # 30% by default
 
 ## --- Income sources
 var employee_income: float = 0.0
@@ -26,6 +31,7 @@ var employees: Dictionary = {}
 
 ## --- Signals
 signal cash_updated(new_cash: float)
+signal credit_updated(used: float, limit: float)
 signal stock_updated(symbol: String, new_stock: Stock)
 signal resource_changed(name: String, value: float)
 signal investments_updated(amount: float)
@@ -50,6 +56,39 @@ func spend_cash(amount: float):
 	cash = snapped(cash - amount, 0.01)
 	emit_signal("cash_updated", cash)
 	emit_signal("resource_changed", "cash", cash)
+
+func can_pay_with_cash(amount: float) -> bool:
+	return cash >= amount
+
+func pay_with_cash(amount: float) -> bool:
+	if can_pay_with_cash(amount):
+		cash -= amount
+		emit_signal("cash_updated", cash)
+		return true
+	return false
+
+## --- Credit functions
+func can_pay_with_credit(amount: float) -> bool:
+	return credit_used + amount * (1.0 + credit_interest_rate) <= credit_limit
+
+
+func pay_with_credit(amount: float) -> bool:
+	if can_pay_with_credit(amount):
+		var total_with_interest := amount * (1.0 + credit_interest_rate)
+		credit_used += total_with_interest
+		debt += total_with_interest  # ← Track it in total debt
+		emit_signal("credit_updated", credit_used, credit_limit)
+		emit_signal("resource_changed", "debt", debt)
+		return true
+	return false
+
+func get_credit_remaining() -> float:
+	return credit_limit - credit_used
+
+func set_credit_interest_rate(new_rate: float) -> void:
+	credit_interest_rate = new_rate
+
+## -- Balance functions
 
 func get_balance() -> float:
 	return snapped(cash + get_total_investments() - debt, 0.01)
