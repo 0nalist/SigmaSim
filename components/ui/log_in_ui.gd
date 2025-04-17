@@ -1,43 +1,50 @@
 extends Control
 
 @onready var logging_in_panel: Panel = %LoggingInPanel
-@onready var profile_v_box_container: VBoxContainer = %ProfileVBoxContainer
-@onready var password_text_edit: TextEdit = %PasswordTextEdit
-@onready var log_in_button: Button = %LogInButton
-@onready var panel: Panel = %Panel
 @onready var logging_in_label: Label = %LoggingInLabel
+
+@onready var profile_v_box_container: VBoxContainer = %ProfileVBoxContainer
+@onready var profile_row: HBoxContainer = %ProfileRow
+
+
+var profile_panel_scene := preload("res://components/ui/profile_panel.tscn")
 
 
 func _ready() -> void:
-	password_text_edit.hide()
-	log_in_button.hide()
-	%LoggingInPanel.hide()
-	%ProfileVBoxContainer.show()
-	panel.custom_minimum_size.y = 170
+	logging_in_panel.hide()
+	profile_v_box_container.show()
 
+	# Load and display all saved profiles
+	var metadata = SaveManager.load_slot_metadata()
 
-func select_profile() -> void:
-	password_text_edit.show()
-	log_in_button.show()
-	panel.custom_minimum_size.y = 240
+	for key in metadata.keys():
+		var slot_id := int(key.trim_prefix("slot_"))
+		var panel = profile_panel_scene.instantiate()
+		profile_row.add_child(panel)
+		await get_tree().process_frame
+		panel.login_requested.connect(_on_profile_login_requested)
+		panel.set_profile_data(metadata[key], slot_id)
+		
+		
 
+var dot_time = .5
 
-func _on_panel_gui_input(event: InputEvent) -> void:
-	select_profile()
-
-
-func _on_log_in_button_pressed() -> void:
-	await get_tree().create_timer(.2).timeout
+func _on_profile_login_requested(slot_id: int) -> void:
+	print("login requested")
+	await get_tree().create_timer(0.2).timeout
 	profile_v_box_container.hide()
 	logging_in_panel.show()
-	await get_tree().create_timer(.3).timeout
-	%LoggingInLabel.text = "Locking in."
-	await get_tree().create_timer(.65).timeout
-	%LoggingInLabel.text = "Locking in.."
-	await get_tree().create_timer(.8).timeout
+
+	await get_tree().create_timer(dot_time).timeout
+	logging_in_label.text = "Locking in."
+	await get_tree().create_timer(dot_time).timeout
+	logging_in_label.text = "Locking in.."
+	await get_tree().create_timer(dot_time).timeout
+	logging_in_label.text = "Locking in..."
+	await get_tree().create_timer(dot_time).timeout
+	# Launch desktop environment
 	var desktop_scene = preload("res://desktop_env.tscn")
-	%LoggingInLabel.text = "Locking in..."
-	await get_tree().create_timer(.8).timeout
 	var desktop = desktop_scene.instantiate()
 	get_parent().add_child(desktop)
+	SaveManager.load_from_slot(slot_id)
 	queue_free()

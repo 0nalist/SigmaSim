@@ -42,7 +42,8 @@ func register_window(window: WindowFrame, add_taskbar_icon := true) -> void:
 		window.get_node("%MinimizeButton").visible = false
 	open_windows[window] = icon_button
 	call_deferred("focus_window", window)
-
+	print("📌 Registering window:", window.window_title)
+	print("🪟 open_windows now:", open_windows.keys())
 	#if start_panel and start_panel.visible:
 	#	start_panel.hide()
 
@@ -72,9 +73,7 @@ func focus_window(window: WindowFrame) -> void:
 		if is_instance_valid(prev_btn):
 			prev_btn.button_pressed = false
 	
-	print("focused window before: " + str(focused_window))
 	focused_window = window
-	print("focused window after: " + str(focused_window))
 	window.on_focus()
 
 	# 🛠️ Re-add to root and move to front
@@ -254,3 +253,78 @@ func open_stock_popup(stock: Stock) -> void:
 			popup_registry.erase(key)
 	)
 	call_deferred("focus_window", win)
+
+func close_all_windows() -> void:
+	var windows_to_close := open_windows.keys()
+	for win in windows_to_close:
+		close_window(win)
+
+
+
+
+## -- Save/Load
+
+func get_save_data() -> Array:
+	var window_data := []
+
+	for win in open_windows.keys():
+		var app = win.get_node("VBoxContainer/ContentPanel").get_child(0)
+		if app == null or not app.has_meta("class_name"):
+			continue
+
+		# Instead of using app_title, derive registry key
+		var app_name := ""
+		for key in app_registry:
+			if app_registry[key].resource_path == app.scene_file_path:
+				app_name = key
+				break
+
+		if app_name == "":
+			continue  # skip unknown apps
+
+		window_data.append({
+			"app_name": app_name,
+			"position": SaveManager.vector2_to_dict(win.position),
+			"size": SaveManager.vector2_to_dict(win.size),
+			"minimized": not win.visible,
+		})
+
+	return window_data
+
+func load_from_data(window_data: Array) -> void:
+	close_all_windows()
+	for entry in window_data:
+		var app_name = entry.get("app_name", "")
+		if not app_registry.has(app_name):
+			continue
+
+		var scene = app_registry[app_name]
+		var instance = scene.instantiate()
+		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+		print("🔁 Restoring app:", app_name)
+
+		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), instance.default_window_size)
+		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
+
+		# Add the window to the scene before positioning
+		get_tree().root.add_child(win)
+
+		# Set size and position AFTER it's in the scene
+		win.size = restored_size
+		win.position = restored_position
+		win.default_size = restored_size
+
+		# Metadata
+		win.icon = instance.app_icon
+		win.window_title = instance.app_title
+		win.call_deferred("set_window_title", instance.app_title)
+		win.window_can_close = instance.window_can_close
+		win.window_can_minimize = instance.window_can_minimize
+		win.window_can_maximize = instance.window_can_maximize
+
+		win.get_node("%ContentPanel").add_child(instance)
+
+		register_window(win)
+
+		if entry.get("minimized", false):
+			win.hide()

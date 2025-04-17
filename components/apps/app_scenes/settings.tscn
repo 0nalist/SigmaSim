@@ -55,3 +55,10 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Popups Break Fourth Wall"
+
+[node name="SiggyButton" type="CheckButton" parent="HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[connection signal="toggled" from="HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]

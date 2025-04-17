@@ -4,6 +4,8 @@ extends BaseAppUI
 @onready var fullscreen_check_box: CheckBox = %FullscreenCheckBox
 @onready var windowed_check_box: CheckBox = %WindowedCheckBox
 
+func _init():
+	set_meta("class_name", "Settings")
 
 func _ready() -> void:
 	update_checked_mode()
@@ -12,7 +14,7 @@ func _ready() -> void:
 	# Disable fullscreen if running in embedded mode
 	if OS.has_feature("editor") or DisplayServer.get_name() == "headless":
 		fullscreen_check_box.disabled = true
-
+	#%SiggyButton.toggled_on = Siggy.toggled_on
 
 
 func update_checked_mode() -> void:
@@ -45,3 +47,10 @@ func _on_windowed_check_box_pressed() -> void:
 
 func _on_check_button_toggled(toggled_on: bool) -> void:
 	pass # Replace with function body.
+
+
+func _on_siggy_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		%SiggyButton.text = "Never ever show me Siggy ever again"
+	else:
+		%SiggyButton.text = "Siggy. Please come back. I miss you"

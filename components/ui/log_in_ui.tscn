@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=7 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_nmwu1"]
-[ext_resource type="Texture2D" uid="uid://c8wi7d4203jib" path="res://assets/gigachad.png" id="1_ym4ii"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
 [ext_resource type="Texture2D" uid="uid://gl0rjxkrh4wh" path="res://assets/logos/AOLlogoMaster.png" id="4_6fwkw"]
 [ext_resource type="FontFile" uid="uid://deimmaj7ejh4l" path="res://assets/fonts/CapitalisTypOasis.ttf" id="5_hcclx"]
@@ -30,9 +29,6 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fwkw"]
-bg_color = Color(0, 0.669403, 0.96699, 1)
-
 [node name="LogInUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -40,6 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme = ExtResource("1_nmwu1")
 script = ExtResource("2_eyvdy")
 
@@ -65,6 +62,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_nmwu1")
 
 [node name="LoggingInLabel" type="Label" parent="Panel/LoggingInPanel"]
@@ -99,58 +97,33 @@ offset_bottom = 83.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/ProfileVBoxContainer"]
+[node name="ProfileRow" type="HBoxContainer" parent="Panel/ProfileVBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
-[node name="Panel" type="Panel" parent="Panel/ProfileVBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 170)
+[node name="NewProfilePanel" type="Panel" parent="Panel/ProfileVBoxContainer/ProfileRow"]
+custom_minimum_size = Vector2(170, 170)
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_6fwkw")
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="Panel/ProfileVBoxContainer/ProfileRow/NewProfilePanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer"]
+[node name="NewProfileButton" type="Button" parent="Panel/ProfileVBoxContainer/ProfileRow/NewProfilePanel/MarginContainer"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 4
-
-[node name="TextureRect" type="TextureRect" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer"]
-clip_contents = true
-custom_minimum_size = Vector2(128, 128)
-layout_mode = 2
-texture = ExtResource("1_ym4ii")
-
-[node name="Label" type="Label" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "@Giga Chad"
-
-[node name="PasswordTextEdit" type="TextEdit" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-placeholder_text = "password"
-
-[node name="LogInButton" type="Button" parent="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-focus_mode = 0
-text = "Lock in"
+size_flags_vertical = 4
+text = " New Profile "
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
@@ -175,6 +148,3 @@ grow_horizontal = 2
 theme_override_fonts/font = ExtResource("5_hcclx")
 theme_override_font_sizes/font_size = 36
 text = "Alpha OnLine"
-
-[connection signal="gui_input" from="Panel/ProfileVBoxContainer/HBoxContainer/Panel" to="." method="_on_panel_gui_input"]
-[connection signal="pressed" from="Panel/ProfileVBoxContainer/HBoxContainer/Panel/MarginContainer/VBoxContainer/LogInButton" to="." method="_on_log_in_button_pressed"]

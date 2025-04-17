@@ -5,7 +5,6 @@ extends Control
 @onready var trash_window: BaseAppUI = %TrashWindow
 
 func _ready() -> void:
-	#%LogInUI.show()
 	hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
 	WindowManager.start_panel = start_panel
@@ -36,3 +35,11 @@ func _on_trash_button_pressed() -> void:
 func open_trash_folder() -> void:
 	trash_window.show()
 	trash_window.grab_focus()
+
+
+func _on_save_button_pressed() -> void:
+	SaveManager.save_to_slot(1)
+
+
+func _on_load_button_pressed() -> void:
+	SaveManager.load_from_slot(1)

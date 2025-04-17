@@ -191,3 +191,62 @@ func _on_stock_price_updated(symbol: String, stock: Stock) -> void:
 	stock_data[symbol] = stock
 	emit_signal("stock_updated", symbol, stock)
 	emit_investment_update()
+
+
+
+
+
+
+
+
+## -- Save/Load
+
+func get_save_data() -> Dictionary:
+	return {
+		"cash": cash,
+		"debt": debt,
+		"rent": rent,
+		"interest": interest,
+		"credit_limit": credit_limit,
+		"credit_used": credit_used,
+		"credit_interest_rate": credit_interest_rate,
+		"employee_income": employee_income,
+		"passive_income": passive_income,
+		"stocks_owned": stocks_owned.duplicate(),
+		"crypto_owned": crypto_owned.duplicate(),
+		#"subcontractors": subcontractors.map(func(s): return {
+		#	"resource_id": s["resource"].id,  # assumes each resource has a unique ID
+		#	"remaining_time": s["remaining_time"]
+		#})
+	}
+
+
+func load_from_data(data: Dictionary) -> void:
+	cash = data.get("cash", 0.0)
+	debt = data.get("debt", 0.0)
+	rent = data.get("rent", 0.0)
+	interest = data.get("interest", 0.0)
+
+	credit_limit = data.get("credit_limit", 0.0)
+	credit_used = data.get("credit_used", 0.0)
+	credit_interest_rate = data.get("credit_interest_rate", 0.3)
+
+	employee_income = data.get("employee_income", 0.0)
+	passive_income = data.get("passive_income", 0.0)
+
+	stocks_owned = data.get("stocks_owned", {})
+	crypto_owned = data.get("crypto_owned", {})
+
+	#subcontractors.clear()
+	#for sub_dict in data.get("subcontractors", []):
+	#	var resource_id = sub_dict.get("resource_id", "")
+	#	var template = SubcontractorDB.get_resource_by_id(resource_id)  # your lookup method
+	#	if template:
+	#		subcontractors.append({
+	#			"resource": template,
+	#			"remaining_time": sub_dict.get("remaining_time", 0.0)
+	#		})
+
+	emit_signal("cash_updated", cash)
+	emit_signal("credit_updated", credit_used, credit_limit)
+	emit_investment_update()

@@ -128,3 +128,33 @@ func get_weekday_for_date(day: int, month: int, year: int) -> int:
 	var J = y / 100
 	var h = (day + int((13 * (m + 1)) / 5) + K + int(K / 4) + int(J / 4) + 5 * J) % 7
 	return (h + 5) % 7  # 0 = Monday
+
+
+
+
+## -- Save/Load
+
+func get_save_data() -> Dictionary:
+	return {
+		"in_game_minutes": in_game_minutes,
+		"current_day": current_day,
+		"current_month": current_month,
+		"current_year": current_year,
+		"day_of_week": day_of_week,
+		"is_fast_forwarding": is_fast_forwarding,
+		"fast_forward_minutes_left": fast_forward_minutes_left
+	}
+
+func load_from_data(data: Dictionary) -> void:
+	in_game_minutes = data.get("in_game_minutes", 0)
+	current_day = data.get("current_day", 1)
+	current_month = data.get("current_month", 1)
+	current_year = data.get("current_year", 2025)
+	day_of_week = data.get("day_of_week", get_weekday_for_date(current_day, current_month, current_year))
+
+	is_fast_forwarding = data.get("is_fast_forwarding", false)
+	fast_forward_minutes_left = data.get("fast_forward_minutes_left", 0)
+
+	emit_signal("minute_passed", in_game_minutes)
+	emit_signal("hour_passed", (in_game_minutes / 60) % 24)
+	emit_signal("day_passed", current_day, current_month, current_year)

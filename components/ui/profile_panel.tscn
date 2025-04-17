@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvd5242ybqyuc"]
+
+[ext_resource type="Script" uid="uid://cehj7u7slfiqb" path="res://components/ui/profile_panel.gd" id="1_k4nqg"]
+[ext_resource type="Texture2D" uid="uid://c8wi7d4203jib" path="res://assets/gigachad.png" id="1_yq36l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fwkw"]
+bg_color = Color(0, 0.669403, 0.96699, 1)
+
+[node name="ProfilePanel" type="Panel"]
+custom_minimum_size = Vector2(180, 190)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_6fwkw")
+script = ExtResource("1_k4nqg")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+texture = ExtResource("1_yq36l")
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 16
+text = "Giga Chad"
+horizontal_alignment = 1
+
+[node name="UsernameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.716296, 0.716296, 0.716296, 1)
+theme_override_font_sizes/font_size = 16
+text = "@Giga Chad"
+horizontal_alignment = 1
+
+[node name="PasswordTextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+mouse_filter = 1
+placeholder_text = "password"
+
+[node name="LogInButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+text = "Lock in"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="gutter_clicked" from="MarginContainer/VBoxContainer/PasswordTextEdit" to="." method="_on_password_text_edit_gutter_clicked"]
+[connection signal="gutter_removed" from="MarginContainer/VBoxContainer/PasswordTextEdit" to="." method="_on_password_text_edit_gutter_removed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/LogInButton" to="." method="_on_log_in_button_pressed"]
