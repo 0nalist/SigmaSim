@@ -6,7 +6,7 @@ var amount: int = 0
 var interest_rate: float = 0.0
 var total_with_interest: float = 0.0
 
-
+var popup_type := "BillPopupUI"
 
 func init(name: String) -> void:
 	bill_name = name
@@ -18,6 +18,10 @@ func init(name: String) -> void:
 		total_with_interest,
 		interest_rate * 100
 	]
+
+func get_window_title() -> String:
+	return "Bill: %s" % bill_name
+
 
 
 func _ready() -> void:
@@ -41,3 +45,13 @@ func _on_pay_by_credit_button_pressed() -> void:
 		close()
 	else:
 		print("❌ Not enough credit")
+
+# --- SAVE SUPPORT ---
+
+func get_custom_save_data() -> Dictionary:
+	return { "bill_name": bill_name }
+
+func load_custom_save_data(data: Dictionary) -> void:
+	var name = data.get("bill_name", "")
+	if name != "":
+		init(name)

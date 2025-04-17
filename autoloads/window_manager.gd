@@ -19,6 +19,11 @@ var app_registry := {
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn")
 }
 
+var popup_scene_registry := {
+	"BillPopupUI": preload("res://components/popups/bill_popup_ui.tscn")
+}
+
+
 func _ready() -> void:
 	print("✅ Registered apps:", app_registry.keys())
 
@@ -325,3 +330,50 @@ func load_from_data(window_data: Array) -> void:
 
 		if entry.get("minimized", false):
 			win.hide()
+
+func get_popup_save_data() -> Array:
+	var popup_data := []
+
+	for win in open_windows.keys():
+		var content = win.get_node("VBoxContainer/ContentPanel").get_child(0)
+		if content is BasePopupUI and content.has_method("get_custom_save_data"):
+			var popup_type = content.popup_type
+			print("📦 Saving popup type:", popup_type)
+
+			popup_data.append({
+				"type": popup_type,
+				"position": SaveManager.vector2_to_dict(win.position),
+				"size": SaveManager.vector2_to_dict(win.size),
+				"custom_data": content.get_custom_save_data()
+			})
+	return popup_data
+
+func load_popups_from_data(popup_data: Array) -> void:
+	for entry in popup_data:
+		var type = entry.get("type", "")
+		if not popup_scene_registry.has(type):
+			print("❌ Unknown popup type:", type)
+			continue
+
+		var scene = popup_scene_registry[type]
+		var popup = scene.instantiate()
+
+		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+		win.get_node("%ContentPanel").add_child(popup)
+
+		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), popup.default_window_size)
+		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
+		win.size = restored_size
+		win.position = restored_position
+		win.default_size = restored_size
+
+		# ✅ Use virtual method to get title
+		if popup.has_method("get_window_title"):
+			win.window_title = popup.get_window_title()
+		else:
+			win.window_title = "Popup"
+
+		register_window(win, false)
+
+		if popup.has_method("load_custom_save_data"):
+			popup.load_custom_save_data(entry.get("custom_data", {}))

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://674hnm8vwbpn"]
 
-[ext_resource type="Script" uid="uid://cj85lih8q20wk" path="res://components/calendar_popup_ui.gd" id="1_4v806"]
+[ext_resource type="Script" uid="uid://cj85lih8q20wk" path="res://components/popups/calendar_popup_ui.gd" id="1_4v806"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_n3opu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glnmr"]

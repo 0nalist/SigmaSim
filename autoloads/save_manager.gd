@@ -66,6 +66,7 @@ func save_to_slot(slot_id: int) -> void:
 		"portfolio": PortfolioManager.get_save_data(),
 		"time": TimeManager.get_save_data(),
 		"windows": WindowManager.get_save_data(),
+		"popups": WindowManager.get_popup_save_data(),
 		#"bills": BillManager.get_save_data(),
 		#"npcs": NPCManager.get_save_data(),
 	}
@@ -108,6 +109,8 @@ func load_from_slot(slot_id: int) -> void:
 		WindowManager.load_from_data(data["windows"])
 	if data.has("bills"):
 		BillManager.load_from_data(data["bills"])
+	if data.has("popups"):
+		WindowManager.load_popups_from_data(data["popups"])
 	#if data.has("npcs"):
 	#	NPCManager.load_from_data(data["npcs"])
 

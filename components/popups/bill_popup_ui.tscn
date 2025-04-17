@@ -1,12 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8s6x0upyixn2"]
+[gd_scene load_steps=3 format=3 uid="uid://c8s6x0upyixn2"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_hspxj"]
-[ext_resource type="Script" uid="uid://b0c08e60kmhnb" path="res://components/bill_popup_ui.gd" id="1_nf6q5"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_38tc7"]
+[ext_resource type="Script" uid="uid://b0c08e60kmhnb" path="res://components/popups/bill_popup_ui.gd" id="2_2jqea"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vdl5f"]
-bg_color = Color(0.396889, 0.396889, 0.396889, 1)
-
-[node name="BillPopupUI" type="Panel"]
+[node name="BillPopupUI" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -15,10 +13,10 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
-theme = ExtResource("1_hspxj")
-theme_override_styles/panel = SubResource("StyleBoxFlat_vdl5f")
-script = ExtResource("1_nf6q5")
+theme = ExtResource("1_38tc7")
+script = ExtResource("2_2jqea")
 default_window_size = Vector2(420, 320)
+metadata/_custom_type_script = "uid://b0c08e60kmhnb"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

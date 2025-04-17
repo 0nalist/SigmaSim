@@ -44,7 +44,7 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	for bill_name in bills_today:
 		if autopay_enabled and attempt_to_autopay(bill_name):
 			continue
-		var popup = preload("res://components/bill_popup_ui.tscn").instantiate()
+		var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
 		popup.init(bill_name)
 
 		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
