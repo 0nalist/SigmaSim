@@ -56,11 +56,6 @@ func toggle_start_panel() -> void:
 		position = Vector2(0, 259)
 
 
-func _input(event: InputEvent) -> void:
-	#if event.is_action_pressed("select") and visible:
-	#	await get_tree().create_timer(0.21).timeout
-	#	hide()
-	pass
 
 
 func launch_app(app_name: String) -> void:

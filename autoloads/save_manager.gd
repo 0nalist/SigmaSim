@@ -39,10 +39,10 @@ func get_next_available_slot() -> int:
 		i += 1
 	return i
 
-func create_new_profile(slot_id: int, name: String, username: String, picture_path: String = "res://assets/profiles/default.png") -> void:
+func create_new_profile(slot_id: int, profile_name: String, username: String, picture_path: String = "res://assets/profiles/default.png") -> void:
 	var metadata = load_slot_metadata()
 	metadata["slot_%d" % slot_id] = {
-		"name": name,
+		"name": profile_name,
 		"username": username,
 		"profile_picture_path": picture_path,
 		"last_played": Time.get_datetime_string_from_system(),
