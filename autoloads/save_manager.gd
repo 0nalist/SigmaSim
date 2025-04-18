@@ -39,12 +39,19 @@ func get_next_available_slot() -> int:
 		i += 1
 	return i
 
-func create_new_profile(slot_id: int, profile_name: String, username: String, picture_path: String = "res://assets/profiles/default.png") -> void:
+func create_new_profile(
+	slot_id: int,
+	profile_name: String,
+	username: String,
+	picture_path: String = "res://assets/profiles/default.png",
+	background_path: String = "res://assets/Bliss_(Windows_XP) (2).png"
+) -> void:
 	var metadata = load_slot_metadata()
 	metadata["slot_%d" % slot_id] = {
 		"name": profile_name,
 		"username": username,
 		"profile_picture_path": picture_path,
+		"background_path": background_path,
 		"last_played": Time.get_datetime_string_from_system(),
 		"cash": 0.0
 	}
@@ -52,15 +59,16 @@ func create_new_profile(slot_id: int, profile_name: String, username: String, pi
 
 	# Save initial data
 	var data := {
-		"portfolio": {},  # Could preload with starter values
+		"portfolio": {},
 		"time": {},
-		"windows": []
+		"windows": [],
+		"player": PlayerManager.get_save_data() # If pre-creating full player state
 	}
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
 	file.close()
 
-# --- Save/Load Full Game ---
+# --- Save/Load Full Game State ---
 func save_to_slot(slot_id: int) -> void:
 	var data := {
 		"portfolio": PortfolioManager.get_save_data(),
@@ -68,6 +76,7 @@ func save_to_slot(slot_id: int) -> void:
 		"windows": WindowManager.get_save_data(),
 		"popups": WindowManager.get_popup_save_data(),
 		"market": MarketManager.get_save_data(),
+		"player": PlayerManager.get_save_data(),
 		#"bills": BillManager.get_save_data(),
 		#"npcs": NPCManager.get_save_data(),
 	}
@@ -77,7 +86,7 @@ func save_to_slot(slot_id: int) -> void:
 	file.store_string(JSON.stringify(data, "\t"))
 	file.close()
 
-	# Update metadata (preserve profile fields)
+	# Update metadata (last played time, cash)
 	var metadata = load_slot_metadata()
 	var slot_key = "slot_%d" % slot_id
 	if not metadata.has(slot_key):
@@ -114,6 +123,9 @@ func load_from_slot(slot_id: int) -> void:
 		WindowManager.load_popups_from_data(data["popups"])
 	if data.has("market"):
 		MarketManager.load_from_data(data.get("market", {}))
+	if data.has("player"):
+		PlayerManager.load_from_data(data["player"])
+		PlayerManager.set_slot_id(slot_id)
 	#if data.has("npcs"):
 	#	NPCManager.load_from_data(data["npcs"])
 

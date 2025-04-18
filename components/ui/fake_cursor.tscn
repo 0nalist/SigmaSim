@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://caveokn0yyis8"]
+
+[ext_resource type="Texture2D" uid="uid://cw1fee715bbo" path="res://assets/cursors/cursor_white.png" id="1_kg4j1"]
+
+[node name="FakeCursor" type="CanvasLayer"]
+layer = 128
+
+[node name="FakeCursor" type="TextureRect" parent="."]
+z_index = 1024
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("1_kg4j1")
+stretch_mode = 2

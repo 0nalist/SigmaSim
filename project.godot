@@ -24,6 +24,8 @@ GPUManager="*res://autoloads/gpu_manager.gd"
 TimeManager="*res://autoloads/time_manager.gd"
 BillManager="*res://autoloads/bill_manager.gd"
 SaveManager="*res://autoloads/save_manager.gd"
+PlayerManager="*res://autoloads/player_manager.gd"
+CursorManager="*res://autoloads/cursor_manager.gd"
 
 [display]
 

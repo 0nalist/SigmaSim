@@ -63,12 +63,12 @@ func flash_invested_label(color: Color) -> void:
 	invested_label.remove_theme_color_override("font_color")
 
 
-func _on_resource_changed(name: String, _value: float) -> void:
-	if name == "cash":
+func _on_resource_changed(resource: String, _value: float) -> void:
+	if resource == "cash":
 		_on_cash_updated(PortfolioManager.cash)
-	elif name == "passive_income":
+	elif resource == "passive_income":
 		_on_passive_income_updated(PortfolioManager.get_passive_income())
-	elif name == "debt":
+	elif resource == "debt":
 		_on_debt_updated()
 
 func _on_debt_updated() -> void:

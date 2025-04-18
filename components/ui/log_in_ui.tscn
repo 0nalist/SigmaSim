@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=8 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_nmwu1"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
+[ext_resource type="PackedScene" uid="uid://cc5n8gw4o0mqx" path="res://components/ui/profile_creation/profile_creation_ui.tscn" id="3_6fwkw"]
 [ext_resource type="Texture2D" uid="uid://gl0rjxkrh4wh" path="res://assets/logos/AOLlogoMaster.png" id="4_6fwkw"]
 [ext_resource type="FontFile" uid="uid://deimmaj7ejh4l" path="res://assets/fonts/CapitalisTypOasis.ttf" id="5_hcclx"]
 
@@ -39,6 +40,7 @@ grow_vertical = 2
 mouse_filter = 1
 theme = ExtResource("1_nmwu1")
 script = ExtResource("2_eyvdy")
+profile_creation_scene = ExtResource("3_6fwkw")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -82,7 +84,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 18
 text = "Locking in"
 
-[node name="ProfileVBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="ProfilesContainer" type="VBoxContainer" parent="Panel"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -97,16 +99,16 @@ offset_bottom = 83.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ProfileRow" type="HBoxContainer" parent="Panel/ProfileVBoxContainer"]
+[node name="ProfileRow" type="HBoxContainer" parent="Panel/ProfilesContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
-[node name="NewProfilePanel" type="Panel" parent="Panel/ProfileVBoxContainer/ProfileRow"]
+[node name="NewProfilePanel" type="Panel" parent="Panel/ProfilesContainer/ProfileRow"]
 custom_minimum_size = Vector2(170, 170)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel/ProfileVBoxContainer/ProfileRow/NewProfilePanel"]
+[node name="MarginContainer" type="MarginContainer" parent="Panel/ProfilesContainer/ProfileRow/NewProfilePanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -118,33 +120,56 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="NewProfileButton" type="Button" parent="Panel/ProfileVBoxContainer/ProfileRow/NewProfilePanel/MarginContainer"]
+[node name="NewProfileButton" type="Button" parent="Panel/ProfilesContainer/ProfileRow/NewProfilePanel/MarginContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = " New Profile "
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_left = 507.0
-offset_top = 38.0
-offset_right = 635.0
-offset_bottom = 166.0
+[node name="ProfileCreationUI" parent="Panel" instance=ExtResource("3_6fwkw")]
+layout_mode = 1
+offset_left = -275.0
+offset_top = -200.0
+offset_right = 275.0
+offset_bottom = 200.0
+
+[node name="AOLLogoHolder" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="TextureRect" type="TextureRect" parent="AOLLogoHolder"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -65.0
+offset_top = 45.0
+offset_right = 63.0
+offset_bottom = 173.0
+grow_horizontal = 2
 texture = ExtResource("4_6fwkw")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="AOLLogoHolder"]
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 13
 anchor_left = 0.5
-anchor_top = 0.023
 anchor_right = 0.5
-anchor_bottom = 0.023
-offset_left = -155.0
-offset_top = 136.096
-offset_right = 163.0
-offset_bottom = 174.096
+anchor_bottom = 1.0
+offset_left = -147.0
+offset_top = 157.0
+offset_right = 171.0
+offset_bottom = 157.0
 grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_hcclx")
 theme_override_font_sizes/font_size = 36
 text = "Alpha OnLine"
+
+[connection signal="pressed" from="Panel/ProfilesContainer/ProfileRow/NewProfilePanel/MarginContainer/NewProfileButton" to="." method="_on_new_profile_button_pressed"]

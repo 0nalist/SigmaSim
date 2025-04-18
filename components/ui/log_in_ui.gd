@@ -1,9 +1,11 @@
 extends Control
 
+@export var profile_creation_scene: PackedScene
+
 @onready var logging_in_panel: Panel = %LoggingInPanel
 @onready var logging_in_label: Label = %LoggingInLabel
 
-@onready var profile_v_box_container: VBoxContainer = %ProfileVBoxContainer
+@onready var profile_v_box_container: VBoxContainer = %ProfilesContainer
 @onready var profile_row: HBoxContainer = %ProfileRow
 
 
@@ -48,3 +50,7 @@ func _on_profile_login_requested(slot_id: int) -> void:
 	get_parent().add_child(desktop)
 	SaveManager.load_from_slot(slot_id)
 	queue_free()
+
+
+func _on_new_profile_button_pressed() -> void:
+	pass # Replace with function body.
