@@ -21,7 +21,6 @@ func _ready():
 	# Listen for price/ownership updates
 	MarketManager.stock_price_updated.connect(_on_stock_updated)
 
-
 func _on_buy_button_pressed(symbol: String):
 	if !PortfolioManager.buy_stock(symbol):
 		print("Failed to buy stock:", symbol)

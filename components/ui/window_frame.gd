@@ -41,9 +41,7 @@ var min_window_size := Vector2(120, 50)
 
 
 func _ready() -> void:
-	minimize_button.visible = window_can_minimize
-	maximize_button.visible = window_can_maximize
-	close_button.visible = window_can_close
+	refresh_window_controls()
 	
 	minimize_button.pressed.connect(func():
 		if WindowManager and WindowManager.has_method("get_taskbar_icon_center"):
@@ -64,6 +62,11 @@ func _ready() -> void:
 		favicon.custom_minimum_size = Vector2(16, 16)
 
 	call_deferred("_apply_default_window_size_and_position")
+
+func refresh_window_controls() -> void:
+	minimize_button.visible = window_can_minimize
+	maximize_button.visible = window_can_maximize
+	close_button.visible = window_can_close
 
 
 func _apply_default_window_size_and_position():

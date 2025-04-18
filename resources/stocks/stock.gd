@@ -35,3 +35,32 @@ func get_player_ownership_ratio() -> float:
 	if shares_outstanding <= 0:
 		return 0.0
 	return clamp(float(player_owned_shares) / float(shares_outstanding), 0.0, 1.0)
+
+
+## --- SAVE LOAD
+
+func to_dict() -> Dictionary:
+	return {
+		"symbol": symbol,
+		"price": price,
+		"shares_outstanding": shares_outstanding,
+		"intrinsic_value": intrinsic_value,
+		"trailing_average": trailing_average,
+		"smoothing_factor": smoothing_factor,
+		"volatility": volatility,
+		"sentiment": sentiment,
+		"momentum": momentum,
+		"player_owned_shares": player_owned_shares
+	}
+
+func from_dict(data: Dictionary) -> void:
+	symbol = data.get("symbol", symbol)
+	price = data.get("price", price)
+	shares_outstanding = data.get("shares_outstanding", shares_outstanding)
+	intrinsic_value = data.get("intrinsic_value", intrinsic_value)
+	trailing_average = data.get("trailing_average", trailing_average)
+	smoothing_factor = data.get("smoothing_factor", smoothing_factor)
+	volatility = data.get("volatility", volatility)
+	sentiment = data.get("sentiment", sentiment)
+	momentum = data.get("momentum", momentum)
+	player_owned_shares = data.get("player_owned_shares", player_owned_shares)

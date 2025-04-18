@@ -55,3 +55,6 @@ func load_custom_save_data(data: Dictionary) -> void:
 	var name = data.get("bill_name", "")
 	if name != "":
 		init(name)
+	var window = get_parent().get_parent().get_parent()
+	window.window_can_close = false
+	window.refresh_window_controls()

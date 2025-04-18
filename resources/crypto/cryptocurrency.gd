@@ -25,3 +25,30 @@ func update_power_required(previous_price: float) -> void:
 
 	# Only update if higher than previous
 	power_required = max(power_required, clamp(int(new_required), 1, 1_000_000))
+
+
+## --- SAVELOAD
+
+func to_dict() -> Dictionary:
+	return {
+		"symbol": symbol,
+		"display_name": display_name,
+		"price": price,
+		"volatility": volatility,
+		"power_required": power_required,
+		"reward_per_mine": reward_per_mine,
+		"price_history": price_history.duplicate(),
+		"all_time_high": all_time_high,
+		"last_price": last_price
+	}
+
+func from_dict(data: Dictionary) -> void:
+	symbol = data.get("symbol", symbol)
+	display_name = data.get("display_name", display_name)
+	price = data.get("price", price)
+	volatility = data.get("volatility", volatility)
+	power_required = data.get("power_required", power_required)
+	reward_per_mine = data.get("reward_per_mine", reward_per_mine)
+	price_history = data.get("price_history", price_history)
+	all_time_high = data.get("all_time_high", all_time_high)
+	last_price = data.get("last_price", price)

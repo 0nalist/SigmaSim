@@ -27,6 +27,7 @@ func register_stock(stock: Stock) -> void:
 func get_stock(symbol: String) -> Stock:
 	return stock_market.get(symbol)
 
+
 func apply_stock_transaction(symbol: String, shares_delta: int) -> void:
 	var stock = stock_market.get(symbol)
 	if not stock:
@@ -46,6 +47,9 @@ func apply_stock_transaction(symbol: String, shares_delta: int) -> void:
 
 	stock.price = max(snapped(stock.price, 0.01), 0.01)
 	emit_signal("stock_price_updated", symbol, stock)
+
+func refresh_prices():
+	_update_stock_prices()
 
 func _update_stock_prices():
 	for stock in stock_market.values():
@@ -88,3 +92,34 @@ func _update_crypto_prices():
 
 		if abs(crypto.price - old_price) > 0.001:
 			emit_signal("crypto_price_updated", crypto.symbol, crypto)
+
+
+## --- SAVELOAD
+
+func get_save_data() -> Dictionary:
+	var stock_data := {}
+	for symbol in stock_market:
+		stock_data[symbol] = stock_market[symbol].to_dict()
+
+	var crypto_data := {}
+	for symbol in crypto_market:
+		crypto_data[symbol] = crypto_market[symbol].to_dict()
+
+	return {
+		"stock_market": stock_data,
+		"crypto_market": crypto_data
+	}
+
+func load_from_data(data: Dictionary) -> void:
+	stock_market.clear()
+	crypto_market.clear()
+
+	for symbol in data.get("stock_market", {}).keys():
+		var stock = Stock.new()
+		stock.from_dict(data["stock_market"][symbol])
+		register_stock(stock)
+
+	for symbol in data.get("crypto_market", {}).keys():
+		var crypto = Cryptocurrency.new()
+		crypto.from_dict(data["crypto_market"][symbol])
+		crypto_market[symbol] = crypto

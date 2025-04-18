@@ -11,3 +11,6 @@ func get_window_title() -> String:
 @export var window_can_close: bool = true
 @export var window_can_minimize: bool = true
 @export var window_can_maximize: bool = true
+
+func _ready() -> void:
+	get_parent().get_parent().get_parent().window_can_close = window_can_close

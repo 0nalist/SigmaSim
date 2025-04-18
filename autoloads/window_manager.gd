@@ -85,7 +85,7 @@ func focus_window(window: WindowFrame) -> void:
 		root.add_child(window)
 	root.move_child(window, root.get_child_count() - 1)
 
-	window.grab_focus()
+	#window.grab_focus()
 
 	var btn = open_windows.get(window)
 	if is_instance_valid(btn):
@@ -289,6 +289,7 @@ func get_save_data() -> Array:
 			"position": SaveManager.vector2_to_dict(win.position),
 			"size": SaveManager.vector2_to_dict(win.size),
 			"minimized": not win.visible,
+			"icon_path": win.icon.resource_path if win.icon else "",
 		})
 
 	return window_data
@@ -316,8 +317,15 @@ func load_from_data(window_data: Array) -> void:
 		win.size = restored_size
 		win.position = restored_position
 		win.default_size = restored_size
-
-		win.icon = instance.app_icon
+		var icon_path = entry.get("icon_path", "")
+		if icon_path != "":
+			var icon = load(icon_path)
+			if icon:
+				win.icon = icon
+				print("set icon")
+		else:
+			win.icon = instance.app_icon
+			print("set app icon")
 		win.window_title = instance.app_title
 		win.call_deferred("set_window_title", instance.app_title)
 		win.window_can_close = instance.window_can_close
@@ -344,7 +352,11 @@ func get_popup_save_data() -> Array:
 				"type": popup_type,
 				"position": SaveManager.vector2_to_dict(win.position),
 				"size": SaveManager.vector2_to_dict(win.size),
-				"custom_data": content.get_custom_save_data()
+				"can_close": win.window_can_close,
+				"can_minimize": win.window_can_minimize,
+				"can_maximize": win.window_can_maximize,
+				"icon_path": win.icon.resource_path if win.icon else "",
+				"custom_data": content.get_custom_save_data(),
 			})
 	return popup_data
 
@@ -361,19 +373,30 @@ func load_popups_from_data(popup_data: Array) -> void:
 		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 		win.get_node("%ContentPanel").add_child(popup)
 
+		# Add to tree before assigning position/size
+		get_tree().root.add_child(win)
+
 		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), popup.default_window_size)
 		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
 		win.size = restored_size
 		win.position = restored_position
 		win.default_size = restored_size
 
-		# ✅ Use virtual method to get title
-		if popup.has_method("get_window_title"):
-			win.window_title = popup.get_window_title()
-		else:
-			win.window_title = "Popup"
-
+		# ✅ Restore window properties
+		win.window_can_close = entry.get("can_close", win.window_can_close)
+		win.window_can_minimize = entry.get("can_minimize", win.window_can_minimize)
+		win.window_can_maximize = entry.get("can_maximize", win.window_can_maximize)
+		var icon_path = entry.get("icon_path", "")
+		if icon_path != "":
+			var icon = load(icon_path)
+			if icon:
+				win.icon = icon
 		register_window(win, false)
 
 		if popup.has_method("load_custom_save_data"):
 			popup.load_custom_save_data(entry.get("custom_data", {}))
+
+		if popup.has_method("get_window_title"):
+			win.call_deferred("set_window_title", popup.get_window_title())
+		else:
+			win.window_title = "Popup"

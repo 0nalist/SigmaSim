@@ -27,6 +27,7 @@ func _ready() -> void:
 	_on_cash_updated(PortfolioManager.cash)
 	_on_passive_income_updated(PortfolioManager.get_passive_income())
 	_on_investments_updated(PortfolioManager.get_total_investments())
+	MarketManager.refresh_prices()
 
 func _on_cash_updated(_cash: float) -> void:
 	var cash = PortfolioManager.cash
@@ -35,7 +36,7 @@ func _on_cash_updated(_cash: float) -> void:
 	cash_label.text = "Cash: $%.2f" % cash
 	balance_label.text = "Net Worth: $%.2f" % balance
 
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().process_frame
 	emit_signal("title_updated", "BrokeRage - $%.2f" % cash)
 
 

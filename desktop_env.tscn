@@ -273,12 +273,6 @@ alignment = 0
 [node name="TaskbarLayer" type="CanvasLayer" parent="."]
 layer = 10
 
-[node name="Siggy" parent="TaskbarLayer" instance=ExtResource("17_g75lf")]
-offset_left = 15.0
-offset_top = -28.0
-offset_right = 15.0
-offset_bottom = -28.0
-
 [node name="TaskbarWrapper" type="Panel" parent="TaskbarLayer"]
 z_index = 1024
 anchors_preset = 12
@@ -316,11 +310,11 @@ theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_lx1wk")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 42
 theme_override_styles/hover = SubResource("StyleBoxTexture_o42ww")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_5eiy6")
 theme_override_styles/normal = SubResource("StyleBoxTexture_05goa")
-text = " Σ Start "
+text = " Σ "
 
 [node name="Control" type="Control" parent="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow"]
 custom_minimum_size = Vector2(20, 0)
@@ -346,9 +340,10 @@ icon = ExtResource("16_xcmse")
 
 [node name="TimePanel" type="Panel" parent="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(120, 35)
 layout_mode = 2
 size_flags_horizontal = 8
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxTexture_75kf8")
 script = ExtResource("9_dc0b5")
 
@@ -360,6 +355,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_lx1wk")
+theme_override_font_sizes/font_size = 12
 text = " 11:11 AM "
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -372,12 +368,17 @@ offset_top = 397.0
 offset_right = -1.0
 offset_bottom = -49.0
 
+[node name="Siggy" parent="TaskbarLayer" instance=ExtResource("17_g75lf")]
+offset_left = 15.0
+offset_top = -28.0
+offset_right = 15.0
+offset_bottom = -28.0
+
 [node name="StartPanel" type="Window" parent="TaskbarLayer"]
 unique_name_in_owner = true
 title = "Sigma Menu"
-position = Vector2i(0, 39)
+position = Vector2i(0, 260)
 size = Vector2i(300, 340)
-visible = false
 unresizable = true
 borderless = true
 always_on_top = true
@@ -389,6 +390,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("7_o42ww")
 
 [node name="Panel" type="Panel" parent="TaskbarLayer/StartPanel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
@@ -451,10 +453,12 @@ alignment = 2
 
 [node name="LoadButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "Load"
 
 [node name="SaveButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "Save"
 
 [node name="SleepButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
@@ -462,6 +466,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
 theme_override_fonts/font = ExtResource("1_lx1wk")
+theme_override_font_sizes/font_size = 14
 text = " sleep "
 
 [node name="SleepButton2" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
@@ -469,7 +474,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
 theme_override_fonts/font = ExtResource("1_lx1wk")
-text = "long sleep "
+theme_override_font_sizes/font_size = 14
+text = "week sleep "
 
 [node name="SettingsButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2

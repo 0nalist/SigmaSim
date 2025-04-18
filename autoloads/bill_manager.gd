@@ -23,6 +23,7 @@ var base_bill_amounts := {
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 	print("active bills: " + str(active_bills))
+	
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	# Resolve yesterday’s bills

@@ -1,7 +1,7 @@
 extends Control
 
 
-var slide_duration := 0.5
+var slide_duration := 1
 var bounce_height := 9
 var bounce_speed := 0.08  # Time per bounce
 
@@ -12,13 +12,29 @@ var bounce_speed := 0.08  # Time per bounce
 
 func _ready():
 	#hide()
-	z_index = 1023
+	z_index = 1020
+	await get_tree().create_timer(1).timeout
+	call_deferred("slide_in_from_right")
 
+func slide_out_from_behind(window: WindowFrame): ## TODO
+	z_index = window.z_index -1
+	position = window.position
+	## decide which end to slide out from based on where the screen is (move towards most free space)
+	## find position that is siggy's size plus margin to the direction determined above
+	## tween there
+	
 
 func slide_in_from_bottom_right():
+	
 	var screen_size = get_viewport_rect().size
 	var siggy_size = size
-	var target_pos = screen_size - siggy_size
+
+	if siggy_size == Vector2.ZERO:
+		siggy_size = get_minimum_size()
+		if siggy_size == Vector2.ZERO:
+			siggy_size = Vector2(200, 200)  # Failsafe default
+
+	var target_pos = screen_size - siggy_size + Vector2(60, -80)  # Optional offset for margin
 	var start_pos = Vector2(target_pos.x, screen_size.y + siggy_size.y)
 
 	position = start_pos
@@ -29,12 +45,20 @@ func slide_in_from_bottom_right():
 func slide_in_from_right():
 	var screen_size = get_viewport_rect().size
 	var siggy_size = size
-	var target_pos = Vector2(screen_size.x - siggy_size.x, screen_size.y - siggy_size.y)
+
+	if siggy_size == Vector2.ZERO:
+		# fallback: manually size based on contents
+		siggy_size = get_minimum_size()
+		if siggy_size == Vector2.ZERO:
+			siggy_size = Vector2(200, 200)  # Failsafe default
+
+	var target_pos = screen_size - siggy_size + Vector2(0, -100)
 	var start_pos = Vector2(screen_size.x + siggy_size.x, target_pos.y)
 
 	position = start_pos
 	show()
 	create_tween().tween_property(self, "position", target_pos, slide_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
 
 
 func talk(text: String, time_per_char := 0.05) -> void:
