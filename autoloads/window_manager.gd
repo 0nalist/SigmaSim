@@ -4,7 +4,7 @@ var open_windows: Dictionary = {} # key: WindowFrame, value: taskbar Button
 var popup_registry: Dictionary = {}
 
 var taskbar_container: Control = null
-var start_panel: Window = null
+var start_panel = null
 
 var focused_window: WindowFrame = null
 

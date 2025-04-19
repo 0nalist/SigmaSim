@@ -1,4 +1,4 @@
-extends Window
+extends Panel
 class_name StartPanelWindow
 
 @onready var app_list_container: VBoxContainer = %AppListContainer
@@ -52,7 +52,8 @@ func toggle_start_panel() -> void:
 	if visible:
 		hide()
 	else:
-		popup()
+		#popup() #window behavior
+		show()
 		position = Vector2(0, 259)
 
 
@@ -72,8 +73,9 @@ func _on_sleep_button_pressed() -> void:
 
 
 func _on_mouse_exited() -> void:
-	if visible:
-		hide()
+	pass
+	#if visible:
+	#	hide()
 
 
 func _on_sleep_button_2_pressed() -> void:
