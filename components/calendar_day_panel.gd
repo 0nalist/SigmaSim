@@ -54,8 +54,8 @@ func set_tooltip(bills: Array) -> void:
 
 	set_tooltip_text(tooltip_text.strip_edges())
 
-func set_today_indicator(show: bool) -> void:
-	%TodayIndicator.visible = show
+func set_today_indicator(show_indicator: bool) -> void:
+	%TodayIndicator.visible = show_indicator
 
 func set_empty() -> void:
 	day_label.text = ""

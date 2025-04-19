@@ -60,7 +60,7 @@ func create_new_profile(
 	# Save initial data
 	var data := {
 		"portfolio": {},
-		"time": {},
+		"time": TimeManager.get_default_save_data(),
 		"windows": [],
 		"player": PlayerManager.get_save_data() # If pre-creating full player state
 	}

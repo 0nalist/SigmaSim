@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=27 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
@@ -14,7 +14,6 @@
 [ext_resource type="Script" uid="uid://jj0g0vk3lpc2" path="res://components/trash.gd" id="14_m483i"]
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="Texture2D" uid="uid://mb2q2hy3djdx" path="res://assets/logos/cog.png" id="16_xcmse"]
-[ext_resource type="PackedScene" uid="uid://5euld8tsq4yj" path="res://components/siggy.tscn" id="17_g75lf"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://start_panel_window.gd" id="23_dik0q"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
@@ -372,12 +371,6 @@ offset_top = 397.0
 offset_right = -1.0
 offset_bottom = -49.0
 
-[node name="Siggy" parent="TaskbarLayer" instance=ExtResource("17_g75lf")]
-offset_left = 15.0
-offset_top = -28.0
-offset_right = 15.0
-offset_bottom = -28.0
-
 [node name="StartPanel" type="Panel" parent="TaskbarLayer"]
 unique_name_in_owner = true
 offset_left = 3.0
@@ -456,6 +449,11 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 alignment = 2
 
+[node name="SiggyButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Siggy"
+
 [node name="LoadButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -493,6 +491,7 @@ icon = ExtResource("16_xcmse")
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="TaskbarLayer/StartPanel" method="_on_settings_button_pressed"]
 [connection signal="gui_input" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel" to="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel" method="_on_gui_input"]
 [connection signal="mouse_exited" from="TaskbarLayer/StartPanel" to="TaskbarLayer/StartPanel" method="_on_mouse_exited"]
+[connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SiggyButton" to="TaskbarLayer/StartPanel" method="_on_siggy_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton" to="TaskbarLayer/StartPanel" method="_on_sleep_button_pressed"]

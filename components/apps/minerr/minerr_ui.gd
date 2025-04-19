@@ -156,19 +156,14 @@ func _on_resource_changed(resource_name: String, _value: float) -> void:
 	update_power_bar()
 
 
-const PICKAXE = preload("res://assets/pickaxe.png")
-const PICKAXE_2 = preload("res://assets/pickaxe2.png")
-
 func _on_selected_crypto_texture_mouse_entered() -> void:
-	Input.set_custom_mouse_cursor(PICKAXE, 0, Vector2(10,10))
-
+	CursorManager.set_pickaxe_cursor()
 
 func _on_selected_crypto_texture_mouse_exited() -> void:
-	Input.set_custom_mouse_cursor(null, Input.CURSOR_ARROW)
-
+	CursorManager.set_default_cursor()
 
 func _on_selected_crypto_texture_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		Input.set_custom_mouse_cursor(PICKAXE_2, 0, Vector2(10,10))
+		CursorManager.set_pickaxe_click_cursor()
 	else:
-		Input.set_custom_mouse_cursor(PICKAXE,0, Vector2(10,10))
+		CursorManager.set_pickaxe_cursor()

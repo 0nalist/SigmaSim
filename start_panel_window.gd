@@ -80,3 +80,9 @@ func _on_mouse_exited() -> void:
 
 func _on_sleep_button_2_pressed() -> void:
 	TimeManager.sleep_for(8640)
+
+
+func _on_siggy_button_pressed() -> void:
+	var siggy = preload("res://components/siggy.tscn").instantiate()
+	
+	get_tree().get_root().add_child(siggy)

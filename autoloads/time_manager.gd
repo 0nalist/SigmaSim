@@ -9,6 +9,14 @@ var time_ticking := true
 var in_game_minutes := 23 * 60 
 var time_accumulator := 0.0
 
+@export var default_start_date_time: Dictionary = {
+	"in_game_minutes": 23 * 60,
+	"current_day": 1,
+	"current_month": 3,
+	"current_year": 2025,
+	}
+
+
 var current_day := 1
 var current_month := 3
 var current_year := 2025
@@ -141,7 +149,8 @@ func get_weekday_for_date(day: int, month: int, year: int) -> int:
 	var h = (day + int((13 * (m + 1)) / 5) + K + int(K / 4) + int(J / 4) + 5 * J) % 7
 	return (h + 5) % 7  # 0 = Monday
 
-
+func get_default_save_data() -> Dictionary:
+	return default_start_date_time.duplicate()
 
 
 ## -- Save/Load

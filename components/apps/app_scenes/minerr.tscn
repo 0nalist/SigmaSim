@@ -114,7 +114,6 @@ size_flags_stretch_ratio = 0.35
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
-text = "CLICK to MINE"
 horizontal_alignment = 1
 
 [node name="SelectedCryptoLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]

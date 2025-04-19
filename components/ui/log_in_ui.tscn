@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=9 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_nmwu1"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
@@ -25,6 +25,13 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fwkw"]
+bg_color = Color(0.511509, 0.544343, 1, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
 
 [node name="LogInUI" type="Control"]
 layout_mode = 3
@@ -104,6 +111,9 @@ alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 170)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_6fwkw")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/ProfilesContainer/ProfileRow/NewProfilePanel"]
 layout_mode = 1
@@ -118,11 +128,11 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="NewProfileButton" type="Button" parent="Panel/ProfilesContainer/ProfileRow/NewProfilePanel/MarginContainer"]
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(70, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-text = " New Profile "
+text = "New Profile "
 
 [node name="ProfileCreationUI" parent="Panel" instance=ExtResource("3_6fwkw")]
 visible = false
