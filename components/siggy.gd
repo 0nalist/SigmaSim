@@ -34,7 +34,7 @@ func slide_in_from_bottom_right():
 		if siggy_size == Vector2.ZERO:
 			siggy_size = Vector2(200, 200)  # Failsafe default
 
-	var target_pos = screen_size - siggy_size + Vector2(60, -80)  # Optional offset for margin
+	var target_pos = screen_size - siggy_size + Vector2(-600, -80)  # Optional offset for margin
 	var start_pos = Vector2(target_pos.x, screen_size.y + siggy_size.y)
 
 	position = start_pos

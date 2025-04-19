@@ -4,6 +4,8 @@ signal minute_passed(current_time_minutes: int)
 signal hour_passed(current_hour: int)
 signal day_passed(new_day: int, new_month: int, new_year: int)
 
+var time_ticking := true
+
 var in_game_minutes := 23 * 60 
 var time_accumulator := 0.0
 
@@ -24,11 +26,21 @@ var month_names := [
 func _ready() -> void:
 	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
 
+func start_time() -> void:
+	time_ticking = true
+	print("time ticking")
+
+func stop_time() -> void:
+	time_ticking = false
+
 func sleep_for(minutes: int) -> void:
 	is_fast_forwarding = true
 	fast_forward_minutes_left = minutes
 
 func _process(delta: float) -> void:
+	
+	if not time_ticking:
+		return
 	if is_fast_forwarding:
 		if fast_forward_minutes_left > 0:
 			advance_time(1)

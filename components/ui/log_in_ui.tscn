@@ -13,10 +13,6 @@ border_width_top = 8
 border_width_right = 8
 border_width_bottom = 8
 border_color = Color(0, 0.616993, 0.765051, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmwu1"]
 bg_color = Color(0, 0.670588, 0.968627, 1)
@@ -37,7 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 theme = ExtResource("1_nmwu1")
 script = ExtResource("2_eyvdy")
 profile_creation_scene = ExtResource("3_6fwkw")
@@ -105,6 +101,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="NewProfilePanel" type="Panel" parent="Panel/ProfilesContainer/ProfileRow"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 170)
 layout_mode = 2
 
@@ -128,6 +125,7 @@ size_flags_vertical = 4
 text = " New Profile "
 
 [node name="ProfileCreationUI" parent="Panel" instance=ExtResource("3_6fwkw")]
+visible = false
 layout_mode = 1
 offset_left = -275.0
 offset_top = -200.0
@@ -135,6 +133,7 @@ offset_right = 275.0
 offset_bottom = 200.0
 
 [node name="AOLLogoHolder" type="Control" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -143,6 +142,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 40.0
 grow_horizontal = 2
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="AOLLogoHolder"]
 layout_mode = 1

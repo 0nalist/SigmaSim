@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://s5d0e4c7s6cc"]
+[gd_scene load_steps=5 format=3 uid="uid://s5d0e4c7s6cc"]
 
 [ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://settings_window.gd" id="1_wlela"]
 [ext_resource type="Texture2D" uid="uid://mb2q2hy3djdx" path="res://assets/logos/cog.png" id="2_wxdtm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlela"]
+bg_color = Color(0.156141, 0.265577, 0.156147, 1)
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_jjwhp"]
 
@@ -18,47 +21,55 @@ theme_override_constants/margin_bottom = 25
 script = ExtResource("1_wlela")
 app_title = "Settings"
 app_icon = ExtResource("2_wxdtm")
+default_window_size = Vector2(400, 260)
 only_one_instance_allowed = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="Panel" type="Panel" parent="."]
 layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_wlela")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+offset_right = 1102.0
+offset_bottom = 598.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FullscreenCheckBox" type="CheckBox" parent="HBoxContainer/VBoxContainer"]
+[node name="FullscreenCheckBox" type="CheckBox" parent="Panel/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 button_group = SubResource("ButtonGroup_jjwhp")
 text = "Fullscreen"
 
-[node name="WindowedCheckBox" type="CheckBox" parent="HBoxContainer/VBoxContainer"]
+[node name="WindowedCheckBox" type="CheckBox" parent="Panel/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 button_group = SubResource("ButtonGroup_jjwhp")
 text = "Windowed"
 
-[node name="Control" type="Control" parent="HBoxContainer"]
+[node name="Control" type="Control" parent="Panel/HBoxContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CheckButton" type="CheckButton" parent="HBoxContainer/VBoxContainer2"]
+[node name="CheckButton" type="CheckButton" parent="Panel/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Popups Break Fourth Wall"
 
-[node name="SiggyButton" type="CheckButton" parent="HBoxContainer/VBoxContainer2"]
+[node name="SiggyButton" type="CheckButton" parent="Panel/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 
-[connection signal="toggled" from="HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
+[connection signal="toggled" from="Panel/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]

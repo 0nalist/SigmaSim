@@ -96,6 +96,8 @@ func save_to_slot(slot_id: int) -> void:
 	save_slot_metadata(metadata)
 
 func load_from_slot(slot_id: int) -> void:
+	print("loading from slot")
+	TimeManager.start_time() ## Should put this somewhere better. I need to initialize vars like time upon new profile creation
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
@@ -115,6 +117,8 @@ func load_from_slot(slot_id: int) -> void:
 		PortfolioManager.load_from_data(data["portfolio"])
 	if data.has("time"):
 		TimeManager.load_from_data(data["time"])
+		
+		print("told time manager to start")
 	if data.has("windows"):
 		WindowManager.load_from_data(data["windows"])
 	if data.has("bills"):
@@ -128,6 +132,7 @@ func load_from_slot(slot_id: int) -> void:
 		PlayerManager.set_slot_id(slot_id)
 	#if data.has("npcs"):
 	#	NPCManager.load_from_data(data["npcs"])
+
 
 # --- Helper Functions ---
 func vector2_to_dict(v: Vector2) -> Dictionary:

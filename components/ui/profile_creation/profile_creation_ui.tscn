@@ -1,9 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://cc5n8gw4o0mqx"]
+[gd_scene load_steps=5 format=3 uid="uid://cc5n8gw4o0mqx"]
 
 [ext_resource type="Script" uid="uid://bxs5wpbid34tr" path="res://components/ui/profile_creation/profile_creation_ui.gd" id="1_mjw8o"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_68ei6"]
-[ext_resource type="PackedScene" uid="uid://be5rjrgh6qexl" path="res://components/ui/profile_creation/name_entry_screen.tscn" id="2_clxn6"]
-[ext_resource type="Script" uid="uid://cehrgqn5cxgpr" path="res://components/ui/profile_creation/pronoun_entry_screen.gd" id="3_clxn6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clxn6"]
 bg_color = Color(0, 0.435981, 0.736537, 1)
@@ -29,16 +27,6 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_68ei6"]
-bg_color = Color(0, 0.270588, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jfqm6"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8jskx"]
-bg_color = Color(0.854255, 0.38934, 0.819727, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lj4co"]
-
 [node name="ProfileCreationUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -46,6 +34,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_mjw8o")
 
 [node name="BackgroundPanel" type="Panel" parent="."]
@@ -72,6 +61,7 @@ offset_right = 275.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0uqby")
 
 [node name="MarginContainer" type="MarginContainer" parent="BackgroundPanel/ProfileCreationPanel"]
@@ -86,128 +76,22 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="MainController" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="MainContainer" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
 
-[node name="NameEntryScreen" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController" instance=ExtResource("2_clxn6")]
-visible = false
-layout_mode = 1
-
-[node name="PronounEntryScreen" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("3_clxn6")
-
-[node name="MarginContainer" type="MarginContainer" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 25
-
-[node name="VBoxContainer" type="VBoxContainer" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer"]
+[node name="Control" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 1
 
-[node name="NameLabel" type="Label" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "I like to be referred to as:"
-
-[node name="Control" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="BoyCheckBox" type="CheckBox" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="BackButton" type="Button" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer/Control"]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 6
-theme_override_styles/hover = SubResource("StyleBoxFlat_68ei6")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jfqm6")
-text = "\"Boy\" \"Dude\" \"Bro\" "
-
-[node name="GirlCheckBox" type="CheckBox" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 6
-theme_override_styles/hover = SubResource("StyleBoxFlat_8jskx")
-theme_override_styles/normal = SubResource("StyleBoxFlat_lj4co")
-text = "\"Girl\" \"Bestie\" \"Lady\" "
-
-[node name="Control3" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 10)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="CheckBox" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Something else: "
-
-[node name="CustomPronounLineEdit1" type="LineEdit" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-
-[node name="CustomPronounLineEdit2" type="LineEdit" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-
-[node name="CustomPronounLineEdit3" type="LineEdit" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-
-[node name="Control2" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="ManButton" type="Button" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer3"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_68ei6")
-theme_override_font_sizes/font_size = 10
-text = "I am not a \"boy,\" I am a man"
-
-[node name="Control3" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(35, 25)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="WomanButton" type="Button" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/PronounEntryScreen/MarginContainer/VBoxContainer/HBoxContainer3"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_68ei6")
-theme_override_font_sizes/font_size = 10
-text = "I am not a \"girl,\" I am a woman"
-
-[node name="BackButton" type="Button" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -215,10 +99,13 @@ anchor_bottom = 1.0
 offset_top = -24.0
 offset_right = 74.0
 grow_vertical = 0
+focus_mode = 0
+mouse_filter = 1
 theme = ExtResource("2_68ei6")
 text = "<- back "
 
-[node name="NextButton" type="Button" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController"]
+[node name="NextButton" type="Button" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer/Control"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -229,8 +116,10 @@ offset_left = -72.0
 offset_top = -24.0
 grow_horizontal = 0
 grow_vertical = 0
+focus_mode = 0
+mouse_filter = 1
 theme = ExtResource("2_68ei6")
 text = " next ->"
 
-[connection signal="pressed" from="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="BackgroundPanel/ProfileCreationPanel/MarginContainer/MainController/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer/Control/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer/Control/NextButton" to="." method="_on_next_button_pressed"]

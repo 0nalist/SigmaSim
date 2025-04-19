@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Stock" load_steps=2 format=3 uid="uid://c0inewq21m6g1"]
+
+[ext_resource type="Script" uid="uid://prlirycaaf1k" path="res://resources/stocks/stock.gd" id="1_e07fi"]
+
+[resource]
+script = ExtResource("1_e07fi")
+symbol = "$LOCK"
+price = 216.0
+shares_outstanding = 10000000
+intrinsic_value = 678.0
+trailing_average = 1.0
+smoothing_factor = 0.05
+volatility = 0.6
+sentiment = 0.0
+momentum = 0
+metadata/_custom_type_script = "uid://prlirycaaf1k"
