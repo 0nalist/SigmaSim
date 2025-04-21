@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d5uirljm8cmi"
-path="res://.godot/imported/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png-4531c54a2b8fa10234f62f1cf8b9a45e.ctex"
+uid="uid://cjflmmx8qr1cg"
+path="res://.godot/imported/Bliss_(Windows_XP) (2).png-d1e7895b0464303345fa7596871e5c23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png"
-dest_files=["res://.godot/imported/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png-4531c54a2b8fa10234f62f1cf8b9a45e.ctex"]
+source_file="res://assets/backgrounds/Bliss_(Windows_XP) (2).png"
+dest_files=["res://.godot/imported/Bliss_(Windows_XP) (2).png-d1e7895b0464303345fa7596871e5c23.ctex"]
 
 [params]
 

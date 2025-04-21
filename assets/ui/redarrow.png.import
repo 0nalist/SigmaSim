@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://224bqpxn4g0n"
-path="res://.godot/imported/panel.png-98abd75f17820992d19abbe4c1e458c7.ctex"
+uid="uid://bexdrhb3xo3ro"
+path="res://.godot/imported/redarrow.png-dbd3ed477f8a52a5b02965f1da76d20b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/panel.png"
-dest_files=["res://.godot/imported/panel.png-98abd75f17820992d19abbe4c1e458c7.ctex"]
+source_file="res://assets/ui/redarrow.png"
+dest_files=["res://.godot/imported/redarrow.png-dbd3ed477f8a52a5b02965f1da76d20b.ctex"]
 
 [params]
 

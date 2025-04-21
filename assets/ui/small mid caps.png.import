@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pld574giprix"
-path="res://.godot/imported/silhouette.png-b7e989554bdf1f587982497c55665346.ctex"
+uid="uid://dl2jo7p65xvuu"
+path="res://.godot/imported/small mid caps.png-17e6c95e36ebd69182a883376d8b1bd3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/silhouette.png"
-dest_files=["res://.godot/imported/silhouette.png-b7e989554bdf1f587982497c55665346.ctex"]
+source_file="res://assets/ui/small mid caps.png"
+dest_files=["res://.godot/imported/small mid caps.png-17e6c95e36ebd69182a883376d8b1bd3.ctex"]
 
 [params]
 

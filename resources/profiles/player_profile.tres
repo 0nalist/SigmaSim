@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Profile" load_steps=3 format=3 uid="uid://bsn7p6fwrpgqj"]
 
 [ext_resource type="Script" uid="uid://dw5uloklpikdx" path="res://resources/profiles/profile.gd" id="1_hdgg2"]
-[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/silhouette.png" id="1_jy6le"]
+[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_jy6le"]
 
 [resource]
 script = ExtResource("1_hdgg2")

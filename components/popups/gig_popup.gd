@@ -67,8 +67,10 @@ func _refresh_selected_worker():
 	var worker = WorkerManager.currently_selected_worker
 	if worker != null:
 		selected_worker_label.text = "Selected: " + worker.name
+		assign_button.text = "Assign " + worker.name
 	else:
 		selected_worker_label.text = "Selected: None"
+		assign_button.text = "Assign Worker"
 	#assign_button.disabled = false
 
 

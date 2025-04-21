@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
 [ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/buttonhovered.png" id="1_ovitq"]
-[ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/Bliss_(Windows_XP) (2).png" id="2_5eiy6"]
+[ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/backgrounds/Bliss_(Windows_XP) (2).png" id="2_5eiy6"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/button2.png" id="2_75kf8"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
 [ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/button1.png" id="3_lx1wk"]

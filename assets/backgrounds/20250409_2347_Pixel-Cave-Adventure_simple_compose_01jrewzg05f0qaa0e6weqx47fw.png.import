@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl2jo7p65xvuu"
-path="res://.godot/imported/small mid caps.png-285625f5d63f564c45f82917a157e90a.ctex"
+uid="uid://d5uirljm8cmi"
+path="res://.godot/imported/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png-3544b1c077c1bd0bf7d89e85b3049052.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/small mid caps.png"
-dest_files=["res://.godot/imported/small mid caps.png-285625f5d63f564c45f82917a157e90a.ctex"]
+source_file="res://assets/backgrounds/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png"
+dest_files=["res://.godot/imported/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png-3544b1c077c1bd0bf7d89e85b3049052.ctex"]
 
 [params]
 

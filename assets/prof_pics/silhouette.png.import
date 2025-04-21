@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ulcids0e12dp"
-path="res://.godot/imported/worker.png-df9ec8359a60d137172554f2ff3be2f0.ctex"
+uid="uid://pld574giprix"
+path="res://.godot/imported/silhouette.png-940bdb64ef78dc16638513cdbe032fb7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/worker.png"
-dest_files=["res://.godot/imported/worker.png-df9ec8359a60d137172554f2ff3be2f0.ctex"]
+source_file="res://assets/prof_pics/silhouette.png"
+dest_files=["res://.godot/imported/silhouette.png-940bdb64ef78dc16638513cdbe032fb7.ctex"]
 
 [params]
 

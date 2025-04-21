@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_eluir"]
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/ui/worker_card/grinderr.gd" id="2_3bg0q"]
 [ext_resource type="PackedScene" uid="uid://dgawvt5yorfxn" path="res://components/popups/gig_popup.tscn" id="3_eluir"]
-[ext_resource type="Texture2D" uid="uid://ciotyr640vdd8" path="res://assets/Tralalero_tralala.png" id="3_ymf5o"]
+[ext_resource type="Texture2D" uid="uid://ciotyr640vdd8" path="res://assets/prof_pics/Tralalero_tralala.png" id="3_ymf5o"]
 
 [node name="Grinderr" type="Panel"]
 anchors_preset = 15

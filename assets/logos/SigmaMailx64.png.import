@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1wp0emq6hqk6"
-path="res://.godot/imported/speechbubble.png-7dfa787383f86c4746860019fff4c0f1.ctex"
+uid="uid://b471ke68etlp5"
+path="res://.godot/imported/SigmaMailx64.png-4630a78b965bb1a502f1ba480845a28d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/speechbubble.png"
-dest_files=["res://.godot/imported/speechbubble.png-7dfa787383f86c4746860019fff4c0f1.ctex"]
+source_file="res://assets/logos/SigmaMailx64.png"
+dest_files=["res://.godot/imported/SigmaMailx64.png-4630a78b965bb1a502f1ba480845a28d.ctex"]
 
 [params]
 

@@ -42,7 +42,7 @@ func setup(worker_ref: Worker) -> void:
 		cost_label.visible = false
 
 	# Placeholder portrait
-	portrait.texture = preload("res://assets/worker.png")
+	portrait.texture = preload("res://assets/prof_pics/worker.png")
 
 	action_button.text = button_label
 	action_button.pressed.connect(func():

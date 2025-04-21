@@ -9,7 +9,7 @@ signal worker_idle(worker: Worker)
 signal worker_selected(worker: Worker)
 
 
-const TICK_INTERVAL := 10  # seconds
+const TICK_INTERVAL := 1  # seconds
 const TICKS_PER_DAY := int(1440 / TICK_INTERVAL)
 
 var workers: Array[Worker] = []
@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func _on_minute_passed(in_game_minutes: int) -> void:
 	if in_game_minutes % TICK_INTERVAL != 0:
-		return  # Only tick every 10 in-game minutes
+		return  
 
 	emit_signal("worker_tick")
 	_process_tick()
@@ -51,7 +51,6 @@ func unassign_worker(worker: Worker) -> void:
 
 # --- Core Tick Loop ---
 func _process_tick() -> void:
-	print("worker tick")
 	var current_tick = get_current_tick()
 	for worker in workers:
 		print(worker.name, "active:", worker.active, "assigned:", worker.assigned_task != null)

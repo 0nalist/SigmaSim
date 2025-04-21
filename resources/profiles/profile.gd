@@ -1,4 +1,4 @@
-@icon("res://assets/silhouette.png") 
+@icon("res://assets/prof_pics/silhouette.png") 
 extends Resource
 class_name Profile
 
