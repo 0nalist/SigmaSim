@@ -24,10 +24,8 @@ var stocks_owned: Dictionary = {}   # symbol: int
 var crypto_owned: Dictionary = {}  # symbol: float
 
 ## --- Future complex resources
-var subcontractors: Array[Dictionary] = []
 var miners: Dictionary = {}
 var businesses: Dictionary = {}
-var employees: Dictionary = {}
 
 ## --- Signals
 signal cash_updated(new_cash: float)
@@ -158,32 +156,6 @@ func get_total_investments() -> float:
 			total += stock.price * owned
 	return snapped(total, 0.01)
 
-# Subcontractor tracking
-
-func hire_subcontractor(template: Subcontractor):
-	var new_sub = {
-		"resource": template,
-		"remaining_time": template.contract_length
-	}
-	subcontractors.append(new_sub)
-
-func update_subcontractors(delta: float):
-	var i := 0
-	while i < subcontractors.size():
-		subcontractors[i]["remaining_time"] -= delta
-		if subcontractors[i]["remaining_time"] <= 0.0:
-			subcontractors.remove_at(i)
-		else:
-			i += 1
-
-func get_total_dps() -> float:
-	var total := 0.0
-	for sub in subcontractors:
-		total += sub["resource"].dollar_per_second
-	return total
-
-func get_subcontractor_count() -> int:
-	return subcontractors.size()
 
 ## Crypto
 
@@ -245,10 +217,7 @@ func get_save_data() -> Dictionary:
 		"passive_income": passive_income,
 		"stocks_owned": stocks_owned.duplicate(),
 		"crypto_owned": crypto_owned.duplicate(),
-		#"subcontractors": subcontractors.map(func(s): return {
-		#	"resource_id": s["resource"].id,  # assumes each resource has a unique ID
-		#	"remaining_time": s["remaining_time"]
-		#})
+
 	}
 
 
@@ -268,15 +237,6 @@ func load_from_data(data: Dictionary) -> void:
 	stocks_owned = data.get("stocks_owned", {})
 	crypto_owned = data.get("crypto_owned", {})
 
-	#subcontractors.clear()
-	#for sub_dict in data.get("subcontractors", []):
-	#	var resource_id = sub_dict.get("resource_id", "")
-	#	var template = SubcontractorDB.get_resource_by_id(resource_id)  # your lookup method
-	#	if template:
-	#		subcontractors.append({
-	#			"resource": template,
-	#			"remaining_time": sub_dict.get("remaining_time", 0.0)
-	#		})
 
 	emit_signal("cash_updated", cash)
 	emit_signal("credit_updated", credit_used, credit_limit)

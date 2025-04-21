@@ -2,7 +2,7 @@ class_name Worker
 extends Resource
 
 @export var name: String
-@export var contractor: bool
+@export var is_contractor: bool
 @export var hours_per_day: int = 8
 @export var work_start_hour: int = 9  # 24hr format
 @export var day_rate: int = 100
@@ -17,7 +17,7 @@ var active: bool = false  # True only during paid working hours and while assign
 
 # --- Update Active Status (called from WorkerManager) ---
 func update_active_status(current_tick_of_day: int, tick_interval: float, can_be_paid: bool) -> void:
-	if contractor and assigned_task == null:
+	if is_contractor and assigned_task == null:
 		active = false
 		return
 

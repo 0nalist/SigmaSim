@@ -16,7 +16,8 @@ var app_registry := {
 	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
 	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
-	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn")
+	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
+	"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
 }
 
 var popup_scene_registry := {
@@ -66,7 +67,6 @@ func close_window(window: WindowFrame) -> void:
 
 func focus_window(window: WindowFrame) -> void:
 	if focused_window == window:
-		print("focused_window == window")
 		return
 
 	if is_instance_valid(focused_window):

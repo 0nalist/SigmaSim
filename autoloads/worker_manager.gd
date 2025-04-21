@@ -15,8 +15,12 @@ const TICKS_PER_DAY := int(1440 / TICK_INTERVAL)
 var workers: Array[Worker] = []
 var currently_selected_worker: Worker = null
 
+var available_workers: Array[Worker] = []
+
 func _ready() -> void:
 	_start_tick_loop()
+	TimeManager.day_passed.connect(_on_day_passed)
+	generate_available_workers()
 
 func _start_tick_loop() -> void:
 	await get_tree().create_timer(TICK_INTERVAL).timeout
@@ -70,3 +74,29 @@ func _gain_specialization(worker: Worker) -> void:
 func _handle_idle_decay(worker: Worker) -> void:
 	for key in worker.specializations.keys():
 		worker.specializations[key] = max(0.0, worker.specializations[key] - 0.0002)
+
+
+## Worker generation ---
+
+func _on_day_passed(_day, _month, _year):
+	generate_available_workers()
+
+func generate_available_workers() -> void:
+	available_workers.clear()
+	for i in 5:
+		available_workers.append(_generate_random_worker(true))  # Contractor
+		available_workers.append(_generate_random_worker(false))  # Employee
+		print("generated worker")
+
+func _generate_random_worker(is_contractor: bool) -> Worker:
+	var worker := Worker.new()
+	worker.name = "Worker %s" % ["A","B","C","D","E","F","G","H","I","J"].pick_random()
+	worker.is_contractor = is_contractor
+	worker.hours_per_day = randi_range(4, 10)
+	worker.productivity_per_tick = randf_range(0.2, 1.0)
+	worker.day_rate = randi_range(30, 120)
+	if is_contractor:
+		worker.sign_on_bonus = randi_range(0, 20)
+	else:
+		worker.sign_on_bonus = randi_range(50, 200)
+	return worker

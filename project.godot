@@ -17,7 +17,7 @@ config/icon="res://assets/logos/icon.svg"
 
 [autoload]
 
-WindowManager="*res://autoloads/window_manager.gd"
+WindowManager="*res://components/apps/worker_overview/window_manager.gd"
 PortfolioManager="*res://autoloads/portfolio_manager.gd"
 MarketManager="*res://autoloads/market_manager.gd"
 GPUManager="*res://autoloads/gpu_manager.gd"

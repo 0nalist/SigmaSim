@@ -91,7 +91,6 @@ func _update_crypto_prices():
 	for crypto in crypto_market.values():
 		var old_price = crypto.price
 		crypto.update_from_market()
-		print("Updated:", crypto.symbol, "new price:", crypto.price)
 
 		if abs(crypto.price - old_price) > 0.001:
 			emit_signal("crypto_price_updated", crypto.symbol, crypto)
