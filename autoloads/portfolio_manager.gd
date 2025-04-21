@@ -40,6 +40,37 @@ func _ready():
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
 
+## --- Hybrid Spend (Cash then Credit fallback) ---
+func attempt_spend(amount: float) -> bool:
+	# Try paying with cash first
+	if can_pay_with_cash(amount):
+		spend_cash(amount)
+		return true
+
+	# Fallback to credit (for the remainder)
+	var remainder := amount - cash
+	if can_pay_with_credit(remainder):
+		if cash > 0:
+			spend_cash(cash)  # spend remaining cash first
+
+		var total_with_interest := remainder * (1.0 + credit_interest_rate)
+		credit_used += total_with_interest
+		debt += total_with_interest
+		cash = 0.0  # should now be zero
+
+		emit_signal("cash_updated", cash)
+		emit_signal("credit_updated", credit_used, credit_limit)
+		emit_signal("resource_changed", "debt", debt)
+		return true
+
+	# Neither cash nor credit can cover the cost
+	print("not enough cash or credit")
+	return false
+
+
+
+
+
 ## --- Cash Methods
 func add_cash(amount: float):
 	if amount < 0.0:

@@ -3,25 +3,50 @@ extends Resource
 
 @export var name: String
 @export var contractor: bool
-@export var hours_per_day: int
-@export var productivity_per_hour: float
-@export var day_rate: int
-@export var sign_on_bonus: int
+@export var hours_per_day: int = 8
+@export var work_start_hour: int = 9  # 24hr format
+@export var day_rate: int = 100
+@export var sign_on_bonus: int = 0
 
-# Tick system
-@export var productivity_per_tick: float
+@export var productivity_per_tick: float = 0.0
+
 var assigned_task: WorkerTask = null
-var specializations: Dictionary = {}  # e.g., { "gig_nice_beat_bro": 0.12, "app_grinderr": 0.08 }
+var specializations: Dictionary = {}  # e.g., { "gig_x": 0.12, "app_y": 0.08 }
 
-# Utility
+var active: bool = false  # True only during paid working hours and while assigned
+
+# --- Update Active Status (called from WorkerManager) ---
+func update_active_status(current_tick_of_day: int, tick_interval: float, can_be_paid: bool) -> void:
+	if contractor and assigned_task == null:
+		active = false
+		return
+
+	var ticks_per_hour := 3600.0 / tick_interval
+	var start_tick := int(work_start_hour * ticks_per_hour)
+	var end_tick := int((work_start_hour + hours_per_day) * ticks_per_hour)
+
+	active = (
+		assigned_task != null and
+		current_tick_of_day >= start_tick and
+		current_tick_of_day < end_tick and
+		can_be_paid
+	)
+
+# --- State Check ---
 func is_idle() -> bool:
 	return assigned_task == null
 
-func apply_productivity():
-	if assigned_task != null:
-		var multiplier := 1.0 + get_specialization_bonus()
-		assigned_task.apply_productivity(productivity_per_tick * multiplier)
+# --- Productivity Output ---
+func apply_productivity() -> void:
+	if not active or assigned_task == null:
+		return
+
+	var multiplier := 1.0 + get_specialization_bonus()
+	var output := productivity_per_tick * multiplier
+	assigned_task.apply_productivity(output)
 
 func get_specialization_bonus() -> float:
+	if assigned_task == null:
+		return 0.0
 	var id := assigned_task.get_specialization_id()
 	return specializations.get(id, 0.0)
