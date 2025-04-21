@@ -1,10 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://cci5lph7o8fg5"]
+[gd_scene load_steps=9 format=3 uid="uid://cci5lph7o8fg5"]
 
 [ext_resource type="Texture2D" uid="uid://d5uirljm8cmi" path="res://assets/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png" id="1_wupxk"]
 [ext_resource type="Script" uid="uid://c2u2e7rvja8k" path="res://components/apps/minerr/minerr_ui.gd" id="2_0t4uf"]
-[ext_resource type="Script" uid="uid://llcvncktu5" path="res://resources/crypto/cryptocurrency.gd" id="3_vg0wk"]
-[ext_resource type="Resource" uid="uid://cwce8c107rab6" path="res://resources/crypto/bitc_crypto.tres" id="4_ohc6w"]
-[ext_resource type="Resource" uid="uid://bjah3mncmmb8" path="res://resources/crypto/hawk_crypto.tres" id="5_px5v3"]
 [ext_resource type="PackedScene" uid="uid://b2lni5gfy28ds" path="res://components/apps/minerr/crypto_row.tscn" id="6_86lpv"]
 [ext_resource type="Texture2D" uid="uid://chkl2i2bg50da" path="res://assets/mine.png" id="7_72mkv"]
 [ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="8_x88rl"]
@@ -28,7 +25,6 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_rcqoh")
 script = ExtResource("2_0t4uf")
-crypto_list = Array[ExtResource("3_vg0wk")]([ExtResource("4_ohc6w"), ExtResource("5_px5v3")])
 crypto_row_scene = ExtResource("6_86lpv")
 app_title = "Minerr"
 app_icon = ExtResource("7_72mkv")

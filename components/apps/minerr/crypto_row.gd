@@ -26,6 +26,8 @@ func setup(crypto_data: Cryptocurrency) -> void:
 	remove_gpu_button.pressed.connect(func(): emit_signal("remove_gpu_pressed", crypto.symbol))
 
 func update_display() -> void:
+	if not crypto:
+		return
 	# Update the token label text
 	token_label.text = "%s  $%.2f" % [crypto.symbol, crypto.price]
 

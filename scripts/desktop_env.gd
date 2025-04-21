@@ -38,8 +38,8 @@ func open_trash_folder() -> void:
 
 
 func _on_save_button_pressed() -> void:
-	SaveManager.save_to_slot(1)
+	SaveManager.save_to_slot(PlayerManager.slot_id)
 
 
 func _on_load_button_pressed() -> void:
-	SaveManager.load_from_slot(1)
+	SaveManager.load_from_slot(PlayerManager.slot_id)

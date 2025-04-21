@@ -26,6 +26,7 @@ BillManager="*res://autoloads/bill_manager.gd"
 SaveManager="*res://autoloads/save_manager.gd"
 PlayerManager="*res://autoloads/player_manager.gd"
 CursorManager="*res://autoloads/cursor_manager.gd"
+WorkerManager="*res://autoloads/worker_manager.gd"
 
 [display]
 

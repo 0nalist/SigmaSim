@@ -3,7 +3,7 @@ class_name Minerr
 
 
 
-@export var crypto_list: Array[Cryptocurrency]
+#@export var crypto_list: Array[Cryptocurrency]
 @export var crypto_row_scene: PackedScene
 
 var crypto_rows: Dictionary = {}
@@ -25,9 +25,25 @@ var power_bar_lerp_speed: float = 5.0
 @onready var power_bar: ProgressBar = %PowerBar
 
 func _ready() -> void:
-	for crypto in crypto_list:
-		MarketManager.crypto_market[crypto.symbol] = crypto
-		extra_power[crypto.symbol] = 0
+	refresh_rows_from_market()
+
+	MarketManager.crypto_price_updated.connect(_on_crypto_updated)
+	PortfolioManager.resource_changed.connect(_on_resource_changed)
+	GPUManager.gpus_changed.connect(update_gpu_label)
+	selected_crypto_texture.gui_input.connect(_on_selected_texture_clicked)
+
+	update_gpu_label()
+
+func refresh_rows_from_market():
+	# Clear existing rows
+	for row in crypto_rows.values():
+		row.queue_free()
+	crypto_rows.clear()
+
+	# Create UI from current market state
+	for symbol in MarketManager.crypto_market.keys():
+		var crypto = MarketManager.crypto_market[symbol]
+		extra_power[symbol] = 0  # or load/preserve if needed
 
 		var row = crypto_row_scene.instantiate() as CryptoRow
 		row.setup(crypto)
@@ -37,15 +53,7 @@ func _ready() -> void:
 		row.selected.connect(_on_crypto_selected)
 
 		crypto_container.add_child(row)
-		crypto_rows[crypto.symbol] = row
-	
-	selected_crypto_texture.gui_input.connect(_on_selected_texture_clicked)
-
-	MarketManager.crypto_price_updated.connect(_on_crypto_updated)
-	PortfolioManager.resource_changed.connect(_on_resource_changed)
-	GPUManager.gpus_changed.connect(update_gpu_label)
-
-	update_gpu_label()
+		crypto_rows[symbol] = row
 
 
 func _process(delta: float) -> void:
@@ -108,6 +116,9 @@ func update_power_bar() -> void:
 	var required_power = float(crypto.power_required)
 
 	target_power_percent = clampf(total_power / required_power * 100.0, 0.0, 100.0)
+
+
+
 
 
 func _on_selected_texture_clicked(event: InputEvent) -> void:

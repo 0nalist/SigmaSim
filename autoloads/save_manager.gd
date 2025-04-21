@@ -73,12 +73,13 @@ func save_to_slot(slot_id: int) -> void:
 	var data := {
 		"portfolio": PortfolioManager.get_save_data(),
 		"time": TimeManager.get_save_data(),
-		"windows": WindowManager.get_save_data(),
+		
 		"popups": WindowManager.get_popup_save_data(),
 		"market": MarketManager.get_save_data(),
 		"player": PlayerManager.get_save_data(),
 		#"bills": BillManager.get_save_data(),
 		#"npcs": NPCManager.get_save_data(),
+		"windows": WindowManager.get_save_data(), # should ALWAYS be last
 	}
 	print("🧠 Windows to save:", WindowManager.get_save_data())
 
@@ -119,8 +120,7 @@ func load_from_slot(slot_id: int) -> void:
 		TimeManager.load_from_data(data["time"])
 		
 		print("told time manager to start")
-	if data.has("windows"):
-		WindowManager.load_from_data(data["windows"])
+	
 	if data.has("bills"):
 		BillManager.load_from_data(data["bills"])
 	if data.has("popups"):
@@ -132,7 +132,8 @@ func load_from_slot(slot_id: int) -> void:
 		PlayerManager.set_slot_id(slot_id)
 	#if data.has("npcs"):
 	#	NPCManager.load_from_data(data["npcs"])
-
+	if data.has("windows"): # should ALWAYS be last
+		WindowManager.load_from_data(data["windows"])
 
 # --- Helper Functions ---
 func vector2_to_dict(v: Vector2) -> Dictionary:

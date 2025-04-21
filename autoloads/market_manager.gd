@@ -11,6 +11,10 @@ signal crypto_price_updated(name: String, crypto: Cryptocurrency)
 
 func _ready():
 	TimeManager.minute_passed.connect(_on_minute_passed)
+	if crypto_market.is_empty():
+		load_cryptos_from_folder()
+	if stock_market.is_empty():
+		load_stocks_from_folder()
 
 func _on_minute_passed(current_time_minutes: int) -> void:
 	# Alternate stock and crypto ticks every minute
@@ -91,6 +95,66 @@ func _update_crypto_prices():
 
 		if abs(crypto.price - old_price) > 0.001:
 			emit_signal("crypto_price_updated", crypto.symbol, crypto)
+
+
+## --- Initialization --- ##
+
+func load_cryptos_from_folder(path: String = "res://resources/crypto/") -> void:
+	var dir = DirAccess.open(path)
+	if dir == null:
+		push_error("Failed to open crypto folder: %s" % path)
+		return
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if dir.current_is_dir():
+			file_name = dir.get_next()
+			continue
+
+		if file_name.ends_with(".tres") or file_name.ends_with(".res"):
+			var full_path = path.path_join(file_name)
+			var resource = load(full_path)
+
+			if resource is Cryptocurrency:
+				register_crypto(resource)
+			else:
+				print("Skipped non-Cryptocurrency file:", file_name)
+
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+
+func load_stocks_from_folder(path: String = "res://resources/stocks/") -> void:
+	var dir = DirAccess.open(path)
+	if dir == null:
+		push_error("Failed to open stock folder: %s" % path)
+		return
+
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if dir.current_is_dir():
+			file_name = dir.get_next()
+			continue
+
+		if file_name.ends_with(".tres") or file_name.ends_with(".res"):
+			var full_path = path.path_join(file_name)
+			var resource = load(full_path)
+
+			if resource is Stock:
+				register_stock(resource)
+			else:
+				print("Skipped non-Stock file:", file_name)
+
+		file_name = dir.get_next()
+
+	dir.list_dir_end()
+
+
+
+
+
 
 
 ## --- SAVELOAD
