@@ -9,10 +9,26 @@ class_name Cryptocurrency
 @export var volatility: float = 1.0
 @export var power_required: int = 100
 @export var reward_per_mine: float = 1.0
-@export var price_history: Array[float] = []
+@export var price_history: Array[float] = [price]
 @export var all_time_high: float = 1.0
 
 var last_price: float = price
+
+func update_price(delta: float) -> void:
+	price_history.append(price)
+	if price_history.size() > 1000:
+		price_history.pop_front()
+
+	last_price = price
+	price = max(0.01, snapped(price + delta, 0.01))
+	all_time_high = max(all_time_high, price)
+
+func update_from_market(volatility_scale := 1.0) -> void:
+	var noise = randf_range(-0.5, 0.5)
+	var max_percent_change = volatility / 100.0 * volatility_scale
+	var delta = price * max_percent_change * noise
+	update_price(delta)
+	update_power_required(price)
 
 
 func update_power_required(previous_price: float) -> void:
@@ -37,7 +53,7 @@ func to_dict() -> Dictionary:
 		"volatility": volatility,
 		"power_required": power_required,
 		"reward_per_mine": reward_per_mine,
-		"price_history": price_history.duplicate(),
+		"price_history": price_history.duplicate() as Array[float],
 		"all_time_high": all_time_high,
 		"last_price": last_price
 	}
@@ -49,6 +65,10 @@ func from_dict(data: Dictionary) -> void:
 	volatility = data.get("volatility", volatility)
 	power_required = data.get("power_required", power_required)
 	reward_per_mine = data.get("reward_per_mine", reward_per_mine)
-	price_history = data.get("price_history", price_history)
+	var raw_history = data.get("price_history", price_history)
+	price_history = []
+	for value in raw_history:
+		if typeof(value) == TYPE_FLOAT or typeof(value) == TYPE_INT:
+			price_history.append(float(value))
 	all_time_high = data.get("all_time_high", all_time_high)
 	last_price = data.get("last_price", price)

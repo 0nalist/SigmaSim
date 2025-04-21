@@ -24,6 +24,11 @@ func _on_minute_passed(current_time_minutes: int) -> void:
 func register_stock(stock: Stock) -> void:
 	stock_market[stock.symbol] = stock
 
+func register_crypto(crypto: Cryptocurrency) -> void:
+	crypto_market[crypto.symbol] = crypto
+	emit_signal("crypto_price_updated", crypto.symbol, crypto)
+
+
 func get_stock(symbol: String) -> Stock:
 	return stock_market.get(symbol)
 
@@ -81,14 +86,8 @@ func _update_stock_prices():
 func _update_crypto_prices():
 	for crypto in crypto_market.values():
 		var old_price = crypto.price
-		var noise = randf_range(-0.5, 0.5)
-		var total_factor = noise
-		var max_percent_change = crypto.volatility / 100.0
-		var delta = crypto.price * max_percent_change * total_factor
-
-		crypto.last_price = crypto.price
-		crypto.price = max(0.01, snapped(crypto.price + delta, 0.01))
-		crypto.update_power_required(old_price)
+		crypto.update_from_market()
+		print("Updated:", crypto.symbol, "new price:", crypto.price)
 
 		if abs(crypto.price - old_price) > 0.001:
 			emit_signal("crypto_price_updated", crypto.symbol, crypto)
@@ -122,4 +121,4 @@ func load_from_data(data: Dictionary) -> void:
 	for symbol in data.get("crypto_market", {}).keys():
 		var crypto = Cryptocurrency.new()
 		crypto.from_dict(data["crypto_market"][symbol])
-		crypto_market[symbol] = crypto
+		register_crypto(crypto)
