@@ -9,7 +9,7 @@ signal worker_idle(worker: Worker)
 signal worker_selected(worker: Worker)
 
 
-const TICK_INTERVAL := 10.0  # seconds
+const TICK_INTERVAL := 10  # seconds
 const TICKS_PER_DAY := int(1440 / TICK_INTERVAL)
 
 var workers: Array[Worker] = []
@@ -18,15 +18,17 @@ var currently_selected_worker: Worker = null
 var available_workers: Array[Worker] = []
 
 func _ready() -> void:
-	_start_tick_loop()
+	TimeManager.minute_passed.connect(_on_minute_passed)
 	TimeManager.day_passed.connect(_on_day_passed)
 	generate_available_workers()
 
-func _start_tick_loop() -> void:
-	await get_tree().create_timer(TICK_INTERVAL).timeout
+func _on_minute_passed(in_game_minutes: int) -> void:
+	if in_game_minutes % TICK_INTERVAL != 0:
+		return  # Only tick every 10 in-game minutes
+
 	emit_signal("worker_tick")
 	_process_tick()
-	_start_tick_loop()
+
 
 # Hiring and Assigning
 func hire_worker(worker: Worker) -> void:
@@ -36,6 +38,11 @@ func hire_worker(worker: Worker) -> void:
 func assign_worker(worker: Worker, task: WorkerTask) -> void:
 	worker.assigned_task = task
 	worker.active = true
+
+	# Set work_start_hour to current time (rounded to the hour)
+	var in_game_hour := int(TimeManager.in_game_minutes / 60)
+	worker.work_start_hour = in_game_hour
+
 	emit_signal("worker_assigned", worker, task)
 
 func unassign_worker(worker: Worker) -> void:
@@ -44,14 +51,17 @@ func unassign_worker(worker: Worker) -> void:
 
 # --- Core Tick Loop ---
 func _process_tick() -> void:
+	print("worker tick")
 	var current_tick = get_current_tick()
 	for worker in workers:
+		print(worker.name, "active:", worker.active, "assigned:", worker.assigned_task != null)
 		var cost_per_tick := float(worker.day_rate) / TICKS_PER_DAY
 		var can_be_paid := PortfolioManager.attempt_spend(cost_per_tick)
 
 		worker.update_active_status(current_tick, TICK_INTERVAL, can_be_paid)
 
 		if worker.active:
+			print("worker.apply_productivity()")
 			worker.apply_productivity()
 			_gain_specialization(worker)
 		elif not can_be_paid:
@@ -86,7 +96,6 @@ func generate_available_workers() -> void:
 	for i in 5:
 		available_workers.append(_generate_random_worker(true))  # Contractor
 		available_workers.append(_generate_random_worker(false))  # Employee
-		print("generated worker")
 
 func _generate_random_worker(is_contractor: bool) -> Worker:
 	var worker := Worker.new()

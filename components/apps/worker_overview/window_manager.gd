@@ -165,6 +165,7 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	icon_button.clip_text = true
 	icon_button.toggle_mode = true
 	icon_button.focus_mode = Control.FOCUS_NONE
+	icon_button.theme = get_tree().root.theme
 
 	icon_button.pressed.connect(func():
 		if window.visible and focused_window == window:
@@ -258,6 +259,19 @@ func close_all_windows() -> void:
 	for win in windows_to_close:
 		close_window(win)
 
+func launch_popup(popup: Control, window_title: String = "Popup", size: Vector2 = Vector2(400, 500)) -> void:
+	var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+
+	win.window_title = window_title
+	win.call_deferred("set_window_title", window_title)
+	win.default_size = size
+	win.window_can_minimize = false  # Optional
+	win.window_can_maximize = false  # Optional
+	win.get_node("%ContentPanel").add_child(popup)
+
+	register_window(win, false)  # false = no taskbar icon
+
+	center_window(win)
 
 
 

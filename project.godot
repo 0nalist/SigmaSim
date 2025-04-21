@@ -32,6 +32,10 @@ WorkerManager="*res://autoloads/worker_manager.gd"
 
 window/stretch/mode="canvas_items"
 
+[gui]
+
+theme/custom="uid://cesgvqexxaqev"
+
 [input]
 
 select={

@@ -49,7 +49,6 @@ func _on_autopay_toggled(pressed: bool) -> void:
 func populate_calendar(month: int, year: int) -> void:
 	var days_in_month := TimeManager.get_days_in_month(month, year)
 	var first_weekday: int = int(TimeManager.get_first_weekday_of_month(month, year))  # 0 = Monday
-	print("First weekday for", month, year, "is index:", first_weekday)
 	var today := TimeManager.get_today()
 	var due_bills := BillManager.get_due_bills_for_month(month, year)  # {day: Array[String]}
 

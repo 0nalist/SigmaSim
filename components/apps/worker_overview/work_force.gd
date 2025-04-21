@@ -9,6 +9,8 @@ func _ready() -> void:
 	_populate_worker_list()
 	WorkerManager.worker_selected.connect(_on_worker_selected)
 	WorkerManager.worker_hired.connect(_on_worker_hired)
+	WorkerManager.worker_assigned.connect(_on_worker_assigned)
+	WorkerManager.worker_idle.connect(_on_worker_idle)
 
 func _on_worker_hired(worker: Worker) -> void:
 	# Optional: prevent duplicates if list isn’t cleared first
@@ -45,3 +47,15 @@ func _create_worker_card(worker: Worker) -> Control:
 
 func _on_worker_selected(worker: Worker) -> void:
 	selected_name_label.text = worker.name
+
+func _on_worker_idle(worker: Worker) -> void:
+	_on_worker_updated(worker)
+
+func _on_worker_assigned(worker: Worker, _task) -> void:
+	_on_worker_updated(worker)
+
+func _on_worker_updated(worker: Worker) -> void:
+	# Find the matching card and update it
+	for card in worker_list.get_children():
+		if card is WorkerCard and card.worker == worker:
+			card.update_all()

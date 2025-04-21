@@ -2,7 +2,7 @@ extends Node
 #Autoload name PortfolioManager
 
 ## --- Basic numeric resources
-var cash: float = 201.0
+var cash: float = 200001.0
 var debt: float = 0.0
 var rent: float = 0.0
 var interest: float = 0.0

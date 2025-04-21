@@ -21,7 +21,6 @@ func setup(worker_ref: Worker) -> void:
 		await ready
 	
 	worker = worker_ref
-	print("worker: " + str(worker))
 	name_label.text = worker.name
 
 	if worker.is_contractor:
@@ -32,7 +31,7 @@ func setup(worker_ref: Worker) -> void:
 	if worker.is_idle():
 		status_label.text = "Idle"
 	else:
-		status_label.text = "Assigned"
+		status_label.text = str(worker.assigned_task.title)
 
 	prod_label.text = "Prod/tick: %.2f" % worker.productivity_per_tick
 
@@ -49,3 +48,25 @@ func setup(worker_ref: Worker) -> void:
 	action_button.pressed.connect(func():
 		emit_signal("action_pressed", worker)
 	)
+	update_all()
+
+func update_all() -> void:
+	update_status()
+	update_productivity()
+	update_cost()
+
+func update_status() -> void:
+	if worker.assigned_task != null:
+		status_label.text = str(worker.assigned_task.title)
+	else:
+		status_label.text = "Idle"
+
+func update_productivity() -> void:
+	prod_label.text = "Prod/tick: %.2f" % worker.productivity_per_tick
+
+func update_cost() -> void:
+	if show_cost:
+		cost_label.visible = true
+		cost_label.text = "$%d + $%d" % [worker.sign_on_bonus, worker.day_rate]
+	else:
+		cost_label.visible = false

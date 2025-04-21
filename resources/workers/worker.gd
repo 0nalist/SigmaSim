@@ -27,8 +27,8 @@ func update_active_status(current_tick_of_day: int, tick_interval: float, can_be
 
 	active = (
 		assigned_task != null and
-		current_tick_of_day >= start_tick and
-		current_tick_of_day < end_tick and
+		#current_tick_of_day >= start_tick and
+		#current_tick_of_day < end_tick and
 		can_be_paid
 	)
 
@@ -40,7 +40,7 @@ func is_idle() -> bool:
 func apply_productivity() -> void:
 	if not active or assigned_task == null:
 		return
-
+	print("✅ ", name, " is contributing productivity!")
 	var multiplier := 1.0 + get_specialization_bonus()
 	var output := productivity_per_tick * multiplier
 	assigned_task.apply_productivity(output)

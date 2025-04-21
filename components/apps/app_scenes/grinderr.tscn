@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://db60wtbc86hq2"]
+[gd_scene load_steps=5 format=3 uid="uid://db60wtbc86hq2"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_eluir"]
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/ui/worker_card/grinderr.gd" id="2_3bg0q"]
+[ext_resource type="PackedScene" uid="uid://dgawvt5yorfxn" path="res://components/popups/gig_popup.tscn" id="3_eluir"]
 [ext_resource type="Texture2D" uid="uid://ciotyr640vdd8" path="res://assets/Tralalero_tralala.png" id="3_ymf5o"]
 
 [node name="Grinderr" type="Panel"]
@@ -15,20 +16,24 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme = ExtResource("1_eluir")
 script = ExtResource("2_3bg0q")
+gig_popup_scene = ExtResource("3_eluir")
 app_title = "Grinderr"
 app_icon = ExtResource("3_ymf5o")
 default_window_size = Vector2(450, 380)
 
 [node name="TabContainer" type="TabContainer" parent="."]
 unique_name_in_owner = true
-layout_mode = 2
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 1142.0
-offset_bottom = 638.0
-current_tab = 0
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 1
 
 [node name="Hire" type="MarginContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -51,7 +56,6 @@ clip_contents = false
 custom_minimum_size = Vector2(400, 240)
 layout_mode = 2
 size_flags_vertical = 3
-horizontal_scroll_mode = 2
 
 [node name="HireList" type="VBoxContainer" parent="TabContainer/Hire/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
@@ -59,4 +63,23 @@ layout_mode = 2
 
 [node name="Footer" type="Control" parent="TabContainer/Hire/VBoxContainer"]
 custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="Work" type="MarginContainer" parent="TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Work"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Work/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GigList" type="VBoxContainer" parent="TabContainer/Work/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
 layout_mode = 2
