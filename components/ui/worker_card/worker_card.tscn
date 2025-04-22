@@ -60,7 +60,11 @@ layout_mode = 2
 size_flags_horizontal = 2
 text = "Productivity"
 
-[node name="CostLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CostLabel" type="Label" parent="VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2

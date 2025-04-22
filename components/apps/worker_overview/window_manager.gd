@@ -10,14 +10,15 @@ var focused_window: WindowFrame = null
 
 # Preloaded app scenes, manually assigned
 var app_registry := {
-	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
 	"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
 	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
+	"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
+	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
 	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
-	"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
+	
 }
 
 var popup_scene_registry := {

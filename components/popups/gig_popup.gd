@@ -13,6 +13,11 @@ class_name GigPopup
 
 var gig: WorkerTask
 
+#var last_displayed_progress: float = 0.0
+#var last_completions: int = 0
+var last_productivity: float = 0.0
+var pending_reset: bool = false
+
 func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
 
@@ -37,9 +42,47 @@ func _on_productivity_applied(_amount: float, _new_total: float) -> void:
 	_refresh_progress()
 
 
+var active_tween: Tween = null
 func _refresh_progress():
-	progress_bar.value = gig.get_progress_percent() * 100.0
-	#progress_bar.text = "%.1f / %.1f" % [gig.current_productivity, gig.productivity_required]
+	var percent := gig.get_progress_percent() * 100.0
+	var completions := gig.completions_done
+	var current_prod := gig.current_productivity
+
+	# Cancel any in-progress tween
+	if active_tween and active_tween.is_valid():
+		active_tween.kill()
+		active_tween = null
+
+	# 1. If we were holding at 100 from last frame, now snap to true progress and resume
+	if pending_reset:
+		progress_bar.value = percent
+		pending_reset = false
+
+	# 2. If productivity rolled over, tween to 100 and freeze
+	elif current_prod < last_productivity:
+		if progress_bar.value < 100.0:
+			active_tween = get_tree().create_tween()
+			active_tween.tween_property(progress_bar, "value", 100.0, 0.25)
+		else:
+			progress_bar.value = 100.0  # already 100
+		pending_reset = true
+
+	# 3. Normal case: just tween forward
+	else:
+		active_tween = get_tree().create_tween()
+		active_tween.tween_property(progress_bar, "value", percent, 0.3)
+
+	# Update completion label
+	var limit_text := "∞" if gig.completion_limit == -1 else str(gig.completion_limit)
+	completions_label.text = "Completions: %d / %s" % [completions, limit_text]
+
+	# Save current productivity for next frame
+	last_productivity = current_prod
+
+
+
+
+
 
 func _refresh_workers():
 	for child in worker_list.get_children():

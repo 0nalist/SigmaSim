@@ -10,6 +10,10 @@ bg_color = Color(0.0923971, 0.0923971, 0.092397, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d50uj"]
 bg_color = Color(0.968351, 0.357676, 0.466506, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="GigPopup" type="Panel"]
 anchors_preset = 15

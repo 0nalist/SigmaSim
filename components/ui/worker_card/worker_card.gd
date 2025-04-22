@@ -37,7 +37,8 @@ func setup(worker_ref: Worker) -> void:
 
 	if show_cost:
 		cost_label.visible = true
-		cost_label.text = "$%d + $%d" % [worker.sign_on_bonus, worker.day_rate]
+		cost_label.text = "Acquisition Cost: $%d + $%d per day" % [worker.sign_on_bonus, worker.day_rate]
+
 	else:
 		cost_label.visible = false
 
@@ -67,6 +68,6 @@ func update_productivity() -> void:
 func update_cost() -> void:
 	if show_cost:
 		cost_label.visible = true
-		cost_label.text = "$%d + $%d" % [worker.sign_on_bonus, worker.day_rate]
+		cost_label.text = "Acquisition Cost: $%d + $%d per day" % [worker.sign_on_bonus, worker.day_rate]
 	else:
 		cost_label.visible = false
