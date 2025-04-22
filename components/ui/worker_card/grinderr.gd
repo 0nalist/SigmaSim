@@ -36,6 +36,7 @@ func _create_hire_row(worker: Worker) -> Control:
 	card.show_cost = true
 	card.button_label = "Hire"
 	card.setup(worker)
+#	card.status_label.text = "" ##TODO Remove StatusLabel from hire_row
 	card.action_pressed.connect(func(w):
 		var cost = w.sign_on_bonus + w.day_rate
 		if PortfolioManager.attempt_spend(cost):
@@ -81,6 +82,7 @@ func _populate_work_tab():
 func _create_gig_card(gig: WorkerTask) -> Control:
 	var card = preload("res://components/ui/gig_card/gig_card.tscn").instantiate()
 	card.open_gig.connect(_on_open_gig)
+	
 	return card
 
 

@@ -79,3 +79,19 @@ func _find_next_button() -> Button:
 		if node.has_node("NextButton"):
 			return node.get_node("NextButton")
 	return null
+
+func save_data() -> void:
+	var user_data = PlayerManager.user_data
+
+	var selected_pronouns: Array[String] = []
+	if %BoyCheckBox.button_pressed:
+		selected_pronouns.append("he/him")
+	if %GirlCheckBox.button_pressed:
+		selected_pronouns.append("she/her")
+	if %CustomGender.button_pressed:
+		for line_edit in [%CustomPronounLineEdit1, %CustomPronounLineEdit2, %CustomPronounLineEdit3]:
+			var p = line_edit.text.strip_edges()
+			if p != "":
+				selected_pronouns.append(p)
+
+	user_data["pronouns"] = selected_pronouns

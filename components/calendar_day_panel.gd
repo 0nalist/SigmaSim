@@ -1,4 +1,4 @@
-extends Panel
+extends PanelContainer
 class_name CalendarDayPanel
 
 @onready var day_label: Label = %DayLabel

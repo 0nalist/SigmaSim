@@ -16,7 +16,7 @@ axis_stretch_vertical = 1
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m3g8w"]
 bg_color = Color(0, 0, 0, 0.713726)
 
-[node name="BrokeRage" type="Panel"]
+[node name="BrokeRage" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -31,12 +31,7 @@ app_title = "BrokeRage"
 app_icon = ExtResource("3_wfbhr")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2

@@ -46,16 +46,13 @@ texture = ExtResource("3_unqnx")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="Panel" type="Panel" parent="HBoxContainer"]
+[node name="Panel" type="PanelContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Panel"]
 layout_mode = 2
-offset_left = 4.0
-offset_right = 1045.0
-offset_bottom = 628.0
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10

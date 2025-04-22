@@ -1,0 +1,133 @@
+[gd_scene load_steps=7 format=3 uid="uid://cbafh0u48w88w"]
+
+[ext_resource type="Script" uid="uid://blnoae64ob0ul" path="res://components/ui/profile_creation/sexuality_entry_screen.gd" id="1_aqjp1"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_t2cd2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqjp1"]
+bg_color = Color(0, 0.270588, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wir2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a25aw"]
+bg_color = Color(0.854255, 0.38934, 0.819727, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mea83"]
+
+[node name="sexuality_entry_screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_aqjp1")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "I am attracted to people with names like"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="FemmesCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(450, 45)
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/hover = SubResource("StyleBoxFlat_aqjp1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5wir2")
+text = " Stephanie, Trixie. Nichole, @glossybunni "
+
+[node name="MascsCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(450, 45)
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/hover = SubResource("StyleBoxFlat_a25aw")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mea83")
+text = "Chad, Michael, Scott, @rockdude82"
+
+[node name="EnbyCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(450, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+text = " Sock, Gumbo, Xaxon, @anuancedsnail"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CustomNamesContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomNamesContainer"]
+layout_mode = 2
+text = "Add some names (optional):"
+
+[node name="CustomNameLineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/CustomNamesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+
+[node name="CustomNameLineEdit2" type="LineEdit" parent="MarginContainer/VBoxContainer/CustomNamesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+
+[node name="CustomNameLineEdit3" type="LineEdit" parent="MarginContainer/VBoxContainer/CustomNamesContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(35, 25)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="QuestionButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_t2cd2")
+theme_override_font_sizes/font_size = 10
+text = "Why do you need to know?"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/FemmesCheckBox" to="." method="_on_femmes_check_box_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/MascsCheckBox" to="." method="_on_mascs_check_box_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/EnbyCheckBox" to="." method="_on_enby_check_box_toggled"]

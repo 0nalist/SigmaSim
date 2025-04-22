@@ -1,4 +1,4 @@
-extends Panel
+extends PanelContainer
 class_name ProfilePanel
 
 signal login_requested(slot_id: int)

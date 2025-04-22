@@ -8,7 +8,7 @@ var user_data: Dictionary = {
 	"name": "",
 	"username": "",
 	"pronouns": "",
-	"sexuality": "",
+	"attracted_to": "",
 	"profile_picture_path": "",
 	"background_path": "",
 

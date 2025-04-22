@@ -11,7 +11,7 @@ signal new_profile_abandoned
 var step_scenes = [
 	preload("res://components/ui/profile_creation/name_entry_screen.tscn"),
 	preload("res://components/ui/profile_creation/pronoun_entry_screen.tscn"),
-	
+	preload("res://components/ui/profile_creation/sexuality_entry_screen.tscn"),
 	
 ]
 

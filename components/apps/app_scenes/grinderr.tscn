@@ -8,7 +8,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eluir"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="Grinderr" type="Panel"]
+[node name="Grinderr" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -28,12 +28,7 @@ default_window_size = Vector2(600, 380)
 [node name="TabContainer" type="TabContainer" parent="."]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 200)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 current_tab = 0
 
 [node name="Work" type="MarginContainer" parent="TabContainer"]
@@ -93,6 +88,7 @@ size_flags_vertical = 3
 [node name="HireList" type="VBoxContainer" parent="TabContainer/Hire/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="Footer" type="Control" parent="TabContainer/Hire/VBoxContainer"]
 custom_minimum_size = Vector2(0, 5)
