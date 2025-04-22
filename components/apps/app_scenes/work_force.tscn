@@ -23,6 +23,7 @@ script = ExtResource("1_30bye")
 app_title = "WorkForce"
 app_icon = ExtResource("3_c3wom")
 default_position = "left"
+only_one_instance_allowed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -70,7 +71,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 
-[node name="Button" type="Button" parent="MarginContainer"]
+[node name="GrinderrButton" type="Button" parent="MarginContainer"]
 custom_minimum_size = Vector2(175, 40)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -78,3 +79,5 @@ size_flags_vertical = 8
 text = "Hire on Grinderr"
 icon = ExtResource("4_wbg8h")
 expand_icon = true
+
+[connection signal="pressed" from="MarginContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]

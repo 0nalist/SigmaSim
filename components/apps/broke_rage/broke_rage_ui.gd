@@ -27,6 +27,7 @@ func _ready() -> void:
 	_on_cash_updated(PortfolioManager.cash)
 	_on_passive_income_updated(PortfolioManager.get_passive_income())
 	_on_investments_updated(PortfolioManager.get_total_investments())
+	_on_debt_updated()
 	MarketManager.refresh_prices()
 
 func _on_cash_updated(_cash: float) -> void:

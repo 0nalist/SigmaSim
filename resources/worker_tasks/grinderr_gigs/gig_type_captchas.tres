@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_wp5u2")
 title = "Filling Out Captchas"
-unit_name = ""
+unit_name = "Captcha completed"
 productivity_required = 6.0
 show_in_grinderr = true
 payout_type = "cash"

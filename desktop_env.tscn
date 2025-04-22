@@ -285,6 +285,8 @@ anchor_bottom = 1.0
 offset_top = -49.0
 grow_horizontal = 2
 grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_lpqk7")
 
 [node name="StartPanel" type="Panel" parent="TaskbarLayer/TaskbarWrapper"]
@@ -293,10 +295,11 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -393.0
+offset_top = -525.0
 offset_right = 300.0
-offset_bottom = -53.0
+offset_bottom = -185.0
 grow_vertical = 0
+scale = Vector2(1.4, 1.4)
 theme_override_styles/panel = SubResource("StyleBoxFlat_m483i")
 script = ExtResource("23_dik0q")
 
@@ -308,6 +311,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer"]
 layout_mode = 2
@@ -489,11 +493,11 @@ vertical_alignment = 1
 
 [node name="CalendarPopupUI" parent="TaskbarLayer" instance=ExtResource("16_g75lf")]
 unique_name_in_owner = true
-visible = false
-offset_left = 842.0
-offset_top = 397.0
-offset_right = -1.0
-offset_bottom = -49.0
+offset_left = 1274.0
+offset_top = 651.0
+offset_right = 431.0
+offset_bottom = 205.0
+scale = Vector2(0.6, 0.6)
 
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="mouse_exited" from="TaskbarLayer/TaskbarWrapper/StartPanel" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_mouse_exited"]

@@ -1,4 +1,5 @@
-extends MarginContainer
+extends Panel
+
 class_name GigCard
 
 signal open_gig(gig: WorkerTask)
@@ -15,10 +16,10 @@ var gig: WorkerTask
 func setup(gig_ref: WorkerTask):
 	gig = gig_ref
 	title_label.text = gig.title
-	progress_label.text = "Progress: %.1f / %.1f" % [gig.current_productivity, gig.productivity_required]
+	progress_label.text = "every %s (%.1f productivity)" % [gig.unit_name, gig.productivity_required]
 	payout_label.text = "Payout: $%.2f" % gig.payout_amount
 	if gig.completion_limit == -1:
-		limit_label.text = "Unlimited"
+		limit_label.text = "Unlimited Repeats"
 	else:
 		limit_label.text = "Limit: %d" % gig.completion_limit
 	workers_label.text = "Workers: %d" % gig.assigned_workers.size()

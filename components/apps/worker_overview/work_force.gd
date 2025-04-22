@@ -59,3 +59,7 @@ func _on_worker_updated(worker: Worker) -> void:
 	for card in worker_list.get_children():
 		if card is WorkerCard and card.worker == worker:
 			card.update_all()
+
+
+func _on_grinderr_button_pressed() -> void:
+	WindowManager.launch_app_by_name("Grinderr")

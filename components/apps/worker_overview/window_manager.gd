@@ -21,6 +21,19 @@ var app_registry := {
 	
 }
 
+var start_apps := {
+	"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
+	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
+	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
+	"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
+	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
+	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
+	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
+	
+}
+
+
+
 var popup_scene_registry := {
 	"BillPopupUI": preload("res://components/popups/bill_popup_ui.tscn")
 }
@@ -78,7 +91,10 @@ func focus_window(window: WindowFrame) -> void:
 	
 	focused_window = window
 	window.on_focus()
-
+	
+	if window.window_state == window.WindowState.MINIMIZED:
+		window.restore()
+	
 	# 🛠️ Re-add to root and move to front
 	var root = get_tree().root
 	if window.get_parent() != root:

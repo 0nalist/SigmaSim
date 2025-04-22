@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="WorkerTask" load_steps=2 format=3 uid="uid://bp3hm506v87qc"]
 
-[ext_resource type="Script" uid="uid://bu3obp0qfk5eg" path="res://resources/worker_tasks/worker_task.gd" id="1_0yc2t"]
+[ext_resource type="Script" uid="uid://bu3obp0qfk5eg" path="res://resources/worker_tasks/worker_task.gd" id="1_eqhp2"]
 
 [resource]
-script = ExtResource("1_0yc2t")
+script = ExtResource("1_eqhp2")
 title = "Posing as a Satisfied Customer"
-unit_name = ""
+unit_name = "pitch"
 productivity_required = 199.0
 show_in_grinderr = true
 payout_type = "cash"

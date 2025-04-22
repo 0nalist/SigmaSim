@@ -5,8 +5,8 @@ class_name StartPanelWindow
 
 
 func _ready() -> void:
-	for app_name in WindowManager.app_registry.keys():
-		var app_scene: PackedScene = WindowManager.app_registry[app_name]
+	for app_name in WindowManager.start_apps.keys():
+		var app_scene: PackedScene = WindowManager.start_apps[app_name]
 		var preview = app_scene.instantiate()
 
 		if not (preview is BaseAppUI):

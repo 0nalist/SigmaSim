@@ -275,6 +275,8 @@ func unmaximize() -> void:
 
 func on_focus():
 	modulate = Color(1, 1, 1, 1)
+	if window_state == WindowState.MINIMIZED:
+		restore()
 
 
 func on_unfocus():

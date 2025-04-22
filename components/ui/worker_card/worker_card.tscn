@@ -36,18 +36,21 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 16
 text = "Name"
 
 [node name="TypeLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 16
 text = "Type"
 
 [node name="StatusLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 16
 text = "Status"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
@@ -58,6 +61,7 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 16
 text = "Productivity"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
@@ -68,6 +72,7 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 16
 text = "Cost"
 
 [node name="ActionButton" type="Button" parent="."]
@@ -76,4 +81,5 @@ custom_minimum_size = Vector2(80, 20)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
+theme_override_font_sizes/font_size = 16
 text = "Action"
