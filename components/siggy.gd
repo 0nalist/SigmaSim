@@ -11,18 +11,22 @@ var bounce_speed := 0.08  # Time per bounce
 
 
 func _ready():
-	#hide()
+	hide()
 	z_index = 1020
 	await get_tree().create_timer(1).timeout
 	call_deferred("slide_in_from_right")
 
 func slide_out_from_behind(window: WindowFrame): ## TODO
+	show()
 	z_index = window.z_index -1
 	position = window.position
 	## decide which end to slide out from based on where the screen is (move towards most free space)
 	## find position that is siggy's size plus margin to the direction determined above
 	## tween there
 	
+
+
+
 
 func slide_in_from_bottom_right():
 	
@@ -43,26 +47,49 @@ func slide_in_from_bottom_right():
 
 
 func slide_in_from_right():
+	show()
 	var screen_size = get_viewport_rect().size
 	var siggy_size = size
 
 	if siggy_size == Vector2.ZERO:
-		# fallback: manually size based on contents
 		siggy_size = get_minimum_size()
 		if siggy_size == Vector2.ZERO:
-			siggy_size = Vector2(200, 200)  # Failsafe default
+			siggy_size = Vector2(200, 200)  # Fallback default
 
-	var target_pos = screen_size - siggy_size + Vector2(0, -100)
+	# Target position: halfway down screen, 75% across (right quarter)
+	var target_pos = Vector2(
+		screen_size.x * 0.92, #- siggy_size.x / 4,
+		screen_size.y * 0.5 - siggy_size.y / 2
+	)
+
+	# Start position: offscreen to the right
 	var start_pos = Vector2(screen_size.x + siggy_size.x, target_pos.y)
 
 	position = start_pos
 	show()
-	create_tween().tween_property(self, "position", target_pos, slide_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	var tween = create_tween()
+	tween.tween_property(self, "position", target_pos, slide_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
 
 
 
 func talk(text: String, time_per_char := 0.05) -> void:
 	speech_label.text = text
+	
+	await get_tree().process_frame
+	speech_label.visible_ratio = 1.0  # ensure full size for height calculation
+
+	# Get the minimum height needed for the text
+	var label_height = speech_label.get_combined_minimum_size().y
+
+	# Optional: clamp height to a max value if needed
+	label_height = clamp(label_height, 60, 300)
+
+	# Add padding/margin if desired
+	var padding = 20
+	speech_bubble.custom_minimum_size.y = label_height + padding
+	
 	speech_label.visible_ratio = 0.0
 	speech_bubble.visible = true
 	speech_bubble.modulate.a = 0.0

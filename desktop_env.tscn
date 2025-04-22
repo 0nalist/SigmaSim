@@ -493,6 +493,7 @@ vertical_alignment = 1
 
 [node name="CalendarPopupUI" parent="TaskbarLayer" instance=ExtResource("16_g75lf")]
 unique_name_in_owner = true
+visible = false
 offset_left = 1274.0
 offset_top = 651.0
 offset_right = 431.0

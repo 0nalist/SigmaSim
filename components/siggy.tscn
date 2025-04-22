@@ -21,7 +21,7 @@ script = ExtResource("1_v5hgp")
 [node name="SiggySprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(-43, 99)
-scale = Vector2(0.35, 0.35)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_qdwsr")
 
 [node name="TalkButton" type="Button" parent="."]
@@ -36,26 +36,25 @@ text = "talk 4 me"
 
 [node name="SpeechBubble" type="NinePatchRect" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 50)
+custom_minimum_size = Vector2(145, 50)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -25.0
-offset_right = 50.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -155.0
+offset_top = -91.0
+offset_right = -10.0
+offset_bottom = -41.0
+grow_horizontal = 0
+grow_vertical = 0
 texture = ExtResource("4_lgbmc")
 patch_margin_left = 20
 patch_margin_top = 20
 patch_margin_right = 20
 patch_margin_bottom = 20
 axis_stretch_horizontal = 2
-axis_stretch_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="SpeechBubble"]
 layout_mode = 1

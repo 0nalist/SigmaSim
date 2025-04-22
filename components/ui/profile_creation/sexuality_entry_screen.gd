@@ -10,9 +10,6 @@ signal step_valid(valid: bool)
 
 
 func _ready():
-	#femmes_check_box.toggled.connect(_check_validity)
-	#mascs_check_box.toggled.connect(_check_validity)
-	#enby_check_box.toggled.connect(_check_validity)
 	_check_validity()
 
 	question_button.pressed.connect(_simulate_selections)

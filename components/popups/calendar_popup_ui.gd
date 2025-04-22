@@ -9,6 +9,7 @@ extends BasePopupUI
 
 
 func _ready():
+	hide()
 	autopay_checkbox.button_pressed = BillManager.autopay_enabled
 	autopay_checkbox.toggled.connect(_on_autopay_toggled)
 	TimeManager.day_passed.connect(_on_day_passed)
