@@ -5,6 +5,8 @@ signal productivity_applied(amount: float, new_total: float)
 
 
 @export var title: String
+@export var unit_name: String
+
 @export var productivity_required: float
 @export var show_in_grinderr: bool = false
 @export var payout_type: String = "cash"  # "cash", "reputation", "product"
