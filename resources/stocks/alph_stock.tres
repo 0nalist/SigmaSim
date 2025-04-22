@@ -6,7 +6,7 @@
 script = ExtResource("1_2ohau")
 symbol = "$ALPH"
 price = 1.0
-shares_outstanding = 1000
+shares_outstanding = 10000
 intrinsic_value = 1.0
 trailing_average = 1.0
 smoothing_factor = 0.05

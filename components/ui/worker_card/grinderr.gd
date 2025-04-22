@@ -5,11 +5,14 @@ class_name Grinderr
 
 @onready var tab_container: TabContainer = %TabContainer
 @onready var hire_list: VBoxContainer = %HireList
+@onready var refresh_countdown_label: Label = %RefreshCountdownLabel
+
 
 var available_gigs: Array[WorkerTask] = []
 
 func _ready() -> void:
-	#default_window_size = Vector2(350, 420)
+	TimeManager.minute_passed.connect(_on_minute_passed)
+	_update_refresh_countdown()
 	app_title = "Grinderr"
 	#app_icon = preload("res://assets/Tralalero_tralala.png")
 	emit_signal("title_updated", app_title)
@@ -85,3 +88,15 @@ func _on_open_gig(gig: WorkerTask) -> void:
 	var popup = gig_popup_scene.instantiate()
 	WindowManager.launch_popup(popup, gig.title)
 	popup.setup(gig)
+
+func _on_minute_passed(_in_game_minutes: int) -> void:
+	_update_refresh_countdown()
+
+func _update_refresh_countdown():
+	var minutes_today := TimeManager.in_game_minutes
+	var minutes_left := 1440 - minutes_today  # Total minutes in a day
+
+	# Format as hours:minutes for style
+	var hours := minutes_left / 60
+	var minutes := minutes_left % 60
+	refresh_countdown_label.text = "Next refresh in %02d:%02d" % [hours, minutes]

@@ -18,6 +18,7 @@ func _ready() -> void:
 		var button := Button.new()
 		button.text = preview.app_title
 		button.icon = preview.app_icon
+		button.add_theme_constant_override("icon_max_width", 64)
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		#button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		#button.add_theme_constant_override("icon_margin", 16)
@@ -54,7 +55,7 @@ func toggle_start_panel() -> void:
 	else:
 		#popup() #window behavior
 		show()
-		position = Vector2(0, 259)
+		
 
 
 

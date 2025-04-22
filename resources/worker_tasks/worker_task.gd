@@ -20,7 +20,6 @@ var completions_done: int = 0
 func apply_productivity(amount: float) -> void:
 	current_productivity += amount
 	emit_signal("productivity_applied", amount, current_productivity)
-	print("productivity applied: " + str(amount))
 	while current_productivity >= productivity_required and not is_complete():
 		current_productivity -= productivity_required
 		completions_done += 1

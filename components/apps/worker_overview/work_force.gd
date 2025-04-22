@@ -5,7 +5,7 @@ class_name WorkerOverviewUI
 @onready var selected_name_label: Label = %SelectedNameLabel
 
 func _ready() -> void:
-	app_title = "Gruntwork"
+	app_title = "WorkForce"
 	_populate_worker_list()
 	WorkerManager.worker_selected.connect(_on_worker_selected)
 	WorkerManager.worker_hired.connect(_on_worker_hired)

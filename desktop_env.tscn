@@ -36,6 +36,17 @@ border_width_bottom = 1
 border_width_top = 1
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m483i"]
+bg_color = Color(0.0705882, 0, 0.407843, 0.815686)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6x3lq"]
+bg_color = Color(0.306923, 0.306923, 0.306923, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o42ww"]
 texture = ExtResource("1_ovitq")
 texture_margin_left = 2.0
@@ -60,17 +71,6 @@ texture_margin_bottom = 2.0
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_75kf8"]
 texture = ExtResource("2_75kf8")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m483i"]
-bg_color = Color(0.125911, 0.125911, 0.125911, 0.529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6x3lq"]
-bg_color = Color(0.306923, 0.306923, 0.306923, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-
 [node name="DesktopEnv" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -86,10 +86,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -366.0
-offset_top = -207.0
-offset_right = 356.0
-offset_bottom = 77.0
+offset_left = -487.0
+offset_top = -313.0
+offset_right = 469.0
+offset_bottom = 247.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_5eiy6")
@@ -287,6 +287,130 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_lpqk7")
 
+[node name="StartPanel" type="Panel" parent="TaskbarLayer/TaskbarWrapper"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -393.0
+offset_right = 300.0
+offset_bottom = -53.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_m483i")
+script = ExtResource("23_dik0q")
+
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("7_o42ww")
+
+[node name="Panel" type="Panel" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer"]
+visible = false
+z_as_relative = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6x3lq")
+
+[node name="Label" type="Label" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.5
+offset_top = -10.0
+offset_right = 38.5
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_lx1wk")
+text = "S I G M A"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="AppListContainer" type="VBoxContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Favorites" type="VBoxContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="SiggyButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Siggy"
+
+[node name="LoadButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Load"
+
+[node name="SaveButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Save"
+
+[node name="SleepButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("1_lx1wk")
+theme_override_font_sizes/font_size = 14
+text = " sleep "
+
+[node name="SleepButton2" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("1_lx1wk")
+theme_override_font_sizes/font_size = 14
+text = "week sleep "
+
+[node name="SettingsButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("7_o42ww")
+icon = ExtResource("16_xcmse")
+
 [node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TaskbarWrapper"]
 layout_mode = 1
 anchors_preset = 15
@@ -371,129 +495,14 @@ offset_top = 397.0
 offset_right = -1.0
 offset_bottom = -49.0
 
-[node name="StartPanel" type="Panel" parent="TaskbarLayer"]
-unique_name_in_owner = true
-offset_left = 3.0
-offset_top = 253.0
-offset_right = 303.0
-offset_bottom = 593.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_m483i")
-script = ExtResource("23_dik0q")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TaskbarLayer/StartPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("7_o42ww")
-
-[node name="Panel" type="Panel" parent="TaskbarLayer/StartPanel/VBoxContainer"]
-z_as_relative = false
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_6x3lq")
-
-[node name="Label" type="Label" parent="TaskbarLayer/StartPanel/VBoxContainer/Panel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -38.5
-offset_top = -10.0
-offset_right = 38.5
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-theme_override_fonts/font = ExtResource("1_lx1wk")
-text = "S I G M A"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/StartPanel/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 4.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="ScrollContainer" type="ScrollContainer" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer"]
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="AppListContainer" type="VBoxContainer" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 10
-
-[node name="Favorites" type="VBoxContainer" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer"]
-layout_mode = 2
-alignment = 2
-
-[node name="SiggyButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Siggy"
-
-[node name="LoadButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Load"
-
-[node name="SaveButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Save"
-
-[node name="SleepButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
-layout_mode = 2
-focus_mode = 0
-mouse_filter = 1
-theme_override_fonts/font = ExtResource("1_lx1wk")
-theme_override_font_sizes/font_size = 14
-text = " sleep "
-
-[node name="SleepButton2" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
-layout_mode = 2
-focus_mode = 0
-mouse_filter = 1
-theme_override_fonts/font = ExtResource("1_lx1wk")
-theme_override_font_sizes/font_size = 14
-text = "week sleep "
-
-[node name="SettingsButton" type="Button" parent="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("7_o42ww")
-icon = ExtResource("16_xcmse")
-
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]
+[connection signal="mouse_exited" from="TaskbarLayer/TaskbarWrapper/StartPanel" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_mouse_exited"]
+[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SiggyButton" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_siggy_button_pressed"]
+[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_sleep_button_pressed"]
+[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton2" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_sleep_button_2_pressed"]
+[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SettingsButton" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_settings_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="TaskbarLayer/StartPanel" method="_on_settings_button_pressed"]
+[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_settings_button_pressed"]
 [connection signal="gui_input" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel" to="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel" method="_on_gui_input"]
-[connection signal="mouse_exited" from="TaskbarLayer/StartPanel" to="TaskbarLayer/StartPanel" method="_on_mouse_exited"]
-[connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SiggyButton" to="TaskbarLayer/StartPanel" method="_on_siggy_button_pressed"]
-[connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/LoadButton" to="." method="_on_load_button_pressed"]
-[connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton" to="TaskbarLayer/StartPanel" method="_on_sleep_button_pressed"]
-[connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton2" to="TaskbarLayer/StartPanel" method="_on_sleep_button_2_pressed"]
-[connection signal="pressed" from="TaskbarLayer/StartPanel/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SettingsButton" to="TaskbarLayer/StartPanel" method="_on_settings_button_pressed"]

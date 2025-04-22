@@ -53,31 +53,33 @@ func _refresh_progress():
 		active_tween.kill()
 		active_tween = null
 
-	# 1. If we were holding at 100 from last frame, now snap to true progress and resume
+	# 1. If we were holding at 100 from last frame, now reset to 0 and tween up
 	if pending_reset:
-		progress_bar.value = percent
+		progress_bar.value = 0.0
+		active_tween = get_tree().create_tween()
+		active_tween.tween_property(progress_bar, "value", percent, 0.3)
 		pending_reset = false
 
-	# 2. If productivity rolled over, tween to 100 and freeze
+	# 2. If productivity wrapped, tween to 100 and hold
 	elif current_prod < last_productivity:
 		if progress_bar.value < 100.0:
 			active_tween = get_tree().create_tween()
 			active_tween.tween_property(progress_bar, "value", 100.0, 0.25)
 		else:
-			progress_bar.value = 100.0  # already 100
+			progress_bar.value = 100.0
 		pending_reset = true
 
-	# 3. Normal case: just tween forward
+	# 3. Normal forward progress
 	else:
 		active_tween = get_tree().create_tween()
 		active_tween.tween_property(progress_bar, "value", percent, 0.3)
 
-	# Update completion label
+	# Completion label
 	var limit_text := "∞" if gig.completion_limit == -1 else str(gig.completion_limit)
 	completions_label.text = "Completions: %d / %s" % [completions, limit_text]
 
-	# Save current productivity for next frame
 	last_productivity = current_prod
+
 
 
 
