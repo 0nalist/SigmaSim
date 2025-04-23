@@ -45,23 +45,11 @@ func _on_step_valid(valid: bool) -> void:
 	next_button.disabled = not valid
 
 func _finish_profile_creation():
-	var name = user_data.get("name", "Unnamed")
-	var username = user_data.get("username", "user")
-	var pic_path = user_data.get("profile_pic", "res://assets/profiles/default.png")
-	var background_path = user_data.get("background_path", "res://assets/Bliss_(Windows_XP) (2).png")
-
 	var slot_id = SaveManager.get_next_available_slot()
-
-	# Save basic profile metadata
-	SaveManager.create_new_profile(slot_id, name, username, pic_path, background_path)
-
-	# Store full identity/stats in PlayerManager
-	PlayerManager.user_data = user_data.duplicate(true)
-	PlayerManager.set_slot_id(slot_id)
-	#PlayerManager.save() ## NO method exists
-
+	SaveManager.initialize_new_profile(slot_id, user_data)
 	emit_signal("profile_created", slot_id)
 	queue_free()
+
 
 
 

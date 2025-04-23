@@ -57,6 +57,29 @@ func set_stat(key: String, value: Variant) -> void:
 		_: user_data[key] = value
 
 
+func reset():
+	user_data = {
+		"name": "",
+		"username": "",
+		"pronouns": "",
+		"attracted_to": "",
+		"profile_picture_path": "",
+		"background_path": "",
+
+		"alpha": 0.0,
+		"beta": 0.0,
+		"delta": 0.0,
+		"gamma": 0.0,
+		"omega": 0.0,
+		"sigma": 0.0,
+
+		"zodiac_sign": "",
+		"mbti": "",
+
+		"unlocked_perks": [],
+		"seen_dialogue_ids": []
+	}
+	slot_id = -1
 
 
 

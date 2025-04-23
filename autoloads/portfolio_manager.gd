@@ -11,7 +11,7 @@ var credit_limit: float = 2000.0
 var credit_used: float = 0.0
 var credit_interest_rate: float = 0.3  # 30% by default
 
-var student_loans: float = 1.11
+var student_loans: float
 
 
 ## --- Income sources
@@ -267,4 +267,30 @@ func load_from_data(data: Dictionary) -> void:
 
 	emit_signal("cash_updated", cash)
 	emit_signal("credit_updated", credit_used, credit_limit)
+	emit_investment_update()
+
+
+func reset():
+	cash = 0.0
+	rent = 0.0
+	interest = 0.0
+
+	credit_limit = 2000.0
+	credit_used = 0.0
+	credit_interest_rate = 0.3
+
+	student_loans = 0.0
+
+	employee_income = 0.0
+	passive_income = 0.0
+
+	stocks_owned.clear()
+	crypto_owned.clear()
+	stock_data.clear()
+	miners.clear()
+	businesses.clear()
+
+	emit_signal("cash_updated", cash)
+	emit_signal("credit_updated", credit_used, credit_limit)
+	emit_signal("resource_changed", "debt", get_total_debt())
 	emit_investment_update()

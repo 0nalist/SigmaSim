@@ -14,6 +14,7 @@ signal step_valid(valid: bool)
 
 var tooltip_tween: Tween = null
 
+var selected_background_name: String = ""
 var selected_background: String = ""
 
 func _ready():
@@ -40,7 +41,10 @@ func _on_background_selected(button: Button) -> void:
 func save_data() -> void:
 	var user_data = PlayerManager.user_data
 	user_data["background_path"] = selected_background
-	print("selected_background saved: " + str(selected_background))
+	user_data["background"] = selected_background_name
+	print("Selected background name: " + selected_background_name)
+	print("Selected background path: " + selected_background)
+
 	
 func show_tooltip_from_button(button: Button) -> void:
 	var tooltip_text = button.tooltip_text
@@ -80,32 +84,39 @@ func show_tooltip_from_button(button: Button) -> void:
 func _on_dropout_button_pressed() -> void:
 	var panel = dropout_button.get_parent()
 	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background_name = "The Dropout"
 	_on_background_selected(dropout_button)
+
 
 func _on_burnout_button_pressed() -> void:
 	var panel = burnout_button.get_parent()
 	selected_background = get_path_to_texture_of_panel(panel)
 	print("selected bg: " + str(selected_background))
+	selected_background_name = "The Burnout"
 	_on_background_selected(burnout_button)
 
 func _on_gamer_button_pressed() -> void:
 	var panel = gamer_button.get_parent()
 	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background_name = "The Gamer"
 	_on_background_selected(gamer_button)
 
 func _on_manager_button_pressed() -> void:
 	var panel = manager_button.get_parent()
 	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background_name = "The Manager"
 	_on_background_selected(manager_button)
 
 func _on_postgrad_button_pressed() -> void:
 	var panel = postgrad_button.get_parent()
 	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background_name = "The Postgrad"
 	_on_background_selected(postgrad_button)
 
 func _on_stoic_button_pressed() -> void:
 	var panel = stoic_button.get_parent()
 	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background_name = "The Stoic"
 	_on_background_selected(stoic_button)
 
 func get_path_to_texture_of_panel(tex_rect: TextureRect) -> String:

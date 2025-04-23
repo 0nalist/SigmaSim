@@ -39,35 +39,25 @@ func get_next_available_slot() -> int:
 		i += 1
 	return i
 
-func create_new_profile(
-	slot_id: int,
-	profile_name: String,
-	username: String,
-	picture_path: String = "res://assets/profiles/default.png",
-	background_path: String = "res://assets/Bliss_(Windows_XP) (2).png"
-	
-) -> void:
-	var metadata = load_slot_metadata()
-	metadata["slot_%d" % slot_id] = {
-		"name": profile_name,
-		"username": username,
-		"profile_picture_path": picture_path,
-		"background_path": background_path,
-		"last_played": Time.get_datetime_string_from_system(),
-		"cash": 0.0
-	}
-	save_slot_metadata(metadata)
 
-	# Save initial data
-	var data := {
-		"portfolio": {},
-		"time": TimeManager.get_default_save_data(),
-		"windows": [],
-		"player": PlayerManager.get_save_data() # If pre-creating full player state
-	}
-	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
-	file.store_string(JSON.stringify(data, "\t"))
-	file.close()
+func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
+	PlayerManager.reset()
+	PortfolioManager.reset()
+
+	# Set internal values
+	PlayerManager.user_data = user_data.duplicate(true)
+	PlayerManager.set_slot_id(slot_id)
+
+	# Apply background effects
+	var background = user_data.get("background", "")
+	if background != "":
+		PlayerManager.apply_background_effects(background)
+
+	# Save full game state + metadata (in one place)
+	save_to_slot(slot_id)
+
+
+
 
 # --- Save/Load Full Game State ---
 func save_to_slot(slot_id: int) -> void:
@@ -93,11 +83,19 @@ func save_to_slot(slot_id: int) -> void:
 	var slot_key = "slot_%d" % slot_id
 	if not metadata.has(slot_key):
 		metadata[slot_key] = {}
+	var player_data = PlayerManager.get_save_data()
+	metadata[slot_key]["name"] = player_data.get("name", "Unnamed")
+	metadata[slot_key]["username"] = player_data.get("username", "user")
+	metadata[slot_key]["profile_picture_path"] = player_data.get("profile_picture_path", "res://assets/profiles/default.png")
+	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
+
 	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
 	metadata[slot_key]["cash"] = PortfolioManager.cash
+
 	save_slot_metadata(metadata)
 
 func load_from_slot(slot_id: int) -> void:
+	reset_managers()
 	print("loading from slot")
 	TimeManager.start_time() ## Should put this somewhere better. I need to initialize vars like time upon new profile creation
 	var path = get_slot_path(slot_id)
@@ -135,6 +133,12 @@ func load_from_slot(slot_id: int) -> void:
 	#	NPCManager.load_from_data(data["npcs"])
 	if data.has("windows"): # should ALWAYS be last
 		WindowManager.load_from_data(data["windows"])
+
+func reset_managers():
+	PortfolioManager.reset()
+	PlayerManager.reset()
+
+
 
 # --- Helper Functions ---
 func vector2_to_dict(v: Vector2) -> Dictionary:

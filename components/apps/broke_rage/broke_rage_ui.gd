@@ -23,6 +23,7 @@ func _ready() -> void:
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
 	PortfolioManager.investments_updated.connect(_on_investments_updated)
 	
+	await get_tree().process_frame
 	# Initial UI update
 	_on_cash_updated(PortfolioManager.cash)
 	_on_passive_income_updated(PortfolioManager.get_passive_income())
