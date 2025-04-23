@@ -22,6 +22,7 @@ var base_bill_amounts := {
 
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
+	PortfolioManager.credit_updated.connect(_on_credit_updated)
 	print("active bills: " + str(active_bills))
 	
 
@@ -61,6 +62,17 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 
 		call_deferred("center_bill_window", win)
 		active_bills[today_key].append(popup)
+
+func _on_credit_updated(used: float, limit: float) -> void:
+	base_bill_amounts["Credit Card"] = used
+
+	# Update currently open Credit Card bill popup, if any
+	for bill_list in active_bills.values():
+		for popup in bill_list:
+			if popup.bill_name == "Credit Card":
+				popup.amount = used
+				popup.update_amount_display()
+
 
 func center_bill_window(win: WindowFrame) -> void:
 	WindowManager.center_window(win)

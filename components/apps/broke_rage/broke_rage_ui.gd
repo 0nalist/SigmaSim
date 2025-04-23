@@ -75,3 +75,7 @@ func _on_resource_changed(resource: String, _value: float) -> void:
 
 func _on_debt_updated() -> void:
 	debt_label.text = "Debt: $%.2f" % PortfolioManager.get_total_debt()
+
+
+func _on_ower_view_button_pressed() -> void:
+	WindowManager.launch_app_by_name("OwerView")

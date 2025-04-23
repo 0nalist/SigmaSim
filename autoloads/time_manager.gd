@@ -9,6 +9,9 @@ var time_ticking := true
 var in_game_minutes := 23 * 60 
 var time_accumulator := 0.0
 
+@export var autosave_interval: int = 6 # Number of in-game hours between autosaves
+var autosave_hour_counter := 0
+
 @export var default_start_date_time: Dictionary = {
 	"in_game_minutes": 23 * 60,
 	"current_day": 1,
@@ -16,7 +19,8 @@ var time_accumulator := 0.0
 	"current_year": 2025,
 	}
 
-
+var current_minute := 0
+var current_hour := 0
 var current_day := 1
 var current_month := 3
 var current_year := 2025
@@ -65,10 +69,18 @@ func _process(delta: float) -> void:
 func advance_time(minutes_to_add: int) -> void:
 	for _i in minutes_to_add:
 		in_game_minutes += 1
+		current_hour = (in_game_minutes / 60) % 24
+		current_minute = in_game_minutes % 60
+
 		emit_signal("minute_passed", in_game_minutes)
 
-		if in_game_minutes % 60 == 0:
-			emit_signal("hour_passed", (in_game_minutes / 60) % 24)
+		if current_minute == 0:
+			emit_signal("hour_passed", current_hour)
+			autosave_hour_counter += 1
+			if autosave_hour_counter >= autosave_interval:
+				autosave_hour_counter = 0
+				SaveManager.save_to_slot(PlayerManager.get_slot_id())
+				print("💾 Autosave triggered at hour %d" % current_hour)
 
 		if in_game_minutes >= 24 * 60:
 			in_game_minutes = 0
@@ -105,8 +117,8 @@ func is_leap_year(year: int) -> bool:
 
 
 func get_formatted_time() -> String:
-	var hour_24 = in_game_minutes / 60
-	var minute = in_game_minutes % 60
+	var hour_24 = current_hour
+	var minute = current_minute
 	var hour_12 = hour_24 % 12
 	if hour_12 == 0:
 		hour_12 = 12
@@ -168,6 +180,8 @@ func get_save_data() -> Dictionary:
 
 func load_from_data(data: Dictionary) -> void:
 	in_game_minutes = data.get("in_game_minutes", 0)
+	current_hour = (in_game_minutes / 60) % 24
+	current_minute = in_game_minutes % 60
 	current_day = data.get("current_day", 1)
 	current_month = data.get("current_month", 1)
 	current_year = data.get("current_year", 2025)
@@ -175,7 +189,7 @@ func load_from_data(data: Dictionary) -> void:
 
 	is_fast_forwarding = data.get("is_fast_forwarding", false)
 	fast_forward_minutes_left = data.get("fast_forward_minutes_left", 0)
-
+	autosave_hour_counter = 0
 	emit_signal("minute_passed", in_game_minutes)
 	emit_signal("hour_passed", (in_game_minutes / 60) % 24)
 	emit_signal("day_passed", current_day, current_month, current_year)

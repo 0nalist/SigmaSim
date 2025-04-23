@@ -1,0 +1,78 @@
+[gd_scene load_steps=2 format=3 uid="uid://fm1t0mtn2omn"]
+
+[ext_resource type="Script" uid="uid://dggifcnlnuj3y" path="res://components/ui/loan_card.gd" id="1_bgg76"]
+
+[node name="LoanCard" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("1_bgg76")
+
+[node name="SummaryPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="SummaryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SummaryPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="LoanTitleLabel" type="Label" parent="SummaryPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Loan name"
+
+[node name="LoanAmountLabel" type="Label" parent="SummaryPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Credit Card"
+
+[node name="LoanProgressBar" type="ProgressBar" parent="SummaryPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Control" type="Control" parent="SummaryPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SummaryPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PaySlider" type="HSlider" parent="SummaryPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PayLabel" type="Label" parent="SummaryPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.46
+mouse_filter = 1
+text = "$0.00"
+
+[node name="PayButton" type="Button" parent="SummaryPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_mode = 0
+text = "Pay Credit "

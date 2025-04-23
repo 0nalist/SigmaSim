@@ -131,14 +131,14 @@ var background_effects := {
 		#AppManager.unlock_app("Minerr")
 		#ResourceManager.add_gpu("BasicGPU", 3),
 
-	#"The Manager": func():
-		#PlayerManager.set_var("student_loans", 120000.0)
+	"The Manager": func():
+		PortfolioManager.set_student_loans(120000.0),
 		#pass
 		#Grinderr.set_permanent_discount(0.5)
 		#Grinderr.set_first_employee_free(true)
 
-	#"The Postgrad": func():
-		#pass
+	"The Postgrad": func():
+		PortfolioManager.set_student_loans(360000.0),
 		#PlayerManager.set_var("student_loans", 360000.0)
 		#EffectManager.add_modifier("PRODUCTIVITY_PER_CLICK_MULT", 2.0, "Postgrad")
 		#EffectManager.add_modifier("GPU_POWER_MULT", 2.0, "Postgrad")
@@ -147,7 +147,7 @@ var background_effects := {
 	
 	"The Stoic": func():
 		PortfolioManager.credit_used = 100000.0
-		PortfolioManager.credit_limit = 25000.0
+		PortfolioManager.credit_limit = 100000.0
 }
 
 func apply_background_effects(background_name: String) -> void:
