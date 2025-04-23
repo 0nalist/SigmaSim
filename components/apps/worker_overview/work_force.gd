@@ -11,6 +11,7 @@ func _ready() -> void:
 	WorkerManager.worker_hired.connect(_on_worker_hired)
 	WorkerManager.worker_assigned.connect(_on_worker_assigned)
 	WorkerManager.worker_idle.connect(_on_worker_idle)
+	WorkerManager.worker_unpaid.connect(_on_worker_unpaid)
 
 func _on_worker_hired(worker: Worker) -> void:
 	# Optional: prevent duplicates if list isn’t cleared first
@@ -47,6 +48,12 @@ func _create_worker_card(worker: Worker) -> Control:
 
 func _on_worker_selected(worker: Worker) -> void:
 	selected_name_label.text = worker.name
+
+func _on_worker_unpaid(worker: Worker) -> void:
+	for card in worker_list.get_children():
+		if card.worker == worker:
+			card.update_status()
+
 
 func _on_worker_idle(worker: Worker) -> void:
 	_on_worker_updated(worker)

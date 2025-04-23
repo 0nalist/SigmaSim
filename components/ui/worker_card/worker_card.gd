@@ -4,7 +4,9 @@ class_name WorkerCard
 signal action_pressed(worker: Worker)
 
 @export var show_cost: bool = false
+@export var show_status: bool = true
 @export var button_label: String = "Select"
+
 
 var worker: Worker
 
@@ -19,7 +21,8 @@ var worker: Worker
 func setup(worker_ref: Worker) -> void:
 	if not is_inside_tree():
 		await ready
-	
+		
+	status_label.visible = show_status
 	worker = worker_ref
 	name_label.text = worker.name
 
@@ -57,12 +60,19 @@ func update_all() -> void:
 	update_cost()
 
 func update_status() -> void:
-	if worker.assigned_task != null:
+	if not show_status:
+		return
+
+	if worker.unpaid:
+		status_label.text = "Unpaid"
+		status_label.modulate = Color.RED
+	elif worker.assigned_task != null:
 		status_label.text = str(worker.assigned_task.title)
 		status_label.modulate = Color.WHITE
 	else:
 		status_label.text = "Idle"
 		status_label.modulate = Color.YELLOW
+
 
 func update_productivity() -> void:
 	prod_label.text = "Prod/tick: %.2f" % worker.productivity_per_tick

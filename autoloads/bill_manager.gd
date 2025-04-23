@@ -42,8 +42,14 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	var bills_today = get_due_bills_for_date(new_day, new_month, new_year)
 
 	for bill_name in bills_today:
+		var amount := get_bill_amount(bill_name)
+		if amount <= 0.0:
+			print("Skipping %s bill (amount is 0)" % bill_name)
+			continue
+
 		if autopay_enabled and attempt_to_autopay(bill_name):
 			continue
+
 
 		var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
 		popup.init(bill_name)
@@ -68,7 +74,7 @@ func _on_credit_updated(used: float, limit: float) -> void:
 		for popup in bill_list:
 			if is_instance_valid(popup) and popup.bill_name == "Credit Card":
 				popup.amount = get_bill_amount("Credit Card")
-				popup.update_amount_display()
+				popup.update_amount_display() 
 
 
 func center_bill_window(win: WindowFrame) -> void:

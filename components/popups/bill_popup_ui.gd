@@ -32,6 +32,9 @@ func _ready() -> void:
 func close() -> void:
 	WindowManager.close_window(get_parent().get_parent().get_parent())
 
+func update_amount_display() -> void:
+	if is_instance_valid(%BillLabel):
+		%BillLabel.text = "$%.2f" % amount
 
 func _on_pay_now_button_pressed() -> void:
 	if PortfolioManager.pay_with_cash(amount):

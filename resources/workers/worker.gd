@@ -11,15 +11,20 @@ extends Resource
 @export var productivity_per_tick: float = 0.0
 
 var assigned_task: WorkerTask = null
+var last_assigned_task: WorkerTask = null
 var specializations: Dictionary = {}  # e.g., { "gig_x": 0.12, "app_y": 0.08 }
 
 var active: bool = false  # True only during paid working hours and while assigned
+var unpaid: bool = false
 
 # --- Update Active Status (called from WorkerManager) ---
 func update_active_status(current_tick_of_day: int, tick_interval: float, can_be_paid: bool) -> void:
-	if is_contractor and assigned_task == null:
+	unpaid = not can_be_paid
+
+	if can_be_paid and assigned_task != null:
+		active = true
+	else:
 		active = false
-		return
 
 	var ticks_per_hour := 3600.0 / tick_interval
 	var start_tick := int(work_start_hour * ticks_per_hour)
@@ -40,7 +45,7 @@ func is_idle() -> bool:
 func apply_productivity() -> void:
 	if not active or assigned_task == null:
 		return
-	print("✅ ", name, " is contributing productivity!")
+	#print("✅ ", name, " is contributing productivity!")
 	var multiplier := 1.0 + get_specialization_bonus()
 	var output := productivity_per_tick * multiplier
 	assigned_task.apply_productivity(output)

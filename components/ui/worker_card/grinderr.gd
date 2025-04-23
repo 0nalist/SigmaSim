@@ -36,6 +36,7 @@ func _populate_hire_tab():
 func _create_hire_row(worker: Worker) -> Control:
 	var card = preload("res://components/ui/worker_card/worker_card.tscn").instantiate()
 	card.show_cost = true
+	card.show_status = false
 	card.button_label = "Hire"
 	card.setup(worker)
 #	card.status_label.text = "" ##TODO Remove StatusLabel from hire_row

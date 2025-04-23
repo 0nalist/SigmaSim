@@ -5,6 +5,7 @@ signal worker_tick
 signal worker_hired(worker: Worker)
 signal worker_assigned(worker: Worker, task: WorkerTask)
 signal worker_deactivated(worker: Worker)
+signal worker_unpaid(worker: Worker)
 signal worker_idle(worker: Worker)
 signal worker_selected(worker: Worker)
 signal available_workers_updated
@@ -38,6 +39,7 @@ func hire_worker(worker: Worker) -> void:
 
 func assign_worker(worker: Worker, task: WorkerTask) -> void:
 	worker.assigned_task = task
+	worker.last_assigned_task = task
 	worker.active = true
 
 	# Set work_start_hour to current time (rounded to the hour)
@@ -53,21 +55,36 @@ func unassign_worker(worker: Worker) -> void:
 # --- Core Tick Loop ---
 func _process_tick() -> void:
 	var current_tick = get_current_tick()
-	for worker in workers:
-		print(worker.name, "active:", worker.active, "assigned:", worker.assigned_task != null)
-		var cost_per_tick := float(worker.day_rate) / TICKS_PER_DAY
-		var can_be_paid := PortfolioManager.attempt_spend(cost_per_tick)
 
+	for worker in workers:
+		var cost_per_tick: float = float(worker.day_rate) / TICKS_PER_DAY
+		var can_be_paid: bool = PortfolioManager.attempt_spend(cost_per_tick)
+
+		# Track payment status
+		if not can_be_paid:
+			if not worker.unpaid:
+				worker.unpaid = true
+				worker.active = false
+				emit_signal("worker_unpaid", worker)
+		else:
+			if worker.unpaid:
+				worker.unpaid = false
+				# Resume if there was a previously assigned task
+				if worker.last_assigned_task != null:
+					assign_worker(worker, worker.last_assigned_task)
+
+		# Update activity status
 		worker.update_active_status(current_tick, TICK_INTERVAL, can_be_paid)
 
+		# Do work or idle behavior
 		if worker.active:
-			print("worker.apply_productivity()")
 			worker.apply_productivity()
 			_gain_specialization(worker)
 		elif not can_be_paid:
 			emit_signal("worker_deactivated", worker)
 		else:
 			_handle_idle_decay(worker)
+
 
 func get_current_tick() -> int:
 	return int(TimeManager.in_game_minutes * 60 / TICK_INTERVAL) % TICKS_PER_DAY

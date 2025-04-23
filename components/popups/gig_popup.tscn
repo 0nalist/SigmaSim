@@ -92,5 +92,5 @@ layout_mode = 2
 [node name="GrindButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_vertical = 3
 text = "Grind"
