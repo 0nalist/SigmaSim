@@ -73,4 +73,4 @@ func _on_resource_changed(resource: String, _value: float) -> void:
 		_on_debt_updated()
 
 func _on_debt_updated() -> void:
-	debt_label.text = "Debt: $%.2f" % PortfolioManager.debt
+	debt_label.text = "Debt: $%.2f" % PortfolioManager.get_total_debt()

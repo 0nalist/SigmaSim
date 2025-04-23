@@ -50,7 +50,6 @@ func _finish_profile_creation():
 	var pic_path = user_data.get("profile_pic", "res://assets/profiles/default.png")
 	var background_path = user_data.get("background_path", "res://assets/Bliss_(Windows_XP) (2).png")
 
-
 	var slot_id = SaveManager.get_next_available_slot()
 
 	# Save basic profile metadata

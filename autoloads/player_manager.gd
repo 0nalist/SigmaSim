@@ -36,6 +36,30 @@ func set_var(key: String, value) -> void:
 	user_data[key] = value
 
 
+## -- Global stat access -- ##
+
+func get_stat(key: String) -> Variant:
+	match key:
+		"cash": return PortfolioManager.cash
+		"credit_used": return PortfolioManager.credit_used
+		"student_loans": return PortfolioManager.student_loans
+		"alpha", "beta", "delta", "gamma", "omega", "sigma":
+			return user_data.get(key, 0.0)
+		_: return user_data.get(key)
+
+func set_stat(key: String, value: Variant) -> void:
+	match key:
+		"cash": PortfolioManager.cash = value
+		"student_loans": PortfolioManager.student_loans = value
+		"credit_used": PortfolioManager.credit_used = value
+		"alpha", "beta", "delta", "gamma", "omega", "sigma":
+			user_data[key] = value
+		_: user_data[key] = value
+
+
+
+
+
 
 func adjust_stat(stat: String, delta: float) -> void:
 	if user_data.has(stat):
@@ -48,6 +72,7 @@ func has_seen(id: String) -> bool:
 func mark_seen(id: String) -> void:
 	if not has_seen(id):
 		user_data["seen_dialogue_ids"].append(id)
+
 
 
 ## -- SAVE LOAD
@@ -64,3 +89,42 @@ func set_slot_id(slot: int) -> void:
 
 func get_slot_id() -> int:
 	return slot_id
+
+
+## -- BACKGROUNDS ## probably make this its own resource late
+
+var background_effects := {
+	"The Dropout": func():
+		PortfolioManager.cash = 300.0
+		PortfolioManager.set_student_loans(0.0),
+
+	"The Burnout": func():
+		PortfolioManager.credit_used = 10000.0
+		PortfolioManager.credit_limit = 25000.0
+		PortfolioManager.set_student_loans(0.0),
+
+	"The Gamer": func():
+		PortfolioManager.set_student_loans(40000.0)
+		#AppManager.unlock_app("Minerr")
+		#ResourceManager.add_gpu("BasicGPU", 3),
+
+	#"The Manager": func():
+		#PlayerManager.set_var("student_loans", 120000.0)
+		#pass
+		#Grinderr.set_permanent_discount(0.5)
+		#Grinderr.set_first_employee_free(true)
+
+	#"The Postgrad": func():
+		#pass
+		#PlayerManager.set_var("student_loans", 360000.0)
+		#EffectManager.add_modifier("PRODUCTIVITY_PER_CLICK_MULT", 2.0, "Postgrad")
+		#EffectManager.add_modifier("GPU_POWER_MULT", 2.0, "Postgrad")
+		#AppManager.unlock_feature("ScroogebergTerminal")
+		#PlayerManager.set_var("can_see_stock_sentiment", true)
+}
+
+func apply_background_effects(background_name: String) -> void:
+	if background_effects.has(background_name):
+		background_effects[background_name].call()
+	else:
+		printerr("No background effects found for: " + background_name)

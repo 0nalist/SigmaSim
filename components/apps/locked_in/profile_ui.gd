@@ -1,4 +1,4 @@
-extends Panel
+extends PanelContainer
 
 @onready var profile_pic: TextureRect = %ProfilePic
 @onready var name_label: Label = %NameLabel
@@ -8,6 +8,14 @@ extends Panel
 @onready var relationship_label: Label = %RelationshipLabel
 @onready var wall_v_box_container: VBoxContainer = %WallVBoxContainer
 @onready var greek_stats_ui: Control = %GreekStatsUI
+
+@onready var bio_label: Label = %BioLabel
+
+
+func _ready() -> void:
+	dump_player_data_in_bio()
+
+
 
 func load_profile(profile: Profile) -> void:
 	profile_pic.texture = profile.profile_pic
@@ -31,3 +39,16 @@ func load_profile(profile: Profile) -> void:
 		var label = Label.new()
 		label.text = post
 		wall_v_box_container.add_child(label)
+	
+
+func dump_player_data_in_bio():
+	var bio_text := ""
+	for key in PlayerManager.user_data.keys():
+		var value = PlayerManager.user_data[key]
+		if value is Array:
+			value = "[" + ", ".join(value) + "]"
+		elif value is Dictionary:
+			value = JSON.stringify(value)
+		bio_text += "%s: %s\n" % [key.capitalize().replace("_", " "), str(value)]
+	
+	bio_label.text = bio_text.strip_edges()

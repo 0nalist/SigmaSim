@@ -35,7 +35,7 @@ func load_and_display_saved_profiles():
 		panel.set_profile_data(metadata[key], slot_id)
 
 
-var dot_time = .5
+var dot_time = .1
 
 func _on_profile_login_requested(slot_id: int) -> void:
 	print("login requested")
