@@ -60,16 +60,15 @@ func _find_next_button() -> Button:
 	return null
 
 
-func _on_femmes_check_box_toggled(toggled_on: bool) -> void:
-	## TODO add to data
+func _on_femmes_check_box_toggled(_toggled_on: bool) -> void:
 	_check_validity()
 
 
-func _on_mascs_check_box_toggled(toggled_on: bool) -> void:
+func _on_mascs_check_box_toggled(_toggled_on: bool) -> void:
 	_check_validity()
 
 
-func _on_enby_check_box_toggled(toggled_on: bool) -> void:
+func _on_enby_check_box_toggled(_toggled_on: bool) -> void:
 	_check_validity()
 
 func save_data() -> void:

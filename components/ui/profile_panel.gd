@@ -31,10 +31,25 @@ func set_profile_data(data: Dictionary, id: int) -> void:
 func _apply_profile_data() -> void:
 	name_label.text = pending_data.get("name", "Unnamed")
 	username_label.text = "@%s" % pending_data.get("username", "user")
-	var path = pending_data.get("profile_pic", "res://assets/profiles/default.png")
+
+	var path = pending_data.get("profile_picture_path", "res://assets/profiles/default.png")
 	if ResourceLoader.exists(path):
-		profile_pic.texture = load(path)
+		var tex = load(path)
+		profile_pic.texture = tex
+
+		# FORCE 128x128 size
+		profile_pic.custom_minimum_size = Vector2(128, 128)
+		profile_pic.set_size(Vector2(128, 128))  # Forces layout if not yet resized
+
+		# Ensure it scales inside the box without distortion
+		profile_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		profile_pic.size_flags_horizontal = Control.SIZE_FILL
+		profile_pic.size_flags_vertical = Control.SIZE_FILL
+
 	slot_id = pending_slot_id
+
+
+
 
 
 func _on_mouse_entered() -> void:

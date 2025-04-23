@@ -127,7 +127,7 @@ var background_effects := {
 		PortfolioManager.set_student_loans(0.0),
 
 	"The Gamer": func():
-		PortfolioManager.set_student_loans(40000.0)
+		PortfolioManager.set_student_loans(40000.0),
 		#AppManager.unlock_app("Minerr")
 		#ResourceManager.add_gpu("BasicGPU", 3),
 
@@ -144,6 +144,10 @@ var background_effects := {
 		#EffectManager.add_modifier("GPU_POWER_MULT", 2.0, "Postgrad")
 		#AppManager.unlock_feature("ScroogebergTerminal")
 		#PlayerManager.set_var("can_see_stock_sentiment", true)
+	
+	"The Stoic": func():
+		PortfolioManager.credit_used = 100000.0
+		PortfolioManager.credit_limit = 25000.0
 }
 
 func apply_background_effects(background_name: String) -> void:
