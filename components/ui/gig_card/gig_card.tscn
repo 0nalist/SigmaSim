@@ -10,8 +10,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="GigCard" type="Panel"]
-custom_minimum_size = Vector2(460, 170)
+[node name="GigCard" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,12 +23,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_4eflt")
 script = ExtResource("2_4eflt")
 
 [node name="GigCard" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_ay41w")
 theme_override_constants/margin_left = 5

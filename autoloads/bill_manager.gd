@@ -12,11 +12,9 @@ var weekly_bill_cycle := [
 	{"name": "Credit Card", "color": Color.PURPLE}
 ]
 
-var base_bill_amounts := {
+var static_bill_amounts := {
 	"Rent": 1200.0,
-	"Medical Insurance": 850.0,
-	"Student Loan": 400.0,
-	"Credit Card": 0.0  # dynamically calculated elsewhere
+	"Medical Insurance": 850.0
 }
 
 
@@ -24,7 +22,7 @@ func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 	PortfolioManager.credit_updated.connect(_on_credit_updated)
 	print("active bills: " + str(active_bills))
-	
+
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	# Resolve yesterday’s bills
@@ -46,6 +44,7 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	for bill_name in bills_today:
 		if autopay_enabled and attempt_to_autopay(bill_name):
 			continue
+
 		var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
 		popup.init(bill_name)
 
@@ -59,24 +58,22 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 		win.get_node("%ContentPanel").add_child(popup)
 
 		WindowManager.register_window(win, false)
-
 		call_deferred("center_bill_window", win)
 		active_bills[today_key].append(popup)
 
-func _on_credit_updated(used: float, limit: float) -> void:
-	base_bill_amounts["Credit Card"] = used
 
-	# Update currently open Credit Card bill popup, if any
+func _on_credit_updated(used: float, limit: float) -> void:
+	# Update any open Credit Card bill popups
 	for bill_list in active_bills.values():
 		for popup in bill_list:
 			if is_instance_valid(popup) and popup.bill_name == "Credit Card":
-				popup.amount = used
+				popup.amount = get_bill_amount("Credit Card")
 				popup.update_amount_display()
-
 
 
 func center_bill_window(win: WindowFrame) -> void:
 	WindowManager.center_window(win)
+
 
 func attempt_to_autopay(bill_name: String) -> bool:
 	var amount := get_bill_amount(bill_name)
@@ -96,7 +93,6 @@ func attempt_to_autopay(bill_name: String) -> bool:
 
 func get_due_bills_for_date(day: int, month: int, year: int) -> Array[String]:
 	var weekday = TimeManager.get_weekday_for_date(day, month, year)
-	
 	if weekday != 6:
 		return []
 
@@ -137,7 +133,13 @@ func get_bill_color(bill_name: String) -> Color:
 
 
 func get_bill_amount(bill_name: String) -> float:
-	return base_bill_amounts.get(bill_name, 0.0)
+	match bill_name:
+		"Credit Card":
+			return PortfolioManager.credit_used
+		"Student Loan":
+			return PortfolioManager.get_min_student_loan_payment()
+		_:
+			return static_bill_amounts.get(bill_name, 0.0)
 
 
 func _format_date_key(date: Dictionary) -> String:

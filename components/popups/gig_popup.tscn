@@ -15,7 +15,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="GigPopup" type="Panel"]
+[node name="GigPopup" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,15 +27,10 @@ mouse_filter = 1
 theme = ExtResource("1_6786e")
 theme_override_styles/panel = SubResource("StyleBoxFlat_rn3q4")
 script = ExtResource("1_p1yuo")
-default_window_size = Vector2(400, 200)
+default_window_size = Vector2(300, 150)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25

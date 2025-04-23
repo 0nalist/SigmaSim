@@ -1,6 +1,7 @@
 extends BaseAppUI
 
 @onready var credit_label := %CreditLabel
+@onready var credit_interest_label: Label = %CreditInterestLabel
 @onready var credit_bar := %CreditProgressBar
 @onready var credit_pay_btn := %PayCreditButton
 @onready var credit_slider := %CreditSlider
@@ -27,11 +28,13 @@ func _ready():
 	update_credit(PortfolioManager.credit_used, PortfolioManager.credit_limit)
 	update_student_loans()
 	update_credit_score()
+	update_credit_interest_label()
 	update_sliders()
 
 func update_credit(used: float, limit: float):
 	credit_label.text = "Credit Used: $%.2f / $%.2f" % [used, limit]
 	credit_bar.value = (used / limit) * 100.0
+	update_credit_interest_label()
 	update_sliders()
 
 func update_student_loans():
@@ -39,9 +42,13 @@ func update_student_loans():
 	loan_label.text = "Student Loans: $%.2f" % loans
 	update_sliders()
 
+func update_credit_interest_label():
+	credit_interest_label.text = "Interest Rate: %.1f%%" % (PortfolioManager.credit_interest_rate * 100.0)
+
+
 func update_credit_score():
 	var score = PortfolioManager.get_credit_score()
-	credit_score_label.text = "Credit Score: %d" % score
+	credit_score_label.text = "%d" % score
 
 func _on_resource_changed(name: String, value: float):
 	if name == "student_loans":

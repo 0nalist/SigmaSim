@@ -8,6 +8,7 @@ class_name CalendarDayPanel
 
 var day: int = 0
 var is_past: bool = false
+var active_bills: Array[String] = []
 
 # Colors by bill type
 var bill_colors := {
@@ -16,6 +17,11 @@ var bill_colors := {
 	"Student Loan": Color.GREEN,
 	"Credit Card": Color.PURPLE
 }
+
+
+func _ready() -> void:
+	PortfolioManager.resource_changed.connect(_on_resource_changed)
+
 
 func set_day(day_number: int, is_in_past: bool, bills: Array):
 	day = day_number
@@ -38,7 +44,7 @@ func set_day(day_number: int, is_in_past: bool, bills: Array):
 		circle.color = bill_colors.get(bill_type, Color.GRAY)
 		circle.custom_minimum_size = Vector2(10, 10)
 		icon_row.add_child(circle)
-
+	active_bills = bills.duplicate()
 	set_tooltip(bills)
 
 
@@ -60,3 +66,12 @@ func set_today_indicator(show_indicator: bool) -> void:
 func set_empty() -> void:
 	day_label.text = ""
 	modulate = Color(0.45, 0.45, 0.45, 1.0) 
+
+
+func _on_resource_changed(name: String, _value: float) -> void:
+	if name in ["student_loans", "debt", "cash", "credit"]:
+		# If any relevant bill is shown, refresh the tooltip
+		for bill in active_bills:
+			if bill == "Credit Card" or bill == "Student Loan":
+				set_tooltip(active_bills)
+				break

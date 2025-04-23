@@ -12,6 +12,8 @@ var available_gigs: Array[WorkerTask] = []
 
 func _ready() -> void:
 	TimeManager.minute_passed.connect(_on_minute_passed)
+	WorkerManager.available_workers_updated.connect(_populate_hire_tab)
+
 	_update_refresh_countdown()
 	app_title = "Grinderr"
 	#app_icon = preload("res://assets/Tralalero_tralala.png")

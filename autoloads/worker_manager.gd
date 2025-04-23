@@ -7,6 +7,7 @@ signal worker_assigned(worker: Worker, task: WorkerTask)
 signal worker_deactivated(worker: Worker)
 signal worker_idle(worker: Worker)
 signal worker_selected(worker: Worker)
+signal available_workers_updated
 
 
 const TICK_INTERVAL := 1  # seconds
@@ -95,6 +96,7 @@ func generate_available_workers() -> void:
 	for i in 5:
 		available_workers.append(_generate_random_worker(true))  # Contractor
 		available_workers.append(_generate_random_worker(false))  # Employee
+	emit_signal("available_workers_updated")
 
 func _generate_random_worker(is_contractor: bool) -> Worker:
 	var worker := Worker.new()

@@ -1,10 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://by7ye7kt412u3"]
 
 [ext_resource type="Script" uid="uid://ce5ge1lmsdy7g" path="res://components/apps/ower_view/ower_view.gd" id="1_t43hg"]
-[ext_resource type="Texture2D" uid="uid://cjvp3i4ey3v42" path="res://assets/logos/OwerView.png" id="2_5ntqa"]
+[ext_resource type="Texture2D" uid="uid://dv6cn782okjbj" path="res://assets/logos/OwerView_face.png" id="2_5ntqa"]
 
-[node name="OwerView" type="Control"]
-layout_mode = 3
+[node name="OwerView" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -20,17 +19,21 @@ default_window_size = Vector2(500, 400)
 default_position = "left"
 only_one_instance_allowed = true
 
-[node name="TabContainer" type="TabContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-current_tab = 1
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
-[node name="ShortTerm" type="MarginContainer" parent="TabContainer"]
-visible = false
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+current_tab = 0
+
+[node name="ShortTerm" type="MarginContainer" parent="MarginContainer/HBoxContainer/TabContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
@@ -38,48 +41,54 @@ theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 metadata/_tab_index = 0
 
-[node name="CreditCardSummary" type="PanelContainer" parent="TabContainer/ShortTerm"]
+[node name="CreditCardSummary" type="PanelContainer" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 50)
+custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 2
 mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="TabContainer/ShortTerm/CreditCardSummary"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/ShortTerm/CreditCardSummary/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Label" type="Label" parent="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Credit Card"
 
-[node name="CreditLabel" type="Label" parent="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
+[node name="CreditLabel" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Credit Card"
 
-[node name="CreditProgressBar" type="ProgressBar" parent="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
+[node name="CreditInterestLabel" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Credit Card"
+
+[node name="CreditProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="CreditSlider" type="HSlider" parent="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CreditSlider" type="HSlider" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CreditSliderLabel" type="Label" parent="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CreditSliderLabel" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -87,7 +96,7 @@ size_flags_stretch_ratio = 0.46
 mouse_filter = 1
 text = "$0.00"
 
-[node name="PayCreditButton" type="Button" parent="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
+[node name="PayCreditButton" type="Button" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -95,7 +104,8 @@ size_flags_vertical = 0
 focus_mode = 0
 text = " Pay "
 
-[node name="LongTerm" type="MarginContainer" parent="TabContainer"]
+[node name="LongTerm" type="MarginContainer" parent="MarginContainer/HBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
@@ -103,43 +113,43 @@ theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 metadata/_tab_index = 1
 
-[node name="StudentLoanSummary" type="PanelContainer" parent="TabContainer/LongTerm"]
+[node name="StudentLoanSummary" type="PanelContainer" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 50)
+custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="TabContainer/LongTerm/StudentLoanSummary"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="TabContainer/LongTerm/StudentLoanSummary/MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
 layout_mode = 2
 text = "Student Loans"
 
-[node name="StudentLoanLabel" type="Label" parent="TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
+[node name="StudentLoanLabel" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Credit Card"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="LoanSlider" type="HSlider" parent="TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/HBoxContainer"]
+[node name="LoanSlider" type="HSlider" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LoanSliderLabel" type="Label" parent="TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/HBoxContainer"]
+[node name="LoanSliderLabel" type="Label" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -147,25 +157,43 @@ size_flags_stretch_ratio = 0.46
 mouse_filter = 1
 text = "$0.00"
 
-[node name="PayStudentLoanButton" type="Button" parent="TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
+[node name="PayStudentLoanButton" type="Button" parent="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 text = " Pay "
 
-[node name="CreditScoreLabel" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 15.0
-grow_horizontal = 0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 24
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="CreditScore" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 17
 text = "Credit Score:"
 
-[connection signal="pressed" from="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/PayCreditButton" to="." method="_on_pay_credit_button_pressed"]
-[connection signal="pressed" from="TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/PayStudentLoanButton" to="." method="_on_pay_student_loan_button_pressed"]
+[node name="CreditScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 17
+text = "Credit Score:"
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+min_value = 300.0
+max_value = 850.0
+value = 700.0
+fill_mode = 3
+show_percentage = false
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/PayCreditButton" to="." method="_on_pay_credit_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/PayStudentLoanButton" to="." method="_on_pay_student_loan_button_pressed"]

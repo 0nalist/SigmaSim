@@ -13,7 +13,8 @@ var credit_interest_rate: float = 0.3  # 30% by default
 var credit_score: int = 700
 
 var student_loans: float
-
+const STUDENT_LOAN_INTEREST_DAILY := 0.001  # 0.1% per day
+const STUDENT_LOAN_MIN_PAYMENT_PERCENT := 0.01  # 1% per 4 weeks
 
 ## --- Income sources
 var employee_income: float = 0.0
@@ -39,7 +40,7 @@ signal investments_updated(amount: float)
 
 func _ready():
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
-
+	TimeManager.day_passed.connect(_on_day_passed)
 
 ## --- Hybrid Spend (Cash then Credit fallback) ---
 func attempt_spend(amount: float) -> bool:
@@ -152,6 +153,21 @@ func pay_down_credit(amount: float) -> bool:
 		emit_signal("resource_changed", "debt", get_total_debt())
 		return true
 	return false
+
+func _on_day_passed(_d: int, _m: int, _y: int) -> void:
+	_accrue_student_loan_interest()
+
+func _accrue_student_loan_interest():
+	if student_loans <= 0.0:
+		return
+	var interest_amount := student_loans * STUDENT_LOAN_INTEREST_DAILY
+	student_loans = snapped(student_loans + interest_amount, 0.01)
+
+	emit_signal("resource_changed", "student_loans", student_loans)
+	emit_signal("resource_changed", "debt", get_total_debt())
+
+func get_min_student_loan_payment() -> float:
+	return snapped(student_loans * STUDENT_LOAN_MIN_PAYMENT_PERCENT, 0.01)
 
 
 ## -- Balance functions
