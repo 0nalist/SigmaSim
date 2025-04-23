@@ -10,6 +10,7 @@ var interest: float = 0.0
 var credit_limit: float = 2000.0
 var credit_used: float = 0.0
 var credit_interest_rate: float = 0.3  # 30% by default
+var credit_score: int = 700
 
 var student_loans: float
 
@@ -108,6 +109,7 @@ func pay_with_credit(amount: float) -> bool:
 		var total_with_interest := amount * (1.0 + credit_interest_rate)
 		credit_used += total_with_interest
 		emit_signal("credit_updated", credit_used, credit_limit)
+		_recalculate_credit_score()
 		emit_signal("resource_changed", "debt", get_total_debt())
 		return true
 	return false
@@ -121,6 +123,35 @@ func set_credit_interest_rate(new_rate: float) -> void:
 func get_total_debt() -> float:
 	return snapped(credit_used + student_loans, 0.01)
 
+func get_credit_score() -> int:
+	return credit_score
+
+func _recalculate_credit_score():
+	var usage_ratio := credit_used / credit_limit
+	var base_score := 700
+
+	# Penalize high utilization
+	if usage_ratio > 0.9:
+		base_score -= 100
+	elif usage_ratio > 0.75:
+		base_score -= 50
+	elif usage_ratio > 0.5:
+		base_score -= 20
+
+	# Optional: reward low debt
+	if student_loans == 0:
+		base_score += 20
+
+	credit_score = clamp(base_score, 300, 850)
+
+func pay_down_credit(amount: float) -> bool:
+	if can_pay_with_cash(amount):
+		spend_cash(amount)
+		credit_used = max(credit_used - amount, 0.0)
+		emit_signal("credit_updated", credit_used, credit_limit)
+		emit_signal("resource_changed", "debt", get_total_debt())
+		return true
+	return false
 
 
 ## -- Balance functions
@@ -193,6 +224,7 @@ func set_student_loans(amount: float):
 	student_loans = snapped(amount, 0.01)
 	emit_signal("resource_changed", "student_loans", student_loans)
 	emit_signal("resource_changed", "debt", get_total_debt())
+	_recalculate_credit_score()
 
 func add_student_loans(amount: float):
 	student_loans = snapped(student_loans + amount, 0.01)

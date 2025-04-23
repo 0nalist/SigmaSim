@@ -18,7 +18,7 @@ var app_registry := {
 	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
-	
+	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 }
 
 var start_apps := {
@@ -29,7 +29,7 @@ var start_apps := {
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
-	
+	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 }
 
 

@@ -120,6 +120,13 @@ theme = ExtResource("4_2rri8")
 text = "Passive Income: $0"
 horizontal_alignment = 2
 
+[node name="OwerViewButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "Manage your debt with
+OwerView"
+
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
