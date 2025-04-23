@@ -166,3 +166,6 @@ grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "Credit Score:"
+
+[connection signal="pressed" from="TabContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/PayCreditButton" to="." method="_on_pay_credit_button_pressed"]
+[connection signal="pressed" from="TabContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/PayStudentLoanButton" to="." method="_on_pay_student_loan_button_pressed"]

@@ -75,12 +75,14 @@ func _on_credit_slider_changed(value: float):
 func _on_loan_slider_changed(value: float):
 	loan_slider_label.text = "$%.2f" % value
 
-func _on_PayCreditButton_pressed():
+
+func _on_pay_credit_button_pressed() -> void:
 	var amount = credit_slider.value
 	PortfolioManager.pay_down_credit(amount)
 	update_sliders()
 
-func _on_PayLoanButton_pressed():
+
+func _on_pay_student_loan_button_pressed() -> void:
 	var amount = loan_slider.value
 	if PortfolioManager.pay_with_cash(amount):
 		var new_amt = PortfolioManager.get_student_loans() - amount

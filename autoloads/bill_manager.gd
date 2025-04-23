@@ -69,9 +69,10 @@ func _on_credit_updated(used: float, limit: float) -> void:
 	# Update currently open Credit Card bill popup, if any
 	for bill_list in active_bills.values():
 		for popup in bill_list:
-			if popup.bill_name == "Credit Card":
+			if is_instance_valid(popup) and popup.bill_name == "Credit Card":
 				popup.amount = used
 				popup.update_amount_display()
+
 
 
 func center_bill_window(win: WindowFrame) -> void:
