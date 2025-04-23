@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvtogb730mnxk"
-path="res://.godot/imported/dollarbillcloseup.png-faa610164b7082bd8fd8216179bdd81a.ctex"
+uid="uid://dpwwqpw4efqvj"
+path="res://.godot/imported/brownfieldbluesky.png-5f9a2978385f2eaab8e1e2531b98088d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/backgrounds/dollarbillcloseup.png"
-dest_files=["res://.godot/imported/dollarbillcloseup.png-faa610164b7082bd8fd8216179bdd81a.ctex"]
+source_file="res://assets/backgrounds/brownfieldbluesky.png"
+dest_files=["res://.godot/imported/brownfieldbluesky.png-5f9a2978385f2eaab8e1e2531b98088d.ctex"]
 
 [params]
 

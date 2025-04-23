@@ -45,6 +45,7 @@ func create_new_profile(
 	username: String,
 	picture_path: String = "res://assets/profiles/default.png",
 	background_path: String = "res://assets/Bliss_(Windows_XP) (2).png"
+	
 ) -> void:
 	var metadata = load_slot_metadata()
 	metadata["slot_%d" % slot_id] = {

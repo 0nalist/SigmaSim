@@ -8,6 +8,8 @@ signal new_profile_abandoned
 
 
 
+
+
 var step_scenes = [
 	preload("res://components/ui/profile_creation/name_entry_screen.tscn"),
 	preload("res://components/ui/profile_creation/pronoun_entry_screen.tscn"),
@@ -46,7 +48,8 @@ func _finish_profile_creation():
 	var name = user_data.get("name", "Unnamed")
 	var username = user_data.get("username", "user")
 	var pic_path = user_data.get("profile_pic", "res://assets/profiles/default.png")
-	var background_path = user_data.get("background", "res://assets/Bliss_(Windows_XP) (2).png")
+	var background_path = user_data.get("background_path", "res://assets/Bliss_(Windows_XP) (2).png")
+
 
 	var slot_id = SaveManager.get_next_available_slot()
 

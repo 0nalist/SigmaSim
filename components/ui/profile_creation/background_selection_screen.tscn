@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://gwvrvwdai56x"]
+[gd_scene load_steps=8 format=3 uid="uid://gwvrvwdai56x"]
 
 [ext_resource type="Script" uid="uid://dutaij8ubg1fd" path="res://components/ui/profile_creation/background_selection_screen.gd" id="1_fdynr"]
-[ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/backgrounds/Bliss_(Windows_XP) (2).png" id="2_j8d1m"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_74qvs"]
-texture = ExtResource("2_j8d1m")
+[ext_resource type="Texture2D" uid="uid://dngnxdr4uo7uw" path="res://assets/backgrounds/brownfieldblueskyx480.png" id="2_lnamk"]
+[ext_resource type="Texture2D" uid="uid://b1fn8owmrky7q" path="res://assets/backgrounds/bluefieldorangeskyx480_restrictive.png" id="3_umkxt"]
+[ext_resource type="Texture2D" uid="uid://cpgjopjt5xr67" path="res://assets/backgrounds/bluefieldyellowskyx480_restrictive.png" id="4_rlyer"]
+[ext_resource type="Texture2D" uid="uid://v4keep3vdsqt" path="res://assets/backgrounds/greenfieldpinkskyx480.png" id="5_eudh7"]
+[ext_resource type="Texture2D" uid="uid://f3id4mqiae6r" path="res://assets/backgrounds/purplefieldgreenskyx480_restrictive.png" id="6_tl8c1"]
+[ext_resource type="Texture2D" uid="uid://dnlhdvhhmjukf" path="res://assets/backgrounds/chairpaula-schmidtx480_adaptive.png" id="7_xt10x"]
 
 [node name="BackgroundSelectionScreen" type="Control"]
 layout_mode = 3
@@ -17,34 +19,242 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_fdynr")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 25
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Choose your background"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 25
+theme_override_constants/separation = 5
 
-[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 400)
+[node name="Panel" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(192, 108)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxTexture_74qvs")
+texture = ExtResource("2_lnamk")
 
-[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 400)
+[node name="DropoutButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "No student loans
+Start with $300 cash
+"
+theme_override_font_sizes/font_size = 20
+text = "The Dropout
+"
+
+[node name="Panel2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(192, 108)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxTexture_74qvs")
+texture = ExtResource("3_umkxt")
 
-[node name="Panel3" type="Panel" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 400)
+[node name="BurnoutButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/Panel2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "$10,000 in credit card debt
+$25,000 credit limit
+"
+tooltip_auto_translate_mode = 1
+theme_override_font_sizes/font_size = 20
+text = "The Burnout"
+
+[node name="Panel3" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(192, 108)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxTexture_74qvs")
+texture = ExtResource("4_rlyer")
+
+[node name="GamerButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/Panel3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "$40,000 in student loans
+Minerr unlocked from the start
+Starts with 3 GPUs
+"
+tooltip_auto_translate_mode = 1
+theme_override_font_sizes/font_size = 20
+text = "The Gamer"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+
+[node name="Panel" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(192, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_eudh7")
+
+[node name="ManagerButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "$120,000 in student loans
+First employee is free forever
+Half-off hiring costs"
+theme_override_font_sizes/font_size = 20
+text = "The Manager"
+
+[node name="Panel2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(192, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("6_tl8c1")
+
+[node name="PostgradButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2/Panel2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "$360,000 in student loans
+Double productivity & power from clicks
+Lifetime subscription to Scroogeberg terminal"
+tooltip_auto_translate_mode = 1
+theme_override_font_sizes/font_size = 20
+text = "The Postgrad"
+
+[node name="Panel3" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(192, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("7_xt10x")
+
+[node name="StoicButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2/Panel3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "$100,000 in credit card debt"
+tooltip_auto_translate_mode = 1
+theme_override_font_sizes/font_size = 20
+text = "The Stoic"
+
+[node name="TooltipPopup" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -268.0
+offset_top = -3655.0
+offset_right = -44.0
+offset_bottom = -3615.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TooltipPopup"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TooltipLabel" type="Label" parent="TooltipPopup/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "tgyasdfgsdfhgsdfghsfdghdfgh"
+autowrap_mode = 3
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel/DropoutButton" to="." method="_on_dropout_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel2/BurnoutButton" to="." method="_on_burnout_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel3/GamerButton" to="." method="_on_gamer_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Panel/ManagerButton" to="." method="_on_manager_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Panel2/PostgradButton" to="." method="_on_postgrad_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Panel3/StoicButton" to="." method="_on_stoic_button_pressed"]

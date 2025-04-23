@@ -3,11 +3,24 @@ extends Control
 @onready var start_panel: StartPanelWindow = %StartPanel
 @onready var taskbar: Control = %Taskbar
 @onready var trash_window: BaseAppUI = %TrashWindow
+@onready var background: TextureRect = %Background
+
+@export var background_texture: Texture = preload("res://assets/backgrounds/Bliss_(Windows_XP) (2).png")
 
 func _ready() -> void:
 	hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
 	WindowManager.start_panel = start_panel
+
+	var path = PlayerManager.user_data.get("background_path", "")
+	if path != "":
+		var tex = load(path)
+		if tex is Texture2D:
+			background.texture = tex
+		else:
+			print("❌ Couldn't load texture from path: ", path)
+	else:
+		background.texture = background_texture  # fallback
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):

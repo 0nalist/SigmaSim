@@ -40,7 +40,7 @@ func _apply_profile_data() -> void:
 func _on_mouse_entered() -> void:
 	password_text_edit.show()
 	log_in_button.show()
-	size = Vector2(180,270)
+	#size = Vector2(180,270)
 
 
 func _on_log_in_button_pressed() -> void:
