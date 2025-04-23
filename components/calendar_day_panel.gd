@@ -5,12 +5,14 @@ class_name CalendarDayPanel
 @onready var icon_row: HBoxContainer = %IconRow
 @onready var today_indicator: ColorRect = %TodayIndicator
 
-
 var day: int = 0
 var is_past: bool = false
 var active_bills: Array[String] = []
 
-# Colors by bill type
+# Bills that should trigger tooltip refresh when updated
+const TOOLTIP_SENSITIVE_BILLS: Array[String] = ["Credit Card", "Student Loan"]
+const TRACKED_RESOURCES: Array[String] = ["student_loans", "debt", "cash", "credit", "student_loan_min_payment"]
+
 var bill_colors := {
 	"Rent": Color.RED,
 	"Medical Insurance": Color.BLUE,
@@ -18,60 +20,57 @@ var bill_colors := {
 	"Credit Card": Color.PURPLE
 }
 
-
 func _ready() -> void:
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
 
-
-func set_day(day_number: int, is_in_past: bool, bills: Array):
+func set_day(day_number: int, is_in_past: bool, bills: Array) -> void:
 	day = day_number
 	is_past = is_in_past
-	day_label.text = str(day)
+	active_bills = bills.duplicate()
+	_update_day_label()
+	_update_icons()
+	_update_tooltip()
 
+func _update_day_label() -> void:
+	day_label.text = str(day)
 	if is_past:
 		modulate = Color(0.6, 0.6, 0.6)
 		day_label.text += " X"
 	else:
 		modulate = Color(1, 1, 1)
 
-	# Clear old icons
+func _update_icons() -> void:
 	for child in icon_row.get_children():
 		child.queue_free()
 
-	# Add colored dots for each bill
-	for bill_type in bills:
-		var circle = ColorRect.new()
+	for bill_type in active_bills:
+		var circle := ColorRect.new()
 		circle.color = bill_colors.get(bill_type, Color.GRAY)
 		circle.custom_minimum_size = Vector2(10, 10)
 		icon_row.add_child(circle)
-	active_bills = bills.duplicate()
-	set_tooltip(bills)
 
-
-func set_tooltip(bills: Array) -> void:
-	if bills.is_empty():
+func _update_tooltip() -> void:
+	if active_bills.is_empty():
 		set_tooltip_text("")
 		return
 
 	var tooltip_text := "Bill Due:\n"
-	for bill_type in bills:
-		var amount = BillManager.get_bill_amount(bill_type)
+	for bill_type in active_bills:
+		var amount: float = BillManager.get_bill_amount(bill_type)
 		tooltip_text += "• %s: $%.2f\n" % [bill_type, amount]
 
 	set_tooltip_text(tooltip_text.strip_edges())
 
+func _on_resource_changed(name: String, _value: float) -> void:
+	if name in TRACKED_RESOURCES:
+		for bill in active_bills:
+			if bill in TOOLTIP_SENSITIVE_BILLS:
+				_update_tooltip()
+				break
+
 func set_today_indicator(show_indicator: bool) -> void:
-	%TodayIndicator.visible = show_indicator
+	today_indicator.visible = show_indicator
 
 func set_empty() -> void:
 	day_label.text = ""
-	modulate = Color(0.45, 0.45, 0.45, 1.0) 
-
-
-func _on_resource_changed(name: String, _value: float) -> void:
-	if name in ["student_loans", "debt", "cash", "credit"]:
-		# If any relevant bill is shown, refresh the tooltip
-		for bill in active_bills:
-			if bill == "Credit Card" or bill == "Student Loan":
-				set_tooltip(active_bills)
-				break
+	modulate = Color(0.45, 0.45, 0.45, 1.0)

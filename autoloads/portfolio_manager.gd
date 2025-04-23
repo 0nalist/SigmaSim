@@ -13,6 +13,7 @@ var credit_interest_rate: float = 0.3  # 30% by default
 var credit_score: int = 700
 
 var student_loans: float
+var student_loan_min_payment: float = 0.0
 const STUDENT_LOAN_INTEREST_DAILY := 0.001  # 0.1% per day
 const STUDENT_LOAN_MIN_PAYMENT_PERCENT := 0.01  # 1% per 4 weeks
 
@@ -162,12 +163,18 @@ func _accrue_student_loan_interest():
 		return
 	var interest_amount := student_loans * STUDENT_LOAN_INTEREST_DAILY
 	student_loans = snapped(student_loans + interest_amount, 0.01)
-
+	student_loans = snapped(student_loans + interest_amount, 0.01)
+	_update_student_loan_min_payment()
 	emit_signal("resource_changed", "student_loans", student_loans)
 	emit_signal("resource_changed", "debt", get_total_debt())
 
+func _update_student_loan_min_payment():
+	student_loan_min_payment = max(snapped(student_loans * 0.01, 0.01), 0.0)
+	emit_signal("resource_changed", "student_loan_min_payment", student_loan_min_payment)
+
 func get_min_student_loan_payment() -> float:
-	return snapped(student_loans * STUDENT_LOAN_MIN_PAYMENT_PERCENT, 0.01)
+	return student_loan_min_payment
+
 
 
 ## -- Balance functions

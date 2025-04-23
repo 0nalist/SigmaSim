@@ -59,8 +59,10 @@ func update_all() -> void:
 func update_status() -> void:
 	if worker.assigned_task != null:
 		status_label.text = str(worker.assigned_task.title)
+		status_label.modulate = Color.WHITE
 	else:
 		status_label.text = "Idle"
+		status_label.modulate = Color.YELLOW
 
 func update_productivity() -> void:
 	prod_label.text = "Prod/tick: %.2f" % worker.productivity_per_tick

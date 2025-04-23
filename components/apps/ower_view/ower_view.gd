@@ -92,6 +92,7 @@ func _on_pay_credit_button_pressed() -> void:
 func _on_pay_student_loan_button_pressed() -> void:
 	var amount = loan_slider.value
 	if PortfolioManager.pay_with_cash(amount):
-		var new_amt = PortfolioManager.get_student_loans() - amount
-		PortfolioManager.set_student_loans(max(new_amt, 0.0))
+		var new_amt = max(PortfolioManager.get_student_loans() - amount, 0.0)
+		PortfolioManager.set_student_loans(new_amt)
+
 	update_sliders()
