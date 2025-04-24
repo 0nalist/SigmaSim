@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_eluir"]
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/ui/worker_card/grinderr.gd" id="2_3bg0q"]
 [ext_resource type="PackedScene" uid="uid://dgawvt5yorfxn" path="res://components/popups/gig_popup.tscn" id="3_eluir"]
-[ext_resource type="Texture2D" uid="uid://dwic4tln0i6n7" path="res://assets/logos/hamster_burg.png" id="4_eluir"]
+[ext_resource type="Texture2D" uid="uid://deecnjgpwkep4" path="res://assets/logos/hamster_circle_black.png" id="4_eluir"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eluir"]
 bg_color = Color(0, 0, 0, 1)
