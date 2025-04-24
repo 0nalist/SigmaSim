@@ -4,7 +4,19 @@ class_name WorkerOverviewUI
 @onready var worker_list: VBoxContainer = %WorkerList
 @onready var selected_name_label: Label = %SelectedNameLabel
 
+const WorkerCardScene := preload("res://components/ui/worker_card/worker_card.tscn")
+const Worker = preload("res://resources/workers/worker.gd")
+
 func _ready() -> void:
+	var test_card = WorkerCardScene.instantiate()
+	if test_card:
+		add_child(test_card)
+		print("✅ Manual test instantiation successful")
+	else:
+		push_error("❌ Manual instantiation of WorkerCard FAILED!")
+	return  # comment out rest of setup for now
+	
+	
 	app_title = "WorkForce"
 	_populate_worker_list()
 	WorkerManager.worker_selected.connect(_on_worker_selected)
@@ -29,19 +41,40 @@ func _populate_worker_list() -> void:
 	for child in worker_list.get_children():
 		child.queue_free()
 	for worker in WorkerManager.workers:
-		var card = _create_worker_card(worker)
-		worker_list.add_child(card)
-		card.call_deferred("setup", worker)
+		var row := _create_worker_row(worker)
+		worker_list.add_child(row)
 
-func _create_worker_card(worker: Worker) -> Control:
-	var card = preload("res://components/ui/worker_card/worker_card.tscn").instantiate()
-	card.show_cost = false
-	card.button_label = "Select"
-	#card.setup(worker)
+func _create_worker_row(worker: Worker) -> Control:
+	var card = WorkerCardScene.instantiate()
+	card.show_cost = true
+	card.show_status = false
+	card.button_label = "Hire"
+	card.setup(worker)
 	card.action_pressed.connect(func(w):
 		WorkerManager.currently_selected_worker = w
 		WorkerManager.emit_signal("worker_selected", w)
 	)
+	return card
+
+
+
+
+func _create_worker_card(worker: Worker) -> Control:
+	print("Instantiating card for", worker.name)
+	var card = WorkerCardScene.instantiate()
+
+	if card == null:
+		push_error("❌ WorkerCardScene.instantiate() returned null!")
+		return null  # ← NOT Control.new() — that hides the bug
+
+	print("✅ Card instantiated:", card)
+	return card
+
+	
+	card.show_cost = false
+	card.button_label = "Select"
+	#card.setup(worker)
+	
 
 
 	return card
@@ -52,7 +85,8 @@ func _on_worker_selected(worker: Worker) -> void:
 func _on_worker_unpaid(worker: Worker) -> void:
 	for card in worker_list.get_children():
 		if card.worker == worker:
-			card.update_status()
+			pass
+			#card.update_status()
 
 
 func _on_worker_idle(worker: Worker) -> void:

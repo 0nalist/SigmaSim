@@ -13,6 +13,7 @@ var pause_screen_instance: PauseScreen = null
 var desktop_scene := preload("res://desktop_env.tscn")
 var login_scene := preload("res://components/ui/log_in_ui.tscn")
 
+const _ForceRegisterWorker := preload("res://resources/workers/worker.gd")
 
 # Signals for communicating with other parts of the game
 signal game_over_triggered(reason: String)
