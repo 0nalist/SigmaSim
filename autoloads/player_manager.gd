@@ -147,7 +147,8 @@ var background_effects := {
 	
 	"The Stoic": func():
 		PortfolioManager.credit_used = 100000.0
-		PortfolioManager.credit_limit = 100000.0
+		PortfolioManager.credit_limit = 99000.0
+		PortfolioManager.add_student_loans(500000)
 }
 
 func apply_background_effects(background_name: String) -> void:

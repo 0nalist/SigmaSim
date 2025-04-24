@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=27 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -10,8 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="10_0utxc"]
 [ext_resource type="Texture2D" uid="uid://dyx0l0aa6l0at" path="res://assets/logos/folder.png" id="10_4e5iv"]
 [ext_resource type="Texture2D" uid="uid://mpip7wcjjyrr" path="res://assets/logos/pdficon.png" id="11_6x3lq"]
-[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/lilac_down_white.png" id="12_g75lf"]
 [ext_resource type="Texture2D" uid="uid://hi7ldhid6blr" path="res://assets/ui/tangelo_down_white.png" id="13_bnui0"]
+[ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/lilac_normal.png" id="13_m483i"]
 [ext_resource type="Script" uid="uid://jj0g0vk3lpc2" path="res://components/trash.gd" id="14_m483i"]
 [ext_resource type="Texture2D" uid="uid://c6q0iyjglvflr" path="res://assets/ui/dodger_blue_down_gray.png" id="14_xcmse"]
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
@@ -51,14 +51,6 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o42ww"]
-texture = ExtResource("12_g75lf")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
-modulate_color = Color(1, 1, 0.337255, 0.215686)
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5eiy6"]
 texture = ExtResource("13_bnui0")
 texture_margin_left = 2.0
@@ -67,7 +59,7 @@ texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_05goa"]
-texture = ExtResource("12_g75lf")
+texture = ExtResource("13_m483i")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
@@ -448,12 +440,9 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 focus_mode = 0
-theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_lx1wk")
 theme_override_font_sizes/font_size = 42
-theme_override_styles/hover = SubResource("StyleBoxTexture_o42ww")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_5eiy6")
 theme_override_styles/normal = SubResource("StyleBoxTexture_05goa")
 text = " Σ "
