@@ -1,4 +1,4 @@
-extends HBoxContainer
+extends PanelContainer
 class_name WorkerCard
 
 signal action_pressed(worker: Worker)

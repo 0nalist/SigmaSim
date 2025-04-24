@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://db60wtbc86hq2"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_eluir"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_eluir"]
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/ui/worker_card/grinderr.gd" id="2_3bg0q"]
 [ext_resource type="PackedScene" uid="uid://dgawvt5yorfxn" path="res://components/popups/gig_popup.tscn" id="3_eluir"]
 [ext_resource type="Texture2D" uid="uid://deecnjgpwkep4" path="res://assets/logos/hamster_circle_black.png" id="4_eluir"]
@@ -29,9 +29,10 @@ default_window_size = Vector2(600, 380)
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 
 [node name="Work" type="MarginContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
@@ -51,7 +52,6 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Hire" type="MarginContainer" parent="TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -69,6 +69,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "Available Workers   "
 
@@ -76,20 +77,11 @@ text = "Available Workers   "
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
 text = " next refresh in"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Hire/VBoxContainer"]
-clip_contents = false
-custom_minimum_size = Vector2(400, 240)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="HireList" type="VBoxContainer" parent="TabContainer/Hire/VBoxContainer/ScrollContainer"]
+[node name="HireList" type="VBoxContainer" parent="TabContainer/Hire/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
-
-[node name="Footer" type="Control" parent="TabContainer/Hire/VBoxContainer"]
-custom_minimum_size = Vector2(0, 5)
-layout_mode = 2

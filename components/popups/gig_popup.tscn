@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dgawvt5yorfxn"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_6786e"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_6786e"]
 [ext_resource type="Script" uid="uid://bl8ocafyv1w1b" path="res://components/popups/gig_popup.gd" id="1_p1yuo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn3q4"]

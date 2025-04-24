@@ -48,6 +48,8 @@ func _on_pay_by_credit_button_pressed() -> void:
 		close()
 	else:
 		print("❌ Not enough credit")
+	WindowManager.launch_app_by_name("OwerView")
+
 
 # --- SAVE SUPPORT ---
 

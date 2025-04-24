@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ddt12lvn4yjgb"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_ay41w"]
 [ext_resource type="Script" uid="uid://c1h61rb6ygcx4" path="res://components/ui/gig_card/gig_card.gd" id="2_4eflt"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="2_x10w4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4eflt"]
 bg_color = Color(3.18866e-07, 0.218351, 0.149065, 1)
@@ -25,11 +25,11 @@ script = ExtResource("2_4eflt")
 [node name="GigCard" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_ay41w")
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+theme = ExtResource("2_x10w4")
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GigCard"]
 layout_mode = 2

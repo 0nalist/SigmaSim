@@ -1,7 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://by7ye7kt412u3"]
+[gd_scene load_steps=9 format=3 uid="uid://by7ye7kt412u3"]
 
 [ext_resource type="Script" uid="uid://ce5ge1lmsdy7g" path="res://components/apps/ower_view/ower_view.gd" id="1_t43hg"]
 [ext_resource type="Texture2D" uid="uid://dv6cn782okjbj" path="res://assets/logos/OwerView_face.png" id="2_5ntqa"]
+[ext_resource type="Texture2D" uid="uid://chka0bjnrrdmr" path="res://assets/ui/dark_purple_normal.png" id="3_aemln"]
+[ext_resource type="Texture2D" uid="uid://dpko7w8bh0pq1" path="res://assets/ui/english_violet_normal.png" id="4_svf65"]
+[ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/lilac_normal.png" id="5_6w1kr"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_11odt"]
+texture = ExtResource("3_aemln")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+expand_margin_top = 18.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_njqv2"]
+texture = ExtResource("4_svf65")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_638yv"]
+texture = ExtResource("5_6w1kr")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [node name="OwerView" type="PanelContainer"]
 anchors_preset = 15
@@ -31,6 +56,7 @@ layout_mode = 2
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_11odt")
 current_tab = 0
 
 [node name="ShortTerm" type="MarginContainer" parent="MarginContainer/HBoxContainer/TabContainer"]
@@ -48,6 +74,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 2
 mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_njqv2")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/TabContainer/ShortTerm/CreditCardSummary"]
 layout_mode = 2
@@ -167,24 +194,32 @@ text = " Pay "
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_638yv")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="CreditScore" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="CreditScore" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 12
 text = "Credit Score:"
 
-[node name="CreditScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="CreditScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 17
 text = "Credit Score:"
 
-[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
 size_flags_horizontal = 4

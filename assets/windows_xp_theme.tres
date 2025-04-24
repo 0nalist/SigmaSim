@@ -1,28 +1,28 @@
-[gd_resource type="Theme" load_steps=15 format=3 uid="uid://cesgvqexxaqev"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://dyhdr7sojcl5h"]
 
-[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_cm3wh"]
-[ext_resource type="Texture2D" uid="uid://y4q1l566sv3c" path="res://assets/ui/marian_blue_normal.png" id="2_bqcnq"]
-[ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/dodger_blue_normal.png" id="3_w21ee"]
-[ext_resource type="Texture2D" uid="uid://cgabqb4y3pyct" path="res://assets/ui/marian_blue_down_white.png" id="4_q5je1"]
-[ext_resource type="Texture2D" uid="uid://224bqpxn4g0n" path="res://assets/ui/panel.png" id="5_bqcnq"]
-[ext_resource type="Texture2D" uid="uid://cqdy76tfxscgl" path="res://assets/ui/alabaster_normal.png" id="6_w21ee"]
+[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_1s4t5"]
+[ext_resource type="Texture2D" uid="uid://y4q1l566sv3c" path="res://assets/ui/marian_blue_normal.png" id="2_dya6n"]
+[ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/dodger_blue_normal.png" id="3_g52da"]
+[ext_resource type="Texture2D" uid="uid://cgabqb4y3pyct" path="res://assets/ui/marian_blue_down_white.png" id="4_55vud"]
+[ext_resource type="Texture2D" uid="uid://224bqpxn4g0n" path="res://assets/ui/panel.png" id="5_37l70"]
+[ext_resource type="Texture2D" uid="uid://cqdy76tfxscgl" path="res://assets/ui/alabaster_normal.png" id="6_lntna"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_peu1b"]
-texture = ExtResource("2_bqcnq")
+texture = ExtResource("2_dya6n")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fm8c1"]
-texture = ExtResource("2_bqcnq")
+texture = ExtResource("2_dya6n")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sbik4"]
-texture = ExtResource("3_w21ee")
+texture = ExtResource("3_g52da")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
@@ -31,53 +31,55 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rfm4r"]
-texture = ExtResource("4_q5je1")
+texture = ExtResource("4_55vud")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bqcnq"]
-texture = ExtResource("5_bqcnq")
+texture = ExtResource("5_37l70")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q5je1"]
-texture = ExtResource("6_w21ee")
+texture = ExtResource("6_lntna")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mtkwi"]
-texture = ExtResource("6_w21ee")
+texture = ExtResource("6_lntna")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vqwb2"]
-texture = ExtResource("5_bqcnq")
+texture = ExtResource("5_37l70")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
 [resource]
-default_font = ExtResource("1_cm3wh")
+default_font = ExtResource("1_1s4t5")
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/constants/icon_max_width = 32
 Button/font_sizes/font_size = 18
-Button/fonts/font = ExtResource("1_cm3wh")
+Button/fonts/font = ExtResource("1_1s4t5")
 Button/styles/focus = null
 Button/styles/hover = SubResource("StyleBoxTexture_peu1b")
 Button/styles/hover_pressed = SubResource("StyleBoxTexture_fm8c1")
 Button/styles/normal = SubResource("StyleBoxTexture_sbik4")
 Button/styles/pressed = SubResource("StyleBoxTexture_rfm4r")
 Label/font_sizes/font_size = 12
-Label/fonts/font = ExtResource("1_cm3wh")
+Label/fonts/font = ExtResource("1_1s4t5")
 Label/styles/normal = null
 Panel/styles/panel = SubResource("StyleBoxTexture_bqcnq")
+TabContainer/colors/drop_mark_color = Color(0, 0, 0, 1)
+TabContainer/colors/font_selected_color = Color(0, 0, 0, 1)
+TabContainer/colors/font_unselected_color = Color(0.521141, 0.521141, 0.521141, 1)
 TabContainer/styles/panel = SubResource("StyleBoxTexture_q5je1")
 TabContainer/styles/tab_focus = null
 TabContainer/styles/tab_selected = SubResource("StyleBoxTexture_mtkwi")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxTexture_vqwb2")
-TabContainer/styles/tabbar_background = SubResource("StyleBoxTexture_vqwb2")

@@ -3,9 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://bvtogb730mnxk" path="res://assets/dollarbillcloseup.png" id="1_gnfo0"]
 [ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
 [ext_resource type="Texture2D" uid="uid://bw7dnfkddu22m" path="res://assets/moneytoburn.png" id="3_wfbhr"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="4_2rri8"]
 [ext_resource type="Texture2D" uid="uid://dl2jo7p65xvuu" path="res://assets/ui/small mid caps.png" id="4_wfbhr"]
 [ext_resource type="Script" uid="uid://bq3i6eu2isf1d" path="res://components/apps/broke_rage/stock_market.gd" id="5_lgac0"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="5_n67s2"]
 [ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_htng3"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcm1f"]
@@ -84,18 +84,19 @@ columns = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
 layout_mode = 2
 size_flags_horizontal = 2
+size_flags_stretch_ratio = 3.61
 
 [node name="BalanceLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("4_2rri8")
+theme = ExtResource("5_n67s2")
 text = "Balance: $ "
 horizontal_alignment = 2
 
 [node name="CashLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("4_2rri8")
+theme = ExtResource("5_n67s2")
 theme_override_font_sizes/font_size = 21
 text = "Cash: $ "
 horizontal_alignment = 2
@@ -103,21 +104,22 @@ horizontal_alignment = 2
 [node name="InvestedLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("4_2rri8")
+theme = ExtResource("5_n67s2")
 text = "Invested: $ "
 horizontal_alignment = 2
 
 [node name="DebtLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("4_2rri8")
+theme = ExtResource("5_n67s2")
 text = "Debt: $ "
 horizontal_alignment = 2
 
 [node name="PassiveIncomeLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
-theme = ExtResource("4_2rri8")
+theme = ExtResource("5_n67s2")
 text = "Passive Income: $0"
 horizontal_alignment = 2
 
@@ -127,7 +129,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 focus_mode = 0
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = " Manage your debt
 with OwerView "
 
