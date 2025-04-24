@@ -1,5 +1,5 @@
 extends PanelContainer
-class_name WorkerCardRedux
+#class_name WorkerCardRedux
 
 signal action_pressed(worker: Worker)
 

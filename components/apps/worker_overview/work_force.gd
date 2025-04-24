@@ -64,7 +64,8 @@ func _on_worker_assigned(worker: Worker, _task) -> void:
 func _on_worker_updated(worker: Worker) -> void:
 	# Find the matching card and update it
 	for card in worker_list.get_children():
-		if card is WorkerCardRedux and card.worker == worker:
+		#if card is WorkerCardRedux and card.worker == worker:
+		if card.worker == worker:
 			card.update_all()
 
 
