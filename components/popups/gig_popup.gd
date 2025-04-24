@@ -67,7 +67,7 @@ func _refresh_progress():
 	elif current_prod < last_productivity:
 		if progress_bar.value < 100.0:
 			active_tween = get_tree().create_tween()
-			active_tween.tween_property(progress_bar, "value", 100.0, 0.25)
+			active_tween.tween_property(progress_bar, "value", 100.0, 0.45)
 		else:
 			progress_bar.value = 100.0
 		pending_reset = true
@@ -75,7 +75,7 @@ func _refresh_progress():
 	# 3. Normal forward progress
 	else:
 		active_tween = get_tree().create_tween()
-		active_tween.tween_property(progress_bar, "value", percent, 0.3)
+		active_tween.tween_property(progress_bar, "value", percent, 0.45)
 
 	# Completion label
 	var limit_text := "∞" if gig.completion_limit == -1 else str(gig.completion_limit)
