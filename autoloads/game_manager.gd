@@ -52,13 +52,16 @@ func trigger_game_over(reason: String) -> void:
 func _on_delete_save():
 	SaveManager.delete_save(PlayerManager.get_slot_id())
 
+	reset_managers()
+
+	load_login_screen()
+
+func reset_managers() -> void:
 	PortfolioManager.reset()
 	PlayerManager.reset()
 	WindowManager.reset()
 	TaskManager.reset()
-
-	load_login_screen()
-
+	# Add more as systems grow (NPCManager, BillManager, etc.)
 
 # Handle reload save action
 func _on_reload_save():

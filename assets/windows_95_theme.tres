@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=15 format=3 uid="uid://cesgvqexxaqev"]
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://cesgvqexxaqev"]
 
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_cm3wh"]
 [ext_resource type="Texture2D" uid="uid://y4q1l566sv3c" path="res://assets/ui/marian_blue_normal.png" id="2_bqcnq"]
@@ -6,6 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://cgabqb4y3pyct" path="res://assets/ui/marian_blue_down_white.png" id="4_q5je1"]
 [ext_resource type="Texture2D" uid="uid://224bqpxn4g0n" path="res://assets/ui/panel.png" id="5_bqcnq"]
 [ext_resource type="Texture2D" uid="uid://cqdy76tfxscgl" path="res://assets/ui/alabaster_normal.png" id="6_w21ee"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w21ee"]
+texture = ExtResource("5_bqcnq")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_peu1b"]
 texture = ExtResource("2_bqcnq")
@@ -63,10 +70,12 @@ texture_margin_bottom = 2.0
 
 [resource]
 default_font = ExtResource("1_cm3wh")
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.544975, 0.544974, 0.544974, 0.5)
 Button/constants/icon_max_width = 32
 Button/font_sizes/font_size = 18
 Button/fonts/font = ExtResource("1_cm3wh")
+Button/styles/disabled = SubResource("StyleBoxTexture_w21ee")
 Button/styles/focus = null
 Button/styles/hover = SubResource("StyleBoxTexture_peu1b")
 Button/styles/hover_pressed = SubResource("StyleBoxTexture_fm8c1")
@@ -76,6 +85,7 @@ Label/font_sizes/font_size = 12
 Label/fonts/font = ExtResource("1_cm3wh")
 Label/styles/normal = null
 Panel/styles/panel = SubResource("StyleBoxTexture_bqcnq")
+TabContainer/colors/font_selected_color = Color(0, 0, 0, 1)
 TabContainer/styles/panel = SubResource("StyleBoxTexture_q5je1")
 TabContainer/styles/tab_focus = null
 TabContainer/styles/tab_selected = SubResource("StyleBoxTexture_mtkwi")
