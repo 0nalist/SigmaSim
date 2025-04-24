@@ -1,8 +1,12 @@
 extends Node
 # Autoload name: TaskManager
 
+signal assignment_target_changed(new_target)
+
 # Tasks are grouped by category (e.g. "grinderr", "contracting", etc.)
 var task_pools: Dictionary = {}  # category -> Array[WorkerTask]
+var active_assignment_target: Node = null
+
 
 func register_task(category: String, task: WorkerTask) -> void:
 	if not task_pools.has(category):
@@ -21,6 +25,11 @@ func get_tasks(category: String) -> Array[WorkerTask]:
 func remove_task(category: String, task: WorkerTask) -> void:
 	if task_pools.has(category):
 		task_pools[category].erase(task)
+
+
+func set_assignment_target(target: Node):
+	active_assignment_target = target
+	emit_signal("assignment_target_changed", target)
 
 # --- Save/Load Support ---
 func get_save_data() -> Dictionary:

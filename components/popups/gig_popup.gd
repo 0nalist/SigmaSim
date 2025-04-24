@@ -22,7 +22,7 @@ func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
 
 	title_label.text = gig.title
-	payout_label.text = "Payout: $%.2f" % gig.payout_amount
+	payout_label.text = "Payout: $%.2f" % gig.payout_amount + " every %s (%.1f productivity)" % [gig.unit_name, gig.productivity_required]
 	completions_label.text = "Completed: %d" % gig.completions_done
 
 	if gig.completion_limit == -1:
@@ -37,6 +37,9 @@ func setup(gig_ref: WorkerTask) -> void:
 	assign_button.pressed.connect(_on_assign_worker_pressed)
 	grind_button.pressed.connect(_on_grind_button_pressed)
 	WorkerManager.worker_selected.connect(_on_worker_selected)
+
+func _ready() -> void:
+	assign_button.toggle_mode = true
 
 func _on_productivity_applied(_amount: float, _new_total: float) -> void:
 	_refresh_progress()
@@ -106,37 +109,52 @@ func _refresh_workers():
 
 
 func _on_worker_selected(worker: Worker) -> void:
-	_refresh_selected_worker()
+	if TaskManager.active_assignment_target != self:
+		return  # We're not the active gig right now
+
+	if worker != null and not gig.assigned_workers.has(worker):
+		gig.assigned_workers.append(worker)
+		WorkerManager.assign_worker(worker, gig)
+		_refresh_workers()
+		_refresh_selected_worker()
+		_reset_assignment_toggle()
+
+
+func _reset_assignment_toggle():
+	assign_button.set_pressed_no_signal(false)
+	if TaskManager.active_assignment_target == self:
+		TaskManager.active_assignment_target = null
+
 
 func _refresh_selected_worker():
 	var worker = WorkerManager.currently_selected_worker
 	if worker != null:
-		selected_worker_label.text = "Selected: " + worker.name
-		assign_button.text = "Assign " + worker.name
+		#selected_worker_label.text = "Selected: " + worker.name
+		#assign_button.text = "Assign " + worker.name
+		pass
 	else:
-		selected_worker_label.text = "Selected: None"
-		assign_button.text = "Assign Worker"
+		pass
+		#selected_worker_label.text = "Selected: None"
+		#assign_button.text = "Assign Worker"
 	#assign_button.disabled = false
 
 
 func _on_assign_worker_pressed():
-	var worker = WorkerManager.currently_selected_worker
-	if worker == null:
-		# Open WorkForce to let the user select one
+	if assign_button.button_pressed:
+		TaskManager.set_assignment_target(self)
 		WindowManager.launch_app_by_name("WorkForce")
-		return
+	else:
+		if TaskManager.active_assignment_target == self:
+			TaskManager.set_assignment_target(null)
 
-	if gig.assigned_workers.has(worker):
-		print("Worker already assigned to this gig")
-		return
 
-	gig.assigned_workers.append(worker)
-	WorkerManager.assign_worker(worker, gig)
-	_refresh_selected_worker()
-	_refresh_workers()
 
 
 
 func _on_grind_button_pressed():
 	gig.apply_productivity(1.0)
 	_refresh_progress()
+
+
+func _on_work_force_button_pressed() -> void:
+	WindowManager.launch_app_by_name("WorkForce")
