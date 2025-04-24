@@ -1,22 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8qrva6m0u5bx"]
+[gd_scene load_steps=5 format=3 uid="uid://brluv6wylly06"]
 
-[ext_resource type="Script" uid="uid://b3dufyde0mvif" path="res://components/ui/worker_card/worker_card.gd" id="1_c2bkr"]
-[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/lilac_down_white.png" id="1_wp747"]
-[ext_resource type="Texture2D" uid="uid://ulcids0e12dp" path="res://assets/prof_pics/worker.png" id="2_w8xxy"]
+[ext_resource type="Script" uid="uid://b3dufyde0mvif" path="res://components/ui/worker_card/worker_card.gd" id="1_3dc37"]
+[ext_resource type="Texture2D" uid="uid://ulcids0e12dp" path="res://assets/prof_pics/worker.png" id="2_a4h5d"]
+[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/lilac_down_white.png" id="3_sxmd5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hx1uy"]
-texture = ExtResource("1_wp747")
+texture = ExtResource("3_sxmd5")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
 [node name="WorkerCard" type="PanelContainer"]
-offset_left = 264.0
-offset_right = 278.0
+offset_left = 232.0
+offset_right = 246.0
 offset_bottom = 92.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_hx1uy")
-script = ExtResource("1_c2bkr")
+script = ExtResource("1_3dc37")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -27,17 +27,11 @@ theme_override_constants/margin_bottom = 5
 
 [node name="WorkerCard" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+mouse_filter = 0
 
 [node name="Portrait" type="TextureRect" parent="MarginContainer/WorkerCard"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-size_flags_horizontal = 2
-size_flags_vertical = 4
-size_flags_stretch_ratio = 0.0
-texture = ExtResource("2_w8xxy")
+texture = ExtResource("2_a4h5d")
 stretch_mode = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/WorkerCard"]

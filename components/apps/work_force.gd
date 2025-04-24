@@ -4,19 +4,10 @@ class_name WorkerOverviewUI
 @onready var worker_list: VBoxContainer = %WorkerList
 @onready var selected_name_label: Label = %SelectedNameLabel
 
-const WorkerCardScene := preload("res://components/ui/worker_card/worker_card.tscn")
+const WorkerCardScene := preload("res://components/ui/worker_card/worker_card_redux.tscn")
 const Worker = preload("res://resources/workers/worker.gd")
 
 func _ready() -> void:
-	var test_card = WorkerCardScene.instantiate()
-	if test_card:
-		add_child(test_card)
-		print("✅ Manual test instantiation successful")
-	else:
-		push_error("❌ Manual instantiation of WorkerCard FAILED!")
-	return  # comment out rest of setup for now
-	
-	
 	app_title = "WorkForce"
 	_populate_worker_list()
 	WorkerManager.worker_selected.connect(_on_worker_selected)
@@ -46,6 +37,7 @@ func _populate_worker_list() -> void:
 
 func _create_worker_row(worker: Worker) -> Control:
 	var card = WorkerCardScene.instantiate()
+	print("Card type:", card.get_class())
 	card.show_cost = true
 	card.show_status = false
 	card.button_label = "Hire"
@@ -85,8 +77,7 @@ func _on_worker_selected(worker: Worker) -> void:
 func _on_worker_unpaid(worker: Worker) -> void:
 	for card in worker_list.get_children():
 		if card.worker == worker:
-			pass
-			#card.update_status()
+			card.update_status()
 
 
 func _on_worker_idle(worker: Worker) -> void:

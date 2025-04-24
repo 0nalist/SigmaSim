@@ -8,7 +8,7 @@ signal action_pressed(worker: Worker)
 @export var button_label: String = "Select"
 
 
-var worker#: Worker
+var worker: Worker
 
 @onready var name_label: Label = %NameLabel
 @onready var type_label: Label = %TypeLabel
