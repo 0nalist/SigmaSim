@@ -47,7 +47,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_aemln")
 script = ExtResource("1_t43hg")
 app_title = "OwerView"
 app_icon = ExtResource("2_5ntqa")
-default_window_size = Vector2(500, 400)
+default_window_size = Vector2(500, 500)
 default_position = "left"
 only_one_instance_allowed = true
 

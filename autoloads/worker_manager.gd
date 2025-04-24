@@ -22,6 +22,7 @@ var available_workers: Array[Worker] = []
 func _ready() -> void:
 	TimeManager.minute_passed.connect(_on_minute_passed)
 	TimeManager.day_passed.connect(_on_day_passed)
+	await NameGenerator.ready
 	generate_available_workers()
 
 func _on_minute_passed(in_game_minutes: int) -> void:
@@ -117,7 +118,11 @@ func generate_available_workers() -> void:
 
 func _generate_random_worker(is_contractor: bool) -> Worker:
 	var worker := Worker.new()
-	worker.name = "Worker %s" % ["A","B","C","D","E","F","G","H","I","J"].pick_random()
+	var fem = randi_range(0, 1)
+	var masc = randi_range(0, 1)
+	var andro = randi_range(0, 1) if randi_range(0, 1) == 1 else 0
+
+	worker.name = NameGenerator.get_random_name(fem, masc, andro)
 	worker.is_contractor = is_contractor
 	worker.hours_per_day = randi_range(4, 10)
 	worker.productivity_per_tick = randf_range(0.2, 1.0)

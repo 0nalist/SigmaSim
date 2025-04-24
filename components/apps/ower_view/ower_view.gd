@@ -43,7 +43,7 @@ func update_student_loans():
 	update_sliders()
 
 func update_credit_interest_label():
-	credit_interest_label.text = "Interest Rate: %.1f%%" % (PortfolioManager.credit_interest_rate * 100.0)
+	credit_interest_label.text = "Interest Rate: %.1f%% per 4 weeks" % (PortfolioManager.credit_interest_rate * 100.0)
 
 
 func update_credit_score():

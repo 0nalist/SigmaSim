@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Adam",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Alan",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Babe",
+    "fem": 0.3,
+    "masc": 0.7,
+    "andro": 0.6
+  },
+  {
+    "name": "Babette",
+    "fem": 0.9,
+    "masc": 0,
+    "andro": 0.3
+  },
+  {
+    "name": "Ben",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Bob",
+    "fem": 0.1,
+    "masc": 1,
+    "andro": 0.1
+  },
+  {
+    "name": "Brunhilda ",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0.2
+  },
+  {
+    "name": "Bruno",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Carly",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Chad",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Chuck",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Cindy",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Destiny",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0.3
+  },
+  {
+    "name": "Emily",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Frisbee",
+    "fem": 0,
+    "masc": 0,
+    "andro": 1
+  },
+  {
+    "name": "Gorgonzola",
+    "fem": 0,
+    "masc": 0.1,
+    "andro": 1
+  },
+  {
+    "name": "Karen",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Kimberly",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Kyle",
+    "fem": 0.05,
+    "masc": 1,
+    "andro": 0.05
+  },
+  {
+    "name": "Lexi",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Nichole",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Sam",
+    "fem": 0.7,
+    "masc": 0.9,
+    "andro": 0.2
+  },
+  {
+    "name": "Samantha",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Skyler",
+    "fem": 0.8,
+    "masc": 0.8,
+    "andro": 0.8
+  },
+  {
+    "name": "Sock",
+    "fem": 0,
+    "masc": 0,
+    "andro": 1
+  },
+  {
+    "name": "Stacy",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Trixie",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Xylophone",
+    "fem": 0,
+    "masc": 0,
+    "andro": 1
+  }
+]

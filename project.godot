@@ -28,6 +28,7 @@ PlayerManager="*res://autoloads/player_manager.gd"
 CursorManager="*res://autoloads/cursor_manager.gd"
 WorkerManager="*res://autoloads/worker_manager.gd"
 TaskManager="*res://autoloads/task_manager.gd"
+NameGenerator="*res://autoloads/name_generator.gd"
 
 [display]
 
