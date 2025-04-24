@@ -51,11 +51,8 @@ func _on_profile_login_requested(slot_id: int) -> void:
 	logging_in_label.text = "Locking in..."
 	await get_tree().create_timer(dot_time).timeout
 	# Launch desktop environment
-	SaveManager.load_from_slot(slot_id)
-	var desktop_scene = preload("res://desktop_env.tscn")
-	var desktop = desktop_scene.instantiate()
-	get_parent().add_child(desktop)
-	queue_free()
+	GameManager.load_desktop_env(slot_id)
+	#queue_free()
 
 
 func _on_new_profile_button_pressed() -> void:

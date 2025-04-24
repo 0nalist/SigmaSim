@@ -8,6 +8,7 @@ extends Control
 @export var background_texture: Texture = preload("res://assets/backgrounds/Bliss_(Windows_XP) (2).png")
 
 func _ready() -> void:
+	GameManager.in_game = true
 	hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
 	WindowManager.start_panel = start_panel

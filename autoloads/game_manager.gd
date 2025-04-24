@@ -4,10 +4,14 @@ extends Node
 # Game state variables
 var god_mode: bool = false
 var is_paused: bool = false
-var current_profile_name: String = ""
+var current_profile_slot: int = -1
 var last_save_path: String = "user://saves/default_save.save" # Adjust path as needed
+var in_game: bool = false
+
 
 var pause_screen_instance: PauseScreen = null
+var desktop_scene := preload("res://desktop_env.tscn")
+var login_scene := preload("res://components/ui/log_in_ui.tscn")
 
 
 # Signals for communicating with other parts of the game
@@ -15,8 +19,6 @@ signal game_over_triggered(reason: String)
 
 # On ready, we can hook into time or UI systems
 func _ready():
-	# Set up any necessary listeners or defaults here
-	#print("Game Manager initialized")
 	pass
 
 func _input(event: InputEvent) -> void:
@@ -47,11 +49,11 @@ func trigger_game_over(reason: String) -> void:
 # Handle delete save action
 func _on_delete_save():
 	SaveManager.delete_save(PlayerManager.get_slot_id())
-	load_main_menu()
+	load_login_screen()
 
 # Handle reload save action
 func _on_reload_save():
-	SaveManager.load_profile(current_profile_name)
+	SaveManager.load_profile(current_profile_slot)
 	# Could also add a state to reset UI or re-initialize game objects
 
 # Handle infinite credit mode
@@ -65,6 +67,9 @@ func _on_continue_with_infinite_credit():
 ## Pause menu actions
 
 func toggle_pause_screen():
+	if not in_game:
+		return
+	
 	if pause_screen_instance and is_instance_valid(pause_screen_instance):
 		# Pause screen is open, so close it and resume time
 		TimeManager.set_time_paused(false)
@@ -99,7 +104,7 @@ func _on_pause_sleep():
 
 func _on_pause_logout():
 	TimeManager.set_time_paused(false)
-	load_main_menu()
+	load_login_screen()
 
 func _on_pause_shutdown():
 	get_tree().quit()
@@ -114,19 +119,26 @@ func _close_pause_screen():
 
 
 # Scene transition helpers
-func load_main_menu():
-	# Switch to main menu scene
-	var main_menu_scene: PackedScene = preload("res://components/ui/log_in_ui.tscn")
-	get_tree().change_scene_to_packed(main_menu_scene)
 
-func load_new_game():
-	# Start a new game with a clean slate
-	SaveManager.create_new_profile("NewPlayer")  # Or handle logic for new game
-	load_main_menu()  # Or switch directly to game world scene if needed
+func load_login_screen():
+	in_game = false
+	TimeManager.set_time_paused(true)
+	get_tree().change_scene_to_packed(login_scene)
+
+func load_desktop_env(slot_id: int):
+	current_profile_slot = slot_id
+	in_game = true
+
+	# Load save data
+	SaveManager.load_from_slot(slot_id)
+
+	# Swap scene
+	get_tree().change_scene_to_packed(desktop_scene)
+
 
 # Save and load functionality (optional, depends on how you handle it)
 func save_game():
-	SaveManager.save_profile(current_profile_name)
+	SaveManager.save_profile(current_profile_slot)
 
 func load_game():
-	SaveManager.load_profile(current_profile_name)
+	SaveManager.load_profile(current_profile_slot)
