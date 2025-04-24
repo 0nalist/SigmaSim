@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 class_name PauseScreen
 
 signal resume_pressed

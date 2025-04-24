@@ -34,10 +34,10 @@ func _populate_worker_list() -> void:
 		card.call_deferred("setup", worker)
 
 func _create_worker_card(worker: Worker) -> Control:
-	var card = preload("res://components/ui/worker_card/worker_card.tscn").instantiate()
+	var card = preload("res://components/ui/worker_card/worker_card_redux.tscn").instantiate()
 	card.show_cost = false
 	card.button_label = "Select"
-	#card.setup(worker)
+	card.setup(worker)
 	card.action_pressed.connect(func(w):
 		WorkerManager.currently_selected_worker = w
 		WorkerManager.emit_signal("worker_selected", w)
