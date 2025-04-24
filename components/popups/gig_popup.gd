@@ -117,7 +117,7 @@ func _on_worker_selected(worker: Worker) -> void:
 		WorkerManager.assign_worker(worker, gig)
 		_refresh_workers()
 		_refresh_selected_worker()
-		_reset_assignment_toggle()
+		#_reset_assignment_toggle()
 
 
 func _reset_assignment_toggle():

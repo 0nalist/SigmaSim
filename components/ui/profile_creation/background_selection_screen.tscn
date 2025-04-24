@@ -71,6 +71,7 @@ size_flags_vertical = 4
 tooltip_text = "No student loans
 Start with $300 cash
 "
+focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "The Dropout
 "
@@ -101,6 +102,7 @@ tooltip_text = "$10,000 in credit card debt
 $25,000 credit limit
 "
 tooltip_auto_translate_mode = 1
+focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "The Burnout"
 
@@ -131,6 +133,7 @@ Minerr unlocked from the start
 Starts with 3 GPUs
 "
 tooltip_auto_translate_mode = 1
+focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "The Gamer"
 
@@ -164,6 +167,7 @@ size_flags_vertical = 4
 tooltip_text = "$120,000 in student loans
 First employee is free forever
 Half-off hiring costs"
+focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "The Manager"
 
@@ -193,6 +197,7 @@ tooltip_text = "$360,000 in student loans
 Double productivity & power from clicks
 Lifetime subscription to Scroogeberg terminal"
 tooltip_auto_translate_mode = 1
+focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "The Postgrad"
 
@@ -221,6 +226,7 @@ size_flags_vertical = 4
 tooltip_text = "$500,000 in student loans
 $100,000 in credit card debt"
 tooltip_auto_translate_mode = 1
+focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "The Stoic"
 

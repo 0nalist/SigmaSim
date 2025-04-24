@@ -14,6 +14,8 @@ extends PanelContainer
 
 func _ready() -> void:
 	dump_player_data_in_bio()
+	update_name_label()
+	update_work_label()
 
 
 
@@ -39,7 +41,16 @@ func load_profile(profile: Profile) -> void:
 		var label = Label.new()
 		label.text = post
 		wall_v_box_container.add_child(label)
-	
+
+
+func update_name_label():
+	name_label.text = PlayerManager.user_data["name"]
+
+func update_work_label():
+	if randi_range(0,1) > 0:
+		work_label.text = PlayerManager.user_data["name"] + " woke up this morning and chose violence"
+	else:
+		work_label.text = PlayerManager.user_data["name"] + " is creating lifelong b2b partnerships"
 
 func dump_player_data_in_bio():
 	var bio_text := ""
