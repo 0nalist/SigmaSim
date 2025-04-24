@@ -1,5 +1,5 @@
 extends BaseAppUI
-class_name WorkerOverviewUI
+class_name WorkerForce
 
 @onready var worker_list: VBoxContainer = %WorkerList
 @onready var selected_name_label: Label = %SelectedNameLabel
@@ -37,7 +37,7 @@ func _create_worker_card(worker: Worker) -> Control:
 	var card = preload("res://components/ui/worker_card/worker_card.tscn").instantiate()
 	card.show_cost = false
 	card.button_label = "Select"
-	#card.setup(worker)
+	card.setup(worker)
 	card.action_pressed.connect(func(w):
 		WorkerManager.currently_selected_worker = w
 		WorkerManager.emit_signal("worker_selected", w)
@@ -64,7 +64,8 @@ func _on_worker_assigned(worker: Worker, _task) -> void:
 func _on_worker_updated(worker: Worker) -> void:
 	# Find the matching card and update it
 	for card in worker_list.get_children():
-		if card is WorkerCard and card.worker == worker:
+		#if card is WorkerCardRedux and card.worker == worker:
+		if card.worker == worker:
 			card.update_all()
 
 

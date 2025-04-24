@@ -1,5 +1,5 @@
 extends PanelContainer
-class_name WorkerCard
+#class_name WorkerCardRedux
 
 signal action_pressed(worker: Worker)
 
@@ -46,7 +46,7 @@ func setup(worker_ref: Worker) -> void:
 		cost_label.visible = false
 
 	# Placeholder portrait
-	portrait.texture = preload("res://assets/prof_pics/worker.png")
+	#portrait.texture = preload("res://assets/prof_pics/worker.png")
 
 	action_button.text = button_label
 	action_button.pressed.connect(func():

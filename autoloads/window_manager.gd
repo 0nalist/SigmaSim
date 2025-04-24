@@ -431,3 +431,10 @@ func load_popups_from_data(popup_data: Array) -> void:
 			win.call_deferred("set_window_title", popup.get_window_title())
 		else:
 			win.window_title = "Popup"
+
+
+func reset() -> void:
+	close_all_windows()
+	open_windows.clear()
+	popup_registry.clear()
+	focused_window = null

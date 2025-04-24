@@ -13,6 +13,8 @@ var pause_screen_instance: PauseScreen = null
 var desktop_scene := preload("res://desktop_env.tscn")
 var login_scene := preload("res://components/ui/log_in_ui.tscn")
 
+const _ForceRegisterWorker := preload("res://resources/workers/worker.gd")
+const _force_worker_card := preload("res://components/ui/worker_card/worker_card_redux.gd")
 
 # Signals for communicating with other parts of the game
 signal game_over_triggered(reason: String)
@@ -49,7 +51,14 @@ func trigger_game_over(reason: String) -> void:
 # Handle delete save action
 func _on_delete_save():
 	SaveManager.delete_save(PlayerManager.get_slot_id())
+
+	PortfolioManager.reset()
+	PlayerManager.reset()
+	WindowManager.reset()
+	TaskManager.reset()
+
 	load_login_screen()
+
 
 # Handle reload save action
 func _on_reload_save():
@@ -103,8 +112,9 @@ func _on_pause_sleep():
 	_close_pause_screen()
 
 func _on_pause_logout():
-	TimeManager.set_time_paused(false)
+	TimeManager.set_time_paused(true)
 	load_login_screen()
+	_close_pause_screen()
 
 func _on_pause_shutdown():
 	get_tree().quit()

@@ -30,7 +30,7 @@ func _populate_hire_tab() -> void:
 		hire_list.add_child(row)
 
 func _create_hire_row(worker: Worker) -> Control:
-	var card = preload("res://components/ui/worker_card/worker_card.tscn").instantiate()
+	var card = preload("res://components/ui/worker_card/worker_card_redux.tscn").instantiate()
 	card.show_cost = true
 	card.show_status = false
 	card.button_label = "Hire"
