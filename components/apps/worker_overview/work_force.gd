@@ -1,11 +1,8 @@
 extends BaseAppUI
-class_name WorkerOverviewUI
+class_name WorkerForce
 
 @onready var worker_list: VBoxContainer = %WorkerList
 @onready var selected_name_label: Label = %SelectedNameLabel
-
-const WorkerCardScene := preload("res://components/ui/worker_card/worker_card_redux.tscn")
-const Worker = preload("res://resources/workers/worker.gd")
 
 func _ready() -> void:
 	app_title = "WorkForce"
@@ -32,41 +29,19 @@ func _populate_worker_list() -> void:
 	for child in worker_list.get_children():
 		child.queue_free()
 	for worker in WorkerManager.workers:
-		var row := _create_worker_row(worker)
-		worker_list.add_child(row)
+		var card = _create_worker_card(worker)
+		worker_list.add_child(card)
+		card.call_deferred("setup", worker)
 
-func _create_worker_row(worker: Worker) -> Control:
-	var card = WorkerCardScene.instantiate()
-	print("Card type:", card.get_class())
-	card.show_cost = true
-	card.show_status = false
-	card.button_label = "Hire"
-	card.setup(worker)
+func _create_worker_card(worker: Worker) -> Control:
+	var card = preload("res://components/ui/worker_card/worker_card.tscn").instantiate()
+	card.show_cost = false
+	card.button_label = "Select"
+	#card.setup(worker)
 	card.action_pressed.connect(func(w):
 		WorkerManager.currently_selected_worker = w
 		WorkerManager.emit_signal("worker_selected", w)
 	)
-	return card
-
-
-
-
-func _create_worker_card(worker: Worker) -> Control:
-	print("Instantiating card for", worker.name)
-	var card = WorkerCardScene.instantiate()
-
-	if card == null:
-		push_error("❌ WorkerCardScene.instantiate() returned null!")
-		return null  # ← NOT Control.new() — that hides the bug
-
-	print("✅ Card instantiated:", card)
-	return card
-
-	
-	card.show_cost = false
-	card.button_label = "Select"
-	#card.setup(worker)
-	
 
 
 	return card

@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkd8ber0rdok0"]
+[gd_scene load_steps=5 format=3 uid="uid://dkd8ber0rdok0"]
 
-[ext_resource type="Script" uid="uid://dprntku0dr0ev" path="res://components/apps/work_force.gd" id="1_30bye"]
+[ext_resource type="Script" uid="uid://dqadp0a03aco3" path="res://components/apps/worker_overview/work_force.gd" id="1_30bye"]
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_wbg8h"]
-[ext_resource type="Texture2D" uid="uid://ulcids0e12dp" path="res://assets/prof_pics/worker.png" id="3_c3wom"]
 [ext_resource type="Texture2D" uid="uid://doyxcfvfbnmaf" path="res://assets/logos/Grinderr.png" id="4_wbg8h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30bye"]
@@ -20,10 +19,6 @@ mouse_filter = 1
 theme = ExtResource("1_wbg8h")
 theme_override_styles/panel = SubResource("StyleBoxFlat_30bye")
 script = ExtResource("1_30bye")
-app_title = "WorkForce"
-app_icon = ExtResource("3_c3wom")
-default_position = "left"
-only_one_instance_allowed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
