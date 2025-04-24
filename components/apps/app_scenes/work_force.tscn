@@ -8,7 +8,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30bye"]
 bg_color = Color(0.0962047, 0.0962048, 0.0962047, 1)
 
-[node name="WorkForce" type="Panel"]
+[node name="WorkForce" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -26,12 +26,7 @@ default_position = "left"
 only_one_instance_allowed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
@@ -78,6 +73,5 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Hire on Grinderr"
 icon = ExtResource("4_wbg8h")
-expand_icon = true
 
 [connection signal="pressed" from="MarginContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]
