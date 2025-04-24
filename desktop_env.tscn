@@ -383,16 +383,19 @@ alignment = 2
 
 [node name="SiggyButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
+focus_mode = 0
 theme_override_font_sizes/font_size = 14
 text = "Siggy"
 
 [node name="LoadButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
+focus_mode = 0
 theme_override_font_sizes/font_size = 14
 text = "Load"
 
 [node name="SaveButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
+focus_mode = 0
 theme_override_font_sizes/font_size = 14
 text = "Save"
 
@@ -415,6 +418,7 @@ text = "week sleep "
 [node name="SettingsButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 theme = ExtResource("1_0utxc")
 icon = ExtResource("10_0utxc")
 
@@ -466,6 +470,7 @@ alignment = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 0
 theme = ExtResource("1_0utxc")
 icon = ExtResource("10_0utxc")
 

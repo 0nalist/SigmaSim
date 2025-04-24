@@ -16,7 +16,7 @@ func _ready() -> void:
 	dump_player_data_in_bio()
 	update_name_label()
 	update_work_label()
-
+	update_prof_pic()
 
 
 func load_profile(profile: Profile) -> void:
@@ -42,9 +42,15 @@ func load_profile(profile: Profile) -> void:
 		label.text = post
 		wall_v_box_container.add_child(label)
 
+func update_prof_pic():
+	pass
+	#profile_pic.texture = PlayerManager.user_data["profile_picture_path"]
+	## Invalid assignment of property or key 'texture' with value of type 'String' on a base object of type 'TextureRect'.
 
 func update_name_label():
-	name_label.text = PlayerManager.user_data["name"]
+	var pname = PlayerManager.user_data["name"]
+	name_label.text = pname
+	relationship_label.text = pname + " is terminally single"
 
 func update_work_label():
 	if randi_range(0,1) > 0:

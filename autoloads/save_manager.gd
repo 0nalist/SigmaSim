@@ -138,6 +138,19 @@ func reset_managers():
 	PortfolioManager.reset()
 	PlayerManager.reset()
 
+func delete_save(slot_id: int) -> void:
+	var path := get_slot_path(slot_id)
+
+	# Remove the save file itself
+	if FileAccess.file_exists(path):
+		DirAccess.remove_absolute(path)
+
+	# Remove the metadata entry
+	var metadata = load_slot_metadata()
+	metadata.erase("slot_%d" % slot_id)
+	save_slot_metadata(metadata)
+
+	print("🧹 Deleted save slot %d" % slot_id)
 
 
 # --- Helper Functions ---

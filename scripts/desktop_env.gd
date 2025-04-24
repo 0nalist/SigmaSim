@@ -23,10 +23,7 @@ func _ready() -> void:
 		background.texture = background_texture  # fallback
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		get_tree().quit()
-
-	if event.is_action_pressed("select") and start_panel.visible:
+	if event.is_action_pressed("select") and start_panel.visible: ## Do this in start_panel once it is its own scene
 		await get_tree().create_timer(0.21).timeout
 		start_panel.hide()
 

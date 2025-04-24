@@ -79,7 +79,7 @@ layout_mode = 2
 [node name="RelationshipLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Name McNamerson is Single"
+text = "Name McNamerson is Terminally Single"
 
 [node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(25, 0)

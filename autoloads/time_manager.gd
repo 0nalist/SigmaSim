@@ -38,12 +38,16 @@ var month_names := [
 func _ready() -> void:
 	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
 
-func start_time() -> void:
+func start_time() -> void: ## refactor to set_time_paused
 	time_ticking = true
 	print("time ticking")
 
-func stop_time() -> void:
+func stop_time() -> void: ## refactor to set_time_paused
 	time_ticking = false
+
+func set_time_paused(paused: bool) -> void:
+	time_ticking = not paused
+
 
 func sleep_for(minutes: int) -> void:
 	is_fast_forwarding = true

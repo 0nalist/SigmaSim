@@ -81,6 +81,11 @@ func _refresh_progress():
 	var limit_text := "∞" if gig.completion_limit == -1 else str(gig.completion_limit)
 	completions_label.text = "Completions: %d / %s" % [completions, limit_text]
 
+	if gig.completion_limit != -1 and completions >= gig.completion_limit:
+		completions_label.add_theme_color_override("font_color", Color.RED)
+	else:
+		completions_label.remove_theme_color_override("font_color")
+
 	last_productivity = current_prod
 
 
