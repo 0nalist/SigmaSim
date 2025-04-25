@@ -159,10 +159,12 @@ func get_due_bills_for_month(month: int, year: int) -> Dictionary:
 
 
 func auto_resolve_bills_for_date(date_str: String) -> void:
+	
 	for popup in active_bills.get(date_str, []):
 		if popup and popup.visible:
 			if PortfolioManager.pay_with_cash(popup.amount):
 				print("✅ Autopaid %s with cash" % popup.amount)
+				popup.close()
 				return
 			elif PortfolioManager.can_pay_with_credit(popup.amount):
 				PortfolioManager.pay_with_credit(popup.amount)
@@ -170,7 +172,7 @@ func auto_resolve_bills_for_date(date_str: String) -> void:
 			else:
 				GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
 				#GameManager.trigger_game_over("Unpaid bill: %s" % popup.bill_name)
-
+			
 
 func get_bill_color(bill_name: String) -> Color:
 	if bill_name == "Lifestyle Spending":

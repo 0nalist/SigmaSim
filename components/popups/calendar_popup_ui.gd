@@ -97,3 +97,7 @@ func populate_calendar(month: int, year: int) -> void:
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
 	BillManager.autopay_enabled = toggled_on
+
+
+func _on_life_stylist_button_pressed() -> void:
+	WindowManager.launch_app_by_name("LifeStylist")

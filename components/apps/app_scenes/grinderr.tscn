@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/grey_button1.png" id="7_85ayv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eluir"]
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0.576471, 0.509804, 0.498039, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_01fde"]
 texture = ExtResource("5_7n4q1")
@@ -56,13 +56,30 @@ app_title = "Grinderr"
 app_icon = ExtResource("4_eluir")
 default_window_size = Vector2(600, 580)
 
-[node name="TabContainer" type="TabContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_eluir")
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Grinderr"
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
+size_flags_vertical = 3
 current_tab = 0
 
-[node name="Work" type="MarginContainer" parent="TabContainer"]
+[node name="Work" type="MarginContainer" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_top = 25
@@ -70,24 +87,24 @@ theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 metadata/_tab_index = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Work"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Work"]
 layout_mode = 2
 
-[node name="SortByButtonContainer" type="HBoxContainer" parent="TabContainer/Work/VBoxContainer"]
+[node name="SortByButtonContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Work/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Control" type="Control" parent="TabContainer/Work/VBoxContainer/SortByButtonContainer"]
+[node name="Control" type="Control" parent="VBoxContainer/TabContainer/Work/VBoxContainer/SortByButtonContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="SortDropdown" type="OptionButton" parent="TabContainer/Work/VBoxContainer/SortByButtonContainer"]
+[node name="SortDropdown" type="OptionButton" parent="VBoxContainer/TabContainer/Work/VBoxContainer/SortByButtonContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 12
 
-[node name="HighLowButton" type="Button" parent="TabContainer/Work/VBoxContainer/SortByButtonContainer"]
+[node name="HighLowButton" type="Button" parent="VBoxContainer/TabContainer/Work/VBoxContainer/SortByButtonContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -98,15 +115,15 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_u16cu")
 theme_override_styles/normal = SubResource("StyleBoxTexture_a4ohf")
 text = "High -> Low"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Work/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Work/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GigList" type="VBoxContainer" parent="TabContainer/Work/VBoxContainer/ScrollContainer"]
+[node name="GigList" type="VBoxContainer" parent="VBoxContainer/TabContainer/Work/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Hire" type="MarginContainer" parent="TabContainer"]
+[node name="Hire" type="MarginContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
@@ -115,13 +132,13 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 metadata/_tab_index = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Hire"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Hire"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Hire/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Hire/VBoxContainer"]
 layout_mode = 2
 
-[node name="AvailableWorkersLabel" type="Label" parent="TabContainer/Hire/VBoxContainer/HBoxContainer"]
+[node name="AvailableWorkersLabel" type="Label" parent="VBoxContainer/TabContainer/Hire/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 1
@@ -129,7 +146,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "Available Workers   "
 
-[node name="RefreshCountdownLabel" type="Label" parent="TabContainer/Hire/VBoxContainer/HBoxContainer"]
+[node name="RefreshCountdownLabel" type="Label" parent="VBoxContainer/TabContainer/Hire/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -137,9 +154,9 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
 text = " next refresh in"
 
-[node name="HireList" type="VBoxContainer" parent="TabContainer/Hire/VBoxContainer"]
+[node name="HireList" type="VBoxContainer" parent="VBoxContainer/TabContainer/Hire/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[connection signal="pressed" from="TabContainer/Work/VBoxContainer/SortByButtonContainer/HighLowButton" to="." method="_on_high_low_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Work/VBoxContainer/SortByButtonContainer/HighLowButton" to="." method="_on_high_low_button_pressed"]

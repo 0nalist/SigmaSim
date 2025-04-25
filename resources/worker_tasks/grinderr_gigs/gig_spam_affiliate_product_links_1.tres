@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WorkerTask" load_steps=2 format=3 uid="uid://dbr7be1iboot0"]
+
+[ext_resource type="Script" uid="uid://bu3obp0qfk5eg" path="res://resources/worker_tasks/worker_task.gd" id="1_iih43"]
+
+[resource]
+script = ExtResource("1_iih43")
+title = "Spamming affiliate marketing links"
+unit_name = "links clicked"
+productivity_required = 35.0
+show_in_grinderr = false
+payout_type = "cash"
+payout_amount = 3.9
+completion_limit = -1
+current_productivity = 0.0
+metadata/_custom_type_script = "uid://bu3obp0qfk5eg"
