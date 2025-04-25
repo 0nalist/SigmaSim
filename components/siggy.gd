@@ -166,8 +166,19 @@ func get_money_tip() -> String:
 	return tips.pick_random()
 
 
+func out_of_pocket_wildcard() -> String:
+	
+	var wildcards = []
+	wildcards.append("Would you still love me if I told you in all my years doing this line of work I have never seen anyone use a computer as retardedly as you!")
+	wildcards.append("...all I'm saying is, buildings don't just fall down like that!")
+	wildcards.append("And that's the day I learned why they're called sperm whales")
+	#wildcards.append("")
+	return str(wildcards[randi_range(0, wildcards.size()-1)])
+	
+
+
 func _on_talk_button_pressed() -> void:
-	talk("This is a test phraseThis is a test phraseThis is a test phraseThis is a test phrase")
+	talk(out_of_pocket_wildcard())
 
 
 func _on_check_button_pressed() -> void:

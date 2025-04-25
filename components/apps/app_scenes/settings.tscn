@@ -63,6 +63,14 @@ focus_mode = 0
 button_group = SubResource("ButtonGroup_jjwhp")
 text = "Windowed"
 
+[node name="Control" type="Control" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="AutosaveCheckBox" type="CheckBox" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Autosave"
+
 [node name="Control" type="Control" parent="Panel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
@@ -72,6 +80,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CheckButton" type="CheckButton" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Popups Break Fourth Wall"
@@ -80,5 +89,7 @@ text = "Popups Break Fourth Wall"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+text = "Siggy?"
 
+[connection signal="toggled" from="Panel/MarginContainer/HBoxContainer/VBoxContainer/AutosaveCheckBox" to="." method="_on_autosave_check_box_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]

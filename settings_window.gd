@@ -52,3 +52,7 @@ func _on_siggy_button_toggled(toggled_on: bool) -> void:
 		%SiggyButton.text = "Never ever show me Siggy ever again"
 	else:
 		%SiggyButton.text = "Siggy. Please come back. I miss you"
+	
+
+func _on_autosave_check_box_toggled(toggled_on: bool) -> void:
+	TimeManager.autosave_enabled = toggled_on

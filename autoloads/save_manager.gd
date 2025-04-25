@@ -41,9 +41,7 @@ func get_next_available_slot() -> int:
 
 
 func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
-	PlayerManager.reset()
-	PortfolioManager.reset()
-
+	reset_managers()
 	# Set internal values
 	PlayerManager.user_data = user_data.duplicate(true)
 	PlayerManager.set_slot_id(slot_id)
@@ -97,7 +95,7 @@ func save_to_slot(slot_id: int) -> void:
 func load_from_slot(slot_id: int) -> void:
 	reset_managers()
 	print("loading from slot")
-	TimeManager.start_time() ## Should put this somewhere better. I need to initialize vars like time upon new profile creation
+	 ## Should put this somewhere better. I need to initialize vars like time upon new profile creation
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
@@ -117,7 +115,7 @@ func load_from_slot(slot_id: int) -> void:
 		PortfolioManager.load_from_data(data["portfolio"])
 	if data.has("time"):
 		TimeManager.load_from_data(data["time"])
-		
+		TimeManager.start_time()
 		print("told time manager to start")
 	
 	if data.has("bills"):
@@ -137,6 +135,10 @@ func load_from_slot(slot_id: int) -> void:
 func reset_managers():
 	PortfolioManager.reset()
 	PlayerManager.reset()
+	WindowManager.reset()
+	TimeManager.reset()
+	TaskManager.reset()
+	
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)

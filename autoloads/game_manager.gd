@@ -4,7 +4,7 @@ extends Node
 # Game state variables
 var god_mode: bool = false
 var is_paused: bool = false
-var current_profile_slot: int = -1
+#var current_profile_slot: int = -1
 var last_save_path: String = "user://saves/default_save.save" # Adjust path as needed
 var in_game: bool = false
 
@@ -65,8 +65,9 @@ func reset_managers() -> void:
 
 # Handle reload save action
 func _on_reload_save():
-	SaveManager.load_profile(current_profile_slot)
-	# Could also add a state to reset UI or re-initialize game objects
+	if SaveManager.get_slot_path(PlayerManager.slot_id) == null:
+		return
+	SaveManager.load_from_slot(PlayerManager.slot_id)
 
 # Handle infinite credit mode
 func _on_continue_with_infinite_credit():
@@ -140,10 +141,9 @@ func load_login_screen():
 	get_tree().change_scene_to_packed(login_scene)
 
 func load_desktop_env(slot_id: int):
-	current_profile_slot = slot_id
 	in_game = true
 
-	# Load save data
+	PlayerManager.set_slot_id(slot_id)
 	SaveManager.load_from_slot(slot_id)
 
 	# Swap scene
@@ -152,7 +152,7 @@ func load_desktop_env(slot_id: int):
 
 # Save and load functionality (optional, depends on how you handle it)
 func save_game():
-	SaveManager.save_profile(current_profile_slot)
+	SaveManager.save_profile(PlayerManager.get_slot_id())
 
 func load_game():
-	SaveManager.load_profile(current_profile_slot)
+	SaveManager.load_profile(PlayerManager.get_slot_id())

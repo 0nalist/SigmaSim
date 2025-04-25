@@ -6,6 +6,8 @@ signal day_passed(new_day: int, new_month: int, new_year: int)
 
 var time_ticking := true
 
+var autosave_enabled := true
+
 var in_game_minutes := 23 * 60 
 var time_accumulator := 0.0
 
@@ -81,7 +83,7 @@ func advance_time(minutes_to_add: int) -> void:
 		if current_minute == 0:
 			emit_signal("hour_passed", current_hour)
 			autosave_hour_counter += 1
-			if autosave_hour_counter >= autosave_interval:
+			if autosave_enabled and autosave_hour_counter >= autosave_interval:
 				autosave_hour_counter = 0
 				SaveManager.save_to_slot(PlayerManager.get_slot_id())
 				print("💾 Autosave triggered at hour %d" % current_hour)
@@ -191,9 +193,29 @@ func load_from_data(data: Dictionary) -> void:
 	current_year = data.get("current_year", 2025)
 	day_of_week = data.get("day_of_week", get_weekday_for_date(current_day, current_month, current_year))
 
-	is_fast_forwarding = data.get("is_fast_forwarding", false)
-	fast_forward_minutes_left = data.get("fast_forward_minutes_left", 0)
+	is_fast_forwarding = false
+	fast_forward_minutes_left = 0
+
+	# Then apply from save if present (only valid if explicitly true)
+	if data.get("is_fast_forwarding", false):
+		is_fast_forwarding = true
+		fast_forward_minutes_left = data.get("fast_forward_minutes_left", 0)
+
 	autosave_hour_counter = 0
 	emit_signal("minute_passed", in_game_minutes)
 	emit_signal("hour_passed", (in_game_minutes / 60) % 24)
 	emit_signal("day_passed", current_day, current_month, current_year)
+
+func reset() -> void:
+	in_game_minutes = default_start_date_time["in_game_minutes"]
+	current_day = default_start_date_time["current_day"]
+	current_month = default_start_date_time["current_month"]
+	current_year = default_start_date_time["current_year"]
+	current_hour = (in_game_minutes / 60) % 24
+	current_minute = in_game_minutes % 60
+	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
+
+	time_accumulator = 0.0
+	is_fast_forwarding = false
+	fast_forward_minutes_left = 0
+	autosave_hour_counter = 0
