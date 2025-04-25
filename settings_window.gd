@@ -3,6 +3,7 @@ extends BaseAppUI
 
 @onready var fullscreen_check_box: CheckBox = %FullscreenCheckBox
 @onready var windowed_check_box: CheckBox = %WindowedCheckBox
+@onready var autosave_check_box: CheckBox = %AutosaveCheckBox
 
 
 func _ready() -> void:
@@ -13,6 +14,7 @@ func _ready() -> void:
 	if OS.has_feature("editor") or DisplayServer.get_name() == "headless":
 		fullscreen_check_box.disabled = true
 	#%SiggyButton.toggled_on = Siggy.toggled_on
+	autosave_check_box.button_pressed = TimeManager.autosave_enabled
 
 
 func update_checked_mode() -> void:

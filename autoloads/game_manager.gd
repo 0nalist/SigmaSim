@@ -156,13 +156,8 @@ func load_login_screen():
 
 func load_desktop_env(slot_id: int):
 	in_game = true
-
 	PlayerManager.set_slot_id(slot_id)
-	SaveManager.load_from_slot(slot_id)
-
-	# Swap scene
 	get_tree().change_scene_to_packed(desktop_scene)
-
 
 # Save and load functionality (optional, depends on how you handle it)
 func save_game():

@@ -5,10 +5,11 @@ class_name StartPanelWindow
 
 
 func _ready() -> void:
+	hide()
 	for app_name in WindowManager.start_apps.keys():
 		var app_scene: PackedScene = WindowManager.start_apps[app_name]
 		var preview = app_scene.instantiate()
-
+	
 		if not (preview is BaseAppUI):
 			push_error("App scene must extend BaseAppUI: " + str(app_scene))
 			continue
@@ -87,3 +88,7 @@ func _on_siggy_button_pressed() -> void:
 	var siggy = preload("res://components/siggy.tscn").instantiate()
 	
 	get_tree().get_root().add_child(siggy)
+
+
+func _on_logout_button_pressed() -> void:
+	GameManager._on_pause_logout()

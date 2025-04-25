@@ -51,6 +51,16 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	var bills_today = get_due_bills_for_date(new_day, new_month, new_year)
 
 	for bill_name in bills_today:
+		# 🧠 Check if this bill popup already exists for today
+		var already_open := false
+		for existing in active_bills[today_key]:
+			if is_instance_valid(existing) and existing.bill_name == bill_name:
+				already_open = true
+				break
+
+		if already_open:
+			continue  # ✅ Skip duplicate
+
 		var amount := get_bill_amount(bill_name)
 		if amount <= 0.0:
 			print("Skipping %s bill (amount is 0)" % bill_name)
@@ -59,6 +69,7 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 		if autopay_enabled and attempt_to_autopay(bill_name):
 			continue
 
+		# 💸 Create new bill popup
 		var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
 		popup.init(bill_name)
 		popup.amount = amount
@@ -74,7 +85,9 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 
 		WindowManager.register_window(win, false)
 		call_deferred("center_bill_window", win)
+
 		active_bills[today_key].append(popup)
+
 
 
 
@@ -231,6 +244,18 @@ func get_daily_lifestyle_cost() -> int:
 	return total
 
 
+func get_popup_save_data() -> Array:
+	var popup_data := []
+	for date_key in active_bills.keys():
+		for popup in active_bills[date_key]:
+			if is_instance_valid(popup):
+				popup_data.append({
+					"type": "BillPopupUI",
+					"bill_name": popup.bill_name,
+					"amount": popup.amount,
+					"date_key": date_key
+				})
+	return popup_data
 
 
 func get_save_data() -> Dictionary:
@@ -245,7 +270,55 @@ func load_from_data(data: Dictionary) -> void:
 	autopay_enabled = data.get("autopay_enabled", false)
 	lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
 	lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
+	active_bills.clear()
 	emit_signal("lifestyle_updated")
+
+	# Restore bill popups after full setup
+	if data.has("popup_data"):
+		for popup_info in data["popup_data"]:
+			if popup_info.get("type", "") == "BillPopupUI":
+				var date_key = popup_info.get("date_key", TimeManager.get_formatted_date())
+
+				# Check if this popup is outdated
+				var popup_date_parts = date_key.split("/")
+				var popup_date = {
+					"day": int(popup_date_parts[0]),
+					"month": int(popup_date_parts[1]),
+					"year": int(popup_date_parts[2])
+				}
+
+				var today_date = {
+					"day": TimeManager.current_day,
+					"month": TimeManager.current_month,
+					"year": TimeManager.current_year
+				}
+
+				if TimeManager.date_is_before(popup_date, today_date):
+					print("Skipping outdated bill popup for date:", date_key)
+					continue  # Skip loading this old popup!
+
+				# Otherwise restore normally
+				var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
+				popup.init(popup_info.bill_name)
+				popup.amount = popup_info.amount
+
+				var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+				win.window_title = "Bill: %s" % popup_info.bill_name
+				win.call_deferred("set_window_title", win.window_title)
+				win.icon = null
+				win.default_size = Vector2(550, 290)
+				win.window_can_close = false
+				win.window_can_minimize = false
+				win.get_node("%ContentPanel").add_child(popup)
+
+				WindowManager.register_window(win, false)
+				call_deferred("center_bill_window", win)
+
+				if not active_bills.has(date_key):
+					active_bills[date_key] = []
+				active_bills[date_key].append(popup)
+
+
 
 
 

@@ -295,6 +295,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_vxmwr")
 
 [node name="StartPanel" type="Panel" parent="TaskbarLayer/TaskbarWrapper"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -431,6 +432,14 @@ theme_override_fonts/font = ExtResource("1_lx1wk")
 theme_override_font_sizes/font_size = 14
 text = "week sleep "
 
+[node name="LogoutButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Logout"
+
 [node name="SettingsButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -528,6 +537,7 @@ scale = Vector2(0.6, 0.6)
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_sleep_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SleepButton2" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_sleep_button_2_pressed"]
+[connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/LogoutButton" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_logout_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SettingsButton" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_settings_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_settings_button_pressed"]

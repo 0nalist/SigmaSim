@@ -61,7 +61,7 @@ func _on_profile_login_requested(slot_id: int) -> void:
 	await get_tree().create_timer(dot_time).timeout
 	# Launch desktop environment
 	GameManager.load_desktop_env(slot_id)
-	SaveManager.save_to_slot(PlayerManager.get_slot_id())
+	#SaveManager.save_to_slot(PlayerManager.get_slot_id())
 	#queue_free()
 
 

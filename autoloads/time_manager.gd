@@ -167,6 +167,14 @@ func get_total_days_since_start(target_day: int, target_month: int, target_year:
 	return total_days
 
 
+func date_is_before(date_a: Dictionary, date_b: Dictionary) -> bool:
+	# Both inputs should be { "day": int, "month": int, "year": int }
+	if date_a.year != date_b.year:
+		return date_a.year < date_b.year
+	elif date_a.month != date_b.month:
+		return date_a.month < date_b.month
+	else:
+		return date_a.day < date_b.day
 
 
 func get_first_weekday_of_month(month: int, year: int) -> int:

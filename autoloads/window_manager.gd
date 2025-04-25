@@ -283,6 +283,29 @@ func close_all_windows() -> void:
 	for win in windows_to_close:
 		close_window(win)
 
+func close_all_apps() -> void:
+	var windows_to_close := []
+	for win in open_windows.keys():
+		var content = win.get_node("VBoxContainer/ContentPanel").get_child(0)
+		if content is BaseAppUI:
+			windows_to_close.append(win)
+
+	for win in windows_to_close:
+		close_window(win)
+
+func close_all_popups() -> void:
+	var windows_to_close := []
+	for win in open_windows.keys():
+		var content = win.get_node("VBoxContainer/ContentPanel").get_child(0)
+		if content is BasePopupUI:
+			windows_to_close.append(win)
+
+	for win in windows_to_close:
+		close_window(win)
+
+
+
+
 func launch_popup(popup: Control, window_title: String = "Popup", size: Vector2 = Vector2(400, 500)) -> void:
 	var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 
@@ -334,7 +357,7 @@ func get_save_data() -> Array:
 
 
 func load_from_data(window_data: Array) -> void:
-	close_all_windows()
+	close_all_apps()
 
 	for entry in window_data:
 		var app_name = entry.get("app_name", "")
@@ -399,6 +422,7 @@ func get_popup_save_data() -> Array:
 	return popup_data
 
 func load_popups_from_data(popup_data: Array) -> void:
+	close_all_popups()
 	for entry in popup_data:
 		var type = entry.get("type", "")
 		if not popup_scene_registry.has(type):
@@ -441,7 +465,7 @@ func load_popups_from_data(popup_data: Array) -> void:
 
 
 func reset() -> void:
-	close_all_windows()
 	open_windows.clear()
 	popup_registry.clear()
+	close_all_windows()
 	focused_window = null

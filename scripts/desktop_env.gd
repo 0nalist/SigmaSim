@@ -11,10 +11,14 @@ func _ready() -> void:
 	#SaveManager.save_to_slot(PlayerManager.get_slot_id())
 	
 	GameManager.in_game = true
-	hide_all_windows_and_panels()
+	#hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
 	WindowManager.start_panel = start_panel
+	
+	call_deferred("_deferred_load_save")
 
+func _deferred_load_save():
+	SaveManager.load_from_slot(PlayerManager.get_slot_id())
 	var path = PlayerManager.user_data.get("background_path", "")
 	if path != "":
 		var tex = load(path)

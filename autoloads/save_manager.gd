@@ -73,8 +73,12 @@ func save_to_slot(slot_id: int) -> void:
 		"popups": WindowManager.get_popup_save_data(),
 		"market": MarketManager.get_save_data(),
 		"player": PlayerManager.get_save_data(),
-		"bills": BillManager.get_save_data(),
-		#"npcs": NPCManager.get_save_data(),
+		"bills": {
+			"lifestyle_categories": BillManager.lifestyle_categories,
+			"lifestyle_indices": BillManager.lifestyle_indices,
+			"autopay_enabled": BillManager.autopay_enabled,
+			"popup_data": BillManager.get_popup_save_data()
+		},
 		"windows": WindowManager.get_save_data(), # should ALWAYS be last
 	}
 	print("🧠 Windows to save:", WindowManager.get_save_data())
@@ -103,7 +107,7 @@ func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
 		push_error("❌ Attempted to save with invalid slot_id: %d" % slot_id)
 		return
-	reset_managers()
+	#reset_managers()
 	print("loading from slot")
 	 ## Should put this somewhere better. I need to initialize vars like time upon new profile creation
 	var path = get_slot_path(slot_id)

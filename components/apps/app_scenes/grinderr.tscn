@@ -54,7 +54,7 @@ script = ExtResource("2_3bg0q")
 gig_popup_scene = ExtResource("3_eluir")
 app_title = "Grinderr"
 app_icon = ExtResource("4_eluir")
-default_window_size = Vector2(600, 380)
+default_window_size = Vector2(600, 580)
 
 [node name="TabContainer" type="TabContainer" parent="."]
 unique_name_in_owner = true
