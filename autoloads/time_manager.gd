@@ -143,6 +143,31 @@ func get_today() -> Dictionary:
 		"year": current_year
 	}
 
+func get_total_days_since_start(target_day: int, target_month: int, target_year: int) -> int:
+	var start_day = default_start_date_time["current_day"]
+	var start_month = default_start_date_time["current_month"]
+	var start_year = default_start_date_time["current_year"]
+
+	var total_days := 0
+
+	# Count full years
+	for y in range(start_year, target_year):
+		total_days += 365
+		if is_leap_year(y):
+			total_days += 1
+
+	# Count months in the final year
+	var start_m = start_month if start_year == target_year else 1
+	for m in range(start_m, target_month):
+		total_days += get_days_in_month(m, target_year)
+
+	# Count leftover days
+	total_days += target_day - start_day
+
+	return total_days
+
+
+
 
 func get_first_weekday_of_month(month: int, year: int) -> int:
 	var m = month

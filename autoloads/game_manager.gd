@@ -63,19 +63,33 @@ func reset_managers() -> void:
 	TaskManager.reset()
 	# Add more as systems grow (NPCManager, BillManager, etc.)
 
-# Handle reload save action
 func _on_reload_save():
 	if SaveManager.get_slot_path(PlayerManager.slot_id) == null:
 		return
 	SaveManager.load_from_slot(PlayerManager.slot_id)
 
-# Handle infinite credit mode
+	# Close Game Over screen
+	for child in get_tree().get_root().get_children():
+		if child is GameOverPopup:
+			child.queue_free()
+			break
+
 func _on_continue_with_infinite_credit():
 	god_mode = true
 	is_paused = false
 	TimeManager.set_time_paused(false)
-	# You might want to show a confirmation that this is a cheating mode
+
+	# Grant near-infinite credit
+	PortfolioManager.credit_limit = 9999999999999999
+
 	print("Continuing with infinite credit...")
+
+	# Close Game Over screen
+	for child in get_tree().get_root().get_children():
+		if child is GameOverPopup:
+			child.queue_free()
+			break
+
 
 ## Pause menu actions
 

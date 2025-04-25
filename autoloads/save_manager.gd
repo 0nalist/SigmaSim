@@ -41,7 +41,11 @@ func get_next_available_slot() -> int:
 
 
 func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
+	if slot_id <= 0:
+		push_error("❌ Attempted to initialize profile with invalid slot_id: %d" % slot_id)
+		return
 	reset_managers()
+	
 	# Set internal values
 	PlayerManager.user_data = user_data.duplicate(true)
 	PlayerManager.set_slot_id(slot_id)
@@ -59,6 +63,9 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 
 # --- Save/Load Full Game State ---
 func save_to_slot(slot_id: int) -> void:
+	if slot_id <= 0:
+		push_error("❌ Attempted to save with invalid slot_id: %d" % slot_id)
+		return
 	var data := {
 		"portfolio": PortfolioManager.get_save_data(),
 		"time": TimeManager.get_save_data(),
@@ -66,7 +73,7 @@ func save_to_slot(slot_id: int) -> void:
 		"popups": WindowManager.get_popup_save_data(),
 		"market": MarketManager.get_save_data(),
 		"player": PlayerManager.get_save_data(),
-		#"bills": BillManager.get_save_data(),
+		"bills": BillManager.get_save_data(),
 		#"npcs": NPCManager.get_save_data(),
 		"windows": WindowManager.get_save_data(), # should ALWAYS be last
 	}
@@ -93,6 +100,9 @@ func save_to_slot(slot_id: int) -> void:
 	save_slot_metadata(metadata)
 
 func load_from_slot(slot_id: int) -> void:
+	if slot_id <= 0:
+		push_error("❌ Attempted to save with invalid slot_id: %d" % slot_id)
+		return
 	reset_managers()
 	print("loading from slot")
 	 ## Should put this somewhere better. I need to initialize vars like time upon new profile creation

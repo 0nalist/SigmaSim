@@ -64,6 +64,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(450, 45)
 layout_mode = 2
 size_flags_horizontal = 6
+focus_mode = 0
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_a25aw")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_mea83")
 text = " Stephanie, Trixie. Nichole, @glossybunni "
@@ -73,6 +74,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(450, 45)
 layout_mode = 2
 size_flags_horizontal = 6
+focus_mode = 0
 text = "Chad, Michael, Scott, @rockdude82"
 
 [node name="EnbyCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
@@ -80,6 +82,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(450, 45)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_5wir2")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_a25aw")
 text = " Sock, Gumbo, Xaxon, @anuancedsnail"

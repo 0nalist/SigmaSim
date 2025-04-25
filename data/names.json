@@ -1,5 +1,179 @@
 [
   {
+    "name": "Casserole",
+    "fem": 0,
+    "masc": 0,
+    "andro": 1
+  },
+  {
+    "name": "Frisbee",
+    "fem": 0,
+    "masc": 0,
+    "andro": 1
+  },
+  {
+    "name": "Gorgonzola",
+    "fem": 0,
+    "masc": 0.1,
+    "andro": 1
+  },
+  {
+    "name": "Sock",
+    "fem": 0,
+    "masc": 0,
+    "andro": 1
+  },
+  {
+    "name": "Xylophone",
+    "fem": 0,
+    "masc": 0,
+    "andro": 1
+  },
+  {
+    "name": "Gallows",
+    "fem": 0,
+    "masc": 0.1,
+    "andro": 1
+  },
+  {
+    "name": "Skyler",
+    "fem": 0.8,
+    "masc": 0.8,
+    "andro": 0.8
+  },
+  {
+    "name": "Loki",
+    "fem": 0.1,
+    "masc": 0.8,
+    "andro": 0.7
+  },
+  {
+    "name": "Babe",
+    "fem": 0.3,
+    "masc": 0.7,
+    "andro": 0.6
+  },
+  {
+    "name": "Ziggy",
+    "fem": 0.1,
+    "masc": 0.9,
+    "andro": 0.5
+  },
+  {
+    "name": "Babette",
+    "fem": 0.9,
+    "masc": 0,
+    "andro": 0.3
+  },
+  {
+    "name": "Destiny",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0.3
+  },
+  {
+    "name": "Walker",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0.3
+  },
+  {
+    "name": "John",
+    "fem": 0.3,
+    "masc": 1,
+    "andro": 0.25
+  },
+  {
+    "name": "Brunhilda ",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0.2
+  },
+  {
+    "name": "Izzy",
+    "fem": 0.9,
+    "masc": 0.4,
+    "andro": 0.2
+  },
+  {
+    "name": "Sam",
+    "fem": 0.7,
+    "masc": 0.9,
+    "andro": 0.2
+  },
+  {
+    "name": "Gunther",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0.2
+  },
+  {
+    "name": "Bob",
+    "fem": 0.1,
+    "masc": 1,
+    "andro": 0.1
+  },
+  {
+    "name": "Brody",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0.1
+  },
+  {
+    "name": "Hank",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0.1
+  },
+  {
+    "name": "Jordan",
+    "fem": 0.9,
+    "masc": 0.9,
+    "andro": 0.1
+  },
+  {
+    "name": "Mary",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0.1
+  },
+  {
+    "name": "Miriam",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0.1
+  },
+  {
+    "name": "Todd",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0.1
+  },
+  {
+    "name": "Israel",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0.1
+  },
+  {
+    "name": "Bigsby",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0.1
+  },
+  {
+    "name": "Mordecai",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0.1
+  },
+  {
+    "name": "Kyle",
+    "fem": 0.05,
+    "masc": 1,
+    "andro": 0.05
+  },
+  {
     "name": "Adam",
     "fem": 0,
     "masc": 1,
@@ -12,34 +186,16 @@
     "andro": 0
   },
   {
-    "name": "Babe",
-    "fem": 0.3,
-    "masc": 0.7,
-    "andro": 0.6
-  },
-  {
-    "name": "Babette",
-    "fem": 0.9,
-    "masc": 0,
-    "andro": 0.3
+    "name": "Andrew",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
   },
   {
     "name": "Ben",
     "fem": 0,
     "masc": 1,
     "andro": 0
-  },
-  {
-    "name": "Bob",
-    "fem": 0.1,
-    "masc": 1,
-    "andro": 0.1
-  },
-  {
-    "name": "Brunhilda ",
-    "fem": 1,
-    "masc": 0,
-    "andro": 0.2
   },
   {
     "name": "Bruno",
@@ -72,10 +228,16 @@
     "andro": 0
   },
   {
-    "name": "Destiny",
+    "name": "Drew",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Elena",
     "fem": 1,
     "masc": 0,
-    "andro": 0.3
+    "andro": 0
   },
   {
     "name": "Emily",
@@ -84,16 +246,16 @@
     "andro": 0
   },
   {
-    "name": "Frisbee",
+    "name": "Henry",
     "fem": 0,
-    "masc": 0,
-    "andro": 1
+    "masc": 1,
+    "andro": 0
   },
   {
-    "name": "Gorgonzola",
+    "name": "Jake",
     "fem": 0,
-    "masc": 0.1,
-    "andro": 1
+    "masc": 1,
+    "andro": 0
   },
   {
     "name": "Karen",
@@ -108,13 +270,19 @@
     "andro": 0
   },
   {
-    "name": "Kyle",
-    "fem": 0.05,
-    "masc": 1,
-    "andro": 0.05
+    "name": "Laura",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
   },
   {
     "name": "Lexi",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Naaz",
     "fem": 1,
     "masc": 0,
     "andro": 0
@@ -126,10 +294,22 @@
     "andro": 0
   },
   {
-    "name": "Sam",
-    "fem": 0.7,
-    "masc": 0.9,
-    "andro": 0.2
+    "name": "Paul",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Peter",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Rick",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
   },
   {
     "name": "Samantha",
@@ -138,16 +318,16 @@
     "andro": 0
   },
   {
-    "name": "Skyler",
-    "fem": 0.8,
-    "masc": 0.8,
-    "andro": 0.8
+    "name": "Scott",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
   },
   {
-    "name": "Sock",
-    "fem": 0,
+    "name": "Sophia",
+    "fem": 1,
     "masc": 0,
-    "andro": 1
+    "andro": 0
   },
   {
     "name": "Stacy",
@@ -162,9 +342,33 @@
     "andro": 0
   },
   {
-    "name": "Xylophone",
+    "name": "Tyler",
     "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Elizabeth",
+    "fem": 1,
     "masc": 0,
-    "andro": 1
+    "andro": 0
+  },
+  {
+    "name": "Evan",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
+  },
+  {
+    "name": "Christina",
+    "fem": 1,
+    "masc": 0,
+    "andro": 0
+  },
+  {
+    "name": "Johnathan",
+    "fem": 0,
+    "masc": 1,
+    "andro": 0
   }
 ]

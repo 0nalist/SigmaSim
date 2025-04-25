@@ -1,8 +1,17 @@
 extends Node
 # Autoload: BillManager
 
+
+signal lifestyle_updated
+
+
+
 var autopay_enabled: bool = false
 var active_bills: Dictionary = {}  # key: date_str → Array[BillPopupUI]
+
+var lifestyle_categories := {}  # category_name: Dictionary
+
+
 
 # Ordered list: Week 0 → Rent, Week 1 → Insurance, etc.
 var weekly_bill_cycle := [
@@ -12,24 +21,24 @@ var weekly_bill_cycle := [
 	{"name": "Credit Card", "color": Color.PURPLE},
 ]
 
-var static_bill_amounts := {
-	"Rent": 1200.0,
-	"Medical Insurance": 850.0
-}
+var static_bill_amounts := {}
 
 
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
+	#TimeManager.hour_passed.connect(_on_hour_passed)
 	PortfolioManager.credit_updated.connect(_on_credit_updated)
+	if lifestyle_categories.is_empty():
+		for category in lifestyle_options.keys():
+			var option = lifestyle_options[category][0]
+			set_lifestyle_choice(category, option, 0)
 	print("active bills: " + str(active_bills))
 
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
-	# Resolve yesterday’s bills
 	var yesterday = _get_yesterday()
 	auto_resolve_bills_for_date(_format_date_key(yesterday))
 
-	# Spawn today’s bills
 	var today := {
 		"day": new_day,
 		"month": new_month,
@@ -50,9 +59,9 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 		if autopay_enabled and attempt_to_autopay(bill_name):
 			continue
 
-
 		var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
 		popup.init(bill_name)
+		popup.amount = amount
 
 		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 		win.window_title = "Bill: %s" % bill_name
@@ -66,6 +75,8 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 		WindowManager.register_window(win, false)
 		call_deferred("center_bill_window", win)
 		active_bills[today_key].append(popup)
+
+
 
 
 func _on_credit_updated(used: float, limit: float) -> void:
@@ -98,14 +109,28 @@ func attempt_to_autopay(bill_name: String) -> bool:
 
 
 func get_due_bills_for_date(day: int, month: int, year: int) -> Array[String]:
+	var bills: Array[String] = []
 	var weekday = TimeManager.get_weekday_for_date(day, month, year)
-	if weekday != 6:
-		return []
 
-	var week_index = int((day - 1) / 7)
-	var bill_index = week_index % weekly_bill_cycle.size()
-	var bill_info = weekly_bill_cycle[bill_index]
-	return [bill_info.name]
+	if weekday == 6:  # Sunday
+		var total_days = TimeManager.get_total_days_since_start(day, month, year)
+		var week_index = int(total_days / 7)
+
+		if week_index % 4 == 0:
+			bills.append("Rent")
+		if week_index % 4 == 1:
+			bills.append("Medical Insurance")
+		if week_index % 4 == 2:
+			bills.append("Student Loan")
+		if week_index % 4 == 3:
+			bills.append("Credit Card")
+
+	if get_daily_lifestyle_cost() > 0:
+		bills.append("Lifestyle Spending")
+
+	return bills
+
+
 
 
 func get_due_bills_for_month(month: int, year: int) -> Dictionary:
@@ -135,6 +160,9 @@ func auto_resolve_bills_for_date(date_str: String) -> void:
 
 
 func get_bill_color(bill_name: String) -> Color:
+	if bill_name == "Lifestyle Spending":
+		return Color.ORANGE
+	
 	for bill in weekly_bill_cycle:
 		if bill.name == bill_name:
 			return bill.color
@@ -145,10 +173,23 @@ func get_bill_amount(bill_name: String) -> float:
 	match bill_name:
 		"Credit Card":
 			return PortfolioManager.credit_used
+		"Rent":
+			var housing = lifestyle_categories.get("Housing", null)
+			if housing:
+				return housing.get("cost", 0) * 4  # 4-week total
+			return 0.0
+		"Medical Insurance":
+			var insurance = lifestyle_categories.get("Medical Insurance", null)
+			if insurance:
+				return insurance.get("cost", 0) * 4  # 4-week total
+			return 0.0
 		"Student Loan":
 			return PortfolioManager.get_min_student_loan_payment()
+		"Lifestyle Spending":
+			return get_daily_lifestyle_cost()
 		_:
 			return static_bill_amounts.get(bill_name, 0.0)
+
 
 
 func _format_date_key(date: Dictionary) -> String:
@@ -168,3 +209,255 @@ func _get_yesterday() -> Dictionary:
 		day = TimeManager.get_days_in_month(month, year)
 
 	return { "day": day, "month": month, "year": year }
+
+
+
+var lifestyle_indices := {}  # category_name: selected_index
+
+func set_lifestyle_choice(category: String, option: Dictionary, index := -1):
+	lifestyle_categories[category] = option
+	if index >= 0:
+		lifestyle_indices[category] = index
+	emit_signal("lifestyle_updated")
+
+
+func get_daily_lifestyle_cost() -> int:
+	var total := 0
+	for key in lifestyle_categories.keys():
+		if key in ["Housing", "Medical Insurance"]:
+			continue
+		var cost = lifestyle_categories[key].get("cost", 0)
+		total += int(round(cost / 7.0))
+	return total
+
+
+
+
+func get_save_data() -> Dictionary:
+	return {
+		"autopay_enabled": autopay_enabled,
+		"lifestyle_categories": lifestyle_categories.duplicate(),
+		"lifestyle_indices": lifestyle_indices.duplicate()
+	}
+
+
+func load_from_data(data: Dictionary) -> void:
+	autopay_enabled = data.get("autopay_enabled", false)
+	lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
+	lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
+	emit_signal("lifestyle_updated")
+
+
+
+
+
+## LIFESTYLE OPTIONS -- move to imported files later, when we set up EffectsResource system
+
+
+func get_lifestyle_options(category: String) -> Array:
+	return lifestyle_options.get(category, [])
+
+
+var lifestyle_options := {
+	"Housing": [
+		{
+			"name": "Basement bedroom with sketchy roommates",
+			"cost": 300,
+			"effects_label": "-1 Comfort",
+			"effects": { "COMFORT_FLAT": -1 }
+		},
+		{
+			"name": "Studio Apartment",
+			"cost": 600,
+			"effects_label": "+1 Comfort",
+			"effects": { "COMFORT_FLAT": 1 }
+		},
+		{
+			"name": "Condo Downtown",
+			"cost": 1200,
+			"effects_label": "+2 Comfort, +1 Reputation",
+			"effects": { "COMFORT_FLAT": 2, "REPUTATION_FLAT": 1 }
+		},
+		{
+			"name": "Luxury Loft w/ Rooftop Sauna",
+			"cost": 3000,
+			"effects_label": "+3 Comfort, +3 Reputation",
+			"effects": { "COMFORT_FLAT": 3, "REPUTATION_FLAT": 3 }
+		},
+		{
+			"name": "Penthouse Suite in Skyrise",
+			"cost": 10000,
+			"effects_label": "+5 Comfort, +5 Reputation, +1 Romance",
+			"effects": { "COMFORT_FLAT": 5, "REPUTATION_FLAT": 5, "ROMANCE_FLAT": 1 }
+		},
+		{
+			"name": "Private Island",
+			"cost": 25000,
+			"effects_label": "+7 Comfort, +7 Reputation, +2 Romance",
+			"effects": { "COMFORT_FLAT": 7, "REPUTATION_FLAT": 7, "ROMANCE_FLAT": 2 }
+		}
+	],
+	"Food": [
+		{
+			"name": "Instant Noodles & Tap Water",
+			"cost": 35,
+			"effects_label": "-1 Health, -1 Mood",
+			"effects": { "HEALTH_FLAT": -1, "MOOD_FLAT": -1 }
+		},
+		{
+			"name": "Fast Food Value Menu",
+			"cost": 105,
+			"effects_label": "+0 Health, +0 Mood",
+			"effects": {}
+		},
+		{
+			"name": "Balanced Meal Kit Subscription",
+			"cost": 210,
+			"effects_label": "+1 Health, +1 Energy",
+			"effects": { "HEALTH_FLAT": 1, "ENERGY_FLAT": 1 }
+		},
+		{
+			"name": "Organic Groceries & Home Cooking",
+			"cost": 420,
+			"effects_label": "+2 Health, +2 Mood",
+			"effects": { "HEALTH_FLAT": 2, "MOOD_FLAT": 2 }
+		},
+		{
+			"name": "Private Chef (Macros Dialed In)",
+			"cost": 1050,
+			"effects_label": "+3 Health, +3 Energy, +1 Attractiveness",
+			"effects": { "HEALTH_FLAT": 3, "ENERGY_FLAT": 3, "ATTRACTIVENESS_FLAT": 1 }
+		},
+		{
+			"name": "Michelin-Star Degenerate",
+			"cost": 2500,
+			"effects_label": "+4 Health, +5 Mood, +2 Attractiveness",
+			"effects": { "HEALTH_FLAT": 4, "MOOD_FLAT": 5, "ATTRACTIVENESS_FLAT": 2 }
+		}
+	],
+	"Medical Insurance": [
+		{
+			"name": "None (Hope for the Best)",
+			"cost": 0,
+			"effects_label": "-3 Health, -2 Energy",
+			"effects": { "HEALTH_FLAT": -3, "ENERGY_FLAT": -2 }
+		},
+		{
+			"name": "State Emergency Coverage",
+			"cost": 200,
+			"effects_label": "-1 Health, +0 Energy",
+			"effects": { "HEALTH_FLAT": -1 }
+		},
+		{
+			"name": "Employer HMO Plan",
+			"cost": 450,
+			"effects_label": "+0 Health, +1 Energy",
+			"effects": { "ENERGY_FLAT": 1 }
+		},
+		{
+			"name": "Private PPO",
+			"cost": 850,
+			"effects_label": "+2 Health, +1 Energy",
+			"effects": { "HEALTH_FLAT": 2, "ENERGY_FLAT": 1 }
+		},
+		{
+			"name": "Concierge Healthcare",
+			"cost": 2500,
+			"effects_label": "+3 Health, +2 Energy, +1 Mood",
+			"effects": { "HEALTH_FLAT": 3, "ENERGY_FLAT": 2, "MOOD_FLAT": 1 }
+		},
+		{
+			"name": "Biohacker Wellness Protocol",
+			"cost": 6000,
+			"effects_label": "+4 Health, +3 Energy, +2 Attractiveness",
+			"effects": { "HEALTH_FLAT": 4, "ENERGY_FLAT": 3, "ATTRACTIVENESS_FLAT": 2 }
+		}
+	],
+	"Entertainment": [
+		{
+			"name": "No Fun at All",
+			"cost": 0,
+			"effects_label": "-2 Mood",
+			"effects": { "MOOD_FLAT": -2 }
+		},
+		{
+			"name": "Occasional Netflix Night",
+			"cost": 35,
+			"effects_label": "+0 Mood",
+			"effects": {}
+		},
+		{
+			"name": "Concerts, Movies & Games",
+			"cost": 210,
+			"effects_label": "+2 Mood, +1 Energy",
+			"effects": { "MOOD_FLAT": 2, "ENERGY_FLAT": 1 }
+		},
+		{
+			"name": "VIP Experiences & Festivals",
+			"cost": 600,
+			"effects_label": "+4 Mood, +2 Reputation",
+			"effects": { "MOOD_FLAT": 4, "REPUTATION_FLAT": 2 }
+		}
+	],
+	"Nightlife": [
+		{
+			"name": "Never Go Out",
+			"cost": 0,
+			"effects_label": "-1 Romance",
+			"effects": { "ROMANCE_FLAT": -1 }
+		},
+		{
+			"name": "Cheap Bars & Dive Nights",
+			"cost": 105,
+			"effects_label": "+1 Mood",
+			"effects": { "MOOD_FLAT": 1 }
+		},
+		{
+			"name": "Trendy Clubs & Date Spots",
+			"cost": 420,
+			"effects_label": "+2 Romance, +2 Reputation",
+			"effects": { "ROMANCE_FLAT": 2, "REPUTATION_FLAT": 2 }
+		},
+		{
+			"name": "Bottle Service & Afterparties",
+			"cost": 1000,
+			"effects_label": "+3 Romance, +3 Mood, +2 Attractiveness",
+			"effects": { "ROMANCE_FLAT": 3, "MOOD_FLAT": 3, "ATTRACTIVENESS_FLAT": 2 }
+		}
+	],
+	"Transportation": [
+		{
+			"name": "Walk Everywhere",
+			"cost": 0,
+			"effects_label": "+1 Health, -1 Energy",
+			"effects": { "HEALTH_FLAT": 1, "ENERGY_FLAT": -1 }
+		},
+		{
+			"name": "Public Transit",
+			"cost": 35,  # $5/day
+			"effects_label": "+0 Mood",
+			"effects": {}
+		},
+		{
+			"name": "Used Beater Car",
+			"cost": 175,  # $25/day
+			"effects_label": "+1 Energy",
+			"effects": { "ENERGY_FLAT": 1 }
+		},
+		{
+			"name": "Luxury Sports Car",
+			"cost": 1400,  # $200/day
+			"effects_label": "+2 Energy, +2 Attractiveness",
+			"effects": { "ENERGY_FLAT": 2, "ATTRACTIVENESS_FLAT": 2 }
+		},
+		{
+			"name": "Private Chauffeur",
+			"cost": 3500,  # $500/day
+			"effects_label": "+3 Energy, +3 Comfort, +2 Reputation",
+			"effects": { "ENERGY_FLAT": 3, "COMFORT_FLAT": 3, "REPUTATION_FLAT": 2 }
+		}
+	],
+
+
+
+}

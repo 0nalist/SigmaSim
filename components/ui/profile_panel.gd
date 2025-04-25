@@ -17,6 +17,7 @@ var slot_id: int = -1
 
 
 func _ready() -> void:
+	size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	password_text_edit.hide()
 	log_in_button.hide()
 	if pending_data:
@@ -54,9 +55,16 @@ func _apply_profile_data() -> void:
 
 func _on_mouse_entered() -> void:
 	password_text_edit.show()
+	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	log_in_button.show()
 	#size = Vector2(180,270)
 
 
 func _on_log_in_button_pressed() -> void:
 	emit_signal("login_requested", slot_id)
+
+
+func _on_mouse_exited() -> void:
+	password_text_edit.hide()
+	size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	log_in_button.hide()

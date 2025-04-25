@@ -27,15 +27,21 @@ func load_and_display_saved_profiles():
 	for child in %ProfileRow.get_children():
 		if child is ProfilePanel:
 			child.queue_free()
+
 	var metadata = SaveManager.load_slot_metadata()
-	print(OS.get_data_dir())
 	for key in metadata.keys():
 		var slot_id := int(key.trim_prefix("slot_"))
+		var data = metadata[key]
+
+		if typeof(data) != TYPE_DICTIONARY or data.is_empty():
+			print("⚠️ Skipping invalid profile slot:", slot_id)
+			continue  # skip malformed or empty profiles
+
 		var panel = profile_panel_scene.instantiate()
 		profile_row.add_child(panel)
-		#await get_tree().process_frame
 		panel.login_requested.connect(_on_profile_login_requested)
-		panel.set_profile_data(metadata[key], slot_id)
+		panel.set_profile_data(data, slot_id)
+
 
 
 var dot_time = .1

@@ -98,6 +98,10 @@ offset_bottom = 83.5
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Control" type="Control" parent="Panel/ProfilesContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
 [node name="ProfileRow" type="HBoxContainer" parent="Panel/ProfilesContainer"]
 unique_name_in_owner = true
 layout_mode = 2

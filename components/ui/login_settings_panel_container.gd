@@ -30,6 +30,7 @@ func _update_selector():
 func _on_delete_pressed():
 	var slot_id = profile_selector.get_selected_id()
 	SaveManager.delete_save(slot_id)
+	slot_metadata = SaveManager.load_slot_metadata() 
 	_update_selector()
 	emit_signal("profile_list_updated")
 
@@ -43,5 +44,6 @@ func _on_reset_pressed():
 		"profile_picture_path": metadata.get("profile_picture_path", ""),
 		"background": metadata.get("background_path", ""),
 	})
+	slot_metadata = SaveManager.load_slot_metadata()
 	_update_selector()
 	emit_signal("profile_list_updated")

@@ -22,6 +22,11 @@ var bill_colors := {
 
 func _ready() -> void:
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
+	BillManager.lifestyle_updated.connect(_on_lifestyle_updated)
+
+
+func _on_lifestyle_updated() -> void:
+	_update_tooltip()
 
 func set_day(day_number: int, is_in_past: bool, bills: Array) -> void:
 	day = day_number
@@ -60,6 +65,7 @@ func _update_tooltip() -> void:
 		tooltip_text += "• %s: $%.2f\n" % [bill_type, amount]
 
 	set_tooltip_text(tooltip_text.strip_edges())
+
 
 func _on_resource_changed(name: String, _value: float) -> void:
 	if name in TRACKED_RESOURCES:
