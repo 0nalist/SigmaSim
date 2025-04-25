@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://du042xu4xssrm"]
+[gd_scene load_steps=11 format=3 uid="uid://du042xu4xssrm"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_i8u7u"]
 [ext_resource type="Script" uid="uid://c1qvasiiw126v" path="res://components/ui/window_frame.gd" id="2_ogx7f"]
 [ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="3_ogx7f"]
+[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/redbuttonpressed.png" id="4_kln2c"]
+[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/redbutton.png" id="5_ohtq3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0quwa"]
 bg_color = Color(0.15886, 0.507507, 1, 1)
@@ -12,6 +14,27 @@ border_width_right = 1
 border_width_bottom = 1
 corner_radius_top_left = 2
 corner_radius_top_right = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6w7g6"]
+texture = ExtResource("4_kln2c")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1v826"]
+texture = ExtResource("4_kln2c")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1k2kg"]
+texture = ExtResource("5_ohtq3")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqsno"]
 bg_color = Color(0.931993, 0.854211, 0.671275, 1)
@@ -104,6 +127,9 @@ size_flags_vertical = 4
 size_flags_stretch_ratio = 0.0
 focus_mode = 0
 theme_override_constants/icon_max_width = 16
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6w7g6")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1v826")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1k2kg")
 text = "x"
 
 [node name="ContentPanel" type="ScrollContainer" parent="VBoxContainer"]

@@ -77,20 +77,26 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="Control" type="Control" parent="TabContainer/Work/VBoxContainer/SortByButtonContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
 [node name="SortDropdown" type="OptionButton" parent="TabContainer/Work/VBoxContainer/SortByButtonContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 12
 
 [node name="HighLowButton" type="Button" parent="TabContainer/Work/VBoxContainer/SortByButtonContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 12
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_01fde")
 theme_override_styles/hover = SubResource("StyleBoxTexture_afjay")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_u16cu")
 theme_override_styles/normal = SubResource("StyleBoxTexture_a4ohf")
-text = "Low -> High"
+text = "High -> Low"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Work/VBoxContainer"]
 layout_mode = 2

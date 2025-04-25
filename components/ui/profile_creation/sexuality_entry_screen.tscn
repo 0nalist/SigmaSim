@@ -1,17 +1,28 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbafh0u48w88w"]
+[gd_scene load_steps=8 format=3 uid="uid://cbafh0u48w88w"]
 
 [ext_resource type="Script" uid="uid://blnoae64ob0ul" path="res://components/ui/profile_creation/sexuality_entry_screen.gd" id="1_aqjp1"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_t2cd2"]
+[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/lilac_down_white.png" id="2_5wir2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqjp1"]
-bg_color = Color(0, 0.270588, 1, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a25aw"]
+texture = ExtResource("2_5wir2")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mea83"]
+texture = ExtResource("2_5wir2")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wir2"]
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a25aw"]
-bg_color = Color(0.854255, 0.38934, 0.819727, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mea83"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="sexuality_entry_screen" type="Control"]
 layout_mode = 3
@@ -53,8 +64,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(450, 45)
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_styles/hover = SubResource("StyleBoxFlat_aqjp1")
-theme_override_styles/normal = SubResource("StyleBoxFlat_5wir2")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_a25aw")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mea83")
 text = " Stephanie, Trixie. Nichole, @glossybunni "
 
 [node name="MascsCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
@@ -62,8 +73,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(450, 45)
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_styles/hover = SubResource("StyleBoxFlat_a25aw")
-theme_override_styles/normal = SubResource("StyleBoxFlat_mea83")
 text = "Chad, Michael, Scott, @rockdude82"
 
 [node name="EnbyCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
@@ -71,6 +80,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(450, 45)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_5wir2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_a25aw")
 text = " Sock, Gumbo, Xaxon, @anuancedsnail"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]

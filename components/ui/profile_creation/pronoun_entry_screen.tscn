@@ -1,17 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://cxxwjrmt5lpyx"]
+[gd_scene load_steps=6 format=3 uid="uid://cxxwjrmt5lpyx"]
 
 [ext_resource type="Script" uid="uid://cehrgqn5cxgpr" path="res://components/ui/profile_creation/pronoun_entry_screen.gd" id="1_mdnml"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_1jd2l"]
+[ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/lilac_normal.png" id="2_kpa3b"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_68ei6"]
-bg_color = Color(0, 0.270588, 1, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_keifn"]
+texture = ExtResource("2_kpa3b")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jfqm6"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8jskx"]
-bg_color = Color(0.854255, 0.38934, 0.819727, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lj4co"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pgdvd"]
+texture = ExtResource("2_kpa3b")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [node name="PronounEntryScreen" type="Control"]
 layout_mode = 3
@@ -57,8 +62,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
-theme_override_styles/hover = SubResource("StyleBoxFlat_68ei6")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jfqm6")
 text = "\"Boy\" \"Dude\" \"Bro\" "
 
 [node name="GirlCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
@@ -66,8 +69,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
-theme_override_styles/hover = SubResource("StyleBoxFlat_8jskx")
-theme_override_styles/normal = SubResource("StyleBoxFlat_lj4co")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_keifn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pgdvd")
 text = "\"Girl\" \"Bestie\" \"Lady\" "
 
 [node name="Control3" type="Control" parent="MarginContainer/VBoxContainer"]

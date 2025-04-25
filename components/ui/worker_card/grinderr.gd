@@ -29,6 +29,7 @@ func _ready() -> void:
 	_load_or_initialize_gigs()
 	_populate_hire_tab()
 	_populate_work_tab()
+	sort_gigs_by("payout_amount", true)
 
 # --- HIRE TAB --- #
 
@@ -129,7 +130,9 @@ func _init_dropdown():
 	%SortDropdown.add_item("Productivity Required", 1)
 	%SortDropdown.add_item("Current Productivity", 2)
 	%SortDropdown.add_item("Payout / Productivity", 3)
-
+	var popup = %SortDropdown.get_popup()
+	popup.add_theme_font_size_override("font_size", 12)
+	
 func _on_sort_property_changed(index: int) -> void:
 	match index:
 		0: sort_property = "payout_amount"

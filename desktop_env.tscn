@@ -385,18 +385,20 @@ alignment = 2
 [node name="SiggyButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 6
 text = "Siggy"
 
 [node name="LoadButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
 focus_mode = 0
+theme_override_colors/font_color = Color(0.729169, 0.47256, 0, 1)
 theme_override_font_sizes/font_size = 14
 text = "Load"
 
 [node name="SaveButton" type="Button" parent="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
 focus_mode = 0
+theme_override_colors/font_color = Color(0.843137, 0.827451, 0.121569, 1)
 theme_override_font_sizes/font_size = 14
 text = "Save"
 
@@ -412,6 +414,19 @@ text = " sleep "
 layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_normal_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_lx1wk")
 theme_override_font_sizes/font_size = 14
 text = "week sleep "
