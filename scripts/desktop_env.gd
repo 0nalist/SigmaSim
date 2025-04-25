@@ -29,10 +29,6 @@ func _deferred_load_save():
 	else:
 		background.texture = background_texture  # fallback
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("select") and start_panel.visible: ## Do this in start_panel once it is its own scene
-		await get_tree().create_timer(0.21).timeout
-		start_panel.hide()
 
 func hide_all_windows_and_panels() -> void:
 	start_panel.hide()

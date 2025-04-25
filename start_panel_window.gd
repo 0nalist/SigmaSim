@@ -3,6 +3,8 @@ class_name StartPanelWindow
 
 @onready var app_list_container: VBoxContainer = %AppListContainer
 
+var listening_for_clicks := false
+
 
 func _ready() -> void:
 	hide()
@@ -48,13 +50,19 @@ func _ready() -> void:
 		app_list_container.add_child(button)
 		preview.queue_free()
 
-
+func _input(event: InputEvent) -> void:
+	if listening_for_clicks and event is InputEventMouseButton and event.pressed:
+		# Check if the click is outside the StartPanel bounds
+		var local_mouse_pos = get_local_mouse_position()
+		if not Rect2(Vector2.ZERO, size).has_point(local_mouse_pos):
+			hide()
+			listening_for_clicks = false
 
 func toggle_start_panel() -> void:
 	if visible:
 		hide()
 	else:
-		#popup() #window behavior
+		listening_for_clicks = true
 		show()
 		
 
@@ -62,7 +70,6 @@ func toggle_start_panel() -> void:
 
 
 func launch_app(app_name: String) -> void:
-	#hide()
 	WindowManager.launch_app_by_name(app_name)
 
 
