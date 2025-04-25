@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=10 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
 [ext_resource type="PackedScene" uid="uid://cc5n8gw4o0mqx" path="res://components/ui/profile_creation/profile_creation_ui.tscn" id="3_6fwkw"]
 [ext_resource type="Texture2D" uid="uid://gl0rjxkrh4wh" path="res://assets/logos/AOLlogoMaster.png" id="4_6fwkw"]
+[ext_resource type="PackedScene" uid="uid://bgsi3yx2mr1rj" path="res://components/ui/login_settings_panel_container.tscn" id="4_7f2l0"]
+[ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="4_hcclx"]
 [ext_resource type="FontFile" uid="uid://deimmaj7ejh4l" path="res://assets/fonts/CapitalisTypOasis.ttf" id="5_hcclx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
@@ -33,10 +35,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 theme = ExtResource("1_6fwkw")
 script = ExtResource("2_eyvdy")
 profile_creation_scene = ExtResource("3_6fwkw")
+settings_panel_scene = ExtResource("4_7f2l0")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -107,7 +110,7 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="NewProfileButton" type="Button" parent="Panel/ProfilesContainer/ProfileRow/MarginContainer"]
+[node name="NewProfileButton" type="Button" parent="Panel/ProfilesContainer/ProfileRow"]
 custom_minimum_size = Vector2(70, 60)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -125,13 +128,11 @@ offset_bottom = 200.0
 [node name="AOLLogoHolder" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="AOLLogoHolder"]
@@ -162,4 +163,31 @@ theme_override_fonts/font = ExtResource("5_hcclx")
 theme_override_font_sizes/font_size = 36
 text = "Alpha OnLine"
 
-[connection signal="pressed" from="Panel/ProfilesContainer/ProfileRow/MarginContainer/NewProfileButton" to="." method="_on_new_profile_button_pressed"]
+[node name="MarginContainer" type="MarginContainer" parent="AOLLogoHolder"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -136.0
+offset_top = -136.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="SettingsButton" type="Button" parent="AOLLogoHolder/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "
+"
+icon = ExtResource("4_hcclx")
+icon_alignment = 1
+
+[connection signal="pressed" from="Panel/ProfilesContainer/ProfileRow/NewProfileButton" to="." method="_on_new_profile_button_pressed"]
+[connection signal="pressed" from="AOLLogoHolder/MarginContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

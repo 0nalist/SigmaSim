@@ -217,6 +217,11 @@ func get_taskbar_icon_center(window: WindowFrame) -> Vector2:
 
 func get_taskbar_height() -> int:
 	return taskbar_container.size.y if is_instance_valid(taskbar_container) else 0
+#W 0:00:02:134   Values of the ternary operator are not mutually compatible.
+#  <GDScript Error>INCOMPATIBLE_TERNARY
+# <GDScript Source>window_manager.gd:219
+
+
 
 func find_window_by_app(title: String) -> WindowFrame:
 	for win in open_windows.keys():

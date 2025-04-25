@@ -80,6 +80,7 @@ func _on_continue_with_infinite_credit():
 
 func toggle_pause_screen():
 	if not in_game:
+		get_tree().quit()
 		return
 	
 	if pause_screen_instance and is_instance_valid(pause_screen_instance):

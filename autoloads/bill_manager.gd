@@ -9,7 +9,7 @@ var weekly_bill_cycle := [
 	{"name": "Rent", "color": Color.RED},
 	{"name": "Medical Insurance", "color": Color.BLUE},
 	{"name": "Student Loan", "color": Color.GREEN},
-	{"name": "Credit Card", "color": Color.PURPLE}
+	{"name": "Credit Card", "color": Color.PURPLE},
 ]
 
 var static_bill_amounts := {

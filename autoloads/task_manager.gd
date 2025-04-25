@@ -36,13 +36,13 @@ func get_save_data() -> Dictionary:
 	var data: Dictionary = {}
 	for category in task_pools.keys():
 		var task_list := []
-		for task in task_pools[category]:
+		for task: WorkerTask in task_pools[category]:
 			task_list.append({
 				"title": task.title,
 				"progress": task.progress,
 				"completion_limit": task.completion_limit,
 				"assigned_worker_id": task.assigned_worker_id if "assigned_worker_id" in task else null,
-				"payout": task.payout,
+				"payout": task.payout_amount,
 				"payout_type": task.payout_type,
 				"completed_units": task.completed_units,
 				"show_in_grinderr": task.show_in_grinderr,
@@ -59,7 +59,7 @@ func load_from_data(data: Dictionary) -> void:
 			task.title = entry.get("title", "")
 			task.progress = entry.get("progress", 0.0)
 			task.completion_limit = entry.get("completion_limit", -1)
-			task.payout = entry.get("payout", 0.0)
+			task.payout = entry.get("payout_amount", 0.0)
 			task.payout_type = entry.get("payout_type", "cash")
 			task.completed_units = entry.get("completed_units", 0)
 			task.show_in_grinderr = entry.get("show_in_grinderr", false)

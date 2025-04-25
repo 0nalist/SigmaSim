@@ -3,6 +3,7 @@ class_name GigPopup
 
 @onready var title_label = %TitleLabel
 @onready var progress_bar = %ProgressBar
+@onready var productivity_label: Label = %ProductivityLabel
 @onready var payout_label = %PayoutLabel
 @onready var limit_label = %LimitLabel
 @onready var completions_label = %CompletionsLabel
@@ -22,7 +23,8 @@ func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
 
 	title_label.text = gig.title
-	payout_label.text = "Payout: $%.2f" % gig.payout_amount + " every %s (%.1f productivity)" % [gig.unit_name, gig.productivity_required]
+	payout_label.text = "Payout: $%.2f" % gig.payout_amount + " every %s" % gig.unit_name
+	productivity_label.text = str(progress_bar.value) + " / " + str(gig.productivity_required)
 	completions_label.text = "Completed: %d" % gig.completions_done
 
 	if gig.completion_limit == -1:

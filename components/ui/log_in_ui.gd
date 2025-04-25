@@ -1,12 +1,15 @@
 extends Control
 
 @export var profile_creation_scene: PackedScene
+@export var settings_panel_scene: PackedScene
 
 @onready var logging_in_panel: Panel = %LoggingInPanel
 @onready var logging_in_label: Label = %LoggingInLabel
 
 @onready var profile_v_box_container: VBoxContainer = %ProfilesContainer
 @onready var profile_row: HBoxContainer = %ProfileRow
+
+@onready var settings_button: Button = %SettingsButton
 
 
 var profile_panel_scene := preload("res://components/ui/profile_panel.tscn")
@@ -73,3 +76,9 @@ func _on_new_profile_abandoned():
 	load_and_display_saved_profiles()
 	%AOLLogoHolder.show()
 	%ProfilesContainer.show()
+
+
+func _on_settings_button_pressed() -> void:
+	var settings_panel = settings_panel_scene.instantiate()
+	add_child(settings_panel)
+	settings_panel.profile_list_updated.connect(load_and_display_saved_profiles)
