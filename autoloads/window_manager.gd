@@ -180,34 +180,6 @@ func autoposition_window(window: WindowFrame) -> void:
 	if is_instance_valid(window):
 		window.autoposition()
 
-'''
-func open_stock_popup(stock: Stock) -> void:
-	var key = "stock:" + stock.symbol
-	var existing = popup_registry.get(key)
-	if existing and is_instance_valid(existing):
-		focus_window(existing)
-		return
-
-	var popup_scene = preload("res://components/popups/stock_popup_ui.tscn")
-	var pane := popup_scene.instantiate() as Pane
-
-	var window = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-	window.load_pane(pane)
-
-	register_window(window, false)
-
-	var mouse_pos = get_viewport().get_mouse_position()
-	var popup_size = pane.default_window_size
-	var screen_size = get_viewport().get_visible_rect().size
-	window.position = mouse_pos.clamp(Vector2.ZERO, screen_size - popup_size)
-
-	popup_registry[key] = window
-	window.tree_exited.connect(func():
-		if popup_registry.get(key) == window:
-			popup_registry.erase(key)
-	)
-	call_deferred("focus_window", window)
-'''
 
 # --- Taskbar --- #
 
@@ -296,12 +268,13 @@ func reset() -> void:
 
 # --- Save / Load --- #
 
+# --- Save / Load ---
 func get_save_data() -> Array:
 	var window_data = []
 	for win in open_windows.keys():
 		var pane = win.pane
-		if not pane:
-			continue
+		if not pane or pane.is_popup:
+			continue  # Bill popups handled by BillManager separately
 
 		var scene_path = pane.scene_file_path if pane.has_method("get_scene_file_path") else pane.get_script().resource_path
 
@@ -335,11 +308,14 @@ func load_from_data(window_data: Array) -> void:
 		var window = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 		window.load_pane(pane)
 
+		register_window(window, pane.show_in_taskbar)
+
 		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), pane.default_window_size)
 		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
 
-		window.size = restored_size
-		window.position = restored_position
+		# IMPORTANT: Set position and size AFTER registering
+		window.set_deferred("size", restored_size)
+		window.set_deferred("position", restored_position)
 		window.default_size = restored_size
 
 		if entry.get("minimized", false):
@@ -347,5 +323,3 @@ func load_from_data(window_data: Array) -> void:
 
 		if pane.has_method("load_custom_save_data"):
 			pane.load_custom_save_data(entry.get("custom_data", {}))
-
-		register_window(window, pane.show_in_taskbar)

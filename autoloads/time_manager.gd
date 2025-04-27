@@ -71,6 +71,16 @@ func _process(delta: float) -> void:
 			time_accumulator -= 1.0
 			advance_time(1)
 
+func parse_date(date_str: String) -> Dictionary:
+	var parts = date_str.split("/")
+	if parts.size() != 3:
+		return {"day": 1, "month": 1, "year": 2025} # default safe date
+	return {
+		"day": int(parts[0]),
+		"month": int(parts[1]),
+		"year": int(parts[2])
+	}
+
 
 func advance_time(minutes_to_add: int) -> void:
 	for _i in minutes_to_add:

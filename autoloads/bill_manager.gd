@@ -89,7 +89,8 @@ func _on_credit_updated(used: float, limit: float) -> void:
 
 
 func center_bill_window(win: WindowFrame) -> void:
-	WindowManager.center_window(win)
+	var screen_size = get_viewport().get_visible_rect().size
+	win.position = (screen_size - win.default_size) / 2
 
 
 func attempt_to_autopay(bill_name: String) -> bool:
@@ -251,9 +252,9 @@ func get_save_data() -> Dictionary:
 	return {
 		"autopay_enabled": autopay_enabled,
 		"lifestyle_categories": lifestyle_categories.duplicate(),
-		"lifestyle_indices": lifestyle_indices.duplicate()
+		"lifestyle_indices": lifestyle_indices.duplicate(),
+		"pane_data": get_pane_save_data()
 	}
-
 
 func load_from_data(data: Dictionary) -> void:
 	autopay_enabled = data.get("autopay_enabled", false)
@@ -262,50 +263,59 @@ func load_from_data(data: Dictionary) -> void:
 	active_bills.clear()
 	emit_signal("lifestyle_updated")
 
-	# Restore bill popups after full setup
-	if data.has("popup_data"):
-		for popup_info in data["popup_data"]:
-			if popup_info.get("type", "") == "BillPopupUI":
-				var date_key = popup_info.get("date_key", TimeManager.get_formatted_date())
+	if data.has("pane_data"):
+		for pane_dict in data["pane_data"]:
+			if typeof(pane_dict) != TYPE_DICTIONARY:
+				continue
 
-				# Check if this popup is outdated
-				var popup_date_parts = date_key.split("/")
-				var popup_date = {
-					"day": int(popup_date_parts[0]),
-					"month": int(popup_date_parts[1]),
-					"year": int(popup_date_parts[2])
-				}
+			var date_key = pane_dict.get("date_key", TimeManager.get_formatted_date())
+			var popup_date_parts = date_key.split("/")
+			if popup_date_parts.size() != 3:
+				continue  # Skip invalid dates
 
-				var today_date = {
-					"day": TimeManager.current_day,
-					"month": TimeManager.current_month,
-					"year": TimeManager.current_year
-				}
+			var popup_date = {
+				"day": int(popup_date_parts[0]),
+				"month": int(popup_date_parts[1]),
+				"year": int(popup_date_parts[2])
+			}
 
-				if TimeManager.date_is_before(popup_date, today_date):
-					print("Skipping outdated bill popup for date:", date_key)
-					continue  # Skip loading this old popup!
+			if TimeManager.date_is_before(popup_date, TimeManager.get_today()):
+				continue  # Skip old bills
 
-				# Otherwise restore normally
-				var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
-				popup.init(popup_info.bill_name)
-				popup.amount = popup_info.amount
+			var pane = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
+			pane.init(pane_dict.get("bill_name", ""))
+			pane.amount = pane_dict.get("amount", 0.0)
 
-				var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-				win.window_title = "Bill: %s" % popup_info.bill_name
-				win.call_deferred("set_window_title", win.window_title)
-				win.icon = null
-				win.default_size = Vector2(550, 290)
-				win.window_can_close = false
-				win.window_can_minimize = false
-				win.get_node("%ContentPanel").add_child(popup)
+			var win = WindowFrame.instantiate_for_pane(pane)
+			win.window_can_close = false
+			win.window_can_minimize = false
+			win.default_size = Vector2(550, 290)
 
-				WindowManager.register_window(win, false)
-				call_deferred("center_bill_window", win)
+			WindowManager.register_window(win, false)
+			call_deferred("center_bill_window", win)
 
-				if not active_bills.has(date_key):
-					active_bills[date_key] = []
-				active_bills[date_key].append(popup)
+			if not active_bills.has(date_key):
+				active_bills[date_key] = []
+			active_bills[date_key].append(pane)
+
+
+
+
+
+
+func get_pane_save_data() -> Array:
+	var pane_data := []
+	for date_key in active_bills.keys():
+		for pane in active_bills[date_key]:
+			if is_instance_valid(pane):
+				pane_data.append({
+					"type": "BillPopupUI",
+					"bill_name": pane.bill_name,
+					"amount": pane.amount,
+					"date_key": date_key
+				})
+	return pane_data
+
 
 
 

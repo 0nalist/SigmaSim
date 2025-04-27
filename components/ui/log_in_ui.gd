@@ -89,3 +89,7 @@ func _on_settings_button_pressed() -> void:
 	var settings_panel = settings_panel_scene.instantiate()
 	add_child(settings_panel)
 	settings_panel.profile_list_updated.connect(load_and_display_saved_profiles)
+
+
+func _on_power_button_pressed() -> void:
+	get_tree().quit()

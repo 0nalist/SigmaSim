@@ -42,52 +42,48 @@ func get_next_available_slot() -> int:
 
 func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	if slot_id <= 0:
-		push_error("❌ Attempted to initialize profile with invalid slot_id: %d" % slot_id)
+		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
 	reset_managers()
 	
-	# Set internal values
 	PlayerManager.user_data = user_data.duplicate(true)
 	PlayerManager.set_slot_id(slot_id)
 
-	# Apply background effects
 	var background = user_data.get("background", "")
 	if background != "":
 		PlayerManager.apply_background_effects(background)
 
-	# Save full game state + metadata (in one place)
+	''' Not sure if this is needed
+	BillManager.load_from_data({
+			"autopay_enabled": false,
+			"lifestyle_categories": BillManager.lifestyle_categories,
+			"lifestyle_indices": BillManager.lifestyle_indices,
+			"pane_data": []
+		})
+	'''
+
 	save_to_slot(slot_id)
-
-
 
 
 # --- Save/Load Full Game State ---
 func save_to_slot(slot_id: int) -> void:
 	if slot_id <= 0:
-		push_error("❌ Attempted to save with invalid slot_id: %d" % slot_id)
+		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
+
 	var data := {
 		"portfolio": PortfolioManager.get_save_data(),
 		"time": TimeManager.get_save_data(),
-		
-		"popups": WindowManager.get_popup_save_data(),
 		"market": MarketManager.get_save_data(),
 		"player": PlayerManager.get_save_data(),
-		"bills": {
-			"lifestyle_categories": BillManager.lifestyle_categories,
-			"lifestyle_indices": BillManager.lifestyle_indices,
-			"autopay_enabled": BillManager.autopay_enabled,
-			"popup_data": BillManager.get_popup_save_data()
-		},
-		"windows": WindowManager.get_save_data(), # should ALWAYS be last
+		"bills": BillManager.get_save_data(),
+		"windows": WindowManager.get_save_data(),
 	}
-	print("🧠 Windows to save:", WindowManager.get_save_data())
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
 	file.close()
 
-	# Update metadata (last played time, cash)
 	var metadata = load_slot_metadata()
 	var slot_key = "slot_%d" % slot_id
 	if not metadata.has(slot_key):
@@ -97,7 +93,6 @@ func save_to_slot(slot_id: int) -> void:
 	metadata[slot_key]["username"] = player_data.get("username", "user")
 	metadata[slot_key]["profile_picture_path"] = player_data.get("profile_picture_path", "res://assets/profiles/default.png")
 	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
-
 	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
 	metadata[slot_key]["cash"] = PortfolioManager.cash
 
@@ -105,8 +100,7 @@ func save_to_slot(slot_id: int) -> void:
 
 func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
-		#push_error("❌ Attempted to save with invalid slot_id: %d" % slot_id) ## This should be an error, but annoying to come up as error when testing
-		print("❌ Attempted to save with invalid slot_id: %d" % slot_id)
+		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
 
 	var path = get_slot_path(slot_id)
@@ -129,21 +123,18 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("time"):
 		TimeManager.load_from_data(data["time"])
 		TimeManager.start_time()
-		print("told time manager to start")
-	
-	if data.has("bills"):
-		BillManager.load_from_data(data["bills"])
-	if data.has("popups"):
-		WindowManager.load_popups_from_data(data["popups"])
 	if data.has("market"):
-		MarketManager.load_from_data(data.get("market", {}))
+		MarketManager.load_from_data(data["market"])
 	if data.has("player"):
 		PlayerManager.load_from_data(data["player"])
 		PlayerManager.set_slot_id(slot_id)
-	#if data.has("npcs"):
-	#	NPCManager.load_from_data(data["npcs"])
-	if data.has("windows"): # should ALWAYS be last
+
+	if data.has("windows"):
 		WindowManager.load_from_data(data["windows"])
+
+	if data.has("bills"):
+		BillManager.load_from_data(data["bills"])
+
 
 func reset_managers():
 	PortfolioManager.reset()
@@ -155,18 +146,11 @@ func reset_managers():
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)
-
-	# Remove the save file itself
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
-
-	# Remove the metadata entry
 	var metadata = load_slot_metadata()
 	metadata.erase("slot_%d" % slot_id)
 	save_slot_metadata(metadata)
-
-	print("Deleted save slot %d" % slot_id)
-
 
 # --- Helper Functions ---
 func vector2_to_dict(v: Vector2) -> Dictionary:

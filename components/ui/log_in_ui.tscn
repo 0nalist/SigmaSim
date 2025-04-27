@@ -183,7 +183,14 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="SettingsButton" type="Button" parent="AOLLogoHolder/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AOLLogoHolder/MarginContainer"]
+layout_mode = 2
+
+[node name="PowerButton" type="Button" parent="AOLLogoHolder/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "power"
+
+[node name="SettingsButton" type="Button" parent="AOLLogoHolder/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -194,4 +201,5 @@ icon = ExtResource("4_hcclx")
 icon_alignment = 1
 
 [connection signal="pressed" from="Panel/ProfilesContainer/ProfileRow/NewProfileButton" to="." method="_on_new_profile_button_pressed"]
-[connection signal="pressed" from="AOLLogoHolder/MarginContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="AOLLogoHolder/MarginContainer/HBoxContainer/PowerButton" to="." method="_on_power_button_pressed"]
+[connection signal="pressed" from="AOLLogoHolder/MarginContainer/HBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
