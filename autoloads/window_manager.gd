@@ -34,9 +34,6 @@ var start_apps := {
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 }
 
-var popup_scene_registry := {
-	"BillPopupUI": preload("res://components/popups/bill_popup_ui.tscn"),
-}
 
 func _ready() -> void:
 	print("✅ Registered apps:", app_registry.keys())

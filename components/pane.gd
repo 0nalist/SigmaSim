@@ -1,7 +1,12 @@
 extends Control
 class_name Pane
 
-@export var window_title: String = "Untitled"
+signal window_title_changed(new_title: String)
+
+@export var window_title: String = "Window" :
+	set(value):
+		window_title = value
+		window_title_changed.emit(value)
 @export var window_icon: Texture
 @export var default_window_size: Vector2 = Vector2(640, 480)
 @export_enum("left", "center", "right") var default_position: String = "center"

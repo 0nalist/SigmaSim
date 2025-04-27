@@ -18,7 +18,9 @@ mouse_filter = 1
 theme = ExtResource("1_38tc7")
 theme_override_styles/panel = SubResource("StyleBoxFlat_hytj0")
 script = ExtResource("2_2jqea")
+window_title = "Bill"
 default_window_size = Vector2(420, 320)
+is_popup = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

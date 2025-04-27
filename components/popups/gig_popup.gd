@@ -24,7 +24,7 @@ var pending_reset: bool = false
 
 func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
-
+	window_title = gig.title
 	title_label.text = gig.title
 	payout_label.text = "Payout: $%.2f" % gig.payout_amount + " every %s" % gig.unit_name
 	productivity_label.text = str(progress_bar.value) + " / " + str(gig.productivity_required)

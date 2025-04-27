@@ -71,12 +71,16 @@ func load_pane(new_pane: Pane) -> void:
 	window_can_maximize = pane.window_can_maximize
 	default_size = pane.default_window_size
 
+	pane.window_title_changed.connect(_on_pane_window_title_changed)
+
 	call_deferred("_add_pane_to_content_panel")
 
 func _add_pane_to_content_panel() -> void:
 	if is_instance_valid(content_panel) and is_instance_valid(pane):
 		content_panel.add_child(pane)
 
+func _on_pane_window_title_changed(new_title: String) -> void:
+	set_window_title(new_title)
 
 
 

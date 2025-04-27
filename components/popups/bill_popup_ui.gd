@@ -1,4 +1,4 @@
-extends BasePopupUI
+extends Pane
 class_name BillPopupUI
 
 var bill_name: String = ""
@@ -12,6 +12,7 @@ var popup_type := "BillPopupUI"
 @onready var interest_label: Label = %InterestLabel
 
 func _ready() -> void:
+	window_title = "Bill: " + str(bill_name)
 	window_can_close = false
 	window_can_minimize = false
 	# If the popup was restored after data load, manually refresh UI

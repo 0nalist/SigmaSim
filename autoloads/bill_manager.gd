@@ -4,7 +4,7 @@ extends Node
 signal lifestyle_updated
 
 var autopay_enabled: bool = false
-var active_bills: Dictionary = {}  # key: date_str → Array[BillPopupUI]
+var active_bills: Dictionary = {} 
 
 var lifestyle_categories := {}  # category_name: Dictionary
 
