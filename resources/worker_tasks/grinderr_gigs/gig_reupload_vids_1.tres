@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_2uhik")
 title = "Reuploading movie clips to shortform video distributors"
-unit_name = "movies ruined"
+unit_name = "movie ruined"
 productivity_required = 1.0
 show_in_grinderr = true
 payout_type = "cash"

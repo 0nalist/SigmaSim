@@ -30,6 +30,7 @@ WorkerManager="*res://autoloads/worker_manager.gd"
 TaskManager="*res://autoloads/task_manager.gd"
 NameGenerator="*res://autoloads/name_generator.gd"
 GameManager="*res://autoloads/game_manager.gd"
+EffectManager="*res://autoloads/effect_manager.gd"
 
 [display]
 

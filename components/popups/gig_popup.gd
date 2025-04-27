@@ -159,7 +159,11 @@ func _on_assign_worker_pressed():
 
 
 func _on_grind_button_pressed():
-	gig.apply_productivity(1.0)
+	var prod_gain = EffectManager.get_final_value(
+		"productivity_per_click",
+		PlayerManager.get_stat("productivity_per_click")
+	)
+	gig.apply_productivity(prod_gain)
 	_refresh_progress()
 
 
