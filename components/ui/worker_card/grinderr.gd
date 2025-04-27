@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Pane
 class_name Grinderr
 
 @export var gig_popup_scene: PackedScene
@@ -29,8 +29,8 @@ func _ready() -> void:
 	sort_dropdown.item_selected.connect(_on_sort_property_changed)
 	
 	_update_refresh_countdown()
-	app_title = "Grinderr"
-	emit_signal("title_updated", app_title)
+	#app_title = "Grinderr"
+	#emit_signal("title_updated", app_title)
 	
 	_init_dropdown()
 	

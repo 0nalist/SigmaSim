@@ -44,10 +44,10 @@ var min_window_size := Vector2(120, 50)
 
 func _ready() -> void:
 	refresh_window_controls()
-	
+
 	minimize_button.pressed.connect(func():
 		if WindowManager and WindowManager.has_method("get_taskbar_icon_center"):
-			var icon_center := WindowManager.get_taskbar_icon_center(self)
+			var icon_center = WindowManager.get_taskbar_icon_center(self)
 			minimize(icon_center)
 		else:
 			minimize()
@@ -57,28 +57,53 @@ func _ready() -> void:
 	close_button.pressed.connect(_on_close_pressed)
 	header.gui_input.connect(_on_header_input)
 
-	#if icon:
-	#	favicon.texture = icon
-	#	favicon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	#	favicon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	#	favicon.custom_minimum_size = Vector2(16, 16)
-
 	call_deferred("_apply_default_window_size_and_position")
+
 
 func load_pane(new_pane: Pane) -> void:
 	pane = new_pane
 	icon = new_pane.window_icon
 	window_title = new_pane.window_title
-	call_deferred("set_window_title", new_pane.window_title)
+	call_deferred("set_window_title", window_title)
 
-	window_can_close = new_pane.window_can_close
-	window_can_minimize = new_pane.window_can_minimize
-	window_can_maximize = new_pane.window_can_maximize
+	window_can_close = pane.window_can_close
+	window_can_minimize = pane.window_can_minimize
+	window_can_maximize = pane.window_can_maximize
+	default_size = pane.default_window_size
 
-	default_size = new_pane.default_window_size
+	call_deferred("_add_pane_to_content_panel")
 
-	get_node("%ContentPanel").add_child(new_pane)
+func _add_pane_to_content_panel() -> void:
+	if is_instance_valid(content_panel) and is_instance_valid(pane):
+		content_panel.add_child(pane)
 
+
+
+
+static func instantiate_for_pane(pane: Pane, autoposition := true) -> WindowFrame:
+	var window := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+	window.load_pane(pane)
+	window.call_deferred("autoposition")
+	return window
+
+
+func autoposition() -> void:
+	if not pane:
+		return
+
+	var screen_size = get_viewport().get_visible_rect().size
+	var window_size = pane.default_window_size
+
+	var x := 0.0
+	if pane.default_position == "left":
+		x = -screen_size.x / 3.0
+	elif pane.default_position == "right":
+		x = screen_size.x / 3.0
+
+	x -= window_size.x / 2.0
+	var y = -window_size.y / 2.0
+
+	position = Vector2(x, y)
 
 
 func refresh_window_controls() -> void:
