@@ -112,7 +112,15 @@ func _apply_default_window_size_and_position():
 func _clamp_to_screen() -> void:
 	await get_tree().process_frame
 	var screen_size = get_viewport().get_visible_rect().size
-	position = position.clamp(Vector2.ZERO, screen_size - size)
+
+	var taskbar_height = 0
+	if WindowManager and WindowManager.has_method("get_taskbar_height"):
+		taskbar_height = WindowManager.get_taskbar_height()
+
+	var max_position = Vector2(screen_size.x - size.x, screen_size.y - size.y - taskbar_height)
+
+	position = position.clamp(Vector2.ZERO, max_position)
+
 
 func _process(_delta: float) -> void:
 	if not is_resizing:

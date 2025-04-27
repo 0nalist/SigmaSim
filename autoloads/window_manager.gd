@@ -81,13 +81,19 @@ func focus_window(window: WindowFrame) -> void:
 
 	bring_to_top(window)
 
+	# ✨ SMART: Only reassert stay_on_top windows if necessary
+	var focused_index = root.get_children().find(window)
+
 	for win in open_windows.keys():
 		if win != window and win.pane and win.pane.stay_on_top:
-			bring_to_top(win)
+			var win_index = root.get_children().find(win)
+			if win_index < focused_index:
+				bring_to_top(win)
 
 	var btn = open_windows.get(window)
 	if is_instance_valid(btn):
 		btn.button_pressed = true
+
 
 
 
