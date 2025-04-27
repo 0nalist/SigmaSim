@@ -3,15 +3,17 @@ class_name WindowFrame
 
 @export var icon: Texture
 @export var default_size: Vector2 = Vector2(640, 480)
-@export var minimized_size: Vector2 = Vector2(200, 40)
+@export var minimized_size: Vector2 = Vector2(100, 40)
 @export var minimized_position: Vector2 = Vector2(10, 10)
-@export var animation_duration: float = 0.1
+@export var animation_duration: float = 0.15
 
 @export var window_can_close: bool = true
 @export var window_can_minimize: bool = true
 @export var window_can_maximize: bool = true
 
 var window_title: String = "Window"
+
+var pane: Pane
 
 enum WindowState { NORMAL, MINIMIZED, MAXIMIZED }
 
@@ -55,13 +57,29 @@ func _ready() -> void:
 	close_button.pressed.connect(_on_close_pressed)
 	header.gui_input.connect(_on_header_input)
 
-	if icon:
-		favicon.texture = icon
-		favicon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		favicon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		favicon.custom_minimum_size = Vector2(16, 16)
+	#if icon:
+	#	favicon.texture = icon
+	#	favicon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	#	favicon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	#	favicon.custom_minimum_size = Vector2(16, 16)
 
 	call_deferred("_apply_default_window_size_and_position")
+
+func load_pane(new_pane: Pane) -> void:
+	pane = new_pane
+	icon = new_pane.window_icon
+	window_title = new_pane.window_title
+	call_deferred("set_window_title", new_pane.window_title)
+
+	window_can_close = new_pane.window_can_close
+	window_can_minimize = new_pane.window_can_minimize
+	window_can_maximize = new_pane.window_can_maximize
+
+	default_size = new_pane.default_window_size
+
+	get_node("%ContentPanel").add_child(new_pane)
+
+
 
 func refresh_window_controls() -> void:
 	minimize_button.visible = window_can_minimize
@@ -291,6 +309,5 @@ func _on_close_pressed() -> void:
 
 
 func set_window_title(title: String) -> void:
-	window_title = title
 	if title_label:
 		title_label.text = title
