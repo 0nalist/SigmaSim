@@ -23,6 +23,7 @@ default_window_size = Vector2(420, 320)
 is_popup = true
 window_can_close = false
 window_can_minimize = false
+stay_on_top = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

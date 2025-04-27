@@ -81,9 +81,14 @@ func focus_window(window: WindowFrame) -> void:
 
 	bring_to_top(window)
 
+	for win in open_windows.keys():
+		if win != window and win.pane and win.pane.stay_on_top:
+			bring_to_top(win)
+
 	var btn = open_windows.get(window)
 	if is_instance_valid(btn):
 		btn.button_pressed = true
+
 
 
 func bring_to_top(window: WindowFrame) -> void:
@@ -91,21 +96,22 @@ func bring_to_top(window: WindowFrame) -> void:
 	if not is_instance_valid(window) or window.get_parent() != root:
 		return
 
-	# If window is stay_on_top, bring it above everything
 	if window.pane and window.pane.stay_on_top:
+		# If stay_on_top, move to very top
 		root.move_child(window, root.get_child_count() - 1)
 	else:
-		# Bring to top, but *below* stay_on_top windows
+		# Find the highest non-stay_on_top window
 		var children = root.get_children()
-		var insert_index = root.get_child_count()  # Default to very top
+		var insert_index = 0  # Default to very bottom
 
 		for i in range(root.get_child_count() - 1, -1, -1):
 			var child = children[i]
-			if child is WindowFrame and child.pane and child.pane.stay_on_top:
-				insert_index = i
+			if child is WindowFrame and child.pane and not child.pane.stay_on_top:
+				insert_index = i + 1
 				break
 
 		root.move_child(window, insert_index)
+
 
 
 
