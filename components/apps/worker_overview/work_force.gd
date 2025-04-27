@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Pane
 class_name WorkerForce
 
 @onready var worker_list: VBoxContainer = %WorkerList
@@ -8,7 +8,7 @@ class_name WorkerForce
 
 
 func _ready() -> void:
-	app_title = "WorkForce"
+	#app_title = "WorkForce"
 	_populate_worker_list()
 	WorkerManager.worker_selected.connect(_on_worker_selected)
 	WorkerManager.worker_hired.connect(_on_worker_hired)

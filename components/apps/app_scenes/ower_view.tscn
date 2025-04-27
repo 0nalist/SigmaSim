@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://by7ye7kt412u3"]
+[gd_scene load_steps=9 format=3 uid="uid://by7ye7kt412u3"]
 
 [ext_resource type="Script" uid="uid://ce5ge1lmsdy7g" path="res://components/apps/ower_view/ower_view.gd" id="1_t43hg"]
 [ext_resource type="Texture2D" uid="uid://chka0bjnrrdmr" path="res://assets/ui/dark_purple_normal.png" id="3_aemln"]
-[ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="3_svf65"]
 [ext_resource type="Texture2D" uid="uid://dpko7w8bh0pq1" path="res://assets/ui/english_violet_normal.png" id="4_svf65"]
 [ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/lilac_normal.png" id="5_6w1kr"]
 
@@ -45,8 +44,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_aemln")
 script = ExtResource("1_t43hg")
-app_title = "OwerView"
-app_icon = ExtResource("3_svf65")
+window_title = "OwerView"
 default_window_size = Vector2(500, 500)
 default_position = "left"
 only_one_instance_allowed = true

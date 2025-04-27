@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://db60wtbc86hq2"]
+[gd_scene load_steps=14 format=3 uid="uid://db60wtbc86hq2"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_eluir"]
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/ui/worker_card/grinderr.gd" id="2_3bg0q"]
 [ext_resource type="PackedScene" uid="uid://dgawvt5yorfxn" path="res://components/popups/gig_popup.tscn" id="3_eluir"]
+[ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="4_1rfep"]
 [ext_resource type="Texture2D" uid="uid://c5sl2581gi8sk" path="res://assets/logos/hamster_clear.png" id="4_eluir"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/grey_button_pressed.png" id="5_7n4q1"]
 [ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/grey_button_hovered.png" id="6_1rfep"]
@@ -53,6 +54,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_eluir")
 script = ExtResource("2_3bg0q")
 gig_popup_scene = ExtResource("3_eluir")
 window_title = "Grinder"
+window_icon = ExtResource("4_1rfep")
 default_window_size = Vector2(600, 580)
 default_position = "right"
 

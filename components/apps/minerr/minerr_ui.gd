@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Pane
 class_name Minerr
 
 

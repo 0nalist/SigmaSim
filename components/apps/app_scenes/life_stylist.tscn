@@ -24,8 +24,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_8oiat")
 script = ExtResource("1_80bik")
 lifestyle_row_scene = ExtResource("2_80bik")
-app_title = "LifeStylist"
-app_icon = ExtResource("4_16n21")
+window_title = "LifeStylist"
 default_window_size = Vector2(815, 650)
 only_one_instance_allowed = true
 

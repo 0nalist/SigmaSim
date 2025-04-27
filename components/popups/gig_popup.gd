@@ -1,5 +1,8 @@
-extends BasePopupUI
-class_name GigPopup
+extends Pane
+#class_name GigPopup
+
+#@export var default_window_size: Vector2 = Vector2(480, 360)
+
 
 @onready var title_label = %TitleLabel
 @onready var progress_bar = %ProgressBar

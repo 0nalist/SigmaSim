@@ -80,11 +80,11 @@ func _add_pane_to_content_panel() -> void:
 
 
 
-static func instantiate_for_pane(pane: Pane, autoposition := true) -> WindowFrame:
+static func instantiate_for_pane(pane: Pane) -> WindowFrame:
 	var window := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 	window.load_pane(pane)
-	window.call_deferred("autoposition")
 	return window
+
 
 
 func autoposition() -> void:
@@ -94,16 +94,18 @@ func autoposition() -> void:
 	var screen_size = get_viewport().get_visible_rect().size
 	var window_size = pane.default_window_size
 
-	var x := 0.0
+	var center = screen_size / 2
+	var x = center.x
 	if pane.default_position == "left":
-		x = -screen_size.x / 3.0
+		x -= screen_size.x / 3.0
 	elif pane.default_position == "right":
-		x = screen_size.x / 3.0
+		x += screen_size.x / 3.0
 
 	x -= window_size.x / 2.0
-	var y = -window_size.y / 2.0
+	var y = center.y - window_size.y / 2.0
 
 	position = Vector2(x, y)
+
 
 
 func refresh_window_controls() -> void:

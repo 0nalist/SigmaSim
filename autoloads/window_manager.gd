@@ -98,31 +98,8 @@ func close_window(window: WindowFrame) -> void:
 		focused_window = null
 
 	window.queue_free()
-	if focused_window == window:
-		return
 
-	if is_instance_valid(focused_window):
-		focused_window.on_unfocus()
-		var prev_btn = open_windows.get(focused_window)
-		if is_instance_valid(prev_btn):
-			prev_btn.button_pressed = false
-	
-	focused_window = window
-	window.on_focus()
-	
-	if window.window_state == window.WindowState.MINIMIZED:
-		window.restore()
 
-	if get_tree():
-		var root = get_tree().root
-		if window.get_parent() != root:
-			window.get_parent().remove_child(window)
-			root.add_child(window)
-		root.move_child(window, root.get_child_count() - 1)
-
-	var btn = open_windows.get(window)
-	if is_instance_valid(btn):
-		btn.button_pressed = true
 
 
 # --- Launchers --- #
@@ -149,6 +126,8 @@ func launch_pane(scene: PackedScene) -> void:
 
 	var window := WindowFrame.instantiate_for_pane(pane)
 	register_window(window, pane.show_in_taskbar)
+	call_deferred("autoposition_window", window)
+	
 
 
 	var screen_size = get_viewport().get_visible_rect().size
@@ -165,6 +144,10 @@ func launch_pane(scene: PackedScene) -> void:
 
 	window.position = Vector2(x, y)
 	register_window(window, pane.show_in_taskbar)
+
+func autoposition_window(window: WindowFrame) -> void:
+	if is_instance_valid(window):
+		window.autoposition()
 
 func open_stock_popup(stock: Stock) -> void:
 	var key = "stock:" + stock.symbol

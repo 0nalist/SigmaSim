@@ -1,1 +1,1 @@
-extends BaseAppUI
+extends Pane

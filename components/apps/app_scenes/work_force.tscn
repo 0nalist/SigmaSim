@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dqadp0a03aco3" path="res://components/apps/worker_overview/work_force.gd" id="1_30bye"]
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_wbg8h"]
-[ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="3_wbg8h"]
+[ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="3_wbg8h"]
 [ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="4_wbg8h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30bye"]
@@ -20,8 +20,8 @@ mouse_filter = 1
 theme = ExtResource("1_wbg8h")
 theme_override_styles/panel = SubResource("StyleBoxFlat_30bye")
 script = ExtResource("1_30bye")
-app_title = "WorkForce"
-app_icon = ExtResource("3_wbg8h")
+window_title = "WorkForce"
+window_icon = ExtResource("3_wbg8h")
 default_position = "left"
 only_one_instance_allowed = true
 
