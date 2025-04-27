@@ -5,6 +5,10 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fwkw"]
 bg_color = Color(0, 0.669403, 0.96699, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 
 [node name="ProfilePanel" type="PanelContainer"]
 custom_minimum_size = Vector2(180, 190)

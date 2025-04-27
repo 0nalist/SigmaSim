@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dtd0wy3l6ohhq" path="res://assets/ui/lemon_chiffon_normal.png" id="1_16n21"]
 [ext_resource type="Script" uid="uid://d0sq5gmsn0mp7" path="res://components/apps/lifestylist/life_stylist.gd" id="1_80bik"]
 [ext_resource type="PackedScene" uid="uid://p3nf4gwmvex1" path="res://components/apps/lifestylist/lifestyle_row.tscn" id="2_80bik"]
-[ext_resource type="Texture2D" uid="uid://ulfy2yoxctqv" path="res://assets/logos/monocle_placeholder.png" id="3_5mbct"]
+[ext_resource type="Texture2D" uid="uid://cgxywei8rjptj" path="res://assets/logos/monocle_man.png" id="4_16n21"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8oiat"]
 texture = ExtResource("1_16n21")
@@ -25,7 +25,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_8oiat")
 script = ExtResource("1_80bik")
 lifestyle_row_scene = ExtResource("2_80bik")
 app_title = "LifeStylist"
-app_icon = ExtResource("3_5mbct")
+app_icon = ExtResource("4_16n21")
 default_window_size = Vector2(800, 650)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -40,10 +40,17 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Label" type="Label" parent="MarginContainer/CategoryList"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CategoryList"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/CategoryList/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_16n21")
+
+[node name="Label" type="Label" parent="MarginContainer/CategoryList/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0.522189, 2.88785e-07, 1)
 theme_override_font_sizes/font_size = 48
 text = "LifeStylist"

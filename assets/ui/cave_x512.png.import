@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjvp3i4ey3v42"
-path="res://.godot/imported/OwerView.png-2fe276fc3e55bcfe479e9e6d2186da6b.ctex"
+uid="uid://crok8ksspsu0s"
+path="res://.godot/imported/cave_x512.png-9b737b3ab6d12b2a66e5bf3724629d75.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/logos/OwerView.png"
-dest_files=["res://.godot/imported/OwerView.png-2fe276fc3e55bcfe479e9e6d2186da6b.ctex"]
+source_file="res://assets/ui/cave_x512.png"
+dest_files=["res://.godot/imported/cave_x512.png-9b737b3ab6d12b2a66e5bf3724629d75.ctex"]
 
 [params]
 

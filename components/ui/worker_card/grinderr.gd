@@ -13,6 +13,14 @@ var sort_descending := true
 @onready var sort_dropdown: OptionButton = %SortDropdown
 
 
+var hire_sort_property: String = "productivity"
+var hire_sort_descending := true
+@onready var hire_sort_dropdown: OptionButton = %HireSortDropdown
+@onready var hire_high_low_button: Button = %HireHighLowButton
+
+
+
+
 func _ready() -> void:
 	TimeManager.minute_passed.connect(_on_minute_passed)
 	WorkerManager.available_workers_updated.connect(_populate_hire_tab)
@@ -36,8 +44,10 @@ func _ready() -> void:
 func _populate_hire_tab() -> void:
 	for child in hire_list.get_children():
 		child.queue_free()
-
-	for worker in WorkerManager.available_workers:
+		
+	var sorted_workers = sort_workers_by(hire_sort_property, hire_sort_descending)
+	
+	for worker in sorted_workers:
 		var row := _create_hire_row(worker)
 		hire_list.add_child(row)
 
@@ -126,6 +136,8 @@ func get_sort_value(task: WorkerTask, property: String) -> float:
 
 
 func _init_dropdown():
+	
+	# WORK sortby init
 	%SortDropdown.add_item("Payout Amount", 0)
 	%SortDropdown.add_item("Productivity Required", 1)
 	%SortDropdown.add_item("Current Productivity", 2)
@@ -133,6 +145,17 @@ func _init_dropdown():
 	var popup = %SortDropdown.get_popup()
 	popup.add_theme_font_size_override("font_size", 12)
 	
+	
+	# HIRE sortby init
+	hire_sort_dropdown.add_item("Productivity", 0)
+	hire_sort_dropdown.add_item("Day Rate", 1)
+	hire_sort_dropdown.add_item("Productivity / Day Rate", 2)
+	hire_sort_dropdown.add_item("Type (Employee/Contractor)", 3)
+
+	var hire_popup = hire_sort_dropdown.get_popup()
+	hire_popup.add_theme_font_size_override("font_size", 12)
+
+
 func _on_sort_property_changed(index: int) -> void:
 	match index:
 		0: sort_property = "payout_amount"
@@ -141,7 +164,32 @@ func _on_sort_property_changed(index: int) -> void:
 		3: sort_property = "payout_per_productivity"
 	_populate_work_tab()
 
+func _on_hire_sort_property_changed(index: int) -> void:
+	match index:
+		0: hire_sort_property = "productivity"
+		1: hire_sort_property = "day_rate"
+		2: hire_sort_property = "productivity_per_day_rate"
+		3: hire_sort_property = "type"
+	_populate_hire_tab()
 
+func sort_workers_by(property: String, descending := true) -> Array[Worker]:
+	var workers = WorkerManager.available_workers.duplicate()
+
+	workers.sort_custom(func(a: Worker, b: Worker) -> bool:
+		var a_value = get_worker_sort_value(a, property)
+		var b_value = get_worker_sort_value(b, property)
+		return a_value > b_value if descending else a_value < b_value
+	)
+
+	return workers
+
+func get_worker_sort_value(worker: Worker, property: String) -> float:
+	match property:
+		"productivity": return worker.productivity_per_tick
+		"day_rate": return worker.day_rate
+		"productivity_per_day_rate": return worker.productivity_per_tick / max(worker.day_rate, 0.01)
+		"type": return 0.0 if worker.is_contractor else 1.0  # Contractors first if ascending
+		_: return 0.0
 
 
 # --- UTILITY --- #
@@ -161,3 +209,9 @@ func _on_high_low_button_pressed() -> void:
 	sort_descending = !sort_descending
 	high_low_button.text = "High → Low" if sort_descending else "Low → High"
 	_populate_work_tab()
+
+
+func _on_hire_high_low_button_pressed() -> void:
+	hire_sort_descending = !hire_sort_descending
+	hire_high_low_button.text = "High → Low" if hire_sort_descending else "Low → High"
+	_populate_hire_tab()

@@ -48,7 +48,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_clxn6")
 
 [node name="ProfileCreationPanel" type="PanelContainer" parent="BackgroundPanel"]
-custom_minimum_size = Vector2(550, 400)
+custom_minimum_size = Vector2(620, 480)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

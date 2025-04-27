@@ -1,16 +1,12 @@
 extends Node
 # Autoload: BillManager
 
-
 signal lifestyle_updated
-
-
 
 var autopay_enabled: bool = false
 var active_bills: Dictionary = {}  # key: date_str → Array[BillPopupUI]
 
 var lifestyle_categories := {}  # category_name: Dictionary
-
 
 
 # Ordered list: Week 0 → Rent, Week 1 → Insurance, etc.

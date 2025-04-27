@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dv6cn782okjbj"
-path="res://.godot/imported/OwerView_face.png-a3b41e07ddde5b078e112156d98f9ddc.ctex"
+uid="uid://mkfj0qa2lgbr"
+path="res://.godot/imported/finger_point.png-bfe52ec4829ab44829772d59e45c78c5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/logos/OwerView_face.png"
-dest_files=["res://.godot/imported/OwerView_face.png-a3b41e07ddde5b078e112156d98f9ddc.ctex"]
+source_file="res://assets/logos/finger_point.png"
+dest_files=["res://.godot/imported/finger_point.png-bfe52ec4829ab44829772d59e45c78c5.ctex"]
 
 [params]
 
