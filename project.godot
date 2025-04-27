@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Sigma"
-run/main_scene="uid://dkhodakv1x0h7"
+run/main_scene="uid://uminah6hxj5y"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="uid://xm8tdrmlmymx"
 
@@ -31,6 +31,7 @@ TaskManager="*res://autoloads/task_manager.gd"
 NameGenerator="*res://autoloads/name_generator.gd"
 GameManager="*res://autoloads/game_manager.gd"
 EffectManager="*res://autoloads/effect_manager.gd"
+StatpopManager="*res://autoloads/statpop_manager.gd"
 
 [display]
 
