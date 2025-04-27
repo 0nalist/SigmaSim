@@ -27,8 +27,8 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_rcqoh")
 script = ExtResource("2_0t4uf")
 crypto_row_scene = ExtResource("6_86lpv")
-app_title = "Minerr"
-app_icon = ExtResource("4_23boj")
+window_title = "Minerr"
+window_icon = ExtResource("4_23boj")
 default_window_size = Vector2(680, 480)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

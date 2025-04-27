@@ -45,11 +45,10 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_aemln")
 script = ExtResource("1_t43hg")
-app_title = "OwerView"
-app_icon = ExtResource("3_svf65")
+window_title = "OwerView"
+window_icon = ExtResource("3_svf65")
 default_window_size = Vector2(500, 500)
 default_position = "left"
-only_one_instance_allowed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

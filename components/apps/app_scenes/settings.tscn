@@ -21,10 +21,9 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 script = ExtResource("1_wlela")
-app_title = "Settings"
-app_icon = ExtResource("2_wlela")
+window_title = "Settings"
+window_icon = ExtResource("2_wlela")
 default_window_size = Vector2(800, 300)
-only_one_instance_allowed = true
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2

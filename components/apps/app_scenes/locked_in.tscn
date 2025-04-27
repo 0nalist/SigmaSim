@@ -20,8 +20,8 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_i15i2")
 script = ExtResource("1_i15i2")
-app_title = "LockedIn"
-app_icon = ExtResource("2_naf07")
+window_title = "LockedIn"
+window_icon = ExtResource("2_naf07")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

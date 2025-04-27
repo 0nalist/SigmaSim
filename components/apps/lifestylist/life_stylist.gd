@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Pane
 class_name LifeStylist
 
 @onready var category_list = %CategoryList

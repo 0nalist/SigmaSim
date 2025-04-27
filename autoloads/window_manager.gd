@@ -8,7 +8,7 @@ var start_panel = null
 
 var focused_window: WindowFrame = null
 
-# Preloaded app scenes, manually assigned
+# Preloaded apps
 var app_registry := {
 	"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
@@ -25,25 +25,20 @@ var app_registry := {
 var start_apps := {
 	"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
+	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
 	"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
+	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
+	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
 	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
-	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
-	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
-	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
-}
-
-
-
-var popup_scene_registry := {
-	"BillPopupUI": preload("res://components/popups/bill_popup_ui.tscn")
 }
 
 
 func _ready() -> void:
 	print("✅ Registered apps:", app_registry.keys())
 
+# --- Main window functions --- #
 
 func register_window(window: WindowFrame, add_taskbar_icon := true) -> void:
 	if open_windows.has(window):
@@ -51,9 +46,7 @@ func register_window(window: WindowFrame, add_taskbar_icon := true) -> void:
 		call_deferred("focus_window", window)
 		return
 
-	if not window.is_inside_tree():
-		get_tree().root.add_child(window)
-
+	get_tree().root.add_child(window)
 	window.show()
 
 	var icon_button = null
@@ -61,25 +54,9 @@ func register_window(window: WindowFrame, add_taskbar_icon := true) -> void:
 		icon_button = _create_taskbar_icon(window)
 	else:
 		window.get_node("%MinimizeButton").visible = false
+
 	open_windows[window] = icon_button
 	call_deferred("focus_window", window)
-	print("Registering window:", window.window_title)
-	#print("open_windows now:", open_windows.keys())
-
-
-
-func close_window(window: WindowFrame) -> void:
-	if open_windows.has(window):
-		var icon = open_windows[window]
-		if is_instance_valid(icon):
-			icon.queue_free()
-		open_windows.erase(window)
-
-		if focused_window == window:
-			focused_window = null
-
-		window.queue_free()
-
 
 func focus_window(window: WindowFrame) -> void:
 	if focused_window == window:
@@ -90,21 +67,28 @@ func focus_window(window: WindowFrame) -> void:
 		var prev_btn = open_windows.get(focused_window)
 		if is_instance_valid(prev_btn):
 			prev_btn.button_pressed = false
-	
+
 	focused_window = window
 	window.on_focus()
-	
+
 	if window.window_state == window.WindowState.MINIMIZED:
 		window.restore()
-	
-	# 🛠️ Re-add to root and move to front
+
 	var root = get_tree().root
 	if window.get_parent() != root:
 		window.get_parent().remove_child(window)
 		root.add_child(window)
-	root.move_child(window, root.get_child_count() - 1)
 
-	#window.grab_focus()
+	bring_to_top(window)
+
+	# ✨ SMART: Only reassert stay_on_top windows if necessary
+	var focused_index = root.get_children().find(window)
+
+	for win in open_windows.keys():
+		if win != window and win.pane and win.pane.stay_on_top:
+			var win_index = root.get_children().find(win)
+			if win_index < focused_index:
+				bring_to_top(win)
 
 	var btn = open_windows.get(window)
 	if is_instance_valid(btn):
@@ -112,72 +96,128 @@ func focus_window(window: WindowFrame) -> void:
 
 
 
+
+func bring_to_top(window: WindowFrame) -> void:
+	var root = get_tree().root
+	if not is_instance_valid(window) or window.get_parent() != root:
+		return
+
+	if window.pane and window.pane.stay_on_top:
+		# If stay_on_top, move to very top
+		root.move_child(window, root.get_child_count() - 1)
+	else:
+		# Find the highest non-stay_on_top window
+		var children = root.get_children()
+		var insert_index = 0  # Default to very bottom
+
+		for i in range(root.get_child_count() - 1, -1, -1):
+			var child = children[i]
+			if child is WindowFrame and child.pane and not child.pane.stay_on_top:
+				insert_index = i + 1
+				break
+
+		root.move_child(window, insert_index)
+
+
+
+
+func close_window(window: WindowFrame) -> void:
+	if open_windows.has(window):
+		var icon = open_windows[window]
+		if is_instance_valid(icon):
+			icon.queue_free()
+		open_windows.erase(window)
+
+	if focused_window == window:
+		focused_window = null
+
+	window.queue_free()
+
+
+
+
+# --- Launchers --- #
+
 func launch_app_by_name(app_name: String) -> void:
 	var scene: PackedScene = app_registry.get(app_name)
-	if scene == null:
-		push_error("App not found in registry: '%s'" % app_name)
+	if scene:
+		launch_pane(scene)
+	else:
+		push_error("App not found: %s" % app_name)
+
+func launch_pane(scene: PackedScene) -> void:
+	var pane := scene.instantiate() as Pane
+	if not pane:
+		push_error("Scene does not extend Pane!")
 		return
 
-	# Instantiate a temporary preview to check metadata (like only_one_instance_allowed)
-	var preview := scene.instantiate()
-	if not (preview is BaseAppUI):
-		push_error("App '%s' does not extend BaseAppUI" % app_name)
-		return
-
-	# If only one instance is allowed, check for an existing window
-	if preview.only_one_instance_allowed:
-		var existing_window := find_window_by_app(app_name)
-		if existing_window:
-			focus_window(existing_window)
-			preview.queue_free()
+	if not pane.allow_multiple:
+		var existing = find_window_by_app(pane.window_title)
+		if existing:
+			focus_window(existing)
+			pane.queue_free()
 			return
 
-	preview.queue_free()
-
-	# --- Instantiate actual app ---
-	var instance = scene.instantiate()
-	var win = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-	win.window_can_close = instance.window_can_close
-	win.window_can_minimize = instance.window_can_minimize
-	win.window_can_maximize = instance.window_can_maximize
+	var window := WindowFrame.instantiate_for_pane(pane)
+	register_window(window, pane.show_in_taskbar)
+	call_deferred("autoposition_window", window)
 	
-	win.icon = instance.app_icon
-	win.window_title = instance.app_title
-	win.call_deferred("set_window_title", instance.app_title)
-	win.default_size = instance.default_window_size
-	win.get_node("%ContentPanel").add_child(instance)
+	register_window(window, pane.show_in_taskbar)
 
-	# ✅ Position logic (center-relative)
-	var screen_size := get_viewport().get_visible_rect().size
-	var window_size = instance.default_window_size
 
-	var x := 0.0
-	match instance.default_position:
-		"left":   x = -screen_size.x / 3.0
-		"right":  x =  screen_size.x / 3.0
-		"center", _: x = 0.0
+func launch_pane_instance(pane: Pane, setup_args: Variant = null) -> void:
+	var window := WindowFrame.instantiate_for_pane(pane)
+	register_window(window, pane.show_in_taskbar)
+	
+	if setup_args != null and pane.has_method("setup_custom"):
+		pane.call_deferred("setup_custom", setup_args)
 
-	x -= window_size.x / 2.0
-	var y = -window_size.y / 2.0
-
-	win.position = Vector2(x, y)
-
-	register_window(win)
+	call_deferred("autoposition_window", window)
 
 
 
+func autoposition_window(window: WindowFrame) -> void:
+	if is_instance_valid(window):
+		window.autoposition()
 
+'''
+func open_stock_popup(stock: Stock) -> void:
+	var key = "stock:" + stock.symbol
+	var existing = popup_registry.get(key)
+	if existing and is_instance_valid(existing):
+		focus_window(existing)
+		return
 
+	var popup_scene = preload("res://components/popups/stock_popup_ui.tscn")
+	var pane := popup_scene.instantiate() as Pane
+
+	var window = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+	window.load_pane(pane)
+
+	register_window(window, false)
+
+	var mouse_pos = get_viewport().get_mouse_position()
+	var popup_size = pane.default_window_size
+	var screen_size = get_viewport().get_visible_rect().size
+	window.position = mouse_pos.clamp(Vector2.ZERO, screen_size - popup_size)
+
+	popup_registry[key] = window
+	window.tree_exited.connect(func():
+		if popup_registry.get(key) == window:
+			popup_registry.erase(key)
+	)
+	call_deferred("focus_window", window)
+'''
+
+# --- Taskbar --- #
 
 func _create_taskbar_icon(window: WindowFrame) -> Button:
 	if not taskbar_container:
 		return null
 
-	var icon_button := Button.new()
+	var icon_button = Button.new()
 	icon_button.text = window.window_title
 	icon_button.icon = window.icon if window.icon else null
-	icon_button.add_theme_constant_override("icon_max_width", 32)
-	icon_button.add_theme_font_size_override("font_size", 12)
 	icon_button.custom_minimum_size = Vector2(100, 32)
 	icon_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	icon_button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -208,8 +248,7 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	taskbar_container.add_child(icon_button)
 	return icon_button
 
-
-# --- Helpers ---
+# --- Helpers --- #
 
 func get_taskbar_icon_center(window: WindowFrame) -> Vector2:
 	var btn = open_windows.get(window)
@@ -219,253 +258,94 @@ func get_taskbar_icon_center(window: WindowFrame) -> Vector2:
 
 func get_taskbar_height() -> int:
 	return taskbar_container.size.y if is_instance_valid(taskbar_container) else 0
-#W 0:00:02:134   Values of the ternary operator are not mutually compatible.
-#  <GDScript Error>INCOMPATIBLE_TERNARY
-# <GDScript Source>window_manager.gd:219
-
-
 
 func find_window_by_app(title: String) -> WindowFrame:
 	for win in open_windows.keys():
-		var content = win.get_node("VBoxContainer/ContentPanel").get_child(0)
-		if content != null and "app_title" in content and content.app_title == title:
+		if win.pane and win.pane.window_title == title:
 			return win
 	return null
 
 func center_window(win: WindowFrame) -> void:
-	var screen_size := get_viewport().get_visible_rect().size
-	var window_size := win.size
+	var screen_size = get_viewport().get_visible_rect().size
+	var window_size = win.size
 	if window_size == Vector2.ZERO:
 		window_size = win.default_size
 	win.position = (screen_size - window_size) / 2.0
 
-
-
-## Specific subwindow launchers
-
-func open_stock_popup(stock: Stock) -> void:
-	var key = "stock:" + stock.symbol
-	var existing = popup_registry.get(key)
-	if existing and is_instance_valid(existing):
-		focus_window(existing)
-		print("focusing popup window: " + str(existing))
-		return
-
-	var popup := preload("res://components/popups/stock_popup_ui.tscn").instantiate()
-	popup.call_deferred("setup", stock)
-
-	var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-	win.window_title = "Stock: %s" % stock.symbol
-	win.call_deferred("set_window_title", "Stock: $" + stock.symbol)
-	win.icon = null
-	win.default_size = popup.default_window_size
-	win.get_node("%ContentPanel").add_child(popup)
-
-	register_window(win, false)
-	win.get_node("%MinimizeButton").visible = false
-	
-	var mouse_pos := get_viewport().get_mouse_position()
-	var popup_size := win.default_size
-	var screen_size := get_viewport().get_visible_rect().size
-	var target_pos := mouse_pos.clamp(Vector2.ZERO, screen_size - popup_size)
-
-	win.position = target_pos
-
-	popup_registry[key] = win
-	win.tree_exited.connect(func():
-		if popup_registry.get(key) == win:
-			popup_registry.erase(key)
-	)
-	call_deferred("focus_window", win)
+# --- Closing --- #
 
 func close_all_windows() -> void:
-	var windows_to_close := open_windows.keys()
-	for win in windows_to_close:
+	for win in open_windows.keys():
 		close_window(win)
 
 func close_all_apps() -> void:
-	var windows_to_close := []
 	for win in open_windows.keys():
-		var content = win.get_node("VBoxContainer/ContentPanel").get_child(0)
-		if content is BaseAppUI:
-			windows_to_close.append(win)
-
-	for win in windows_to_close:
-		close_window(win)
+		if win.pane and not win.pane.is_popup:
+			close_window(win)
 
 func close_all_popups() -> void:
-	var windows_to_close := []
 	for win in open_windows.keys():
-		var content = win.get_node("VBoxContainer/ContentPanel").get_child(0)
-		if content is BasePopupUI:
-			windows_to_close.append(win)
+		if win.pane and win.pane.is_popup:
+			close_window(win)
 
-	for win in windows_to_close:
-		close_window(win)
+func reset() -> void:
+	close_all_windows()
+	open_windows.clear()
+	popup_registry.clear()
+	focused_window = null
 
-
-
-
-func launch_popup(popup: Control, window_title: String = "Popup", size: Vector2 = Vector2(400, 500)) -> void:
-	var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-
-	win.window_title = window_title
-	win.call_deferred("set_window_title", window_title)
-	win.default_size = size
-	win.window_can_minimize = false  # Optional
-	win.window_can_maximize = false  # Optional
-	win.get_node("%ContentPanel").add_child(popup)
-
-	register_window(win, false)  # false = no taskbar icon
-
-	center_window(win)
-
-
-
-## -- Save/Load
+# --- Save / Load --- #
 
 func get_save_data() -> Array:
-	var window_data := []
-
+	var window_data = []
 	for win in open_windows.keys():
-		var app = win.get_node("VBoxContainer/ContentPanel").get_child(0)
-		if app == null:
+		var pane = win.pane
+		if not pane:
 			continue
 
-		# Identify the app by matching scene path
-		var scene_path = app.scene_file_path if app.has_method("get_scene_file_path") else app.get_script().resource_path
-
-		# Find registry key from scene path
-		var app_name := ""
-		for key in app_registry:
-			if app_registry[key].resource_path == scene_path:
-				app_name = key
-				break
-
-		if app_name == "":
-			continue  # skip unknown apps
+		var scene_path = pane.scene_file_path if pane.has_method("get_scene_file_path") else pane.get_script().resource_path
 
 		window_data.append({
-			"app_name": app_name,
+			"scene_path": scene_path,
 			"position": SaveManager.vector2_to_dict(win.position),
 			"size": SaveManager.vector2_to_dict(win.size),
 			"minimized": not win.visible,
-			"icon_path": win.icon.resource_path if win.icon else "",
+			"custom_data": pane.get_custom_save_data() if pane.has_method("get_custom_save_data") else {},
 		})
-
 	return window_data
 
-
 func load_from_data(window_data: Array) -> void:
-	close_all_apps()
+	reset()
 
 	for entry in window_data:
-		var app_name = entry.get("app_name", "")
-		if not app_registry.has(app_name):
+		var scene_path = entry.get("scene_path", "")
+		if scene_path == "":
 			continue
 
-		var scene = app_registry[app_name]
-		var instance = scene.instantiate()
-		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+		var scene = load(scene_path)
+		if not scene:
+			push_error("Could not load scene at path: %s" % scene_path)
+			continue
 
-		print("🔁 Restoring app:", app_name)
+		var pane = scene.instantiate() as Pane
+		if not pane:
+			push_error("Loaded scene does not extend Pane!")
+			continue
 
-		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), instance.default_window_size)
+		var window = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+		window.load_pane(pane)
+
+		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), pane.default_window_size)
 		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
 
-		get_tree().root.add_child(win)
-
-		win.size = restored_size
-		win.position = restored_position
-		win.default_size = restored_size
-		var icon_path = entry.get("icon_path", "")
-		if icon_path != "":
-			var icon = load(icon_path)
-			if icon:
-				win.icon = icon
-				print("set icon")
-		else:
-			win.icon = instance.app_icon
-			print("set app icon")
-		win.window_title = instance.app_title
-		win.call_deferred("set_window_title", instance.app_title)
-		win.window_can_close = instance.window_can_close
-		win.window_can_minimize = instance.window_can_minimize
-		win.window_can_maximize = instance.window_can_maximize
-
-		win.get_node("%ContentPanel").add_child(instance)
-
-		register_window(win)
+		window.size = restored_size
+		window.position = restored_position
+		window.default_size = restored_size
 
 		if entry.get("minimized", false):
-			win.hide()
+			window.hide()
 
-func get_popup_save_data() -> Array:
-	var popup_data := []
+		if pane.has_method("load_custom_save_data"):
+			pane.load_custom_save_data(entry.get("custom_data", {}))
 
-	for win in open_windows.keys():
-		var content = win.get_node("VBoxContainer/ContentPanel").get_child(0)
-		if content is BasePopupUI and content.has_method("get_custom_save_data"):
-			var popup_type = content.popup_type
-			print("📦 Saving popup type:", popup_type)
-
-			popup_data.append({
-				"type": popup_type,
-				"position": SaveManager.vector2_to_dict(win.position),
-				"size": SaveManager.vector2_to_dict(win.size),
-				"can_close": win.window_can_close,
-				"can_minimize": win.window_can_minimize,
-				"can_maximize": win.window_can_maximize,
-				"icon_path": win.icon.resource_path if win.icon else "",
-				"custom_data": content.get_custom_save_data(),
-			})
-	return popup_data
-
-func load_popups_from_data(popup_data: Array) -> void:
-	close_all_popups()
-	for entry in popup_data:
-		var type = entry.get("type", "")
-		if not popup_scene_registry.has(type):
-			print("❌ Unknown popup type:", type)
-			continue
-
-		var scene = popup_scene_registry[type]
-		var popup = scene.instantiate()
-
-		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-		win.get_node("%ContentPanel").add_child(popup)
-
-		# Add to tree before assigning position/size
-		get_tree().root.add_child(win)
-
-		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), popup.default_window_size)
-		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
-		win.size = restored_size
-		win.position = restored_position
-		win.default_size = restored_size
-
-		# ✅ Restore window properties
-		win.window_can_close = entry.get("can_close", win.window_can_close)
-		win.window_can_minimize = entry.get("can_minimize", win.window_can_minimize)
-		win.window_can_maximize = entry.get("can_maximize", win.window_can_maximize)
-		var icon_path = entry.get("icon_path", "")
-		if icon_path != "":
-			var icon = load(icon_path)
-			if icon:
-				win.icon = icon
-		register_window(win, false)
-
-		if popup.has_method("load_custom_save_data"):
-			popup.load_custom_save_data(entry.get("custom_data", {}))
-
-		if popup.has_method("get_window_title"):
-			win.call_deferred("set_window_title", popup.get_window_title())
-		else:
-			win.window_title = "Popup"
-
-
-func reset() -> void:
-	open_windows.clear()
-	popup_registry.clear()
-	close_all_windows()
-	focused_window = null
+		register_window(window, pane.show_in_taskbar)

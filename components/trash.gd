@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Pane
 
 
 func _ready() -> void:

@@ -12,36 +12,28 @@ func _ready() -> void:
 		var app_scene: PackedScene = WindowManager.start_apps[app_name]
 		var preview = app_scene.instantiate()
 	
-		if not (preview is BaseAppUI):
-			push_error("App scene must extend BaseAppUI: " + str(app_scene))
+		if not (preview is Pane):
+			push_error("App scene must extend Pane: " + str(app_scene))
 			continue
 
-
-		## TODO: Create AppButton scene to replace this, allow more fine control
+		# --- Create Button --- #
 		var button := Button.new()
-		button.text = preview.app_title
-		button.icon = preview.app_icon
-		button.add_theme_constant_override("icon_max_width", 64)
-		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
-		#button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		#button.add_theme_constant_override("icon_margin", 16)
-		button.add_theme_font_size_override("font_size", 10)
-		button.expand_icon = false
+		button.text = preview.window_title
 		button.focus_mode = Control.FOCUS_NONE
 		button.theme = preload("res://assets/windows_95_theme.tres")
-
-		# ✅ Uniform button size
 		button.custom_minimum_size = Vector2(160, 40)
+		button.add_theme_font_size_override("font_size", 10)
 
-		# ✅ Uniform icon size (scaling via TextureRect child)
-		var icon_texture := TextureRect.new()
-		icon_texture.texture = preview.app_icon
-		icon_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon_texture.custom_minimum_size = Vector2(24, 24)
-		icon_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		button.icon = null  # prevent default icon layout
-		button.add_child(icon_texture)
-		icon_texture.position = Vector2(8, 8)  # fine-tune alignment if needed
+		# --- Add Icon --- #
+		if preview.window_icon:
+			var icon_texture := TextureRect.new()
+			icon_texture.texture = preview.window_icon
+			icon_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			icon_texture.custom_minimum_size = Vector2(24, 24)
+			icon_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			button.add_child(icon_texture)
+			icon_texture.position = Vector2(8, 8)  # slight padding if needed
+			button.icon = null  # Make sure no built-in button icon
 
 		button.pressed.connect(func():
 			launch_app(app_name)
@@ -50,11 +42,11 @@ func _ready() -> void:
 		app_list_container.add_child(button)
 		preview.queue_free()
 
+
 func _input(event: InputEvent) -> void:
 	if listening_for_clicks and event is InputEventMouseButton and event.pressed:
 		# Check if the click is outside the StartPanel bounds
-		var local_mouse_pos = get_local_mouse_position()
-		if not Rect2(Vector2.ZERO, size).has_point(local_mouse_pos):
+		if not Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position()):
 			hide()
 			listening_for_clicks = false
 

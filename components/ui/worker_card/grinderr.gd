@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Pane
 class_name Grinderr
 
 @export var gig_popup_scene: PackedScene
@@ -29,8 +29,8 @@ func _ready() -> void:
 	sort_dropdown.item_selected.connect(_on_sort_property_changed)
 	
 	_update_refresh_countdown()
-	app_title = "Grinderr"
-	emit_signal("title_updated", app_title)
+	#app_title = "Grinderr"
+	#emit_signal("title_updated", app_title)
 	
 	_init_dropdown()
 	
@@ -107,9 +107,18 @@ func _create_gig_card(gig: WorkerTask) -> Control:
 	return card
 
 func _on_open_gig(gig: WorkerTask) -> void:
-	var popup = gig_popup_scene.instantiate()
-	WindowManager.launch_popup(popup, gig.title)
-	popup.setup(gig)
+	var popup_pane := gig_popup_scene.instantiate() as Pane
+
+	var window := WindowFrame.instantiate_for_pane(popup_pane)
+	WindowManager.register_window(window, popup_pane.show_in_taskbar)
+	call_deferred("setup_gig_popup", popup_pane, gig)
+	call_deferred("autoposition_window", window)
+
+func setup_gig_popup(pane: Pane, gig: WorkerTask) -> void:
+	if is_instance_valid(pane):
+		pane.setup(gig)
+
+
 
 
 func sort_gigs_by(property: String, descending := true) -> Array[WorkerTask]:

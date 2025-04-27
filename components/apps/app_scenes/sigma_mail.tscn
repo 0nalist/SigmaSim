@@ -21,8 +21,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 script = ExtResource("2_wwi5a")
-app_title = "Sigma Mail"
-app_icon = ExtResource("3_wwi5a")
+window_icon = ExtResource("3_wwi5a")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

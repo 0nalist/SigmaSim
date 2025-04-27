@@ -1,4 +1,4 @@
-extends BasePopupUI
+extends Pane
 class_name StockPopupUI
 
 @onready var label_symbol = %LabelSymbol
@@ -12,10 +12,14 @@ class_name StockPopupUI
 
 var stock: Stock
 
+func setup_custom(args) -> void:
+	if args is Stock:
+		setup(args)
+
 func setup(_stock: Stock) -> void:
 	stock = _stock
 	_update_ui()
-
+	window_title = str(stock.symbol) + " " + str(stock.price)
 	# Connect signal
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
@@ -26,6 +30,7 @@ func _on_stock_price_updated(symbol: String, updated_stock: Stock) -> void:
 	_update_ui()
 
 func _update_ui() -> void:
+	window_title = str(stock.symbol) + " " + str(stock.price)
 	label_symbol.text = "Symbol: " + stock.symbol
 	label_price.text = "Price: $" + str(stock.price)
 	label_intrinsic.text = "Intrinsic Value: $" + str(stock.intrinsic_value)

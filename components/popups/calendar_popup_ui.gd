@@ -1,4 +1,4 @@
-extends BasePopupUI
+extends Pane
 
 @export var click_catcher: Control = null
 

@@ -18,7 +18,13 @@ size_flags_vertical = 4
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_glnmr")
 script = ExtResource("1_4v806")
+window_title = "Calendar"
 default_window_size = Vector2(360, 180)
+show_in_taskbar = false
+is_popup = true
+window_can_close = false
+window_can_minimize = false
+window_can_maximize = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

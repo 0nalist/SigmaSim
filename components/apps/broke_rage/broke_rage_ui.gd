@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Pane
 class_name BrokeRage
 
 @onready var stock_market: VBoxContainer = %StockMarket
@@ -14,9 +14,9 @@ var last_invested: float = 0.0
 
 
 func _ready() -> void:
-	app_title = "BrokeRage"
+	#app_title = "BrokeRage"
 	#app_icon = preload("res://assets/AlphaOnline.png")
-	emit_signal("title_updated", app_title)
+	#emit_signal("title_updated", app_title)
 
 	# Connect signals from PortfolioManager
 	PortfolioManager.cash_updated.connect(_on_cash_updated)

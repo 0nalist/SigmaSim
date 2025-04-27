@@ -18,7 +18,13 @@ mouse_filter = 1
 theme = ExtResource("1_38tc7")
 theme_override_styles/panel = SubResource("StyleBoxFlat_hytj0")
 script = ExtResource("2_2jqea")
-default_window_size = Vector2(420, 320)
+window_title = "Bill"
+default_window_size = Vector2(420, 400)
+is_popup = true
+window_can_close = false
+window_can_minimize = false
+window_can_maximize = false
+stay_on_top = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -57,12 +63,14 @@ mouse_filter = 1
 
 [node name="BillLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 36
 text = "Rent: $0,000"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Control2" type="Control" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
@@ -95,9 +103,12 @@ text = "*Paying by credit imposes a 30% fee"
 
 [node name="InterestLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "*Paying by credit imposes a 30% fee"
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/PayNowButton" to="." method="_on_pay_now_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/PayByCreditButton" to="." method="_on_pay_by_credit_button_pressed"]

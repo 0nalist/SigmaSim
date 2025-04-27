@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Pane
 
 @onready var credit_label := %CreditLabel
 @onready var credit_interest_label: Label = %CreditInterestLabel
@@ -15,8 +15,8 @@ extends BaseAppUI
 @onready var credit_score_label := %CreditScoreLabel
 
 func _ready():
-	app_title = "OwerView"
-	emit_signal("title_updated", app_title)
+	#app_title = "OwerView"
+	#emit_signal("title_updated", app_title)
 
 	PortfolioManager.credit_updated.connect(update_credit)
 	PortfolioManager.resource_changed.connect(_on_resource_changed)

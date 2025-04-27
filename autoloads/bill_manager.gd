@@ -4,7 +4,7 @@ extends Node
 signal lifestyle_updated
 
 var autopay_enabled: bool = false
-var active_bills: Dictionary = {}  # key: date_str → Array[BillPopupUI]
+var active_bills: Dictionary = {} 
 
 var lifestyle_categories := {}  # category_name: Dictionary
 
@@ -66,19 +66,10 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 			continue
 
 		# 💸 Create new bill popup
-		var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
+		var popup = preload("res://components/popups/bill_popup_ui.tscn").instantiate() as Pane
 		popup.init(bill_name)
-		popup.amount = amount
 
-		var win := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-		win.window_title = "Bill: %s" % bill_name
-		win.call_deferred("set_window_title", win.window_title)
-		win.icon = null
-		win.default_size = popup.default_window_size if "default_window_size" in popup else Vector2(550, 290)
-		win.window_can_close = false
-		win.window_can_minimize = false
-		win.get_node("%ContentPanel").add_child(popup)
-
+		var win = WindowFrame.instantiate_for_pane(popup)
 		WindowManager.register_window(win, false)
 		call_deferred("center_bill_window", win)
 

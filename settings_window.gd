@@ -1,5 +1,5 @@
 #settings_window.gd
-extends BaseAppUI
+extends Pane
 
 @onready var fullscreen_check_box: CheckBox = %FullscreenCheckBox
 @onready var windowed_check_box: CheckBox = %WindowedCheckBox
@@ -8,8 +8,8 @@ extends BaseAppUI
 
 func _ready() -> void:
 	update_checked_mode()
-	app_title = "Settings"
-	emit_signal("title_updated", app_title)
+	#app_title = "Settings"
+	#emit_signal("title_updated", app_title)
 	# Disable fullscreen if running in embedded mode
 	if OS.has_feature("editor") or DisplayServer.get_name() == "headless":
 		fullscreen_check_box.disabled = true
