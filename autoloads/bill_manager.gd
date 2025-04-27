@@ -368,44 +368,6 @@ var lifestyle_options := {
 			"effects": { "COMFORT_FLAT": 7, "REPUTATION_FLAT": 7, "ROMANCE_FLAT": 2 }
 		}
 	],
-	"Food": [
-		{
-			"name": "Instant Noodles & Tap Water",
-			"cost": 35,
-			"effects_label": "-1 Health, -1 Mood",
-			"effects": { "HEALTH_FLAT": -1, "MOOD_FLAT": -1 }
-		},
-		{
-			"name": "Fast Food Value Menu",
-			"cost": 105,
-			"effects_label": "+0 Health, +0 Mood",
-			"effects": {}
-		},
-		{
-			"name": "Balanced Meal Kit Subscription",
-			"cost": 210,
-			"effects_label": "+1 Health, +1 Energy",
-			"effects": { "HEALTH_FLAT": 1, "ENERGY_FLAT": 1 }
-		},
-		{
-			"name": "Organic Groceries & Home Cooking",
-			"cost": 420,
-			"effects_label": "+2 Health, +2 Mood",
-			"effects": { "HEALTH_FLAT": 2, "MOOD_FLAT": 2 }
-		},
-		{
-			"name": "Private Chef (Macros Dialed In)",
-			"cost": 1050,
-			"effects_label": "+3 Health, +3 Energy, +1 Attractiveness",
-			"effects": { "HEALTH_FLAT": 3, "ENERGY_FLAT": 3, "ATTRACTIVENESS_FLAT": 1 }
-		},
-		{
-			"name": "Michelin-Star Degenerate",
-			"cost": 2500,
-			"effects_label": "+4 Health, +5 Mood, +2 Attractiveness",
-			"effects": { "HEALTH_FLAT": 4, "MOOD_FLAT": 5, "ATTRACTIVENESS_FLAT": 2 }
-		}
-	],
 	"Medical Insurance": [
 		{
 			"name": "None (Hope for the Best)",
@@ -442,6 +404,44 @@ var lifestyle_options := {
 			"cost": 6000,
 			"effects_label": "+4 Health, +3 Energy, +2 Attractiveness",
 			"effects": { "HEALTH_FLAT": 4, "ENERGY_FLAT": 3, "ATTRACTIVENESS_FLAT": 2 }
+		}
+	],
+	"Food": [
+		{
+			"name": "Instant Noodles & Tap Water",
+			"cost": 35,
+			"effects_label": "-1 Health, -1 Mood",
+			"effects": { "HEALTH_FLAT": -1, "MOOD_FLAT": -1 }
+		},
+		{
+			"name": "Fast Food Value Menu",
+			"cost": 105,
+			"effects_label": "+0 Health, +0 Mood",
+			"effects": {}
+		},
+		{
+			"name": "Balanced Meal Kit Subscription",
+			"cost": 210,
+			"effects_label": "+1 Health, +1 Energy",
+			"effects": { "HEALTH_FLAT": 1, "ENERGY_FLAT": 1 }
+		},
+		{
+			"name": "Organic Groceries & Home Cooking",
+			"cost": 420,
+			"effects_label": "+2 Health, +2 Mood",
+			"effects": { "HEALTH_FLAT": 2, "MOOD_FLAT": 2 }
+		},
+		{
+			"name": "Private Chef (Macros Dialed In)",
+			"cost": 1050,
+			"effects_label": "+3 Health, +3 Energy, +1 Attractiveness",
+			"effects": { "HEALTH_FLAT": 3, "ENERGY_FLAT": 3, "ATTRACTIVENESS_FLAT": 1 }
+		},
+		{
+			"name": "Michelin-Star Degenerate",
+			"cost": 2500,
+			"effects_label": "+4 Health, +5 Mood, +2 Attractiveness",
+			"effects": { "HEALTH_FLAT": 4, "MOOD_FLAT": 5, "ATTRACTIVENESS_FLAT": 2 }
 		}
 	],
 	"Entertainment": [
@@ -528,7 +528,4 @@ var lifestyle_options := {
 			"effects": { "ENERGY_FLAT": 3, "COMFORT_FLAT": 3, "REPUTATION_FLAT": 2 }
 		}
 	],
-
-
-
 }

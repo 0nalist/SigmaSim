@@ -63,8 +63,8 @@ func register_window(window: WindowFrame, add_taskbar_icon := true) -> void:
 		window.get_node("%MinimizeButton").visible = false
 	open_windows[window] = icon_button
 	call_deferred("focus_window", window)
-	print("📌 Registering window:", window.window_title)
-	print("🪟 open_windows now:", open_windows.keys())
+	print("Registering window:", window.window_title)
+	#print("open_windows now:", open_windows.keys())
 
 
 

@@ -105,11 +105,10 @@ func save_to_slot(slot_id: int) -> void:
 
 func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
-		push_error("❌ Attempted to save with invalid slot_id: %d" % slot_id)
+		#push_error("❌ Attempted to save with invalid slot_id: %d" % slot_id) ## This should be an error, but annoying to come up as error when testing
+		print("❌ Attempted to save with invalid slot_id: %d" % slot_id)
 		return
-	#reset_managers()
-	print("loading from slot")
-	 ## Should put this somewhere better. I need to initialize vars like time upon new profile creation
+
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
@@ -166,7 +165,7 @@ func delete_save(slot_id: int) -> void:
 	metadata.erase("slot_%d" % slot_id)
 	save_slot_metadata(metadata)
 
-	print("🧹 Deleted save slot %d" % slot_id)
+	print("Deleted save slot %d" % slot_id)
 
 
 # --- Helper Functions ---
