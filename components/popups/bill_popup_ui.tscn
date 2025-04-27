@@ -21,6 +21,8 @@ script = ExtResource("2_2jqea")
 window_title = "Bill"
 default_window_size = Vector2(420, 320)
 is_popup = true
+window_can_close = false
+window_can_minimize = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

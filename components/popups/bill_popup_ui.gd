@@ -12,9 +12,10 @@ var popup_type := "BillPopupUI"
 @onready var interest_label: Label = %InterestLabel
 
 func _ready() -> void:
+	user_movable = true
 	window_title = "Bill: " + str(bill_name)
-	window_can_close = false
-	window_can_minimize = false
+	#window_can_close = false
+	#window_can_minimize = false
 	# If the popup was restored after data load, manually refresh UI
 	_update_display()
 

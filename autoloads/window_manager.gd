@@ -67,10 +67,10 @@ func focus_window(window: WindowFrame) -> void:
 		var prev_btn = open_windows.get(focused_window)
 		if is_instance_valid(prev_btn):
 			prev_btn.button_pressed = false
-	
+
 	focused_window = window
 	window.on_focus()
-	
+
 	if window.window_state == window.WindowState.MINIMIZED:
 		window.restore()
 
@@ -78,11 +78,36 @@ func focus_window(window: WindowFrame) -> void:
 	if window.get_parent() != root:
 		window.get_parent().remove_child(window)
 		root.add_child(window)
-	root.move_child(window, root.get_child_count() - 1)
+
+	bring_to_top(window)
 
 	var btn = open_windows.get(window)
 	if is_instance_valid(btn):
 		btn.button_pressed = true
+
+
+func bring_to_top(window: WindowFrame) -> void:
+	var root = get_tree().root
+	if not is_instance_valid(window) or window.get_parent() != root:
+		return
+
+	# If window is stay_on_top, bring it above everything
+	if window.pane and window.pane.stay_on_top:
+		root.move_child(window, root.get_child_count() - 1)
+	else:
+		# Bring to top, but *below* stay_on_top windows
+		var children = root.get_children()
+		var insert_index = root.get_child_count()  # Default to very top
+
+		for i in range(root.get_child_count() - 1, -1, -1):
+			var child = children[i]
+			if child is WindowFrame and child.pane and child.pane.stay_on_top:
+				insert_index = i
+				break
+
+		root.move_child(window, insert_index)
+
+
 
 func close_window(window: WindowFrame) -> void:
 	if open_windows.has(window):
@@ -125,27 +150,25 @@ func launch_pane(scene: PackedScene) -> void:
 	register_window(window, pane.show_in_taskbar)
 	call_deferred("autoposition_window", window)
 	
-
-
-	var screen_size = get_viewport().get_visible_rect().size
-	var window_size = pane.default_window_size
-	var x := 0.0
-
-	if pane.default_position == "left":
-		x = -screen_size.x / 3.0
-	elif pane.default_position == "right":
-		x = screen_size.x / 3.0
-
-	x -= window_size.x / 2.0
-	var y = -window_size.y / 2.0
-
-	window.position = Vector2(x, y)
 	register_window(window, pane.show_in_taskbar)
+
+
+func launch_pane_instance(pane: Pane, setup_args: Variant = null) -> void:
+	var window := WindowFrame.instantiate_for_pane(pane)
+	register_window(window, pane.show_in_taskbar)
+	
+	if setup_args != null and pane.has_method("setup_custom"):
+		pane.call_deferred("setup_custom", setup_args)
+
+	call_deferred("autoposition_window", window)
+
+
 
 func autoposition_window(window: WindowFrame) -> void:
 	if is_instance_valid(window):
 		window.autoposition()
 
+'''
 func open_stock_popup(stock: Stock) -> void:
 	var key = "stock:" + stock.symbol
 	var existing = popup_registry.get(key)
@@ -172,6 +195,7 @@ func open_stock_popup(stock: Stock) -> void:
 			popup_registry.erase(key)
 	)
 	call_deferred("focus_window", window)
+'''
 
 # --- Taskbar --- #
 

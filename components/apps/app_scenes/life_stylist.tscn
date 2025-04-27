@@ -25,8 +25,8 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_8oiat")
 script = ExtResource("1_80bik")
 lifestyle_row_scene = ExtResource("2_80bik")
 window_title = "LifeStylist"
+window_icon = ExtResource("4_16n21")
 default_window_size = Vector2(815, 650)
-only_one_instance_allowed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

@@ -70,4 +70,6 @@ func update_sentiment_arrow(sentiment: float) -> void:
 
 func _on_stock_label_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		WindowManager.open_stock_popup(stock)
+		var popup_scene = preload("res://components/popups/stock_popup_ui.tscn")
+		var stock_popup = popup_scene.instantiate() as Pane
+		WindowManager.launch_pane_instance(stock_popup, stock)

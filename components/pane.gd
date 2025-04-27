@@ -12,7 +12,7 @@ signal window_title_changed(new_title: String)
 @export_enum("left", "center", "right") var default_position: String = "center"
 
 @export var show_in_taskbar: bool = true
-@export var only_one_instance_allowed: bool = false
+#@export var only_one_instance_allowed: bool = false
 
 @export var allow_multiple: bool = false
 @export var unique_popup_key: String = ""
@@ -21,6 +21,11 @@ signal window_title_changed(new_title: String)
 @export var window_can_close: bool = true
 @export var window_can_minimize: bool = true
 @export var window_can_maximize: bool = true
+
+@export var user_movable: bool = true
+@export var user_resizable: bool = true
+@export var stay_on_top: bool = false
+
 
 signal title_updated(title: String)
 

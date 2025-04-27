@@ -12,6 +12,10 @@ class_name StockPopupUI
 
 var stock: Stock
 
+func setup_custom(args) -> void:
+	if args is Stock:
+		setup(args)
+
 func setup(_stock: Stock) -> void:
 	stock = _stock
 	_update_ui()

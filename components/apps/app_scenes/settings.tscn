@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://s5d0e4c7s6cc"]
+[gd_scene load_steps=5 format=3 uid="uid://s5d0e4c7s6cc"]
 
 [ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://settings_window.gd" id="1_wlela"]
+[ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="2_wlela"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlela"]
 bg_color = Color(0.156141, 0.265577, 0.156147, 1)
@@ -21,8 +22,8 @@ theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 script = ExtResource("1_wlela")
 window_title = "Settings"
+window_icon = ExtResource("2_wlela")
 default_window_size = Vector2(800, 300)
-only_one_instance_allowed = true
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2

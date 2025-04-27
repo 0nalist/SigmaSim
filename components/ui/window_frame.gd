@@ -12,7 +12,6 @@ class_name WindowFrame
 @export var window_can_maximize: bool = true
 
 var window_title: String = "Window"
-
 var pane: Pane
 
 enum WindowState { NORMAL, MINIMIZED, MAXIMIZED }
@@ -41,7 +40,6 @@ var min_window_size := Vector2(120, 50)
 @onready var close_button: Button = $VBoxContainer/MarginContainer/Header/CloseButton
 @onready var content_panel: ScrollContainer = %ContentPanel
 
-
 func _ready() -> void:
 	refresh_window_controls()
 
@@ -59,7 +57,6 @@ func _ready() -> void:
 
 	call_deferred("_apply_default_window_size_and_position")
 
-
 func load_pane(new_pane: Pane) -> void:
 	pane = new_pane
 	icon = new_pane.window_icon
@@ -72,7 +69,6 @@ func load_pane(new_pane: Pane) -> void:
 	default_size = pane.default_window_size
 
 	pane.window_title_changed.connect(_on_pane_window_title_changed)
-
 	call_deferred("_add_pane_to_content_panel")
 
 func _add_pane_to_content_panel() -> void:
@@ -82,152 +78,101 @@ func _add_pane_to_content_panel() -> void:
 func _on_pane_window_title_changed(new_title: String) -> void:
 	set_window_title(new_title)
 
-
-
 static func instantiate_for_pane(pane: Pane) -> WindowFrame:
 	var window := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 	window.load_pane(pane)
 	return window
 
-
-
 func autoposition() -> void:
 	if not pane:
 		return
-
 	var screen_size = get_viewport().get_visible_rect().size
 	var window_size = pane.default_window_size
-
 	var center = screen_size / 2
 	var x = center.x
 	if pane.default_position == "left":
 		x -= screen_size.x / 3.0
 	elif pane.default_position == "right":
 		x += screen_size.x / 3.0
-
 	x -= window_size.x / 2.0
 	var y = center.y - window_size.y / 2.0
-
 	position = Vector2(x, y)
-
-
 
 func refresh_window_controls() -> void:
 	minimize_button.visible = window_can_minimize
 	maximize_button.visible = window_can_maximize
 	close_button.visible = window_can_close
 
-
 func _apply_default_window_size_and_position():
 	if size == Vector2.ZERO or size == Vector2(1, 1):
 		size = default_size
-
 	if position == Vector2.ZERO:
 		call_deferred("_clamp_to_screen")
-
 
 func _clamp_to_screen() -> void:
 	await get_tree().process_frame
 	var screen_size = get_viewport().get_visible_rect().size
-	var window_size = size
-	position = position.clamp(Vector2.ZERO, screen_size - window_size)
-
+	position = position.clamp(Vector2.ZERO, screen_size - size)
 
 func _process(_delta: float) -> void:
 	if not is_resizing:
 		return
 
-	var viewport_size = get_viewport().get_visible_rect().size
 	var mouse_delta := get_global_mouse_position() - resize_start_mouse
 	var new_size := resize_start_size
 	var new_pos := resize_start_pos
 
 	if resize_dir.x != 0:
-		var new_width = resize_start_size.x + mouse_delta.x * resize_dir.x
-		new_size.x = max(new_width, min_window_size.x)
-
-	if resize_dir.x == -1:
-		new_pos.x = resize_start_pos.x + mouse_delta.x
-		if new_size.x <= min_window_size.x:
-			new_pos.x = resize_start_pos.x + (resize_start_size.x - min_window_size.x)
-
+		new_size.x = max(resize_start_size.x + mouse_delta.x * resize_dir.x, min_window_size.x)
+		if resize_dir.x == -1:
+			new_pos.x = resize_start_pos.x + mouse_delta.x
 	if resize_dir.y != 0:
-		var new_height = resize_start_size.y + mouse_delta.y * resize_dir.y
-		new_size.y = max(new_height, min_window_size.y)
-
-	if resize_dir.y == -1:
-		new_pos.y = resize_start_pos.y + mouse_delta.y
-		if new_size.y <= min_window_size.y:
-			new_pos.y = resize_start_pos.y + (resize_start_size.y - min_window_size.y)
-
-	# Clamp resizing so that no edge can go off-screen
-	if new_pos.x < 0:
-		var overshoot_x = -new_pos.x
-		new_pos.x = 0
-		new_size.x = max(min_window_size.x, new_size.x - overshoot_x)
-
-	if new_pos.y < 0:
-		var overshoot_y = -new_pos.y
-		new_pos.y = 0
-		new_size.y = max(min_window_size.y, new_size.y - overshoot_y)
-
-	if new_pos.x + new_size.x > viewport_size.x:
-		new_size.x = max(min_window_size.x, viewport_size.x - new_pos.x)
-
-	if new_pos.y + new_size.y > viewport_size.y:
-		new_size.y = max(min_window_size.y, viewport_size.y - new_pos.y)
+		new_size.y = max(resize_start_size.y + mouse_delta.y * resize_dir.y, min_window_size.y)
+		if resize_dir.y == -1:
+			new_pos.y = resize_start_pos.y + mouse_delta.y
 
 	size = new_size
 	global_position = new_pos
-
+	_clamp_to_screen()
 
 func _on_header_input(event: InputEvent) -> void:
 	if is_resizing:
 		return
 
+	if pane == null:
+		return
+
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if WindowManager and WindowManager.has_method("focus_window"):
+			WindowManager.focus_window(self)
+
 	if event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
-		position += event.relative
-		_clamp_to_viewport()
-
-
-func _clamp_to_viewport() -> void:
-	var viewport_size = get_viewport().get_visible_rect().size
-	var min_x = viewport_size.x - MIN_VISIBLE_AREA.x
-	var min_y = viewport_size.y - MIN_VISIBLE_AREA.y
-
-	if position.x + size.x < MIN_VISIBLE_AREA.x:
-		position.x = MIN_VISIBLE_AREA.x - size.x
-	if position.x > min_x:
-		position.x = min_x
-	if position.y + size.y < MIN_VISIBLE_AREA.y:
-		position.y = MIN_VISIBLE_AREA.y - size.y
-	if position.y > min_y:
-		position.y = min_y
-
+		if pane.user_movable: # 👈 ADD THIS CHECK
+			position += event.relative
+			_clamp_to_screen()
 
 func _gui_input(event: InputEvent) -> void:
-	#if window_state != WindowState.NORMAL:
 	if window_state == WindowState.MINIMIZED:
 		return
 
-	if event is InputEventMouseButton and event.pressed:
-		if WindowManager.has_method("focus_window"):
+	if event is InputEventMouseButton and event.pressed and not is_resizing:
+		if WindowManager and WindowManager.has_method("focus_window"):
 			WindowManager.focus_window(self)
 
-	var local_mouse := get_local_mouse_position()
-	var w := size.x
-	var h := size.y
-	var dir := Vector2.ZERO
+	var local_mouse = get_local_mouse_position()
+	var dir = Vector2.ZERO
 
-	if local_mouse.x >= w - resize_margin:
-		dir.x = 1
-	elif local_mouse.x <= resize_margin:
-		dir.x = -1
-	if local_mouse.y >= h - resize_margin:
-		dir.y = 1
-	elif local_mouse.y <= resize_margin:
-		dir.y = -1
+	if pane and pane.user_resizable:
+		if local_mouse.x >= size.x - resize_margin:
+			dir.x = 1
+		elif local_mouse.x <= resize_margin:
+			dir.x = -1
+		if local_mouse.y >= size.y - resize_margin:
+			dir.y = 1
+		elif local_mouse.y <= resize_margin:
+			dir.y = -1
 
+	mouse_default_cursor_shape = Control.CURSOR_ARROW
 	if dir != Vector2.ZERO:
 		if dir == Vector2(1, 1) or dir == Vector2(-1, -1):
 			mouse_default_cursor_shape = Control.CURSOR_FDIAGSIZE
@@ -237,8 +182,6 @@ func _gui_input(event: InputEvent) -> void:
 			mouse_default_cursor_shape = Control.CURSOR_HSIZE
 		else:
 			mouse_default_cursor_shape = Control.CURSOR_VSIZE
-	else:
-		mouse_default_cursor_shape = Control.CURSOR_ARROW
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed and dir != Vector2.ZERO:
@@ -249,7 +192,6 @@ func _gui_input(event: InputEvent) -> void:
 			resize_start_pos = global_position
 		elif not event.pressed:
 			is_resizing = false
-
 
 func minimize(target_position: Vector2 = global_position) -> void:
 	if window_state == WindowState.MINIMIZED:
@@ -269,10 +211,8 @@ func minimize(target_position: Vector2 = global_position) -> void:
 	tween.parallel().tween_property(self, "global_position", target_position - minimized_size / 2, animation_duration)
 	tween.finished.connect(_on_minimize_animation_finished)
 
-
 func _on_minimize_animation_finished():
 	hide()
-
 
 func toggle_maximize() -> void:
 	if window_state == WindowState.MINIMIZED:
@@ -287,15 +227,11 @@ func toggle_maximize() -> void:
 			normal_size = size
 
 		var viewport_size = get_viewport().get_visible_rect().size
-		var taskbar_height = 0
-
-		if WindowManager and WindowManager.has_method("get_taskbar_height"):
-			taskbar_height = WindowManager.get_taskbar_height() + 14
+		var taskbar_height = WindowManager.get_taskbar_height() + 14 if WindowManager and WindowManager.has_method("get_taskbar_height") else 0
 
 		global_position = Vector2.ZERO
 		size = Vector2(viewport_size.x, viewport_size.y - taskbar_height)
 		window_state = WindowState.MAXIMIZED
-
 
 func restore() -> void:
 	if window_state != WindowState.MINIMIZED:
@@ -303,41 +239,34 @@ func restore() -> void:
 
 	show()
 	window_state = previous_state
-
 	if previous_state == WindowState.NORMAL:
 		global_position = normal_position
 		size = normal_size
 	elif previous_state == WindowState.MAXIMIZED:
-		position = Vector2.ZERO
+		global_position = Vector2.ZERO
 		size = get_viewport().get_visible_rect().size
-		window_state = WindowState.MAXIMIZED
 
-	_clamp_to_viewport()
-
+	_clamp_to_screen()
 
 func unmaximize() -> void:
 	global_position = normal_position
 	size = normal_size
 	window_state = WindowState.NORMAL
-	_clamp_to_viewport()
-
+	_clamp_to_screen()
 
 func on_focus():
 	modulate = Color(1, 1, 1, 1)
 	if window_state == WindowState.MINIMIZED:
 		restore()
 
-
 func on_unfocus():
 	modulate = Color(0.9, 0.9, 0.9, 1)
-
 
 func _on_close_pressed() -> void:
 	if WindowManager.has_method("close_window"):
 		WindowManager.close_window(self)
 	else:
 		queue_free()
-
 
 func set_window_title(title: String) -> void:
 	if title_label:

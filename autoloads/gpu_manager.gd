@@ -1,4 +1,4 @@
-extends BaseAppUI
+extends Node
 # Autoload name: GPUManager
 
 signal gpus_changed

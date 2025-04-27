@@ -2,7 +2,7 @@ extends Control
 
 @onready var start_panel: StartPanelWindow = %StartPanel
 @onready var taskbar: Control = %Taskbar
-@onready var trash_window: BaseAppUI = %TrashWindow
+@onready var trash_window: Pane = %TrashWindow
 @onready var background: TextureRect = %Background
 
 @export var background_texture: Texture = preload("res://assets/backgrounds/Bliss_(Windows_XP) (2).png")
