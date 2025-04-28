@@ -26,6 +26,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_ye6sa")
+window_title = "EarlyBird"
+default_window_size = Vector2(640, 960)
+window_can_maximize = false
+user_resizable = false
 
 [node name="RoundManager" type="Node" parent="."]
 unique_name_in_owner = true

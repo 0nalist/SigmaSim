@@ -3,7 +3,7 @@ extends Node2D
 class_name EarlyBirdPipeManager
 
 @export var pipe_pair_scene: PackedScene
-@export var spawn_interval: float = 2.0
+@export var spawn_interval: float = 2
 @export var spawn_x_offset: float = 1000.0
 
 var spawn_timer: Timer
@@ -40,3 +40,13 @@ func _on_spawn_pipe_pair() -> void:
 	pipe_pair.player = %EarlyBirdPlayer
 
 	pipe_pair.randomize_gap_position()
+
+func set_move_speed(new_speed: float) -> void:
+	for child in get_children():
+		if child is EarlyBirdPipePair:
+			child.move_speed = new_speed
+
+	# Adjust spawn interval: faster speed = spawn farther apart
+	spawn_interval = clamp(1.5 + (100.0 / new_speed), 0.8, 2.5) 
+	if spawn_timer:
+		spawn_timer.wait_time = spawn_interval
