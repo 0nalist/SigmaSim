@@ -51,6 +51,8 @@ func update_name_label():
 	var pname = PlayerManager.user_data["name"]
 	name_label.text = pname
 	relationship_label.text = pname + " is terminally single"
+	
+	username_button.text = "@" + PlayerManager.user_data["username"]
 
 func update_work_label():
 	if randi_range(0,1) > 0:

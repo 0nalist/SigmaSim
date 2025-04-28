@@ -146,6 +146,7 @@ func launch_app_by_name(app_name: String) -> void:
 		push_error("App not found: %s" % app_name)
 
 func launch_pane(scene: PackedScene) -> void:
+	print("launch pane scene: " + str(scene))
 	var pane := scene.instantiate() as Pane
 	if not pane:
 		push_error("Scene does not extend Pane!")
@@ -166,6 +167,7 @@ func launch_pane(scene: PackedScene) -> void:
 
 
 func launch_pane_instance(pane: Pane, setup_args: Variant = null) -> void:
+	print("launch pane instance : " + str(pane))
 	var window := WindowFrame.instantiate_for_pane(pane)
 	register_window(window, pane.show_in_taskbar)
 	
@@ -173,6 +175,31 @@ func launch_pane_instance(pane: Pane, setup_args: Variant = null) -> void:
 		pane.call_deferred("setup_custom", setup_args)
 
 	call_deferred("autoposition_window", window)
+
+
+func launch_popup(popup_scene: PackedScene, unique_key: String, setup_args: Variant = null) -> void:
+	if popup_scene == null:
+		push_error("launch_popup called with null scene")
+		return
+
+	# Check if popup already exists
+	var existing_window = find_popup_by_key(unique_key)
+	if existing_window:
+		focus_window(existing_window)
+		return
+
+	# Otherwise, create new popup
+	var popup_pane = popup_scene.instantiate() as Pane
+	popup_pane.unique_popup_key = unique_key
+
+	var window = WindowFrame.instantiate_for_pane(popup_pane)
+	register_window(window, popup_pane.show_in_taskbar)
+
+	if setup_args != null and popup_pane.has_method("setup"):
+		popup_pane.call_deferred("setup", setup_args)
+
+	call_deferred("autoposition_window", window)
+
 
 
 
@@ -236,6 +263,14 @@ func find_window_by_app(title: String) -> WindowFrame:
 		if win.pane and win.pane.window_title == title:
 			return win
 	return null
+
+func find_popup_by_key(key: String) -> WindowFrame:
+	for win in open_windows.keys():
+		if win.pane and win.pane.unique_popup_key == key:
+			return win
+	return null
+
+
 
 func center_window(win: WindowFrame) -> void:
 	var screen_size = get_viewport().get_visible_rect().size

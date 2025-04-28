@@ -2,6 +2,8 @@ extends PanelContainer
 
 class_name GigCard
 
+@export var gig_popup_scene: PackedScene
+
 signal open_gig(gig: WorkerTask)
 
 @onready var title_label = %TitleLabel
@@ -24,5 +26,5 @@ func setup(gig_ref: WorkerTask):
 		limit_label.text = "Limit: %d" % gig.completion_limit
 	workers_label.text = "Workers: %d" % gig.assigned_workers.size()
 	open_button.pressed.connect(func():
-		emit_signal("open_gig", gig)
+		WindowManager.launch_popup(gig_popup_scene, "task_" + gig.title, gig)
 	)

@@ -16,6 +16,12 @@ func _ready() -> void:
 	WindowManager.start_panel = start_panel
 	
 	call_deferred("_deferred_load_save")
+	launch_startup_apps()
+
+
+func launch_startup_apps() -> void:
+	WindowManager.launch_app_by_name("BrokeRage")
+
 
 func _deferred_load_save():
 	SaveManager.load_from_slot(PlayerManager.get_slot_id())

@@ -81,7 +81,7 @@ theme = ExtResource("1_i8u7u")
 
 [node name="Favicon" type="TextureRect" parent="VBoxContainer/MarginContainer/Header"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(16, 16)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4

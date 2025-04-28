@@ -1,7 +1,5 @@
 extends Pane
-#class_name GigPopup
-
-#@export var default_window_size: Vector2 = Vector2(480, 360)
+class_name GigPopup
 
 
 @onready var title_label = %TitleLabel
@@ -16,18 +14,23 @@ extends Pane
 @onready var grind_button: Button = %GrindButton
 
 var gig: WorkerTask
+var pending_gig_title: String = ""
 
-#var last_displayed_progress: float = 0.0
-#var last_completions: int = 0
 var last_productivity: float = 0.0
 var pending_reset: bool = false
+
+func _ready() -> void:
+	assign_button.toggle_mode = true
+	# If we had a pending load
+	if pending_gig_title != "":
+		call_deferred("_try_load_gig_by_title")
 
 func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
 	window_title = gig.title
 	title_label.text = gig.title
-	payout_label.text = "Payout: $%.2f" % gig.payout_amount + " every %s" % gig.unit_name
-	productivity_label.text = str(progress_bar.value) + " / " + str(gig.productivity_required)
+	payout_label.text = "$%.2f" % gig.payout_amount + " every %s" % gig.unit_name
+	productivity_label.text = "%.2f / %.2f" % [gig.current_productivity, gig.productivity_required]
 	completions_label.text = "Completed: %d" % gig.completions_done
 
 	if gig.completion_limit == -1:
@@ -38,13 +41,11 @@ func setup(gig_ref: WorkerTask) -> void:
 	_refresh_progress()
 	_refresh_workers()
 	_refresh_selected_worker()
+
 	gig.productivity_applied.connect(_on_productivity_applied)
 	assign_button.pressed.connect(_on_assign_worker_pressed)
 	grind_button.pressed.connect(_on_grind_button_pressed)
 	WorkerManager.worker_selected.connect(_on_worker_selected)
-
-func _ready() -> void:
-	assign_button.toggle_mode = true
 
 func _on_productivity_applied(_amount: float, _new_total: float) -> void:
 	_refresh_progress()
@@ -52,6 +53,8 @@ func _on_productivity_applied(_amount: float, _new_total: float) -> void:
 
 var active_tween: Tween = null
 func _refresh_progress():
+	productivity_label.text = "%.2f / %.2f" % [gig.current_productivity, gig.productivity_required]
+
 	var percent := gig.get_progress_percent() * 100.0
 	var completions := gig.completions_done
 	var current_prod := gig.current_productivity
@@ -174,3 +177,25 @@ func _on_grind_button_pressed():
 
 func _on_work_force_button_pressed() -> void:
 	WindowManager.launch_app_by_name("WorkForce")
+
+
+
+
+func get_custom_save_data() -> Dictionary:
+	return {
+		"task_title": gig.title,
+	}
+
+func load_custom_save_data(data: Dictionary) -> void:
+	pending_gig_title = data.get("task_title", "")
+	# We defer the real setup into _ready()
+
+func _try_load_gig_by_title() -> void:
+	if pending_gig_title == "":
+		return
+	var found_gig = TaskManager.find_task_by_title("grinderr", pending_gig_title)
+	if found_gig:
+		setup(found_gig)
+	else:
+		push_warning("GigPopup: Could not find gig with title: %s" % pending_gig_title)
+	pending_gig_title = ""

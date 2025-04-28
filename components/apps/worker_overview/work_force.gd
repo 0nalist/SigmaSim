@@ -5,10 +5,10 @@ class_name WorkerForce
 @onready var selected_name_label: Label = %SelectedNameLabel
 @onready var selected_task_label: Label = %SelectedTaskLabel
 
+@export var hire_popup_scene: PackedScene
 
 
 func _ready() -> void:
-	#app_title = "WorkForce"
 	_populate_worker_list()
 	WorkerManager.worker_selected.connect(_on_worker_selected)
 	WorkerManager.worker_hired.connect(_on_worker_hired)
@@ -16,6 +16,7 @@ func _ready() -> void:
 	WorkerManager.worker_idle.connect(_on_worker_idle)
 	WorkerManager.worker_unpaid.connect(_on_worker_unpaid)
 	TaskManager.assignment_target_changed.connect(_on_assignment_target_changed)
+	
 
 func _on_worker_hired(worker: Worker) -> void:
 	# Optional: prevent duplicates if list isn’t cleared first
@@ -98,4 +99,4 @@ func _on_assignment_target_changed(target: Node) -> void:
 
 
 func _on_grinderr_button_pressed() -> void:
-	WindowManager.launch_app_by_name("Grinderr")
+	WindowManager.launch_pane(hire_popup_scene)

@@ -62,6 +62,7 @@ func load_pane(new_pane: Pane) -> void:
 	icon = new_pane.window_icon
 	window_title = new_pane.window_title
 	call_deferred("set_window_title", window_title)
+	call_deferred("set_window_icon", icon)
 
 	window_can_close = pane.window_can_close
 	window_can_minimize = pane.window_can_minimize
@@ -69,11 +70,39 @@ func load_pane(new_pane: Pane) -> void:
 	default_size = pane.default_window_size
 
 	pane.window_title_changed.connect(_on_pane_window_title_changed)
+	pane.window_icon_changed.connect(_on_window_icon_changed)
 	call_deferred("_add_pane_to_content_panel")
 
 func _add_pane_to_content_panel() -> void:
 	if is_instance_valid(content_panel) and is_instance_valid(pane):
 		content_panel.add_child(pane)
+
+func _on_window_icon_changed(new_icon: Texture) -> void:
+	set_window_icon(new_icon)
+
+func set_window_icon(new_icon: Texture) -> void:
+	
+	if not favicon:
+		print("no favicon")
+	
+	if favicon:
+		print("favicon")
+		if new_icon:
+			var img = new_icon.get_image().duplicate()
+			img.resize(32, 32, Image.INTERPOLATE_LANCZOS) # modifies img directly
+
+			var tex = ImageTexture.new()
+			tex.set_image(img)
+
+			favicon.texture = tex
+			print("favicon texture " + str(tex))
+		else:
+			favicon.texture = null
+			print("favicon texture null")
+
+
+
+
 
 func _on_pane_window_title_changed(new_title: String) -> void:
 	set_window_title(new_title)
@@ -275,6 +304,9 @@ func _on_close_pressed() -> void:
 		WindowManager.close_window(self)
 	else:
 		queue_free()
+
+
+
 
 func set_window_title(title: String) -> void:
 	if title_label:

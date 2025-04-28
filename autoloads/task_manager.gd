@@ -31,6 +31,14 @@ func set_assignment_target(target: Node):
 	active_assignment_target = target
 	emit_signal("assignment_target_changed", target)
 
+func find_task_by_title(category: String, title: String) -> WorkerTask:
+	var tasks = get_tasks(category)
+	for task in tasks:
+		if task.title == title:
+			return task
+	return null
+
+
 # --- Save/Load Support ---
 func get_save_data() -> Dictionary:
 	var data: Dictionary = {}

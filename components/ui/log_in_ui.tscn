@@ -188,6 +188,7 @@ layout_mode = 2
 
 [node name="PowerButton" type="Button" parent="AOLLogoHolder/MarginContainer/HBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "power"
 
 [node name="SettingsButton" type="Button" parent="AOLLogoHolder/MarginContainer/HBoxContainer"]

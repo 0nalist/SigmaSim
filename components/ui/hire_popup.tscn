@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dovku0me4jq4o"]
+[gd_scene load_steps=11 format=3 uid="uid://dovku0me4jq4o"]
 
 [ext_resource type="Script" uid="uid://cb3qkb4u4qmyy" path="res://components/ui/hire_popup.gd" id="1_j0f0j"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/grey_button_pressed.png" id="2_5v5y8"]
+[ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="2_dvjtp"]
 [ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/grey_button_hovered.png" id="3_6xrnq"]
+[ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="3_ccamy"]
 [ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/grey_button1.png" id="4_dvjtp"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ccamy"]
@@ -39,7 +41,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
 script = ExtResource("1_j0f0j")
+window_title = "Hirerr: by Grinderr"
+default_window_size = Vector2(650, 600)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -70,6 +77,24 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
 text = " next refresh in"
 
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WorkForceButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "WorkForce"
+icon = ExtResource("2_dvjtp")
+
+[node name="GrinderrButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Grinderr"
+icon = ExtResource("3_ccamy")
+
 [node name="HireSortByButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -95,7 +120,16 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_ni8o7")
 theme_override_styles/normal = SubResource("StyleBoxTexture_4w5r8")
 text = "High -> Low"
 
-[node name="HireList" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HireList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 20
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/WorkForceButton" to="." method="_on_work_force_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]

@@ -53,6 +53,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_rn3q4")
 script = ExtResource("1_p1yuo")
 window_title = "Gig"
 default_window_size = Vector2(300, 420)
+unique_popup_key = "task_ + "
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -80,6 +81,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_d50uj")
 [node name="ProductivityLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+text = " / "
 
 [node name="PayoutLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

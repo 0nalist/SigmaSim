@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkd8ber0rdok0"]
+[gd_scene load_steps=8 format=3 uid="uid://dkd8ber0rdok0"]
 
 [ext_resource type="Script" uid="uid://dqadp0a03aco3" path="res://components/apps/worker_overview/work_force.gd" id="1_30bye"]
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_wbg8h"]
+[ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="3_ngx45"]
 [ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="3_wbg8h"]
 [ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="4_wbg8h"]
+[ext_resource type="Script" uid="uid://d1n71inu575u" path="res://components/ui/active_tasks_bar.gd" id="4_yfqmq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30bye"]
 bg_color = Color(0.0962047, 0.0962048, 0.0962047, 1)
@@ -20,8 +22,10 @@ mouse_filter = 1
 theme = ExtResource("1_wbg8h")
 theme_override_styles/panel = SubResource("StyleBoxFlat_30bye")
 script = ExtResource("1_30bye")
+hire_popup_scene = ExtResource("3_ngx45")
 window_title = "WorkForce"
 window_icon = ExtResource("3_wbg8h")
+default_window_size = Vector2(620, 500)
 default_position = "left"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -74,15 +78,42 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
+text = "Selected Task: "
 autowrap_mode = 3
 
+[node name="FlowContainer" type="FlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/FlowContainer"]
+layout_mode = 2
+
+[node name="ActiveTasksBar" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+script = ExtResource("4_yfqmq")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ActiveTasksBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TaskList" type="HFlowContainer" parent="MarginContainer/VBoxContainer/ActiveTasksBar/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="GrinderrButton" type="Button" parent="MarginContainer"]
-custom_minimum_size = Vector2(175, 40)
+custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 focus_mode = 0
-text = "Hire on Grinderr"
+text = "Hire"
 icon = ExtResource("4_wbg8h")
 
 [connection signal="pressed" from="MarginContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]
