@@ -62,28 +62,28 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.873298, 0.873298, 0.873298, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 12
 text = "progress"
 autowrap_mode = 3
+
+[node name="OpenButton" type="Button" parent="GigCard/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+theme_override_font_sizes/font_size = 14
+text = " Let's go "
 
 [node name="LimitLabel" type="Label" parent="GigCard/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.873298, 0.873298, 0.873298, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 12
 text = "limit"
 
 [node name="WorkersLabel" type="Label" parent="GigCard/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.873298, 0.873298, 0.873298, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 12
 text = "workers"
-
-[node name="OpenButton" type="Button" parent="GigCard/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 8
-focus_mode = 0
-theme_override_font_sizes/font_size = 16
-text = " Let's do it "

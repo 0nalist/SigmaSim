@@ -21,9 +21,20 @@ var pending_reset: bool = false
 
 func _ready() -> void:
 	assign_button.toggle_mode = true
-	# If we had a pending load
+	TaskManager.assignment_target_changed.connect(_on_assignment_target_changed)
+	call_deferred("_safe_check_assignment_target")
+	
+	
 	if pending_gig_title != "":
 		call_deferred("_try_load_gig_by_title")
+
+func _on_assignment_target_changed(new_target: WorkerTask) -> void:
+	if not gig:
+		assign_button.set_pressed_no_signal(false)
+		return
+
+	assign_button.set_pressed_no_signal(new_target == gig)
+
 
 func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
@@ -46,6 +57,16 @@ func setup(gig_ref: WorkerTask) -> void:
 	assign_button.pressed.connect(_on_assign_worker_pressed)
 	grind_button.pressed.connect(_on_grind_button_pressed)
 	WorkerManager.worker_selected.connect(_on_worker_selected)
+	call_deferred("_safe_check_assignment_target")
+
+
+func _safe_check_assignment_target() -> void:
+	if TaskManager.active_assignment_target and is_instance_valid(TaskManager.active_assignment_target):
+		_on_assignment_target_changed(TaskManager.active_assignment_target)
+	else:
+		_on_assignment_target_changed(null)
+
+
 
 func _on_productivity_applied(_amount: float, _new_total: float) -> void:
 	_refresh_progress()
@@ -122,15 +143,13 @@ func _refresh_workers():
 
 
 func _on_worker_selected(worker: Worker) -> void:
-	if TaskManager.active_assignment_target != self:
-		return  # We're not the active gig right now
+	TaskManager.set_assignment_target(gig)
 
 	if worker != null and not gig.assigned_workers.has(worker):
 		gig.assigned_workers.append(worker)
 		WorkerManager.assign_worker(worker, gig)
 		_refresh_workers()
 		_refresh_selected_worker()
-		#_reset_assignment_toggle()
 
 
 func _reset_assignment_toggle():
@@ -154,11 +173,14 @@ func _refresh_selected_worker():
 
 func _on_assign_worker_pressed():
 	if assign_button.button_pressed:
-		TaskManager.set_assignment_target(self)
+		TaskManager.set_assignment_target(gig)
+		call_deferred("_safe_check_assignment_target") # 🛠 Force button state refresh
 		WindowManager.launch_app_by_name("WorkForce")
 	else:
-		if TaskManager.active_assignment_target == self:
+		if TaskManager.active_assignment_target == gig:
 			TaskManager.set_assignment_target(null)
+
+	
 
 
 

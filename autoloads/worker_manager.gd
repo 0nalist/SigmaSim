@@ -39,15 +39,25 @@ func hire_worker(worker: Worker) -> void:
 	emit_signal("worker_hired", worker)
 
 func assign_worker(worker: Worker, task: WorkerTask) -> void:
+	# --- New logic: Unassign from old task if necessary ---
+	if worker.assigned_task and worker.assigned_task != task:
+		# Remove worker from old task's assigned list
+		worker.assigned_task.assigned_workers.erase(worker)
+
 	worker.assigned_task = task
 	worker.last_assigned_task = task
 	worker.active = true
+
+	# Make sure worker is listed in the new task's assigned_workers
+	if not task.assigned_workers.has(worker):
+		task.assigned_workers.append(worker)
 
 	# Set work_start_hour to current time (rounded to the hour)
 	var in_game_hour := int(TimeManager.in_game_minutes / 60)
 	worker.work_start_hour = in_game_hour
 
 	emit_signal("worker_assigned", worker, task)
+
 
 func unassign_worker(worker: Worker) -> void:
 	worker.assigned_task = null

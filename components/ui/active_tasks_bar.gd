@@ -6,6 +6,8 @@ class_name ActiveTasksBar
 
 @onready var task_list: HFlowContainer = %TaskList
 
+var task_to_button: Dictionary = {}  # Map each WorkerTask to its button
+
 func _ready() -> void:
 	_refresh_tasks()
 
@@ -21,6 +23,8 @@ func _on_minute_passed(_in_game_minutes: int) -> void:
 	_refresh_tasks()
 
 func _refresh_tasks() -> void:
+	task_to_button.clear()
+
 	for child in task_list.get_children():
 		child.queue_free()
 
@@ -32,21 +36,29 @@ func _refresh_tasks() -> void:
 
 		var button = _create_task_button(task)
 		task_list.add_child(button)
+		task_to_button[task] = button
+
+	_update_button_states()
+	#_update_button_texts()
 
 func _create_task_button(task: WorkerTask) -> Button:
 	var btn := Button.new()
-	btn.text = task.title
+	btn.text = "%.2f / %.2f" % [task.current_productivity, task.productivity_required]
+	btn.toggle_mode = true
 	btn.custom_minimum_size = Vector2(100, 32)
+	btn.add_theme_font_size_override("font_size", 12)
 	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	btn.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	btn.clip_text = true
 	btn.focus_mode = Control.FOCUS_NONE
 
 	btn.pressed.connect(func():
-		_open_task_popup(task)
+		TaskManager.set_assignment_target(task)  # 🛠 ADD THIS
+		_open_task_popup(task)  # 🛠 Then open the popup
 	)
 
 	return btn
+
 
 func _open_task_popup(task: WorkerTask) -> void:
 	if not gig_popup_scene:
@@ -68,3 +80,24 @@ func _open_task_popup(task: WorkerTask) -> void:
 
 	popup_pane.call_deferred("setup", task)
 	WindowManager.call_deferred("autoposition_window", window)
+
+func _on_assignment_target_changed(new_target: Node) -> void:
+	_update_button_states()
+
+func _update_button_states() -> void:
+	for task in task_to_button.keys():
+		var button = task_to_button[task]
+		if not is_instance_valid(button):
+			continue
+		if TaskManager.active_assignment_target and TaskManager.active_assignment_target is WorkerTask:
+			button.set_pressed_no_signal(TaskManager.active_assignment_target == task)
+		else:
+			button.set_pressed_no_signal(false)
+
+func _update_button_texts() -> void:
+	for task in task_to_button.keys():
+		var button = task_to_button[task]
+		if not is_instance_valid(button):
+			continue
+		#button.text = "%.2f / %.2f" % [task.current_productivity, task.productivity_required]
+		button.text = "%.2f / %.2f" % [round(task.current_productivity), round(task.productivity_required)]
