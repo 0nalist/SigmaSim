@@ -1,0 +1,129 @@
+[gd_scene load_steps=10 format=3 uid="uid://dsbd5ymiyhx0x"]
+
+[ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
+[ext_resource type="Script" uid="uid://dye2qhymstgb7" path="res://components/apps/early_bird/early_bird_hud.gd" id="2_jcpj0"]
+[ext_resource type="Script" uid="uid://bhg1mfe5e11r4" path="res://components/apps/early_bird/early_bird_player.gd" id="2_yrrt2"]
+[ext_resource type="Script" uid="uid://dbmpwkk7dhfby" path="res://components/apps/early_bird/round_manager.gd" id="3_4pdpe"]
+[ext_resource type="Script" uid="uid://k2ttxoaqe66c" path="res://components/apps/early_bird/pipe_manager.gd" id="3_kqjgp"]
+[ext_resource type="PackedScene" uid="uid://datt2qpbgo56v" path="res://components/apps/early_bird/pipe_pair.tscn" id="6_4pdpe"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ye6sa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jcpj0"]
+radius = 26.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yrrt2"]
+size = Vector2(446, 69)
+
+[node name="EarlyBird" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_ye6sa")
+
+[node name="HUD" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("2_jcpj0")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 48
+text = "3"
+
+[node name="BankLabel" type="Label" parent="HUD/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 48
+text = "Bank"
+
+[node name="GameMenuContainer" type="VBoxContainer" parent="HUD/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="GameLabel" type="Label" parent="HUD/MarginContainer/GameMenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 48
+text = "EARLY BIRD"
+
+[node name="GoButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 48
+text = " Go! "
+
+[node name="QuitButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = " Quit "
+
+[node name="ForceSpawnButton" type="Button" parent="HUD/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Force pipe spawn"
+
+[node name="RoundManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_4pdpe")
+
+[node name="PipeManager" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_kqjgp")
+pipe_pair_scene = ExtResource("6_4pdpe")
+spawn_x_offset = 100.0
+
+[node name="EarlyBirdPlayer" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(813, 166)
+script = ExtResource("2_yrrt2")
+
+[node name="Sprite2D" type="Sprite2D" parent="EarlyBirdPlayer"]
+scale = Vector2(50, 50)
+texture = SubResource("PlaceholderTexture2D_ye6sa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EarlyBirdPlayer"]
+shape = SubResource("CircleShape2D_jcpj0")
+
+[node name="BankArea" type="Area2D" parent="."]
+position = Vector2(577, 1076)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BankArea" groups=["bank"]]
+position = Vector2(213, -24.5)
+shape = SubResource("RectangleShape2D_yrrt2")
+
+[connection signal="pressed" from="HUD/MarginContainer/ForceSpawnButton" to="HUD" method="_on_force_spawn_button_pressed"]
