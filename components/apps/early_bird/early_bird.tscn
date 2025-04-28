@@ -125,11 +125,3 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = " Quit "
-
-[node name="ForceSpawnButton" type="Button" parent="HUD/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-text = "Force pipe spawn"
-
-[connection signal="pressed" from="HUD/MarginContainer/ForceSpawnButton" to="HUD" method="_on_force_spawn_button_pressed"]

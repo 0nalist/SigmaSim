@@ -38,7 +38,6 @@ func _ready() -> void:
 	player.scored_point.connect(_on_player_scored)
 	hud.restart_pressed.connect(_on_restart_pressed)
 	hud.quit_pressed.connect(_on_quit_pressed)
-	hud.force_spawn_pipe.connect(_on_force_spawn_pipe)
 	start_game()
 
 func find_parent_window_frame() -> WindowFrame:
@@ -72,11 +71,6 @@ func _adjust_window_size() -> void:
 	new_size.x = lerp(window_frame.size.x, target_width, 0.1) # smooth interpolation
 	window_frame.size = new_size
 
-
-
-func _on_force_spawn_pipe() -> void:
-	print("Force spawning pipe manually.")
-	pipe_manager._on_spawn_pipe_pair()
 
 func start_game() -> void:
 	game_active = true

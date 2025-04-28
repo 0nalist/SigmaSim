@@ -47,6 +47,6 @@ func set_move_speed(new_speed: float) -> void:
 			child.move_speed = new_speed
 
 	# Adjust spawn interval: faster speed = spawn farther apart
-	spawn_interval = clamp(1.5 + (100.0 / new_speed), 0.8, 2.5) 
+	spawn_interval = clamp(1 + (100.0 / new_speed), 0.25, 2) 
 	if spawn_timer:
 		spawn_timer.wait_time = spawn_interval

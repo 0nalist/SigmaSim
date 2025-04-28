@@ -7,8 +7,8 @@ signal scored_point
 signal banked
 
 #@export var gravity: float = 900.0
-@export var jump_strength: float = 450.0
-@export var terminal_velocity: float = 1200.0
+@export var jump_strength: float = 650.0
+@export var terminal_velocity: float = 1400.0
 
 var velocity: Vector2 = Vector2.ZERO
 var is_alive: bool = true
@@ -21,7 +21,7 @@ func _physics_process(delta: float) -> void:
 	if not is_alive:
 		return
 
-	velocity.y += gravity * 2 * delta
+	velocity.y += gravity * 2.4 * delta
 	velocity.y = min(velocity.y, terminal_velocity)
 
 	position += velocity * delta

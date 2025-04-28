@@ -1,8 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://datt2qpbgo56v"]
+[gd_scene load_steps=7 format=3 uid="uid://datt2qpbgo56v"]
 
 [ext_resource type="Script" uid="uid://cr08hwviy4i0c" path="res://components/apps/early_bird/pipe_pair.gd" id="1_q5j8w"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_hdqa3"]
+[sub_resource type="Gradient" id="Gradient_a7y7w"]
+offsets = PackedFloat32Array(0, 0.167647, 0.285294, 0.682353, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.15555, 0.193841, 0.288793, 1, 0.225199, 0.280635, 0.418103, 1, 0.538619, 0.67121, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ldtf7"]
+gradient = SubResource("Gradient_a7y7w")
+width = 5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u8dg3"]
 size = Vector2(50, 100)
@@ -23,7 +29,7 @@ scale = Vector2(1, 10)
 
 [node name="TopPipeSprite" type="Sprite2D" parent="TopPipe"]
 scale = Vector2(10, 100)
-texture = SubResource("PlaceholderTexture2D_hdqa3")
+texture = SubResource("GradientTexture1D_ldtf7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe" groups=["obstacle"]]
 position = Vector2(0, 5.72205e-06)
