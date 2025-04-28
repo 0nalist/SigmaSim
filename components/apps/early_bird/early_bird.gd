@@ -86,14 +86,6 @@ func reset_speed():
 	current_speed = base_speed
 	pipe_manager.set_move_speed(current_speed)
 
-'''
-func _unhandled_input(event: InputEvent) -> void:
-	if not game_active:
-		return
-
-	if (event is InputEventMouseButton and event.pressed) or (event is InputEventKey and event.pressed and event.keycode == KEY_SPACE):
-		player.flap()
-'''
 
 func _input(event: InputEvent) -> void:
 	if not game_active:
@@ -131,4 +123,7 @@ func _on_restart_pressed() -> void:
 	start_game()
 
 func _on_quit_pressed() -> void:
-	queue_free() # (Or hide this window if integrating in SigmaSim)
+	if window_frame and WindowManager and WindowManager.has_method("close_window"):
+		WindowManager.close_window(window_frame)
+	else:
+		window_frame.queue_free()
