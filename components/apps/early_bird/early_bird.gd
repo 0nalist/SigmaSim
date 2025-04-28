@@ -1,5 +1,5 @@
 # early_bird.gd
-extends Control
+extends Pane
 class_name EarlyBird
 
 @onready var round_manager = %RoundManager
@@ -10,6 +10,7 @@ class_name EarlyBird
 var game_active: bool = false
 
 func _ready() -> void:
+	randomize()
 	round_manager.round_started.connect(_on_round_started)
 	round_manager.round_ended.connect(_on_round_ended)
 	player.died.connect(_on_player_died)

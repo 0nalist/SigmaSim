@@ -5,7 +5,7 @@
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_hdqa3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u8dg3"]
-size = Vector2(10, 100)
+size = Vector2(50, 100)
 
 [sub_resource type="Gradient" id="Gradient_q5j8w"]
 
@@ -16,26 +16,28 @@ width = 5
 [node name="PipePair" type="Node2D"]
 script = ExtResource("1_q5j8w")
 
-[node name="TopPipe" type="Area2D" parent="."]
+[node name="TopPipe" type="Area2D" parent="." groups=["obstacle"]]
 unique_name_in_owner = true
-scale = Vector2(1, 5)
+position = Vector2(0, -650)
+scale = Vector2(1, 10)
 
 [node name="TopPipeSprite" type="Sprite2D" parent="TopPipe"]
 scale = Vector2(10, 100)
 texture = SubResource("PlaceholderTexture2D_hdqa3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe" groups=["obstacle"]]
 position = Vector2(0, 5.72205e-06)
 shape = SubResource("RectangleShape2D_u8dg3")
 
-[node name="BottomPipe" type="Area2D" parent="."]
+[node name="BottomPipe" type="Area2D" parent="." groups=["obstacle"]]
 unique_name_in_owner = true
-scale = Vector2(1, 5)
+position = Vector2(0, 650)
+scale = Vector2(1, 10)
 
 [node name="BottomPipeSprite" type="Sprite2D" parent="BottomPipe"]
 scale = Vector2(10, 100)
 texture = SubResource("GradientTexture1D_a7y7w")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe"]
-position = Vector2(0, 5.72205e-06)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe" groups=["obstacle"]]
+position = Vector2(0, 7.62939e-06)
 shape = SubResource("RectangleShape2D_u8dg3")

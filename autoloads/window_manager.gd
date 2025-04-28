@@ -20,6 +20,7 @@ var app_registry := {
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
 	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
+	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
 }
 
 var start_apps := {
@@ -32,6 +33,7 @@ var start_apps := {
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
 	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
+	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
 }
 
 

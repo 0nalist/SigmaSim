@@ -38,3 +38,5 @@ func _on_spawn_pipe_pair() -> void:
 	)
 
 	pipe_pair.player = %EarlyBirdPlayer
+
+	pipe_pair.randomize_gap_position()

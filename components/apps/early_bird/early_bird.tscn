@@ -22,8 +22,39 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_ye6sa")
+
+[node name="RoundManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_4pdpe")
+
+[node name="PipeManager" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_kqjgp")
+pipe_pair_scene = ExtResource("6_4pdpe")
+spawn_x_offset = 100.0
+
+[node name="EarlyBirdPlayer" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(813, 166)
+script = ExtResource("2_yrrt2")
+
+[node name="Sprite2D" type="Sprite2D" parent="EarlyBirdPlayer"]
+scale = Vector2(50, 50)
+texture = SubResource("PlaceholderTexture2D_ye6sa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EarlyBirdPlayer"]
+shape = SubResource("CircleShape2D_jcpj0")
+
+[node name="BankArea" type="Area2D" parent="."]
+position = Vector2(577, 1076)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BankArea" groups=["bank"]]
+position = Vector2(213, -24.5)
+shape = SubResource("RectangleShape2D_yrrt2")
 
 [node name="HUD" type="Control" parent="."]
 unique_name_in_owner = true
@@ -96,34 +127,5 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 text = "Force pipe spawn"
-
-[node name="RoundManager" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("3_4pdpe")
-
-[node name="PipeManager" type="Node2D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("3_kqjgp")
-pipe_pair_scene = ExtResource("6_4pdpe")
-spawn_x_offset = 100.0
-
-[node name="EarlyBirdPlayer" type="Area2D" parent="."]
-unique_name_in_owner = true
-position = Vector2(813, 166)
-script = ExtResource("2_yrrt2")
-
-[node name="Sprite2D" type="Sprite2D" parent="EarlyBirdPlayer"]
-scale = Vector2(50, 50)
-texture = SubResource("PlaceholderTexture2D_ye6sa")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EarlyBirdPlayer"]
-shape = SubResource("CircleShape2D_jcpj0")
-
-[node name="BankArea" type="Area2D" parent="."]
-position = Vector2(577, 1076)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BankArea" groups=["bank"]]
-position = Vector2(213, -24.5)
-shape = SubResource("RectangleShape2D_yrrt2")
 
 [connection signal="pressed" from="HUD/MarginContainer/ForceSpawnButton" to="HUD" method="_on_force_spawn_button_pressed"]
