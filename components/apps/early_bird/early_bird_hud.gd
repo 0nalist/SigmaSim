@@ -29,7 +29,7 @@ func update_score(new_score: int) -> void:
 func show_bank_prompt(show: bool) -> void:
 	bank_label.visible = show
 	if show:
-		bank_label.text = "Bank Now!"  # Or something funnier later
+		bank_label.text = ""
 
 func show_game_over(final_score: int) -> void:
 	game_label.text = "Game Over!\nScore: " + str(final_score)

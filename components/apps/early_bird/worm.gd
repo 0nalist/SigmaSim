@@ -9,7 +9,6 @@ var pulsing: bool = false
 var pulse_tween: Tween
 
 func _ready() -> void:
-	connect("input_event", Callable(self, "_on_input_event"))
 
 	var rot_timer := Timer.new()
 	rot_timer.wait_time = rotation_animation_interval
@@ -46,6 +45,27 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	print("worm clicked")
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		PortfolioManager.cash += 1.0
+		if StatpopManager:
+			print("worm statpop")
+			StatpopManager.spawn("+$1", global_position, "click")
+
+
+func _on_worm_texture_mouse_entered() -> void:
+	pulsing = true
+	_start_pulsing()
+
+
+func _on_worm_texture_mouse_exited() -> void:
+	pulsing = false
+	if pulse_tween and pulse_tween.is_valid():
+		pulse_tween.kill()
+	sprite.scale = Vector2.ONE
+
+
+func _on_worm_texture_gui_input(event: InputEvent) -> void:
+	print("worm clicked")
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		PortfolioManager.add_cash(1)
 		if StatpopManager:
 			print("worm statpop")
 			StatpopManager.spawn("+$1", global_position, "click")
