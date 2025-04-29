@@ -52,6 +52,7 @@ func setup(worker_ref: Worker) -> void:
 	action_button.pressed.connect(func():
 		emit_signal("action_pressed", worker)
 	)
+	##TODO : connect to assignment_target_changed from TaskManager, toggle select button accordingly
 	update_all()
 
 func update_all() -> void:
