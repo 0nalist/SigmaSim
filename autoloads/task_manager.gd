@@ -6,8 +6,8 @@ signal assignment_target_changed(new_target: WorkerTask)
 # Tasks are grouped by category (e.g. "grinderr", "contracting", etc.)
 var task_pools: Dictionary = {}  # category -> Array[WorkerTask]
 var active_assignment_target: WorkerTask = null
-
-
+var selected_task: WorkerTask = null # this might be a clearer name for active_assignment_target
+#signal selected_task_changed(new_task: WorkerTask)
 
 func register_task(category: String, task: WorkerTask) -> void:
 	if not task_pools.has(category):
@@ -40,7 +40,7 @@ func find_task_by_title(category: String, title: String) -> WorkerTask:
 	return null
 
 
-# --- Save/Load Support ---
+# --- Save/Load  ---
 func get_save_data() -> Dictionary:
 	var data: Dictionary = {}
 	for category in task_pools.keys():
