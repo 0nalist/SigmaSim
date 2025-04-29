@@ -80,12 +80,13 @@ func _on_worker_updated(worker: Worker) -> void:
 
 
 func _on_assignment_target_changed(target: Node) -> void:
+	print("assignment target changed to: " + str(target))
 	if target == null:
 		selected_task_label.text = "Selected Task: None"
 	else:
 		# If the target has a 'gig' or 'title' property, use that
 		var task_title := "?"
-		if "gig" in target and target.gig != null:
+		if "gig" in target and target.gig != null: # TODO this should be target.task, not gig!
 			task_title = target.gig.title
 		elif "title" in target:
 			task_title = target.title
