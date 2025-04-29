@@ -10,6 +10,9 @@ signal banked
 @export var jump_strength: float = 450.0
 @export var terminal_velocity: float = 1200.0
 
+@onready var early_bird_player_sprite: Sprite2D = %EarlyBirdPlayerSprite
+
+
 var velocity: Vector2 = Vector2.ZERO
 var is_alive: bool = true
 var score: int = 0
@@ -25,8 +28,9 @@ func _physics_process(delta: float) -> void:
 	velocity.y = min(velocity.y, terminal_velocity)
 
 	position += velocity * delta
-
-	if position.y < 0 or position.y > get_viewport_rect().size.y:
+	var target_rotation = clamp(velocity.y / 600.0, -0.5, 0.5)
+	early_bird_player_sprite.rotation = lerp(early_bird_player_sprite.rotation, target_rotation, 10.0 * delta)
+	if position.y < 0 or position.y > get_viewport_rect().size.y + 10:
 		_on_death()
 
 func flap() -> void:

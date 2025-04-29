@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=17 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
@@ -11,14 +11,14 @@
 [ext_resource type="PackedScene" uid="uid://datt2qpbgo56v" path="res://components/apps/early_bird/pipe_pair.tscn" id="6_4pdpe"]
 [ext_resource type="Script" uid="uid://y2npulwei57h" path="res://components/apps/early_bird/early_bird_autopilot.gd" id="9_tm5dr"]
 [ext_resource type="Texture2D" uid="uid://b8piqndlfnolp" path="res://assets/early_bird/wojak_bird_1.png" id="9_y10ql"]
+[ext_resource type="Script" uid="uid://cvkmxe30l4wqr" path="res://components/apps/early_bird/worm.gd" id="12_im8xc"]
+[ext_resource type="Texture2D" uid="uid://bfrkf7nmil0hd" path="res://assets/early_bird/worm1.png" id="13_8hmpk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jcpj0"]
 radius = 22.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yrrt2"]
 size = Vector2(1971, 69)
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_tm5dr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y10ql"]
 radius = 0.835224
@@ -93,8 +93,10 @@ unique_name_in_owner = true
 position = Vector2(813, 166)
 script = ExtResource("2_yrrt2")
 
-[node name="Sprite2D" type="Sprite2D" parent="EarlyBirdPlayer"]
+[node name="EarlyBirdPlayerSprite" type="Sprite2D" parent="EarlyBirdPlayer"]
+unique_name_in_owner = true
 position = Vector2(-4.50611e-05, -4.17233e-06)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("9_y10ql")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EarlyBirdPlayer"]
@@ -194,12 +196,15 @@ text = "Autopilot"
 
 [node name="Worm" type="Area2D" parent="."]
 position = Vector2(1808, 190)
-scale = Vector2(50, 50)
+script = ExtResource("12_im8xc")
 
 [node name="Sprite2D" type="Sprite2D" parent="Worm"]
-texture = SubResource("PlaceholderTexture2D_tm5dr")
+texture = ExtResource("13_8hmpk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Worm"]
 shape = SubResource("CircleShape2D_y10ql")
 
 [connection signal="pressed" from="HUD/AutopilotButton" to="." method="_on_autopilot_button_pressed"]
+[connection signal="input_event" from="Worm" to="Worm" method="_on_input_event"]
+[connection signal="mouse_entered" from="Worm" to="Worm" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Worm" to="Worm" method="_on_mouse_exited"]
