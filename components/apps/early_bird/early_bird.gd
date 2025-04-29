@@ -9,8 +9,8 @@ class_name EarlyBird
 
 @export var base_speed: float = 200.0
 @export var speed_growth_rate: float = 10.0 # Speed increase per second
-@export var max_speed: float = 600.0
-
+@export var max_speed: float = 1200.0
+@onready var autopilot: Node = %EarlyBirdAutopilot
 
 
 var current_speed: float = 0.0
@@ -20,16 +20,26 @@ var window_frame: WindowFrame = null
 
 @export var base_width: float = 440.0
 @export var max_width: float = 1920.0
+@export var fixed_height: float = 600.0
+
+
+@onready var sky: Parallax2D = $Parallax/Sky
+@onready var high_clouds: Parallax2D = $Parallax/HighClouds
+#@onready var low_clouds: Parallax2D = $Parallax/LowClouds
+@onready var hills: Parallax2D = $Parallax/Hills
+@onready var foreground: Parallax2D = %Foreground
+
+
+
+
+
 
 var game_active: bool = false
 
 func _ready() -> void:
 	
-	
 	window_frame = find_parent_window_frame()
 	reset_speed()
-	
-	#get_tree().root.get_viewport().connect("input", Callable(self, "_on_global_input"))
 	
 	round_manager.round_started.connect(_on_round_started)
 	round_manager.round_ended.connect(_on_round_ended)
@@ -38,6 +48,7 @@ func _ready() -> void:
 	player.scored_point.connect(_on_player_scored)
 	hud.restart_pressed.connect(_on_restart_pressed)
 	hud.quit_pressed.connect(_on_quit_pressed)
+	
 	start_game()
 
 func find_parent_window_frame() -> WindowFrame:
@@ -56,7 +67,11 @@ func _physics_process(delta: float) -> void:
 	speed_timer += delta
 	current_speed = min(base_speed + speed_growth_rate * speed_timer, max_speed)
 	pipe_manager.set_move_speed(current_speed)
-
+	high_clouds.autoscroll = Vector2(-(current_speed/20), 0)
+	foreground.autoscroll = Vector2((-current_speed), 0)
+	
+	
+	
 	# Adjust window stretch
 	_adjust_window_size()
 
@@ -68,8 +83,11 @@ func _adjust_window_size() -> void:
 	var target_width = lerp(base_width, max_width, speed_ratio)
 
 	var new_size = window_frame.size
-	new_size.x = lerp(window_frame.size.x, target_width, 0.1) # smooth interpolation
+	new_size.x = lerp(window_frame.size.x, target_width, 0.1)
+	new_size.y = fixed_height
 	window_frame.size = new_size
+
+
 
 
 func start_game() -> void:
@@ -78,7 +96,7 @@ func start_game() -> void:
 	pipe_manager.reset()
 	round_manager.start_round_cycle()
 	hud.reset()
-	window_frame.size = Vector2(base_width, 960)
+	window_frame.size = Vector2(base_width, fixed_height)
 	reset_speed()
 
 func reset_speed():
@@ -127,3 +145,8 @@ func _on_quit_pressed() -> void:
 		WindowManager.close_window(window_frame)
 	else:
 		window_frame.queue_free()
+
+
+func _on_autopilot_button_pressed() -> void:
+	if autopilot:
+		autopilot.enabled = !autopilot.enabled

@@ -7,8 +7,8 @@ signal scored_point
 signal banked
 
 #@export var gravity: float = 900.0
-@export var jump_strength: float = 650.0
-@export var terminal_velocity: float = 1400.0
+@export var jump_strength: float = 450.0
+@export var terminal_velocity: float = 1200.0
 
 var velocity: Vector2 = Vector2.ZERO
 var is_alive: bool = true
@@ -59,7 +59,7 @@ func add_point() -> void:
 	emit_signal("scored_point")
 
 func reset() -> void:
-	position = Vector2(100, get_viewport_rect().size.y / 2)
+	position = Vector2(100, 0) #
 	velocity = Vector2.ZERO
 	score = 0
 	is_alive = true

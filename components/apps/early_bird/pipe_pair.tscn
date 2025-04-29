@@ -24,7 +24,7 @@ script = ExtResource("1_q5j8w")
 
 [node name="TopPipe" type="Area2D" parent="." groups=["obstacle"]]
 unique_name_in_owner = true
-position = Vector2(0, -650)
+position = Vector2(0, -580)
 scale = Vector2(1, 10)
 
 [node name="TopPipeSprite" type="Sprite2D" parent="TopPipe"]
@@ -37,7 +37,7 @@ shape = SubResource("RectangleShape2D_u8dg3")
 
 [node name="BottomPipe" type="Area2D" parent="." groups=["obstacle"]]
 unique_name_in_owner = true
-position = Vector2(0, 650)
+position = Vector2(0, 580)
 scale = Vector2(1, 10)
 
 [node name="BottomPipeSprite" type="Sprite2D" parent="BottomPipe"]

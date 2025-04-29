@@ -4,8 +4,9 @@ class_name EarlyBirdPipePair
 
 @export var move_speed: float = 200.0
 @export var gap_size: float = 200.0
-@export var min_y: float = 150.0
-@export var max_y: float = 450.0
+@export var min_y: float = 50.0
+@export var max_y: float = 550.0
+
 
 var scored: bool = false
 var player: Node = null # Reference to player for scoring check
@@ -25,7 +26,7 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 
 func randomize_gap_position() -> void:
-	var viewport_height = get_viewport_rect().size.y
+	var viewport_height = get_parent().get_parent().size.y
 	var safe_margin = 100.0
 
 	# Randomize center Y position for the GAP
@@ -34,3 +35,9 @@ func randomize_gap_position() -> void:
 		viewport_height - safe_margin - gap_size / 2
 	)
 	position.y = gap_center_y
+
+
+
+
+func get_gap_center_y() -> float:
+	return global_position.y

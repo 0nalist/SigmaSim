@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=15 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
@@ -7,21 +7,19 @@
 [ext_resource type="Script" uid="uid://dbmpwkk7dhfby" path="res://components/apps/early_bird/round_manager.gd" id="3_4pdpe"]
 [ext_resource type="Script" uid="uid://k2ttxoaqe66c" path="res://components/apps/early_bird/pipe_manager.gd" id="3_kqjgp"]
 [ext_resource type="Texture2D" uid="uid://6l6nhs2hrxjx" path="res://assets/early_bird/high_clouds.png" id="3_tm5dr"]
-[ext_resource type="Texture2D" uid="uid://dto483mcrx8w2" path="res://assets/early_bird/grass.png" id="4_tm5dr"]
 [ext_resource type="PackedScene" uid="uid://datt2qpbgo56v" path="res://components/apps/early_bird/pipe_pair.tscn" id="6_4pdpe"]
+[ext_resource type="Texture2D" uid="uid://copm4bbx8ptvu" path="res://assets/early_bird/background.png" id="7_hdqa3"]
 [ext_resource type="Script" uid="uid://y2npulwei57h" path="res://components/apps/early_bird/early_bird_autopilot.gd" id="9_tm5dr"]
-[ext_resource type="Texture2D" uid="uid://b8piqndlfnolp" path="res://assets/early_bird/wojak_bird_1.png" id="9_y10ql"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ye6sa"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jcpj0"]
-radius = 22.0
+radius = 26.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yrrt2"]
 size = Vector2(1971, 69)
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_tm5dr"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_y10ql"]
-radius = 0.835224
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_4pdpe"]
 
 [node name="EarlyBird" type="Control"]
 layout_mode = 3
@@ -42,7 +40,6 @@ user_resizable = false
 [node name="Parallax" type="Node2D" parent="."]
 
 [node name="Sky" type="Parallax2D" parent="Parallax"]
-unique_name_in_owner = true
 repeat_size = Vector2(1920, 600)
 
 [node name="Sky" type="Sprite2D" parent="Parallax/Sky"]
@@ -50,7 +47,6 @@ position = Vector2(960, 300)
 texture = ExtResource("2_3mf2d")
 
 [node name="HighClouds" type="Parallax2D" parent="Parallax"]
-unique_name_in_owner = true
 repeat_size = Vector2(1920, 0)
 autoscroll = Vector2(-7, 0)
 
@@ -58,15 +54,21 @@ autoscroll = Vector2(-7, 0)
 position = Vector2(960, 300)
 texture = ExtResource("3_tm5dr")
 
-[node name="Hills" type="Parallax2D" parent="Parallax"]
-unique_name_in_owner = true
+[node name="LowClouds" type="Parallax2D" parent="Parallax"]
 visible = false
 repeat_size = Vector2(1920, 0)
-autoscroll = Vector2(-7, 0)
+
+[node name="LowClouds" type="Sprite2D" parent="Parallax/LowClouds"]
+visible = false
+texture = ExtResource("7_hdqa3")
+
+[node name="Hills" type="Parallax2D" parent="Parallax"]
+visible = false
+repeat_size = Vector2(1920, 0)
 
 [node name="Hills" type="Sprite2D" parent="Parallax/Hills"]
 visible = false
-position = Vector2(960, 300)
+texture = ExtResource("7_hdqa3")
 
 [node name="RoundManager" type="Node" parent="."]
 unique_name_in_owner = true
@@ -78,30 +80,19 @@ script = ExtResource("3_kqjgp")
 pipe_pair_scene = ExtResource("6_4pdpe")
 spawn_x_offset = 100.0
 
-[node name="Foreground" type="Parallax2D" parent="."]
-unique_name_in_owner = true
-texture_repeat = 2
-repeat_size = Vector2(1920, 0)
-autoscroll = Vector2(-21, 0)
-
-[node name="Foreground" type="Sprite2D" parent="Foreground"]
-position = Vector2(960, 274)
-texture = ExtResource("4_tm5dr")
-
 [node name="EarlyBirdPlayer" type="Area2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(813, 166)
 script = ExtResource("2_yrrt2")
 
 [node name="Sprite2D" type="Sprite2D" parent="EarlyBirdPlayer"]
-position = Vector2(-4.50611e-05, -4.17233e-06)
-texture = ExtResource("9_y10ql")
+scale = Vector2(50, 50)
+texture = SubResource("PlaceholderTexture2D_ye6sa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EarlyBirdPlayer"]
 shape = SubResource("CircleShape2D_jcpj0")
 
 [node name="EarlyBirdAutopilot" type="Node" parent="EarlyBirdPlayer"]
-unique_name_in_owner = true
 script = ExtResource("9_tm5dr")
 
 [node name="BankArea" type="Area2D" parent="."]
@@ -177,29 +168,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = " Quit "
 
-[node name="AutopilotButton" type="Button" parent="HUD"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -4.0
-offset_top = -4.0
-grow_horizontal = 0
-grow_vertical = 0
-toggle_mode = true
-button_pressed = true
-text = "Autopilot"
-
-[node name="Worm" type="Area2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1808, 190)
 scale = Vector2(50, 50)
-
-[node name="Sprite2D" type="Sprite2D" parent="Worm"]
-texture = SubResource("PlaceholderTexture2D_tm5dr")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Worm"]
-shape = SubResource("CircleShape2D_y10ql")
-
-[connection signal="pressed" from="HUD/AutopilotButton" to="." method="_on_autopilot_button_pressed"]
+texture = SubResource("PlaceholderTexture2D_4pdpe")

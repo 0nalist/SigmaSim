@@ -28,15 +28,13 @@ func reset() -> void:
 			child.queue_free()
 
 func _on_spawn_pipe_pair() -> void:
-	print("spawning pipe pair")
 	var pipe_pair = pipe_pair_scene.instantiate()
 	add_child(pipe_pair)
-
+	
 	pipe_pair.global_position = Vector2(
-		get_viewport_rect().size.x + spawn_x_offset,
-		0
+	get_viewport_rect().size.x + spawn_x_offset,
+	0
 	)
-
 	pipe_pair.player = %EarlyBirdPlayer
 
 	pipe_pair.randomize_gap_position()
@@ -50,3 +48,13 @@ func set_move_speed(new_speed: float) -> void:
 	spawn_interval = clamp(1 + (100.0 / new_speed), 0.25, 2) 
 	if spawn_timer:
 		spawn_timer.wait_time = spawn_interval
+
+
+
+
+func get_active_pipe_pairs() -> Array[EarlyBirdPipePair]:
+	var active_pairs: Array[EarlyBirdPipePair]
+	for child in get_children():
+		if child is EarlyBirdPipePair:
+			active_pairs.append(child)
+	return active_pairs

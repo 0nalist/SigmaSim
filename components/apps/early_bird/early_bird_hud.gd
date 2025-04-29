@@ -5,7 +5,6 @@ class_name EarlyBirdHUD
 signal score_banked(score: int)
 signal restart_pressed
 signal quit_pressed
-signal force_spawn_pipe
 
 @onready var hud: Control = %HUD
 @onready var score_label: Label = %ScoreLabel
@@ -15,6 +14,8 @@ signal force_spawn_pipe
 @onready var game_label: Label = %GameLabel
 @onready var go_button: Button = %GoButton
 @onready var quit_button: Button = %QuitButton
+
+
 
 func _ready() -> void:
 	game_label.text = "Early Bird"
@@ -50,7 +51,3 @@ func _on_go_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	emit_signal("quit_pressed")
-
-
-func _on_force_spawn_button_pressed() -> void:
-	emit_signal("force_spawn_pipe") # ← Emit signal to EarlyBird.gd
