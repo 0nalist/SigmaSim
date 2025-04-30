@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_eluir"]
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/ui/worker_card/grinderr.gd" id="2_3bg0q"]
-[ext_resource type="PackedScene" uid="uid://dgawvt5yorfxn" path="res://components/popups/gig_popup.tscn" id="3_eluir"]
+[ext_resource type="PackedScene" uid="uid://kpqwebu0bb67" path="res://components/popups/gig_popup_clean.tscn" id="3_85ayv"]
 [ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="4_1rfep"]
 [ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="4_85ayv"]
 [ext_resource type="Texture2D" uid="uid://c5sl2581gi8sk" path="res://assets/logos/hamster_clear.png" id="4_eluir"]
@@ -53,7 +53,7 @@ mouse_filter = 1
 theme = ExtResource("1_eluir")
 theme_override_styles/panel = SubResource("StyleBoxFlat_eluir")
 script = ExtResource("2_3bg0q")
-gig_popup_scene = ExtResource("3_eluir")
+gig_popup_scene = ExtResource("3_85ayv")
 hire_popup_scene = ExtResource("4_85ayv")
 window_title = "Grinder"
 window_icon = ExtResource("4_1rfep")
