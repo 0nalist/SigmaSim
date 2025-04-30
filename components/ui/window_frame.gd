@@ -39,11 +39,18 @@ var min_window_size := Vector2(120, 50)
 @onready var minimize_button: Button = %MinimizeButton
 @onready var maximize_button: Button = %MaximizeButton
 @onready var close_button: Button = %CloseButton
-
 @onready var content_panel: ScrollContainer = %ContentPanel
+
+var is_upgrade_view := false
+var upgrade_instance: Pane = null
+
+
+
 
 func _ready() -> void:
 	refresh_window_controls()
+
+	upgrade_button.visible = false
 
 	minimize_button.pressed.connect(func():
 		if WindowManager and WindowManager.has_method("get_taskbar_icon_center"):
@@ -65,19 +72,22 @@ func load_pane(new_pane: Pane) -> void:
 	window_title = new_pane.window_title
 	call_deferred("set_window_title", window_title)
 	call_deferred("set_window_icon", icon)
-
+	
 	window_can_close = pane.window_can_close
 	window_can_minimize = pane.window_can_minimize
 	window_can_maximize = pane.window_can_maximize
+	
+	
 	default_size = pane.default_window_size
-
 	pane.window_title_changed.connect(_on_pane_window_title_changed)
 	pane.window_icon_changed.connect(_on_window_icon_changed)
-	call_deferred("_add_pane_to_content_panel")
+	call_deferred("_set_content", pane)
 
-func _add_pane_to_content_panel() -> void:
-	if is_instance_valid(content_panel) and is_instance_valid(pane):
-		content_panel.add_child(pane)
+func _set_content(new_content: Control) -> void:
+	for child in content_panel.get_children():
+		child.queue_free()
+	content_panel.add_child(new_content)
+	upgrade_button.visible = pane.upgrade_pane != null
 
 func _on_window_icon_changed(new_icon: Texture) -> void:
 	set_window_icon(new_icon)
@@ -313,3 +323,16 @@ func _on_close_pressed() -> void:
 func set_window_title(title: String) -> void:
 	if title_label:
 		title_label.text = title
+
+
+func _on_upgrade_button_toggled(button_pressed: bool) -> void:
+	if button_pressed:
+		if not is_instance_valid(upgrade_instance) and pane.upgrade_pane:
+			upgrade_instance = pane.upgrade_pane.instantiate() as Pane
+		if upgrade_instance:
+			_set_content(upgrade_instance)
+			is_upgrade_view = true
+	else:
+		if is_instance_valid(pane):
+			_set_content(pane)
+			is_upgrade_view = false

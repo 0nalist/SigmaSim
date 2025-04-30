@@ -140,11 +140,14 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+focus_mode = 0
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_f5uc2")
 theme_override_styles/hover = SubResource("StyleBoxTexture_74cm5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_bq65h")
 theme_override_styles/normal = SubResource("StyleBoxTexture_afg75")
+toggle_mode = true
 icon = ExtResource("4_1v826")
+flat = true
 icon_alignment = 1
 
 [node name="MinimizeButton" type="Button" parent="VBoxContainer/MarginContainer/Header"]
@@ -188,3 +191,5 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_i8u7u")
 theme_override_styles/panel = SubResource("StyleBoxFlat_aqsno")
+
+[connection signal="toggled" from="VBoxContainer/MarginContainer/Header/UpgradeButton" to="." method="_on_upgrade_button_toggled"]

@@ -27,6 +27,7 @@ var window_frame: WindowFrame = null
 @onready var high_clouds: Parallax2D = $Parallax/HighClouds
 #@onready var low_clouds: Parallax2D = $Parallax/LowClouds
 @onready var hills: Parallax2D = $Parallax/Hills
+@onready var hills_2: Parallax2D = %Hills2
 @onready var foreground: Parallax2D = %Foreground
 @onready var forest: Parallax2D = %Forest
 
@@ -72,6 +73,7 @@ func _physics_process(delta: float) -> void:
 	foreground.autoscroll = Vector2((-current_speed), 0)
 	hills.autoscroll = Vector2(-(current_speed/15), 0)
 	forest.autoscroll = Vector2(-(current_speed/2), 0)
+	hills_2.autoscroll = Vector2(-(current_speed/17), 0)
 	
 	# Adjust window stretch
 	_adjust_window_size()

@@ -30,6 +30,8 @@ signal window_icon_changed(new_icon)
 @export var user_resizable: bool = true
 @export var stay_on_top: bool = false
 
+@export var upgrade_pane: PackedScene # upgrade_pane_scene if I am using scenes. But are packed scenes best here?
+
 
 signal title_updated(title: String)
 

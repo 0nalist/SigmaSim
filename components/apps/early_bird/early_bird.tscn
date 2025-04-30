@@ -61,6 +61,16 @@ autoscroll = Vector2(-7, 0)
 position = Vector2(960, 300)
 texture = ExtResource("3_tm5dr")
 
+[node name="Hills2" type="Parallax2D" parent="Parallax"]
+unique_name_in_owner = true
+scroll_offset = Vector2(38, -18)
+repeat_size = Vector2(1920, 0)
+autoscroll = Vector2(-7, 0)
+
+[node name="Hills" type="Sprite2D" parent="Parallax/Hills2"]
+position = Vector2(960, 300)
+texture = ExtResource("5_8hmpk")
+
 [node name="Hills" type="Parallax2D" parent="Parallax"]
 unique_name_in_owner = true
 repeat_size = Vector2(1920, 0)
