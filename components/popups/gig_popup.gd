@@ -1,7 +1,6 @@
 extends Pane
 class_name GigPopup
 
-
 @onready var title_label = %TitleLabel
 @onready var progress_bar = %ProgressBar
 @onready var productivity_label: Label = %ProductivityLabel
@@ -145,7 +144,15 @@ func _refresh_workers():
 
 
 func _on_worker_selected(worker: Worker) -> void:
-	TaskManager.set_assignment_target(gig)
+	if TaskManager.active_assignment_target != gig:
+		return # ⚠️ This popup is no longer the one the player is interacting with
+
+	# Prevent duplicates
+	if worker != null and not gig.assigned_workers.has(worker):
+		gig.assigned_workers.append(worker)
+		WorkerManager.assign_worker(worker, gig)
+		_refresh_workers()
+		_refresh_selected_worker()
 
 	if worker != null and not gig.assigned_workers.has(worker):
 		gig.assigned_workers.append(worker)
@@ -223,3 +230,7 @@ func _try_load_gig_by_title() -> void:
 	else:
 		push_warning("GigPopup: Could not find gig with title: %s" % pending_gig_title)
 	pending_gig_title = ""
+
+func _exit_tree() -> void:
+	if WorkerManager.worker_selected.is_connected(_on_worker_selected):
+		WorkerManager.worker_selected.disconnect(_on_worker_selected)

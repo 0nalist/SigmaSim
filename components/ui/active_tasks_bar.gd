@@ -95,10 +95,9 @@ func _update_button_states() -> void:
 		var card = task_to_button[task]
 		if not is_instance_valid(card):
 			continue
-		if TaskManager.active_assignment_target == task:
-			card.button.set_pressed_no_signal(true)
-		else:
-			card.button.set_pressed_no_signal(false)
+		card.set_selected(TaskManager.active_assignment_target == task)
+		card.button.set_pressed_no_signal(TaskManager.active_assignment_target == task)
+
 
 
 func _update_button_texts() -> void:

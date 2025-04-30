@@ -47,7 +47,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_aemln")
 script = ExtResource("1_t43hg")
 window_title = "OwerView"
 window_icon = ExtResource("3_svf65")
-default_window_size = Vector2(500, 500)
+default_window_size = Vector2(600, 500)
 default_position = "left"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
