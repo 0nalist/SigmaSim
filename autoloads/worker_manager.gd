@@ -57,11 +57,16 @@ func assign_worker(worker: Worker, task: WorkerTask) -> void:
 	worker.work_start_hour = in_game_hour
 
 	emit_signal("worker_assigned", worker, task)
-
+	task.emit_signal("task_updated")
 
 func unassign_worker(worker: Worker) -> void:
+	var task := worker.assigned_task
 	worker.assigned_task = null
 	emit_signal("worker_idle", worker)
+
+	if task and task.assigned_workers.has(worker):
+		task.assigned_workers.erase(worker)
+		task.emit_signal("task_updated")
 
 # --- Core Tick Loop ---
 func _process_tick() -> void:
@@ -95,7 +100,7 @@ func _process_tick() -> void:
 			emit_signal("worker_deactivated", worker)
 		else:
 			_handle_idle_decay(worker)
-
+	
 
 func get_current_tick() -> int:
 	return int(TimeManager.in_game_minutes * 60 / TICK_INTERVAL) % TICKS_PER_DAY

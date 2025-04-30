@@ -59,6 +59,10 @@ func _ready() -> void:
 		else:
 			minimize()
 	)
+	PortfolioManager.cash_updated.connect(_on_relevant_stat_changed)
+	UpgradeManager.upgrade_unlocked.connect(_on_relevant_stat_changed)
+	UpgradeManager.upgrade_purchased.connect(_on_relevant_stat_changed)
+
 
 	maximize_button.pressed.connect(toggle_maximize)
 	close_button.pressed.connect(_on_close_pressed)
@@ -87,7 +91,7 @@ func _set_content(new_content: Control) -> void:
 	for child in content_panel.get_children():
 		child.queue_free()
 	content_panel.add_child(new_content)
-	upgrade_button.visible = pane.upgrade_pane != null
+	_update_upgrade_button_state()
 
 func _on_window_icon_changed(new_icon: Texture) -> void:
 	set_window_icon(new_icon)
@@ -98,7 +102,6 @@ func set_window_icon(new_icon: Texture) -> void:
 		print("no favicon")
 	
 	if favicon:
-		print("favicon")
 		if new_icon:
 			var img = new_icon.get_image().duplicate()
 			img.resize(32, 32, Image.INTERPOLATE_LANCZOS) # modifies img directly
@@ -107,10 +110,10 @@ func set_window_icon(new_icon: Texture) -> void:
 			tex.set_image(img)
 
 			favicon.texture = tex
-			print("favicon texture " + str(tex))
+			#print("favicon texture " + str(tex))
 		else:
 			favicon.texture = null
-			print("favicon texture null")
+			#print("favicon texture null")
 
 
 
@@ -317,6 +320,27 @@ func _on_close_pressed() -> void:
 	else:
 		queue_free()
 
+func _on_relevant_stat_changed(_x = null):
+	_update_upgrade_button_state()
+
+
+func _update_upgrade_button_state() -> void:
+	if not pane or not pane.upgrade_pane:
+		upgrade_button.visible = false
+		return
+
+	var upgrades := UpgradeManager.get_upgrades_by_source(pane.window_title)
+
+	var any_available := false
+	for upgrade in upgrades:
+		if UpgradeManager.is_unlocked(upgrade.upgrade_id) and not UpgradeManager.is_purchased(upgrade.upgrade_id):
+			var cost := upgrade.get_current_cost()
+			if PortfolioManager.cash >= cost:
+				any_available = true
+				break
+
+	upgrade_button.visible = true
+	upgrade_button.flat = not any_available
 
 
 
@@ -325,14 +349,15 @@ func set_window_title(title: String) -> void:
 		title_label.text = title
 
 
-func _on_upgrade_button_toggled(button_pressed: bool) -> void:
-	if button_pressed:
-		if not is_instance_valid(upgrade_instance) and pane.upgrade_pane:
-			upgrade_instance = pane.upgrade_pane.instantiate() as Pane
-		if upgrade_instance:
-			_set_content(upgrade_instance)
-			is_upgrade_view = true
-	else:
-		if is_instance_valid(pane):
-			_set_content(pane)
-			is_upgrade_view = false
+func _on_upgrade_button_pressed() -> void:
+	if not pane or not pane.upgrade_pane:
+		return
+
+	var popup_key := pane.window_title + "::upgrade"
+
+	var existing := WindowManager.find_popup_by_key(popup_key)
+	if existing:
+		WindowManager.focus_window(existing)
+		return
+
+	WindowManager.launch_popup(pane.upgrade_pane, popup_key)

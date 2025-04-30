@@ -37,6 +37,21 @@ func update_active_status(current_tick_of_day: int, tick_interval: float, can_be
 		can_be_paid
 	)
 
+# --- Stat Getters --- #
+
+func get_day_rate() -> float:
+	print("day rate: " + str(EffectManager.get_final_value("worker_day_rate", day_rate)))
+	return EffectManager.get_final_value("worker_day_rate", day_rate)
+	
+
+
+
+
+
+
+
+
+
 # --- State Check ---
 func is_idle() -> bool:
 	return assigned_task == null
@@ -45,10 +60,10 @@ func is_idle() -> bool:
 func apply_productivity() -> void:
 	if not active or assigned_task == null:
 		return
-	#print("✅ ", name, " is contributing productivity!")
-	var multiplier := 1.0 + get_specialization_bonus()
-	var output := productivity_per_tick * multiplier
+	var final_productivity = EffectManager.get_final_value("worker_productivity_per_tick", productivity_per_tick)
+	var output = final_productivity * (1.0 + get_specialization_bonus())
 	assigned_task.apply_productivity(output)
+
 
 func get_specialization_bonus() -> float:
 	if assigned_task == null:

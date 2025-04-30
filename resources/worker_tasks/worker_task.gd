@@ -2,6 +2,7 @@ class_name WorkerTask
 extends Resource
 
 signal productivity_applied(amount: float, new_total: float)
+signal task_updated()
 
 
 @export var title: String
@@ -20,11 +21,12 @@ var completions_done: int = 0
 func apply_productivity(amount: float) -> void:
 	current_productivity += amount
 	emit_signal("productivity_applied", amount, current_productivity)
+	
 	while current_productivity >= productivity_required and not is_complete():
 		current_productivity -= productivity_required
 		completions_done += 1
 		_on_task_completed()
-
+	emit_signal("task_updated")
 
 func _on_task_completed():
 	match payout_type:

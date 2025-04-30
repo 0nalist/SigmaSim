@@ -32,6 +32,7 @@ NameGenerator="*res://autoloads/name_generator.gd"
 GameManager="*res://autoloads/game_manager.gd"
 EffectManager="*res://autoloads/effect_manager.gd"
 StatpopManager="*res://autoloads/statpop_manager.gd"
+UpgradeManager="*res://autoloads/upgrade_manager.gd"
 
 [display]
 

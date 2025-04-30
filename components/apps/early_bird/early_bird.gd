@@ -101,6 +101,7 @@ func start_game() -> void:
 	hud.reset()
 	window_frame.size = Vector2(base_width, fixed_height)
 	reset_speed()
+	%Worm.show()
 
 func reset_speed():
 	speed_timer = 0.0
@@ -131,6 +132,7 @@ func _on_player_died() -> void:
 	game_active = false
 	round_manager.stop_round_cycle()
 	hud.show_game_over(player.score)
+	%Worm.hide()
 
 func _on_player_banked() -> void:
 	game_active = false

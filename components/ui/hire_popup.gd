@@ -58,8 +58,8 @@ func sort_workers_by(property: String, descending := true) -> Array[Worker]:
 func get_worker_sort_value(worker: Worker, property: String) -> float:
 	match property:
 		"productivity": return worker.productivity_per_tick
-		"day_rate": return worker.day_rate
-		"productivity_per_day_rate": return worker.productivity_per_tick / max(worker.day_rate, 0.01)
+		"day_rate": return worker.get_day_rate()
+		"productivity_per_day_rate": return worker.productivity_per_tick / max(worker.get_day_rate(), 0.01)
 		"type": return 0.0 if worker.is_contractor else 1.0  # Contractors first if ascending
 		_: return 0.0
 

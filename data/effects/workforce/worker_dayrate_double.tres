@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectResource" load_steps=2 format=3 uid="uid://bfx64rd6v8jlu"]
+
+[ext_resource type="Script" uid="uid://b0hdnk3k0j2yh" path="res://resources/effects/effect_resource.gd" id="1_jqs3g"]
+
+[resource]
+script = ExtResource("1_jqs3g")
+target_variable = "worker_day_rate"
+operation = "mult"
+value = 2.0
+metadata/_custom_type_script = "uid://b0hdnk3k0j2yh"
