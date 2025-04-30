@@ -26,10 +26,19 @@ func _ready():
 	print("✅ NameGenerator loaded %d names" % name_pool.size())
 
 # --- Public API ---
-func get_random_name(fem: float = 0.0, masc: float = 0.0, andro: float = 0.0, top_n: int = 0) -> String:
+func get_random_name(fem: float = 0.0, masc: float = 0.0, andro: float = 0.0, top_n: int = 1) -> String:
 	if name_pool.is_empty():
 		printerr("⚠️ Name pool is empty!")
 		return "Unnamed"
+
+	var total_input := fem + masc + andro
+	if total_input == 0.0:
+		# ⚡ True randomness mode
+		var available := name_pool.map(func(e): return e.name)
+		available.shuffle()
+		var name = available[0]
+		_add_to_recent(name)
+		return name
 
 	var target_vector := Vector3(fem, masc, andro).normalized()
 	var scored_names: Array = []

@@ -2,7 +2,7 @@ extends Control
 class_name ActiveTasksBar
 
 @export var task_source_category: String = "grinderr"  # default to "grinderr"
-@export var gig_popup_scene: PackedScene
+var gig_popup_scene: PackedScene = preload("res://components/popups/gig_popup.tscn")
 @export var task_card_scene: PackedScene
 
 @onready var task_list: HFlowContainer = %TaskList
@@ -60,8 +60,9 @@ func _create_task_button(task: WorkerTask) -> TaskCard:
 
 
 func _open_task_popup(task: WorkerTask) -> void:
-	if not gig_popup_scene:
-		push_error("ActiveTasksBar: No gig_popup_scene assigned!")
+	print("gig_popup_scene:", gig_popup_scene)
+	if not gig_popup_scene or not is_instance_valid(gig_popup_scene):
+		push_error("❌ gig_popup_scene is null or invalid at runtime!")
 		return
 
 	var key := "task_" + task.title
@@ -71,7 +72,8 @@ func _open_task_popup(task: WorkerTask) -> void:
 		WindowManager.focus_window(existing)
 		return
 
-	var popup_pane := gig_popup_scene.instantiate() as Pane
+	var popup_pane := preload("res://components/popups/gig_popup.tscn").instantiate() #as Pane
+	print("instantiated gig popup scene : " + str(popup_pane))
 	popup_pane.unique_popup_key = key  # Needed for WindowManager tracking
 
 	var window := WindowFrame.instantiate_for_pane(popup_pane)

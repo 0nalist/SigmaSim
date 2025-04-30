@@ -146,7 +146,6 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_74cm5")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_bq65h")
 theme_override_styles/normal = SubResource("StyleBoxTexture_afg75")
 icon = ExtResource("4_1v826")
-flat = true
 icon_alignment = 1
 
 [node name="MinimizeButton" type="Button" parent="VBoxContainer/MarginContainer/Header"]

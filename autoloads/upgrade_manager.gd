@@ -114,7 +114,8 @@ func get_all_upgrades() -> Array:
 	return available_upgrades.values()
 
 func get_upgrades_by_source(source_name: String) -> Array:
-	return available_upgrades.values().filter(func(u): return u.source == source_name)
+	var target = source_name.to_lower()
+	return available_upgrades.values().filter(func(u): return u.source.to_lower() == target)
 
 # --- Save/load --- #
 

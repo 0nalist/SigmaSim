@@ -76,6 +76,7 @@ func save_to_slot(slot_id: int) -> void:
 		"time": TimeManager.get_save_data(),
 		"market": MarketManager.get_save_data(),
 		"player": PlayerManager.get_save_data(),
+		"workers": WorkerManager.get_save_data(),
 		"bills": BillManager.get_save_data(),
 		"windows": WindowManager.get_save_data(),
 	}
@@ -128,7 +129,8 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("player"):
 		PlayerManager.load_from_data(data["player"])
 		PlayerManager.set_slot_id(slot_id)
-
+	if data.has("workers"):
+		WorkerManager.load_from_data(data["workers"])
 	if data.has("windows"):
 		WindowManager.load_from_data(data["windows"])
 

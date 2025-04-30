@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dkd8ber0rdok0"]
+[gd_scene load_steps=9 format=3 uid="uid://dkd8ber0rdok0"]
 
 [ext_resource type="Script" uid="uid://dqadp0a03aco3" path="res://components/apps/worker_overview/work_force.gd" id="1_30bye"]
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_wbg8h"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="3_wbg8h"]
 [ext_resource type="Script" uid="uid://d1n71inu575u" path="res://components/ui/active_tasks_bar.gd" id="4_yfqmq"]
 [ext_resource type="PackedScene" uid="uid://b6d1kl4tiarf2" path="res://components/upgrade_scenes/workforce_upgrade_ui.tscn" id="5_yfqmq"]
-[ext_resource type="PackedScene" uid="uid://dgawvt5yorfxn" path="res://components/popups/gig_popup.tscn" id="7_bq8vs"]
 [ext_resource type="PackedScene" uid="uid://bqc77qqsonskv" path="res://components/ui/task_card.tscn" id="7_ngx45"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30bye"]
@@ -97,7 +96,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.25
 script = ExtResource("4_yfqmq")
-gig_popup_scene = ExtResource("7_bq8vs")
 task_card_scene = ExtResource("7_ngx45")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ActiveTasksBar"]

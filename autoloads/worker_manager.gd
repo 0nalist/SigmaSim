@@ -132,12 +132,16 @@ func generate_available_workers() -> void:
 	emit_signal("available_workers_updated")
 
 func _generate_random_worker(is_contractor: bool) -> Worker:
-	var worker := Worker.new()
+	var worker = Worker.new()
+	
+	''' Gender generator
 	var fem = randi_range(0, 1)
 	var masc = randi_range(0, 1)
 	var andro = randi_range(0, 1) if randi_range(0, 1) == 1 else 0
 
 	worker.name = NameGenerator.get_random_name(fem, masc, andro)
+	'''
+	worker.name = NameGenerator.get_random_name()
 	worker.is_contractor = is_contractor
 	worker.hours_per_day = randi_range(4, 10)
 	worker.productivity_per_tick = randf_range(0.2, 1.0)
@@ -147,3 +151,35 @@ func _generate_random_worker(is_contractor: bool) -> Worker:
 	else:
 		worker.sign_on_bonus = randi_range(50, 200)
 	return worker
+
+
+
+## -- SAVE LOAD --- ##
+
+func get_save_data() -> Dictionary:
+	var out := {
+		"workers": [],
+	}
+	for w in workers:
+		out["workers"].append(w.get_save_data())
+	return out
+
+
+
+func load_from_data(data: Dictionary) -> void:
+	workers.clear()
+	if not data.has("workers") or typeof(data["workers"]) != TYPE_ARRAY:
+		push_error("WorkerManager.load_from_data expected 'workers' as Array.")
+		return
+
+	for worker_dict in data["workers"]:
+		var worker := Worker.new()
+		worker.load_from_data(worker_dict)
+		workers.append(worker)
+
+		var last_title = worker_dict.get("last_assigned_task_title", "")
+		if last_title != "":
+			var task = TaskManager.find_task_by_title("grinderr", last_title)
+			if task:
+				worker.assigned_task = task
+				task.assigned_workers.append(worker)

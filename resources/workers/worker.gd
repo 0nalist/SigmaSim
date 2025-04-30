@@ -70,3 +70,44 @@ func get_specialization_bonus() -> float:
 		return 0.0
 	var id := assigned_task.get_specialization_id()
 	return specializations.get(id, 0.0)
+
+
+
+
+## --- Save Load --- ##
+
+func get_save_data() -> Dictionary:
+	var last_title := ""
+	if last_assigned_task != null:
+		last_title = last_assigned_task.title
+
+	return {
+		"name": name,
+		"is_contractor": is_contractor,
+		"hours_per_day": hours_per_day,
+		"work_start_hour": work_start_hour,
+		"day_rate": day_rate,
+		"sign_on_bonus": sign_on_bonus,
+		"productivity_per_tick": productivity_per_tick,
+		"unpaid": unpaid,
+		"active": active,
+		"specializations": specializations,
+		"last_assigned_task_title": last_title
+	}
+
+
+func load_from_data(data: Dictionary) -> void:
+	name = data.get("name", "")
+	is_contractor = data.get("is_contractor", false)
+	hours_per_day = data.get("hours_per_day", 8)
+	work_start_hour = data.get("work_start_hour", 9)
+	day_rate = data.get("day_rate", 100)
+	sign_on_bonus = data.get("sign_on_bonus", 0)
+	productivity_per_tick = data.get("productivity_per_tick", 0.0)
+	unpaid = data.get("unpaid", false)
+	active = data.get("active", false)
+	specializations = data.get("specializations", {})
+
+	var last_title = data.get("last_assigned_task_title", "")
+	if last_title != "":
+		last_assigned_task = TaskManager.find_task_by_title("grinderr", last_title)
