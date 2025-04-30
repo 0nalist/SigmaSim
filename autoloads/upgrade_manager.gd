@@ -113,7 +113,7 @@ func get_upgrade_by_id(id: String) -> UpgradeResource:
 func get_all_upgrades() -> Array:
 	return available_upgrades.values()
 
-func get_upgrades_by_source(source_name: String) -> Array[UpgradeResource]:
+func get_upgrades_by_source(source_name: String) -> Array:
 	return available_upgrades.values().filter(func(u): return u.source == source_name)
 
 # --- Save/load --- #

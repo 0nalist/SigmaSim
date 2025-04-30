@@ -38,6 +38,8 @@ func _on_assignment_target_changed(new_target: WorkerTask) -> void:
 
 func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
+	
+	
 	window_title = gig.title
 	title_label.text = gig.title
 	payout_label.text = "$%.2f" % gig.payout_amount + " every %s" % gig.unit_name

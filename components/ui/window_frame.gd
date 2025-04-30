@@ -71,8 +71,10 @@ func _ready() -> void:
 	call_deferred("_apply_default_window_size_and_position")
 
 func load_pane(new_pane: Pane) -> void:
+	print("loading pane: " + str(new_pane))
 	pane = new_pane
-	icon = new_pane.window_icon
+	if new_pane.window_icon:
+		icon = new_pane.window_icon
 	window_title = new_pane.window_title
 	call_deferred("set_window_title", window_title)
 	call_deferred("set_window_icon", icon)
@@ -334,7 +336,7 @@ func _update_upgrade_button_state() -> void:
 	var any_available := false
 	for upgrade in upgrades:
 		if UpgradeManager.is_unlocked(upgrade.upgrade_id) and not UpgradeManager.is_purchased(upgrade.upgrade_id):
-			var cost := upgrade.get_current_cost()
+			var cost = upgrade.get_current_cost()
 			if PortfolioManager.cash >= cost:
 				any_available = true
 				break

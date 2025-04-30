@@ -1,5 +1,6 @@
 extends Pane
-class_name WorkerForce
+class_name WorkForce
+#was called workerforce by typo, revert if breaks
 
 @onready var worker_list: VBoxContainer = %WorkerList
 @onready var selected_name_label: Label = %SelectedNameLabel
@@ -80,7 +81,7 @@ func _on_worker_updated(worker: Worker) -> void:
 
 
 func _on_assignment_target_changed(new_task: WorkerTask) -> void:
-	print("assignment target changed to: " + str(new_task))
+	#print("assignment target changed to: " + str(new_task))
 	if new_task == null:
 		selected_task_label.text = "Selected Task: None"
 	else:

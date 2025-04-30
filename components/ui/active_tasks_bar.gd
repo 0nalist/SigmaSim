@@ -3,6 +3,7 @@ class_name ActiveTasksBar
 
 @export var task_source_category: String = "grinderr"  # default to "grinderr"
 @export var gig_popup_scene: PackedScene
+@export var task_card_scene: PackedScene
 
 @onready var task_list: HFlowContainer = %TaskList
 
@@ -41,23 +42,21 @@ func _refresh_tasks() -> void:
 	_update_button_states()
 	#_update_button_texts()
 
-func _create_task_button(task: WorkerTask) -> Button:
-	var btn := Button.new()
-	btn.text = "%.2f / %.2f" % [task.current_productivity, task.productivity_required]
-	btn.toggle_mode = true
-	btn.custom_minimum_size = Vector2(100, 32)
-	btn.add_theme_font_size_override("font_size", 12)
-	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	btn.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	btn.clip_text = true
-	btn.focus_mode = Control.FOCUS_NONE
+func _create_task_button(task: WorkerTask) -> TaskCard:
+	var card = task_card_scene.instantiate() as TaskCard
+	card.call_deferred("setup", task)
 
-	btn.pressed.connect(func():
-		TaskManager.set_assignment_target(task)  # 🛠 ADD THIS
-		_open_task_popup(task)  # 🛠 Then open the popup
+	#card.button.toggle_mode = true
+	#card.button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	#card.button.focus_mode = Control.FOCUS_NONE
+
+	card.task_pressed.connect(func(t):
+		TaskManager.set_assignment_target(t)
+		_open_task_popup(t)
 	)
 
-	return btn
+	return card
+
 
 
 func _open_task_popup(task: WorkerTask) -> void:
@@ -65,34 +64,42 @@ func _open_task_popup(task: WorkerTask) -> void:
 		push_error("ActiveTasksBar: No gig_popup_scene assigned!")
 		return
 
-	var key = "task_" + task.title
+	var key := "task_" + task.title
 
-	var existing_window = WindowManager.find_popup_by_key(key)
-	if existing_window:
-		WindowManager.focus_window(existing_window)
+	var existing := WindowManager.find_popup_by_key(key)
+	if existing:
+		WindowManager.focus_window(existing)
 		return
 
-	var popup_pane := gig_popup_scene.instantiate() as GigPopup
-	popup_pane.unique_popup_key = key
+	var popup_pane := gig_popup_scene.instantiate() as Pane
+	popup_pane.unique_popup_key = key  # Needed for WindowManager tracking
 
 	var window := WindowFrame.instantiate_for_pane(popup_pane)
 	WindowManager.register_window(window, popup_pane.show_in_taskbar)
 
-	popup_pane.call_deferred("setup", task)
+	call_deferred("setup_gig_popup", popup_pane, task)
 	WindowManager.call_deferred("autoposition_window", window)
+
+
+func setup_gig_popup(pane: Pane, task: WorkerTask) -> void:
+	if is_instance_valid(pane) and pane.has_method("setup"):
+		pane.setup(task)
+
+
 
 func _on_assignment_target_changed(new_target: Node) -> void:
 	_update_button_states()
 
 func _update_button_states() -> void:
 	for task in task_to_button.keys():
-		var button = task_to_button[task]
-		if not is_instance_valid(button):
+		var card = task_to_button[task]
+		if not is_instance_valid(card):
 			continue
-		if TaskManager.active_assignment_target and TaskManager.active_assignment_target is WorkerTask:
-			button.set_pressed_no_signal(TaskManager.active_assignment_target == task)
+		if TaskManager.active_assignment_target == task:
+			card.button.set_pressed_no_signal(true)
 		else:
-			button.set_pressed_no_signal(false)
+			card.button.set_pressed_no_signal(false)
+
 
 func _update_button_texts() -> void:
 	for task in task_to_button.keys():
