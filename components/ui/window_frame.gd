@@ -34,10 +34,12 @@ var min_window_size := Vector2(120, 50)
 
 @onready var favicon: TextureRect = %Favicon
 @onready var title_label: Label = %TitleLabel
-@onready var header: HBoxContainer = $VBoxContainer/MarginContainer/Header
-@onready var minimize_button: Button = $VBoxContainer/MarginContainer/Header/MinimizeButton
-@onready var maximize_button: Button = $VBoxContainer/MarginContainer/Header/MaximizeButton
-@onready var close_button: Button = $VBoxContainer/MarginContainer/Header/CloseButton
+@onready var header: HBoxContainer = %Header
+@onready var upgrade_button: Button = %UpgradeButton
+@onready var minimize_button: Button = %MinimizeButton
+@onready var maximize_button: Button = %MaximizeButton
+@onready var close_button: Button = %CloseButton
+
 @onready var content_panel: ScrollContainer = %ContentPanel
 
 func _ready() -> void:

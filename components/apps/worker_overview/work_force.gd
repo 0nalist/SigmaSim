@@ -79,23 +79,19 @@ func _on_worker_updated(worker: Worker) -> void:
 			card.update_all()
 
 
-func _on_assignment_target_changed(target: Node) -> void:
-	print("assignment target changed to: " + str(target))
-	if target == null:
+func _on_assignment_target_changed(new_task: WorkerTask) -> void:
+	print("assignment target changed to: " + str(new_task))
+	if new_task == null:
 		selected_task_label.text = "Selected Task: None"
 	else:
 		# If the target has a 'gig' or 'title' property, use that
-		var task_title := "?"
-		if "gig" in target and target.gig != null: # TODO this should be target.task, not gig!
-			task_title = target.gig.title
-		elif "title" in target:
-			task_title = target.title
+		var task_title := new_task.title
 		selected_task_label.text = "Selected Task: " + task_title
 
 	# Disable or enable buttons on all WorkerCards
 	for card in worker_list.get_children():
 		if card.has_node("%ActionButton"):
-			card.get_node("%ActionButton").disabled = (target == null)
+			card.get_node("%ActionButton").disabled = (new_task == null)
 
 
 

@@ -9,7 +9,7 @@ class_name EarlyBird
 
 @export var base_speed: float = 200.0
 @export var speed_growth_rate: float = 10.0 # Speed increase per second
-@export var max_speed: float = 1200.0
+@export var max_speed: float = 1600.0
 @onready var autopilot: Node = %EarlyBirdAutopilot
 
 
@@ -28,6 +28,7 @@ var window_frame: WindowFrame = null
 #@onready var low_clouds: Parallax2D = $Parallax/LowClouds
 @onready var hills: Parallax2D = $Parallax/Hills
 @onready var foreground: Parallax2D = %Foreground
+@onready var forest: Parallax2D = %Forest
 
 
 
@@ -69,8 +70,8 @@ func _physics_process(delta: float) -> void:
 	pipe_manager.set_move_speed(current_speed)
 	high_clouds.autoscroll = Vector2(-(current_speed/20), 0)
 	foreground.autoscroll = Vector2((-current_speed), 0)
-	
-	
+	hills.autoscroll = Vector2(-(current_speed/15), 0)
+	forest.autoscroll = Vector2(-(current_speed/2), 0)
 	
 	# Adjust window stretch
 	_adjust_window_size()
