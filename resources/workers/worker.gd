@@ -48,8 +48,9 @@ func get_day_rate() -> float:
 
 func get_hire_cost() -> float:
 	var base_cost = sign_on_bonus + day_rate
-	var scaled_cost = base_cost * pow(1.25, hire_count)
+	var scaled_cost = base_cost * pow(1.25, WorkerManager.total_workers_hired)
 	return EffectManager.get_final_value("worker_hire_cost", scaled_cost)
+
 
 
 

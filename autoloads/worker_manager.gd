@@ -18,6 +18,7 @@ var workers: Array[Worker] = []
 var currently_selected_worker: Worker = null
 
 var available_workers: Array[Worker] = []
+var total_workers_hired := 0
 
 func _ready() -> void:
 	TimeManager.minute_passed.connect(_on_minute_passed)
@@ -36,7 +37,12 @@ func _on_minute_passed(in_game_minutes: int) -> void:
 # Hiring and Assigning
 func hire_worker(worker: Worker) -> void:
 	workers.append(worker)
+	WorkerManager.increment_hire_count()
 	emit_signal("worker_hired", worker)
+	increment_hire_count()
+
+func increment_hire_count():
+	total_workers_hired += 1
 
 func assign_worker(worker: Worker, task: WorkerTask) -> void:
 	# --- New logic: Unassign from old task if necessary ---
@@ -159,6 +165,7 @@ func _generate_random_worker(is_contractor: bool) -> Worker:
 func get_save_data() -> Dictionary:
 	var out := {
 		"workers": [],
+		"total_workers_hired": total_workers_hired,
 	}
 	for w in workers:
 		out["workers"].append(w.get_save_data())
@@ -171,7 +178,7 @@ func load_from_data(data: Dictionary) -> void:
 	if not data.has("workers") or typeof(data["workers"]) != TYPE_ARRAY:
 		push_error("WorkerManager.load_from_data expected 'workers' as Array.")
 		return
-
+	total_workers_hired = data.get("total_workers_hired", 0)
 	for worker_dict in data["workers"]:
 		var worker := Worker.new()
 		worker.load_from_data(worker_dict)
