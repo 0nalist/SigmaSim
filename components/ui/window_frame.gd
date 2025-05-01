@@ -323,13 +323,11 @@ func _on_relevant_stat_changed(_x = null):
 
 
 func _update_upgrade_button_state() -> void:
-	print("updating upgrade button state")
 	if not pane or not pane.upgrade_pane:
 		upgrade_button.visible = false
 		return
 
 	var upgrades := UpgradeManager.get_upgrades_by_source(pane.window_title)
-	print("checking upgrades: " +str(upgrades))
 	
 	var any_available := false
 	for upgrade in upgrades:

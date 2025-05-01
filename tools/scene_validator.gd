@@ -1,7 +1,7 @@
 @tool
-extends Node
+extends EditorScript
 
-func _ready():
+func _run() -> void:
 	validate_scene_folder("res://")  # You can change this to target specific folders
 	print("✅ Scene validation complete.")
 

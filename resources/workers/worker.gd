@@ -10,6 +10,8 @@ extends Resource
 
 @export var productivity_per_tick: float = 0.0
 
+@export var hire_count: int = 0
+
 var assigned_task: WorkerTask = null
 var last_assigned_task: WorkerTask = null
 var specializations: Dictionary = {}  # e.g., { "gig_x": 0.12, "app_y": 0.08 }
@@ -44,7 +46,10 @@ func get_day_rate() -> float:
 	return EffectManager.get_final_value("worker_day_rate", day_rate)
 	
 
-
+func get_hire_cost() -> float:
+	var base_cost = sign_on_bonus + day_rate
+	var scaled_cost = base_cost * pow(1.25, hire_count)
+	return EffectManager.get_final_value("worker_hire_cost", scaled_cost)
 
 
 
