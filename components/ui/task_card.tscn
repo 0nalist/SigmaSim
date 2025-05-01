@@ -29,22 +29,29 @@ script = ExtResource("1_rxra5")
 unselected_panel = ExtResource("1_wq2m2")
 selected_panel = ExtResource("3_vcm20")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="ShortTaskNameLabel" type="Label" parent="VBoxContainer"]
+[node name="ShortTaskNameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ProgressLabel" type="Label" parent="VBoxContainer"]
+[node name="ProgressLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PayoutLabel" type="Label" parent="VBoxContainer"]
+[node name="PayoutLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="WorkoutLabel" type="Label" parent="VBoxContainer"]
+[node name="WorkoutLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 

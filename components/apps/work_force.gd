@@ -9,6 +9,7 @@ class_name WorkForce
 @export var hire_popup_scene: PackedScene
 
 
+
 func _ready() -> void:
 	_populate_worker_list()
 	WorkerManager.worker_selected.connect(_on_worker_selected)

@@ -31,9 +31,8 @@ func get_random_name(fem: float = 0.0, masc: float = 0.0, andro: float = 0.0, to
 		printerr("⚠️ Name pool is empty!")
 		return "Unnamed"
 
-	var total_input := fem + masc + andro
-	if total_input == 0.0:
-		# ⚡ True randomness mode
+	if fem + masc + andro == 0.0:
+		# Choose random name when called without arguments
 		var available := name_pool.map(func(e): return e.name)
 		available.shuffle()
 		var name = available[0]

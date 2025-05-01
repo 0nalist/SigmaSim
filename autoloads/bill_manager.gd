@@ -352,19 +352,19 @@ var lifestyle_options := {
 		},
 		{
 			"name": "Luxury Loft w/ Rooftop Sauna",
-			"cost": 3000,
+			"cost": 7800,
 			"effects_label": "+3 Comfort, +3 Reputation",
 			"effects": { "COMFORT_FLAT": 3, "REPUTATION_FLAT": 3 }
 		},
 		{
 			"name": "Penthouse Suite in Skyrise",
-			"cost": 10000,
+			"cost": 30000,
 			"effects_label": "+5 Comfort, +5 Reputation, +1 Romance",
 			"effects": { "COMFORT_FLAT": 5, "REPUTATION_FLAT": 5, "ROMANCE_FLAT": 1 }
 		},
 		{
 			"name": "Private Island",
-			"cost": 25000,
+			"cost": 250000,
 			"effects_label": "+7 Comfort, +7 Reputation, +2 Romance",
 			"effects": { "COMFORT_FLAT": 7, "REPUTATION_FLAT": 7, "ROMANCE_FLAT": 2 }
 		}
@@ -402,7 +402,7 @@ var lifestyle_options := {
 		},
 		{
 			"name": "Biohacker Wellness Protocol",
-			"cost": 6000,
+			"cost": 36000,
 			"effects_label": "+4 Health, +3 Energy, +2 Attractiveness",
 			"effects": { "HEALTH_FLAT": 4, "ENERGY_FLAT": 3, "ATTRACTIVENESS_FLAT": 2 }
 		}
@@ -416,31 +416,31 @@ var lifestyle_options := {
 		},
 		{
 			"name": "Fast Food Value Menu",
-			"cost": 105,
+			"cost": 250,
 			"effects_label": "+0 Health, +0 Mood",
 			"effects": {}
 		},
 		{
 			"name": "Balanced Meal Kit Subscription",
-			"cost": 210,
+			"cost": 1200,
 			"effects_label": "+1 Health, +1 Energy",
 			"effects": { "HEALTH_FLAT": 1, "ENERGY_FLAT": 1 }
 		},
 		{
 			"name": "Organic Groceries & Home Cooking",
-			"cost": 420,
+			"cost": 6000,
 			"effects_label": "+2 Health, +2 Mood",
 			"effects": { "HEALTH_FLAT": 2, "MOOD_FLAT": 2 }
 		},
 		{
-			"name": "Private Chef (Macros Dialed In)",
-			"cost": 1050,
+			"name": "Private Chef",
+			"cost": 20000,
 			"effects_label": "+3 Health, +3 Energy, +1 Attractiveness",
 			"effects": { "HEALTH_FLAT": 3, "ENERGY_FLAT": 3, "ATTRACTIVENESS_FLAT": 1 }
 		},
 		{
-			"name": "Michelin-Star Degenerate",
-			"cost": 2500,
+			"name": "Michelin Connoisseur",
+			"cost": 250000,
 			"effects_label": "+4 Health, +5 Mood, +2 Attractiveness",
 			"effects": { "HEALTH_FLAT": 4, "MOOD_FLAT": 5, "ATTRACTIVENESS_FLAT": 2 }
 		}
@@ -460,13 +460,13 @@ var lifestyle_options := {
 		},
 		{
 			"name": "Concerts, Movies & Games",
-			"cost": 210,
+			"cost": 510,
 			"effects_label": "+2 Mood, +1 Energy",
 			"effects": { "MOOD_FLAT": 2, "ENERGY_FLAT": 1 }
 		},
 		{
 			"name": "VIP Experiences & Festivals",
-			"cost": 600,
+			"cost": 8600,
 			"effects_label": "+4 Mood, +2 Reputation",
 			"effects": { "MOOD_FLAT": 4, "REPUTATION_FLAT": 2 }
 		}
@@ -480,19 +480,19 @@ var lifestyle_options := {
 		},
 		{
 			"name": "Cheap Bars & Dive Nights",
-			"cost": 105,
+			"cost": 350,
 			"effects_label": "+1 Mood",
 			"effects": { "MOOD_FLAT": 1 }
 		},
 		{
 			"name": "Trendy Clubs & Date Spots",
-			"cost": 420,
+			"cost": 2420,
 			"effects_label": "+2 Romance, +2 Reputation",
 			"effects": { "ROMANCE_FLAT": 2, "REPUTATION_FLAT": 2 }
 		},
 		{
 			"name": "Bottle Service & Afterparties",
-			"cost": 1000,
+			"cost": 9000,
 			"effects_label": "+3 Romance, +3 Mood, +2 Attractiveness",
 			"effects": { "ROMANCE_FLAT": 3, "MOOD_FLAT": 3, "ATTRACTIVENESS_FLAT": 2 }
 		}
@@ -512,19 +512,19 @@ var lifestyle_options := {
 		},
 		{
 			"name": "Used Beater Car",
-			"cost": 175,  # $25/day
+			"cost": 250,  # 
 			"effects_label": "+1 Energy",
 			"effects": { "ENERGY_FLAT": 1 }
 		},
 		{
 			"name": "Luxury Sports Car",
-			"cost": 1400,  # $200/day
+			"cost": 2400,  
 			"effects_label": "+2 Energy, +2 Attractiveness",
 			"effects": { "ENERGY_FLAT": 2, "ATTRACTIVENESS_FLAT": 2 }
 		},
 		{
 			"name": "Private Chauffeur",
-			"cost": 3500,  # $500/day
+			"cost": 12500,  
 			"effects_label": "+3 Energy, +3 Comfort, +2 Reputation",
 			"effects": { "ENERGY_FLAT": 3, "COMFORT_FLAT": 3, "REPUTATION_FLAT": 2 }
 		}
