@@ -227,7 +227,7 @@ text = "Autopilot"
 
 [node name="Worm" type="Area2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(1808, 190)
+position = Vector2(162, 114)
 script = ExtResource("12_im8xc")
 
 [node name="Sprite2D" type="Sprite2D" parent="Worm"]
@@ -240,17 +240,14 @@ shape = SubResource("CircleShape2D_y10ql")
 debug_color = Color(0.707938, 0.36898, 0.812766, 0.42)
 
 [node name="WormTexture" type="TextureRect" parent="Worm"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = 32.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(33.935, 27.305)
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("13_8hmpk")
 
 [node name="Timer" type="Timer" parent="Worm"]

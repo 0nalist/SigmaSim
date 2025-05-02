@@ -38,7 +38,7 @@ func _on_assignment_target_changed(new_target: WorkerTask) -> void:
 func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
 	
-	
+	unique_popup_key = "gig_%s" % gig.title
 	window_title = gig.title
 	title_label.text = gig.title
 	payout_label.text = "$%.2f" % gig.payout_amount + " every %s" % gig.unit_name
@@ -218,15 +218,22 @@ func load_custom_save_data(data: Dictionary) -> void:
 	pending_gig_title = data.get("task_title", "")
 	# We defer the real setup into _ready()
 
+var try_count = 0
 func _try_load_gig_by_title() -> void:
+	
+	
 	if pending_gig_title == "":
 		return
+
 	var found_gig = TaskManager.find_task_by_title("grinderr", pending_gig_title)
 	if found_gig:
 		setup(found_gig)
-	else:
-		push_warning("GigPopup: Could not find gig with title: %s" % pending_gig_title)
-	pending_gig_title = ""
+		pending_gig_title = ""
+	elif try_count < 5:
+		print("⏳ Gig not yet found: retrying...")
+		call_deferred("_try_load_gig_by_title")
+		try_count += 1  # Try again next frame, will repeat forever tho...
+
 
 func _exit_tree() -> void:
 	if WorkerManager.worker_selected.is_connected(_on_worker_selected):

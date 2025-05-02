@@ -202,7 +202,10 @@ func launch_popup(popup_scene: PackedScene, unique_key: String, setup_args: Vari
 
 	call_deferred("autoposition_window", window)
 
-
+func launch_gig_popup(gig: WorkerTask) -> void:
+	var popup_scene = preload("res://components/popups/gig_popup.tscn")
+	var key = "gig_%s" % gig.title
+	launch_popup(popup_scene, key, gig)
 
 
 func autoposition_window(window: WindowFrame) -> void:

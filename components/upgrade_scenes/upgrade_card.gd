@@ -6,7 +6,6 @@ extends VBoxContainer
 @onready var name_label: Label = %NameLabel
 @onready var desc_label: Label = %DescriptionLabel
 @onready var price_label: Label = %PriceLabel
-@onready var limit_label: Label = %LimitLabel
 @onready var status_label: Label = %StatusLabel
 
 

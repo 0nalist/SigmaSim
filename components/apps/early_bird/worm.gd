@@ -1,6 +1,7 @@
 extends Area2D
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var worm_texture: TextureRect = $WormTexture
 @onready var timer: Timer = $Timer
 var rotation_animation_interval: float = 2.4
 var pulse_animation_interval: float = 1.9
@@ -67,4 +68,5 @@ func _on_worm_texture_gui_input(event: InputEvent) -> void:
 
 func _on_timer_timeout() -> void:
 	var angle_deg = randf_range(30.0, 70.0)
-	sprite.rotation = deg_to_rad(angle_deg)
+	worm_texture.rotation += deg_to_rad(angle_deg)
+	print("rotating worm")
