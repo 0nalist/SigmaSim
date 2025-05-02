@@ -44,26 +44,35 @@ func hire_worker(worker: Worker) -> void:
 func increment_hire_count():
 	total_workers_hired += 1
 
+var currently_assigning := false
 func assign_worker(worker: Worker, task: WorkerTask) -> void:
-	# --- New logic: Unassign from old task if necessary ---
+	if currently_assigning:
+		push_error("⚠️ Re-entrant assign_worker call blocked.")
+		return
+	currently_assigning = true
+	if not worker or not task:
+		push_error("❌ Tried to assign null worker or task.")
+		return
+
+	if worker.assigned_task == task:
+		return  # 🛑 Already assigned. Don't even print.
+
+	print("Assigning worker:", worker.name, " → ", task.title)
+
+	# Remove from previous task
 	if worker.assigned_task and worker.assigned_task != task:
-		# Remove worker from old task's assigned list
 		worker.assigned_task.assigned_workers.erase(worker)
 
 	worker.assigned_task = task
 	worker.last_assigned_task = task
 	worker.active = true
 
-	# Make sure worker is listed in the new task's assigned_workers
 	if not task.assigned_workers.has(worker):
 		task.assigned_workers.append(worker)
 
-	# Set work_start_hour to current time (rounded to the hour)
-	var in_game_hour := int(TimeManager.in_game_minutes / 60)
-	worker.work_start_hour = in_game_hour
-
 	emit_signal("worker_assigned", worker, task)
 	task.emit_signal("task_updated")
+	currently_assigning = false
 
 func unassign_worker(worker: Worker) -> void:
 	var task := worker.assigned_task
@@ -148,6 +157,7 @@ func _generate_random_worker(is_contractor: bool) -> Worker:
 	worker.name = NameGenerator.get_random_name(fem, masc, andro)
 	'''
 	worker.name = NameGenerator.get_random_name()
+	worker.id = "worker_" + str(worker.name)
 	worker.is_contractor = is_contractor
 	worker.hours_per_day = randi_range(4, 10)
 	worker.productivity_per_tick = randf_range(0.2, 1.0)
@@ -158,6 +168,11 @@ func _generate_random_worker(is_contractor: bool) -> Worker:
 		worker.sign_on_bonus = randi_range(50, 200)
 	return worker
 
+func get_worker_by_id(id: String) -> Worker:
+	for w in workers:
+		if w.id == id:
+			return w
+	return null
 
 
 ## -- SAVE LOAD --- ##

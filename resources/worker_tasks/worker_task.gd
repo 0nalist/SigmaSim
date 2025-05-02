@@ -19,14 +19,23 @@ var assigned_workers: Array[Worker] = []
 var completions_done: int = 0
 
 func apply_productivity(amount: float) -> void:
+	print("🛠 Task.apply_productivity called with:", amount)
+
 	current_productivity += amount
+	print("📊 New productivity total:", current_productivity, "/", productivity_required)
+
 	emit_signal("productivity_applied", amount, current_productivity)
-	
+	if productivity_required <= 0.0:
+		push_error("❌ Task has invalid productivity_required = 0.0. Skipping completion loop.")
+		return
 	while current_productivity >= productivity_required and not is_complete():
 		current_productivity -= productivity_required
 		completions_done += 1
+		print("✅ Completion added. New count:", completions_done)
 		_on_task_completed()
+
 	emit_signal("task_updated")
+
 
 func _on_task_completed():
 	match payout_type:
@@ -47,3 +56,9 @@ func get_specialization_id() -> String:
 
 func get_progress_percent() -> float:
 	return clamp(current_productivity / productivity_required, 0.0, 1.0)
+
+func get_assigned_worker_ids() -> Array[String]:
+	var ids: Array[String] = []
+	for worker in assigned_workers:
+		ids.append(worker.id) # Assuming each Worker has a unique `id` string
+	return ids

@@ -75,6 +75,7 @@ func save_to_slot(slot_id: int) -> void:
 		"portfolio": PortfolioManager.get_save_data(),
 		"time": TimeManager.get_save_data(),
 		"market": MarketManager.get_save_data(),
+		"tasks": TaskManager.get_save_data(),
 		"player": PlayerManager.get_save_data(),
 		"workers": WorkerManager.get_save_data(),
 		"bills": BillManager.get_save_data(),
@@ -127,6 +128,8 @@ func load_from_slot(slot_id: int) -> void:
 		TimeManager.start_time()
 	if data.has("upgrades"):
 		UpgradeManager.load_from_data(data["upgrades"])
+	if data.has("tasks"):
+		TaskManager.load_from_data(data["tasks"])
 	if data.has("market"):
 		MarketManager.load_from_data(data["market"])
 	if data.has("player"):

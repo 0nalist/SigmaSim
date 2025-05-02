@@ -75,12 +75,7 @@ func _create_gig_card(gig: WorkerTask) -> Control:
 	return card
 
 func _on_open_gig(gig: WorkerTask) -> void:
-	var popup_pane := gig_popup_scene.instantiate() as Pane
-
-	var window := WindowFrame.instantiate_for_pane(popup_pane)
-	WindowManager.register_window(window, popup_pane.show_in_taskbar)
-	call_deferred("setup_gig_popup", popup_pane, gig)
-	call_deferred("autoposition_window", window)
+	WindowManager.launch_gig_popup(gig)
 
 func setup_gig_popup(pane: Pane, gig: WorkerTask) -> void:
 	if is_instance_valid(pane):

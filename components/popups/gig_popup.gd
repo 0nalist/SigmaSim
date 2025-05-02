@@ -23,7 +23,6 @@ func _ready() -> void:
 	TaskManager.assignment_target_changed.connect(_on_assignment_target_changed)
 	call_deferred("_safe_check_assignment_target")
 	
-	
 	if pending_gig_title != "":
 		call_deferred("_try_load_gig_by_title")
 
@@ -57,7 +56,9 @@ func setup(gig_ref: WorkerTask) -> void:
 	gig.productivity_applied.connect(_on_productivity_applied)
 	assign_button.pressed.connect(_on_assign_worker_pressed)
 	grind_button.pressed.connect(_on_grind_button_pressed)
-	WorkerManager.worker_selected.connect(_on_worker_selected)
+	if not WorkerManager.worker_selected.is_connected(_on_worker_selected):
+		WorkerManager.worker_selected.connect(_on_worker_selected)
+
 	call_deferred("_safe_check_assignment_target")
 
 
@@ -120,10 +121,6 @@ func _refresh_progress():
 
 
 
-
-
-
-
 func _refresh_workers():
 	for child in worker_list.get_children():
 		child.queue_free()
@@ -145,11 +142,11 @@ func _refresh_workers():
 
 func _on_worker_selected(worker: Worker) -> void:
 	if TaskManager.active_assignment_target != gig:
-		return # ⚠️ This popup is no longer the one the player is interacting with
+		return 
 
 	# Prevent duplicates
 	if worker != null and not gig.assigned_workers.has(worker):
-		gig.assigned_workers.append(worker)
+		#gig.assigned_workers.append(worker)
 		WorkerManager.assign_worker(worker, gig)
 		_refresh_workers()
 		_refresh_selected_worker()

@@ -197,8 +197,11 @@ func launch_popup(popup_scene: PackedScene, unique_key: String, setup_args: Vari
 	var window = WindowFrame.instantiate_for_pane(popup_pane)
 	register_window(window, popup_pane.show_in_taskbar)
 
-	if setup_args != null and popup_pane.has_method("setup"):
-		popup_pane.call_deferred("setup", setup_args)
+	if setup_args != null:
+		if popup_pane.has_method("setup_custom"):
+			popup_pane.call_deferred("setup_custom", setup_args)
+		elif popup_pane.has_method("setup"):
+			popup_pane.call_deferred("setup", setup_args)
 
 	call_deferred("autoposition_window", window)
 

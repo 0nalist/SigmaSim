@@ -13,6 +13,8 @@ config_version=5
 config/name="Sigma"
 run/main_scene="uid://c4tt0mgxvgw5g"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/bg_color=Color(0.0305153, 0.432916, 0.58626, 1)
+boot_splash/image="uid://xm8tdrmlmymx"
 config/icon="uid://xm8tdrmlmymx"
 
 [autoload]
