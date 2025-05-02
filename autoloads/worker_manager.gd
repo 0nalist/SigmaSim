@@ -205,3 +205,6 @@ func load_from_data(data: Dictionary) -> void:
 			if task:
 				worker.assigned_task = task
 				task.assigned_workers.append(worker)
+
+func reset():
+	workers.clear()

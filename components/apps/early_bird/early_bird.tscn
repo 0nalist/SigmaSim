@@ -227,7 +227,7 @@ text = "Autopilot"
 
 [node name="Worm" type="Area2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(162, 114)
+position = Vector2(1709, 238)
 script = ExtResource("12_im8xc")
 
 [node name="Sprite2D" type="Sprite2D" parent="Worm"]

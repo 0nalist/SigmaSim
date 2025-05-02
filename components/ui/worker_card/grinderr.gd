@@ -16,7 +16,9 @@ var daily_gigs: Array[WorkerTask] = []
 func _ready() -> void:
 
 	sort_dropdown.item_selected.connect(_on_sort_property_changed)
-
+	
+	TimeManager.day_passed.connect(_on_day_passed)
+	
 	_init_dropdown()
 
 	_load_or_initialize_gigs()
@@ -56,6 +58,9 @@ func _load_or_initialize_gigs() -> void:
 		# Only treat saved tasks as daily_gigs
 		daily_gigs = existing_gigs
 		
+
+func _on_day_passed() -> void:
+	_load_or_initialize_gigs() ## TEMP, should portion out load or init to store pool of already exhausted tasks
 
 func _populate_work_tab() -> void:
 	for child in %GigList.get_children():

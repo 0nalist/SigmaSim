@@ -154,9 +154,8 @@ func reset_game_state() -> void:
 	EffectManager.reset()
 	WorkerManager.reset()
 	MarketManager.reset()
-	BillManager.reset()
-	UpgradeManager.reset()
-	# Add others as needed
+	#BillManager.reset()
+	#UpgradeManager.reset()
 
 
 
@@ -165,6 +164,8 @@ func reset_managers():
 	PlayerManager.reset()
 	WindowManager.reset()
 	TimeManager.reset()
+	WorkerManager.reset()
+	EffectManager.reset()
 	TaskManager.reset()
 	EffectManager.reset()
 

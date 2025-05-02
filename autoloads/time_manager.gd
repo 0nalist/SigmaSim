@@ -114,7 +114,7 @@ func advance_day() -> void:
 			current_month = 1
 			current_year += 1
 
-	emit_signal("day_passed", current_day, current_month, current_year)
+	emit_signal("day_passed", current_day, current_month, current_year) #TODO 
 
 
 func get_days_in_month(month: int, year: int) -> int:
