@@ -154,13 +154,6 @@ func _on_worker_selected(worker: Worker) -> void:
 		_refresh_workers()
 		_refresh_selected_worker()
 
-	if worker != null and not gig.assigned_workers.has(worker):
-		gig.assigned_workers.append(worker)
-		WorkerManager.assign_worker(worker, gig)
-		_refresh_workers()
-		_refresh_selected_worker()
-
-
 func _reset_assignment_toggle():
 	assign_button.set_pressed_no_signal(false)
 	if TaskManager.active_assignment_target == self:
@@ -213,9 +206,13 @@ func _on_work_force_button_pressed() -> void:
 
 
 func get_custom_save_data() -> Dictionary:
-	return {
-		"task_title": gig.title,
-	}
+	if gig != null:
+		return { "task_title": gig.title } # Normal
+	elif pending_gig_title != "":
+		return { "task_title": pending_gig_title } # Fallback if pending
+	return {} # Double fallback to prevent crash, silently fails
+
+
 
 func load_custom_save_data(data: Dictionary) -> void:
 	pending_gig_title = data.get("task_title", "")

@@ -78,6 +78,7 @@ func save_to_slot(slot_id: int) -> void:
 		"player": PlayerManager.get_save_data(),
 		"workers": WorkerManager.get_save_data(),
 		"bills": BillManager.get_save_data(),
+		"upgrades": UpgradeManager.get_save_data(),
 		"windows": WindowManager.get_save_data(),
 	}
 
@@ -107,7 +108,7 @@ func load_from_slot(slot_id: int) -> void:
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
-
+	reset_managers()
 	var file := FileAccess.open(path, FileAccess.READ)
 	var text := file.get_as_text()
 	file.close()
@@ -124,6 +125,8 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("time"):
 		TimeManager.load_from_data(data["time"])
 		TimeManager.start_time()
+	if data.has("upgrades"):
+		UpgradeManager.load_from_data(data["upgrades"])
 	if data.has("market"):
 		MarketManager.load_from_data(data["market"])
 	if data.has("player"):
@@ -144,7 +147,7 @@ func reset_managers():
 	WindowManager.reset()
 	TimeManager.reset()
 	TaskManager.reset()
-	
+	EffectManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)

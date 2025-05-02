@@ -123,6 +123,7 @@ func get_save_data() -> Dictionary:
 	return upgrade_states
 
 func load_from_data(data: Dictionary) -> void:
+	EffectManager.reset()
 	upgrade_states = data
 	for id in upgrade_states:
 		var upgrade = get_upgrade_by_id(id)

@@ -1,26 +1,20 @@
 extends Area2D
 
 @onready var sprite: Sprite2D = $Sprite2D
-
+@onready var timer: Timer = $Timer
 var rotation_animation_interval: float = 2.4
 var pulse_animation_interval: float = 1.9
 
 var pulsing: bool = false
 var pulse_tween: Tween
 
+
+
+
 func _ready() -> void:
+	pass
 
-	var rot_timer := Timer.new()
-	rot_timer.wait_time = rotation_animation_interval
-	rot_timer.autostart = true
-	rot_timer.timeout.connect(_on_rotation_timer_timeout)
-	add_child(rot_timer)
 
-func _on_rotation_timer_timeout() -> void:
-	
-	# Instantly snap to a new random angle between 30° and 70°
-	var angle_deg = randf_range(30.0, 70.0)
-	sprite.rotation = deg_to_rad(angle_deg)
 
 func _on_mouse_entered() -> void:
 	pulsing = true
@@ -69,3 +63,8 @@ func _on_worm_texture_gui_input(event: InputEvent) -> void:
 		if StatpopManager:
 			print("worm statpop")
 			StatpopManager.spawn("+$1", global_position, "click")
+
+
+func _on_timer_timeout() -> void:
+	var angle_deg = randf_range(30.0, 70.0)
+	sprite.rotation = deg_to_rad(angle_deg)

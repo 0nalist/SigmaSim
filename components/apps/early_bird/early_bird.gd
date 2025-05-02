@@ -9,7 +9,7 @@ class_name EarlyBird
 
 @export var base_speed: float = 200.0
 @export var speed_growth_rate: float = 10.0 # Speed increase per second
-@export var max_speed: float = 1600.0
+@export var max_speed: float = 2400.0 # 1600 tested as safe
 @onready var autopilot: Node = %EarlyBirdAutopilot
 
 
