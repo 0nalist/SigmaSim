@@ -69,6 +69,7 @@ func apply_productivity() -> void:
 	var final_productivity = EffectManager.get_final_value("worker_productivity_per_tick", productivity_per_tick)
 	var output = final_productivity * (1.0 + get_specialization_bonus())
 	assigned_task.apply_productivity(output)
+	print("💼 Applying productivity:", output)
 
 
 func get_specialization_bonus() -> float:

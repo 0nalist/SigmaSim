@@ -123,12 +123,16 @@ func get_save_data() -> Dictionary:
 	return upgrade_states
 
 func load_from_data(data: Dictionary) -> void:
+	print("🔄 UpgradeManager: Resetting and loading...")
 	EffectManager.reset()
+	upgrade_states.clear()
 	upgrade_states = data
+
 	for id in upgrade_states:
 		var upgrade = get_upgrade_by_id(id)
 		if not upgrade:
 			continue
 		var count = upgrade_states[id].get("purchase_count", 0)
+		print("⬆️  Applying", id, "x", count)
 		for _i in count:
 			upgrade.apply_all()
