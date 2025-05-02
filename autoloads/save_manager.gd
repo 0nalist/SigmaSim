@@ -144,6 +144,22 @@ func load_from_slot(slot_id: int) -> void:
 		BillManager.load_from_data(data["bills"])
 
 
+func reset_game_state() -> void:
+	# Reset all relevant managers to blank state
+	PortfolioManager.reset()
+	PlayerManager.reset()
+	WindowManager.reset()
+	TimeManager.reset()
+	TaskManager.reset()
+	EffectManager.reset()
+	WorkerManager.reset()
+	MarketManager.reset()
+	BillManager.reset()
+	UpgradeManager.reset()
+	# Add others as needed
+
+
+
 func reset_managers():
 	PortfolioManager.reset()
 	PlayerManager.reset()

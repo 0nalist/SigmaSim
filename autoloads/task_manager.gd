@@ -81,15 +81,18 @@ func load_from_data(data: Dictionary) -> void:
 			if entry.has("assigned_worker_ids"):
 				var ids = entry["assigned_worker_ids"]
 				for id in ids:
-					var worker = WorkerManager.get_worker_by_id(id)
-					if worker:
-						WorkerManager.assign_worker(worker, task)
+					deferred_assignments.append([id, task])
 
 			task_pools[category].append(task)
 
-	# Defer actual assignments to avoid triggering side-effects too early
+	# Perform deferred assignments safely
 	for pair in deferred_assignments:
-		call_deferred("_deferred_assign_worker", pair[0], pair[1])
+		var id = pair[0]
+		var task = pair[1]
+		var worker = WorkerManager.get_worker_by_id(id)
+		if worker:
+			call_deferred("_deferred_assign_worker", worker, task)
+
 
 
 func _deferred_assign_worker(worker: Worker, task: WorkerTask) -> void:
