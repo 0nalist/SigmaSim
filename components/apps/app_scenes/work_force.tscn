@@ -115,3 +115,5 @@ size_flags_vertical = 0
 focus_mode = 0
 mouse_filter = 1
 text = "Hire"
+
+[connection signal="pressed" from="MarginContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]

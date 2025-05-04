@@ -59,8 +59,10 @@ func _load_or_initialize_gigs() -> void:
 		daily_gigs = existing_gigs
 		
 
-func _on_day_passed() -> void:
+func _on_day_passed(_day, _month, _year) -> void:
 	_load_or_initialize_gigs() ## TEMP, should portion out load or init to store pool of already exhausted tasks
+	##TODO Fix this^ Doesnt refresh on day passed
+	_populate_work_tab()
 
 func _populate_work_tab() -> void:
 	for child in %GigList.get_children():
