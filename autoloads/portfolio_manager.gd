@@ -66,6 +66,7 @@ func attempt_spend(amount: float) -> bool:
 
 	# Neither cash nor credit can cover the cost
 	print("not enough cash or credit")
+	StatpopManager.spawn("DECLINED", get_viewport().get_mouse_position(), "click", Color.RED)
 	return false
 
 
