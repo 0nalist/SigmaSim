@@ -49,12 +49,6 @@ layout_mode = 2
 mouse_filter = 1
 text = "price"
 
-[node name="LimitLabel" type="Label" parent="ClickPanel/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 1
-text = "price"
-
 [node name="StatusLabel" type="Label" parent="ClickPanel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2

@@ -9,10 +9,16 @@ var sort_descending := true
 @onready var high_low_button: Button = %HighLowButton
 @onready var sort_dropdown: OptionButton = %SortDropdown
 
+var max_daily_gigs := 3
+
+var daily_gigs: Array[WorkerTask] = []
+
 func _ready() -> void:
 
 	sort_dropdown.item_selected.connect(_on_sort_property_changed)
-
+	
+	TimeManager.day_passed.connect(_on_day_passed)
+	
 	_init_dropdown()
 
 	_load_or_initialize_gigs()
@@ -31,6 +37,7 @@ func _load_or_initialize_gigs() -> void:
 			return
 
 		dir.list_dir_begin()
+		var all_tasks: Array[WorkerTask] = []
 		var file_name = dir.get_next()
 		while file_name != "":
 			if file_name.ends_with(".tres"):
@@ -38,9 +45,24 @@ func _load_or_initialize_gigs() -> void:
 				var base_task: WorkerTask = load(path)
 				var task := base_task.duplicate(true)
 				if task is WorkerTask and task.show_in_grinderr and task.payout_type == "cash":
-					TaskManager.register_task("grinderr", task)
+					all_tasks.append(task)
 			file_name = dir.get_next()
 		dir.list_dir_end()
+
+		all_tasks.shuffle()
+		daily_gigs = all_tasks.slice(0, max_daily_gigs)
+
+		for task in daily_gigs:
+			TaskManager.register_task("grinderr", task)
+	else:
+		# Only treat saved tasks as daily_gigs
+		daily_gigs = existing_gigs
+		
+
+func _on_day_passed(_day, _month, _year) -> void:
+	_load_or_initialize_gigs() ## TEMP, should portion out load or init to store pool of already exhausted tasks
+	##TODO Fix this^ Doesnt refresh on day passed
+	_populate_work_tab()
 
 func _populate_work_tab() -> void:
 	for child in %GigList.get_children():
@@ -48,6 +70,8 @@ func _populate_work_tab() -> void:
 
 	var sorted_gigs = sort_gigs_by(sort_property, sort_descending)
 	for gig in sorted_gigs:
+		if gig.completion_limit != -1 and gig.completions_done >= gig.completion_limit:
+			continue  # skip gigs that are completed to their limit
 		var card = _create_gig_card(gig)
 		%GigList.add_child(card)
 		card.setup(gig)
@@ -58,12 +82,7 @@ func _create_gig_card(gig: WorkerTask) -> Control:
 	return card
 
 func _on_open_gig(gig: WorkerTask) -> void:
-	var popup_pane := gig_popup_scene.instantiate() as Pane
-
-	var window := WindowFrame.instantiate_for_pane(popup_pane)
-	WindowManager.register_window(window, popup_pane.show_in_taskbar)
-	call_deferred("setup_gig_popup", popup_pane, gig)
-	call_deferred("autoposition_window", window)
+	WindowManager.launch_gig_popup(gig)
 
 func setup_gig_popup(pane: Pane, gig: WorkerTask) -> void:
 	if is_instance_valid(pane):
@@ -71,7 +90,7 @@ func setup_gig_popup(pane: Pane, gig: WorkerTask) -> void:
 
 func sort_gigs_by(property: String, descending := true) -> Array[WorkerTask]:
 	var gigs = TaskManager.get_tasks("grinderr")
-	print("📊 Sorting grinderr gigs by:", property)
+	print("Sorting grinderr gigs by: ", property)
 
 	gigs.sort_custom(func(a: WorkerTask, b: WorkerTask) -> bool:
 		var a_value = get_sort_value(a, property)
@@ -88,7 +107,9 @@ func get_sort_value(task: WorkerTask, property: String) -> float:
 		"current_productivity": return task.current_productivity
 		"payout_per_productivity":
 			return task.payout_amount / max(task.productivity_required, 0.01)
-		_: return 0.0
+		_: 
+			print("invalid sort property")
+			return 0.0
 
 # --- DROPDOWNS --- #
 
@@ -117,5 +138,4 @@ func _on_high_low_button_pressed() -> void:
 
 
 func _on_hire_button_pressed() -> void:
-	
 	WindowManager.launch_pane(hire_popup_scene)

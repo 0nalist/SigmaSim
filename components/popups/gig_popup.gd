@@ -23,7 +23,6 @@ func _ready() -> void:
 	TaskManager.assignment_target_changed.connect(_on_assignment_target_changed)
 	call_deferred("_safe_check_assignment_target")
 	
-	
 	if pending_gig_title != "":
 		call_deferred("_try_load_gig_by_title")
 
@@ -38,7 +37,7 @@ func _on_assignment_target_changed(new_target: WorkerTask) -> void:
 func setup(gig_ref: WorkerTask) -> void:
 	gig = gig_ref
 	
-	
+	unique_popup_key = "gig_%s" % gig.title
 	window_title = gig.title
 	title_label.text = gig.title
 	payout_label.text = "$%.2f" % gig.payout_amount + " every %s" % gig.unit_name
@@ -57,8 +56,23 @@ func setup(gig_ref: WorkerTask) -> void:
 	gig.productivity_applied.connect(_on_productivity_applied)
 	assign_button.pressed.connect(_on_assign_worker_pressed)
 	grind_button.pressed.connect(_on_grind_button_pressed)
-	WorkerManager.worker_selected.connect(_on_worker_selected)
+	
+	if not gig.task_updated.is_connected(_on_worker_state_changed):
+		gig.task_updated.connect(_on_worker_state_changed)
+		
+	if not WorkerManager.worker_selected.is_connected(_on_worker_selected):
+		WorkerManager.worker_selected.connect(_on_worker_selected)
+	
+	#WorkerManager.worker_idle.connect(_on_worker_state_changed)
+	#WorkerManager.worker_unpaid.connect(_on_worker_state_changed)
+	#WorkerManager.worker_assigned.connect(_on_worker_state_changed)
+	#WorkerManager.worker_deactivated.connect(_on_worker_state_changed)
+
+
 	call_deferred("_safe_check_assignment_target")
+
+func _on_worker_state_changed(_args = null):
+	_refresh_workers()
 
 
 func _safe_check_assignment_target() -> void:
@@ -120,10 +134,6 @@ func _refresh_progress():
 
 
 
-
-
-
-
 func _refresh_workers():
 	for child in worker_list.get_children():
 		child.queue_free()
@@ -145,21 +155,14 @@ func _refresh_workers():
 
 func _on_worker_selected(worker: Worker) -> void:
 	if TaskManager.active_assignment_target != gig:
-		return # ⚠️ This popup is no longer the one the player is interacting with
+		return 
 
 	# Prevent duplicates
 	if worker != null and not gig.assigned_workers.has(worker):
-		gig.assigned_workers.append(worker)
+		#gig.assigned_workers.append(worker)
 		WorkerManager.assign_worker(worker, gig)
 		_refresh_workers()
 		_refresh_selected_worker()
-
-	if worker != null and not gig.assigned_workers.has(worker):
-		gig.assigned_workers.append(worker)
-		WorkerManager.assign_worker(worker, gig)
-		_refresh_workers()
-		_refresh_selected_worker()
-
 
 func _reset_assignment_toggle():
 	assign_button.set_pressed_no_signal(false)
@@ -213,23 +216,34 @@ func _on_work_force_button_pressed() -> void:
 
 
 func get_custom_save_data() -> Dictionary:
-	return {
-		"task_title": gig.title,
-	}
+	if gig != null:
+		return { "task_title": gig.title } # Normal
+	elif pending_gig_title != "":
+		return { "task_title": pending_gig_title } # Fallback if pending
+	return {} # Double fallback to prevent crash, silently fails
+
+
 
 func load_custom_save_data(data: Dictionary) -> void:
 	pending_gig_title = data.get("task_title", "")
 	# We defer the real setup into _ready()
 
+var try_count = 0
 func _try_load_gig_by_title() -> void:
+	
+	
 	if pending_gig_title == "":
 		return
+
 	var found_gig = TaskManager.find_task_by_title("grinderr", pending_gig_title)
 	if found_gig:
 		setup(found_gig)
-	else:
-		push_warning("GigPopup: Could not find gig with title: %s" % pending_gig_title)
-	pending_gig_title = ""
+		pending_gig_title = ""
+	elif try_count < 5:
+		print("⏳ Gig not yet found: retrying...")
+		call_deferred("_try_load_gig_by_title")
+		try_count += 1  # Try again next frame, will repeat forever tho...
+
 
 func _exit_tree() -> void:
 	if WorkerManager.worker_selected.is_connected(_on_worker_selected):

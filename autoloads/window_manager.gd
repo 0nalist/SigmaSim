@@ -197,12 +197,18 @@ func launch_popup(popup_scene: PackedScene, unique_key: String, setup_args: Vari
 	var window = WindowFrame.instantiate_for_pane(popup_pane)
 	register_window(window, popup_pane.show_in_taskbar)
 
-	if setup_args != null and popup_pane.has_method("setup"):
-		popup_pane.call_deferred("setup", setup_args)
+	if setup_args != null:
+		if popup_pane.has_method("setup_custom"):
+			popup_pane.call_deferred("setup_custom", setup_args)
+		elif popup_pane.has_method("setup"):
+			popup_pane.call_deferred("setup", setup_args)
 
 	call_deferred("autoposition_window", window)
 
-
+func launch_gig_popup(gig: WorkerTask) -> void:
+	var popup_scene = preload("res://components/popups/gig_popup.tscn")
+	var key = "gig_%s" % gig.title
+	launch_popup(popup_scene, key, gig)
 
 
 func autoposition_window(window: WindowFrame) -> void:

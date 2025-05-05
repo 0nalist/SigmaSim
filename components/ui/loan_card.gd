@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends Control
 class_name LoanCard
 
 signal pay_requested(amount: float)

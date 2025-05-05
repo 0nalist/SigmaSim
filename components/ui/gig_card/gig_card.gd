@@ -23,7 +23,7 @@ func setup(gig_ref: WorkerTask):
 	gig.task_updated.connect(_on_gig_updated)
 
 	open_button.pressed.connect(func():
-		WindowManager.launch_popup(gig_popup_scene, "task_" + gig.title, gig)
+		WindowManager.launch_gig_popup(gig)
 	)
 
 func _update_display():

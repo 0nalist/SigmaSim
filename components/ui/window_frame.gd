@@ -41,10 +41,6 @@ var min_window_size := Vector2(120, 50)
 @onready var close_button: Button = %CloseButton
 @onready var content_panel: ScrollContainer = %ContentPanel
 
-var is_upgrade_view := false
-var upgrade_instance: Pane = null
-
-
 
 
 func _ready() -> void:
@@ -332,7 +328,7 @@ func _update_upgrade_button_state() -> void:
 		return
 
 	var upgrades := UpgradeManager.get_upgrades_by_source(pane.window_title)
-
+	
 	var any_available := false
 	for upgrade in upgrades:
 		if UpgradeManager.is_unlocked(upgrade.upgrade_id) and not UpgradeManager.is_purchased(upgrade.upgrade_id):

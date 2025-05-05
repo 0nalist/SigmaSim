@@ -70,7 +70,7 @@ func purchase_upgrade(id: String) -> void:
 	if PortfolioManager.cash < cost:
 		return  # Not enough money
 
-	PortfolioManager.spend_cash(cost)
+	PortfolioManager.attempt_spend(cost)
 	upgrade.apply_all()
 
 	state.purchase_count = count + 1
@@ -114,7 +114,8 @@ func get_all_upgrades() -> Array:
 	return available_upgrades.values()
 
 func get_upgrades_by_source(source_name: String) -> Array:
-	return available_upgrades.values().filter(func(u): return u.source == source_name)
+	var target = source_name.to_lower()
+	return available_upgrades.values().filter(func(u): return u.source.to_lower() == target)
 
 # --- Save/load --- #
 
@@ -122,11 +123,16 @@ func get_save_data() -> Dictionary:
 	return upgrade_states
 
 func load_from_data(data: Dictionary) -> void:
+	print("🔄 UpgradeManager: Resetting and loading...")
+	EffectManager.reset()
+	upgrade_states.clear()
 	upgrade_states = data
+
 	for id in upgrade_states:
 		var upgrade = get_upgrade_by_id(id)
 		if not upgrade:
 			continue
 		var count = upgrade_states[id].get("purchase_count", 0)
+		print("⬆️  Applying", id, "x", count)
 		for _i in count:
 			upgrade.apply_all()

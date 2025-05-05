@@ -6,7 +6,7 @@ extends Node
 
 @export var stat_pop_scene: PackedScene = preload("res://components/ui/statpop.tscn")
 
-func spawn(text: String, position: Vector2, event_type: String = "click") -> void:
+func spawn(text: String, position: Vector2, event_type: String = "click", color: Color = Color.WHITE) -> void:
 	if event_type == "click" and not click_stat_pops_enabled:
 		return
 	if event_type == "passive" and not passive_stat_pops_enabled:
@@ -15,4 +15,4 @@ func spawn(text: String, position: Vector2, event_type: String = "click") -> voi
 	var stat_pop = stat_pop_scene.instantiate()
 	stat_pop.global_position = position 
 	get_tree().root.add_child(stat_pop)
-	stat_pop.init(text)
+	stat_pop.init(text, color)

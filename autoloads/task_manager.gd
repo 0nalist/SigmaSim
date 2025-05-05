@@ -48,12 +48,13 @@ func get_save_data() -> Dictionary:
 		for task: WorkerTask in task_pools[category]:
 			task_list.append({
 				"title": task.title,
-				"progress": task.progress,
+				"current_productivity": task.current_productivity,
 				"completion_limit": task.completion_limit,
-				"assigned_worker_id": task.assigned_worker_id if "assigned_worker_id" in task else null,
-				"payout": task.payout_amount,
+				"productivity_required": task.productivity_required,
+				"assigned_worker_ids": task.get_assigned_worker_ids(),
+				"payout_amount": task.payout_amount,
 				"payout_type": task.payout_type,
-				"completed_units": task.completed_units,
+				"completions_done": task.completions_done,
 				"show_in_grinderr": task.show_in_grinderr,
 			})
 		data[category] = task_list
@@ -61,20 +62,44 @@ func get_save_data() -> Dictionary:
 
 func load_from_data(data: Dictionary) -> void:
 	task_pools.clear()
+
+	var deferred_assignments: Array = []  # 🧠 Store worker-task pairs to assign later
+
 	for category in data.keys():
 		task_pools[category] = []
 		for entry in data[category]:
 			var task := WorkerTask.new()
 			task.title = entry.get("title", "")
-			task.progress = entry.get("progress", 0.0)
+			task.current_productivity = entry.get("current_productivity", 0.0)
 			task.completion_limit = entry.get("completion_limit", -1)
-			task.payout = entry.get("payout_amount", 0.0)
+			task.productivity_required = entry.get("productivity_required", 1.0)
+			task.payout_amount = entry.get("payout_amount", 0.0)
 			task.payout_type = entry.get("payout_type", "cash")
-			task.completed_units = entry.get("completed_units", 0)
+			task.completions_done = entry.get("completions_done", 0)
 			task.show_in_grinderr = entry.get("show_in_grinderr", false)
-			if entry.has("assigned_worker_id"):
-				task.assigned_worker_id = entry["assigned_worker_id"]
+
+			if entry.has("assigned_worker_ids"):
+				var ids = entry["assigned_worker_ids"]
+				for id in ids:
+					deferred_assignments.append([id, task])
+
 			task_pools[category].append(task)
+
+	# Perform deferred assignments safely
+	for pair in deferred_assignments:
+		var id = pair[0]
+		var task = pair[1]
+		var worker = WorkerManager.get_worker_by_id(id)
+		if worker:
+			call_deferred("_deferred_assign_worker", worker, task)
+
+
+
+func _deferred_assign_worker(worker: Worker, task: WorkerTask) -> void:
+	if worker and task:
+		WorkerManager.assign_worker(worker, task)
+		
+
 
 
 func clear_tasks(category: String) -> void:

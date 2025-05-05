@@ -12,9 +12,10 @@ func _ready() -> void:
 	modulate.a = 1.0
 
 
-func init(text: String) -> void:
+func init(text: String, color: Color = Color.WHITE) -> void:
 	self.text = text
-
+	self.add_theme_color_override("font_color", color)
+	
 	anchor_left = 0
 	anchor_top = 0
 	anchor_right = 0

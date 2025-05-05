@@ -75,8 +75,11 @@ func save_to_slot(slot_id: int) -> void:
 		"portfolio": PortfolioManager.get_save_data(),
 		"time": TimeManager.get_save_data(),
 		"market": MarketManager.get_save_data(),
+		"tasks": TaskManager.get_save_data(),
 		"player": PlayerManager.get_save_data(),
+		"workers": WorkerManager.get_save_data(),
 		"bills": BillManager.get_save_data(),
+		"upgrades": UpgradeManager.get_save_data(),
 		"windows": WindowManager.get_save_data(),
 	}
 
@@ -106,7 +109,7 @@ func load_from_slot(slot_id: int) -> void:
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
-
+	reset_managers()
 	var file := FileAccess.open(path, FileAccess.READ)
 	var text := file.get_as_text()
 	file.close()
@@ -123,12 +126,17 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("time"):
 		TimeManager.load_from_data(data["time"])
 		TimeManager.start_time()
+	if data.has("upgrades"):
+		UpgradeManager.load_from_data(data["upgrades"])
+	if data.has("tasks"):
+		TaskManager.load_from_data(data["tasks"])
 	if data.has("market"):
 		MarketManager.load_from_data(data["market"])
 	if data.has("player"):
 		PlayerManager.load_from_data(data["player"])
 		PlayerManager.set_slot_id(slot_id)
-
+	if data.has("workers"):
+		WorkerManager.load_from_data(data["workers"])
 	if data.has("windows"):
 		WindowManager.load_from_data(data["windows"])
 
@@ -136,13 +144,30 @@ func load_from_slot(slot_id: int) -> void:
 		BillManager.load_from_data(data["bills"])
 
 
-func reset_managers():
+func reset_game_state() -> void:
+	# Reset all relevant managers to blank state
 	PortfolioManager.reset()
 	PlayerManager.reset()
 	WindowManager.reset()
 	TimeManager.reset()
 	TaskManager.reset()
-	
+	EffectManager.reset()
+	WorkerManager.reset()
+	MarketManager.reset()
+	#BillManager.reset()
+	#UpgradeManager.reset()
+
+
+
+func reset_managers():
+	PortfolioManager.reset()
+	PlayerManager.reset()
+	WindowManager.reset()
+	TimeManager.reset()
+	WorkerManager.reset()
+	EffectManager.reset()
+	TaskManager.reset()
+	EffectManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)

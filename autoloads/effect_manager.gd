@@ -22,3 +22,6 @@ func remove_effect(variable_name: String, effect: EffectResource) -> void:
 	if not effect_stacks.has(variable_name):
 		return
 	effect_stacks[variable_name].erase(effect)
+
+func reset() -> void:
+	effect_stacks.clear()

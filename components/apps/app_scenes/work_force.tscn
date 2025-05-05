@@ -1,16 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://dkd8ber0rdok0"]
+[gd_scene load_steps=9 format=3 uid="uid://dkd8ber0rdok0"]
 
-[ext_resource type="Script" uid="uid://dqadp0a03aco3" path="res://components/apps/worker_overview/work_force.gd" id="1_30bye"]
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_wbg8h"]
-[ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="3_ngx45"]
-[ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="3_wbg8h"]
+[ext_resource type="Script" uid="uid://dqadp0a03aco3" path="res://components/apps/work_force.gd" id="2_bq8vs"]
+[ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="2_ngx45"]
+[ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="3_bq8vs"]
+[ext_resource type="PackedScene" uid="uid://b6d1kl4tiarf2" path="res://components/upgrade_scenes/workforce_upgrade_ui.tscn" id="4_bq8vs"]
 [ext_resource type="Script" uid="uid://d1n71inu575u" path="res://components/ui/active_tasks_bar.gd" id="4_yfqmq"]
-[ext_resource type="PackedScene" uid="uid://b6d1kl4tiarf2" path="res://components/upgrade_scenes/workforce_upgrade_ui.tscn" id="5_yfqmq"]
-[ext_resource type="PackedScene" uid="uid://dgawvt5yorfxn" path="res://components/popups/gig_popup.tscn" id="7_bq8vs"]
+[ext_resource type="PackedScene" uid="uid://kpqwebu0bb67" path="res://components/popups/gig_popup.tscn" id="7_bq8vs"]
 [ext_resource type="PackedScene" uid="uid://bqc77qqsonskv" path="res://components/ui/task_card.tscn" id="7_ngx45"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30bye"]
-bg_color = Color(0.0962047, 0.0962048, 0.0962047, 1)
 
 [node name="WorkForce" type="PanelContainer"]
 anchors_preset = 15
@@ -21,15 +18,12 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
-theme = ExtResource("1_wbg8h")
-theme_override_styles/panel = SubResource("StyleBoxFlat_30bye")
-script = ExtResource("1_30bye")
-hire_popup_scene = ExtResource("3_ngx45")
+script = ExtResource("2_bq8vs")
+hire_popup_scene = ExtResource("2_ngx45")
 window_title = "WorkForce"
-window_icon = ExtResource("3_wbg8h")
-default_window_size = Vector2(620, 500)
-default_position = "left"
-upgrade_pane = ExtResource("5_yfqmq")
+window_icon = ExtResource("3_bq8vs")
+default_window_size = Vector2(680, 480)
+upgrade_pane = ExtResource("4_bq8vs")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -96,6 +90,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.25
+mouse_filter = 1
 script = ExtResource("4_yfqmq")
 gig_popup_scene = ExtResource("7_bq8vs")
 task_card_scene = ExtResource("7_ngx45")
@@ -118,6 +113,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 focus_mode = 0
+mouse_filter = 1
 text = "Hire"
 
 [connection signal="pressed" from="MarginContainer/GrinderrButton" to="." method="_on_grinderr_button_pressed"]

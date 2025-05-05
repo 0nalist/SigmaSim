@@ -81,6 +81,8 @@ func update_productivity() -> void:
 func update_cost() -> void:
 	if show_cost:
 		cost_label.visible = true
-		cost_label.text = "Acquisition Cost: $%d + $%d per day" % [worker.sign_on_bonus, worker.day_rate]
+		var total_cost := worker.get_hire_cost()
+		var rate := worker.get_day_rate()
+		cost_label.text = "Hire Cost: $%.0f + $%.0f/day" % [total_cost, rate]
 	else:
 		cost_label.visible = false
