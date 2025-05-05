@@ -1,8 +1,6 @@
 extends Pane
 class_name Minerr
 
-
-
 #@export var crypto_list: Array[Cryptocurrency]
 @export var crypto_row_scene: PackedScene
 
@@ -178,3 +176,11 @@ func _on_selected_crypto_texture_gui_input(event: InputEvent) -> void:
 		CursorManager.set_pickaxe_click_cursor()
 	else:
 		CursorManager.set_pickaxe_cursor()
+
+
+func _on_buy_used_gpu_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_buy_new_gpu_button_pressed() -> void:
+	pass # Replace with function body.

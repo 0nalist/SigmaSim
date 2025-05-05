@@ -4,6 +4,12 @@ extends Node
 signal gpus_changed
 signal gpu_burned_out(index: int)
 
+# GPU Pricing
+var gpu_base_price: float = 100.0
+var current_gpu_price: float = gpu_base_price
+var gpu_price_growth: float = 1.4  # price multiplier each purchase
+
+
 @export var base_power: int = 100
 @export var overclock_power_multiplier: float = 1.5
 @export var burnout_rate_per_tick: float = 5.0  # Burnout chance increase per tick of overclocking (out of 1000)
@@ -27,6 +33,35 @@ func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 	total_power += power
 
 	emit_signal("gpus_changed")
+
+func buy_gpu() -> bool:
+	if PortfolioManager.can_pay_with_cash(current_gpu_price):
+		PortfolioManager.spend_cash(current_gpu_price)
+		add_gpu("")  # Add GPU without assigning it yet (free GPU)
+		current_gpu_price *= gpu_price_growth
+		emit_signal("gpus_changed")
+		return true
+	else:
+		print("Insufficient cash to buy GPU")
+		return false
+
+# Adjust get_free_gpu_count logic:
+func get_free_gpu_count() -> int:
+	var free := 0
+	for crypto in gpu_cryptos:
+		if crypto == "":
+			free += 1
+	return free
+
+# Modified assign_gpu function (to assign a free GPU to a crypto)
+func assign_free_gpu(symbol: String) -> bool:
+	for i in gpu_cryptos.size():
+		if gpu_cryptos[i] == "":
+			gpu_cryptos[i] = symbol
+			emit_signal("gpus_changed")
+			return true
+	return false  # No free GPU available
+
 
 
 func set_overclocked(index: int, overclocked: bool) -> void:

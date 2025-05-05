@@ -44,7 +44,7 @@ func _ready():
 	TimeManager.day_passed.connect(_on_day_passed)
 
 ## --- Spending Router
-func attempt_spend(amount: float, credit_required_score: int = 1000, silent: bool = false) -> bool:
+func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool = false) -> bool:
 	if amount <= 0.0:
 		printerr("Attempted to spend non-positive amount")
 		return false
@@ -53,7 +53,7 @@ func attempt_spend(amount: float, credit_required_score: int = 1000, silent: boo
 	if can_pay_with_cash(amount):
 		spend_cash(amount)
 		if not silent:
-			StatpopManager.spawn("$" + str(amount), get_viewport().get_mouse_position(), "click", Color.YELLOW)
+			StatpopManager.spawn("-$" + str(amount), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 		return true
 
 	# Credit fallback
@@ -62,7 +62,7 @@ func attempt_spend(amount: float, credit_required_score: int = 1000, silent: boo
 		if cash > 0.0:
 			spend_cash(cash)
 			if not silent:
-				StatpopManager.spawn("$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.YELLOW)
+				StatpopManager.spawn("-$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 
 		if can_pay_with_credit(remainder):
 			var total_with_interest := remainder * (1.0 + credit_interest_rate)
@@ -73,7 +73,7 @@ func attempt_spend(amount: float, credit_required_score: int = 1000, silent: boo
 			_recalculate_credit_score()
 			emit_signal("resource_changed", "debt", get_total_debt())
 			if not silent:
-				StatpopManager.spawn("$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.ORANGE)
+				StatpopManager.spawn("-$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.ORANGE)
 			return true
 
 	# Failed to pay
@@ -163,8 +163,7 @@ func _recalculate_credit_score():
 	credit_score = clamp(base_score, 300, 850)
 
 func pay_down_credit(amount: float) -> bool:
-	if can_pay_with_cash(amount):
-		spend_cash(amount)
+	if attempt_spend(amount, 9999):
 		credit_used = max(credit_used - amount, 0.0)
 		emit_signal("credit_updated", credit_used, credit_limit)
 		emit_signal("resource_changed", "debt", get_total_debt())
@@ -204,13 +203,16 @@ func get_passive_income() -> float:
 ## --- Stock Methods
 func buy_stock(symbol: String, amount: int = 1) -> bool:
 	var stock = stock_data.get(symbol)
-	if stock == null or cash < stock.price * amount:
+	if stock == null:
 		return false
 
-	spend_cash(stock.price * amount)
-	stocks_owned[symbol] = stocks_owned.get(symbol, 0) + amount
-	MarketManager.apply_stock_transaction(symbol, amount)
-	return true
+	var total_price = stock.price * amount
+	if attempt_spend(total_price, 800):
+		stocks_owned[symbol] = stocks_owned.get(symbol, 0) + amount
+		MarketManager.apply_stock_transaction(symbol, amount)
+		return true
+
+	return false
 
 
 func sell_stock(symbol: String, amount: int = 1) -> bool:
@@ -219,6 +221,7 @@ func sell_stock(symbol: String, amount: int = 1) -> bool:
 
 	var stock = stock_data.get(symbol)
 	add_cash(stock.price * amount)
+	StatpopManager.spawn("+$" + str(stock.price*amount), get_viewport().get_mouse_position(), "click", Color.GREEN)
 	stocks_owned[symbol] -= amount
 	MarketManager.apply_stock_transaction(symbol, -amount)
 	return true

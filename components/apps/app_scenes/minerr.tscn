@@ -127,6 +127,19 @@ horizontal_alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
+[node name="BuyNewGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Buy New GPU"
+
+[node name="BuyUsedGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Used GPUs have a chance of burning out"
+text = "Buy Used GPU"
+
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
@@ -144,3 +157,5 @@ fill_mode = 3
 [connection signal="gui_input" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_gui_input"]
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_mouse_exited"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]
