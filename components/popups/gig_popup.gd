@@ -63,11 +63,6 @@ func setup(gig_ref: WorkerTask) -> void:
 	if not WorkerManager.worker_selected.is_connected(_on_worker_selected):
 		WorkerManager.worker_selected.connect(_on_worker_selected)
 	
-	#WorkerManager.worker_idle.connect(_on_worker_state_changed)
-	#WorkerManager.worker_unpaid.connect(_on_worker_state_changed)
-	#WorkerManager.worker_assigned.connect(_on_worker_state_changed)
-	#WorkerManager.worker_deactivated.connect(_on_worker_state_changed)
-
 
 	call_deferred("_safe_check_assignment_target")
 
