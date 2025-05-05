@@ -70,7 +70,7 @@ func purchase_upgrade(id: String) -> void:
 	if PortfolioManager.cash < cost:
 		return  # Not enough money
 
-	PortfolioManager.spend_cash(cost)
+	PortfolioManager.attempt_spend(cost)
 	upgrade.apply_all()
 
 	state.purchase_count = count + 1

@@ -56,10 +56,23 @@ func setup(gig_ref: WorkerTask) -> void:
 	gig.productivity_applied.connect(_on_productivity_applied)
 	assign_button.pressed.connect(_on_assign_worker_pressed)
 	grind_button.pressed.connect(_on_grind_button_pressed)
+	
+	if not gig.task_updated.is_connected(_on_worker_state_changed):
+		gig.task_updated.connect(_on_worker_state_changed)
+		
 	if not WorkerManager.worker_selected.is_connected(_on_worker_selected):
 		WorkerManager.worker_selected.connect(_on_worker_selected)
+	
+	#WorkerManager.worker_idle.connect(_on_worker_state_changed)
+	#WorkerManager.worker_unpaid.connect(_on_worker_state_changed)
+	#WorkerManager.worker_assigned.connect(_on_worker_state_changed)
+	#WorkerManager.worker_deactivated.connect(_on_worker_state_changed)
+
 
 	call_deferred("_safe_check_assignment_target")
+
+func _on_worker_state_changed(_args = null):
+	_refresh_workers()
 
 
 func _safe_check_assignment_target() -> void:

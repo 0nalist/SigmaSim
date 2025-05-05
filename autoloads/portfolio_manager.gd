@@ -10,7 +10,7 @@ var interest: float = 0.0
 var credit_limit: float = 2000.0
 var credit_used: float = 0.0
 var credit_interest_rate: float = 0.3  # 30% by default
-var credit_score: int = 700
+var credit_score: int = 1700
 
 var student_loans: float
 var student_loan_min_payment: float = 0.0
@@ -43,31 +43,45 @@ func _ready():
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 	TimeManager.day_passed.connect(_on_day_passed)
 
-## --- Hybrid Spend (Cash then Credit fallback) ---
-func attempt_spend(amount: float) -> bool:
-	# Try paying with cash first
+## --- Spending Router
+func attempt_spend(amount: float, credit_required_score: int = 1000, silent: bool = false) -> bool:
+	if amount <= 0.0:
+		printerr("Attempted to spend non-positive amount")
+		return false
+
+	# Cash first
 	if can_pay_with_cash(amount):
 		spend_cash(amount)
+		if not silent:
+			StatpopManager.spawn("$" + str(amount), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 		return true
 
-	# Fallback to credit (for the remainder)
-	var remainder := amount - cash
-	if can_pay_with_credit(remainder):
-		if cash > 0:
-			spend_cash(cash)  # spend remaining cash first
+	# Credit fallback
+	if credit_score >= credit_required_score:
+		var remainder := amount - cash
+		if cash > 0.0:
+			spend_cash(cash)
+			if not silent:
+				StatpopManager.spawn("$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 
-		var total_with_interest := remainder * (1.0 + credit_interest_rate)
-		credit_used += total_with_interest
-		cash = 0.0  # should now be zero
+		if can_pay_with_credit(remainder):
+			var total_with_interest := remainder * (1.0 + credit_interest_rate)
+			credit_used += total_with_interest
+			cash = 0.0
+			emit_signal("cash_updated", cash)
+			emit_signal("credit_updated", credit_used, credit_limit)
+			_recalculate_credit_score()
+			emit_signal("resource_changed", "debt", get_total_debt())
+			if not silent:
+				StatpopManager.spawn("$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.ORANGE)
+			return true
 
-		emit_signal("cash_updated", cash)
-		emit_signal("credit_updated", credit_used, credit_limit)
-		return true
-
-	# Neither cash nor credit can cover the cost
-	print("not enough cash or credit")
-	StatpopManager.spawn("DECLINED", get_viewport().get_mouse_position(), "click", Color.RED)
+	# Failed to pay
+	if not silent:
+		StatpopManager.spawn("DECLINED", get_viewport().get_mouse_position(), "click", Color.RED)
+	#print("Not enough cash or credit")
 	return false
+
 
 
 

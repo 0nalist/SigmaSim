@@ -50,28 +50,23 @@ func assign_worker(worker: Worker, task: WorkerTask) -> void:
 		push_error("⚠️ Re-entrant assign_worker call blocked.")
 		return
 	currently_assigning = true
+
 	if not worker or not task:
 		push_error("❌ Tried to assign null worker or task.")
+		currently_assigning = false
 		return
 
-	if worker.assigned_task == task:
-		return  # 🛑 Already assigned. Don't even print.
-
-	print("Assigning worker:", worker.name, " → ", task.title)
-
-	# Remove from previous task
-	if worker.assigned_task and worker.assigned_task != task:
-		worker.assigned_task.assigned_workers.erase(worker)
+	var old_task := worker.assigned_task
+	if old_task and is_instance_valid(old_task):
+		old_task.remove_worker(worker)
 
 	worker.assigned_task = task
 	worker.last_assigned_task = task
 	worker.active = true
 
-	if not task.assigned_workers.has(worker):
-		task.assigned_workers.append(worker)
+	task.add_worker(worker) 
 
 	emit_signal("worker_assigned", worker, task)
-	task.emit_signal("task_updated")
 	currently_assigning = false
 
 func unassign_worker(worker: Worker) -> void:
@@ -79,9 +74,12 @@ func unassign_worker(worker: Worker) -> void:
 	worker.assigned_task = null
 	emit_signal("worker_idle", worker)
 
-	if task and task.assigned_workers.has(worker):
-		task.assigned_workers.erase(worker)
-		task.emit_signal("task_updated")
+	if task:
+		task.remove_worker(worker) 
+	emit_signal("worker_assigned", worker, null)
+
+
+
 
 # --- Core Tick Loop ---
 func _process_tick() -> void:
@@ -89,9 +87,11 @@ func _process_tick() -> void:
 
 	for worker in workers:
 		var cost_per_tick: float = float(worker.day_rate) / TICKS_PER_DAY
-		var can_be_paid: bool = PortfolioManager.attempt_spend(cost_per_tick)
 
-		# Track payment status
+		# Attempt to pay using cash, fallback to credit if credit score ≥ 800
+		var can_be_paid := PortfolioManager.attempt_spend(cost_per_tick, 800,true)
+
+		# Handle unpaid state
 		if not can_be_paid:
 			if not worker.unpaid:
 				worker.unpaid = true
@@ -100,14 +100,12 @@ func _process_tick() -> void:
 		else:
 			if worker.unpaid:
 				worker.unpaid = false
-				# Resume if there was a previously assigned task
-				if worker.last_assigned_task != null:
+				if worker.last_assigned_task:
 					assign_worker(worker, worker.last_assigned_task)
 
-		# Update activity status
+		# Per-tick status and productivity logic
 		worker.update_active_status(current_tick, TICK_INTERVAL, can_be_paid)
 
-		# Do work or idle behavior
 		if worker.active:
 			worker.apply_productivity()
 			_gain_specialization(worker)
@@ -115,6 +113,7 @@ func _process_tick() -> void:
 			emit_signal("worker_deactivated", worker)
 		else:
 			_handle_idle_decay(worker)
+
 	
 
 func get_current_tick() -> int:
