@@ -3,6 +3,9 @@ extends Node
 
 signal gpus_changed
 signal gpu_burned_out(index: int)
+signal crypto_mined(crypto)
+
+var mining_timers: Dictionary = {}  # symbol: Timer
 
 # GPU Pricing
 var gpu_base_price: float = 100.0
@@ -24,6 +27,37 @@ var burnout_chances: PackedFloat32Array = []
 # Queue for removal
 var to_remove: PackedInt32Array = []
 
+func _ready() -> void:
+	call_deferred("setup_crypto_timers")
+
+func setup_crypto_timers() -> void:
+	for crypto in MarketManager.crypto_market.values():
+		if not mining_timers.has(crypto.symbol):
+			var timer = Timer.new()
+			timer.wait_time = crypto.block_time
+			timer.autostart = true
+			timer.one_shot = false
+			timer.timeout.connect(func(): _attempt_mine(crypto))
+			add_child(timer)
+			mining_timers[crypto.symbol] = timer
+
+func get_time_until_next_block(symbol: String) -> int:
+	if not mining_timers.has(symbol):
+		return -1
+	return int(ceil(mining_timers[symbol].time_left))
+
+func _attempt_mine(crypto: Cryptocurrency) -> void:
+	var current_power = get_power_for(crypto.symbol)
+
+	if current_power <= 0:
+		return
+
+	var random_difficulty = randi_range(0, crypto.power_required)
+	if current_power >= random_difficulty:
+		PortfolioManager.add_crypto(crypto.symbol, crypto.block_size)
+		emit_signal("crypto_mined", crypto)
+	emit_signal("gpus_changed")  # Notify Minerr UI to refresh
+
 func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 	gpu_cryptos.append(crypto_symbol)
 	is_overclocked.append(1 if overclocked else 0)
@@ -35,14 +69,13 @@ func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 	emit_signal("gpus_changed")
 
 func buy_gpu() -> bool:
-	if PortfolioManager.can_pay_with_cash(current_gpu_price):
-		PortfolioManager.spend_cash(current_gpu_price)
-		add_gpu("")  # Add GPU without assigning it yet (free GPU)
+	if PortfolioManager.attempt_spend(current_gpu_price):
+		add_gpu("")  # Add a free GPU (unassigned)
 		current_gpu_price *= gpu_price_growth
 		emit_signal("gpus_changed")
 		return true
 	else:
-		print("Insufficient cash to buy GPU")
+		print("Insufficient funds to buy GPU.")
 		return false
 
 # Adjust get_free_gpu_count logic:
@@ -127,24 +160,19 @@ func remove_gpu_from(symbol: String, count: int = 1) -> void:
 	var i := gpu_cryptos.size() - 1
 	while i >= 0 and removed < count:
 		if gpu_cryptos[i] == symbol:
-			gpu_cryptos.remove_at(i)
-			is_overclocked.remove_at(i)
-			burnout_chances.remove_at(i)
+			gpu_cryptos[i] = ""  # ← Assign GPU as free (unassigned), don't delete it!
+			is_overclocked[i] = 0  # Optionally reset overclock status
+			burnout_chances[i] = 0.0  # Optionally reset burnout chances
 			removed += 1
 		i -= 1
 	
 	if removed > 0:
 		emit_signal("gpus_changed")
 
+
 func get_total_gpu_count() -> int:
 	return gpu_cryptos.size()
 
-func get_free_gpu_count() -> int:
-	var assigned := 0
-	for symbol in gpu_cryptos:
-		if symbol != "":
-			assigned += 1
-	return gpu_cryptos.size() - assigned
 
 func get_gpu_count_for(symbol: String) -> int:
 	var count := 0

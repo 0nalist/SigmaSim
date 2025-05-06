@@ -76,7 +76,7 @@ func _populate_work_tab() -> void:
 		%GigList.add_child(card)
 		card.setup(gig)
 
-func _create_gig_card(gig: WorkerTask) -> Control:
+func _create_gig_card(_gig: WorkerTask) -> Control:
 	var card = preload("res://components/ui/gig_card/gig_card.tscn").instantiate()
 	card.open_gig.connect(_on_open_gig)
 	return card

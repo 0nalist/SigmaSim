@@ -4,7 +4,7 @@ class_name GigCard
 
 @export var gig_popup_scene: PackedScene
 
-signal open_gig(gig: WorkerTask)
+signal open_gig(gig: WorkerTask) # Do i actually use this?
 
 @onready var title_label = %TitleLabel
 @onready var progress_label = %ProgressLabel

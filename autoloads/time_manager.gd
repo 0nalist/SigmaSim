@@ -1,4 +1,5 @@
 extends Node
+# Autoload: TimeManager
 
 signal minute_passed(current_time_minutes: int)
 signal hour_passed(current_hour: int)

@@ -28,9 +28,11 @@ func _ready() -> void:
 	MarketManager.crypto_price_updated.connect(_on_crypto_updated)
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
 	GPUManager.gpus_changed.connect(update_gpu_label)
+	GPUManager.crypto_mined.connect(_on_crypto_mined)
 	selected_crypto_texture.gui_input.connect(_on_selected_texture_clicked)
 
 	update_gpu_label()
+	
 
 func refresh_rows_from_market():
 	# Clear existing rows
@@ -57,7 +59,7 @@ func refresh_rows_from_market():
 func _process(delta: float) -> void:
 	var changed := false
 	var to_remove: Array[String] = []
-
+	update_power_bar()
 	# Decay all entries
 	for symbol in extra_power.keys():
 		extra_power[symbol] = max(0.0, extra_power[symbol] - power_draw_down * delta)
@@ -88,9 +90,7 @@ func _process(delta: float) -> void:
 func update_gpu_label() -> void:
 	var total_gpus: int = GPUManager.get_total_gpu_count()
 	var free_gpus: int = GPUManager.get_free_gpu_count()
-	gpus_label.text = "GPUs 
-Free/Owned: 
-%d / %d" % [free_gpus, total_gpus]
+	gpus_label.text = "GPUs\nFree/Owned:\n%d / %d" % [free_gpus, total_gpus]
 
 	for symbol in crypto_rows.keys():
 		crypto_rows[symbol].update_display()
@@ -98,14 +98,17 @@ Free/Owned:
 	update_power_bar()
 
 
+
 func update_power_bar() -> void:
 	if selected_symbol == "":
 		target_power_percent = 0.0
+		print("no selected symbol")
 		return
 
 	var crypto = MarketManager.crypto_market.get(selected_symbol)
 	if crypto == null:
 		target_power_percent = 0.0
+		print("crypto null")
 		return
 
 	var gpu_power = GPUManager.get_power_for(selected_symbol)
@@ -125,9 +128,6 @@ func _on_selected_texture_clicked(event: InputEvent) -> void:
 			extra_power[selected_symbol] = extra_power.get(selected_symbol, 0) + 1
 			update_power_bar()
 
-			
-
-			# 🔥 Immediately reflect new value in the bar
 			displayed_power_percent = target_power_percent
 			power_bar.value = displayed_power_percent
 
@@ -138,13 +138,22 @@ func _on_sell_pressed(symbol: String) -> void:
 
 
 func _on_add_gpu(symbol: String) -> void:
-	GPUManager.add_gpu(symbol)
-	update_gpu_label()
+	if GPUManager.get_free_gpu_count() > 0:
+		if GPUManager.assign_free_gpu(symbol):
+			update_gpu_label()
+		else:
+			print("Failed to assign GPU to crypto.")
+	else:
+		print("No free GPUs available!")
 
 
 func _on_remove_gpu(symbol: String) -> void:
-	GPUManager.remove_gpu_from(symbol)
-	update_gpu_label()
+	if GPUManager.get_gpu_count_for(symbol) > 0:
+		GPUManager.remove_gpu_from(symbol, 1)  # removes and destroys GPU
+		update_gpu_label()
+	else:
+		print("No GPUs assigned to remove.")
+
 
 
 func _on_crypto_selected(symbol: String) -> void:
@@ -153,10 +162,13 @@ func _on_crypto_selected(symbol: String) -> void:
 	update_power_bar()
 
 
-func _on_crypto_updated(symbol: String, updated_crypto: Cryptocurrency) -> void:
+func _on_crypto_updated(symbol: String, _crypto: Cryptocurrency) -> void:
 	if crypto_rows.has(symbol):
 		crypto_rows[symbol].update_display()
-	update_power_bar()
+
+	# Directly update if this is the selected crypto
+	if symbol == selected_symbol:
+		update_power_bar()
 
 
 func _on_resource_changed(resource_name: String, _value: float) -> void:
@@ -177,10 +189,23 @@ func _on_selected_crypto_texture_gui_input(event: InputEvent) -> void:
 	else:
 		CursorManager.set_pickaxe_cursor()
 
+func _on_crypto_mined(crypto: Cryptocurrency):
+	##TODO Make this work
+	var window: WindowFrame
+	if get_parent().get_parent() is WindowFrame:
+		window = get_parent().get_parent() 
+	else:
+		return
+	StatpopManager.spawn("+" + str(crypto.block_size) + " " + str(crypto.symbol), window.header.global_position, "passive", Color.GREEN)
+
+
 
 func _on_buy_used_gpu_button_pressed() -> void:
 	pass # Replace with function body.
 
 
 func _on_buy_new_gpu_button_pressed() -> void:
-	pass # Replace with function body.
+	if GPUManager.buy_gpu():
+		update_gpu_label()
+	else:
+		print("Could not purchase GPU (insufficient funds).")

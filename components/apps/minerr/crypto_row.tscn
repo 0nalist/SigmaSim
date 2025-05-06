@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2lni5gfy28ds"]
+[gd_scene load_steps=4 format=3 uid="uid://b2lni5gfy28ds"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_4uak2"]
 [ext_resource type="Texture2D" uid="uid://chkl2i2bg50da" path="res://assets/mine.png" id="1_q4sjg"]
 [ext_resource type="Script" uid="uid://bq6co0sbj6hi" path="res://components/apps/minerr/crypto_row.gd" id="2_xojw8"]
 
@@ -31,38 +30,67 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="CryptoRow" type="GridContainer" parent="MarginContainer"]
-custom_minimum_size = Vector2(0, 50)
-layout_direction = 2
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("1_4uak2")
-columns = 4
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/CryptoRow"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("1_q4sjg")
 expand_mode = 2
 
-[node name="TokenLabel" type="Label" parent="MarginContainer/CryptoRow"]
+[node name="TokenLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 6
 text = "$HAWK"
 
-[node name="Control2" type="Control" parent="MarginContainer/CryptoRow"]
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_filter = 1
+
+[node name="OwnedLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Owned: 1 ($1)"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(79.575, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="OwnedLabel" type="Label" parent="MarginContainer/CryptoRow"]
+[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-text = "Owned: 1 ($1)"
+text = "GPUs: "
 
-[node name="SellButton" type="Button" parent="MarginContainer/CryptoRow"]
+[node name="RemoveGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+text = "-"
+
+[node name="AddGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+text = "+"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -70,35 +98,28 @@ size_flags_vertical = 6
 focus_mode = 0
 text = " Sell "
 
-[node name="Control" type="Control" parent="MarginContainer/CryptoRow"]
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CryptoRow"]
-custom_minimum_size = Vector2(79.575, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="GPUsLabel" type="Label" parent="MarginContainer/CryptoRow/HBoxContainer"]
+[node name="BlockLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "GPUs: "
+text = "2% chance to mine 1 HAWK in"
 
-[node name="RemoveGPUButton" type="Button" parent="MarginContainer/CryptoRow/HBoxContainer"]
+[node name="CountdownLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-text = "-"
+text = "10 seconds"
 
-[node name="AddGPUButton" type="Button" parent="MarginContainer/CryptoRow/HBoxContainer"]
-unique_name_in_owner = true
+[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-text = "+"
+size_flags_horizontal = 3
+mouse_filter = 1
 
-[node name="Button" type="Button" parent="MarginContainer/CryptoRow"]
+[node name="OverclockButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4

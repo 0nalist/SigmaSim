@@ -74,6 +74,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 			emit_signal("resource_changed", "debt", get_total_debt())
 			if not silent:
 				StatpopManager.spawn("-$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.ORANGE)
+			WindowManager.launch_app_by_name("OwerView")
 			return true
 
 	# Failed to pay
