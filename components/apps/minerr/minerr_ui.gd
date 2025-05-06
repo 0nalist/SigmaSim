@@ -190,10 +190,11 @@ func _on_selected_crypto_texture_gui_input(event: InputEvent) -> void:
 		CursorManager.set_pickaxe_cursor()
 
 func _on_crypto_mined(crypto: Cryptocurrency):
+	print("on crypto mined")
 	##TODO Make this work
 	var window: WindowFrame
-	if get_parent().get_parent() is WindowFrame:
-		window = get_parent().get_parent() 
+	if get_parent().get_parent().get_parent() is WindowFrame:
+		window = get_parent().get_parent().get_parent()
 	else:
 		return
 	StatpopManager.spawn("+" + str(crypto.block_size) + " " + str(crypto.symbol), window.header.global_position, "passive", Color.GREEN)
