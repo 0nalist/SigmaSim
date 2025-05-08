@@ -191,7 +191,7 @@ func _on_selected_crypto_texture_gui_input(event: InputEvent) -> void:
 
 func _on_crypto_mined(crypto: Cryptocurrency):
 	print("on crypto mined")
-	##TODO Make this work
+	
 	var window: WindowFrame
 	if get_parent().get_parent().get_parent() is WindowFrame:
 		window = get_parent().get_parent().get_parent()
