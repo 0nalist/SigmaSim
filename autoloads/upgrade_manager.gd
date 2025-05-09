@@ -8,12 +8,8 @@ signal upgrade_unlocked(id: String)
 signal upgrade_purchased(id: String)
 
 
-const UPGRADE_FOLDERS: Array[String] = [
-	"res://data/upgrades/workforce/",
-	"res://data/upgrades/brokerage/",
-	"res://data/upgrades/minerr/",
-	#"res://data/upgrades/lifestylist/",
-]
+@export var upgrade_files: Array[UpgradeResource] = []
+
 
 func _ready() -> void:
 	load_all_upgrades()
@@ -21,27 +17,13 @@ func _ready() -> void:
 # --- Registry and loader --- #
 
 func load_all_upgrades() -> void:
-	for folder_path in UPGRADE_FOLDERS:
-		_load_upgrades_from_folder(folder_path)
-
-func _load_upgrades_from_folder(folder_path: String) -> void:
-	var dir := DirAccess.open(folder_path)
-	if dir == null:
-		push_error("UpgradeManager: Could not open folder %s" % folder_path)
-		return
-
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-
-	while file_name != "":
-		if file_name.ends_with(".tres"):
-			var full_path = folder_path + file_name
-			var res = load(full_path)
-			if res is UpgradeResource and res.upgrade_id != "":
-				available_upgrades[res.upgrade_id] = res
+	for upgrade in upgrade_files:
+			if upgrade.upgrade_id != "":
+				available_upgrades[upgrade.upgrade_id] = upgrade
 			else:
-				push_warning("UpgradeManager: Skipped invalid upgrade: %s" % full_path)
-		file_name = dir.get_next()
+				push_warning("UpgradeManager: Skipped invalid upgrade with no ID.")
+
+
 
 # --- State management --- #
 

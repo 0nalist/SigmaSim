@@ -14,6 +14,7 @@ signal task_updated
 @export var payout_amount: float = 0.0
 @export var completion_limit: int = -1
 @export var current_productivity: float = 0.0
+@export var is_daily: bool = true
 
 var assigned_workers: Array[Worker] = []
 var completions_done: int = 0

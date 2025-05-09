@@ -3,6 +3,8 @@ extends Node
 
 signal assignment_target_changed(new_target: WorkerTask)
 
+@export var base_tasks: Array[WorkerTask] = []
+
 # Tasks are grouped by category (e.g. "grinderr", "contracting", etc.)
 var task_pools: Dictionary = {}  # category -> Array[WorkerTask]
 var active_assignment_target: WorkerTask = null
@@ -21,6 +23,21 @@ func get_tasks(category: String) -> Array[WorkerTask]:
 		for task in task_pools[category]:
 			tasks.append(task)
 	return tasks
+
+func unregister_task(category: String, task: WorkerTask) -> void:
+	if task_pools.has(category):
+		task_pools[category].erase(task)
+
+func generate_random_tasks(category: String, count: int) -> Array[WorkerTask]:
+	var filtered := base_tasks.filter(func(t): return t.show_in_grinderr and category == "grinderr")
+	filtered.shuffle()
+
+	var selected: Array[WorkerTask] = []
+	for i in min(count, filtered.size()):
+		var task = filtered[i].duplicate(true)
+		register_task(category, task)
+		selected.append(task)
+	return selected
 
 
 func remove_task(category: String, task: WorkerTask) -> void:

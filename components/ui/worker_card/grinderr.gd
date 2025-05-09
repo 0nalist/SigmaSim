@@ -4,10 +4,17 @@ class_name Grinderr
 @export var gig_popup_scene: PackedScene
 @export var hire_popup_scene: PackedScene
 
+@export var available_gig_files: Array[WorkerTask] = []
+
+var task_pools: Dictionary = {}  # category → Array[WorkerTask]
+
 var sort_property: String = "payout_amount"
 var sort_descending := true
 @onready var high_low_button: Button = %HighLowButton
 @onready var sort_dropdown: OptionButton = %SortDropdown
+
+
+
 
 var max_daily_gigs := 3
 
@@ -28,41 +35,25 @@ func _ready() -> void:
 # --- WORK TAB --- #
 
 func _load_or_initialize_gigs() -> void:
-	var existing_gigs = TaskManager.get_tasks("grinderr")
-
+	var existing_gigs = TaskManager.get_tasks("grinderr").filter(func(t): return t.is_daily)
 	if existing_gigs.is_empty():
-		var dir := DirAccess.open("res://resources/worker_tasks/grinderr_gigs/")
-		if dir == null:
-			printerr("Could not open gig directory.")
-			return
-
-		dir.list_dir_begin()
-		var all_tasks: Array[WorkerTask] = []
-		var file_name = dir.get_next()
-		while file_name != "":
-			if file_name.ends_with(".tres"):
-				var path = "res://resources/worker_tasks/grinderr_gigs/" + file_name
-				var base_task: WorkerTask = load(path)
-				var task := base_task.duplicate(true)
-				if task is WorkerTask and task.show_in_grinderr and task.payout_type == "cash":
-					all_tasks.append(task)
-			file_name = dir.get_next()
-		dir.list_dir_end()
-
-		all_tasks.shuffle()
-		daily_gigs = all_tasks.slice(0, max_daily_gigs)
-
-		for task in daily_gigs:
-			TaskManager.register_task("grinderr", task)
+		daily_gigs = TaskManager.generate_random_tasks("grinderr", max_daily_gigs)
 	else:
-		# Only treat saved tasks as daily_gigs
 		daily_gigs = existing_gigs
-		
+
+
 
 func _on_day_passed(_day, _month, _year) -> void:
-	_load_or_initialize_gigs() ## TEMP, should portion out load or init to store pool of already exhausted tasks
-	##TODO Fix this^ Doesnt refresh on day passed
+	var to_remove = TaskManager.get_tasks("grinderr").filter(func(t): return t.is_daily)
+	for gig in to_remove:
+		TaskManager.remove_task("grinderr", gig)
+
+	daily_gigs.clear()
+	_load_or_initialize_gigs()
 	_populate_work_tab()
+
+
+
 
 func _populate_work_tab() -> void:
 	for child in %GigList.get_children():

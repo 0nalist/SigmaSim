@@ -521,13 +521,28 @@ text = " 11:11 AM "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CalendarPopupUI" parent="TaskbarLayer" instance=ExtResource("16_g75lf")]
+[node name="Control" type="Control" parent="TaskbarLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="CalendarPopupUI" parent="TaskbarLayer/Control" instance=ExtResource("16_g75lf")]
 unique_name_in_owner = true
 visible = false
-offset_left = 1274.0
-offset_top = 651.0
-offset_right = 431.0
-offset_bottom = 205.0
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+offset_left = -422.0
+offset_top = -309.0
+offset_right = 281.0
+offset_bottom = 127.0
+grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(0.6, 0.6)
 
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]
