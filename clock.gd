@@ -15,6 +15,7 @@ func _on_day_passed(_day: int, _month: int, _year: int) -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		print("toggling calendar")
 		if %CalendarPopupUI.visible:
 			%CalendarPopupUI.close()
 		else:

@@ -505,6 +505,7 @@ custom_minimum_size = Vector2(120, 35)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_75kf8")
 script = ExtResource("9_dc0b5")
 
@@ -529,18 +530,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="CalendarPopupUI" parent="TaskbarLayer/Control" instance=ExtResource("16_g75lf")]
 unique_name_in_owner = true
-visible = false
+custom_minimum_size = Vector2(650, 450)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
-offset_left = -422.0
-offset_top = -309.0
-offset_right = 281.0
-offset_bottom = 127.0
+offset_left = -390.0
+offset_top = -319.0
+offset_right = 260.0
+offset_bottom = 131.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.6, 0.6)

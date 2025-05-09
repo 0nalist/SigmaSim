@@ -7,7 +7,6 @@ extends Pane
 @onready var day_panel_scene: PackedScene = preload("res://components/calendar_day_panel.tscn")
 @onready var month_year_label: Label = %MonthYearLabel
 
-
 func _ready():
 	hide()
 	autopay_checkbox.button_pressed = BillManager.autopay_enabled
@@ -17,18 +16,15 @@ func _ready():
 	month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
 	call_deferred("move_to_front")
 
-
 func add_click_catcher() -> void:
 	click_catcher = preload("res://components/ui/click_catcher.tscn").instantiate()
 	click_catcher.clicked_outside.connect(_on_click_outside)
 	get_tree().root.add_child(click_catcher)
 	move_to_front()
 
-
 func _on_click_outside(pos: Vector2) -> void:
 	if not get_global_rect().has_point(pos):
 		close()
-
 
 func open() -> void:
 	add_click_catcher()
@@ -97,7 +93,6 @@ func populate_calendar(month: int, year: int) -> void:
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
 	BillManager.autopay_enabled = toggled_on
-
 
 func _on_life_stylist_button_pressed() -> void:
 	WindowManager.launch_app_by_name("LifeStylist")
