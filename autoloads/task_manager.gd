@@ -11,6 +11,32 @@ var active_assignment_target: WorkerTask = null
 var selected_task: WorkerTask = null # this might be a clearer name for active_assignment_target
 #signal selected_task_changed(new_task: WorkerTask)
 
+func get_daily_gigs(category: String, count: int, day_seed: int) -> Array[WorkerTask]:
+	var pool := base_tasks.filter(func(t): return t.show_in_grinderr and category == "grinderr")
+	if pool.is_empty():
+		return []
+
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(hash(str(day_seed) + category))  # deterministic seed
+
+	var selected: Array[WorkerTask] = []
+	var pool_copy := pool.duplicate()
+
+	for _i in min(count, pool_copy.size()):
+		var index = rng.randi_range(0, pool_copy.size() - 1)
+		var task = pool_copy[index].duplicate(true)
+		task.is_daily = true
+		selected.append(task)
+		pool_copy.remove_at(index)
+
+	return selected
+
+
+
+
+
+
+
 func register_task(category: String, task: WorkerTask) -> void:
 	if not task_pools.has(category):
 		task_pools[category] = []

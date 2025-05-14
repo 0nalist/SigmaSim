@@ -30,36 +30,37 @@ func _ready() -> void:
 
 	_load_or_initialize_gigs()
 	_populate_work_tab()
-	sort_gigs_by("payout_amount", true)
+	sort_gigs_by("current_productivity", true)
 
 # --- WORK TAB --- #
 
 func _load_or_initialize_gigs() -> void:
-	var existing_gigs = TaskManager.get_tasks("grinderr").filter(func(t): return t.is_daily)
-	if existing_gigs.is_empty():
-		daily_gigs = TaskManager.generate_random_tasks("grinderr", max_daily_gigs)
-	else:
-		daily_gigs = existing_gigs
+	var day_seed := TimeManager.current_year * 10000 + TimeManager.current_month * 100 + TimeManager.current_day
+	daily_gigs = TaskManager.get_daily_gigs("grinderr", max_daily_gigs, day_seed)
 
 
 
-func _on_day_passed(_day, _month, _year) -> void:
-	var to_remove = TaskManager.get_tasks("grinderr").filter(func(t): return t.is_daily)
-	for gig in to_remove:
-		TaskManager.remove_task("grinderr", gig)
 
-	daily_gigs.clear()
+func _on_day_passed(_d, _m, _y) -> void:
 	_load_or_initialize_gigs()
 	_populate_work_tab()
 
 
 
 
+
 func _populate_work_tab() -> void:
+	print("populating work tab")
 	for child in %GigList.get_children():
 		child.queue_free()
 
-	var sorted_gigs = sort_gigs_by(sort_property, sort_descending)
+	var sorted_gigs = daily_gigs.duplicate()
+	sorted_gigs.sort_custom(func(a: WorkerTask, b: WorkerTask) -> bool:
+		var a_value = get_sort_value(a, sort_property)
+		var b_value = get_sort_value(b, sort_property)
+		return a_value > b_value if sort_descending else a_value < b_value
+	)
+
 	for gig in sorted_gigs:
 		if gig.completion_limit != -1 and gig.completions_done >= gig.completion_limit:
 			continue  # skip gigs that are completed to their limit
