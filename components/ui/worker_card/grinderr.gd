@@ -4,7 +4,7 @@ class_name Grinderr
 @export var gig_popup_scene: PackedScene
 @export var hire_popup_scene: PackedScene
 
-@export var available_gig_files: Array[WorkerTask] = []
+#@export var available_gig_files: Array[WorkerTask] = []
 
 var task_pools: Dictionary = {}  # category → Array[WorkerTask]
 

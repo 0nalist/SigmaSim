@@ -32,12 +32,12 @@ SaveManager="*res://autoloads/save_manager.gd"
 PlayerManager="*res://autoloads/player_manager.gd"
 CursorManager="*res://autoloads/cursor_manager.gd"
 WorkerManager="*res://autoloads/worker_manager.gd"
-TaskManager="*res://autoloads/task_manager.gd"
 NameGenerator="*res://autoloads/name_generator.gd"
 GameManager="*res://autoloads/game_manager.gd"
 EffectManager="*res://autoloads/effect_manager.gd"
 StatpopManager="*res://autoloads/statpop_manager.gd"
 UpgradeManager="*res://autoloads/upgrade_manager.tscn"
+TaskManager="*res://autoloads/task_manager.tscn"
 
 [display]
 

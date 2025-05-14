@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://q3rhpri641gv"]
+[gd_scene load_steps=11 format=3 uid="uid://q3rhpri641gv"]
 
 [ext_resource type="Script" uid="uid://cgegh7v8lopyj" path="res://autoloads/task_manager.gd" id="1_clojv"]
+[ext_resource type="Script" uid="uid://bu3obp0qfk5eg" path="res://resources/worker_tasks/worker_task.gd" id="2_423rj"]
+[ext_resource type="Resource" uid="uid://bp3hm506v87qc" path="res://resources/worker_tasks/grinderr_gigs/gig_fake_client_1.tres" id="3_jg2pg"]
+[ext_resource type="Resource" uid="uid://ekaj0mnbxi8r" path="res://resources/worker_tasks/grinderr_gigs/gig_reupload_vids_1.tres" id="4_grlwm"]
+[ext_resource type="Resource" uid="uid://dbr7be1iboot0" path="res://resources/worker_tasks/grinderr_gigs/gig_spam_affiliate_product_links_1.tres" id="5_joibs"]
+[ext_resource type="Resource" uid="uid://biv4kxeix63bt" path="res://resources/worker_tasks/grinderr_gigs/gig_surveys_1.tres" id="6_erunx"]
+[ext_resource type="Resource" uid="uid://dvsdpidrhvy8v" path="res://resources/worker_tasks/grinderr_gigs/gig_type_captchas.tres" id="7_6032f"]
+[ext_resource type="Resource" uid="uid://bfy4ngca8fwdf" path="res://resources/worker_tasks/grinderr_gigs/gig_vape_promo_1.tres" id="8_gqg5b"]
+[ext_resource type="Resource" uid="uid://dh656bfbhl8dc" path="res://resources/worker_tasks/grinderr_gigs/gig_vibe_code_website_1.tres" id="9_erxjq"]
+[ext_resource type="Resource" uid="uid://dharo2jtl2yti" path="res://resources/worker_tasks/grinderr_gigs/gig_watch_ads_1.tres" id="10_fx8pw"]
 
 [node name="TaskManager" type="Node"]
 script = ExtResource("1_clojv")
+base_tasks = Array[ExtResource("2_423rj")]([ExtResource("3_jg2pg"), ExtResource("4_grlwm"), ExtResource("5_joibs"), ExtResource("6_erunx"), ExtResource("7_6032f"), ExtResource("8_gqg5b"), ExtResource("9_erxjq"), ExtResource("10_fx8pw")])
