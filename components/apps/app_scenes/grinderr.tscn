@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://db60wtbc86hq2"]
+[gd_scene load_steps=24 format=3 uid="uid://db60wtbc86hq2"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_eluir"]
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/ui/worker_card/grinderr.gd" id="2_3bg0q"]
@@ -6,9 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="4_1rfep"]
 [ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="4_85ayv"]
 [ext_resource type="Texture2D" uid="uid://c5sl2581gi8sk" path="res://assets/logos/hamster_clear.png" id="4_eluir"]
+[ext_resource type="Script" uid="uid://bu3obp0qfk5eg" path="res://resources/worker_tasks/worker_task.gd" id="5_6p513"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/grey_button_pressed.png" id="5_7n4q1"]
 [ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/grey_button_hovered.png" id="6_1rfep"]
+[ext_resource type="Resource" uid="uid://bp3hm506v87qc" path="res://resources/worker_tasks/grinderr_gigs/gig_fake_client_1.tres" id="6_ywro3"]
 [ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/grey_button1.png" id="7_85ayv"]
+[ext_resource type="Resource" uid="uid://ekaj0mnbxi8r" path="res://resources/worker_tasks/grinderr_gigs/gig_reupload_vids_1.tres" id="7_mqwmu"]
+[ext_resource type="Resource" uid="uid://dbr7be1iboot0" path="res://resources/worker_tasks/grinderr_gigs/gig_spam_affiliate_product_links_1.tres" id="8_7mmku"]
+[ext_resource type="Resource" uid="uid://biv4kxeix63bt" path="res://resources/worker_tasks/grinderr_gigs/gig_surveys_1.tres" id="9_ugu3j"]
+[ext_resource type="Resource" uid="uid://dvsdpidrhvy8v" path="res://resources/worker_tasks/grinderr_gigs/gig_type_captchas.tres" id="10_llwuk"]
+[ext_resource type="Resource" uid="uid://bfy4ngca8fwdf" path="res://resources/worker_tasks/grinderr_gigs/gig_vape_promo_1.tres" id="11_qy867"]
+[ext_resource type="Resource" uid="uid://dh656bfbhl8dc" path="res://resources/worker_tasks/grinderr_gigs/gig_vibe_code_website_1.tres" id="12_akhs4"]
+[ext_resource type="Resource" uid="uid://dharo2jtl2yti" path="res://resources/worker_tasks/grinderr_gigs/gig_watch_ads_1.tres" id="13_vf52x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eluir"]
 bg_color = Color(0.576471, 0.509804, 0.498039, 1)
@@ -55,6 +64,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_eluir")
 script = ExtResource("2_3bg0q")
 gig_popup_scene = ExtResource("3_85ayv")
 hire_popup_scene = ExtResource("4_85ayv")
+available_gig_files = Array[ExtResource("5_6p513")]([ExtResource("6_ywro3"), ExtResource("7_mqwmu"), ExtResource("8_7mmku"), ExtResource("9_ugu3j"), ExtResource("10_llwuk"), ExtResource("11_qy867"), ExtResource("12_akhs4"), ExtResource("13_vf52x")])
 window_title = "Grinder"
 window_icon = ExtResource("4_1rfep")
 default_window_size = Vector2(600, 580)

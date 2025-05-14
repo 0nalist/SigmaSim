@@ -69,7 +69,7 @@ func _on_upgrade_purchased(purchased_id: String) -> void:
 	if upgrade.upgrade_id == purchased_id:
 		refresh_state()
 
-func _on_cash_updated(new_cash: float) -> void:
+func _on_cash_updated(_new_cash: float) -> void:
 	# Refresh to show if the upgrade is now affordable or not
 	refresh_state()
 

@@ -35,8 +35,8 @@ func _refresh():
 	worker_label.text = "👷 %d" % task.assigned_workers.size()
 	_update_style()
 
-func _shorten_name(name: String) -> String:
-	return name if name.length() <= 18 else name.substr(0, 15) + "..."
+func _shorten_name(fullname: String) -> String:
+	return fullname if fullname.length() <= 18 else fullname.substr(0, 15) + "..."
 
 func set_selected(selected: bool) -> void:
 	is_selected = selected

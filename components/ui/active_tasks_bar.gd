@@ -89,7 +89,7 @@ func setup_gig_popup(pane: Pane, task: WorkerTask) -> void:
 
 
 
-func _on_assignment_target_changed(new_target: Node) -> void:
+func _on_assignment_target_changed(_new_target: Node) -> void:
 	_update_button_states()
 
 func _update_button_states() -> void:
