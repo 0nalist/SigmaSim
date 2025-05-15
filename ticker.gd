@@ -3,13 +3,15 @@ extends Panel
 @onready var timer: Timer = $TickerTimer
 @onready var text_label: RichTextLabel = $RichTextLabel
 
+var current_template: String = ""
+
 var ticker_entries: Array = [
 	{
 		"text": "You currently have {cash} in your wallet.",
 		"condition": func() -> bool: return PortfolioManager.cash > 0
 	},
 	{
-		"text": "Your crypto portfolio is worth {crypto_total}.",
+		"text": "Your crypto portfolio is worth {crypto_total}",
 		"condition": func() -> bool: return PortfolioManager.get_crypto_total() > 0
 	},
 	{
@@ -22,6 +24,10 @@ var ticker_entries: Array = [
 	},
 	{
 		"text": "No news is good news?         No!     News is good news.",
+		"condition": null
+	},
+	{
+		"text": "Nine out of ten dentists regret loving me",
 		"condition": null
 	},
 ]
@@ -37,38 +43,42 @@ var scroll_tween: Tween = null
 var current_text: String = ""
 
 func _ready():
-	timer.wait_time = 3.0
+	timer.wait_time = 4.0
 	timer.one_shot = true
 	timer.timeout.connect(_on_timer_timeout)
 	_show_next_ticker()
-	
+
+
+func _process(_delta):
+	if current_template != "":
+		text_label.text = format_ticker_text(current_template)
+
 
 func _on_timer_timeout():
+	print("ticker timeout")
 	_show_next_ticker()
 
 func _show_next_ticker():
-	current_text = get_next_ticker_text()
-	text_label.text = current_text
-	text_label.visible_characters = -1 # Show all
+	current_template = get_next_ticker_template()
+	text_label.text = format_ticker_text(current_template)
+	text_label.visible_characters = -1
 
-	# Prepare label offscreen (right)
 	text_label.position.x = size.x
 	text_label.position.y = (size.y - text_label.size.y) / 2.0
 
-	# Use Tween to animate leftwards
 	var distance = text_label.position.x + text_label.size.x
-	var duration = max(3.5, distance / 80.0) # Adjust scroll speed as needed
+	var duration = max(3.5, distance / 80.0)
 
 	if scroll_tween:
 		scroll_tween.kill()
 	scroll_tween = create_tween()
 	scroll_tween.tween_property(text_label, "position:x", -text_label.size.x, duration).set_trans(Tween.TRANS_LINEAR)
-
 	scroll_tween.finished.connect(func():
-		timer.start() # After scroll, wait 8s before next one
+		timer.start()
 	)
 
-func get_next_ticker_text() -> String:
+
+func get_next_ticker_template() -> String:
 	var candidates := []
 	for entry in ticker_entries:
 		if entry.condition == null or entry.condition.call():
@@ -76,7 +86,7 @@ func get_next_ticker_text() -> String:
 	if candidates.is_empty():
 		return "No news is good news."
 	var selected = candidates.pick_random()
-	return format_ticker_text(selected.text)
+	return selected.text
 
 func format_ticker_text(text: String) -> String:
 	for key in ticker_variables.keys():
