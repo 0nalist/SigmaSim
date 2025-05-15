@@ -1,10 +1,11 @@
-[gd_scene load_steps=27 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=29 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
 [ext_resource type="Texture2D" uid="uid://f3id4mqiae6r" path="res://assets/backgrounds/purplefieldgreenskyx480_restrictive.png" id="3_0utxc"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
+[ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://ticker.gd" id="5_g75lf"]
 [ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/dodger_blue_normal.png" id="9_m483i"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="10_0utxc"]
@@ -16,6 +17,13 @@
 [ext_resource type="Texture2D" uid="uid://c6q0iyjglvflr" path="res://assets/ui/dodger_blue_down_gray.png" id="14_xcmse"]
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://start_panel_window.gd" id="23_dik0q"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
+texture = ExtResource("9_m483i")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
 
@@ -98,6 +106,37 @@ scale = Vector2(0.8673, 0.8673)
 texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
+
+[node name="TopBar" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme = ExtResource("1_0utxc")
+
+[node name="Ticker" type="Panel" parent="TopBar"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_m483i")
+script = ExtResource("5_g75lf")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TopBar/Ticker"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "ticker text ticker text ticker text"
+vertical_alignment = 1
+
+[node name="TickerTimer" type="Timer" parent="TopBar/Ticker"]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

@@ -74,7 +74,10 @@ func _create_gig_card(_gig: WorkerTask) -> Control:
 	return card
 
 func _on_open_gig(gig: WorkerTask) -> void:
+	if not TaskManager.get_tasks("grinderr").has(gig):
+		TaskManager.register_task("grinderr", gig)
 	WindowManager.launch_gig_popup(gig)
+
 
 func setup_gig_popup(pane: Pane, gig: WorkerTask) -> void:
 	if is_instance_valid(pane):

@@ -260,6 +260,14 @@ func sell_crypto(symbol: String, amount: float = 1) -> bool:
 	emit_signal("resource_changed", symbol, crypto_owned[symbol])
 	return true
 
+func get_crypto_total() -> float:
+	var total := 0.0
+	for symbol in crypto_owned.keys():
+		var amount = crypto_owned[symbol]
+		var crypto = MarketManager.crypto_market.get(symbol)
+		if crypto:
+			total += amount * crypto.price
+	return snapped(total, 0.01)
 
 
 ## Student loans

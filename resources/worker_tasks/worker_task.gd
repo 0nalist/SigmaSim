@@ -20,10 +20,10 @@ var assigned_workers: Array[Worker] = []
 var completions_done: int = 0
 
 func apply_productivity(amount: float) -> void:
-	print("🛠 Task.apply_productivity called with:", amount)
+	#print("Task.apply_productivity called with:", amount)
 
 	current_productivity += amount
-	print("📊 New productivity total:", current_productivity, "/", productivity_required)
+	#print("New productivity total:", current_productivity, "/", productivity_required)
 
 	emit_signal("productivity_applied", amount, current_productivity)
 	if productivity_required <= 0.0:

@@ -94,11 +94,23 @@ autoscroll = Vector2(-7, 0)
 position = Vector2(960, 300)
 texture = ExtResource("9_eegpt")
 
-[node name="Forest2" type="Sprite2D" parent="Forest"]
+[node name="Forest2" type="Parallax2D" parent="."]
+unique_name_in_owner = true
+scroll_offset = Vector2(-19, -25)
+repeat_size = Vector2(1920, 0)
+autoscroll = Vector2(-7, 0)
+
+[node name="Forest2" type="Sprite2D" parent="Forest2"]
 position = Vector2(800, 299)
 texture = ExtResource("9_eegpt")
 
-[node name="Forest3" type="Sprite2D" parent="Forest"]
+[node name="Forest3" type="Parallax2D" parent="."]
+unique_name_in_owner = true
+scroll_offset = Vector2(-19, -25)
+repeat_size = Vector2(1920, 0)
+autoscroll = Vector2(-7, 0)
+
+[node name="Forest3" type="Sprite2D" parent="Forest3"]
 position = Vector2(833, 301)
 texture = ExtResource("9_eegpt")
 

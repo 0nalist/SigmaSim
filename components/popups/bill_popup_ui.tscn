@@ -19,6 +19,7 @@ theme = ExtResource("1_38tc7")
 theme_override_styles/panel = SubResource("StyleBoxFlat_hytj0")
 script = ExtResource("2_2jqea")
 window_title = "Bill"
+default_window_size = Vector2(400, 500)
 is_popup = true
 window_can_close = false
 window_can_minimize = false

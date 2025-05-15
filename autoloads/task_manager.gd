@@ -37,6 +37,7 @@ func get_daily_gigs(category: String, count: int, day_seed: int) -> Array[Worker
 
 
 
+
 func register_task(category: String, task: WorkerTask) -> void:
 	if not task_pools.has(category):
 		task_pools[category] = []
@@ -76,6 +77,8 @@ func set_assignment_target(target: WorkerTask) -> void:
 	emit_signal("assignment_target_changed", active_assignment_target)
 
 func find_task_by_title(category: String, title: String) -> WorkerTask:
+	print("Base tasks: ")
+	print(str(base_tasks))
 	var tasks = get_tasks(category)
 	for task in tasks:
 		if task.title == title:

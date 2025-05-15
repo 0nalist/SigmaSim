@@ -35,6 +35,7 @@ func _update_display() -> void:
 			PortfolioManager.credit_interest_rate * 100
 		]
 
+
 func update_amount_display() -> void:
 	_update_display()
 
@@ -69,7 +70,8 @@ func load_custom_save_data(data: Dictionary) -> void:
 	total_with_interest = amount * (1.0 + interest_rate)
 	_update_display()
 
-	var window = get_parent().get_parent().get_parent()
+	var window = get_parent().get_parent().get_parent() as WindowFrame
 	if window:
 		window.window_can_close = false
 		window.refresh_window_controls()
+		window.set_size(Vector2(400,480))
