@@ -1,7 +1,9 @@
 extends Panel
 
 @onready var timer: Timer = $TickerTimer
-@onready var text_label: RichTextLabel = $RichTextLabel
+@onready var text_label: RichTextLabel = %TickerTextLabel
+@onready var cash_label: Label = %CashLabel
+
 
 var current_template: String = ""
 
@@ -23,7 +25,7 @@ var ticker_entries: Array = [
 		"condition": null
 	},
 	{
-		"text": "No news is good news?         No!     News is good news.",
+		"text": "No news is good news?     No!     News is good news.",
 		"condition": null
 	},
 	{
@@ -35,7 +37,7 @@ var ticker_entries: Array = [
 var ticker_variables := {
 	"cash": func(): return "$%.2f" % PortfolioManager.cash,
 	"crypto_total": func(): return "$%.2f" % PortfolioManager.get_crypto_total(),
-	"day": func(): return "Day %s" % TimeManager.get_formatted_date(),
+	"day": func(): return "%s" % TimeManager.get_formatted_date(),
 	"time": func(): return TimeManager.get_formatted_time(),
 }
 
@@ -52,7 +54,7 @@ func _ready():
 func _process(_delta):
 	if current_template != "":
 		text_label.text = format_ticker_text(current_template)
-
+	cash_label.text = "$%.0f" % PortfolioManager.cash
 
 func _on_timer_timeout():
 	print("ticker timeout")

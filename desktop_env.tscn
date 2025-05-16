@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=31 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://f3id4mqiae6r" path="res://assets/backgrounds/purplefieldgreenskyx480_restrictive.png" id="3_0utxc"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
 [ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://ticker.gd" id="5_g75lf"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
 [ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/dodger_blue_normal.png" id="9_m483i"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="10_0utxc"]
@@ -24,6 +25,9 @@ texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bnui0"]
+bg_color = Color(0.47451, 0.639216, 0.627451, 0.780392)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
 
@@ -114,29 +118,77 @@ anchor_right = 1.0
 grow_horizontal = 2
 theme = ExtResource("1_0utxc")
 
-[node name="Ticker" type="Panel" parent="TopBar"]
-custom_minimum_size = Vector2(0, 36)
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 36.0
+offset_bottom = 55.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = -1
+
+[node name="Ticker" type="Panel" parent="TopBar/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_m483i")
 script = ExtResource("5_g75lf")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TopBar/Ticker"]
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/VBoxContainer/Ticker"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/VBoxContainer/Ticker/MarginContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="TopBar/VBoxContainer/Ticker/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 5)
+layout_mode = 2
+theme = ExtResource("6_bnui0")
+
+[node name="TickerTextLabel" type="RichTextLabel" parent="TopBar/VBoxContainer/Ticker/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 text = "ticker text ticker text ticker text"
 vertical_alignment = 1
 
-[node name="TickerTimer" type="Timer" parent="TopBar/Ticker"]
+[node name="TickerTimer" type="Timer" parent="TopBar/VBoxContainer/Ticker"]
+
+[node name="Panel" type="Panel" parent="TopBar/VBoxContainer"]
+custom_minimum_size = Vector2(50, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_bnui0")
+
+[node name="MarginContainer" type="MarginContainer" parent="TopBar/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Cash:"
+
+[node name="CashLabel" type="Label" parent="TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+text = "$"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
