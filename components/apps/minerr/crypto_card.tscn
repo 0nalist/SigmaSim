@@ -28,99 +28,133 @@ texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
-[node name="CryptoCard" type="Panel"]
+[node name="CryptoCard" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("1_clvji")
 theme_override_styles/panel = SubResource("StyleBoxTexture_scfj1")
 script = ExtResource("3_ixyll")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
 
-[node name="SymbolLabel" type="Label" parent="VBoxContainer"]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="DisplayNameLabel" type="Label" parent="VBoxContainer"]
+[node name="SymbolLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 36
 
-[node name="PriceLabel" type="Label" parent="VBoxContainer"]
+[node name="DisplayNameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
 
-[node name="BlockChanceLabel" type="Label" parent="VBoxContainer"]
+[node name="PriceLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
 
-[node name="BlockTimeLabel" type="Label" parent="VBoxContainer"]
+[node name="BlockChanceLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
 
-[node name="BlockSizeLabel" type="Label" parent="VBoxContainer"]
+[node name="BlockTimeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
 
-[node name="MinerSprite" type="TextureRect" parent="VBoxContainer"]
+[node name="BlockSizeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="OwnedLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Owned: "
+
+[node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Sell"
+
+[node name="MinerSprite" type="TextureRect" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("4_5wbke")
 
-[node name="ClickBoostArea" type="TextureButton" parent="VBoxContainer"]
+[node name="ClickBoostArea" type="TextureButton" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("4_5wbke")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(79.575, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="GPUsLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "GPUs: "
 
-[node name="RemoveGPUButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="RemoveGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
 text = "-"
 
-[node name="AddGPUButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="AddGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
 text = "+"
 
-[node name="OverclockButton" type="Button" parent="VBoxContainer"]
+[node name="OverclockButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
+theme_override_font_sizes/font_size = 14
+toggle_mode = true
 text = "Overclock"
 
-[node name="UpgradeButton" type="Button" parent="VBoxContainer"]
+[node name="UpgradeButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
+theme_override_font_sizes/font_size = 14
 theme_override_styles/pressed = SubResource("StyleBoxTexture_blh88")
 theme_override_styles/normal = SubResource("StyleBoxTexture_2knlv")
 text = "Upgrade

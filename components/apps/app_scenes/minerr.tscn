@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cci5lph7o8fg5"]
+[gd_scene load_steps=9 format=3 uid="uid://cci5lph7o8fg5"]
 
 [ext_resource type="Texture2D" uid="uid://d5uirljm8cmi" path="res://assets/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png" id="1_wupxk"]
 [ext_resource type="Script" uid="uid://c2u2e7rvja8k" path="res://components/apps/minerr/minerr_ui.gd" id="2_0t4uf"]
+[ext_resource type="PackedScene" uid="uid://cd6b75613o34u" path="res://components/apps/minerr/crypto_card.tscn" id="3_ykms3"]
 [ext_resource type="Texture2D" uid="uid://brs7oc40iion5" path="res://assets/cursors/pickaxe.png" id="4_23boj"]
-[ext_resource type="PackedScene" uid="uid://b2lni5gfy28ds" path="res://components/apps/minerr/crypto_row.tscn" id="6_86lpv"]
-[ext_resource type="Texture2D" uid="uid://chkl2i2bg50da" path="res://assets/mine.png" id="7_72mkv"]
 [ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="8_x88rl"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="9_0t4uf"]
 
@@ -26,10 +25,10 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxTexture_rcqoh")
 script = ExtResource("2_0t4uf")
-crypto_row_scene = ExtResource("6_86lpv")
+crypto_card_scene = ExtResource("3_ykms3")
 window_title = "Minerr"
 window_icon = ExtResource("4_23boj")
-default_window_size = Vector2(680, 480)
+default_window_size = Vector2(480, 680)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -56,67 +55,13 @@ theme_override_fonts/font = ExtResource("8_x88rl")
 theme_override_font_sizes/font_size = 36
 text = " Minerr"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("9_0t4uf")
-
-[node name="CryptoContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/CryptoContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-
-[node name="MenuButton" type="MenuButton" parent="MarginContainer/VBoxContainer/HBoxContainer/CryptoContainer/HBoxContainer"]
-layout_mode = 2
-text = "Sort by: price"
-item_count = 3
-popup/item_0/text = "Price"
-popup/item_0/checked = true
-popup/item_0/id = 0
-popup/item_1/text = "GPUs"
-popup/item_1/id = 1
-popup/item_2/text = "Power"
-popup/item_2/id = 2
-
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/CryptoContainer/HBoxContainer"]
-custom_minimum_size = Vector2(32, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-text = "|
-V"
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.35
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-horizontal_alignment = 1
-
-[node name="SelectedCryptoLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_stretch_ratio = 0.0
-text = "Select a cryptocurrency to mine 
-"
-horizontal_alignment = 1
-
-[node name="SelectedCryptoTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("7_72mkv")
-expand_mode = 5
-stretch_mode = 4
-
-[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "GPUs 
@@ -124,38 +69,33 @@ Free/Owned:
 0/0"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-
-[node name="BuyNewGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="BuyNewGPUButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 text = "Buy New GPU"
 
-[node name="BuyUsedGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="BuyUsedGPUButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Used GPUs have a chance of burning out"
+focus_mode = 0
 text = "Buy Used GPU"
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
-size_flags_stretch_ratio = 0.0
 
-[node name="PowerBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(10, 300)
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-mouse_filter = 1
-value = 50.0
-allow_greater = true
-fill_mode = 3
 
-[connection signal="gui_input" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_gui_input"]
-[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/SelectedCryptoTexture" to="." method="_on_selected_crypto_texture_mouse_exited"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]
+[node name="CryptoContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("9_0t4uf")
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer2/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]

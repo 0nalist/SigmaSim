@@ -1,4 +1,4 @@
-extends Panel
+extends PanelContainer
 class_name CryptoCard
 
 signal add_gpu(symbol: String)
@@ -19,7 +19,7 @@ signal selected(symbol: String)
 @onready var gpus_label = %GPUsLabel
 @onready var add_gpu_button = %AddGPUButton
 @onready var remove_gpu_button = %RemoveGPUButton
-@onready var overclock_button = %OverclockToggleButton
+@onready var overclock_button = %OverclockButton
 @onready var upgrade_button = %UpgradeButton
 
 var crypto: Cryptocurrency
