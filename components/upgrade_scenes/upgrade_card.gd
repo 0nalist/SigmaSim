@@ -42,7 +42,7 @@ func refresh_state():
 
 	name_label.text = upgrade.upgrade_name
 	desc_label.text = upgrade.description
-	price_label.text = "💰 $%.0f" % cost
+	price_label.text = "💰 $" + NumberFormatter.format_number(cost)
 
 	if limit == -1:
 		status_label.text = "Purchased: %d (∞ max)" % count

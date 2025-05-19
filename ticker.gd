@@ -32,6 +32,10 @@ var ticker_entries: Array = [
 		"text": "Nine out of ten dentists regret loving me",
 		"condition": null
 	},
+	{
+		"text": "You can elect yourself CEO of any company you own 50% + 1 of the shares of",
+		"condition": null
+	},
 ]
 
 var ticker_variables := {
