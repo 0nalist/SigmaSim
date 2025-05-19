@@ -33,7 +33,7 @@ var ticker_entries: Array = [
 		"condition": null
 	},
 	{
-		"text": "You can elect yourself CEO of any company you own 50% + 1 of the shares of",
+		"text": "You can elect yourself CEO of a company if you own 50% + 1 of the shares",
 		"condition": null
 	},
 ]
