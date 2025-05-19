@@ -11,6 +11,8 @@ class_name UpgradeResource
 
 @export var effects: Array[EffectResource] = [] # All effects it applies
 
+@export var prerequisites: Array[String] = []  # Upgrade IDs required to unlock this one
+
 @export var base_cost_cash: float = 100.0
 @export var cost_multiplier: float = 1.5  # exponential scaling
 @export var purchase_limit: int = -1  # -1 means unlimited
