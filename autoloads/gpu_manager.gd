@@ -5,6 +5,7 @@ signal gpus_changed
 signal gpu_prices_changed
 signal gpu_burned_out(index: int)
 signal crypto_mined(crypto)
+signal block_attempted(symbol: String)
 
 var mining_timers: Dictionary = {}  # symbol: Timer
 
@@ -48,6 +49,7 @@ func get_time_until_next_block(symbol: String) -> int:
 	return int(ceil(mining_timers[symbol].time_left))
 
 func _attempt_mine(crypto: Cryptocurrency) -> void:
+	emit_signal("block_attempted", crypto.symbol)
 	var current_power = get_power_for(crypto.symbol)
 
 	if current_power <= 0:
@@ -192,3 +194,10 @@ func get_power_for(symbol: String) -> int:
 				power = int(round(base_power * overclock_power_multiplier))
 			total += power
 	return total
+
+func get_new_gpu_price() -> float:
+	return current_gpu_price
+
+func get_used_gpu_price() -> float:
+	# Assuming used GPUs are a fixed discount (e.g. 50% of new)
+	return current_gpu_price * 0.5

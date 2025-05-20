@@ -74,6 +74,9 @@ func _on_remove_gpu(symbol: String) -> void:
 		print("No GPUs assigned to remove.")
 
 
+func _on_gpu_prices_changed() -> void:
+	_update_gpu_prices()
+
 func _update_gpu_prices() -> void:
 	var new_price = GPUManager.get_new_gpu_price()
 	var used_price = GPUManager.get_used_gpu_price()

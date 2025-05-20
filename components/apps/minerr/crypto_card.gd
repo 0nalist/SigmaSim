@@ -46,7 +46,7 @@ func setup(crypto_data: Cryptocurrency) -> void:
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
 	MarketManager.crypto_price_updated.connect(_on_price_updated)
 	GPUManager.crypto_mined.connect(_on_crypto_mined)
-	
+	GPUManager.block_attempted.connect(_on_block_attempted)
 	update_display()
 
 func _process(delta: float) -> void:
@@ -99,7 +99,8 @@ func update_display() -> void:
 		animate_mining()
 	else:
 		animate_stop_mining()
-	
+
+
 func _on_click_boost() -> void:
 	extra_power += 1.0  # Or scale with upgrade later
 	# Optional: animate miner_sprite or play feedback
@@ -118,15 +119,16 @@ func _on_resource_changed(resource_name: String, _value: float) -> void:
 
 func _on_time_tick(_mins: int) -> void:
 	update_display()
-	if get_time_to_block() == 10:
+
+func _on_block_attempted(symbol: String) -> void:
+	if symbol == crypto.symbol:
 		animate_new_block()
+
 
 @onready var block_sprite: TextureRect = %BlockSprite
 #@onready var miner_sprite: TextureRect = %MinerSprite
 @onready var miner_animation_player: AnimationPlayer = %MinerAnimationPlayer
 @onready var block_animation_player: AnimationPlayer = %BlockAnimationPlayer
-
-
 
 func animate_mining() -> void:
 	miner_animation_player.play("mining")
