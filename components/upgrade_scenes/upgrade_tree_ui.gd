@@ -1,6 +1,21 @@
 extends Pane
 class_name UpgradeTreeUI
 
+#TODO
+'''
+Popup tooltip in fixed position
+Keep Buy button in tooltip
+Figure out why layer 2 isnt showing
+
+ALSO: Fix save/load for crypto block_time. We need to add current_time_to_block
+	to also be saved and loaded. Right now, current block time is overriding 
+	total block time, permanently shortening the cycle.
+
+'''
+
+
+
+
 @export var tree_title: String = "Upgrade Tree"
 @export var upgrade_filter: String = ""  # e.g., "Workforce"
 @export var upgrades: Array[UpgradeResource]
@@ -36,8 +51,8 @@ func layout_tree():
 	var upgrade_list = _get_upgrade_list()
 	var layers = UpgradeManager.get_upgrade_layers(upgrade_list)
 
-	const X_SPACING = 300
-	const Y_SPACING = 200
+	const X_SPACING = 150
+	const Y_SPACING = 100
 
 	for layer_idx in layers.size():
 		var layer = layers[layer_idx]
