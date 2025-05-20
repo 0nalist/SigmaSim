@@ -8,6 +8,10 @@ var crypto_cards: Dictionary = {}
 @onready var crypto_container: HBoxContainer = %CryptoContainer
 @onready var gpus_label: Label = %GPUsLabel
 
+@onready var new_gpu_price_label: Label = %NewGPUPriceLabel
+@onready var used_gpu_price_label: Label = %UsedGPUPriceLabel
+
+
 func _ready() -> void:
 	refresh_cards_from_market()
 
@@ -15,7 +19,7 @@ func _ready() -> void:
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
 	GPUManager.gpus_changed.connect(update_gpu_label)
 	#GPUManager.crypto_mined.connect(_on_crypto_mined)
-
+	GPUManager.gpu_prices_changed.connect(_on_gpu_prices_changed)
 	update_gpu_label()
 
 func refresh_cards_from_market():
@@ -70,6 +74,12 @@ func _on_remove_gpu(symbol: String) -> void:
 		print("No GPUs assigned to remove.")
 
 
+func _update_gpu_prices() -> void:
+	var new_price = GPUManager.get_new_gpu_price()
+	var used_price = GPUManager.get_used_gpu_price()
+
+	new_gpu_price_label.text = "New GPU: $%.2f" % new_price
+	used_gpu_price_label.text = "Used GPU: $%.2f" % used_price
 
 
 func _on_resource_changed(resource_name: String, _value: float) -> void:

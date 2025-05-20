@@ -2,6 +2,7 @@ extends Node
 # Autoload name: GPUManager
 
 signal gpus_changed
+signal gpu_prices_changed
 signal gpu_burned_out(index: int)
 signal crypto_mined(crypto)
 
@@ -73,6 +74,7 @@ func buy_gpu() -> bool:
 		add_gpu("")  # Add a free GPU (unassigned)
 		current_gpu_price *= gpu_price_growth
 		emit_signal("gpus_changed")
+		emit_signal("gpu_prices_changed")
 		return true
 	else:
 		print("Insufficient funds to buy GPU.")

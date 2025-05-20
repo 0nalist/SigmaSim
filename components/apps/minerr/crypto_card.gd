@@ -46,7 +46,7 @@ func setup(crypto_data: Cryptocurrency) -> void:
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
 	MarketManager.crypto_price_updated.connect(_on_price_updated)
 	GPUManager.crypto_mined.connect(_on_crypto_mined)
-
+	
 	update_display()
 
 func _process(delta: float) -> void:
