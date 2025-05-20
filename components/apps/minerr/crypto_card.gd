@@ -21,7 +21,7 @@ signal selected(symbol: String)
 @onready var remove_gpu_button = %RemoveGPUButton
 @onready var overclock_button = %OverclockButton
 @onready var upgrade_button = %UpgradeButton
-@onready var power_bar: ProgressBar = %PowerBar  # Optional but recommended
+@onready var power_bar: ProgressBar = %PowerBar
 
 var crypto: Cryptocurrency
 var extra_power: float = 0.0
