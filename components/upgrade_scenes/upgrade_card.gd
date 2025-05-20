@@ -1,17 +1,13 @@
-extends VBoxContainer
+extends PanelContainer
 
+signal hovered(upgrade: UpgradeResource, global_pos: Vector2)
+signal unhovered()
+signal clicked(upgrade: UpgradeResource, global_pos: Vector2)
 
+@onready var name_label = %NameLabel
+@onready var icon = %Icon  # Remove if you don't have an icon
 
-@onready var click_panel: PanelContainer = %ClickPanel
-@onready var name_label: Label = %NameLabel
-@onready var desc_label: Label = %DescriptionLabel
-@onready var price_label: Label = %PriceLabel
-@onready var status_label: Label = %StatusLabel
-
-
-signal purchase_requested(upgrade: UpgradeResource)
-
-var upgrade: UpgradeResource
+var upgrade: UpgradeResource = null
 var upgrade_queued: bool = false
 
 func set_upgrade(upg: UpgradeResource):
@@ -23,66 +19,29 @@ func set_upgrade(upg: UpgradeResource):
 func _ready():
 	if upgrade_queued:
 		_refresh_upgrade()
-	UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
-	PortfolioManager.cash_updated.connect(_on_cash_updated)
 
 func _refresh_upgrade():
 	if not is_instance_valid(upgrade):
 		return
-	name_label.text = upgrade.upgrade_name
-	desc_label.text = upgrade.description
-	refresh_state()
+	if name_label:
+		name_label.text = upgrade.upgrade_name
+	if icon and upgrade.has_meta("icon") and upgrade.icon:
+		icon.texture = upgrade.icon
+	var can_purchase = UpgradeManager.can_purchase(upgrade.upgrade_id)
+	modulate = Color(1, 1, 1) if can_purchase else Color(0.6, 0.6, 0.6)
 
-
-func refresh_state():
-	var id = upgrade.upgrade_id
-	var count = UpgradeManager.get_purchase_count(id)
-	var limit = upgrade.purchase_limit
-	var cost = upgrade.get_current_cost()
-
-	name_label.text = upgrade.upgrade_name
-	desc_label.text = upgrade.description
-	price_label.text = "💰 $" + NumberFormatter.format_number(cost)
-
-	if limit == -1:
-		status_label.text = "Purchased: %d (∞ max)" % count
-	elif count >= limit:
-		status_label.text = "✅ Maxed (%d/%d)" % [count, limit]
-	else:
-		status_label.text = "Purchased: %d / %d" % [count, limit]
-
-	# Handle interactivity & visual feedback
-	if not UpgradeManager.is_unlocked(id):
-		modulate = Color(0.7, 0.7, 0.7)  # dim when locked
-		click_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	elif limit != -1 and count >= limit:
-		modulate = Color(1, 1, 1)
-		click_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	elif PortfolioManager.cash < cost:
-		modulate = Color(0.85, 0.85, 0.85)  # slightly dim when unaffordable
-		click_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	else:
-		modulate = Color(1, 1, 1)
-		click_panel.mouse_filter = Control.MOUSE_FILTER_STOP
-
-func _on_upgrade_purchased(purchased_id: String) -> void:
-	if upgrade.upgrade_id == purchased_id:
-		refresh_state()
-
-func _on_cash_updated(_new_cash: float) -> void:
-	# Refresh to show if the upgrade is now affordable or not
-	refresh_state()
-
-
-func _on_click_panel_gui_input(event: InputEvent) -> void:
-	
+func _gui_input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		purchase_requested.emit(upgrade)
+		emit_signal("clicked", upgrade, get_global_position())
+	if event is InputEventMouseMotion:
+		emit_signal("hovered", upgrade, get_global_position())
+
+func _on_mouse_entered():
+	emit_signal("hovered", upgrade, get_global_position())
+
+func _on_mouse_exited():
+	emit_signal("unhovered")
 
 
-func _on_click_panel_mouse_entered() -> void:
-	modulate = Color(1.1, 1.1, 1.1) #swap out to panels later
-
-
-func _on_click_panel_mouse_exited() -> void:
-	modulate = Color(1, 1, 1) #swap out to panels later
+func _on_clicked(upgrade: UpgradeResource, global_pos: Vector2) -> void:
+	pass # Replace with function body.

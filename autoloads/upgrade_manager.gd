@@ -86,6 +86,21 @@ func is_purchased(id: String) -> bool:
 
 
 # --- Queries --- #
+func can_purchase(id: String) -> bool:
+	var upgrade = get_upgrade_by_id(id)
+	if not upgrade:
+		return false
+	if not is_unlocked(id):
+		return false
+	var count = get_purchase_count(id)
+	if upgrade.purchase_limit != -1 and count >= upgrade.purchase_limit:
+		return false
+	var cost = upgrade.base_cost_cash * pow(upgrade.cost_multiplier, count)
+	if PortfolioManager.cash < cost:
+		return false
+	return true
+
+
 func get_purchase_count(id: String) -> int:
 	return upgrade_states.get(id, {}).get("purchase_count", 0)
 
@@ -98,6 +113,44 @@ func get_all_upgrades() -> Array:
 func get_upgrades_by_source(source_name: String) -> Array:
 	var target = source_name.to_lower()
 	return available_upgrades.values().filter(func(u): return u.source.to_lower() == target)
+
+func get_upgrade_layers(upgrades: Array) -> Array:
+	var remaining = upgrades.duplicate()
+	var layers: Array = []
+	var placed_ids := {}  # upgrade_id -> true
+	var max_iterations := 1000  # prevent infinite loops
+
+	while not remaining.is_empty() and max_iterations > 0:
+		var current_layer: Array = []
+		for upgrade in remaining:
+			var prereqs = upgrade.prerequisites if upgrade.has_method("prerequisites") else []
+			var all_met = true
+			for prereq_id in prereqs:
+				if not placed_ids.has(prereq_id):
+					all_met = false
+					break
+			if all_met:
+				current_layer.append(upgrade)
+
+		if current_layer.is_empty():
+			push_error("UpgradeManager: Cyclical or invalid dependency in upgrade tree! Remaining: %s" % (
+				remaining.map(func(u): return u.upgrade_id)))
+			break
+
+		layers.append(current_layer)
+		for upgrade in current_layer:
+			placed_ids[upgrade.upgrade_id] = true
+			remaining.erase(upgrade)
+
+		max_iterations -= 1
+
+	if max_iterations <= 0:
+		push_error("UpgradeManager: Hit max iterations in get_upgrade_layers (possible infinite loop)")
+
+	return layers
+
+
+
 
 # --- Save/load --- #
 

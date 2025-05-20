@@ -1,0 +1,104 @@
+[gd_scene load_steps=5 format=3 uid="uid://b3u00a845kbu4"]
+
+[ext_resource type="Script" uid="uid://12i7g3vsb17j" path="res://components/upgrade_scenes/upgrade_tree_ui.gd" id="1_uifmq"]
+[ext_resource type="PackedScene" uid="uid://1b3edvmanfkb" path="res://components/upgrade_scenes/upgrade_card.tscn" id="2_sapn2"]
+[ext_resource type="Script" uid="uid://evabtcytw5d3" path="res://components/upgrade_scenes/upgrade_tooltip.gd" id="2_tes6w"]
+[ext_resource type="Script" uid="uid://bbxofpqtm3x02" path="res://components/upgrade_scenes/connector_overlay.gd" id="3_l6ni6"]
+
+[node name="UpgradeTreeUI" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1_uifmq")
+upgrade_card_scene = ExtResource("2_sapn2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="TitleLabel" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ConnectorOverlay" type="Node2D" parent="MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+script = ExtResource("3_l6ni6")
+
+[node name="CardCanvas" type="Control" parent="MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="UpgradeTooltip" type="Control" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+script = ExtResource("2_tes6w")
+
+[node name="Button" type="Button" parent="MarginContainer/UpgradeTooltip"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -16.0
+offset_bottom = 27.0
+grow_horizontal = 0
+text = "x"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/UpgradeTooltip"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -132.0
+offset_bottom = 107.0
+grow_horizontal = 0
+
+[node name="NameLabel" type="Label" parent="MarginContainer/UpgradeTooltip/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Upgrade Name"
+
+[node name="CostLabel" type="Label" parent="MarginContainer/UpgradeTooltip/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Upgrade Cost"
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/UpgradeTooltip/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Upgrade Description"
+
+[node name="EffectList" type="VBoxContainer" parent="MarginContainer/UpgradeTooltip/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="MarginContainer/UpgradeTooltip/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = " Buy "
+
+[node name="StatusLabel" type="Label" parent="MarginContainer/UpgradeTooltip/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Upgrade Status"
+
+[connection signal="pressed" from="MarginContainer/UpgradeTooltip/VBoxContainer/BuyButton" to="MarginContainer/UpgradeTooltip" method="_on_buy_button_pressed"]
