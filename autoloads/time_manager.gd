@@ -1,4 +1,5 @@
 extends Node
+# Autoload: TimeManager
 
 signal minute_passed(current_time_minutes: int)
 signal hour_passed(current_hour: int)
@@ -101,6 +102,7 @@ func advance_time(minutes_to_add: int) -> void:
 		if in_game_minutes >= 24 * 60:
 			in_game_minutes = 0
 			advance_day()
+			
 
 
 func advance_day() -> void:

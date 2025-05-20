@@ -151,7 +151,8 @@ func _refresh_workers():
 func _on_worker_selected(worker: Worker) -> void:
 	if TaskManager.active_assignment_target != gig:
 		return 
-
+	if not TaskManager.get_tasks("grinderr").has(gig):
+		TaskManager.register_task("grinderr", gig)
 	# Prevent duplicates
 	if worker != null and not gig.assigned_workers.has(worker):
 		#gig.assigned_workers.append(worker)
@@ -225,19 +226,29 @@ func load_custom_save_data(data: Dictionary) -> void:
 
 var try_count = 0
 func _try_load_gig_by_title() -> void:
-	
-	
 	if pending_gig_title == "":
 		return
 
 	var found_gig = TaskManager.find_task_by_title("grinderr", pending_gig_title)
+
+	# Fallback to base_tasks if needed
+	if not found_gig:
+		var fallback_matches = TaskManager.base_tasks.filter(func(t): return t.title == pending_gig_title)
+		if fallback_matches.size() > 0:
+			var fallback = fallback_matches[0]
+			found_gig = fallback.duplicate(true)
+			TaskManager.register_task("grinderr", found_gig)
+
 	if found_gig:
 		setup(found_gig)
 		pending_gig_title = ""
-	elif try_count < 5:
-		print("⏳ Gig not yet found: retrying...")
-		call_deferred("_try_load_gig_by_title")
-		try_count += 1  # Try again next frame, will repeat forever tho...
+	else:
+		if try_count < 5:
+			print("⏳ Gig not yet found: retrying...")
+			call_deferred("_try_load_gig_by_title")
+			try_count += 1
+
+
 
 
 func _exit_tree() -> void:

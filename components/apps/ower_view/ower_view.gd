@@ -50,10 +50,10 @@ func update_credit_score():
 	var score = PortfolioManager.get_credit_score()
 	credit_score_label.text = "%d" % score
 
-func _on_resource_changed(name: String, value: float):
-	if name == "student_loans":
+func _on_resource_changed(resource_name: String, _value: float):
+	if resource_name == "student_loans":
 		update_student_loans()
-	elif name == "debt":
+	elif resource_name == "debt":
 		update_credit_score()
 
 func _on_cash_updated(_cash: float):

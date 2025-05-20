@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 
 func randomize_gap_position() -> void:
 	var viewport_height = get_parent().get_parent().size.y
-	var safe_margin = 100.0
+	var safe_margin = 50.0
 
 	# Randomize center Y position for the GAP
 	var gap_center_y = randf_range(

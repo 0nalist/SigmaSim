@@ -6,11 +6,13 @@
 [resource]
 script = ExtResource("2_l88or")
 symbol = "$BITC"
-display_name = ""
+display_name = "BitchCoin"
 icon = ExtResource("1_cweql")
 price = 100000.0
 volatility = 1.0
-power_required = 1000
-reward_per_mine = 1.0
+power_required = 10000000
+block_size = 1.0
+block_time = 10.0
 price_history = Array[float]([])
+all_time_high = 1.0
 metadata/_custom_type_script = "uid://llcvncktu5"

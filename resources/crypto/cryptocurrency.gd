@@ -8,7 +8,8 @@ class_name Cryptocurrency
 @export var price: float = 1.0
 @export var volatility: float = 1.0
 @export var power_required: int = 100
-@export var reward_per_mine: float = 1.0
+@export var block_size: float = 1.0
+@export var block_time: float = 10.0
 @export var price_history: Array[float] = [price]
 @export var all_time_high: float = 1.0
 
@@ -28,9 +29,9 @@ func update_from_market(volatility_scale := 1.0) -> void:
 	var max_percent_change = volatility / 100.0 * volatility_scale
 	var delta = price * max_percent_change * noise
 	update_price(delta)
-	update_power_required(price)
+	#update_power_required(price)
 
-
+'''
 func update_power_required(previous_price: float) -> void:
 	if previous_price <= 0:
 		return
@@ -39,9 +40,9 @@ func update_power_required(previous_price: float) -> void:
 	var noise = randf_range(0.95, 1.05)
 	var new_required = power_required * value_ratio * noise
 
-	# Only update if higher than previous
-	power_required = max(power_required, clamp(int(new_required), 1, 1_000_000))
-
+	# Set updated value
+	power_required = clamp(int(new_required), 1, 1_000_000)
+'''
 
 ## --- SAVELOAD
 
@@ -52,7 +53,7 @@ func to_dict() -> Dictionary:
 		"price": price,
 		"volatility": volatility,
 		"power_required": power_required,
-		"reward_per_mine": reward_per_mine,
+		"block_size": block_size,
 		"price_history": price_history.duplicate() as Array[float],
 		"all_time_high": all_time_high,
 		"last_price": last_price
@@ -64,7 +65,7 @@ func from_dict(data: Dictionary) -> void:
 	price = data.get("price", price)
 	volatility = data.get("volatility", volatility)
 	power_required = data.get("power_required", power_required)
-	reward_per_mine = data.get("reward_per_mine", reward_per_mine)
+	block_size = data.get("block_size", block_size)
 	var raw_history = data.get("price_history", price_history)
 	price_history = []
 	for value in raw_history:

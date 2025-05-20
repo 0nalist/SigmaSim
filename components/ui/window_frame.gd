@@ -327,7 +327,7 @@ func _update_upgrade_button_state() -> void:
 		upgrade_button.visible = false
 		return
 
-	var upgrades := UpgradeManager.get_upgrades_by_source(pane.window_title)
+	var upgrades = UpgradeManager.get_upgrades_by_source(pane.window_title)
 	
 	var any_available := false
 	for upgrade in upgrades:

@@ -1,0 +1,10 @@
+[gd_scene load_steps=5 format=3 uid="uid://old72dkcr22e"]
+
+[ext_resource type="Script" uid="uid://sp23mlahf68s" path="res://autoloads/upgrade_manager.gd" id="1_x4qnn"]
+[ext_resource type="Script" uid="uid://bbkcekvw4yfpc" path="res://resources/effects/upgrade_resource.gd" id="2_yuul1"]
+[ext_resource type="Resource" uid="uid://ddmxonphc43n0" path="res://data/upgrades/workforce/worker_prod_flat_1.tres" id="3_rk1gh"]
+[ext_resource type="Resource" uid="uid://drjgrqh8rbfmd" path="res://data/upgrades/workforce/worker_prod_mult_2.tres" id="4_kkn3i"]
+
+[node name="UpgradeManager" type="Node"]
+script = ExtResource("1_x4qnn")
+upgrade_files = Array[ExtResource("2_yuul1")]([ExtResource("3_rk1gh"), ExtResource("4_kkn3i")])

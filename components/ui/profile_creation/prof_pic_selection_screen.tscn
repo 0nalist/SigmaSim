@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqs8jojfclfim"]
+[gd_scene load_steps=11 format=3 uid="uid://bqs8jojfclfim"]
 
 [ext_resource type="Script" uid="uid://bfhslgcvwv85n" path="res://components/ui/profile_creation/prof_pic_selection_screen.gd" id="1_2mnij"]
+[ext_resource type="Texture2D" uid="uid://cj4c515jq4pdp" path="res://assets/prof_pics/bombardiocrocodilox128.png" id="2_yvmy6"]
+[ext_resource type="Texture2D" uid="uid://kap6bft4nr62" path="res://assets/prof_pics/bonecaAmbalabux128colors88.png" id="3_3i72g"]
+[ext_resource type="Texture2D" uid="uid://ci5lwbuvjqtgr" path="res://assets/prof_pics/BurbaloniLulilollix128.png" id="4_1t14d"]
+[ext_resource type="Texture2D" uid="uid://b0f41s52r8lsh" path="res://assets/prof_pics/gigachad_square.png" id="5_bdtrg"]
+[ext_resource type="Texture2D" uid="uid://dsplganf3lota" path="res://assets/prof_pics/liriliLarilax128.png" id="6_q1x6m"]
+[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="7_ni6fn"]
+[ext_resource type="Texture2D" uid="uid://ciotyr640vdd8" path="res://assets/prof_pics/Tralalero_tralala.png" id="8_hjrlt"]
+[ext_resource type="Texture2D" uid="uid://dun01j37qx5ya" path="res://assets/prof_pics/trulimeroTrulicin.png" id="9_pmdhq"]
+[ext_resource type="Texture2D" uid="uid://ulcids0e12dp" path="res://assets/prof_pics/worker.png" id="10_m6a30"]
 
 [node name="ProfPicSelectionScreen" type="Control"]
 layout_mode = 3
@@ -12,6 +21,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_2mnij")
+profile_pictures = Array[Texture2D]([ExtResource("2_yvmy6"), ExtResource("3_3i72g"), ExtResource("4_1t14d"), ExtResource("5_bdtrg"), ExtResource("6_q1x6m"), ExtResource("7_ni6fn"), ExtResource("8_hjrlt"), ExtResource("9_pmdhq"), ExtResource("10_m6a30")])
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

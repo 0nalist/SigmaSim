@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Cryptocurrency" load_steps=3 format=3 uid="uid://bqmenibdvdr7w"]
+
+[ext_resource type="Script" uid="uid://llcvncktu5" path="res://resources/crypto/cryptocurrency.gd" id="1_dncrq"]
+[ext_resource type="Texture2D" uid="uid://bfrkf7nmil0hd" path="res://assets/early_bird/worm1.png" id="1_ufhts"]
+
+[resource]
+script = ExtResource("1_dncrq")
+symbol = "WORM"
+display_name = "WormCoin"
+icon = ExtResource("1_ufhts")
+price = 1.0
+volatility = 7.07
+power_required = 10000000000
+block_size = 1.0
+block_time = 9.0
+price_history = null
+all_time_high = 1.0
+metadata/_custom_type_script = "uid://llcvncktu5"

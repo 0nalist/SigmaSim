@@ -42,7 +42,7 @@ func refresh_state():
 
 	name_label.text = upgrade.upgrade_name
 	desc_label.text = upgrade.description
-	price_label.text = "💰 $%.0f" % cost
+	price_label.text = "💰 $" + NumberFormatter.format_number(cost)
 
 	if limit == -1:
 		status_label.text = "Purchased: %d (∞ max)" % count
@@ -69,7 +69,7 @@ func _on_upgrade_purchased(purchased_id: String) -> void:
 	if upgrade.upgrade_id == purchased_id:
 		refresh_state()
 
-func _on_cash_updated(new_cash: float) -> void:
+func _on_cash_updated(_new_cash: float) -> void:
 	# Refresh to show if the upgrade is now affordable or not
 	refresh_state()
 

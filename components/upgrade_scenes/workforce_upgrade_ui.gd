@@ -9,9 +9,9 @@ func _ready():
 	_populate()
 
 func _populate():
-	for upgrade in UpgradeManager.get_all_upgrades():
-		if upgrade.source != "Workforce":
-			continue
+	for upgrade in UpgradeManager.get_upgrades_by_source("Workforce"):
+		#if upgrade.source != "Workforce":
+		#	continue
 		var card := upgrade_card_scene.instantiate()
 		card.call_deferred("set_upgrade", upgrade)
 		upgrade_list.add_child(card)

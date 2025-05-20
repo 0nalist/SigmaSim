@@ -3,7 +3,7 @@ extends Node
 
 @export var click_stat_pops_enabled := true
 @export var passive_stat_pops_enabled := true
-
+ 
 @export var stat_pop_scene: PackedScene = preload("res://components/ui/statpop.tscn")
 
 func spawn(text: String, position: Vector2, event_type: String = "click", color: Color = Color.WHITE) -> void:

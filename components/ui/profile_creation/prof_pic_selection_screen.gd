@@ -3,31 +3,17 @@ signal step_valid(valid: bool)
 
 @onready var pic_grid := %PicGrid
 
-var selected_path: String = ""
+@export var profile_pictures: Array[Texture2D] = []
+
+var selected_texture: Texture2D = null
 var selected_button: TextureButton = null
-var pic_folder_path := "res://assets/prof_pics/"
 
 func _ready():
-	var dir = DirAccess.open(pic_folder_path)
-	if dir == null:
-		printerr("Could not open profile picture directory:", pic_folder_path)
-		return
+	for tex in profile_pictures:
+		_add_picture_option(tex)
 
-	dir.list_dir_begin()
-
-	var file_name = dir.get_next()
-	while file_name != "":
-		if not dir.current_is_dir() and file_name.ends_with(".png"):
-			var full_path = pic_folder_path + file_name
-			_add_picture_option(full_path)
-		file_name = dir.get_next()
-
-	dir.list_dir_end()
-
-func _add_picture_option(path: String) -> void:
-	var tex = load(path)
+func _add_picture_option(tex: Texture2D) -> void:
 	if tex == null:
-		printerr("Failed to load texture at:", path)
 		return
 
 	var pic_button = TextureButton.new()
@@ -38,14 +24,11 @@ func _add_picture_option(path: String) -> void:
 	pic_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	pic_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
-	pic_button.connect("pressed", func():
-		_on_pic_selected(path, pic_button)
-	)
+	pic_button.pressed.connect(func(): _on_pic_selected(tex, pic_button))
 	pic_grid.add_child(pic_button)
 
-
-func _on_pic_selected(path: String, button: TextureButton):
-	selected_path = path
+func _on_pic_selected(tex: Texture2D, button: TextureButton):
+	selected_texture = tex
 
 	# Clear highlights
 	for child in pic_grid.get_children():
@@ -54,9 +37,8 @@ func _on_pic_selected(path: String, button: TextureButton):
 
 	# Highlight selected
 	button.modulate = Color.DODGER_BLUE
-
 	emit_signal("step_valid", true)
 
-
 func save_data():
-	PlayerManager.user_data["profile_picture_path"] = selected_path
+	# Store the path or resource UID depending on your save system
+	PlayerManager.user_data["profile_picture_path"] = selected_texture.resource_path

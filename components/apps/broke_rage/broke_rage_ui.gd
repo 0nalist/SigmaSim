@@ -35,11 +35,11 @@ func _on_cash_updated(_cash: float) -> void:
 	var cash = PortfolioManager.cash
 	var balance = PortfolioManager.get_balance()
 
-	cash_label.text = "Cash: $%.2f" % cash
-	balance_label.text = "Net Worth: $%.2f" % balance
+	cash_label.text = "Cash: $" + NumberFormatter.format_number(PortfolioManager.cash)
+	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
 
 	await get_tree().process_frame
-	emit_signal("title_updated", "BrokeRage - $%.2f" % cash)
+	emit_signal("title_updated", "BrokeRage - $%.2f" % cash) # Not currently working
 
 
 
@@ -50,8 +50,8 @@ func _on_investments_updated(amount: float):
 	var delta = amount - last_invested
 	last_invested = amount
 
-	invested_label.text = "Invested: $%.2f" % amount
-	balance_label.text = "Net Worth: $%.2f" % PortfolioManager.get_balance()
+	invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
+	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
 		
 	
 	if delta > 0.01:
@@ -74,7 +74,7 @@ func _on_resource_changed(resource: String, _value: float) -> void:
 		_on_debt_updated()
 
 func _on_debt_updated() -> void:
-	debt_label.text = "Debt: $%.2f" % PortfolioManager.get_total_debt()
+	debt_label.text = "Debt: $" + NumberFormatter.format_number(PortfolioManager.get_total_debt())
 
 
 func _on_ower_view_button_pressed() -> void:

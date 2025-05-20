@@ -74,6 +74,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 			emit_signal("resource_changed", "debt", get_total_debt())
 			if not silent:
 				StatpopManager.spawn("-$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.ORANGE)
+			WindowManager.launch_app_by_name("OwerView")
 			return true
 
 	# Failed to pay
@@ -259,6 +260,14 @@ func sell_crypto(symbol: String, amount: float = 1) -> bool:
 	emit_signal("resource_changed", symbol, crypto_owned[symbol])
 	return true
 
+func get_crypto_total() -> float:
+	var total := 0.0
+	for symbol in crypto_owned.keys():
+		var amount = crypto_owned[symbol]
+		var crypto = MarketManager.crypto_market.get(symbol)
+		if crypto:
+			total += amount * crypto.price
+	return snapped(total, 0.01)
 
 
 ## Student loans

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=21 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
@@ -13,8 +13,12 @@
 [ext_resource type="Texture2D" uid="uid://gs5v18e4xqeq" path="res://assets/early_bird/forest1.png" id="9_eegpt"]
 [ext_resource type="Script" uid="uid://y2npulwei57h" path="res://components/apps/early_bird/early_bird_autopilot.gd" id="9_tm5dr"]
 [ext_resource type="Texture2D" uid="uid://b8piqndlfnolp" path="res://assets/early_bird/wojak_bird_1.png" id="9_y10ql"]
+[ext_resource type="Shader" uid="uid://dpkrwbqp1ct8w" path="res://assets/shaders/pixel_perfect.gdshader" id="12_35jdd"]
 [ext_resource type="Script" uid="uid://cvkmxe30l4wqr" path="res://components/apps/early_bird/worm.gd" id="12_im8xc"]
 [ext_resource type="Texture2D" uid="uid://bfrkf7nmil0hd" path="res://assets/early_bird/worm1.png" id="13_8hmpk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eegpt"]
+shader = ExtResource("12_35jdd")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jcpj0"]
 radius = 22.0
@@ -90,11 +94,23 @@ autoscroll = Vector2(-7, 0)
 position = Vector2(960, 300)
 texture = ExtResource("9_eegpt")
 
-[node name="Forest2" type="Sprite2D" parent="Forest"]
+[node name="Forest2" type="Parallax2D" parent="."]
+unique_name_in_owner = true
+scroll_offset = Vector2(-19, -25)
+repeat_size = Vector2(1920, 0)
+autoscroll = Vector2(-7, 0)
+
+[node name="Forest2" type="Sprite2D" parent="Forest2"]
 position = Vector2(800, 299)
 texture = ExtResource("9_eegpt")
 
-[node name="Forest3" type="Sprite2D" parent="Forest"]
+[node name="Forest3" type="Parallax2D" parent="."]
+unique_name_in_owner = true
+scroll_offset = Vector2(-19, -25)
+repeat_size = Vector2(1920, 0)
+autoscroll = Vector2(-7, 0)
+
+[node name="Forest3" type="Sprite2D" parent="Forest3"]
 position = Vector2(833, 301)
 texture = ExtResource("9_eegpt")
 
@@ -125,6 +141,7 @@ script = ExtResource("2_yrrt2")
 
 [node name="EarlyBirdPlayerSprite" type="Sprite2D" parent="EarlyBirdPlayer"]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_eegpt")
 position = Vector2(-4.50611e-05, -4.17233e-06)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("9_y10ql")
