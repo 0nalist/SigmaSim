@@ -4,7 +4,7 @@ extends Pane
 
 @onready var autopay_checkbox: CheckBox = %AutopayCheckBox
 @onready var grid_container: GridContainer = %GridContainer
-@onready var day_panel_scene: PackedScene = preload("res://components/calendar_day_panel.tscn")
+@export var day_panel_scene: PackedScene
 @onready var month_year_label: Label = %MonthYearLabel
 
 func _ready():

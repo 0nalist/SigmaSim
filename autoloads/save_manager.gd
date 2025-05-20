@@ -79,6 +79,7 @@ func save_to_slot(slot_id: int) -> void:
 		"player": PlayerManager.get_save_data(),
 		"workers": WorkerManager.get_save_data(),
 		"bills": BillManager.get_save_data(),
+		"gpus": GPUManager.get_save_data(),
 		"upgrades": UpgradeManager.get_save_data(),
 		"windows": WindowManager.get_save_data(),
 	}
@@ -137,12 +138,15 @@ func load_from_slot(slot_id: int) -> void:
 		PlayerManager.set_slot_id(slot_id)
 	if data.has("workers"):
 		WorkerManager.load_from_data(data["workers"])
-	if data.has("windows"):
-		WindowManager.load_from_data(data["windows"])
-
+	
+	if data.has("gpus"):
+		GPUManager.load_from_data(data["gpus"])
 	if data.has("bills"):
 		BillManager.load_from_data(data["bills"])
 
+
+	if data.has("windows"): ##Always load windows last (I think)
+		WindowManager.load_from_data(data["windows"])
 
 func reset_game_state() -> void:
 	# Reset all relevant managers to blank state
@@ -154,6 +158,7 @@ func reset_game_state() -> void:
 	EffectManager.reset()
 	WorkerManager.reset()
 	MarketManager.reset()
+	GPUManager.reset()
 	#BillManager.reset()
 	#UpgradeManager.reset()
 
@@ -167,6 +172,7 @@ func reset_managers():
 	WorkerManager.reset()
 	EffectManager.reset()
 	TaskManager.reset()
+	GPUManager.reset()
 	EffectManager.reset()
 
 func delete_save(slot_id: int) -> void:

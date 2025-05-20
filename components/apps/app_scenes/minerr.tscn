@@ -13,6 +13,7 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6dwf"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="Minerr" type="PanelContainer"]
 anchors_preset = 15
@@ -55,9 +56,21 @@ theme_override_fonts/font = ExtResource("8_x88rl")
 theme_override_font_sizes/font_size = 36
 text = " Minerr"
 
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CryptoContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("9_0t4uf")
+
 [node name="GPUsHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 8
+theme = ExtResource("9_0t4uf")
 
 [node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/GPUsHBoxContainer"]
 unique_name_in_owner = true
@@ -102,16 +115,6 @@ text = "Buy Used GPU"
 [node name="UsedGPUPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/GPUsHBoxContainer/VBoxContainer2/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="CryptoContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("9_0t4uf")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/GPUsHBoxContainer/VBoxContainer2/HBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/GPUsHBoxContainer/VBoxContainer2/HBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]

@@ -64,6 +64,11 @@ func _process(delta: float) -> void:
 	block_chance_label.text = "%.f%% chance to mine" % displayed_chance
 	if power_bar:
 		power_bar.value = displayed_chance
+	
+	if crypto:
+		var time_left := GPUManager.get_time_until_next_block(crypto.symbol)
+		var seconds = floor(time_left)
+		block_time_label.text = "Next block: %ds" % seconds
 
 func calculate_block_chance() -> float:
 	var gpu_power = GPUManager.get_power_for(crypto.symbol)
@@ -75,7 +80,7 @@ func calculate_block_chance() -> float:
 
 
 func get_time_to_block() -> int:
-	return max(0, round(GPUManager.get_time_until_next_block(crypto.symbol)))
+	return max(0, floor(GPUManager.get_time_until_next_block(crypto.symbol)))
 
 func update_display() -> void:
 	if not crypto:
@@ -84,7 +89,7 @@ func update_display() -> void:
 	symbol_label.text = crypto.symbol
 	display_name_label.text = crypto.display_name
 	price_label.text = "$" + NumberFormatter.format_number(crypto.price)
-	block_time_label.text = "Next block: %ds" % get_time_to_block()
+	#block_time_label.text = "Next block: %ds" % get_time_to_block()
 	block_size_label.text = "Block size: %.1f" % crypto.block_size
 
 	var owned = PortfolioManager.get_crypto_amount(crypto.symbol)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=33 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -14,9 +14,11 @@
 [ext_resource type="Texture2D" uid="uid://mpip7wcjjyrr" path="res://assets/logos/pdficon.png" id="11_6x3lq"]
 [ext_resource type="Texture2D" uid="uid://hi7ldhid6blr" path="res://assets/ui/tangelo_down_white.png" id="13_bnui0"]
 [ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/lilac_normal.png" id="13_m483i"]
+[ext_resource type="PackedScene" uid="uid://5euld8tsq4yj" path="res://components/siggy/siggy.tscn" id="13_xcmse"]
 [ext_resource type="Script" uid="uid://jj0g0vk3lpc2" path="res://components/trash.gd" id="14_m483i"]
 [ext_resource type="Texture2D" uid="uid://c6q0iyjglvflr" path="res://assets/ui/dodger_blue_down_gray.png" id="14_xcmse"]
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
+[ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://start_panel_window.gd" id="23_dik0q"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
@@ -398,6 +400,7 @@ grow_vertical = 0
 scale = Vector2(1.4, 1.4)
 theme_override_styles/panel = SubResource("StyleBoxFlat_m483i")
 script = ExtResource("23_dik0q")
+siggy_scene = ExtResource("13_xcmse")
 
 [node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TaskbarWrapper/StartPanel"]
 layout_mode = 1
@@ -637,6 +640,7 @@ offset_bottom = 131.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.6, 0.6)
+day_panel_scene = ExtResource("20_vxmwr")
 
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="mouse_exited" from="TaskbarLayer/TaskbarWrapper/StartPanel" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_mouse_exited"]

@@ -3,6 +3,8 @@ class_name StartPanelWindow
 
 @onready var app_list_container: VBoxContainer = %AppListContainer
 
+@export var siggy_scene: PackedScene
+
 var listening_for_clicks := false
 
 
@@ -84,7 +86,7 @@ func _on_sleep_button_2_pressed() -> void:
 
 
 func _on_siggy_button_pressed() -> void:
-	var siggy = preload("res://components/siggy.tscn").instantiate()
+	var siggy = siggy_scene.instantiate()
 	
 	get_tree().get_root().add_child(siggy)
 

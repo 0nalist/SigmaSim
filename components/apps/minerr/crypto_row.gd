@@ -1,3 +1,4 @@
+## DEPRECATED -- see CryptoCard for current implementation
 extends Panel
 class_name CryptoRow
 
