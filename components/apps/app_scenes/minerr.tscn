@@ -55,28 +55,41 @@ theme_override_fonts/font = ExtResource("8_x88rl")
 theme_override_font_sizes/font_size = 36
 text = " Minerr"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 2
-size_flags_vertical = 4
-size_flags_stretch_ratio = 0.35
 
-[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 text = "GPUs 
 Free/Owned: 
 0/0"
 horizontal_alignment = 1
 
-[node name="BuyNewGPUButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.35
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="BuyNewGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "Buy New GPU"
 
-[node name="BuyUsedGPUButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="NewGPUPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="BuyUsedGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -84,7 +97,7 @@ tooltip_text = "Used GPUs have a chance of burning out"
 focus_mode = 0
 text = "Buy Used GPU"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="UsedGPUPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
@@ -97,5 +110,5 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("9_0t4uf")
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer2/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]

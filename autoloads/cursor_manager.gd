@@ -7,6 +7,7 @@ const DEFAULT_CURSOR := preload("res://assets/cursors/cursor_default.png")
 const PICKAXE_CLICK_CURSOR = preload("res://assets/cursors/pickaxe2.png")
 const PICKAXE_CURSOR = preload("res://assets/cursors/pickaxe.png")
 
+var cursor_offset := Vector2.ZERO
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -24,7 +25,7 @@ func _initialize_cursor_scene():
 
 func _process(_delta):
 	if is_instance_valid(cursor):
-		cursor.position = get_viewport().get_mouse_position()
+		cursor.position = get_viewport().get_mouse_position() + cursor_offset
 
 func warp_cursor(pos: Vector2):
 	if is_instance_valid(cursor):
@@ -33,17 +34,17 @@ func warp_cursor(pos: Vector2):
 
 ## Cursor setters
 
-func set_cursor(tex: Texture):
+func set_cursor(tex: Texture, offset := Vector2.ZERO):
 	if is_instance_valid(cursor):
 		cursor.texture = tex
-		
-		
+		cursor_offset = offset
 
 func set_default_cursor():
-	set_cursor(DEFAULT_CURSOR)
+	set_cursor(DEFAULT_CURSOR, Vector2.ZERO)
 
 func set_pickaxe_cursor():
-	set_cursor(PICKAXE_CURSOR)
+	# Adjust this offset until the pickaxe tip aligns with mouse point
+	set_cursor(PICKAXE_CURSOR, Vector2(-8, -2))
 
 func set_pickaxe_click_cursor():
-	set_cursor(PICKAXE_CLICK_CURSOR)
+	set_cursor(PICKAXE_CLICK_CURSOR, Vector2(-6, -3))

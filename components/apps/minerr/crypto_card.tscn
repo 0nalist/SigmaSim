@@ -1,11 +1,25 @@
-[gd_scene load_steps=10 format=3 uid="uid://cd6b75613o34u"]
+[gd_scene load_steps=31 format=3 uid="uid://cd6b75613o34u"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_clvji"]
 [ext_resource type="Texture2D" uid="uid://chka0bjnrrdmr" path="res://assets/ui/dark_purple_normal.png" id="2_opq6i"]
 [ext_resource type="Script" uid="uid://dprwc8feasjw2" path="res://components/apps/minerr/crypto_card.gd" id="3_ixyll"]
-[ext_resource type="Texture2D" uid="uid://chkl2i2bg50da" path="res://assets/mine.png" id="4_5wbke"]
+[ext_resource type="Texture2D" uid="uid://j2kkf8roo1a4" path="res://assets/minerr/blockchain_background.png" id="4_baesq"]
 [ext_resource type="Texture2D" uid="uid://cpph6qmmgf2p3" path="res://assets/ui/greenbuttonpressed.png" id="5_ixyll"]
+[ext_resource type="Texture2D" uid="uid://bdcw452ofw0ok" path="res://assets/minerr/blockchain_block.png" id="5_jyt70"]
 [ext_resource type="Texture2D" uid="uid://ctlorutr8vm1m" path="res://assets/ui/greenbutton.png" id="6_5wbke"]
+[ext_resource type="Texture2D" uid="uid://d0238esdxcusa" path="res://assets/minerr/miner_mining/miner_mining1.png" id="6_gfgdv"]
+[ext_resource type="Texture2D" uid="uid://b7yig7tomq4cp" path="res://assets/minerr/blockchain_block_chaining_in1.png" id="6_uur7y"]
+[ext_resource type="Texture2D" uid="uid://cs22minimbk4t" path="res://assets/minerr/blockchain_block_chaining_in2.png" id="7_2n4b4"]
+[ext_resource type="Texture2D" uid="uid://bidigtjm3s1w5" path="res://assets/minerr/miner_mining/miner_mining2.png" id="7_hw3iy"]
+[ext_resource type="Texture2D" uid="uid://d4yhjm5awpl7" path="res://assets/minerr/blockchain_block_chaining_in3.png" id="8_5e46i"]
+[ext_resource type="Texture2D" uid="uid://bno2hn5nfjeyr" path="res://assets/minerr/miner_mining/miner_mining3.png" id="8_qba4q"]
+[ext_resource type="Texture2D" uid="uid://c2frqwafsuc3g" path="res://assets/minerr/blockchain_block_chaining_in4.png" id="9_e4ame"]
+[ext_resource type="Texture2D" uid="uid://bhjq82cikdfx4" path="res://assets/minerr/miner_mining/miner_mining4.png" id="9_k7b8i"]
+[ext_resource type="Texture2D" uid="uid://dg1ye3goqvgmg" path="res://assets/minerr/miner_mining/miner_mining5.png" id="10_bhrxs"]
+[ext_resource type="Texture2D" uid="uid://cn7uigpl0305u" path="res://assets/minerr/blockchain_block_chaining_in5.png" id="10_nnteb"]
+[ext_resource type="Texture2D" uid="uid://ctl5sihccy6fx" path="res://assets/minerr/blockchain_block_chaining_in6.png" id="11_xgb1v"]
+[ext_resource type="Texture2D" uid="uid://b21enp0ir0ohr" path="res://assets/minerr/blockchain_block_chaining_in7.png" id="12_bvodt"]
+[ext_resource type="Texture2D" uid="uid://dlqu03tmgnjpu" path="res://assets/minerr/blockchain_block_chaining_in8.png" id="13_hye0i"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_scfj1"]
 texture = ExtResource("2_opq6i")
@@ -13,6 +27,96 @@ texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
+
+[sub_resource type="Animation" id="Animation_sll2m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_jyt70")]
+}
+
+[sub_resource type="Animation" id="Animation_ioxsk"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("13_hye0i")]
+}
+
+[sub_resource type="Animation" id="Animation_4qu8f"]
+resource_name = "new_block"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2, 0.266667, 0.317694, 0.378277, 0.444771, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [null, ExtResource("6_uur7y"), ExtResource("7_2n4b4"), ExtResource("8_5e46i"), ExtResource("9_e4ame"), ExtResource("10_nnteb"), ExtResource("11_xgb1v"), ExtResource("12_bvodt"), ExtResource("13_hye0i"), ExtResource("5_jyt70")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pw1a1"]
+_data = {
+&"RESET": SubResource("Animation_sll2m"),
+&"idle": SubResource("Animation_ioxsk"),
+&"new_block": SubResource("Animation_4qu8f")
+}
+
+[sub_resource type="Animation" id="Animation_uur7y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MinerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_gfgdv")]
+}
+
+[sub_resource type="Animation" id="Animation_sai5q"]
+resource_name = "mining"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MinerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("6_gfgdv"), ExtResource("7_hw3iy"), ExtResource("8_qba4q"), ExtResource("9_k7b8i"), ExtResource("10_bhrxs"), ExtResource("8_qba4q"), ExtResource("7_hw3iy"), ExtResource("6_gfgdv")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2n4b4"]
+_data = {
+&"RESET": SubResource("Animation_uur7y"),
+&"mining": SubResource("Animation_sai5q")
+}
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_blh88"]
 texture = ExtResource("5_ixyll")
@@ -35,7 +139,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 4
+mouse_filter = 1
 theme = ExtResource("1_clvji")
 theme_override_styles/panel = SubResource("StyleBoxTexture_scfj1")
 script = ExtResource("3_ixyll")
@@ -68,6 +173,23 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 12
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="OwnedLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Owned: "
+
+[node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
+text = "Sell"
+
 [node name="PowerBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -90,35 +212,41 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MinerAnimationPanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 1
 
-[node name="OwnedLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Owned: "
-
-[node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
+[node name="BackgroundTextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MinerAnimationPanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-text = "Sell"
+mouse_filter = 2
+texture = ExtResource("4_baesq")
 
-[node name="MinerSprite" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+[node name="BlockSprite" type="TextureRect" parent="MarginContainer/VBoxContainer/MinerAnimationPanelContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("4_5wbke")
+texture = ExtResource("5_jyt70")
 
-[node name="ClickBoostArea" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+[node name="BlockAnimationPlayer" type="AnimationPlayer" parent="MarginContainer/VBoxContainer/MinerAnimationPanelContainer/BlockSprite"]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_pw1a1")
+}
+
+[node name="MinerSprite" type="TextureRect" parent="MarginContainer/VBoxContainer/MinerAnimationPanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-texture_normal = ExtResource("4_5wbke")
+mouse_filter = 2
+texture = ExtResource("6_gfgdv")
+
+[node name="MinerAnimationPlayer" type="AnimationPlayer" parent="MarginContainer/VBoxContainer/MinerAnimationPanelContainer/MinerSprite"]
+unique_name_in_owner = true
+root_node = NodePath("../../BackgroundTextureRect")
+libraries = {
+&"": SubResource("AnimationLibrary_2n4b4")
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(79.575, 0)
@@ -136,6 +264,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
+theme_override_font_sizes/font_size = 12
 text = "-"
 
 [node name="AddGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
@@ -143,6 +272,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
+theme_override_font_sizes/font_size = 12
 text = "+"
 
 [node name="OverclockButton" type="Button" parent="MarginContainer/VBoxContainer"]
@@ -166,3 +296,7 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_blh88")
 theme_override_styles/normal = SubResource("StyleBoxTexture_2knlv")
 text = "Upgrade
 "
+
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/MinerAnimationPanelContainer/BlockSprite" to="." method="_on_block_sprite_gui_input"]
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/MinerAnimationPanelContainer/BlockSprite" to="." method="_on_block_sprite_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/VBoxContainer/MinerAnimationPanelContainer/BlockSprite" to="." method="_on_block_sprite_mouse_exited"]

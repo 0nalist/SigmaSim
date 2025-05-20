@@ -13,7 +13,7 @@ var current_gpu_price: float = gpu_base_price
 var gpu_price_growth: float = 1.4  # price multiplier each purchase
 
 
-@export var base_power: int = 100
+@export var base_power: int = 10
 @export var overclock_power_multiplier: float = 1.5
 @export var burnout_rate_per_tick: float = 5.0  # Burnout chance increase per tick of overclocking (out of 1000)
 

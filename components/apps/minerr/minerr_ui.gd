@@ -14,7 +14,7 @@ func _ready() -> void:
 	MarketManager.crypto_price_updated.connect(_on_crypto_updated)
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
 	GPUManager.gpus_changed.connect(update_gpu_label)
-	GPUManager.crypto_mined.connect(_on_crypto_mined)
+	#GPUManager.crypto_mined.connect(_on_crypto_mined)
 
 	update_gpu_label()
 
@@ -81,13 +81,8 @@ func _on_crypto_updated(symbol: String, _crypto: Cryptocurrency) -> void:
 	if crypto_cards.has(symbol):
 		crypto_cards[symbol].update_display()
 
-func _on_crypto_mined(crypto: Cryptocurrency) -> void:
-	var window: WindowFrame
-	if get_parent().get_parent().get_parent() is WindowFrame:
-		window = get_parent().get_parent().get_parent()
-	else:
-		return
-	StatpopManager.spawn("+" + str(crypto.block_size) + " " + str(crypto.symbol), window.header.global_position, "passive", Color.GREEN)
+
+ 
 
 func _on_toggle_overclock(symbol: String) -> void:
 	print("Toggle overclock for:", symbol)

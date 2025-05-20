@@ -7,7 +7,7 @@ class_name Cryptocurrency
 @export var icon: Texture
 @export var price: float = 1.0
 @export var volatility: float = 1.0
-@export var power_required: int = 100
+@export var power_required: int = 10000
 @export var block_size: float = 1.0
 @export var block_time: float = 10.0
 @export var price_history: Array[float] = [price]
