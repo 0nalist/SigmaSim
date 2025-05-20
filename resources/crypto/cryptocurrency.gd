@@ -7,7 +7,7 @@ class_name Cryptocurrency
 @export var icon: Texture
 @export var price: float = 1.0
 @export var volatility: float = 1.0
-@export var power_required: int = 10000
+@export var power_required: int = 100
 @export var block_size: float = 1.0
 @export var block_time: float = 10.0
 @export var price_history: Array[float] = [price]
@@ -29,9 +29,9 @@ func update_from_market(volatility_scale := 1.0) -> void:
 	var max_percent_change = volatility / 100.0 * volatility_scale
 	var delta = price * max_percent_change * noise
 	update_price(delta)
-	update_power_required(price)
+	#update_power_required(price)
 
-
+'''
 func update_power_required(previous_price: float) -> void:
 	if previous_price <= 0:
 		return
@@ -42,7 +42,7 @@ func update_power_required(previous_price: float) -> void:
 
 	# Set updated value
 	power_required = clamp(int(new_required), 1, 1_000_000)
-
+'''
 
 ## --- SAVELOAD
 
