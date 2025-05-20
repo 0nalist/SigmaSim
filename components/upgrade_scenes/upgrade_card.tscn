@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://1b3edvmanfkb"]
+[gd_scene load_steps=4 format=3 uid="uid://dsuhxnhukwvd"]
 
 [ext_resource type="Script" uid="uid://ccoco6yx2vht0" path="res://components/upgrade_scenes/upgrade_card.gd" id="1_68qdy"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_2byyh"]
