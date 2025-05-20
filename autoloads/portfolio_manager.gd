@@ -129,8 +129,8 @@ func pay_with_credit(amount: float) -> bool:
 		emit_signal("credit_updated", credit_used, credit_limit)
 		_recalculate_credit_score()
 		emit_signal("resource_changed", "debt", get_total_debt())
-		return true
 		WindowManager.launch_app_by_name("OwerView")
+		return true
 	return false
 
 func get_credit_remaining() -> float:

@@ -15,7 +15,7 @@ var card_dict: Dictionary = {}  # upgrade_id -> card
 
 func _ready():
 	window_title = tree_title
-	window_title_changed.emit()
+	window_title_changed.emit(window_title)
 	if has_node("TitleLabel"):
 		title_label.text = tree_title
 	layout_tree()
