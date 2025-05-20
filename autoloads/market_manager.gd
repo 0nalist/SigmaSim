@@ -9,12 +9,31 @@ signal crypto_tick()
 signal stock_price_updated(symbol: String, stock: Stock)
 signal crypto_price_updated(name: String, crypto: Cryptocurrency)
 
+var STOCK_RESOURCES = {
+	"ALPH_STOCK" : preload("res://resources/stocks/alph_stock.tres"),
+	"BRO_STOCK" : preload("res://resources/stocks/bro_stock.tres"),
+	"GME_STOCK" : preload("res://resources/stocks/gme_stock.tres"),
+	"LOCK_STOCK" : preload("res://resources/stocks/lock_stock.tres"),
+	"TSLA_STOCK" : preload("res://resources/stocks/tsla_stock.tres"),
+	"USD_STOCK" : preload("res://resources/stocks/usd_stock.tres"),
+	"YOLO_STOCK" : preload("res://resources/stocks/yolo_stock.tres"),
+	
+}
+
+var CRYPTO_RESOURCES = {
+	"BITC_CRYPTO" : preload("res://resources/crypto/bitc_crypto.tres"),
+	"HAWK_CRYPTO" : preload("res://resources/crypto/hawk_crypto.tres"),
+	"WORM_CRYPTO" : preload("res://resources/crypto/worm_crypto.tres"),
+	
+}
+
+
 func _ready():
 	TimeManager.minute_passed.connect(_on_minute_passed)
 	if crypto_market.is_empty():
-		load_cryptos_from_folder()
+		_init_crypto_market()
 	if stock_market.is_empty():
-		load_stocks_from_folder()
+		_init_stock_market()
 
 func _on_minute_passed(current_time_minutes: int) -> void:
 	# Alternate stock and crypto ticks every minute
@@ -98,62 +117,15 @@ func _update_crypto_prices():
 
 ## --- Initialization --- ##
 
-func load_cryptos_from_folder(path: String = "res://resources/crypto/") -> void:
-	var dir = DirAccess.open(path)
-	if dir == null:
-		push_error("Failed to open crypto folder: %s" % path)
-		return
+func _init_crypto_market() -> void:
+	for symbol in CRYPTO_RESOURCES.keys():
+		var crypto = CRYPTO_RESOURCES[symbol].duplicate()
+		register_crypto(crypto)
 
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	while file_name != "":
-		if dir.current_is_dir():
-			file_name = dir.get_next()
-			continue
-
-		if file_name.ends_with(".tres") or file_name.ends_with(".res"):
-			var full_path = path.path_join(file_name)
-			var resource = load(full_path)
-
-			if resource is Cryptocurrency:
-				register_crypto(resource)
-			else:
-				print("Skipped non-Cryptocurrency file:", file_name)
-
-		file_name = dir.get_next()
-
-	dir.list_dir_end()
-
-func load_stocks_from_folder(path: String = "res://resources/stocks/") -> void:
-	var dir = DirAccess.open(path)
-	if dir == null:
-		push_error("Failed to open stock folder: %s" % path)
-		return
-
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	while file_name != "":
-		if dir.current_is_dir():
-			file_name = dir.get_next()
-			continue
-
-		if file_name.ends_with(".tres") or file_name.ends_with(".res"):
-			var full_path = path.path_join(file_name)
-			var resource = load(full_path)
-
-			if resource is Stock:
-				register_stock(resource)
-			else:
-				print("Skipped non-Stock file:", file_name)
-
-		file_name = dir.get_next()
-
-	dir.list_dir_end()
-
-
-
-
-
+func _init_stock_market() -> void:
+	for symbol in STOCK_RESOURCES.keys():
+		var stock = STOCK_RESOURCES[symbol].duplicate()
+		register_stock(stock)
 
 
 ## --- SAVELOAD
@@ -176,12 +148,14 @@ func load_from_data(data: Dictionary) -> void:
 	stock_market.clear()
 	crypto_market.clear()
 
-	for symbol in data.get("stock_market", {}).keys():
-		var stock = Stock.new()
-		stock.from_dict(data["stock_market"][symbol])
+	for symbol in STOCK_RESOURCES.keys():
+		var stock = STOCK_RESOURCES[symbol].duplicate()
+		if data.get("stock_market", {}).has(symbol):
+			stock.from_dict(data["stock_market"][symbol])
 		register_stock(stock)
 
-	for symbol in data.get("crypto_market", {}).keys():
-		var crypto = Cryptocurrency.new()
-		crypto.from_dict(data["crypto_market"][symbol])
+	for symbol in CRYPTO_RESOURCES.keys():
+		var crypto = CRYPTO_RESOURCES[symbol].duplicate()
+		if data.get("crypto_market", {}).has(symbol):
+			crypto.from_dict(data["crypto_market"][symbol])
 		register_crypto(crypto)

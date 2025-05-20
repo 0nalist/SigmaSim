@@ -201,3 +201,92 @@ func get_new_gpu_price() -> float:
 func get_used_gpu_price() -> float:
 	# Assuming used GPUs are a fixed discount (e.g. 50% of new)
 	return current_gpu_price * 0.5
+
+## SAVE/LOAD/RESET
+
+func reset() -> void:
+	gpu_cryptos.clear()
+	is_overclocked.clear()
+	burnout_chances.clear()
+	to_remove.clear()
+	total_power = 0
+	current_gpu_price = gpu_base_price
+
+	# Stop and clear timers
+	for timer in mining_timers.values():
+		timer.queue_free()
+	mining_timers.clear()
+
+
+func get_save_data() -> Dictionary:
+	var timers: Dictionary = {}
+	for symbol in mining_timers.keys():
+		timers[symbol] = mining_timers[symbol].time_left
+
+	return {
+		"current_gpu_price": current_gpu_price,
+		"gpu_cryptos": gpu_cryptos,
+		"is_overclocked": is_overclocked,
+		"burnout_chances": burnout_chances,
+		"mining_timers": timers
+	}
+
+func load_from_data(data: Dictionary) -> void:
+	reset()
+
+	current_gpu_price = data.get("current_gpu_price", gpu_base_price)
+
+	var arr_crypto = data.get("gpu_cryptos", [])
+	if typeof(arr_crypto) == TYPE_STRING:
+		arr_crypto = []
+	gpu_cryptos = array_to_packed_string_array(arr_crypto)
+
+	var arr_overclock = data.get("is_overclocked", [])
+	if typeof(arr_overclock) == TYPE_STRING:
+		arr_overclock = []
+	is_overclocked = array_to_packed_byte_array(arr_overclock)
+
+	var arr_burnout = data.get("burnout_chances", [])
+	if typeof(arr_burnout) == TYPE_STRING:
+		arr_burnout = []
+	burnout_chances = array_to_packed_float32_array(arr_burnout)
+
+	# -- Fix: Force array lengths to match
+	var gpu_count = gpu_cryptos.size()
+	while is_overclocked.size() < gpu_count:
+		is_overclocked.append(0)
+	while burnout_chances.size() < gpu_count:
+		burnout_chances.append(0.0)
+	while is_overclocked.size() > gpu_count:
+		is_overclocked.remove_at(is_overclocked.size() - 1)
+	while burnout_chances.size() > gpu_count:
+		burnout_chances.remove_at(burnout_chances.size() - 1)
+
+	setup_crypto_timers()
+
+	var timers = data.get("mining_timers", {})
+	for symbol in timers.keys():
+		if mining_timers.has(symbol):
+			mining_timers[symbol].start(timers[symbol])
+
+	emit_signal("gpus_changed")
+
+
+
+func array_to_packed_byte_array(arr: Array) -> PackedByteArray:
+	var pba := PackedByteArray()
+	for v in arr:
+		pba.append(int(v))  # Make sure to cast to int (0/1)
+	return pba
+
+func array_to_packed_float32_array(arr: Array) -> PackedFloat32Array:
+	var pfa := PackedFloat32Array()
+	for v in arr:
+		pfa.append(float(v))
+	return pfa
+
+func array_to_packed_string_array(arr: Array) -> PackedStringArray:
+	var psa := PackedStringArray()
+	for v in arr:
+		psa.append(str(v))
+	return psa

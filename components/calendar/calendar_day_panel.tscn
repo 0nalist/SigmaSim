@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bxbwmaa2wwr33"]
 
-[ext_resource type="Script" uid="uid://bo45oowf0uxuu" path="res://components/calendar_day_panel.gd" id="1_8oa01"]
+[ext_resource type="Script" uid="uid://bo45oowf0uxuu" path="res://components/calendar/calendar_day_panel.gd" id="1_8oa01"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8oa01"]
 bg_color = Color(0.82224, 0.526727, 0, 1)

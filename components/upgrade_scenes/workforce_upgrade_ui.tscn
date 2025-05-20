@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b6d1kl4tiarf2"]
 
 [ext_resource type="Script" uid="uid://vovyj6kvtkn6" path="res://components/upgrade_scenes/workforce_upgrade_ui.gd" id="1_lq7ey"]
-[ext_resource type="PackedScene" uid="uid://1b3edvmanfkb" path="res://components/upgrade_card.tscn" id="2_75r8a"]
+[ext_resource type="PackedScene" uid="uid://1b3edvmanfkb" path="res://components/upgrade_scenes/upgrade_card.tscn" id="2_75r8a"]
 
 [node name="WorkforceUpgradeUi" type="PanelContainer"]
 anchors_preset = 15
