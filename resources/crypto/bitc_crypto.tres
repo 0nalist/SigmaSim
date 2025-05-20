@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_l88or")
 symbol = "$BITC"
-display_name = ""
+display_name = "BitchCoin"
 icon = ExtResource("1_cweql")
 price = 100000.0
 volatility = 1.0
