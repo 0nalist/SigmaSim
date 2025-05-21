@@ -1,18 +1,8 @@
 extends Pane
 class_name UpgradeTreeUI
 
-#TODO
-'''
-
-ALSO: Fix save/load for crypto block_time. We need to add current_time_to_block
-	to also be saved and loaded. Right now, current block time is overriding 
-	total block time, permanently shortening the cycle.
-
-'''
-
 var selected_upgrade: UpgradeResource = null
 var hovered_upgrade: UpgradeResource = null
-
 
 @export var tree_title: String = "Upgrade Tree"
 @export var upgrade_filter: String = ""  # e.g., "Workforce"
@@ -25,34 +15,8 @@ var hovered_upgrade: UpgradeResource = null
 @onready var title_label = %TitleLabel  # (if you have one)
 
 var card_dict: Dictionary = {}  # upgrade_id -> card
-
 var last_hovered_card: Node = null
-
-func _process(_delta):
-	var mouse_pos = get_global_mouse_position()
-	var card_under_mouse = _get_upgrade_card_under_mouse(mouse_pos)
-
-	if card_under_mouse != last_hovered_card:
-		last_hovered_card = card_under_mouse
-
-		if card_under_mouse and card_under_mouse.upgrade:
-			hovered_upgrade = card_under_mouse.upgrade
-			tooltip.show_upgrade(hovered_upgrade)
-			#tooltip.position = TOOLTIP_POS
-			tooltip.visible = true
-		elif selected_upgrade:
-			tooltip.show_upgrade(selected_upgrade)
-			#tooltip.position = TOOLTIP_POS
-			tooltip.visible = true
-		else:
-			tooltip.visible = false
-
-func _get_upgrade_card_under_mouse(mouse_pos: Vector2) -> Node:
-	for card in card_dict.values():
-		if card.get_global_rect().has_point(mouse_pos):
-			return card
-	return null
-
+var last_selected_card: Node = null
 
 func _ready():
 	window_title = tree_title
@@ -61,6 +25,25 @@ func _ready():
 		title_label.text = tree_title
 	layout_tree()
 
+func _process(_delta):
+	var mouse_pos = get_global_mouse_position()
+	var card_under_mouse = _get_upgrade_card_under_mouse(mouse_pos)
+
+	# Hover logic
+	if card_under_mouse != last_hovered_card:
+		if last_hovered_card:
+			last_hovered_card.set_hovered(false)
+		last_hovered_card = card_under_mouse
+		if card_under_mouse:
+			card_under_mouse.set_hovered(true)
+
+	_update_tooltip_display(card_under_mouse)
+
+func _get_upgrade_card_under_mouse(mouse_pos: Vector2) -> Node:
+	for card in card_dict.values():
+		if card.get_global_rect().has_point(mouse_pos):
+			return card
+	return null
 
 func _get_upgrade_list() -> Array:
 	if upgrades.size() > 0:
@@ -89,7 +72,6 @@ func layout_tree():
 			var upgrade = layer[i]
 			var card = upgrade_card_scene.instantiate()
 			card.set_upgrade(upgrade)
-			# Center each layer horizontally
 			var x = i * X_SPACING - layer_width / 2
 			card.position = Vector2(x, y)
 			card_canvas.add_child(card)
@@ -104,36 +86,38 @@ func layout_tree():
 	connector_overlay.set_cards(card_dict)
 	connector_overlay.queue_redraw()
 
-#func _on_card_hovered(upgrade, global_pos):
-#	tooltip.show_upgrade(upgrade, global_pos)
-
-const TOOLTIP_POS = Vector2(600, 80) # Adjust as needed
-
+# Signal handlers (optional, for future, but not required with manual tracking)
 func _on_card_hovered(upgrade, _global_pos):
-	hovered_upgrade = upgrade
-	tooltip.show_upgrade(upgrade)
-	#tooltip.position = TOOLTIP_POS
-	tooltip.visible = true
-
+	pass
 
 func _on_card_unhovered():
-	hovered_upgrade = null
-	# If a card is currently selected, show that one.
-	if selected_upgrade:
-		tooltip.show_upgrade(selected_upgrade)
-		#tooltip.position = TOOLTIP_POS
-		tooltip.visible = true
-	else:
-		tooltip.visible = false
-
+	pass
 
 func _on_card_clicked(upgrade, _global_pos):
+	# Unselect last card if needed
+	if last_selected_card:
+		last_selected_card.set_selected(false)
+	# Select new card
+	var card = card_dict.get(upgrade.upgrade_id)
+	if card:
+		card.set_selected(true)
+		last_selected_card = card
 	selected_upgrade = upgrade
-	tooltip.show_upgrade(upgrade)
-	#tooltip.position = TOOLTIP_POS
-	tooltip.visible = true
+	tooltip.show_tooltip(upgrade)
 
 func clear_upgrade_selection():
+	if last_selected_card:
+		last_selected_card.set_selected(false)
+		last_selected_card = null
 	selected_upgrade = null
 	hovered_upgrade = null
-	tooltip.visible = false
+	tooltip.hide_tooltip()
+
+func _update_tooltip_display(card_under_mouse: Node) -> void:
+	if card_under_mouse and card_under_mouse.upgrade:
+		hovered_upgrade = card_under_mouse.upgrade
+		tooltip.show_tooltip(hovered_upgrade)
+	elif selected_upgrade:
+		tooltip.show_tooltip(selected_upgrade)
+	else:
+		tooltip.hide_tooltip()

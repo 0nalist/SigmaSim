@@ -49,6 +49,7 @@ func _update_modulate():
 	elif is_hovered:
 		# Example: blue tint for hovered
 		modulate = Color(0.7, 0.7, 1.2, 1)
+		print("hovered mod")
 	else:
 		# Default: white or gray for unpurchasable
 		var can_purchase = UpgradeManager.can_purchase(upgrade.upgrade_id)
