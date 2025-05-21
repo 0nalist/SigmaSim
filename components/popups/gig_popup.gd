@@ -203,7 +203,7 @@ func _on_grind_button_pressed():
 	_refresh_progress()
 	print("Cursor position (local): ", CursorManager.cursor.position)
 	print("Cursor position (global): ", CursorManager.cursor.global_position)
-	StatpopManager.spawn("+" + str(prod_gain), get_viewport().get_mouse_position())
+	StatpopManager.spawn("+" + str(NumberFormatter.format_number(prod_gain)), get_viewport().get_mouse_position())
 
 func _on_work_force_button_pressed() -> void:
 	WindowManager.launch_app_by_name("WorkForce")

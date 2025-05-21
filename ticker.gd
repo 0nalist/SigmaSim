@@ -61,7 +61,7 @@ func _process(_delta):
 	cash_label.text = "$" + str(NumberFormatter.format_number(PortfolioManager.cash))
 
 func _on_timer_timeout():
-	print("ticker timeout")
+	#print("ticker timeout")
 	_show_next_ticker()
 
 func _show_next_ticker():

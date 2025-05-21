@@ -92,8 +92,8 @@ func apply_productivity() -> void:
 func get_specialization_bonus() -> float:
 	if assigned_task == null:
 		return 0.0
-	var id := assigned_task.get_specialization_id()
-	return specializations.get(id, 0.0)
+	var spec_id := assigned_task.get_specialization_id()
+	return specializations.get(spec_id, 0.0)
 
 
 

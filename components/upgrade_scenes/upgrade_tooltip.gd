@@ -1,4 +1,4 @@
-extends Control
+extends PanelContainer
 
 @onready var name_label = %NameLabel
 #@onready var icon = %Icon
@@ -14,7 +14,8 @@ var current_upgrade: UpgradeResource = null
 
 
 func _ready() -> void:
-	z_index = 1000
+	#z_index = 1000
+	pass
 
 func show_upgrade(upgrade: UpgradeResource):
 	current_upgrade = upgrade
@@ -39,7 +40,7 @@ func show_upgrade(upgrade: UpgradeResource):
 		buy_button.text = "Buy"
 	else:
 		buy_button.disabled = true
-		buy_button.text = "Can't Buy"
+		buy_button.text = "Buy"
 
 	status_label.visible = false # Hide status, unless you want an error message
 
@@ -50,7 +51,7 @@ func show_upgrade(upgrade: UpgradeResource):
 func _on_buy_button_pressed():
 	if current_upgrade:
 		UpgradeManager.purchase_upgrade(current_upgrade.upgrade_id)
-		hide()
+		format_cost(current_upgrade)
 
 func format_cost(upgrade: UpgradeResource) -> String:
 	var txt = ""
