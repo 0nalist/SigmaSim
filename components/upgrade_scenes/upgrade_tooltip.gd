@@ -7,10 +7,16 @@ extends Control
 @onready var effect_list = %EffectList
 @onready var buy_button = %BuyButton
 @onready var status_label = %StatusLabel
+@onready var close_button: Button = %CloseButton
+
 
 var current_upgrade: UpgradeResource = null
 
-func show_upgrade(upgrade: UpgradeResource, screen_pos: Vector2, show_purchase: bool = false):
+
+func _ready() -> void:
+	z_index = 1000
+
+func show_upgrade(upgrade: UpgradeResource):
 	current_upgrade = upgrade
 	name_label.text = upgrade.upgrade_name
 	#icon.texture = upgrade.icon if upgrade.icon else null
@@ -25,19 +31,21 @@ func show_upgrade(upgrade: UpgradeResource, screen_pos: Vector2, show_purchase: 
 		effect_label.text = describe_effect(effect)
 		effect_list.add_child(effect_label)
 
-	# Show/hide button
+	# Always show button, gray out if not purchasable
 	var can_purchase = UpgradeManager.can_purchase(upgrade.upgrade_id)
-	buy_button.visible = show_purchase and can_purchase
 	buy_button.disabled = not can_purchase
-	status_label.visible = not can_purchase
-	if not can_purchase:
-		status_label.text = get_status_text(upgrade)
+	if UpgradeManager.can_purchase(upgrade.upgrade_id):
+		buy_button.disabled = false
+		buy_button.text = "Buy"
 	else:
-		status_label.text = ""
+		buy_button.disabled = true
+		buy_button.text = "Can't Buy"
 
-	# Position and popup
-	global_position = screen_pos + Vector2(16, 0)
-	show()
+	status_label.visible = false # Hide status, unless you want an error message
+
+	# Don't reposition the tooltip
+	self.visible = true
+
 
 func _on_buy_button_pressed():
 	if current_upgrade:
@@ -64,3 +72,13 @@ func get_status_text(upgrade: UpgradeResource) -> String:
 	if PortfolioManager.cash < upgrade.get_current_cost():
 		return "Not enough funds"
 	return ""
+
+
+
+
+func _on_close_button_pressed() -> void:
+	self.visible = false
+	# Clear selection when closed
+	var parent_ui = get_parent().get_parent().get_parent() # Or however you access UpgradeTreeUI
+	if parent_ui.has_method("clear_upgrade_selection"):
+		parent_ui.clear_upgrade_selection()

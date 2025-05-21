@@ -3,9 +3,6 @@ class_name UpgradeTreeUI
 
 #TODO
 '''
-Popup tooltip in fixed position
-Keep Buy button in tooltip
-Figure out why layer 2 isnt showing
 
 ALSO: Fix save/load for crypto block_time. We need to add current_time_to_block
 	to also be saved and loaded. Right now, current block time is overriding 
@@ -13,7 +10,8 @@ ALSO: Fix save/load for crypto block_time. We need to add current_time_to_block
 
 '''
 
-
+var selected_upgrade: UpgradeResource = null
+var hovered_upgrade: UpgradeResource = null
 
 
 @export var tree_title: String = "Upgrade Tree"
@@ -28,12 +26,41 @@ ALSO: Fix save/load for crypto block_time. We need to add current_time_to_block
 
 var card_dict: Dictionary = {}  # upgrade_id -> card
 
+var last_hovered_card: Node = null
+
+func _process(_delta):
+	var mouse_pos = get_global_mouse_position()
+	var card_under_mouse = _get_upgrade_card_under_mouse(mouse_pos)
+
+	if card_under_mouse != last_hovered_card:
+		last_hovered_card = card_under_mouse
+
+		if card_under_mouse and card_under_mouse.upgrade:
+			hovered_upgrade = card_under_mouse.upgrade
+			tooltip.show_upgrade(hovered_upgrade)
+			#tooltip.position = TOOLTIP_POS
+			tooltip.visible = true
+		elif selected_upgrade:
+			tooltip.show_upgrade(selected_upgrade)
+			#tooltip.position = TOOLTIP_POS
+			tooltip.visible = true
+		else:
+			tooltip.visible = false
+
+func _get_upgrade_card_under_mouse(mouse_pos: Vector2) -> Node:
+	for card in card_dict.values():
+		if card.get_global_rect().has_point(mouse_pos):
+			return card
+	return null
+
+
 func _ready():
 	window_title = tree_title
 	window_title_changed.emit(window_title)
 	if has_node("TitleLabel"):
 		title_label.text = tree_title
 	layout_tree()
+
 
 func _get_upgrade_list() -> Array:
 	if upgrades.size() > 0:
@@ -70,16 +97,43 @@ func layout_tree():
 			card.hovered.connect(_on_card_hovered)
 			card.unhovered.connect(_on_card_unhovered)
 			card.clicked.connect(_on_card_clicked)
+			card.set_hovered(false)
+			card.set_selected(false)
 
 	# Draw connector lines
 	connector_overlay.set_cards(card_dict)
 	connector_overlay.queue_redraw()
 
-func _on_card_hovered(upgrade, global_pos):
-	tooltip.show_upgrade(upgrade, global_pos)
+#func _on_card_hovered(upgrade, global_pos):
+#	tooltip.show_upgrade(upgrade, global_pos)
+
+const TOOLTIP_POS = Vector2(600, 80) # Adjust as needed
+
+func _on_card_hovered(upgrade, _global_pos):
+	hovered_upgrade = upgrade
+	tooltip.show_upgrade(upgrade)
+	#tooltip.position = TOOLTIP_POS
+	tooltip.visible = true
+
 
 func _on_card_unhovered():
-	tooltip.hide()
+	hovered_upgrade = null
+	# If a card is currently selected, show that one.
+	if selected_upgrade:
+		tooltip.show_upgrade(selected_upgrade)
+		#tooltip.position = TOOLTIP_POS
+		tooltip.visible = true
+	else:
+		tooltip.visible = false
 
-func _on_card_clicked(upgrade, global_pos):
-	tooltip.show_upgrade(upgrade, global_pos, true)
+
+func _on_card_clicked(upgrade, _global_pos):
+	selected_upgrade = upgrade
+	tooltip.show_upgrade(upgrade)
+	#tooltip.position = TOOLTIP_POS
+	tooltip.visible = true
+
+func clear_upgrade_selection():
+	selected_upgrade = null
+	hovered_upgrade = null
+	tooltip.visible = false

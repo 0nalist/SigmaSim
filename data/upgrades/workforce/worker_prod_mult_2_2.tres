@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("4_tl65h")
-upgrade_id = "worker_prod_mult_2"
+upgrade_id = "worker_prod_mult_2_2"
 unlock_conditions = Array[String]([])
 cost_cash = 100.0
 cost_crypto = {}
