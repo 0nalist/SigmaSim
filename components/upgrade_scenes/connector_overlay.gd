@@ -1,14 +1,12 @@
 extends Node2D
 
-# Dictionary mapping upgrade_id to UpgradeCard node
 var card_dict: Dictionary = {}
 
 func set_cards(dict: Dictionary) -> void:
 	card_dict = dict
-	queue_redraw() # Triggers _draw()
+	queue_redraw()
 
 func _draw():
-	# Draw a line from each card to each of its prerequisites
 	for upgrade_id in card_dict:
 		var card = card_dict[upgrade_id]
 		if not card.upgrade or not card.upgrade.prerequisites:

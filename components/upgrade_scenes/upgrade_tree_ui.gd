@@ -58,11 +58,12 @@ func layout_tree():
 	for child in card_canvas.get_children():
 		child.queue_free()
 	card_dict.clear()
+	
 	var upgrade_list = _get_upgrade_list()
 	var layers = UpgradeManager.get_upgrade_layers(upgrade_list)
 
-	const X_SPACING = 150
-	const Y_SPACING = 100
+	const X_SPACING = 180
+	const Y_SPACING = 120
 
 	for layer_idx in layers.size():
 		var layer = layers[layer_idx]
@@ -76,15 +77,16 @@ func layout_tree():
 			card.position = Vector2(x, y)
 			card_canvas.add_child(card)
 			card_dict[upgrade.upgrade_id] = card
+			card.set_hovered(false)
+			card.set_selected(false)
 			card.hovered.connect(_on_card_hovered)
 			card.unhovered.connect(_on_card_unhovered)
 			card.clicked.connect(_on_card_clicked)
-			card.set_hovered(false)
-			card.set_selected(false)
 
-	# Draw connector lines
+	# Now that all cards are placed, tell the overlay
 	connector_overlay.set_cards(card_dict)
 	connector_overlay.queue_redraw()
+
 
 # Signal handlers (optional, for future, but not required with manual tracking)
 func _on_card_hovered(upgrade, _global_pos):
