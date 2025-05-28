@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1wp0emq6hqk6"
-path="res://.godot/imported/speechbubble.png-2c28d8c8af88445a81b2955647fd1099.ctex"
+uid="uid://chka0bjnrrdmr"
+path="res://.godot/imported/dark_purple_normal.png-f4da352a5f0609d13daf420998cb8300.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/speechbubble.png"
-dest_files=["res://.godot/imported/speechbubble.png-2c28d8c8af88445a81b2955647fd1099.ctex"]
+source_file="res://assets/ui/buttons/dark_purple_normal.png"
+dest_files=["res://.godot/imported/dark_purple_normal.png-f4da352a5f0609d13daf420998cb8300.ctex"]
 
 [params]
 

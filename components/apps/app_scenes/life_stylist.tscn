@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://6sibrffc2ni7"]
 
-[ext_resource type="Texture2D" uid="uid://dtd0wy3l6ohhq" path="res://assets/ui/lemon_chiffon_normal.png" id="1_16n21"]
+[ext_resource type="Texture2D" uid="uid://dtd0wy3l6ohhq" path="res://assets/ui/buttons/lemon_chiffon_normal.png" id="1_16n21"]
 [ext_resource type="Script" uid="uid://d0sq5gmsn0mp7" path="res://components/apps/lifestylist/life_stylist.gd" id="1_80bik"]
 [ext_resource type="PackedScene" uid="uid://p3nf4gwmvex1" path="res://components/apps/lifestylist/lifestyle_row.tscn" id="2_80bik"]
 [ext_resource type="Texture2D" uid="uid://cgxywei8rjptj" path="res://assets/logos/monocle_man.png" id="4_16n21"]

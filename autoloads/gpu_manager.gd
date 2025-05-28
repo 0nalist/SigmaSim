@@ -30,18 +30,49 @@ var burnout_chances: PackedFloat32Array = []
 var to_remove: PackedInt32Array = []
 
 func _ready() -> void:
-	call_deferred("setup_crypto_timers")
+	pass
+	#call_deferred("setup_crypto_timers")
+
+func refresh_timers_after_market_loaded() -> void:
+	# Clear old timers if needed
+	for timer in mining_timers.values():
+		timer.queue_free()
+	mining_timers.clear()
+
+	setup_crypto_timers()
 
 func setup_crypto_timers() -> void:
 	for crypto in MarketManager.crypto_market.values():
 		if not mining_timers.has(crypto.symbol):
-			var timer = Timer.new()
-			timer.wait_time = crypto.block_time
-			timer.autostart = true
-			timer.one_shot = false
-			timer.timeout.connect(func(): _attempt_mine(crypto))
-			add_child(timer)
-			mining_timers[crypto.symbol] = timer
+			set_timer_with_offset(crypto.symbol, crypto.block_time)
+
+
+func set_timer_with_offset(symbol: String, delay: float) -> void:
+	var crypto = MarketManager.crypto_market.get(symbol)
+	if not crypto:
+		return
+
+	# Main repeating timer
+	var timer = Timer.new()
+	timer.name = "Timer_" + symbol
+	timer.wait_time = crypto.block_time
+	timer.one_shot = false
+	timer.autostart = true
+	timer.process_mode = Timer.ProcessMode.PROCESS_MODE_PAUSABLE  # Pauses when the game is paused
+	timer.timeout.connect(func(): _attempt_mine(crypto))
+	add_child(timer)
+	mining_timers[symbol] = timer
+
+	# First timeout delay
+	var first = Timer.new()
+	first.name = "FirstTimeout_" + symbol
+	first.wait_time = clamp(delay, 0.01, crypto.block_time)
+	first.one_shot = true
+	first.process_mode = Timer.ProcessMode.PROCESS_MODE_PAUSABLE
+	first.timeout.connect(func(): _attempt_mine(crypto))
+	add_child(first)
+	first.start()
+
 
 func get_time_until_next_block(symbol: String) -> int:
 	if not mining_timers.has(symbol):
@@ -221,8 +252,11 @@ func reset() -> void:
 func get_save_data() -> Dictionary:
 	var timers: Dictionary = {}
 	for symbol in mining_timers.keys():
-		timers[symbol] = mining_timers[symbol].time_left
-
+		var timer = mining_timers[symbol]
+		timers[symbol] = {
+			"time_left": timer.time_left,
+			#"block_time": timer.wait_time
+		}
 	return {
 		"current_gpu_price": current_gpu_price,
 		"gpu_cryptos": gpu_cryptos,
@@ -230,6 +264,7 @@ func get_save_data() -> Dictionary:
 		"burnout_chances": burnout_chances,
 		"mining_timers": timers
 	}
+
 
 func load_from_data(data: Dictionary) -> void:
 	reset()
@@ -266,8 +301,17 @@ func load_from_data(data: Dictionary) -> void:
 
 	var timers = data.get("mining_timers", {})
 	for symbol in timers.keys():
-		if mining_timers.has(symbol):
-			mining_timers[symbol].start(timers[symbol])
+		var saved = timers[symbol]
+		if typeof(saved) == TYPE_DICTIONARY and MarketManager.crypto_market.has(symbol):
+			var time_left = float(saved.get("time_left", MarketManager.crypto_market[symbol].block_time))
+			print("Loading", symbol, "resource.block_time:", MarketManager.crypto_market[symbol].block_time, "saved time_left:", time_left)
+			
+			# Replace default timer with proper offset timer
+			if mining_timers.has(symbol):
+				mining_timers[symbol].queue_free()
+				mining_timers.erase(symbol)
+
+			set_timer_with_offset(symbol, time_left)
 
 	emit_signal("gpus_changed")
 

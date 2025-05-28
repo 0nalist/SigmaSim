@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu12v0yfad1ai"
-path="res://.godot/imported/lilac_normal.png-e199637d85be6c250c891dab7f5da07e.ctex"
+uid="uid://hi7ldhid6blr"
+path="res://.godot/imported/tangelo_down_white.png-e6a20c7cec9c12aca0476c327e477dd4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/lilac_normal.png"
-dest_files=["res://.godot/imported/lilac_normal.png-e199637d85be6c250c891dab7f5da07e.ctex"]
+source_file="res://assets/ui/buttons/tangelo_down_white.png"
+dest_files=["res://.godot/imported/tangelo_down_white.png-e6a20c7cec9c12aca0476c327e477dd4.ctex"]
 
 [params]
 

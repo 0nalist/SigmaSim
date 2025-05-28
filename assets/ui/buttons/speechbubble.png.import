@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://224bqpxn4g0n"
-path="res://.godot/imported/panel.png-3b9543c06792d57fdee8f168520a6a81.ctex"
+uid="uid://d1wp0emq6hqk6"
+path="res://.godot/imported/speechbubble.png-a016fe65cc10b8494b893f0ad58b6c03.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/panel.png"
-dest_files=["res://.godot/imported/panel.png-3b9543c06792d57fdee8f168520a6a81.ctex"]
+source_file="res://assets/ui/buttons/speechbubble.png"
+dest_files=["res://.godot/imported/speechbubble.png-a016fe65cc10b8494b893f0ad58b6c03.ctex"]
 
 [params]
 

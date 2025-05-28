@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bt7khdre4vr0l"
-path="res://.godot/imported/redbuttonpressed.png-d8185d5aed4a95c11a3302abb0a21106.ctex"
+uid="uid://dtd0wy3l6ohhq"
+path="res://.godot/imported/lemon_chiffon_normal.png-18cc5ce65fdcc5e5355ab85cd129f67a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/redbuttonpressed.png"
-dest_files=["res://.godot/imported/redbuttonpressed.png-d8185d5aed4a95c11a3302abb0a21106.ctex"]
+source_file="res://assets/ui/buttons/lemon_chiffon_normal.png"
+dest_files=["res://.godot/imported/lemon_chiffon_normal.png-18cc5ce65fdcc5e5355ab85cd129f67a.ctex"]
 
 [params]
 

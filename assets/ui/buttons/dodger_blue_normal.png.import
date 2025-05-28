@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgabqb4y3pyct"
-path="res://.godot/imported/marian_blue_down_white.png-556b145cb9dcdc2f396d7cc37fb7d4e8.ctex"
+uid="uid://ca7daiywemk7p"
+path="res://.godot/imported/dodger_blue_normal.png-e14fc21444721d62e617e57352c32317.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/marian_blue_down_white.png"
-dest_files=["res://.godot/imported/marian_blue_down_white.png-556b145cb9dcdc2f396d7cc37fb7d4e8.ctex"]
+source_file="res://assets/ui/buttons/dodger_blue_normal.png"
+dest_files=["res://.godot/imported/dodger_blue_normal.png-e14fc21444721d62e617e57352c32317.ctex"]
 
 [params]
 

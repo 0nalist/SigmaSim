@@ -6,9 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="4_1rfep"]
 [ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="4_85ayv"]
 [ext_resource type="Texture2D" uid="uid://c5sl2581gi8sk" path="res://assets/logos/hamster_clear.png" id="4_eluir"]
-[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/grey_button_pressed.png" id="5_7n4q1"]
-[ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/grey_button_hovered.png" id="6_1rfep"]
-[ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/grey_button1.png" id="7_85ayv"]
+[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/buttons/grey_button_pressed.png" id="5_7n4q1"]
+[ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/buttons/grey_button_hovered.png" id="6_1rfep"]
+[ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/buttons/grey_button1.png" id="7_85ayv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eluir"]
 bg_color = Color(0, 0, 0, 1)

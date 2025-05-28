@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bd8rtde7fiebt"]
 
-[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/lilac_down_white.png" id="1_wp747"]
+[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/buttons/lilac_down_white.png" id="1_wp747"]
 [ext_resource type="Texture2D" uid="uid://ulcids0e12dp" path="res://assets/prof_pics/worker.png" id="2_w8xxy"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hx1uy"]

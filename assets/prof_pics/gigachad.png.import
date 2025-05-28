@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6q0iyjglvflr"
-path="res://.godot/imported/dodger_blue_down_gray.png-3238ccc91585b6e8b20ecde59d7daac5.ctex"
+uid="uid://c8wi7d4203jib"
+path="res://.godot/imported/gigachad.png-dde0e4a5a9a43580a52c9fbceea92343.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/dodger_blue_down_gray.png"
-dest_files=["res://.godot/imported/dodger_blue_down_gray.png-3238ccc91585b6e8b20ecde59d7daac5.ctex"]
+source_file="res://assets/prof_pics/gigachad.png"
+dest_files=["res://.godot/imported/gigachad.png-dde0e4a5a9a43580a52c9fbceea92343.ctex"]
 
 [params]
 

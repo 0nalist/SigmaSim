@@ -5,7 +5,9 @@ signal minute_passed(current_time_minutes: int)
 signal hour_passed(current_hour: int)
 signal day_passed(new_day: int, new_month: int, new_year: int)
 
-var time_ticking := true
+var time_ticking := true:
+	set(value):
+		print("paused" + str(value))
 
 var autosave_enabled := true
 

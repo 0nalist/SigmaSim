@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bht5uooi8rjgf"
-path="res://.godot/imported/grey_button_pressed.png-15886b270221938ffba531c72e8f7559.ctex"
+uid="uid://bu12v0yfad1ai"
+path="res://.godot/imported/lilac_normal.png-871daebf7e171d7e7a9e01e6e6f7bd94.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/grey_button_pressed.png"
-dest_files=["res://.godot/imported/grey_button_pressed.png-15886b270221938ffba531c72e8f7559.ctex"]
+source_file="res://assets/ui/buttons/lilac_normal.png"
+dest_files=["res://.godot/imported/lilac_normal.png-871daebf7e171d7e7a9e01e6e6f7bd94.ctex"]
 
 [params]
 

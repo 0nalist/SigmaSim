@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qpx8kgmedbk1"
-path="res://.godot/imported/dodger_blue_down_white.png-8e62bd7bd154b7f9ebd3d49ec382e1f7.ctex"
+path="res://.godot/imported/dodger_blue_down_white.png-3a6e17b5923ae5e5203362bd30b6213b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/dodger_blue_down_white.png"
-dest_files=["res://.godot/imported/dodger_blue_down_white.png-8e62bd7bd154b7f9ebd3d49ec382e1f7.ctex"]
+source_file="res://assets/ui/buttons/dodger_blue_down_white.png"
+dest_files=["res://.godot/imported/dodger_blue_down_white.png-3a6e17b5923ae5e5203362bd30b6213b.ctex"]
 
 [params]
 

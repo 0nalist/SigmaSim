@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qx70gu5u3jhm"
-path="res://.godot/imported/lilac_down_white.png-6e22bd6f709942091a888d569284f55a.ctex"
+uid="uid://dgbuedoo1sjgn"
+path="res://.godot/imported/redbutton.png-6472b87f9dafd1dbb042a0f4fdf29762.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/lilac_down_white.png"
-dest_files=["res://.godot/imported/lilac_down_white.png-6e22bd6f709942091a888d569284f55a.ctex"]
+source_file="res://assets/ui/buttons/redbutton.png"
+dest_files=["res://.godot/imported/redbutton.png-6472b87f9dafd1dbb042a0f4fdf29762.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chka0bjnrrdmr"
-path="res://.godot/imported/dark_purple_normal.png-b73a60e694c494d003b5b5350c45186d.ctex"
+uid="uid://b34jeguax4tha"
+path="res://.godot/imported/grey_button1.png-3910ac6608cb2f9c6bac233f77448924.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/dark_purple_normal.png"
-dest_files=["res://.godot/imported/dark_purple_normal.png-b73a60e694c494d003b5b5350c45186d.ctex"]
+source_file="res://assets/ui/buttons/grey_button1.png"
+dest_files=["res://.godot/imported/grey_button1.png-3910ac6608cb2f9c6bac233f77448924.ctex"]
 
 [params]
 

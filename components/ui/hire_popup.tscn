@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=3 uid="uid://dovku0me4jq4o"]
 
 [ext_resource type="Script" uid="uid://cb3qkb4u4qmyy" path="res://components/ui/hire_popup.gd" id="1_j0f0j"]
-[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/grey_button_pressed.png" id="2_5v5y8"]
+[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/buttons/grey_button_pressed.png" id="2_5v5y8"]
 [ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="2_dvjtp"]
-[ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/grey_button_hovered.png" id="3_6xrnq"]
+[ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/buttons/grey_button_hovered.png" id="3_6xrnq"]
 [ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="3_ccamy"]
-[ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/grey_button1.png" id="4_dvjtp"]
+[ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/buttons/grey_button1.png" id="4_dvjtp"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ccamy"]
 texture = ExtResource("2_5v5y8")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://y4q1l566sv3c"
-path="res://.godot/imported/marian_blue_normal.png-483d011e20e3e1a8b91e11caba1780fc.ctex"
+uid="uid://qx70gu5u3jhm"
+path="res://.godot/imported/lilac_down_white.png-d2aa33ed2529b0a93f113b7e15b218d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/marian_blue_normal.png"
-dest_files=["res://.godot/imported/marian_blue_normal.png-483d011e20e3e1a8b91e11caba1780fc.ctex"]
+source_file="res://assets/ui/buttons/lilac_down_white.png"
+dest_files=["res://.godot/imported/lilac_down_white.png-d2aa33ed2529b0a93f113b7e15b218d4.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtd0wy3l6ohhq"
-path="res://.godot/imported/lemon_chiffon_normal.png-e3daefb5a29b1d0f3f9653504d070248.ctex"
+uid="uid://cgabqb4y3pyct"
+path="res://.godot/imported/marian_blue_down_white.png-5f690b9a9cb4daa9898a44d7c04165c7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/lemon_chiffon_normal.png"
-dest_files=["res://.godot/imported/lemon_chiffon_normal.png-e3daefb5a29b1d0f3f9653504d070248.ctex"]
+source_file="res://assets/ui/buttons/marian_blue_down_white.png"
+dest_files=["res://.godot/imported/marian_blue_down_white.png-5f690b9a9cb4daa9898a44d7c04165c7.ctex"]
 
 [params]
 

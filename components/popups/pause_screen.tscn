@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://dmy85mwkgom6i"]
 
 [ext_resource type="Script" uid="uid://xsmyme3j42hn" path="res://components/popups/pause_screen.gd" id="1_y4fnm"]
-[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/redbuttonpressed.png" id="2_vgswq"]
-[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/redbutton.png" id="3_4tvkn"]
+[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/buttons/redbuttonpressed.png" id="2_vgswq"]
+[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/buttons/redbutton.png" id="3_4tvkn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jprcr"]
 texture = ExtResource("2_vgswq")

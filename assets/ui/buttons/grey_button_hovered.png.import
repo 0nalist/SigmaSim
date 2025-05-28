@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hi7ldhid6blr"
-path="res://.godot/imported/tangelo_down_white.png-c99e60648764a34e72cf89a32fa3b216.ctex"
+uid="uid://bcw7hx85vfhn6"
+path="res://.godot/imported/grey_button_hovered.png-237b1103c9f5dd527bc6ec05cf1a0291.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/tangelo_down_white.png"
-dest_files=["res://.godot/imported/tangelo_down_white.png-c99e60648764a34e72cf89a32fa3b216.ctex"]
+source_file="res://assets/ui/buttons/grey_button_hovered.png"
+dest_files=["res://.godot/imported/grey_button_hovered.png-237b1103c9f5dd527bc6ec05cf1a0291.ctex"]
 
 [params]
 

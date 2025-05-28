@@ -3,8 +3,8 @@
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_g5w0b"]
 [ext_resource type="Script" uid="uid://bl8ocafyv1w1b" path="res://components/popups/gig_popup.gd" id="2_3vama"]
 [ext_resource type="Texture2D" uid="uid://ulcids0e12dp" path="res://assets/prof_pics/worker.png" id="3_lo5h5"]
-[ext_resource type="Texture2D" uid="uid://cpph6qmmgf2p3" path="res://assets/ui/greenbuttonpressed.png" id="4_rap7d"]
-[ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/lilac_normal.png" id="5_bhen3"]
+[ext_resource type="Texture2D" uid="uid://cpph6qmmgf2p3" path="res://assets/ui/buttons/greenbuttonpressed.png" id="4_rap7d"]
+[ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/buttons/lilac_normal.png" id="5_bhen3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn3q4"]
 bg_color = Color(0.0923971, 0.0923971, 0.092397, 1)

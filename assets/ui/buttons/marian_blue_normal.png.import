@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcw7hx85vfhn6"
-path="res://.godot/imported/grey_button_hovered.png-a63d84e1d1cb066654fb19fe9fb97a46.ctex"
+uid="uid://y4q1l566sv3c"
+path="res://.godot/imported/marian_blue_normal.png-f12cb9f72528844b4de3688122384a5e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/grey_button_hovered.png"
-dest_files=["res://.godot/imported/grey_button_hovered.png-a63d84e1d1cb066654fb19fe9fb97a46.ctex"]
+source_file="res://assets/ui/buttons/marian_blue_normal.png"
+dest_files=["res://.godot/imported/marian_blue_normal.png-f12cb9f72528844b4de3688122384a5e.ctex"]
 
 [params]
 

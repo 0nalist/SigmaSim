@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dgbuedoo1sjgn"
-path="res://.godot/imported/redbutton.png-8bc837dfcf044f5d9dc596378918a14c.ctex"
+uid="uid://c6q0iyjglvflr"
+path="res://.godot/imported/dodger_blue_down_gray.png-e04a46b59dfa45cb721f6094e3355f00.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/redbutton.png"
-dest_files=["res://.godot/imported/redbutton.png-8bc837dfcf044f5d9dc596378918a14c.ctex"]
+source_file="res://assets/ui/buttons/dodger_blue_down_gray.png"
+dest_files=["res://.godot/imported/dodger_blue_down_gray.png-e04a46b59dfa45cb721f6094e3355f00.ctex"]
 
 [params]
 
