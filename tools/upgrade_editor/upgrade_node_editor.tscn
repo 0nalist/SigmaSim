@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://bylna3aevqa6j"]
+
+[ext_resource type="Script" uid="uid://bnf83ue8ctslh" path="res://tools/upgrade_editor/upgrade_node_editor.gd" id="1_o40im"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0ah5g"]
+
+[node name="UpgradeNodeEditor" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1840.0
+offset_bottom = -1040.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o40im")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Unset"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_0ah5g")
