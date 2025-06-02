@@ -57,8 +57,8 @@ func setup(gig_ref: WorkerTask) -> void:
 	assign_button.pressed.connect(_on_assign_worker_pressed)
 	grind_button.pressed.connect(_on_grind_button_pressed)
 	
-	if not gig.task_updated.is_connected(_on_worker_state_changed):
-		gig.task_updated.connect(_on_worker_state_changed)
+	if not gig.assignment_changed.is_connected(_on_worker_state_changed):
+		gig.assignment_changed.connect(_on_worker_state_changed)
 		
 	if not WorkerManager.worker_selected.is_connected(_on_worker_selected):
 		WorkerManager.worker_selected.connect(_on_worker_selected)

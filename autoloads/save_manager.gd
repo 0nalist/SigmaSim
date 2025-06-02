@@ -133,7 +133,7 @@ func load_from_slot(slot_id: int) -> void:
 		TaskManager.load_from_data(data["tasks"])
 	if data.has("market"):
 		MarketManager.load_from_data(data["market"])
-		GPUManager.refresh_timers_after_market_loaded()
+		#GPUManager.refresh_timers_after_market_loaded()
 	if data.has("player"):
 		PlayerManager.load_from_data(data["player"])
 		PlayerManager.set_slot_id(slot_id)

@@ -56,7 +56,11 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 			StatpopManager.spawn("-$" + str(NumberFormatter.format_number(amount)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 		return true
 
-
+	# Check if cash + credit is enough
+	if not can_pay_with_credit(amount + cash):
+		if not silent:
+			StatpopManager.spawn("DECLINED", get_viewport().get_mouse_position(), "click", Color.RED)
+		return false
 
 	# Credit fallback
 	if credit_score >= credit_required_score:

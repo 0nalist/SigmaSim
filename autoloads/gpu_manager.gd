@@ -7,7 +7,8 @@ signal gpu_burned_out(index: int)
 signal crypto_mined(crypto)
 signal block_attempted(symbol: String)
 
-var mining_timers: Dictionary = {}  # symbol: Timer
+var mining_cooldowns := {}  # symbol -> float (remaining cooldown in minutes)
+
 
 # GPU Pricing
 var gpu_base_price: float = 100.0
@@ -30,54 +31,36 @@ var burnout_chances: PackedFloat32Array = []
 var to_remove: PackedInt32Array = []
 
 func _ready() -> void:
-	pass
-	#call_deferred("setup_crypto_timers")
+	TimeManager.minute_passed.connect(_on_minute_tick)
+	MarketManager.crypto_market_ready.connect(setup_crypto_cooldowns)
 
-func refresh_timers_after_market_loaded() -> void:
-	# Clear old timers if needed
-	for timer in mining_timers.values():
-		timer.queue_free()
-	mining_timers.clear()
+func _on_minute_tick(_min):
+	print("Minute tick! mining_cooldowns:", mining_cooldowns)
+	for symbol in mining_cooldowns.keys():
+		mining_cooldowns[symbol] -= 1.0
+		print("Cooldown for", symbol, "is now", mining_cooldowns[symbol])
+		if mining_cooldowns[symbol] <= 0.0:
+			print("Attempting to mine", symbol)
+			var crypto = MarketManager.crypto_market.get(symbol)
+			if crypto:
+				_attempt_mine(crypto)
+				mining_cooldowns[symbol] = crypto.block_time
 
-	setup_crypto_timers()
-
-func setup_crypto_timers() -> void:
+func setup_crypto_cooldowns():
+	print("SETUP: crypto_market keys:", MarketManager.crypto_market.keys())
+	mining_cooldowns.clear()
 	for crypto in MarketManager.crypto_market.values():
-		if not mining_timers.has(crypto.symbol):
-			set_timer_with_offset(crypto.symbol, crypto.block_time)
-
-
-func set_timer_with_offset(symbol: String, delay: float) -> void:
-	var crypto = MarketManager.crypto_market.get(symbol)
-	if not crypto:
-		return
-
-	# Main repeating timer
-	var timer = Timer.new()
-	timer.name = "Timer_" + symbol
-	timer.wait_time = crypto.block_time
-	timer.one_shot = false
-	timer.autostart = true
-	timer.process_mode = Timer.ProcessMode.PROCESS_MODE_PAUSABLE  # Pauses when the game is paused
-	timer.timeout.connect(func(): _attempt_mine(crypto))
-	add_child(timer)
-	mining_timers[symbol] = timer
-
-	# First timeout delay
-	var first = Timer.new()
-	first.name = "FirstTimeout_" + symbol
-	first.wait_time = clamp(delay, 0.01, crypto.block_time)
-	first.one_shot = true
-	first.process_mode = Timer.ProcessMode.PROCESS_MODE_PAUSABLE
-	first.timeout.connect(func(): _attempt_mine(crypto))
-	add_child(first)
-	first.start()
-
+		print("SETUP: Adding cooldown for", crypto.symbol, "=", crypto.block_time)
+		mining_cooldowns[crypto.symbol] = crypto.block_time
+	print("SETUP: Resulting mining_cooldowns:", mining_cooldowns)
 
 func get_time_until_next_block(symbol: String) -> int:
-	if not mining_timers.has(symbol):
+	if not mining_cooldowns.has(symbol):
 		return -1
-	return int(ceil(mining_timers[symbol].time_left))
+	return int(ceil(mining_cooldowns[symbol]))
+
+
+
 
 func _attempt_mine(crypto: Cryptocurrency) -> void:
 	emit_signal("block_attempted", crypto.symbol)
@@ -243,26 +226,20 @@ func reset() -> void:
 	total_power = 0
 	current_gpu_price = gpu_base_price
 
-	# Stop and clear timers
-	for timer in mining_timers.values():
-		timer.queue_free()
-	mining_timers.clear()
+	mining_cooldowns.clear()
 
 
 func get_save_data() -> Dictionary:
-	var timers: Dictionary = {}
-	for symbol in mining_timers.keys():
-		var timer = mining_timers[symbol]
-		timers[symbol] = {
-			"time_left": timer.time_left,
-			#"block_time": timer.wait_time
-		}
+	var cooldowns: Dictionary = {}
+	for symbol in mining_cooldowns:
+		cooldowns[symbol] = mining_cooldowns[symbol]
+
 	return {
 		"current_gpu_price": current_gpu_price,
 		"gpu_cryptos": gpu_cryptos,
 		"is_overclocked": is_overclocked,
 		"burnout_chances": burnout_chances,
-		"mining_timers": timers
+		"mining_cooldowns": cooldowns
 	}
 
 
@@ -286,7 +263,7 @@ func load_from_data(data: Dictionary) -> void:
 		arr_burnout = []
 	burnout_chances = array_to_packed_float32_array(arr_burnout)
 
-	# -- Fix: Force array lengths to match
+	# -- Force array lengths to match
 	var gpu_count = gpu_cryptos.size()
 	while is_overclocked.size() < gpu_count:
 		is_overclocked.append(0)
@@ -297,21 +274,11 @@ func load_from_data(data: Dictionary) -> void:
 	while burnout_chances.size() > gpu_count:
 		burnout_chances.remove_at(burnout_chances.size() - 1)
 
-	setup_crypto_timers()
+	setup_crypto_cooldowns()
 
-	var timers = data.get("mining_timers", {})
-	for symbol in timers.keys():
-		var saved = timers[symbol]
-		if typeof(saved) == TYPE_DICTIONARY and MarketManager.crypto_market.has(symbol):
-			var time_left = float(saved.get("time_left", MarketManager.crypto_market[symbol].block_time))
-			print("Loading", symbol, "resource.block_time:", MarketManager.crypto_market[symbol].block_time, "saved time_left:", time_left)
-			
-			# Replace default timer with proper offset timer
-			if mining_timers.has(symbol):
-				mining_timers[symbol].queue_free()
-				mining_timers.erase(symbol)
-
-			set_timer_with_offset(symbol, time_left)
+	var saved_cooldowns = data.get("mining_cooldowns", {})
+	for symbol in saved_cooldowns.keys():
+		mining_cooldowns[symbol] = float(saved_cooldowns[symbol])
 
 	emit_signal("gpus_changed")
 
