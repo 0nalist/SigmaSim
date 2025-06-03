@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://xm8tdrmlmymx" path="res://assets/siggy.png" id="1_qdwsr"]
 [ext_resource type="Script" uid="uid://3bhjirdktw5e" path="res://components/siggy/siggy.gd" id="1_v5hgp"]
-[ext_resource type="Texture2D" uid="uid://d1wp0emq6hqk6" path="res://assets/ui/speechbubble.png" id="4_lgbmc"]
+[ext_resource type="Texture2D" uid="uid://d1wp0emq6hqk6" path="res://assets/ui/buttons/speechbubble.png" id="4_lgbmc"]
 
 [node name="Siggy" type="Control"]
 layout_mode = 3

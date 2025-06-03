@@ -1,12 +1,12 @@
 [gd_resource type="Theme" load_steps=18 format=3 uid="uid://cesgvqexxaqev"]
 
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_cm3wh"]
-[ext_resource type="Texture2D" uid="uid://y4q1l566sv3c" path="res://assets/ui/marian_blue_normal.png" id="2_bqcnq"]
-[ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/dodger_blue_normal.png" id="3_w21ee"]
-[ext_resource type="Texture2D" uid="uid://cgabqb4y3pyct" path="res://assets/ui/marian_blue_down_white.png" id="4_q5je1"]
-[ext_resource type="Texture2D" uid="uid://224bqpxn4g0n" path="res://assets/ui/panel.png" id="5_bqcnq"]
-[ext_resource type="Texture2D" uid="uid://cqdy76tfxscgl" path="res://assets/ui/alabaster_normal.png" id="6_w21ee"]
-[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/lilac_down_white.png" id="7_q5je1"]
+[ext_resource type="Texture2D" uid="uid://y4q1l566sv3c" path="res://assets/ui/buttons/marian_blue_normal.png" id="2_bqcnq"]
+[ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="3_w21ee"]
+[ext_resource type="Texture2D" uid="uid://cgabqb4y3pyct" path="res://assets/ui/buttons/marian_blue_down_white.png" id="4_q5je1"]
+[ext_resource type="Texture2D" uid="uid://224bqpxn4g0n" path="res://assets/ui/buttons/panel.png" id="5_bqcnq"]
+[ext_resource type="Texture2D" uid="uid://cqdy76tfxscgl" path="res://assets/ui/buttons/alabaster_normal.png" id="6_w21ee"]
+[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/buttons/lilac_down_white.png" id="7_q5je1"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w21ee"]
 texture = ExtResource("5_bqcnq")

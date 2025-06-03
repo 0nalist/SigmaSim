@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UpgradeTreeResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tools/upgrade_editor/upgrade_tree_resource.gd" id="1_bhwey"]
+
+[resource]
+script = ExtResource("1_bhwey")

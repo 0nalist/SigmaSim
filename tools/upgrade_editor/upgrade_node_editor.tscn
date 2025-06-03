@@ -1,0 +1,76 @@
+[gd_scene load_steps=3 format=3 uid="uid://bylna3aevqa6j"]
+
+[ext_resource type="Script" uid="uid://bnf83ue8ctslh" path="res://tools/upgrade_editor/upgrade_node_editor.gd" id="1_o40im"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0ah5g"]
+
+[node name="UpgradeNodeEditor" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1840.0
+offset_bottom = -1040.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o40im")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "true"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_0ah5g")
+
+[node name="GreenCircle" type="Control" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_right = 16.0
+grow_vertical = 0
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="GreenCircle"]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+mouse_filter = 1
+color = Color(0, 0.86269, 0, 1)
+
+[node name="RedCircle" type="Control" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="RedCircle"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+mouse_filter = 1
+color = Color(1, 0, 0, 1)
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

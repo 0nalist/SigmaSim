@@ -4,6 +4,8 @@ extends Node
 var stock_market: Dictionary = {}  # symbol: Stock
 var crypto_market: Dictionary = {}  # symbol: Crypto
 
+signal crypto_market_ready
+
 signal market_tick()
 signal crypto_tick()
 signal stock_price_updated(symbol: String, stock: Stock)
@@ -121,6 +123,7 @@ func _init_crypto_market() -> void:
 	for symbol in CRYPTO_RESOURCES.keys():
 		var crypto = CRYPTO_RESOURCES[symbol].duplicate()
 		register_crypto(crypto)
+	emit_signal("crypto_market_ready")
 
 func _init_stock_market() -> void:
 	for symbol in STOCK_RESOURCES.keys():
@@ -159,3 +162,4 @@ func load_from_data(data: Dictionary) -> void:
 		if data.get("crypto_market", {}).has(symbol):
 			crypto.from_dict(data["crypto_market"][symbol])
 		register_crypto(crypto)
+	emit_signal("crypto_market_ready")

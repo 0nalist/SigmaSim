@@ -53,8 +53,14 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 	if can_pay_with_cash(amount):
 		spend_cash(amount)
 		if not silent:
-			StatpopManager.spawn("-$" + str(amount), get_viewport().get_mouse_position(), "click", Color.YELLOW)
+			StatpopManager.spawn("-$" + str(NumberFormatter.format_number(amount)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 		return true
+
+	# Check if cash + credit is enough
+	if not can_pay_with_credit(amount + cash):
+		if not silent:
+			StatpopManager.spawn("DECLINED", get_viewport().get_mouse_position(), "click", Color.RED)
+		return false
 
 	# Credit fallback
 	if credit_score >= credit_required_score:
@@ -62,7 +68,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 		if cash > 0.0:
 			spend_cash(cash)
 			if not silent:
-				StatpopManager.spawn("-$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.YELLOW)
+				StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 
 		if can_pay_with_credit(remainder):
 			var total_with_interest := remainder * (1.0 + credit_interest_rate)
@@ -73,7 +79,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 			_recalculate_credit_score()
 			emit_signal("resource_changed", "debt", get_total_debt())
 			if not silent:
-				StatpopManager.spawn("-$" + str(remainder), get_viewport().get_mouse_position(), "click", Color.ORANGE)
+				StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
 			WindowManager.launch_app_by_name("OwerView")
 			return true
 
@@ -129,8 +135,8 @@ func pay_with_credit(amount: float) -> bool:
 		emit_signal("credit_updated", credit_used, credit_limit)
 		_recalculate_credit_score()
 		emit_signal("resource_changed", "debt", get_total_debt())
-		return true
 		WindowManager.launch_app_by_name("OwerView")
+		return true
 	return false
 
 func get_credit_remaining() -> float:
@@ -222,7 +228,7 @@ func sell_stock(symbol: String, amount: int = 1) -> bool:
 
 	var stock = stock_data.get(symbol)
 	add_cash(stock.price * amount)
-	StatpopManager.spawn("+$" + str(stock.price*amount), get_viewport().get_mouse_position(), "click", Color.GREEN)
+	StatpopManager.spawn("+$" + str(NumberFormatter.format_number(stock.price*amount)), get_viewport().get_mouse_position(), "click", Color.GREEN)
 	stocks_owned[symbol] -= amount
 	MarketManager.apply_stock_transaction(symbol, -amount)
 	return true

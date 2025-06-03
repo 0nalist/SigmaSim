@@ -4,6 +4,7 @@ class_name EffectResource
 @export var target_variable: String = ""
 @export var operation: String = "flat" # "flat", "mult", "percent", "set"
 @export var value: float = 0.0
+@export var description: String = ""
 
 func apply(base_value: float) -> float:
 	match operation:

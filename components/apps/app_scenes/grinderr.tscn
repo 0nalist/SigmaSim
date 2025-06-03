@@ -6,12 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="4_1rfep"]
 [ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="4_85ayv"]
 [ext_resource type="Texture2D" uid="uid://c5sl2581gi8sk" path="res://assets/logos/hamster_clear.png" id="4_eluir"]
-[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/grey_button_pressed.png" id="5_7n4q1"]
-[ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/grey_button_hovered.png" id="6_1rfep"]
-[ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/grey_button1.png" id="7_85ayv"]
+[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/buttons/grey_button_pressed.png" id="5_7n4q1"]
+[ext_resource type="Texture2D" uid="uid://bcw7hx85vfhn6" path="res://assets/ui/buttons/grey_button_hovered.png" id="6_1rfep"]
+[ext_resource type="Texture2D" uid="uid://b34jeguax4tha" path="res://assets/ui/buttons/grey_button1.png" id="7_85ayv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eluir"]
-bg_color = Color(0.576471, 0.509804, 0.498039, 1)
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_01fde"]
 texture = ExtResource("5_7n4q1")
@@ -80,6 +80,7 @@ texture = ExtResource("4_eluir")
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.995254, 0.633294, 3.85046e-07, 1)
 theme_override_font_sizes/font_size = 36
 text = "Grinderr"
 

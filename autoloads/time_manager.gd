@@ -5,7 +5,10 @@ signal minute_passed(current_time_minutes: int)
 signal hour_passed(current_hour: int)
 signal day_passed(new_day: int, new_month: int, new_year: int)
 
-var time_ticking := true
+var time_ticking := false:
+	set(value):
+		time_ticking = value
+
 
 var autosave_enabled := true
 
@@ -40,6 +43,7 @@ var month_names := [
 
 func _ready() -> void:
 	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
+	time_ticking = false
 
 func start_time() -> void: ## refactor to set_time_paused
 	time_ticking = true
@@ -211,6 +215,10 @@ func get_weekday_for_date(day: int, month: int, year: int) -> int:
 	var J = y / 100
 	var h = (day + int((13 * (m + 1)) / 5) + K + int(K / 4) + int(J / 4) + 5 * J) % 7
 	return (h + 5) % 7  # 0 = Monday
+
+func on_logout():
+	set_time_paused(true)
+
 
 func get_default_save_data() -> Dictionary:
 	return default_start_date_time.duplicate()

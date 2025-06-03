@@ -69,4 +69,4 @@ func _on_worm_texture_gui_input(event: InputEvent) -> void:
 func _on_timer_timeout() -> void:
 	var angle_deg = randf_range(30.0, 70.0)
 	worm_texture.rotation += deg_to_rad(angle_deg)
-	print("rotating worm")
+#	print("rotating worm")

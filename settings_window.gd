@@ -46,7 +46,7 @@ func _on_windowed_check_box_pressed() -> void:
 
 
 func _on_check_button_toggled(toggled_on: bool) -> void:
-	pass # Replace with function body.
+	print("toggled_on" + str(toggled_on))
 
 
 func _on_siggy_button_toggled(toggled_on: bool) -> void:

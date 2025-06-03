@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="UpgradeResource" load_steps=5 format=3 uid="uid://llbp1qxucdev"]
+
+[ext_resource type="Script" uid="uid://b0hdnk3k0j2yh" path="res://resources/effects/effect_resource.gd" id="1_phbox"]
+[ext_resource type="Resource" uid="uid://baudo6vac37ew" path="res://data/effects/workforce/worker_prod_mult_2.tres" id="2_f8rs0"]
+[ext_resource type="Resource" uid="uid://bfx64rd6v8jlu" path="res://data/effects/workforce/worker_dayrate_double.tres" id="3_12gag"]
+[ext_resource type="Script" uid="uid://bbkcekvw4yfpc" path="res://resources/effects/upgrade_resource.gd" id="4_tl65h"]
+
+[resource]
+script = ExtResource("4_tl65h")
+upgrade_id = "worker_prod_mult_2_2"
+unlock_conditions = Array[String]([])
+cost_cash = 100.0
+cost_crypto = {}
+upgrade_name = "Worker Productivity X 2"
+description = "Multiply current worker productivity X 2"
+source = "Workforce"
+effects = Array[ExtResource("1_phbox")]([ExtResource("2_f8rs0"), ExtResource("3_12gag")])
+prerequisites = Array[String](["worker_prod_mult_2"])
+base_cost_cash = 10000.0
+cost_multiplier = 3.0
+purchase_limit = 3
+metadata/_custom_type_script = "uid://bbkcekvw4yfpc"

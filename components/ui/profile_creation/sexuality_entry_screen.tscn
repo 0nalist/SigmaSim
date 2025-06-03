@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://blnoae64ob0ul" path="res://components/ui/profile_creation/sexuality_entry_screen.gd" id="1_aqjp1"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_t2cd2"]
-[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/lilac_down_white.png" id="2_5wir2"]
+[ext_resource type="Texture2D" uid="uid://qx70gu5u3jhm" path="res://assets/ui/buttons/lilac_down_white.png" id="2_5wir2"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a25aw"]
 texture = ExtResource("2_5wir2")

@@ -1,6 +1,7 @@
 class_name WorkerTask
 extends Resource
 
+signal assignment_changed
 signal productivity_applied(amount: float, new_total: float)
 signal task_updated
 
@@ -67,9 +68,9 @@ func get_assigned_worker_ids() -> Array[String]:
 func add_worker(worker: Worker):
 	if not assigned_workers.has(worker):
 		assigned_workers.append(worker)
-		emit_signal("task_updated")
+		emit_signal("assignment_changed")
 
 func remove_worker(worker: Worker):
 	if assigned_workers.has(worker):
 		assigned_workers.erase(worker)
-		emit_signal("task_updated")
+		emit_signal("assignment_changed")

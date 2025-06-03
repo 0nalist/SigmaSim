@@ -73,7 +73,7 @@ func _process(delta: float) -> void:
 func calculate_block_chance() -> float:
 	var gpu_power = GPUManager.get_power_for(crypto.symbol)
 	var total_power = gpu_power + extra_power
-	print("DEBUG: gpu_power=", gpu_power, " extra_power=", extra_power, " power_required=", crypto.power_required)
+	#print("DEBUG: gpu_power=", gpu_power, " extra_power=", extra_power, " power_required=", crypto.power_required)
 	var chance = float(total_power + 1) / float(crypto.power_required + 1)
 	return clampf(chance * 100.0, 0.0, 100.0)
 
