@@ -2,7 +2,7 @@
 extends Resource
 class_name UpgradeTreeResource
 
-@export var nodes: Array[Dictionary] = []
+@export var nodes := []
 # Example node dict: 
 # {
 #   "position": Vector2,

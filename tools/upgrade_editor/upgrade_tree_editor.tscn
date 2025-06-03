@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcstc36el7gw2"]
+[gd_scene load_steps=7 format=3 uid="uid://bcstc36el7gw2"]
 
 [ext_resource type="Script" uid="uid://ob4xsqxgnua2" path="res://tools/upgrade_editor/upgrade_tree_editor.gd" id="1_lr88f"]
 [ext_resource type="PackedScene" uid="uid://d1oxjb362g2rw" path="res://tools/upgrade_editor/editor_canvas.tscn" id="2_lr88f"]
 [ext_resource type="Script" uid="uid://d0g3pmb5mdyjs" path="res://tools/upgrade_editor/dependency_overlay.gd" id="2_mshn7"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="4_g6i53"]
+[ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="5_pf3is"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gtf1o"]
+texture = ExtResource("5_pf3is")
 
 [node name="UpgradeTreeEditor" type="Control"]
 layout_mode = 3
@@ -13,6 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 script = ExtResource("1_lr88f")
 
 [node name="EditorCanvas" parent="." instance=ExtResource("2_lr88f")]
@@ -27,21 +33,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("2_mshn7")
 
 [node name="Toolbar" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -437.0
-offset_top = -64.0
+offset_left = -552.0
+offset_bottom = 64.0
 grow_horizontal = 0
-grow_vertical = 0
+mouse_filter = 2
 
 [node name="AddNodeButton" type="Button" parent="Toolbar"]
 unique_name_in_owner = true
@@ -65,13 +70,22 @@ text = "Save As"
 
 [node name="LoadButton" type="Button" parent="Toolbar"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "Load"
 
 [node name="ClearAllButton" type="Button" parent="Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Clear All"
+text = "New"
+
+[node name="LoadMenuButton" type="MenuButton" parent="Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("4_g6i53")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxTexture_gtf1o")
+text = "Load Menu"
 
 [node name="SaveAsDialog" type="Window" parent="."]
 unique_name_in_owner = true
@@ -95,9 +109,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "confirm"
 
+[connection signal="gui_input" from="EditorCanvas/UpgradeNodeEditor" to="EditorCanvas/UpgradeNodeEditor" method="_on_gui_input"]
 [connection signal="pressed" from="Toolbar/AddNodeButton" to="." method="_on_add_node_button_pressed"]
 [connection signal="pressed" from="Toolbar/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="Toolbar/SaveAsButton" to="." method="_on_save_as_button_pressed"]
 [connection signal="pressed" from="Toolbar/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="Toolbar/ClearAllButton" to="." method="_on_clear_all_button_pressed"]
+[connection signal="pressed" from="Toolbar/LoadMenuButton" to="." method="_on_load_menu_button_pressed"]
 [connection signal="pressed" from="SaveAsDialog/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]

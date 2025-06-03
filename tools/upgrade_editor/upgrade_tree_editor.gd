@@ -15,6 +15,9 @@ extends Control
 @onready var file_name_edit = %FileNameEdit
 @onready var confirm_button = %ConfirmButton
 
+@onready var load_menu_button: MenuButton = %LoadMenuButton
+
+
 # Pan and zoom state
 var pan_offset: Vector2 = Vector2.ZERO
 var zoom: float = 1.0
@@ -22,8 +25,7 @@ var is_panning: bool = false
 var pan_start_mouse: Vector2 = Vector2.ZERO
 var pan_start_offset: Vector2 = Vector2.ZERO
 
-var current_scene_path: String = ""
-
+var current_resource_path: String = ""
 
 
 func _ready():
@@ -77,146 +79,180 @@ func _apply_pan_zoom():
 func add_upgrade_node(upgrade_resource, pos: Vector2, name: String = "", is_major: bool = false):
 	var node = editor_canvas.add_upgrade_node(upgrade_resource, pos, name, is_major)
 	dependency_overlay.queue_redraw()
+	print("Added node at pos: ", pos)
 	return node
+
 
 # Called after node drag or dependency edit
 func on_tree_changed():
 	dependency_overlay.queue_redraw()
 
-# Save/load helpers (optional, WIP)
-func save_layout_to_file(path: String):
-	var layout = []
-	for node in editor_canvas.upgrade_nodes:
-		var resource_path = ""
-		if node.upgrade_resource != null and node.upgrade_resource.resource_path != null:
-			resource_path = node.upgrade_resource.resource_path
-		layout.append({
-			"resource": resource_path,
-			"pos": node.position,
+# --- SAVE / LOAD LOGIC ---
+
+func save_tree_resource(path: String):
+	print("Children of editor_canvas at save time:")
+	for node in editor_canvas.get_children():
+		print(" - ", node, " (type: ", typeof(node), ")")
+	var tree = UpgradeTreeResource.new()
+	var node_list = []
+	# Build a mapping so dependencies can use indices
+	var node_index = {}
+	var nodes = []
+	var i = 0
+	for node in editor_canvas.get_children():
+		if node is UpgradeNodeEditor:
+			node_index[node] = i
+			nodes.append(node)
+			i += 1
+	# Now collect node info and dependencies
+	for idx in nodes.size():
+		var node = nodes[idx]
+		var upgrade_resource_path = ""
+		if node.upgrade_resource != null:
+			upgrade_resource_path = str(node.upgrade_resource.resource_path)
+		var node_dict = {
+			"position": node.position,
 			"display_name": node.display_name,
 			"is_major": node.is_major,
-		})
-	var f = FileAccess.open(path, FileAccess.WRITE)
-	f.store_var(layout)
-	f.close()
+			"upgrade_resource_path": upgrade_resource_path,
+			"dependencies": []
+		}
+		if node.has_method("get_dependencies"):
+			for dep in node.get_dependencies():
+				if node_index.has(dep):
+					node_dict["dependencies"].append(node_index[dep])
+		node_list.append(node_dict)
+	tree.nodes = node_list
 
-func load_layout_from_file(path: String):
-	if not FileAccess.file_exists(path):
+	print("NODES BEING SAVED: ", node_list)
+
+	var err = ResourceSaver.save(tree, path)
+	if err == OK:
+		print("Saved tree resource to: ", path)
+	else:
+		push_error("Failed to save: " + str(err))
+
+
+func load_tree_resource(path: String):
+	var tree: UpgradeTreeResource = load(path)
+	if not tree:
+		push_warning("Failed to load tree resource.")
 		return
-	var f = FileAccess.open(path, FileAccess.READ)
-	var layout = f.get_var()
-	f.close()
-	# Clear old nodes
-	for n in editor_canvas.upgrade_nodes:
-		n.queue_free()
-	editor_canvas.upgrade_nodes.clear()
-	# Add from file
-	for n in layout:
-		var resource = null
-		if n["resource"] != "":
-			resource = load(n["resource"])
-		add_upgrade_node(resource, n["pos"], n["display_name"], n["is_major"])
-	dependency_overlay.queue_redraw()
+	# Remove old nodes
+	for node in editor_canvas.get_children():
+		node.queue_free()
+
+	# Add nodes and build index for dependencies
+	var created_nodes: Array = []
+	for node_dict in tree.nodes:
+		var upgrade_res = null
+		if node_dict.has("upgrade_resource_path"):
+			var resource_path = node_dict["upgrade_resource_path"]
+			if typeof(resource_path) == TYPE_STRING and resource_path != "":
+				upgrade_res = load(resource_path)
+		var node = add_upgrade_node(
+			upgrade_res,
+			node_dict["position"],
+			node_dict.get("display_name", ""),
+			node_dict.get("is_major", false)
+		)
+		created_nodes.append(node)
+	# Now wire up dependencies (optional: skip if not implemented yet)
+	for i in tree.nodes.size():
+		var dep_indices = tree.nodes[i].get("dependencies", [])
+		for dep_idx in dep_indices:
+			if dep_idx >= 0 and dep_idx < created_nodes.size():
+				var dep_node = created_nodes[dep_idx]
+				var this_node = created_nodes[i]
+				if this_node.has_method("add_dependency"):
+					this_node.add_dependency(dep_node)
+	current_resource_path = path
+	_update_save_name_label()
 
 
-func _on_add_node_button_pressed() -> void:
-	# Spawn in the center of current view or at a default spot
+# --- TOOLBAR BUTTONS ---
+
+func _on_add_node_button_pressed():
 	var pos = editor_canvas.size / 2
 	add_upgrade_node(null, pos, "Node" + str(editor_canvas.get_child_count() + 1), false)
 
-
-func _on_clear_all_button_pressed() -> void:
-	for node in editor_canvas.upgrade_nodes:
+func _on_clear_all_button_pressed():
+	for node in editor_canvas.get_children():
 		node.queue_free()
-	editor_canvas.upgrade_nodes.clear()
-	dependency_overlay.queue_redraw()
-	current_scene_path = ""      # Forget which file was last saved/loaded
+	current_resource_path = ""
 	_update_save_name_label()
 
-func _on_save_button_pressed() -> void:
-	if current_scene_path == "":
+func _on_save_button_pressed():
+	if current_resource_path == "":
 		push_warning("No save file specified. Use 'Save As' first.")
-		# Optionally: automatically open Save As dialog
 		save_as_dialog.popup_centered()
 		return
-	save_canvas_as_scene(current_scene_path)
+	save_tree_resource(current_resource_path)
 
+func _on_save_as_button_pressed():
+	file_name_edit.text = ""
+	save_as_dialog.popup_centered()
 
-
-
-func _on_load_button_pressed() -> void:
-	# For simplicity, use a hardcoded path or add a file dialog
+func _on_confirm_button_pressed():
 	var filename = file_name_edit.text.strip_edges()
 	if filename == "":
 		push_warning("Filename cannot be empty!")
 		return
-	if not filename.ends_with(".tscn"):
-		filename += ".tscn"
+	if not filename.ends_with(".tres"):
+		filename += ".tres"
 	var path = "res://data/upgrade_trees/" + filename
-	load_canvas_scene(path)
-	current_scene_path = path
+	save_tree_resource(path)
+	current_resource_path = path
+	_update_save_name_label()
+	save_as_dialog.hide()
 
-func load_canvas_scene(path: String):
-	if not ResourceLoader.exists(path):
-		push_warning("Scene not found: " + path)
+func _on_load_button_pressed():
+	var filename = file_name_edit.text.strip_edges()
+	if filename == "":
+		push_warning("Filename cannot be empty!")
 		return
-	# Remove old nodes
-	for node in editor_canvas.upgrade_nodes:
-		node.queue_free()
-	editor_canvas.upgrade_nodes.clear()
-	# Remove any extra children just in case
-	for child in editor_canvas.get_children():
-		child.queue_free()
-	# Instance the saved scene and re-parent its nodes
-	var scene = load(path)
-	if scene is PackedScene:
-		var new_canvas = scene.instantiate()
-		for child in new_canvas.get_children():
-			editor_canvas.add_child(child)
-			if child is UpgradeNodeEditor:
-				editor_canvas.upgrade_nodes.append(child)
-		print("Loaded upgrade tree from:", path)
-
-
-
-
-func save_canvas_as_scene(path: String):
-	var packed_scene = PackedScene.new()
-	packed_scene.pack(editor_canvas)
-	var err = ResourceSaver.save(packed_scene, path)
-	if err == OK:
-		print("Saved upgrade tree as scene to:", path)
-	else:
-		push_error("Failed to save scene: " + str(err))
-
-
+	if not filename.ends_with(".tres"):
+		filename += ".tres"
+	var path = "res://data/upgrade_trees/" + filename
+	load_tree_resource(path)
+	current_resource_path = path
+	_update_save_name_label()
 
 func _update_save_name_label():
-	if current_scene_path == "":
+	if current_resource_path == "":
 		save_name_label.text = "UNSAVED"
 	else:
-		# Only show the file name, not full path
-		var split_path = current_scene_path.rsplit("/", false, 1)
-		var name = current_scene_path
+		var split_path = current_resource_path.rsplit("/", false, 1)
+		var name = current_resource_path
 		if split_path.size() > 1:
 			name = split_path[1]
 		save_name_label.text = name
 
 
-func _on_confirm_button_pressed() -> void:
-	var filename = file_name_edit.text.strip_edges()
-	if filename == "":
-		push_warning("Filename cannot be empty!")
+func _on_load_menu_button_pressed():
+	var popup = load_menu_button.get_popup()
+	popup.clear()  # Remove old items
+	var dir = DirAccess.open("res://data/upgrade_trees/")
+	if dir:
+		var idx = 0
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if file_name.ends_with(".tres"):
+				popup.add_item(file_name, idx)
+				idx += 1
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	else:
+		popup.add_item("Could not open directory", 0)
+	popup.id_pressed.connect(_on_load_menu_file_selected)
+
+func _on_load_menu_file_selected(id):
+	var popup = load_menu_button.get_popup()
+	var file_name = popup.get_item_text(id)
+	if not file_name.ends_with(".tres"):
 		return
-	if not filename.ends_with(".tscn"):
-		filename += ".tscn"
-	var path = "res://data/upgrade_trees/" + filename
-	save_canvas_as_scene(path)
-	current_scene_path = path
+	var path = "res://data/upgrade_trees/" + file_name
+	load_tree_resource(path)
+	current_resource_path = path
 	_update_save_name_label()
-	save_as_dialog.hide()
-
-
-func _on_save_as_button_pressed() -> void:
-	file_name_edit.text = ""
-	save_as_dialog.popup_centered()
