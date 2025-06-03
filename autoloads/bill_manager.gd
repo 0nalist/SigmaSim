@@ -79,7 +79,7 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 
 
 
-func _on_credit_updated(used: float, limit: float) -> void:
+func _on_credit_updated(used: float, _limit: float) -> void:
 	# Update any open Credit Card bill popups
 	for bill_list in active_bills.values():
 		for popup in bill_list:

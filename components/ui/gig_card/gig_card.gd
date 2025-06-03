@@ -4,7 +4,7 @@ class_name GigCard
 
 @export var gig_popup_scene: PackedScene
 
-signal open_gig(gig: WorkerTask) # Do i actually use this?
+signal open_gig(gig: WorkerTask) # Do i actually use this? TODO: test if this signal and associated hookups should be removed
 
 @onready var title_label = %TitleLabel
 @onready var progress_label = %ProgressLabel
