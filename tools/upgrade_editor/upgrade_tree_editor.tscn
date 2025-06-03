@@ -21,10 +21,6 @@ size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_lr88f")
 
-[node name="EditorCanvas" parent="." instance=ExtResource("2_lr88f")]
-unique_name_in_owner = true
-layout_mode = 1
-
 [node name="DependencyOverlay" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
@@ -35,6 +31,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_mshn7")
+
+[node name="EditorCanvas" parent="." instance=ExtResource("2_lr88f")]
+unique_name_in_owner = true
+layout_mode = 1
 
 [node name="Toolbar" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -79,13 +79,24 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "New"
 
-[node name="LoadMenuButton" type="MenuButton" parent="Toolbar"]
+[node name="ClearAllButton2" type="Button" parent="Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
+text = "          "
+
+[node name="LoadMenuButton" type="MenuButton" parent="Toolbar/ClearAllButton2"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 0
 theme = ExtResource("4_g6i53")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxTexture_gtf1o")
-text = "Load Menu"
+text = " Load "
 
 [node name="SaveAsDialog" type="Window" parent="."]
 unique_name_in_owner = true
@@ -115,5 +126,6 @@ text = "confirm"
 [connection signal="pressed" from="Toolbar/SaveAsButton" to="." method="_on_save_as_button_pressed"]
 [connection signal="pressed" from="Toolbar/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="Toolbar/ClearAllButton" to="." method="_on_clear_all_button_pressed"]
-[connection signal="pressed" from="Toolbar/LoadMenuButton" to="." method="_on_load_menu_button_pressed"]
+[connection signal="pressed" from="Toolbar/ClearAllButton2" to="." method="_on_clear_all_button_pressed"]
+[connection signal="pressed" from="Toolbar/ClearAllButton2/LoadMenuButton" to="." method="_on_load_menu_button_pressed"]
 [connection signal="pressed" from="SaveAsDialog/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]

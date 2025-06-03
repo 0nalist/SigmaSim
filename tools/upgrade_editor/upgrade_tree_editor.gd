@@ -17,6 +17,9 @@ extends Control
 
 @onready var load_menu_button: MenuButton = %LoadMenuButton
 
+var dependency_dragging_from: UpgradeNodeEditor = null
+var dependency_dragging_pos: Vector2 = Vector2.ZERO
+
 
 # Pan and zoom state
 var pan_offset: Vector2 = Vector2.ZERO
@@ -29,6 +32,8 @@ var current_resource_path: String = ""
 
 
 func _ready():
+	
+	
 	dependency_overlay.canvas = editor_canvas
 	set_process(true)
 	_update_save_name_label()
@@ -78,9 +83,48 @@ func _apply_pan_zoom():
 # Add upgrade node (can be called from a button, etc.)
 func add_upgrade_node(upgrade_resource, pos: Vector2, name: String = "", is_major: bool = false):
 	var node = editor_canvas.add_upgrade_node(upgrade_resource, pos, name, is_major)
+	# Connect dependency signals
+	node.output_circle_pressed.connect(_on_node_output_circle_pressed)
+	node.input_circle_pressed.connect(_on_node_input_circle_pressed)
 	dependency_overlay.queue_redraw()
 	print("Added node at pos: ", pos)
 	return node
+
+
+func _on_node_output_circle_pressed(node: UpgradeNodeEditor, global_pos: Vector2) -> void:
+	# Start dependency drag from this node
+	dependency_dragging_from = node
+	dependency_dragging_pos = global_pos
+	dependency_overlay.update_drag_line(global_pos, global_pos) # Start dummy line
+
+func _on_node_input_circle_pressed(node: UpgradeNodeEditor, global_pos: Vector2) -> void:
+	print("input circle pressed")
+	# Complete drag if in drag mode and not self
+	if dependency_dragging_from and node != dependency_dragging_from:
+		# Add the dependency to the upgrade_resource's prerequisites
+		if dependency_dragging_from.upgrade_resource and node.upgrade_resource:
+			var from_path = dependency_dragging_from.upgrade_resource.resource_path
+			var to_res = node.upgrade_resource
+			if not to_res.prerequisites.has(from_path):
+				to_res.prerequisites.append(from_path)
+				print("Dependency added: %s -> %s" % [dependency_dragging_from.display_name, node.display_name])
+	# Clear drag
+	dependency_dragging_from = null
+	dependency_overlay.clear_drag_line()
+	dependency_overlay.queue_redraw()
+
+func _input(event):
+	# Update live drag line
+	if dependency_dragging_from and event is InputEventMouseMotion:
+		dependency_overlay.update_drag_line(
+			dependency_dragging_from.get_global_position() + dependency_dragging_from.size * 0.5,
+			get_global_mouse_position()
+		)
+	# Cancel on right-click
+	if dependency_dragging_from and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		dependency_dragging_from = null
+		dependency_overlay.clear_drag_line()
+		dependency_overlay.queue_redraw()
 
 
 # Called after node drag or dependency edit
