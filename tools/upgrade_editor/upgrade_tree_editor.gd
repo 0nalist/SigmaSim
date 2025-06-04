@@ -2,6 +2,8 @@
 @tool
 extends Control
 
+
+
 @onready var editor_canvas = %EditorCanvas
 @onready var dependency_overlay = %DependencyOverlay
 
@@ -17,6 +19,14 @@ extends Control
 @onready var confirm_button = %ConfirmButton
 
 @onready var load_menu_button: MenuButton = %LoadMenuButton
+
+@onready var upgrade_folder_button: Button = %UpgradeFolderButton
+@onready var attach_upgrade_button: Button = %AttachUpgradeButton
+@onready var upgrade_folder_dialog: FileDialog = %UpgradeFolderDialog
+
+var selected_node: UpgradeNodeEditor = null
+var current_upgrade_folder: String = "res://data/upgrades"
+
 
 var dependency_dragging_from: UpgradeNodeEditor = null
 var dependency_dragging_pos: Vector2 = Vector2.ZERO
@@ -37,7 +47,10 @@ var current_resource_path: String = ""
 
 
 func _ready():
-	
+	upgrade_folder_button.pressed.connect(_on_upgrade_folder_button_pressed)
+	attach_upgrade_button.get_popup().id_pressed.connect(_on_attach_upgrade_selected)
+	upgrade_folder_dialog.dir_selected.connect(_on_upgrade_folder_selected)
+	editor_canvas.node_clicked.connect(_on_node_clicked)
 	
 	dependency_overlay.canvas = editor_canvas
 	set_process(true)
@@ -176,7 +189,11 @@ func _input(event):
 func on_tree_changed():
 	dependency_overlay.queue_redraw()
 
-
+func _on_node_clicked(node):
+	if selected_node:
+		selected_node.modulate = Color(1,1,1)
+	selected_node = node
+	selected_node.modulate = Color(1,1,0.5) # Highlight
 
 
 # --- SAVE / LOAD LOGIC ---
@@ -375,3 +392,39 @@ func _on_snap_to_grid_toggled(toggled_on: bool) -> void:
 func _on_grid_size_value_changed(value: float) -> void:
 	grid_size = int(value)
 	editor_canvas.queue_redraw()
+
+
+func _on_upgrade_folder_button_pressed():
+	upgrade_folder_dialog.popup_centered()
+
+func _on_upgrade_folder_selected(folder_path: String):
+	current_upgrade_folder = folder_path
+	_refresh_attach_upgrade_menu()
+
+func _refresh_attach_upgrade_menu():
+	var popup = attach_upgrade_button.get_popup()
+	popup.clear()
+	var dir = DirAccess.open(current_upgrade_folder)
+	if dir:
+		dir.list_dir_begin()
+		var file = dir.get_next()
+		while file != "":
+			if file.ends_with(".tres") or file.ends_with(".res"):
+				popup.add_item(file)
+			file = dir.get_next()
+		dir.list_dir_end()
+	else:
+		popup.add_item("No upgrades found")
+
+
+func _on_attach_upgrade_selected(idx):
+	if not selected_node:
+		push_warning("Select a node to attach upgrade!")
+		return
+	var file_name = attach_upgrade_button.get_popup().get_item_text(idx)
+	var full_path = current_upgrade_folder + "/" + file_name
+	var resource = load(full_path)
+	if resource is UpgradeResource:
+		selected_node.set_upgrade_resource(resource)
+		selected_node.display_name = resource.upgrade_name
+		selected_node.queue_redraw()

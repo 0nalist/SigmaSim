@@ -3,7 +3,8 @@
 extends Control
 
 
-signal node_selected(node)
+#signal node_selected(node)
+signal node_clicked(node)
 signal connection_started(from_node)
 signal connection_finished(to_node)
 
@@ -42,6 +43,7 @@ func _on_node_gui_input(event, node):
 			mouse_pos = event.position
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
+				emit_signal("node_clicked", node)
 				dragging_node = node
 				drag_offset = event.position
 			else:

@@ -80,13 +80,13 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "New"
 
-[node name="ClearAllButton2" type="Button" parent="Toolbar"]
+[node name="LoadButtonFake" type="Button" parent="Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "          "
 
-[node name="LoadMenuButton" type="MenuButton" parent="Toolbar/ClearAllButton2"]
+[node name="LoadMenuButton" type="MenuButton" parent="Toolbar/LoadButtonFake"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -110,6 +110,20 @@ layout_mode = 2
 layout_mode = 2
 text = "snap"
 
+[node name="Control" type="Control" parent="Toolbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="UpgradeFolderButton" type="Button" parent="Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Upgrade Folder"
+
+[node name="AttachUpgradeButton" type="MenuButton" parent="Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Attach Upgrade"
+
 [node name="SaveAsDialog" type="Window" parent="."]
 unique_name_in_owner = true
 position = Vector2i(36, 36)
@@ -132,15 +146,22 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "confirm"
 
+[node name="UpgradeFolderDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open a Directory"
+ok_button_text = "Select Current Folder"
+file_mode = 2
+
 [connection signal="gui_input" from="EditorCanvas/UpgradeNodeEditor" to="EditorCanvas/UpgradeNodeEditor" method="_on_gui_input"]
 [connection signal="pressed" from="Toolbar/AddNodeButton" to="." method="_on_add_node_button_pressed"]
 [connection signal="pressed" from="Toolbar/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="Toolbar/SaveAsButton" to="." method="_on_save_as_button_pressed"]
 [connection signal="pressed" from="Toolbar/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="Toolbar/ClearAllButton" to="." method="_on_clear_all_button_pressed"]
-[connection signal="pressed" from="Toolbar/ClearAllButton2" to="." method="_on_clear_all_button_pressed"]
-[connection signal="pressed" from="Toolbar/ClearAllButton2/LoadMenuButton" to="." method="_on_load_menu_button_pressed"]
+[connection signal="pressed" from="Toolbar/LoadButtonFake" to="." method="_on_clear_all_button_pressed"]
+[connection signal="pressed" from="Toolbar/LoadButtonFake/LoadMenuButton" to="." method="_on_load_menu_button_pressed"]
 [connection signal="toggled" from="Toolbar/ShowGrid" to="." method="_on_show_grid_toggled"]
 [connection signal="value_changed" from="Toolbar/GridSize" to="." method="_on_grid_size_value_changed"]
 [connection signal="toggled" from="Toolbar/SnapToGrid" to="." method="_on_snap_to_grid_toggled"]
 [connection signal="pressed" from="SaveAsDialog/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="dir_selected" from="UpgradeFolderDialog" to="." method="_on_upgrade_folder_dialog_dir_selected"]

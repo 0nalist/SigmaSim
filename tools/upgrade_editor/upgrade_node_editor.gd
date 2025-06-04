@@ -23,7 +23,14 @@ var _drag_start_node_pos := Vector2.ZERO
 
 func _ready():
 	self.size = Vector2(80, 40)
-	%Label.text = display_name if display_name != "" else (upgrade_resource and upgrade_resource.resource_name or "Unset")
+	if upgrade_resource:
+		if upgrade_resource.upgrade_name != "":
+			display_name = upgrade_resource.upgrade_name
+		else:
+			display_name = upgrade_resource.resource_name
+	else:
+		display_name = "Unset"
+	%Label.text = display_name
 	modulate = Color(1.2, 1.2, 1.6) if is_major else Color(1, 1, 1)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	%RedCircle.gui_input.connect(_on_output_circle_input)
@@ -35,6 +42,7 @@ func _ready():
 	%ClearDepsButton.visible = tool_mode
 	%RedCircle.visible = tool_mode
 	%GreenCircle.visible = tool_mode
+
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -88,13 +96,23 @@ func _on_input_circle_input(event):
 func set_upgrade_resource(new_resource: UpgradeResource):
 	upgrade_resource = new_resource
 	if upgrade_resource:
-		# Clear and re-populate prerequisites based on incoming_dependencies
+		if upgrade_resource.upgrade_name != "":
+			display_name = upgrade_resource.upgrade_name
+		else:
+			display_name = upgrade_resource.resource_name
+		%Label.text = display_name
+		# Update prerequisites
 		upgrade_resource.prerequisites.clear()
 		for node in incoming_dependencies:
 			if node.upgrade_resource and node.upgrade_resource.resource_path != "":
 				var prereq_path = node.upgrade_resource.resource_path
 				if not upgrade_resource.prerequisites.has(prereq_path):
 					upgrade_resource.prerequisites.append(prereq_path)
+	else:
+		display_name = "Unset"
+		%Label.text = "Unset"
+
+
 
 func _on_delete_pressed():
 	emit_signal("node_deleted", self)
