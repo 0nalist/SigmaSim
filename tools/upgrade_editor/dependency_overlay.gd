@@ -29,8 +29,11 @@ func _draw():
 	for node in canvas.upgrade_nodes:
 		if not is_instance_valid(node):
 			continue
+		if not node.has_method("get_dependencies"): # Defensive check for UpgradeNodeEditor
+			continue
+		# Now you are safe to access outgoing_dependencies
 		for dep_node in node.outgoing_dependencies:
-			if is_instance_valid(dep_node):
+			if is_instance_valid(dep_node) and dep_node.has_method("get_dependencies"):
 				var start_pos = node.position + node.size * 0.5
 				var end_pos = dep_node.position + dep_node.size * 0.5
 				draw_line(start_pos, end_pos, Color(0.3, 0.4, 1), 3)
