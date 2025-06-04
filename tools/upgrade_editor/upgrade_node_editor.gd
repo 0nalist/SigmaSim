@@ -89,3 +89,15 @@ func _on_delete_pressed():
 
 func _on_clear_deps_pressed():
 	emit_signal("dependencies_cleared", self)
+
+
+func get_dependencies() -> Array:
+	# Return all outgoing dependency nodes
+	return outgoing_dependencies.duplicate()
+
+func add_dependency(dep_node):
+	# Add a dependency if not present, and update both sides
+	if not outgoing_dependencies.has(dep_node):
+		outgoing_dependencies.append(dep_node)
+	if not dep_node.incoming_dependencies.has(self):
+		dep_node.incoming_dependencies.append(self)

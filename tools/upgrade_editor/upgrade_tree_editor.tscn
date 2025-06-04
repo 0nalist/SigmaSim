@@ -100,6 +100,7 @@ text = " Load "
 
 [node name="SaveAsDialog" type="Window" parent="."]
 unique_name_in_owner = true
+process_mode = 4
 position = Vector2i(36, 36)
 size = Vector2i(150, 100)
 visible = false

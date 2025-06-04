@@ -243,15 +243,20 @@ func load_tree_resource(path: String):
 			node_dict.get("is_major", false)
 		)
 		created_nodes.append(node)
-	# Now wire up dependencies (optional: skip if not implemented yet)
+
+	# --- THIS SECTION CLEARS ALL DEPENDENCIES TO PREVENT DUPLICATES ---
+	for node in created_nodes:
+		node.outgoing_dependencies.clear()
+		node.incoming_dependencies.clear()
+
+	# --- THIS SECTION REWIRES DEPENDENCIES FROM SAVE DATA ---
 	for i in tree.nodes.size():
 		var dep_indices = tree.nodes[i].get("dependencies", [])
 		for dep_idx in dep_indices:
 			if dep_idx >= 0 and dep_idx < created_nodes.size():
 				var dep_node = created_nodes[dep_idx]
 				var this_node = created_nodes[i]
-				if this_node.has_method("add_dependency"):
-					this_node.add_dependency(dep_node)
+				this_node.add_dependency(dep_node)
 	current_resource_path = path
 	_update_save_name_label()
 
