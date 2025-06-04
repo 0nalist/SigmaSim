@@ -259,7 +259,9 @@ func load_tree_resource(path: String):
 				this_node.add_dependency(dep_node)
 	current_resource_path = path
 	_update_save_name_label()
-
+	await get_tree().process_frame
+	await get_tree().process_frame
+	dependency_overlay.queue_redraw()
 
 # --- TOOLBAR BUTTONS ---
 
@@ -272,6 +274,7 @@ func _on_clear_all_button_pressed():
 		node.queue_free()
 	current_resource_path = ""
 	_update_save_name_label()
+	dependency_overlay.queue_redraw()
 
 func _on_save_button_pressed():
 	if current_resource_path == "":
@@ -297,6 +300,7 @@ func _on_confirm_button_pressed():
 	_update_save_name_label()
 	save_as_dialog.hide()
 
+## UNUSED, see _on_load_menu_button_pressed():
 func _on_load_button_pressed():
 	var filename = file_name_edit.text.strip_edges()
 	if filename == "":
@@ -308,6 +312,7 @@ func _on_load_button_pressed():
 	load_tree_resource(path)
 	current_resource_path = path
 	_update_save_name_label()
+	
 
 func _update_save_name_label():
 	if current_resource_path == "":
@@ -337,6 +342,7 @@ func _on_load_menu_button_pressed():
 	else:
 		popup.add_item("Could not open directory", 0)
 	popup.id_pressed.connect(_on_load_menu_file_selected)
+	
 
 func _on_load_menu_file_selected(id):
 	var popup = load_menu_button.get_popup()
@@ -347,3 +353,4 @@ func _on_load_menu_file_selected(id):
 	load_tree_resource(path)
 	current_resource_path = path
 	_update_save_name_label()
+	dependency_overlay.queue_redraw()

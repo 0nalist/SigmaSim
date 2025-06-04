@@ -10,6 +10,7 @@
 texture = ExtResource("5_pf3is")
 
 [node name="UpgradeTreeEditor" type="Control"]
+process_priority = -1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,7 +101,6 @@ text = " Load "
 
 [node name="SaveAsDialog" type="Window" parent="."]
 unique_name_in_owner = true
-process_mode = 4
 position = Vector2i(36, 36)
 size = Vector2i(150, 100)
 visible = false
