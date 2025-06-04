@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="UpgradeTreeResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tools/upgrade_editor/upgrade_tree_resource.gd" id="1_jwy6f"]
+
+[resource]
+script = ExtResource("1_jwy6f")
+nodes = [{
+"dependencies": [1, 2],
+"display_name": "Node3",
+"is_major": false,
+"position": Vector2(672.401, 416.772),
+"upgrade_resource_path": ""
+}, {
+"dependencies": [3],
+"display_name": "Node1",
+"is_major": false,
+"position": Vector2(949.979, 676.252),
+"upgrade_resource_path": ""
+}, {
+"dependencies": [3],
+"display_name": "Node2",
+"is_major": false,
+"position": Vector2(957.996, 183.339),
+"upgrade_resource_path": ""
+}, {
+"dependencies": [],
+"display_name": "Node4",
+"is_major": false,
+"position": Vector2(1519.17, 340.631),
+"upgrade_resource_path": ""
+}]

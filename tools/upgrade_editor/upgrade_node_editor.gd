@@ -60,7 +60,19 @@ func _on_gui_input(event: InputEvent) -> void:
 		# Mouse delta in canvas space
 		var current_mouse_pos = get_global_mouse_position()
 		var delta = (current_mouse_pos - _drag_start_mouse_pos) / zoom
-		self.position = _drag_start_node_pos + delta
+		var new_pos = _drag_start_node_pos + delta
+		# Snap to grid if enabled
+		if editor and editor.snap_enabled:
+			var grid_size = editor.grid_size
+			# Snap center point to grid
+			var center = new_pos + self.size * 0.5
+			center = Vector2(
+				round(center.x / grid_size) * grid_size,
+				round(center.y / grid_size) * grid_size
+			)
+			new_pos = center - self.size * 0.5
+		self.position = new_pos
+
 
 		if editor and editor.has_method("on_tree_changed"):
 			editor.on_tree_changed()

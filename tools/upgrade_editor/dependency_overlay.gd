@@ -1,3 +1,4 @@
+#dependency_overlay.gd
 @tool
 extends Control
 

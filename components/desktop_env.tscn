@@ -5,9 +5,9 @@
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
 [ext_resource type="Texture2D" uid="uid://f3id4mqiae6r" path="res://assets/backgrounds/purplefieldgreenskyx480_restrictive.png" id="3_0utxc"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
-[ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://ticker.gd" id="5_g75lf"]
+[ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://components/ticker.gd" id="5_g75lf"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
-[ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://clock.gd" id="9_dc0b5"]
+[ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://components/clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="9_m483i"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="10_0utxc"]
 [ext_resource type="Texture2D" uid="uid://dyx0l0aa6l0at" path="res://assets/logos/folder.png" id="10_4e5iv"]
@@ -19,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://c6q0iyjglvflr" path="res://assets/ui/buttons/dodger_blue_down_gray.png" id="14_xcmse"]
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
-[ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://start_panel_window.gd" id="23_dik0q"]
+[ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="23_dik0q"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
 texture = ExtResource("9_m483i")

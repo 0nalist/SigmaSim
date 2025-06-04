@@ -1,3 +1,4 @@
+#upgrade_tree_editor.gd
 @tool
 extends Control
 
@@ -19,6 +20,10 @@ extends Control
 
 var dependency_dragging_from: UpgradeNodeEditor = null
 var dependency_dragging_pos: Vector2 = Vector2.ZERO
+
+var grid_enabled := true
+var snap_enabled := true
+var grid_size := 32
 
 
 # Pan and zoom state
@@ -79,6 +84,7 @@ func _apply_pan_zoom():
 	editor_canvas.scale = Vector2(zoom, zoom)
 	dependency_overlay.position = pan_offset
 	dependency_overlay.scale = Vector2(zoom, zoom)
+	editor_canvas.queue_redraw()
 
 # Add upgrade node (can be called from a button, etc.)
 func add_upgrade_node(upgrade_resource, pos: Vector2, name: String = "", is_major: bool = false):
@@ -354,3 +360,18 @@ func _on_load_menu_file_selected(id):
 	current_resource_path = path
 	_update_save_name_label()
 	dependency_overlay.queue_redraw()
+
+
+func _on_show_grid_toggled(toggled_on: bool) -> void:
+	grid_enabled = toggled_on
+	editor_canvas.queue_redraw()
+
+
+func _on_snap_to_grid_toggled(toggled_on: bool) -> void:
+	snap_enabled = toggled_on
+	editor_canvas.queue_redraw()
+
+
+func _on_grid_size_value_changed(value: float) -> void:
+	grid_size = int(value)
+	editor_canvas.queue_redraw()

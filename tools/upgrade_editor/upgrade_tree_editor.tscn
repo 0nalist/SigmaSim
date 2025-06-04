@@ -99,6 +99,17 @@ theme = ExtResource("4_g6i53")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxTexture_gtf1o")
 text = " Load "
 
+[node name="ShowGrid" type="CheckBox" parent="Toolbar"]
+layout_mode = 2
+text = "grid"
+
+[node name="GridSize" type="SpinBox" parent="Toolbar"]
+layout_mode = 2
+
+[node name="SnapToGrid" type="CheckBox" parent="Toolbar"]
+layout_mode = 2
+text = "snap"
+
 [node name="SaveAsDialog" type="Window" parent="."]
 unique_name_in_owner = true
 position = Vector2i(36, 36)
@@ -129,4 +140,7 @@ text = "confirm"
 [connection signal="pressed" from="Toolbar/ClearAllButton" to="." method="_on_clear_all_button_pressed"]
 [connection signal="pressed" from="Toolbar/ClearAllButton2" to="." method="_on_clear_all_button_pressed"]
 [connection signal="pressed" from="Toolbar/ClearAllButton2/LoadMenuButton" to="." method="_on_load_menu_button_pressed"]
+[connection signal="toggled" from="Toolbar/ShowGrid" to="." method="_on_show_grid_toggled"]
+[connection signal="value_changed" from="Toolbar/GridSize" to="." method="_on_grid_size_value_changed"]
+[connection signal="toggled" from="Toolbar/SnapToGrid" to="." method="_on_snap_to_grid_toggled"]
 [connection signal="pressed" from="SaveAsDialog/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]

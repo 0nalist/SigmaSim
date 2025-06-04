@@ -1,3 +1,4 @@
+#editor_canvas.gd
 @tool
 extends Control
 
@@ -49,6 +50,28 @@ func _on_node_gui_input(event, node):
 		mouse_pos = event.position
 		if dragging_node == node:
 			node.position += event.relative
+
+func _draw():
+	if not get_parent().grid_enabled:
+		return
+
+	var sz = get_size()
+	var gs = get_parent().grid_size
+
+	var grid_color = Color(0.16, 0.16, 0.2, 0.42)
+
+	# Draw vertical grid lines
+	for x in range(0, int(sz.x / gs) + 2):
+		var xpos = x * gs
+		draw_line(Vector2(xpos, 0), Vector2(xpos, sz.y), grid_color, 1)
+	# Draw horizontal grid lines
+	for y in range(0, int(sz.y / gs) + 2):
+		var ypos = y * gs
+		draw_line(Vector2(0, ypos), Vector2(sz.x, ypos), grid_color, 1)
+
+
+
+
 
 func _unhandled_input(event):
 	if connecting_from and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and not event.pressed:
