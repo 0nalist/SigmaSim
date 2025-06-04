@@ -83,12 +83,35 @@ func _apply_pan_zoom():
 # Add upgrade node (can be called from a button, etc.)
 func add_upgrade_node(upgrade_resource, pos: Vector2, name: String = "", is_major: bool = false):
 	var node = editor_canvas.add_upgrade_node(upgrade_resource, pos, name, is_major)
+	node.tool_mode = true
 	# Connect dependency signals
+	node.node_deleted.connect(_on_node_deleted)
+	node.dependencies_cleared.connect(_on_node_dependencies_cleared)
 	node.output_circle_pressed.connect(_on_node_output_circle_pressed)
 	node.input_circle_pressed.connect(_on_node_input_circle_pressed)
 	dependency_overlay.queue_redraw()
 	print("Added node at pos: ", pos)
 	return node
+
+func _on_node_deleted(node: UpgradeNodeEditor):
+	# Remove all references to this node in other nodes' dependency lists
+	for other in editor_canvas.upgrade_nodes:
+		other.outgoing_dependencies.erase(node)
+		other.incoming_dependencies.erase(node)
+	# Remove from canvas and free
+	editor_canvas.upgrade_nodes.erase(node)
+	node.queue_free()
+	dependency_overlay.queue_redraw()
+
+func _on_node_dependencies_cleared(node: UpgradeNodeEditor):
+	# Remove all dependency references involving this node
+	for other in editor_canvas.upgrade_nodes:
+		other.outgoing_dependencies.erase(node)
+		other.incoming_dependencies.erase(node)
+	node.outgoing_dependencies.clear()
+	node.incoming_dependencies.clear()
+	dependency_overlay.queue_redraw()
+
 
 
 func _on_node_output_circle_pressed(node: UpgradeNodeEditor, global_pos: Vector2) -> void:
@@ -99,19 +122,35 @@ func _on_node_output_circle_pressed(node: UpgradeNodeEditor, global_pos: Vector2
 
 func _on_node_input_circle_pressed(node: UpgradeNodeEditor, global_pos: Vector2) -> void:
 	print("input circle pressed")
-	# Complete drag if in drag mode and not self
 	if dependency_dragging_from and node != dependency_dragging_from:
-		# Add the dependency to the upgrade_resource's prerequisites
-		if dependency_dragging_from.upgrade_resource and node.upgrade_resource:
-			var from_path = dependency_dragging_from.upgrade_resource.resource_path
-			var to_res = node.upgrade_resource
-			if not to_res.prerequisites.has(from_path):
-				to_res.prerequisites.append(from_path)
-				print("Dependency added: %s -> %s" % [dependency_dragging_from.display_name, node.display_name])
-	# Clear drag
+		# Check for cycles
+		if _creates_circular_dependency(dependency_dragging_from, node):
+			print("Circular dependency prevented: %s -> %s" % [dependency_dragging_from.display_name, node.display_name])
+			# Optional: show a dialog or UI warning here!
+		elif not dependency_dragging_from.outgoing_dependencies.has(node):
+			dependency_dragging_from.outgoing_dependencies.append(node)
+			node.incoming_dependencies.append(dependency_dragging_from)
+			print("Node dependency added: %s -> %s" % [dependency_dragging_from.display_name, node.display_name])
 	dependency_dragging_from = null
-	dependency_overlay.clear_drag_line()
 	dependency_overlay.queue_redraw()
+
+
+func _creates_circular_dependency(start_node: UpgradeNodeEditor, target_node: UpgradeNodeEditor) -> bool:
+	# Returns true if adding a dependency from start_node to target_node would cause a cycle
+	var stack = [target_node]
+	var visited = {}
+	while not stack.is_empty():
+		var node = stack.pop_back()
+		if node == start_node:
+			return true  # A cycle would be created!
+		if visited.has(node):
+			continue
+		visited[node] = true
+		for dep in node.outgoing_dependencies:
+			if is_instance_valid(dep):
+				stack.append(dep)
+	return false
+
 
 func _input(event):
 	# Update live drag line
@@ -130,6 +169,9 @@ func _input(event):
 # Called after node drag or dependency edit
 func on_tree_changed():
 	dependency_overlay.queue_redraw()
+
+
+
 
 # --- SAVE / LOAD LOGIC ---
 

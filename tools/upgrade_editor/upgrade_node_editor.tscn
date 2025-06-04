@@ -1,47 +1,51 @@
-[gd_scene load_steps=3 format=3 uid="uid://bylna3aevqa6j"]
+[gd_scene load_steps=2 format=3 uid="uid://bylna3aevqa6j"]
 
 [ext_resource type="Script" uid="uid://bnf83ue8ctslh" path="res://tools/upgrade_editor/upgrade_node_editor.gd" id="1_o40im"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0ah5g"]
 
 [node name="UpgradeNodeEditor" type="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -1840.0
-offset_bottom = -1040.0
+offset_bottom = -1000.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_o40im")
+tool_mode = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
 text = "true"
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-texture = SubResource("PlaceholderTexture2D_0ah5g")
-
 [node name="GreenCircle" type="Control" parent="."]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -16.0
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -8.0
 offset_right = 16.0
-grow_vertical = 0
-mouse_filter = 1
+offset_bottom = 8.0
+grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="GreenCircle"]
 layout_mode = 0
@@ -54,16 +58,16 @@ color = Color(0, 0.86269, 0, 1)
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = 6
 anchor_left = 1.0
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.5
 offset_left = -16.0
-offset_top = -16.0
+offset_top = -8.0
+offset_bottom = 8.0
 grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 1
+grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="RedCircle"]
 custom_minimum_size = Vector2(16, 16)
@@ -72,5 +76,34 @@ offset_right = 16.0
 offset_bottom = 16.0
 mouse_filter = 1
 color = Color(1, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = -17.0
+offset_right = 23.5
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="DeleteButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 10
+text = "X"
+
+[node name="ClearDepsButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 10
+text = "clear"
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

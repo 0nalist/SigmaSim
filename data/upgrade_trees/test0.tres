@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="UpgradeTreeResource" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="UpgradeTreeResource" load_steps=2 format=3 uid="uid://cdug10v5ejrw1"]
 
-[ext_resource type="Script" path="res://tools/upgrade_editor/upgrade_tree_resource.gd" id="1_0cbot"]
+[ext_resource type="Script" uid="uid://b1wobac1buybs" path="res://tools/upgrade_editor/upgrade_tree_resource.gd" id="1_0cbot"]
 
 [resource]
 script = ExtResource("1_0cbot")
@@ -8,7 +8,7 @@ nodes = [{
 "dependencies": [],
 "display_name": "Node1",
 "is_major": false,
-"position": Vector2(960, 540),
+"position": Vector2(969.775, 540),
 "upgrade_resource_path": ""
 }, {
 "dependencies": [],
