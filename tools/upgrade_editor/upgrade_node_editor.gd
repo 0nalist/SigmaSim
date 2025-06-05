@@ -22,7 +22,7 @@ var _drag_start_mouse_pos := Vector2.ZERO
 var _drag_start_node_pos := Vector2.ZERO
 
 func _ready():
-	self.size = Vector2(80, 40)
+	#self.size = Vector2(80, 40)
 	if upgrade_resource:
 		if upgrade_resource.upgrade_name != "":
 			display_name = upgrade_resource.upgrade_name

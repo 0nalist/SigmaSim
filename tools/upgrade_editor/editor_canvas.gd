@@ -20,6 +20,8 @@ var mouse_pos := Vector2.ZERO
 #	if Engine.is_editor_hint():
 #		add_upgrade_node(null, Vector2(100,100), "A", true)
 #		add_upgrade_node(null, Vector2(300,200), "B")
+	#custom_minimum_size = Vector2(20000, 20000)
+
 
 # Add/Remove
 func add_upgrade_node(upgrade_resource, position: Vector2, display_name: String = "", is_major := false):
@@ -54,22 +56,40 @@ func _on_node_gui_input(event, node):
 			node.position += event.relative
 
 func _draw():
-	if not get_parent().grid_enabled:
+	var editor = get_parent()
+	if not editor.grid_enabled:
 		return
 
-	var sz = get_size()
-	var gs = get_parent().grid_size
+	var window_size = editor.size         # <- use the parent's size, not get_size()
+	var gs = editor.grid_size * editor.zoom
+	var pan = editor.pan_offset
+	var zoom = editor.zoom
+
+	# Visible area in graph-space coordinates:
+	var top_left = -pan / zoom
+	var bottom_right = (window_size - pan) / zoom
+
+	var min_x = floor(top_left.x / editor.grid_size) * editor.grid_size
+	var max_x = ceil(bottom_right.x / editor.grid_size) * editor.grid_size
+	var min_y = floor(top_left.y / editor.grid_size) * editor.grid_size
+	var max_y = ceil(bottom_right.y / editor.grid_size) * editor.grid_size
 
 	var grid_color = Color(0.16, 0.16, 0.2, 0.42)
 
-	# Draw vertical grid lines
-	for x in range(0, int(sz.x / gs) + 2):
-		var xpos = x * gs
-		draw_line(Vector2(xpos, 0), Vector2(xpos, sz.y), grid_color, 1)
-	# Draw horizontal grid lines
-	for y in range(0, int(sz.y / gs) + 2):
-		var ypos = y * gs
-		draw_line(Vector2(0, ypos), Vector2(sz.x, ypos), grid_color, 1)
+	# Draw vertical lines
+	var x = min_x
+	while x <= max_x:
+		var sx = (x - top_left.x) * zoom
+		draw_line(Vector2(sx, 0), Vector2(sx, window_size.y), grid_color, 1)
+		x += editor.grid_size
+
+	# Draw horizontal lines
+	var y = min_y
+	while y <= max_y:
+		var sy = (y - top_left.y) * zoom
+		draw_line(Vector2(0, sy), Vector2(window_size.x, sy), grid_color, 1)
+		y += editor.grid_size
+
 
 
 
