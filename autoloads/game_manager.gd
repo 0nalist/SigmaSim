@@ -13,6 +13,7 @@ var pause_screen_instance: PauseScreen = null
 var desktop_scene := preload("res://components/desktop_env.tscn")
 var login_scene := preload("res://components/ui/log_in_ui.tscn")
 
+#Deprecated
 const _ForceRegisterWorker := preload("res://resources/workers/worker.gd")
 const _force_worker_card := preload("res://components/ui/worker_card/worker_card_redux.gd")
 
@@ -51,7 +52,7 @@ func trigger_game_over(reason: String) -> void:
 # Handle delete save action
 func _on_delete_save():
 	SaveManager.delete_save(PlayerManager.get_slot_id())
-
+	#TODO: Shift other save slots to fill gaps (eg. if slot 1 is deleted, slot 2 becomes slot 1)
 	reset_managers()
 
 	load_login_screen()
@@ -61,7 +62,7 @@ func reset_managers() -> void:
 	PlayerManager.reset()
 	WindowManager.reset()
 	TaskManager.reset()
-	# Add more as systems grow (NPCManager, BillManager, etc.)
+	# Add more as systems grow
 
 func _on_reload_save():
 	if SaveManager.get_slot_path(PlayerManager.slot_id) == null:
@@ -122,7 +123,7 @@ func _on_pause_resume():
 
 func _on_pause_save():
 	SaveManager.save_to_slot(PlayerManager.get_slot_id())
-	print("💾 Game saved from pause menu")
+	print("Game saved from pause menu")
 
 
 func _on_pause_sleep():
