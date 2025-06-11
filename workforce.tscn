@@ -13,6 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 script = ExtResource("1_jlt70")
 window_title = "WorkForce"
 default_window_size = Vector2(720, 680)
@@ -89,14 +90,23 @@ size_flags_horizontal = 3
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "HUMAN RESOURCES"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HumanResources" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="HumanResources" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -105,83 +115,83 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_e167l")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.559532, 0, 0, 1)
 text = "Human Resources"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Vice Presidents"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Name N Name "
-
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Name N Name "
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Name N Name "
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Middle Management"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Name N Name "
-
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Name N Name "
 
-[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Name N Name "
+
+[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "W     o     r     k     e     r     s "
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer3"]
-layout_mode = 2
-text = "Name N Name "
-
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer3"]
 layout_mode = 2
 text = "Name N Name "
 
-[node name="Handbook" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HumanResources/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+text = "Name N Name "
+
+[node name="Handbook" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -190,33 +200,33 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_e167l")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.559532, 0, 0, 1)
 text = "Handbook"
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 columns = 3
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
@@ -224,7 +234,7 @@ text = "Upgrade A Thing
 More Words About the Upgrade"
 autowrap_mode = 3
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
@@ -232,7 +242,7 @@ text = "Upgrade A Thing
 More Words About the Upgrade"
 autowrap_mode = 3
 
-[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
@@ -240,7 +250,7 @@ text = "Upgrade A Thing
 More Words About the Upgrade"
 autowrap_mode = 3
 
-[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
@@ -248,7 +258,7 @@ text = "Upgrade A Thing
 More Words About the Upgrade"
 autowrap_mode = 3
 
-[node name="Button5" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
+[node name="Button5" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Handbook/PanelContainer/MarginContainer/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
@@ -256,11 +266,11 @@ text = "Upgrade A Thing
 More Words About the Upgrade"
 autowrap_mode = 3
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Resumes" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3"]
+[node name="Resumes" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -269,158 +279,158 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_e167l")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.559532, 0, 0, 1)
 text = "Resumes"
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Name McNameface"
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = " 👁 "
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = " Hire "
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Name McNameface"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = " 👁 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = " Hire "
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Name McNameface"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = " 👁 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = " Hire "
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = "Name McNameface"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = " 👁 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = " Hire "
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 text = "Name McNameface"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 text = " 👁 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 text = " Hire "
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 text = "Name McNameface"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 text = " 👁 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 text = " Hire "
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
 layout_mode = 2
 text = "Name McNameface"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
 layout_mode = 2
 text = " 👁 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
 layout_mode = 2
 text = " Hire "
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
 layout_mode = 2
 text = "Name McNameface"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
 layout_mode = 2
 text = " 👁 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
 layout_mode = 2
 text = " Hire "
 
-[node name="HeadHunters" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+layout_mode = 2
+text = "Name McNameface"
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+layout_mode = 2
+text = " 👁 "
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+layout_mode = 2
+text = " Hire "
+
+[node name="HeadHunters" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -429,43 +439,43 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_e167l")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.559532, 0, 0, 1)
 text = "HeadHunters"
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
-layout_mode = 2
-
-[node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/HumanResourcesPane/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/HeadHunters/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer2"]
 layout_mode = 2
