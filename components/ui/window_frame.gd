@@ -11,6 +11,13 @@ class_name WindowFrame
 @export var window_can_minimize: bool = true
 @export var window_can_maximize: bool = true
 
+var _windowless_mode := false
+@export var windowless_mode: bool:
+	set(value):
+		_set_windowless_mode(value)
+	get:
+		return _windowless_mode
+
 var window_title: String = "Window"
 var pane: Pane
 
@@ -91,6 +98,19 @@ func _set_content(new_content: Control) -> void:
 	content_panel.add_child(new_content)
 	_update_upgrade_button_state()
 
+func _set_windowless_mode(enabled: bool) -> void:
+	_windowless_mode = enabled
+
+	# Hide or show frame UI
+	header.visible = not enabled
+	minimize_button.visible = not enabled and window_can_minimize
+	maximize_button.visible = not enabled and window_can_maximize
+	#close_button.visible = not enabled and window_can_close
+
+	# Adjust content margins/padding
+	#content_panel.margin_top = 0 if enabled else DEFAULT_MARGIN
+
+
 func _on_window_icon_changed(new_icon: Texture) -> void:
 	set_window_icon(new_icon)
 
@@ -123,6 +143,10 @@ func _on_pane_window_title_changed(new_title: String) -> void:
 static func instantiate_for_pane(pane: Pane) -> WindowFrame:
 	var window := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 	window.load_pane(pane)
+	
+	window.call_deferred("set", "windowless_mode", pane.request_windowless_mode)
+
+	
 	return window
 
 func autoposition() -> void:

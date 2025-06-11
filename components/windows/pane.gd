@@ -15,6 +15,9 @@ signal window_icon_changed(new_icon)
 @export var default_window_size: Vector2 = Vector2(400, 480)
 @export_enum("left", "center", "right") var default_position: String = "center"
 
+
+@export var request_windowless_mode: bool = false
+
 @export var show_in_taskbar: bool = true
 #@export var only_one_instance_allowed: bool = false
 
