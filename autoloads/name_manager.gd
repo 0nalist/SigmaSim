@@ -32,7 +32,7 @@ func _ready():
 func feistel_shuffle(i: int, seed: int, rounds: int = 4) -> int:
 	var l = i >> 16
 	var r = i & 0xFFFF
-	for _ in range(rounds):
+	for x in range(rounds):
 		var new_l = r
 		var hash_input = str(r) + str(seed)
 		var new_r = l ^ hash_string(hash_input)
