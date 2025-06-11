@@ -42,6 +42,7 @@ var min_window_size := Vector2(120, 50)
 @onready var favicon: TextureRect = %Favicon
 @onready var title_label: Label = %TitleLabel
 @onready var header: HBoxContainer = %Header
+@onready var header_container: PanelContainer = %HeaderContainer
 @onready var upgrade_button: Button = %UpgradeButton
 @onready var minimize_button: Button = %MinimizeButton
 @onready var maximize_button: Button = %MaximizeButton
@@ -70,8 +71,14 @@ func _ready() -> void:
 	maximize_button.pressed.connect(toggle_maximize)
 	close_button.pressed.connect(_on_close_pressed)
 	header.gui_input.connect(_on_header_input)
-
+	
 	call_deferred("_apply_default_window_size_and_position")
+	call_deferred("_finalize_window_size")
+
+func _finalize_window_size():
+	if pane and default_size != Vector2.ZERO:
+		size = default_size
+		#min_size = default_size
 
 func load_pane(new_pane: Pane) -> void:
 	print("loading pane: " + str(new_pane))
@@ -102,9 +109,9 @@ func _set_windowless_mode(enabled: bool) -> void:
 	_windowless_mode = enabled
 
 	# Hide or show frame UI
-	header.visible = not enabled
-	minimize_button.visible = not enabled and window_can_minimize
-	maximize_button.visible = not enabled and window_can_maximize
+	header_container.visible = not enabled
+	#minimize_button.visible = not enabled and window_can_minimize
+	#maximize_button.visible = not enabled and window_can_maximize
 	#close_button.visible = not enabled and window_can_close
 
 	# Adjust content margins/padding

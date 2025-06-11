@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://du042xu4xssrm"]
+[gd_scene load_steps=23 format=3 uid="uid://du042xu4xssrm"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_i8u7u"]
 [ext_resource type="Script" uid="uid://c1qvasiiw126v" path="res://components/ui/window_frame.gd" id="2_ogx7f"]
 [ext_resource type="Texture2D" uid="uid://kxqegawt4eu3" path="res://assets/logos/sigma_eye.png" id="3_kln2c"]
 [ext_resource type="Texture2D" uid="uid://btg006ktyy6ip" path="res://assets/icons/icon_arrow_up.png" id="4_1v826"]
+[ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="4_f5uc2"]
 [ext_resource type="Texture2D" uid="uid://cpph6qmmgf2p3" path="res://assets/ui/buttons/greenbuttonpressed.png" id="4_jw2h1"]
 [ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/buttons/redbuttonpressed.png" id="4_kln2c"]
 [ext_resource type="Texture2D" uid="uid://c1xnrvgtpdpyg" path="res://assets/icons/icon_minimize.png" id="5_1k2kg"]
@@ -12,14 +13,14 @@
 [ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/buttons/redbutton.png" id="5_ohtq3"]
 [ext_resource type="Texture2D" uid="uid://b2yvstkafcjto" path="res://assets/icons/icon_maximize.png" id="6_jw2h1"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0quwa"]
-bg_color = Color(0.15886, 0.507507, 1, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 2
-corner_radius_top_right = 2
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_74cm5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l8046"]
+texture = ExtResource("4_f5uc2")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f5uc2"]
 texture = ExtResource("4_jw2h1")
@@ -80,7 +81,6 @@ border_color = Color(0.907942, 0.907942, 0.907942, 1)
 
 [node name="WindowFrame" type="Panel"]
 auto_translate_mode = 1
-custom_minimum_size = Vector2(0, 30)
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -90,7 +90,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_i8u7u")
-theme_override_styles/panel = SubResource("StyleBoxFlat_0quwa")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_74cm5")
 script = ExtResource("2_ogx7f")
 icon = ExtResource("3_kln2c")
 default_size = Vector2(350, 400)
@@ -102,19 +102,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="HeaderContainer" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_l8046")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HeaderContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 
-[node name="Header" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
+[node name="Header" type="HBoxContainer" parent="VBoxContainer/HeaderContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_i8u7u")
 
-[node name="Favicon" type="TextureRect" parent="VBoxContainer/MarginContainer/Header"]
+[node name="Favicon" type="TextureRect" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
@@ -123,29 +130,26 @@ size_flags_vertical = 4
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TabBar" type="TabBar" parent="VBoxContainer/MarginContainer/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 1
-scrolling_enabled = false
-
-[node name="TitleLabel" type="Label" parent="VBoxContainer/MarginContainer/Header/TabBar"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-offset_left = 4.0
-offset_top = 8.0
-offset_right = 1691.0
-offset_bottom = 23.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 20.0
 text = "Window"
 autowrap_mode = 1
 
-[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/Header"]
+[node name="TabBar" type="TabBar" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+scrolling_enabled = false
+
+[node name="Control" type="Control" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 layout_mode = 2
 
-[node name="UpgradeButton" type="Button" parent="VBoxContainer/MarginContainer/Header"]
+[node name="UpgradeButton" type="Button" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
@@ -157,7 +161,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_afg75")
 icon = ExtResource("4_1v826")
 icon_alignment = 1
 
-[node name="MinimizeButton" type="Button" parent="VBoxContainer/MarginContainer/Header"]
+[node name="MinimizeButton" type="Button" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(22, 24)
 layout_mode = 2
@@ -168,7 +172,7 @@ theme_override_constants/icon_max_width = 16
 icon = ExtResource("5_1k2kg")
 icon_alignment = 1
 
-[node name="MaximizeButton" type="Button" parent="VBoxContainer/MarginContainer/Header"]
+[node name="MaximizeButton" type="Button" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
@@ -179,7 +183,7 @@ theme_override_constants/icon_max_width = 16
 icon = ExtResource("6_jw2h1")
 icon_alignment = 1
 
-[node name="CloseButton" type="Button" parent="VBoxContainer/MarginContainer/Header"]
+[node name="CloseButton" type="Button" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -199,5 +203,5 @@ size_flags_vertical = 3
 theme = ExtResource("1_i8u7u")
 theme_override_styles/panel = SubResource("StyleBoxFlat_aqsno")
 
-[connection signal="pressed" from="VBoxContainer/MarginContainer/Header/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
-[connection signal="toggled" from="VBoxContainer/MarginContainer/Header/UpgradeButton" to="." method="_on_upgrade_button_toggled"]
+[connection signal="pressed" from="VBoxContainer/HeaderContainer/MarginContainer/Header/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="toggled" from="VBoxContainer/HeaderContainer/MarginContainer/Header/UpgradeButton" to="." method="_on_upgrade_button_toggled"]
