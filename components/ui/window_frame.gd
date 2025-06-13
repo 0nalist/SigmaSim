@@ -74,6 +74,8 @@ func _ready() -> void:
 	
 	call_deferred("_apply_default_window_size_and_position")
 	call_deferred("_finalize_window_size")
+	if windowless_mode:
+		call_deferred("_setup_windowless_drag")
 
 func _finalize_window_size():
 	if pane and default_size != Vector2.ZERO:
@@ -104,18 +106,50 @@ func _set_content(new_content: Control) -> void:
 		child.queue_free()
 	content_panel.add_child(new_content)
 	_update_upgrade_button_state()
+	if windowless_mode:
+		call_deferred("_setup_windowless_drag")
 
 func _set_windowless_mode(enabled: bool) -> void:
 	_windowless_mode = enabled
 
 	# Hide or show frame UI
 	header_container.visible = not enabled
+	if enabled:
+		_setup_windowless_drag()
 	#minimize_button.visible = not enabled and window_can_minimize
 	#maximize_button.visible = not enabled and window_can_maximize
 	#close_button.visible = not enabled and window_can_close
 
 	# Adjust content margins/padding
 	#content_panel.margin_top = 0 if enabled else DEFAULT_MARGIN
+
+func _setup_windowless_drag():
+	if not pane or not pane.has_method("get_drag_handle"):
+		return
+
+	var handle = pane.get_drag_handle()
+	if not is_instance_valid(handle):
+		return
+
+	# This connects to the entire tab container
+	handle.mouse_default_cursor_shape = Control.CURSOR_MOVE
+	handle.gui_input.connect(_on_custom_drag_input)
+
+	# 🔁 Connect to each tab button too
+	for child in handle.get_children():
+		if child is BaseButton:
+			child.mouse_default_cursor_shape = Control.CURSOR_MOVE
+			child.gui_input.connect(_on_custom_drag_input)
+
+
+func _on_custom_drag_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if WindowManager:
+			WindowManager.focus_window(self)
+
+	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+		position += event.relative
+		_clamp_to_screen()
 
 
 func _on_window_icon_changed(new_icon: Texture) -> void:

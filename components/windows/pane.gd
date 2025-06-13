@@ -43,6 +43,11 @@ func _ready() -> void:
 	#window_icon_changed.emit(window_icon)
 	pass
 
+func get_drag_handle() -> Control:
+	var tab_bar = %TabBar.get_tab_bar() 
+	tab_bar.mouse_filter = Control.MOUSE_FILTER_PASS
+	return tab_bar
+
 
 func get_window_title() -> String:
 	return window_title
