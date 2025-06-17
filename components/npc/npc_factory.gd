@@ -30,13 +30,9 @@ static func create_npc(npc_index: int) -> NPCProfile:
 	# --- Attractiveness as normal distribution [0,100] ---
 	npc.attractiveness = attractiveness_from_name(full_name)
 
-	# Greek stats as before
-	npc.alpha = _bounded_trait(full_name, "alpha")
-	npc.beta = _bounded_trait(full_name, "beta")
-	npc.gamma = _bounded_trait(full_name, "gamma")
-	npc.delta = _bounded_trait(full_name, "delta")
-	npc.omega = _bounded_trait(full_name, "omega")
-	npc.sigma = _bounded_trait(full_name, "sigma")
+	# Greek stats
+	assign_greek_stats(npc, full_name)
+
 
 	npc.username = _generate_username(npc)
 	npc.bio = "This is a sample auto-generated NPC bio for %s." % npc.first_name
@@ -66,6 +62,32 @@ static func generate_multi_bucket_trait(seed_string: String, trait_name: String)
 			return bucket.sign * val if bucket.has("sign") else val
 	push_error("Percentile did not match a bucket in trait %s" % trait_name)
 	return 0
+
+static func assign_greek_stats(npc: NPC, seed_string: String) -> void:
+	var greek_stats = ["alpha", "beta", "gamma", "delta", "omega", "sigma"]
+	
+	# Deterministically select primary stat
+	var primary_idx = djb2(seed_string + "primary_greek_stat") % greek_stats.size()
+	var primary_stat = greek_stats[primary_idx]
+	
+	# Set all stats
+	for stat in greek_stats:
+		if stat == primary_stat:
+			npc.set(stat, 60 + int(deterministic_randf(seed_string + stat) * 41))  # 60–100
+		else:
+			npc.set(stat, int(deterministic_randf(seed_string + stat) * 60))  # 0–59
+
+func get_primary_greek_stat() -> String:
+	var greek_stats = ["alpha", "beta", "gamma", "delta", "omega", "sigma"]
+	var max_val = -1
+	var primary = ""
+	for stat in greek_stats:
+		var val = self.get(stat)
+		if val > max_val:
+			max_val = val
+			primary = stat
+	return primary
+
 
 static func _bounded_trait(seed_string: String, trait_name: String) -> float:
 	return float((djb2(seed_string + trait_name) % 201) - 100)
