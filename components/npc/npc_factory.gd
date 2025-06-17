@@ -61,8 +61,8 @@ static func generate_multi_bucket_trait(seed_string: String, trait_name: String)
 	for bucket in buckets:
 		if percentile < bucket.cutoff:
 			var r = bucket.range
-			var val = _secondary_trait_value(seed_string, trait_name + str(bucket.cutoff)) % int(r.y - r.x + 1) + int(r.x)
-			return bucket.sign * val if bucket.has("sign") else val
+			var val = int(deterministic_randf(seed_string + str(bucket.cutoff)) * (r.y - r.x + 1)) + int(r.x)
+			return val
 	push_error("Percentile did not match a bucket in trait %s" % trait_name)
 	return 0
 
