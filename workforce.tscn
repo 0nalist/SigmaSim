@@ -1908,126 +1908,22 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
+[node name="ResumesList" type="VBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/ResumesList"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Name McNameface"
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = " 👁 "
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = " Hire "
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/ResumesList/HBoxContainer"]
 layout_mode = 2
 text = "Name McNameface"
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/ResumesList/HBoxContainer"]
 layout_mode = 2
 text = " 👁 "
 
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = " Hire "
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
-layout_mode = 2
-text = "Name McNameface"
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
-layout_mode = 2
-text = " 👁 "
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
-layout_mode = 2
-text = " Hire "
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
-layout_mode = 2
-text = "Name McNameface"
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
-layout_mode = 2
-text = " 👁 "
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
-layout_mode = 2
-text = " Hire "
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
-layout_mode = 2
-text = "Name McNameface"
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
-layout_mode = 2
-text = " 👁 "
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
-layout_mode = 2
-text = " Hire "
-
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
-layout_mode = 2
-text = "Name McNameface"
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
-layout_mode = 2
-text = " 👁 "
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
-layout_mode = 2
-text = " Hire "
-
-[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
-layout_mode = 2
-text = "Name McNameface"
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
-layout_mode = 2
-text = " 👁 "
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
-layout_mode = 2
-text = " Hire "
-
-[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
-layout_mode = 2
-text = "Name McNameface"
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
-layout_mode = 2
-text = " 👁 "
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/TabBar/HR/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/Resumes/PanelContainer/MarginContainer/VBoxContainer/PanelContainer/ResumesList/HBoxContainer"]
 layout_mode = 2
 text = " Hire "
 

@@ -39,6 +39,8 @@ StatpopManager="*res://autoloads/statpop_manager.gd"
 UpgradeManager="*res://autoloads/upgrade_manager.tscn"
 TaskManager="*res://autoloads/task_manager.tscn"
 NumberFormatter="*res://autoloads/number_formatter.gd"
+NPCManager="*res://components/npc/npc_manager.gd"
+NameManager="*res://components/npc/name_manager.gd"
 
 [display]
 
