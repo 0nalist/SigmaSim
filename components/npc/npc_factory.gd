@@ -1,10 +1,20 @@
 class_name NPCFactory
 
-static func create_npc(npc_index: int, name_manager: NameManager) -> NPC:
-	var name_data = name_manager.get_npc_name_by_index(npc_index)
+const TRAIT_CONFIG = {
+	"wealth": {
+		"buckets": [
+			{ "cutoff": 0.2, "range": Vector2(1, 5000), "sign": -1 },      # 20% "poor"/debt
+			{ "cutoff": 0.7, "range": Vector2(5001, 20000), "sign": 1 },   # next 50% "middle"
+			{ "cutoff": 1.0, "range": Vector2(20001, 50000), "sign": 1 }   # last 30% "rich"
+		]
+	}
+}
+
+static func create_npc(npc_index: int) -> NPCProfile:
+	var name_data = NameManager.get_npc_name_by_index(npc_index)
 	var full_name = name_data["full_name"]
 
-	var npc = NPC.new()
+	var npc = NPCProfile.new()
 	npc.full_name = full_name
 	npc.first_name = name_data["first_name"]
 	npc.middle_initial = name_data["middle_initial"]
@@ -13,10 +23,14 @@ static func create_npc(npc_index: int, name_manager: NameManager) -> NPC:
 
 	npc.affinity = _bounded_trait(full_name, "affinity")
 	npc.rizz = _bounded_trait(full_name, "rizz")
-	#npc.income = _unbounded_trait(full_name, "income")
-	npc.wealth = _unbounded_trait(full_name, "wealth")
 	
-	# Example: Assign Greek stats deterministically
+	# --- Multi-bucket Wealth ---
+	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
+
+	# --- Attractiveness as normal distribution [0,100] ---
+	npc.attractiveness = attractiveness_from_name(full_name)
+
+	# Greek stats as before
 	npc.alpha = _bounded_trait(full_name, "alpha")
 	npc.beta = _bounded_trait(full_name, "beta")
 	npc.gamma = _bounded_trait(full_name, "gamma")
@@ -24,30 +38,48 @@ static func create_npc(npc_index: int, name_manager: NameManager) -> NPC:
 	npc.omega = _bounded_trait(full_name, "omega")
 	npc.sigma = _bounded_trait(full_name, "sigma")
 
-	# Dummy username generation (customize as needed)
 	npc.username = _generate_username(npc)
-
-	# Demo profile_pic (could use a pool or hash to pick an image)
-	# npc.profile_pic = pick_profile_pic_based_on_index_or_name(npc_index, full_name)
 	npc.bio = "This is a sample auto-generated NPC bio for %s." % npc.first_name
-	npc.occupation = "Unemployed"  # Or generate based on stats/seed
+	npc.occupation = "Unemployed"
 	npc.relationship_status = "Single"
 	npc.wall_posts = []
-	npc.tags = []  # Add any logic for auto-tags here
+	npc.tags = []
 
 	npc.preferred_pet_names = _generate_pet_names(full_name, "preferred")
 	npc.player_pet_names = _generate_pet_names(full_name, "player")
 
 	return npc
 
+# ---- Trait generation helpers ----
+
+static func generate_multi_bucket_trait(seed_string: String, trait_name: String) -> int:
+	if not TRAIT_CONFIG.has(trait_name):
+		push_error("No config for trait %s" % trait_name)
+		return 0
+
+	var buckets = TRAIT_CONFIG[trait_name].buckets
+	var percentile = float(_bounded_trait(seed_string, trait_name) + 100) / 200.0  # [0,1]
+	for bucket in buckets:
+		if percentile < bucket.cutoff:
+			var r = bucket.range
+			var val = _secondary_trait_value(seed_string, trait_name + str(bucket.cutoff)) % int(r.y - r.x + 1) + int(r.x)
+			return bucket.sign * val if bucket.has("sign") else val
+	push_error("Percentile did not match a bucket in trait %s" % trait_name)
+	return 0
 
 static func _bounded_trait(seed_string: String, trait_name: String) -> float:
-	# Returns a deterministic float from -100 to 100
 	return float((djb2(seed_string + trait_name) % 201) - 100)
 
-static func _unbounded_trait(seed_string: String, trait_name: String) -> int:
-	return djb2(seed_string + trait_name)
+static func _secondary_trait_value(seed_string: String, suffix: String) -> int:
+	return djb2(seed_string + suffix)
 
+static func djb2(s: String) -> int:
+	var hash := 5381
+	for i in s.length():
+		hash = ((hash << 5) + hash) + s.unicode_at(i)
+	return hash & 0xFFFFFFFF
+
+# --- Normal Distribution Attractiveness [0,100] ---
 static func deterministic_randf(seed: String) -> float:
 	var h = djb2(seed)
 	return float(h % 1000000) / 1000000.0
@@ -60,21 +92,14 @@ static func box_muller(seed_a: String, seed_b: String) -> float:
 	var z0 = sqrt(-2.0 * log(u1)) * cos(2.0 * PI * u2)
 	return z0
 
-static func djb2(s: String) -> int:
-	var hash := 5381
-	for i in s.length():
-		hash = ((hash << 5) + hash) + s.unicode_at(i)
-	return hash & 0xFFFFFFFF
-
 static func attractiveness_from_name(full_name: String) -> float:
 	var z = box_muller(full_name + "A", full_name + "B")
 	var bounded = clamp(z, -3.0, 3.0)
 	return ((bounded + 3.0) / 6.0) * 100.0
 
+# --- Placeholder for pet names/username ---
 static func _generate_pet_names(seed_string: String, key: String) -> Array[String]:
-	# Placeholder—deterministic pet name list per NPC
 	return []
 
-static func _generate_username(npc: NPC) -> String:
-	# Simple: lowercased first+last name with index, or use a hash
+static func _generate_username(npc: NPCProfile) -> String:
 	return (npc.first_name + npc.last_name).to_lower()
