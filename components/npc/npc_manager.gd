@@ -2,11 +2,11 @@
 extends Node
 
 var encounter_count: int = 0
-var encountered_npcs: Array[int] = []  # Stores indices of NPCs the player has met
-var npcs: Dictionary = {}  # index -> NPC resource
+var encountered_npcs: Array[int] = []
+var npcs: Dictionary = {}  # idx -> NPCProfile
+var npc_overrides: Dictionary = {}  # idx -> Dictionary
 
-# Called when the player meets a new NPC
-func encounter_new_npc(name_manager: NameManager) -> NPC:
+func encounter_new_npc(name_manager: NameManager) -> NPCProfile:
 	var idx = encounter_count
 	var npc = NPCFactory.create_npc(idx, name_manager)
 	npcs[idx] = npc
@@ -14,21 +14,50 @@ func encounter_new_npc(name_manager: NameManager) -> NPC:
 	encounter_count += 1
 	return npc
 
-# Retrieve or preview a specific NPC by index
-func get_npc_by_index(idx: int, name_manager: NameManager) -> NPC:
+func get_npc_by_index(idx: int, name_manager: NameManager) -> NPCProfile:
 	if npcs.has(idx):
 		return npcs[idx]
 	var npc = NPCFactory.create_npc(idx, name_manager)
+	# Only apply overrides if encountered before
+	if npc_overrides.has(idx):
+		for key in npc_overrides[idx].keys():
+			npc.set(key, npc_overrides[idx][key])
 	npcs[idx] = npc
 	return npc
 
-# For save/load
+func set_npc_field(idx: int, field: String, value) -> void:
+	if not npcs.has(idx):
+		push_error("Tried to set a field on a non-existent NPC!")
+		return
+	npcs[idx].set(field, value)
+	if not npc_overrides.has(idx):
+		npc_overrides[idx] = {}
+	npc_overrides[idx][field] = value
+
+# Save / Load
+
 func to_dict() -> Dictionary:
+	var npc_data = []
+	for idx in encountered_npcs:
+		var overrides = npc_overrides.get(idx, {})
+		npc_data.append({"idx": idx, "overrides": overrides})
 	return {
 		"encounter_count": encounter_count,
-		"encountered_npcs": encountered_npcs
+		"npc_data": npc_data
 	}
 
-func from_dict(data: Dictionary):
+func from_dict(data: Dictionary, name_manager: NameManager):
 	encounter_count = data.get("encounter_count", 0)
-	encountered_npcs = data.get("encountered_npcs", [])
+	var npc_data = data.get("npc_data", [])
+	encountered_npcs.clear()
+	npcs.clear()
+	npc_overrides.clear()
+	for entry in npc_data:
+		var idx = entry.get("idx")
+		encountered_npcs.append(idx)
+		var npc = NPCFactory.create_npc(idx, name_manager)
+		var overrides = entry.get("overrides", {})
+		for key in overrides.keys():
+			npc.set(key, overrides[key])
+		npcs[idx] = npc
+		npc_overrides[idx] = overrides
