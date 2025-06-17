@@ -181,14 +181,13 @@ func _on_day_passed(_d: int, _m: int, _y: int) -> void:
 	_accrue_student_loan_interest()
 
 func _accrue_student_loan_interest():
-	if student_loans <= 0.0:
-		return
-	var interest_amount := student_loans * STUDENT_LOAN_INTEREST_DAILY
-	student_loans = snapped(student_loans + interest_amount, 0.01)
-	student_loans = snapped(student_loans + interest_amount, 0.01)
-	_update_student_loan_min_payment()
-	emit_signal("resource_changed", "student_loans", student_loans)
-	emit_signal("resource_changed", "debt", get_total_debt())
+        if student_loans <= 0.0:
+                return
+        var interest_amount := student_loans * STUDENT_LOAN_INTEREST_DAILY
+        student_loans = snapped(student_loans + interest_amount, 0.01)
+        _update_student_loan_min_payment()
+        emit_signal("resource_changed", "student_loans", student_loans)
+        emit_signal("resource_changed", "debt", get_total_debt())
 
 func _update_student_loan_min_payment():
 	student_loan_min_payment = max(snapped(student_loans * 0.01, 0.01), 0.0)
