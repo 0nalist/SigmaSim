@@ -42,10 +42,10 @@ var wealth: int
 @export_range(0, 100, 0.1) var sigma: float = 0.0
 
 # === Wall Posts / Social Feed (optional) ===
-@export var wall_posts: Array[String] = []
+@export var wall_posts: Array[String] = ["hello world"]
 
 # === Tags / Attributes ===
-@export var tags: Array[String] = [] # ["flirtable", "boss", "rival", etc.]
+@export var tags: Array[String] = ["alive"] # 
 
 
 

@@ -1,5 +1,6 @@
 class_name NPCFactory
 
+
 const TRAIT_CONFIG = {
 	"wealth": {
 		"buckets": [
@@ -13,11 +14,14 @@ const TRAIT_CONFIG = {
 }
 
 
-static func create_npc(npc_index: int) -> NPCProfile:
+
+# -- M E T H O D S -- #
+
+static func create_npc(npc_index: int) -> NPC:
 	var name_data = NameManager.get_npc_name_by_index(npc_index)
 	var full_name = name_data["full_name"]
 
-	var npc = NPCProfile.new()
+	var npc = NPC.new()
 	npc.full_name = full_name
 	npc.first_name = name_data["first_name"]
 	npc.middle_initial = name_data["middle_initial"]
@@ -41,8 +45,8 @@ static func create_npc(npc_index: int) -> NPCProfile:
 	npc.bio = "This is a sample auto-generated NPC bio for %s." % npc.first_name
 	npc.occupation = "Unemployed"
 	npc.relationship_status = "Single"
-	npc.wall_posts = []
-	npc.tags = []
+	npc.wall_posts = [] as Array[String]
+	npc.tags = [] as Array[String]
 
 	npc.preferred_pet_names = _generate_pet_names(full_name, "preferred")
 	npc.player_pet_names = _generate_pet_names(full_name, "player")
@@ -126,5 +130,5 @@ static func attractiveness_from_name(full_name: String) -> float:
 static func _generate_pet_names(seed_string: String, key: String) -> Array[String]:
 	return []
 
-static func _generate_username(npc: NPCProfile) -> String:
+static func _generate_username(npc: NPC) -> String:
 	return (npc.first_name + npc.last_name).to_lower()
