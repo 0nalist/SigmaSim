@@ -36,6 +36,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 8
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 material = SubResource("ShaderMaterial_vq0mq")
@@ -48,6 +49,7 @@ horizontal_alignment = 1
 
 [node name="TeamTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -219,14 +221,14 @@ icon_alignment = 1
 
 [node name="ChatsTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChatsTab"]
-layout_mode = 2
-offset_right = 1900.0
-offset_bottom = 1002.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 15
@@ -327,11 +329,11 @@ text = "conversation"
 layout_mode = 2
 text = "conversation"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="TeamButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="TeamButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -341,7 +343,7 @@ theme_override_constants/h_separation = 8
 text = " Team "
 flat = true
 
-[node name="FieldButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="FieldButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -351,7 +353,7 @@ theme_override_constants/h_separation = 8
 text = " Field "
 flat = true
 
-[node name="GameButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="GameButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
