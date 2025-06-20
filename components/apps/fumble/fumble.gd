@@ -3,6 +3,8 @@ extends Pane
 
 @export var fumble_profile_scene: PackedScene
 
+@onready var fumble_label: Label = %FumbleLabel
+
 
 @onready var profile_container: Control = %ProfileContainer
 
@@ -17,11 +19,24 @@ extends Pane
 @onready var field_tab: Control = %FieldTab
 @onready var chats_tab: Control = %ChatsTab
 
+#Team tab UI
+@onready var x_slider: HSlider = %XHSlider
+@onready var y_slider: HSlider = %YHSlider
+@onready var z_slider: HSlider = %ZHSlider
+
+
+
+
+
 func _ready():
 	# Connect buttons to tab switch
 	team_button.pressed.connect(show_team_tab)
 	field_button.pressed.connect(show_field_tab)
 	game_button.pressed.connect(show_chat_tab)
+
+	x_slider.value_changed.connect(_on_gender_slider_changed)
+	y_slider.value_changed.connect(_on_gender_slider_changed)
+	z_slider.value_changed.connect(_on_gender_slider_changed)
 
 	swipe_left_button.pressed.connect(swipe_left)
 	swipe_right_button.pressed.connect(swipe_right)
@@ -29,9 +44,11 @@ func _ready():
 	# Start on field tab by default
 	show_field_tab()
 	show_next_npc()
+	cancel_pride()
 
 func show_next_npc():
 	var npc = NPCManager.encounter_new_npc()
+	print("NPC :", npc)
 	#var npc = NPCManager.get_npc_by_index(idx)
 	# clear old
 	for child in profile_container.get_children():
@@ -43,6 +60,7 @@ func show_next_npc():
 	ui.load_npc(npc)
 
 func swipe_left():
+	print("swipe left")
 	show_next_npc() # of selected gender preference
 
 func swipe_right():
@@ -72,3 +90,17 @@ func show_chat_tab():
 	field_tab.visible = false
 	chats_tab.visible = true
 	highlight_active(game_button)
+
+var pride_material = preload("res://components/apps/fumble/fumble_label_pride_month_material.tres")
+
+func _on_gender_slider_changed(value):
+	if z_slider.value > 0 or (x_slider.value > 0 and y_slider.value > 0):
+		yassify_fumble_label()
+	else:
+		cancel_pride()
+
+func yassify_fumble_label() -> void:
+	fumble_label.material = pride_material
+
+func cancel_pride() -> void:
+	fumble_label.material = null

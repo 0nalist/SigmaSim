@@ -1,18 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=5 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="PackedScene" uid="uid://cwin011rx52n7" path="res://components/apps/fumble/fumble_profile_ui.tscn" id="2_bo40p"]
-[ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="3_ye860"]
+[ext_resource type="Material" uid="uid://bl8moqb187o1d" path="res://components/apps/fumble/fumble_label_pride_month_material.tres" id="3_ye860"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ye860"]
 bg_color = Color(2.22605e-07, 0.23204, 0.190425, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vq0mq"]
-shader = ExtResource("3_ye860")
-shader_parameter/line_thickness = 1.0
-shader_parameter/sin_frequency = 0.5
-shader_parameter/sin_offset = 0.0
-shader_parameter/light_offset = 0.5
 
 [node name="Fumble" type="PanelContainer"]
 anchors_preset = 15
@@ -38,8 +31,9 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
-material = SubResource("ShaderMaterial_vq0mq")
+[node name="FumbleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+material = ExtResource("3_ye860")
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 16
@@ -112,7 +106,8 @@ layout_mode = 2
 layout_mode = 2
 text = "X"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+[node name="XHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -123,7 +118,8 @@ layout_mode = 2
 layout_mode = 2
 text = "Y"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+[node name="YHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -134,7 +130,8 @@ layout_mode = 2
 layout_mode = 2
 text = "Z"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+[node name="ZHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -177,7 +174,6 @@ layout_mode = 2
 
 [node name="FieldTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -221,6 +217,7 @@ icon_alignment = 1
 
 [node name="ChatsTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
