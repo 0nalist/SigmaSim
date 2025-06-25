@@ -196,7 +196,6 @@ size_flags_vertical = 3
 
 [node name="ProfileCardStack" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/ProfileContainer" instance=ExtResource("3_vq0mq")]
 layout_mode = 1
-profile_card_scene = ExtResource("2_bo40p")
 
 [node name="FumbleProfile" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/ProfileContainer" instance=ExtResource("2_bo40p")]
 visible = false

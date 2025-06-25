@@ -60,9 +60,10 @@ func _clear_container(c: Control) -> void:
 
 func animate_swipe_left(on_complete: Callable) -> void:
 	self.pivot_offset = self.size / 2
+	var swipe_distance = 2 * self.size.x + 100  # Enough to always go off screen
 	var duration = 0.35
 	var final_rotation = -18
-	var target_x = -self.size.x - 50  # Always works (off left edge)
+	var target_x = self.position.x - swipe_distance
 	
 	var tween1 = create_tween()
 	tween1.tween_property(self, "position:x", target_x, duration)
@@ -73,13 +74,10 @@ func animate_swipe_left(on_complete: Callable) -> void:
 
 func animate_swipe_right(on_complete: Callable) -> void:
 	self.pivot_offset = self.size / 2
+	var swipe_distance = 2 * self.size.x + 100
 	var duration = 0.35
 	var final_rotation = 18
-
-	# Use the parent size if available, fallback to own size
-	var parent = get_parent()
-	var parent_width = parent.size.x if parent and parent.has_method("get_size") else self.size.x
-	var target_x = parent_width + self.size.x + 50
+	var target_x = self.position.x + swipe_distance
 
 	var tween1 = create_tween()
 	tween1.tween_property(self, "position:x", target_x, duration)
