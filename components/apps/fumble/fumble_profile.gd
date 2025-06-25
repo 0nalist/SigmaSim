@@ -56,3 +56,34 @@ func load_npc(npc: NPC) -> void:
 func _clear_container(c: Control) -> void:
 	for child in c.get_children():
 		child.queue_free()
+
+
+func animate_swipe_left(on_complete: Callable) -> void:
+	self.pivot_offset = self.size / 2
+	var duration = 0.35
+	var final_rotation = -18
+	var target_x = -self.size.x - 50  # Always works (off left edge)
+	
+	var tween1 = create_tween()
+	tween1.tween_property(self, "position:x", target_x, duration)
+	var tween2 = create_tween()
+	tween2.tween_property(self, "rotation_degrees", final_rotation, duration)
+	tween1.tween_callback(on_complete)
+	tween1.tween_callback(queue_free)
+
+func animate_swipe_right(on_complete: Callable) -> void:
+	self.pivot_offset = self.size / 2
+	var duration = 0.35
+	var final_rotation = 18
+
+	# Use the parent size if available, fallback to own size
+	var parent = get_parent()
+	var parent_width = parent.size.x if parent and parent.has_method("get_size") else self.size.x
+	var target_x = parent_width + self.size.x + 50
+
+	var tween1 = create_tween()
+	tween1.tween_property(self, "position:x", target_x, duration)
+	var tween2 = create_tween()
+	tween2.tween_property(self, "rotation_degrees", final_rotation, duration)
+	tween1.tween_callback(on_complete)
+	tween1.tween_callback(queue_free)

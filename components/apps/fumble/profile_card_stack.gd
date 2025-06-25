@@ -25,26 +25,29 @@ func load_initial_cards():
 		npc_indices.append(idx)
 		add_profile_card(idx, i)
 
+
 func add_profile_card(idx: int, position: int = -1):
 	var card = profile_card_scene.instantiate()
-	card.z_index = position if position >= 0 else cards.size()
 	card.set("npc_idx", idx)
 	var npc = NPCManager.get_npc_by_index(idx)
+	add_child(card) # Add as the last child (topmost)
 	card.call("load_npc", npc)
-	add_child(card)
-	cards.append(card)
-	_update_card_positions()
+	cards.append(card) # Last = topmost
+
+func _update_card_positions():
+	# Optionally just: nothing here, or only do scene order
+	for i in range(cards.size()):
+		move_child(cards[i], i)
 
 func swipe_left():
 	if cards.size() == 0:
 		return
-	var card = cards[0]
-	var idx = npc_indices[0]
+	var card = cards[cards.size() - 1] # Topmost card
+	var idx = npc_indices[npc_indices.size() - 1]
 	card.animate_swipe_left(func():
-		# After animation completes:
 		card.queue_free()
-		cards.pop_front()
-		npc_indices.pop_front()
+		cards.pop_back()
+		npc_indices.pop_back()
 		NPCManager.mark_npc_inactive_in_app(idx, app_name)
 		emit_signal("card_swiped_left", idx)
 		_after_swipe()
@@ -53,13 +56,12 @@ func swipe_left():
 func swipe_right():
 	if cards.size() == 0:
 		return
-	var card = cards[0]
-	var idx = npc_indices[0]
+	var card = cards[cards.size() - 1]
+	var idx = npc_indices[npc_indices.size() - 1]
 	card.animate_swipe_right(func():
 		card.queue_free()
-		cards.pop_front()
-		npc_indices.pop_front()
-		# (Optional: Mark liked, or promote to persistent, etc)
+		cards.pop_back()
+		npc_indices.pop_back()
 		emit_signal("card_swiped_right", idx)
 		_after_swipe()
 	)
@@ -67,14 +69,10 @@ func swipe_right():
 func _after_swipe():
 	var idx = get_next_npc_index()
 	if idx != -1:
+		add_profile_card(idx)
 		npc_indices.append(idx)
-		add_profile_card(idx, position=cards.size())
-	_update_card_positions()
 
-func _update_card_positions():
-	for i in range(cards.size()):
-		cards[i].z_index = i
-		# You can add visual stack offset here if you wish
+
 
 func clear_cards():
 	for card in cards:
