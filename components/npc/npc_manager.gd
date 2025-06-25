@@ -20,7 +20,7 @@ var persistent_by_wealth: Dictionary = {}
 # === Main API ===
 
 # Get (or create) an NPC index for the app, returning the NPC object
-func encounter_new_npc_for_app(app_name: String) -> NPC:
+func encounter_new_npc_for_app(app_name: String) -> int:
 	var idx = get_recyclable_npc_index_for_app(app_name)
 	if idx == -1:
 		idx = encounter_count
@@ -30,15 +30,17 @@ func encounter_new_npc_for_app(app_name: String) -> NPC:
 		encountered_npcs_by_app[app_name] = []
 	if not encountered_npcs_by_app[app_name].has(idx):
 		encountered_npcs_by_app[app_name].append(idx)
+
 	if not active_npcs_by_app.has(app_name):
 		active_npcs_by_app[app_name] = []
 	if not active_npcs_by_app[app_name].has(idx):
 		active_npcs_by_app[app_name].append(idx)
+
 	if not encountered_npcs.has(idx):
 		encountered_npcs.append(idx)
-	var npc = NPCFactory.create_npc(idx)
-	npcs[idx] = npc
-	return npc
+	# (You do not need to create/store the NPC object here)
+	return idx
+
 
 # Mark this NPC as inactive in a given app (slot is recyclable for that app)
 func mark_npc_inactive_in_app(idx: int, app_name: String) -> void:

@@ -192,7 +192,13 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="FumbleProfile" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/ProfileContainer" instance=ExtResource("2_bo40p")]
+visible = false
 layout_mode = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/ProfileContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer"]
 layout_mode = 2
