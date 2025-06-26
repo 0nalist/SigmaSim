@@ -187,7 +187,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_bottom = 25
+theme_override_constants/margin_bottom = 5
 
 [node name="ProfileContainer" type="Control" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer"]
 unique_name_in_owner = true
@@ -207,21 +207,28 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+theme_override_constants/separation = 8
 
-[node name="SwipeLeftButton" type="Button" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/HBoxContainer"]
+[node name="SwipeLeftButton" type="Button" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 35)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "  🤮  "
 icon_alignment = 1
 
-[node name="SwipeRightButton" type="Button" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/HBoxContainer"]
+[node name="SwipeRightButton" type="Button" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 35)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0

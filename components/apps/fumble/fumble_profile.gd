@@ -29,7 +29,7 @@ func load_npc(npc: NPC) -> void:
 	lines.append("Relationship: %s" % npc.relationship_status)
 	lines.append("Affinity: %d"  % int(npc.affinity))
 	lines.append("Rizz: %d"      % npc.rizz)
-	lines.append("Wealth: $%s"   % str(npc.wealth))
+	lines.append("Wealth: $%s"   % NumberFormatter.format_commas(npc.wealth))
 	lines.append("Gender: %s"    % npc.describe_gender())
 
 	# Find and display primary greek stat

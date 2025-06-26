@@ -1,11 +1,16 @@
 class_name ProfileCardStack
 extends Control
 
+signal card_swiped_left(npc_idx)
+signal card_swiped_right(npc_idx)
+
 @export var app_name: String = "fumble"
 @export var profile_card_scene: PackedScene
 
-signal card_swiped_left(npc_idx)
-signal card_swiped_right(npc_idx)
+@export var min_recycled_percent: float = 0.0   # 0% at start
+@export var max_recycled_percent: float = 0.9   # 90% at end
+@export var max_recycled_cap_index: int = 20000 # Index at which max is reached
+@export var swipe_pool_size: int = 20
 
 const CARD_VISIBLE_COUNT := 2
 
@@ -13,15 +18,16 @@ var npc_indices: Array[int] = []  # bottom → top
 var cards: Array[Control] = []    # bottom → top
 var is_animating := false
 
+var swipe_pool: Array[int] = []
+
 func _ready():
 	load_initial_cards()
 
 func load_initial_cards():
 	clear_cards()
-	npc_indices.clear()
-	cards.clear()
+	_refill_swipe_pool()
 	for i in range(CARD_VISIBLE_COUNT):
-		var idx = get_next_npc_index()
+		var idx = _fetch_next_index_from_pool()
 		if idx == -1:
 			break
 		_add_card_at_top(idx)
@@ -83,8 +89,10 @@ func swipe_right():
 	)
 
 func _after_swipe():
-	# After swipe, always add a new card to the bottom of the stack
-	var idx = get_next_npc_index()
+	# Always refill the pool if running low
+	if swipe_pool.size() < CARD_VISIBLE_COUNT + 2:
+		_refill_swipe_pool()
+	var idx = _fetch_next_index_from_pool()
 	if idx != -1:
 		_add_card_at_bottom(idx)
 
@@ -93,6 +101,44 @@ func clear_cards():
 		card.queue_free()
 	cards.clear()
 	npc_indices.clear()
+	swipe_pool.clear()
 
-func get_next_npc_index() -> int:
-	return NPCManager.encounter_new_npc_for_app(app_name)
+func _fetch_next_index_from_pool() -> int:
+	if swipe_pool.is_empty():
+		_refill_swipe_pool()
+	if swipe_pool.is_empty():
+		return -1
+	return swipe_pool.pop_front()
+
+func _refill_swipe_pool():
+	# Calculates desired number of recycled and new npcs in pool
+	var seen = NPCManager.encounter_count
+	var t = clamp(float(seen) / float(max_recycled_cap_index), 0.0, 1.0)
+	var percent = lerp(min_recycled_percent, max_recycled_percent, t)
+	var num_recycled = int(round(swipe_pool_size * percent))
+	var num_new = swipe_pool_size - num_recycled
+	var pool: Array[int] = []
+
+	# Only fetch NEW that aren't already in pool or on stack
+	var new_indices = NPCManager.get_batch_of_new_npc_indices(app_name, num_new)
+	# Only fetch RECYCLED that aren't already in pool or on stack
+	var recycled_indices = NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled)
+
+	# Exclude any NPCs already on stack or already queued for the pool
+	var exclude = npc_indices + pool
+	new_indices = new_indices.filter(func(idx): return not exclude.has(idx))
+	recycled_indices = recycled_indices.filter(func(idx): return not exclude.has(idx))
+
+	pool += new_indices
+	pool += recycled_indices
+	pool.shuffle()
+
+	# Add only as many as needed to reach pool size
+	while swipe_pool.size() < swipe_pool_size and not pool.is_empty():
+		swipe_pool.append(pool.pop_front())
+
+func get_allowed_recycled_count() -> int:
+	var seen = NPCManager.encounter_count
+	var t = clamp(float(seen) / float(max_recycled_cap_index), 0.0, 1.0)
+	var percent = lerp(min_recycled_percent, max_recycled_percent, t)
+	return int(round(swipe_pool_size * percent))

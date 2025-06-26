@@ -21,6 +21,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 1
 theme = ExtResource("1_a0w3w")
 theme_override_styles/panel = SubResource("StyleBoxFlat_5ticg")
@@ -33,17 +35,22 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
 layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="ProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+[node name="ProfilePic" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("1_m5oeo")
 
-[node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/ProfilePic"]
+[node name="AttractivenessLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ProfilePic"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -60,8 +67,9 @@ grow_vertical = 2
 theme = ExtResource("1_a0w3w")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "0/10"
+horizontal_alignment = 1
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/ProfilePic"]
+[node name="NameLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ProfilePic"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
@@ -78,22 +86,23 @@ size_flags_vertical = 8
 theme = ExtResource("1_a0w3w")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Name McNamerson"
+horizontal_alignment = 1
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 mouse_filter = 1
 theme = ExtResource("1_a0w3w")
 
-[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="Control3" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
 theme = ExtResource("1_a0w3w")
 
-[node name="TagsScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Control3"]
+[node name="TagsScrollContainer" type="ScrollContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3"]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 1
 anchors_preset = 15
@@ -102,65 +111,65 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TagsHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer"]
+[node name="TagsHBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label4" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label5" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Label6" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label6" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Label7" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label7" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Label8" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label8" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Label9" type="Label" parent="MarginContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
+[node name="Label9" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/Control3/TagsScrollContainer/TagsHBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "brat"
 
-[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="Control2" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 mouse_filter = 1
 theme = ExtResource("1_a0w3w")
 
-[node name="BioLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="BioLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1

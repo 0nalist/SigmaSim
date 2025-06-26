@@ -17,6 +17,47 @@ var npcs: Dictionary = {}                                 # idx -> live NPC cach
 var persistent_by_gender: Dictionary = {}                 # e.g. { "f": [idx, ...] }
 var persistent_by_wealth: Dictionary = {}
 
+# === Swipe Pool Helpers ===
+
+# Fetches a batch of new NPC indices (prioritizes never-before-seen or unused/recyclable, marks as encountered/active)
+func get_batch_of_new_npc_indices(app_name: String, count: int) -> Array[int]:
+	var result: Array[int] = []
+	for i in range(count):
+		var idx = get_recyclable_npc_index_for_app(app_name)
+		if idx == -1:
+			idx = encounter_count
+			encounter_count += 1
+		if not encountered_npcs_by_app.has(app_name):
+			encountered_npcs_by_app[app_name] = []
+		if not encountered_npcs_by_app[app_name].has(idx):
+			encountered_npcs_by_app[app_name].append(idx)
+		if not active_npcs_by_app.has(app_name):
+			active_npcs_by_app[app_name] = []
+		if not active_npcs_by_app[app_name].has(idx):
+			active_npcs_by_app[app_name].append(idx)
+		if not encountered_npcs.has(idx):
+			encountered_npcs.append(idx)
+		result.append(idx)
+	return result
+
+# Fetches a batch of recycled (previously-seen but currently inactive) NPC indices for this app
+func get_batch_of_recycled_npc_indices(app_name: String, count: int) -> Array[int]:
+	var pool = []
+	var encountered = encountered_npcs_by_app.get(app_name, [])
+	var active = active_npcs_by_app.get(app_name, [])
+	for idx in encountered:
+		if not active.has(idx) and not persistent_npcs.has(idx):
+			pool.append(idx)
+	pool.shuffle()
+	var result: Array[int] = []
+	for idx in pool.slice(0, count):
+		result.append(idx)
+	return result
+
+
+
+# (Optional: Exclude recent IDs, see last message if you want this)
+
 # === Main API ===
 
 # Get (or create) an NPC index for the app, returning the NPC object
