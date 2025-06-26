@@ -1,26 +1,59 @@
 #class_name NameManager
 extends Node
 
+var first_names_json_path: String = "res://data/npc_data/names/first_names.json"
+var last_names_json_path: String = "res://data/npc_data/names/last_names.json"
+var use_json_for_last_names: bool = true # Set false if you want to load from a .txt
+
 var first_names: Array[GenderedFirstName] = []
-var middle_initials: Array[String] = []
 var last_names: Array[String] = []
+var middle_initials: Array[String] = []
 var global_seed: int = 123456
 
 func _ready():
-	# Dummy first names (with sample gender vectors)
-	first_names.append(GenderedFirstName.new("Alex", Vector3(0.7, 0.2, 0.1)))
-	first_names.append(GenderedFirstName.new("Jordan", Vector3(0.5, 0.4, 0.1)))
-	first_names.append(GenderedFirstName.new("Morgan", Vector3(0.33, 0.33, 0.34)))
+	# Load names
+	_load_first_names()
+	_load_last_names()
 
-	# Middle initials: A-Z
-	for ascii in range(65,66):
-	#for ascii in range(65, 91):  # 65 = 'A', 90 = 'Z' # TEMPORARILY DISABLED, REENABLE FOR RELEASE
+	# Generate A-Z middle initials
+	for ascii in range(65, 91):
 		middle_initials.append(String.chr(ascii))
 
-	# Dummy last names
-	last_names.append("Smith")
-	last_names.append("Patel")
-	last_names.append("Rivera")
+func _load_first_names():
+	first_names.clear()
+	var file = FileAccess.open(first_names_json_path, FileAccess.READ)
+	if not file:
+		push_error("Couldn't load first names JSON: %s" % first_names_json_path)
+		return
+	var data = JSON.parse_string(file.get_as_text())
+	for entry in data:
+		var name = entry.get("Name", entry.get("name", ""))
+		var fem = float(entry.get("Femme", entry.get("fem", "0")))
+		var masc = float(entry.get("Masc", entry.get("masc", "0")))
+		var nb = float(entry.get("Nonbinary", entry.get("nonbinary", "0")))
+		first_names.append(GenderedFirstName.new(name, Vector3(fem, masc, nb)))
+
+func _load_last_names():
+	last_names.clear()
+	if use_json_for_last_names:
+		var file = FileAccess.open(last_names_json_path, FileAccess.READ)
+		if not file:
+			push_error("Couldn't load last names JSON: %s" % last_names_json_path)
+			return
+		var data = JSON.parse_string(file.get_as_text())
+		# Supports both [ {"LastName":"Smith"}, ... ] and [ "Smith", ... ]
+		for entry in data:
+			if typeof(entry) == TYPE_DICTIONARY:
+				last_names.append(entry.values()[0]) # Takes the value if dictionary
+			elif typeof(entry) == TYPE_STRING:
+				last_names.append(entry)
+	else:
+		# If using .txt, one last name per line
+		var file = FileAccess.open(last_names_json_path, FileAccess.READ)
+		if not file:
+			push_error("Couldn't load last names TXT: %s" % last_names_json_path)
+			return
+		last_names = file.get_as_text().split("\n", false)
 
 func get_npc_name_by_index(npc_index: int) -> Dictionary:
 	var total_combos = first_names.size() * middle_initials.size() * last_names.size()

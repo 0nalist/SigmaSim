@@ -1,0 +1,1856 @@
+[
+  {
+	"name": "Aaron",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Abby",
+	"fem": 1.0,
+	"masc": 0.05,
+	"enby": 0.1
+  },
+  {
+	"name": "Abdul",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Abdullah",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Abigail",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Ada",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Adam",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Addison",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Adele",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Adi",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Agatha",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Agnes",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Alan",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Albert",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Alex",
+	"fem": 0.7,
+	"masc": 0.7,
+	"enby": 0.3
+  },
+  {
+	"name": "Ali",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Alice",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Amir",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Andrea",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Andrew",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Andy",
+	"fem": 0.2,
+	"masc": 1.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Anh",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0.1
+  },
+  {
+	"name": "Anisa",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Anwar",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Arthur",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Aspen",
+	"fem": 0.3,
+	"masc": 0.7,
+	"enby": 1.0
+  },
+  {
+	"name": "Axel",
+	"fem": 0.0,
+	"masc": 0.3,
+	"enby": 0.8
+  },
+  {
+	"name": "Azealia",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.4
+  },
+  {
+	"name": "Aziz",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Babe",
+	"fem": 0.3,
+	"masc": 0.7,
+	"enby": 0.6
+  },
+  {
+	"name": "Babette",
+	"fem": 0.9,
+	"masc": 0.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Bambi",
+	"fem": 1.0,
+	"masc": 0.1,
+	"enby": 0.7
+  },
+  {
+	"name": "Bao",
+	"fem": 0.9,
+	"masc": 0.9,
+	"enby": 0.3
+  },
+  {
+	"name": "Batari",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Bee",
+	"fem": 0.1,
+	"masc": 0.6,
+	"enby": 0.6
+  },
+  {
+	"name": "Ben",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Benjamin",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Bernie",
+	"fem": 0.05,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Bessie",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Bigsby",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Billie",
+	"fem": 0.7,
+	"masc": 0.4,
+	"enby": 0.5
+  },
+  {
+	"name": "Billy",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Blue",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Bob",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Brenda",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Brianna",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.05
+  },
+  {
+	"name": "Brittany",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Brock",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Brody",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Brunhilda",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Bruno",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Bubbles",
+	"fem": 0.2,
+	"masc": 0.2,
+	"enby": 0.8
+  },
+  {
+	"name": "Cadence",
+	"fem": 0.2,
+	"masc": 0.1,
+	"enby": 1.0
+  },
+  {
+	"name": "Carly",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Carson",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Casserole",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Cassiopeia",
+	"fem": 0.7,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Chad",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Chase",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Chester",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.3
+  },
+  {
+	"name": "China",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Chip",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Chloe",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Chowder",
+	"fem": 0.0,
+	"masc": 0.1,
+	"enby": 1.0
+  },
+  {
+	"name": "Chris",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Chrissy",
+	"fem": 0.7,
+	"masc": 0.3,
+	"enby": 0.1
+  },
+  {
+	"name": "Christina",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Christine",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Chuck",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Cindy",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Citra",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Clara",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Cleo",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Colin",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Connan",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Cornelius",
+	"fem": 0.0,
+	"masc": 0.9,
+	"enby": 0.2
+  },
+  {
+	"name": "Corran",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Court",
+	"fem": 0.9,
+	"masc": 0.1,
+	"enby": 0.1
+  },
+  {
+	"name": "Craig",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Daniel",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Daniel",
+	"fem": 0.05,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Danny",
+	"fem": 0.2,
+	"masc": 0.9,
+	"enby": 0.2
+  },
+  {
+	"name": "Dat",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "David",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Dee",
+	"fem": 1.0,
+	"masc": 0.3,
+	"enby": 0.6
+  },
+  {
+	"name": "Dem",
+	"fem": 0.4,
+	"masc": 0.1,
+	"enby": 1.0
+  },
+  {
+	"name": "Deron",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Destiny",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Dick",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Dirk",
+	"fem": 0.0,
+	"masc": 0.9,
+	"enby": 0.5
+  },
+  {
+	"name": "Dot",
+	"fem": 0.7,
+	"masc": 0.05,
+	"enby": 1.0
+  },
+  {
+	"name": "Drew",
+	"fem": 0.3,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Dylan",
+	"fem": 0.4,
+	"masc": 0.9,
+	"enby": 0.3
+  },
+  {
+	"name": "Eddy",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Eden",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.8
+  },
+  {
+	"name": "Edward",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Effie",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Elena",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Eli",
+	"fem": 0.1,
+	"masc": 0.9,
+	"enby": 0.5
+  },
+  {
+	"name": "Elizabeth",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Emily",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Eric",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Evan",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Eve",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Fae",
+	"fem": 0.1,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Faiz",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Fang",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Fatimah",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Fern",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Finn",
+	"fem": 0.1,
+	"masc": 0.9,
+	"enby": 0.9
+  },
+  {
+	"name": "Fractal",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Frisbee",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Fritz",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Gallows",
+	"fem": 0.0,
+	"masc": 0.1,
+	"enby": 1.0
+  },
+  {
+	"name": "Gauze",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Gee",
+	"fem": 0.1,
+	"masc": 0.1,
+	"enby": 0.8
+  },
+  {
+	"name": "Gene",
+	"fem": 0.2,
+	"masc": 0.8,
+	"enby": 0.2
+  },
+  {
+	"name": "Geoffrey",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "George",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Gertrude",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Gordon",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Gorgonzola",
+	"fem": 0.0,
+	"masc": 0.1,
+	"enby": 1.0
+  },
+  {
+	"name": "Grace",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Gray",
+	"fem": 0.6,
+	"masc": 0.8,
+	"enby": 0.9
+  },
+  {
+	"name": "Groucho",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Gunther",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Halifax",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Hanh",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Hank",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Harlen",
+	"fem": 0.1,
+	"masc": 0.6,
+	"enby": 0.7
+  },
+  {
+	"name": "Hasan",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Hazel",
+	"fem": 0.9,
+	"masc": 0.0,
+	"enby": 0.6
+  },
+  {
+	"name": "Helen",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Helena",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Henry",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Hisamxoxo",
+	"fem": 0.333333,
+	"masc": 0.6547289538,
+	"enby": 0.23478927
+  },
+  {
+	"name": "Ho",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Hui",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0.0
+  },
+  {
+	"name": "Ilham",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0
+  },
+  {
+	"name": "India",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Isa",
+	"fem": 0.7,
+	"masc": 0.6,
+	"enby": 0
+  },
+  {
+	"name": "Isaac",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Ishmael",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Israel",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Itzu",
+	"fem": 0.4,
+	"masc": 0.1,
+	"enby": 0.8
+  },
+  {
+	"name": "Izzy",
+	"fem": 0.9,
+	"masc": 0.4,
+	"enby": 0.2
+  },
+  {
+	"name": "Jack",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Jackson",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Jacques",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Jake",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Jamal",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Jamil",
+	"fem": 0,
+	"masc": 1.0,
+	"enby": 0
+  },
+  {
+	"name": "Jamilah",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Jasper",
+	"fem": 0.0,
+	"masc": 0.8,
+	"enby": 0.6
+  },
+  {
+	"name": "Jax",
+	"fem": 0.1,
+	"masc": 0.6,
+	"enby": 0.6
+  },
+  {
+	"name": "Jean",
+	"fem": 0.9,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Jeb",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Jesse",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0.1
+  },
+  {
+	"name": "Jesus",
+	"fem": 0.1,
+	"masc": 0.7,
+	"enby": 0.5
+  },
+  {
+	"name": "John",
+	"fem": 0.3,
+	"masc": 1.0,
+	"enby": 0.25
+  },
+  {
+	"name": "Johnathan",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Jordan",
+	"fem": 0.9,
+	"masc": 0.9,
+	"enby": 0.1
+  },
+  {
+	"name": "Jorge",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Julian",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Juniper",
+	"fem": 0.85,
+	"masc": 0.0,
+	"enby": 0.7
+  },
+  {
+	"name": "Kai",
+	"fem": 0.5,
+	"masc": 0.9,
+	"enby": 0.5
+  },
+  {
+	"name": "Kaleidoscope",
+	"fem": 0.1,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Karen",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Kaya",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Kayla",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Kenny",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Kevin",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Kieran",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Kiku",
+	"fem": 1.0,
+	"masc": 0.2,
+	"enby": 0.7
+  },
+  {
+	"name": "Kimberly",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Kirk",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Kris",
+	"fem": 0.6,
+	"masc": 0.1,
+	"enby": 0.8
+  },
+  {
+	"name": "Kyle",
+	"fem": 0.05,
+	"masc": 1.0,
+	"enby": 0.05
+  },
+  {
+	"name": "Lana",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Lara",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Laura",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Leaf",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Lexi",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Li",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0.0
+  },
+  {
+	"name": "Liem",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Lilith",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.5
+  },
+  {
+	"name": "Linh",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Loki",
+	"fem": 0.1,
+	"masc": 0.8,
+	"enby": 0.7
+  },
+  {
+	"name": "Lorelei",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.7
+  },
+  {
+	"name": "Lorraine",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Lycoris",
+	"fem": 0.1,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Mac",
+	"fem": 0.05,
+	"masc": 1.0,
+	"enby": 0.25
+  },
+  {
+	"name": "Macauly",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Maeve",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Mai",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Marge",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Mars",
+	"fem": 0.2,
+	"masc": 0.7,
+	"enby": 0.9
+  },
+  {
+	"name": "Mary",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Mason",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Matt",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Max",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Mega",
+	"fem": 1.0,
+	"masc": 1.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Mei",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0.0
+  },
+  {
+	"name": "Melanie",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Meryl",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Michael",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Michel",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Michelle",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Mikey",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Miles",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Miriam",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Missy",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Mo",
+	"fem": 0.05,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Mohammad",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Mordecai",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Morris",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Moss",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Murphy",
+	"fem": 0.5,
+	"masc": 0.5,
+	"enby": 0.5
+  },
+  {
+	"name": "Na",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Naaz",
+	"fem": 1.0,
+	"masc": 0.5,
+	"enby": 0.0
+  },
+  {
+	"name": "Nadia",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Niavh",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Nichole",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Ois\u00edn",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Onyx",
+	"fem": 0.1,
+	"masc": 0.4,
+	"enby": 1.0
+  },
+  {
+	"name": "Patrick",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Paul",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Pete",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Peter",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Phong",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Pixel",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Pluto",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Polina",
+	"fem": 0.8,
+	"masc": 0.2,
+	"enby": 0.4
+  },
+  {
+	"name": "Puck",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Raja",
+	"fem": 0.25,
+	"masc": 1.0,
+	"enby": 0.5
+  },
+  {
+	"name": "Randy",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Ray",
+	"fem": 0.1,
+	"masc": 0.9,
+	"enby": 0.3
+  },
+  {
+	"name": "Red",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Reginald",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Rich",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Richard",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Rick",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Rick",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Ricky",
+	"fem": 0.1,
+	"masc": 1.0,
+	"enby": 0.3
+  },
+  {
+	"name": "River",
+	"fem": 0.2,
+	"masc": 0.7,
+	"enby": 0.9
+  },
+  {
+	"name": "Rock",
+	"fem": 0.0,
+	"masc": 0.1,
+	"enby": 1.0
+  },
+  {
+	"name": "Rod",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.8
+  },
+  {
+	"name": "Ross",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Ruth",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Ruth",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Ryan",
+	"fem": 0.6,
+	"masc": 0.7,
+	"enby": 0.2
+  },
+  {
+	"name": "Salma",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Sam",
+	"fem": 0.7,
+	"masc": 0.9,
+	"enby": 0.2
+  },
+  {
+	"name": "Samantha",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Sandy",
+	"fem": 0.9,
+	"masc": 0.2,
+	"enby": 0.4
+  },
+  {
+	"name": "Sawyer",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Scott",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Selin",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.2
+  },
+  {
+	"name": "Shlomo",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Sioban",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Sky",
+	"fem": 0.9,
+	"masc": 0.4,
+	"enby": 0.8
+  },
+  {
+	"name": "Skyler",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0.8
+  },
+  {
+	"name": "Sock",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Sophia",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Sophie",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Stacy",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Star",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Stephen",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Steve",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Stud",
+	"fem": 0.0,
+	"masc": 0.1,
+	"enby": 1.0
+  },
+  {
+	"name": "Svetlana",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Tabitha",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Talea",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Tali",
+	"fem": 0.9,
+	"masc": 0.4,
+	"enby": 0.3
+  },
+  {
+	"name": "Tallulah",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Tammy",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Tana",
+	"fem": 0.6,
+	"masc": 0.1,
+	"enby": 1.0
+  },
+  {
+	"name": "Thomas",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Thor",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Tin",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Ting",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0.0
+  },
+  {
+	"name": "Todd",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Tom",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.05
+  },
+  {
+	"name": "Trixie",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Tyler",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Ursula",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Vas",
+	"fem": 0.2,
+	"masc": 0.2,
+	"enby": 1.0
+  },
+  {
+	"name": "Vic",
+	"fem": 0.8,
+	"masc": 0.3,
+	"enby": 0.7
+  },
+  {
+	"name": "Victor",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.1
+  },
+  {
+	"name": "Victoria",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.05
+  },
+  {
+	"name": "Vinny",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.4
+  },
+  {
+	"name": "Violet",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Vladimir",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Walker",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.3
+  },
+  {
+	"name": "Wei",
+	"fem": 0.8,
+	"masc": 0.8,
+	"enby": 0.0
+  },
+  {
+	"name": "Wendy",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Will",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "William",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Wilson",
+	"fem": 0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Wolfy",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Worm",
+	"fem": 0.01,
+	"masc": 0.01,
+	"enby": 1.0
+  },
+  {
+	"name": "Xander",
+	"fem": 0.1,
+	"masc": 0.2,
+	"enby": 1.0
+  },
+  {
+	"name": "Xevi",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Xiu Ying",
+	"fem": 1.0,
+	"masc": 0.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Xylophone",
+	"fem": 0.0,
+	"masc": 0.0,
+	"enby": 1.0
+  },
+  {
+	"name": "Yoko",
+	"fem": 1.0,
+	"masc": 0,
+	"enby": 0
+  },
+  {
+	"name": "Zhang",
+	"fem": 0.0,
+	"masc": 1.0,
+	"enby": 0.0
+  },
+  {
+	"name": "Ziggy",
+	"fem": 0.1,
+	"masc": 0.9,
+	"enby": 0.5
+  },
+  {
+	"name": "Chromium",
+	"fem": 0.0,
+	"masc": 0.05,
+	"enby": 1.0
+  }
+]

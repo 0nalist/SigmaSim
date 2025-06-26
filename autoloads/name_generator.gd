@@ -1,3 +1,6 @@
+##
+# DEPRECATED !!!!!!!!!!!!!!!!!!!!
+##
 extends Node
 # Autoload name: NameGenerator
 

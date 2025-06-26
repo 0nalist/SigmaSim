@@ -233,5 +233,13 @@ value = 700.0
 fill_mode = 3
 show_percentage = false
 
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("3_svf65")
+stretch_mode = 3
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/PayCreditButton" to="." method="_on_pay_credit_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/PayStudentLoanButton" to="." method="_on_pay_student_loan_button_pressed"]
