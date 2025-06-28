@@ -30,7 +30,7 @@ func _load_first_names():
 		var name = entry.get("Name", entry.get("name", ""))
 		var fem = float(entry.get("Femme", entry.get("fem", "0")))
 		var masc = float(entry.get("Masc", entry.get("masc", "0")))
-		var nb = float(entry.get("Nonbinary", entry.get("nonbinary", "0")))
+		var nb = float(entry.get("Enby", entry.get("enby", "0")))
 		first_names.append(GenderedFirstName.new(name, Vector3(fem, masc, nb)))
 
 func _load_last_names():

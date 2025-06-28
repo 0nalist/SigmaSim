@@ -41,6 +41,7 @@ TaskManager="*res://autoloads/task_manager.tscn"
 NumberFormatter="*res://autoloads/number_formatter.gd"
 NPCManager="*res://components/npc/npc_manager.gd"
 NameManager="*res://components/npc/name_manager.gd"
+DBManager="*res://autoloads/db_manager.gd"
 
 [display]
 
@@ -48,6 +49,10 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=3
 window/stretch/mode="viewport"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
 
 [gui]
 

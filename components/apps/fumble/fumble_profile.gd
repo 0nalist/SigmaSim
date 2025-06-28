@@ -6,9 +6,13 @@ extends PanelContainer
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
 
-@onready var tags_container: HBoxContainer = %TagsHBoxContainer
+#@onready var tags_container: HBoxContainer = %TagsHBoxContainer
 
 @onready var bio_label: Label = %BioLabel
+
+@onready var likes_label: Label = %LikesLabel
+@onready var tags_label: Label = %TagsLabel
+
 
 
 func load_npc(npc: NPC) -> void:
@@ -17,11 +21,11 @@ func load_npc(npc: NPC) -> void:
 	attractiveness_label.text = "%0.1f/10" % (float(npc.attractiveness) / 10.0)
 
 	# Tags
-	_clear_container(tags_container)
-	for tag in npc.tags:
-		var tag_label = Label.new()
-		tag_label.text = tag.capitalize()
-		tags_container.add_child(tag_label)
+	#_clear_container(tags_container)
+	#for tag in npc.tags:
+	#	var tag_label = Label.new()
+	#	tag_label.text = tag.capitalize()
+	#	tags_container.add_child(tag_label)
 
 	# Bio lines
 	var lines := []
@@ -52,6 +56,18 @@ func load_npc(npc: NPC) -> void:
 	lines.append("Bio: %s" % npc.bio)
 
 	bio_label.text = "\n".join(lines.map(func(line): return str(line)))
+
+	if npc.likes and npc.likes.size() > 0:
+		likes_label.text = "Likes: " + ", ".join(npc.likes)
+	else:
+		likes_label.text = "Likes: None"
+
+	# Tags label: comma-separated list, or "None" if empty
+	if npc.tags and npc.tags.size() > 0:
+		tags_label.text = "Tags: " + ", ".join(npc.tags)
+	else:
+		tags_label.text = "Tags: None"
+
 
 func _clear_container(c: Control) -> void:
 	for child in c.get_children():

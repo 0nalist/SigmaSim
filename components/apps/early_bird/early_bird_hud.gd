@@ -32,11 +32,11 @@ func show_bank_prompt(show: bool) -> void:
 		bank_label.text = ""
 
 func show_game_over(final_score: int) -> void:
-	game_label.text = "Game Over!\nScore: " + str(final_score)
+	#game_label.text = "Game Over!\nScore: " + str(final_score)
 	game_menu_container.show()
 
 func show_bank_success(score: int) -> void:
-	game_label.text = "You Banked!\nPoints: " + str(score)
+	#game_label.text = "You Banked!\nPoints: " + str(score)
 	game_menu_container.show()
 	emit_signal("score_banked", score)
 
@@ -44,7 +44,7 @@ func reset() -> void:
 	update_score(0)
 	bank_label.hide()
 	game_menu_container.hide()
-	game_label.hide()
+	#game_label.hide()
 
 func _on_go_button_pressed() -> void:
 	emit_signal("restart_pressed")

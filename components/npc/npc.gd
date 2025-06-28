@@ -8,7 +8,7 @@ extends Resource
 @export var first_name: String
 @export var middle_initial: String
 @export var last_name: String
-@export var gender_vector: Vector3 = Vector3(0, 0, 1) # x: femme, y: masc, z: ungendered
+@export var gender_vector: Vector3 = Vector3(0, 0, 1) # x: femme, y: masc, z: enby
 
 @export var username: String
 @export var profile_pic: Texture2D
@@ -41,13 +41,16 @@ var wealth: int
 @export_range(0, 100, 0.1) var omega: float = 0.0
 @export_range(0, 100, 0.1) var sigma: float = 0.0
 
-# === Wall Posts / Social Feed (optional) ===
-@export var wall_posts: Array[String] = ["hello world"]
 
 # === Tags / Attributes ===
-@export var tags: Array[String] = ["alive"] # 
+@export var tags: Array[String] = ["alive"] 
+@export var likes: Array[String]
+
+@export var fumble_bio: String
 
 
+# === Wall Posts / Social Feed ===
+@export var wall_posts: Array[String] = ["hello world"]
 
 
 # === M E T H O D S === #
@@ -62,5 +65,5 @@ func describe_gender() -> String:
 	if gender_vector.y > 0.5:
 		components.append("masculine")
 	if gender_vector.z > 0.5:
-		components.append("ungendered")
+		components.append("enby")
 	return ", ".join(components) if components.size() > 0 else "ambiguous"

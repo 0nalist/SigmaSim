@@ -13,11 +13,16 @@ extends Pane
 @onready var chats_tab: Control = %ChatsTab
 
 # Team tab UI
+# Gender sliders
 @onready var x_slider: HSlider = %XHSlider
 @onready var y_slider: HSlider = %YHSlider
 @onready var z_slider: HSlider = %ZHSlider
+@onready var curiosity_slider: HSlider = %CuriosityHSlider
 
-# Add a variable for the card stack
+
+var preferred_gender: Vector3 = Vector3(0,0,0) # Should be moved to player data TODO
+var curiosity: float = .85
+
 var card_stack: ProfileCardStack = null
 
 func _ready():
@@ -42,10 +47,14 @@ func _ready():
 	team_button.pressed.connect(show_team_tab)
 	field_button.pressed.connect(show_field_tab)
 	game_button.pressed.connect(show_chat_tab)
+	
 	x_slider.value_changed.connect(_on_gender_slider_changed)
 	y_slider.value_changed.connect(_on_gender_slider_changed)
 	z_slider.value_changed.connect(_on_gender_slider_changed)
-
+	
+	x_slider.drag_ended.connect(_on_gender_slider_drag_ended)
+	y_slider.drag_ended.connect(_on_gender_slider_drag_ended)
+	z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	# Start on field tab by default
 	show_field_tab()
 	cancel_pride()
@@ -87,13 +96,55 @@ func show_chat_tab():
 var pride_material = preload("res://components/apps/fumble/fumble_label_pride_month_material.tres")
 
 func _on_gender_slider_changed(value):
-	if z_slider.value > 0 or (x_slider.value > 0 and y_slider.value > 0):
+	# Convert sliders (0-100) to 0.0-1.0 floats
+	preferred_gender = Vector3(
+		x_slider.value / x_slider.max_value,
+		y_slider.value / y_slider.max_value,
+		z_slider.value / z_slider.max_value
+	)
+	print("Sliders (scaled): X:", preferred_gender.x, "Y:", preferred_gender.y, "Z:", preferred_gender.z)
+	
+	print("preferred gender: " + str(preferred_gender))
+	# Pride label logic
+	if preferred_gender.z > 0 or (preferred_gender.x > 0 and preferred_gender.y > 0):
 		yassify_fumble_label()
 	else:
 		cancel_pride()
+
+func _on_gender_slider_drag_ended(_changed):
+	# (Redundant to clamp now, as values are already scaled)
+	if card_stack:
+		card_stack.refresh_pool_under_top_with_gender(preferred_gender)
+
 
 func yassify_fumble_label() -> void:
 	fumble_label.material = pride_material
 
 func cancel_pride() -> void:
 	fumble_label.material = null
+
+
+
+
+
+func _on_curiosity_h_slider_value_changed(value: float) -> void:
+	# If your slider goes 0-100, normalize to 0-1:
+	var t = value
+	if curiosity_slider.max_value > 1.01:
+		t = value / curiosity_slider.max_value
+	# Interpolate from 0.85 down to 0.01
+	curiosity = lerp(0.85, 0.01, t)
+	# Optionally print/debug
+	#print("Curiosity %.2f  threshold: %.3f" % [t, curiosity])
+	if card_stack:
+		card_stack.set_curiosity(curiosity)
+		card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
+
+
+
+func _process(_delta):
+	var hovered = get_viewport().gui_get_hovered_control()
+	if hovered:
+		print("Mouse is over: ", hovered.name, " (", hovered, ")")
+	else:
+		print("Nothing hovered")

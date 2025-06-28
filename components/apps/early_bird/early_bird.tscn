@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=24 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
@@ -16,6 +16,8 @@
 [ext_resource type="Shader" uid="uid://dpkrwbqp1ct8w" path="res://assets/shaders/pixel_perfect.gdshader" id="12_35jdd"]
 [ext_resource type="Script" uid="uid://cvkmxe30l4wqr" path="res://components/apps/early_bird/worm.gd" id="12_im8xc"]
 [ext_resource type="Texture2D" uid="uid://bfrkf7nmil0hd" path="res://assets/early_bird/worm1.png" id="13_8hmpk"]
+[ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="16_hew32"]
+[ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="17_5sugq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eegpt"]
 shader = ExtResource("12_35jdd")
@@ -25,6 +27,13 @@ radius = 22.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yrrt2"]
 size = Vector2(1971, 69)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tgvyg"]
+shader = ExtResource("16_hew32")
+shader_parameter/line_thickness = 1.0
+shader_parameter/sin_frequency = 0.1
+shader_parameter/sin_offset = 0.0
+shader_parameter/light_offset = 0.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y10ql"]
 radius = 23.0
@@ -206,9 +215,11 @@ size_flags_vertical = 4
 
 [node name="GameLabel" type="Label" parent="HUD/MarginContainer/GameMenuContainer"]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_tgvyg")
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 96
+theme_override_fonts/font = ExtResource("17_5sugq")
+theme_override_font_sizes/font_size = 64
 text = "EARLY BIRD"
 
 [node name="GoButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
@@ -216,8 +227,10 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("17_5sugq")
 theme_override_font_sizes/font_size = 48
 text = " Get that worm! "
+vertical_icon_alignment = 0
 
 [node name="QuitButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
 unique_name_in_owner = true
