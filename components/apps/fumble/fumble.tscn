@@ -7,6 +7,11 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ye860"]
 bg_color = Color(2.22605e-07, 0.23204, 0.190425, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
 
 [node name="Fumble" type="PanelContainer"]
 anchors_preset = 15
