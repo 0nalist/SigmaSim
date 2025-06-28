@@ -251,20 +251,52 @@ func _process(_delta: float) -> void:
 	_clamp_to_screen()
 
 func _on_header_input(event: InputEvent) -> void:
-	if is_resizing:
+	if pane == null or !pane.user_resizable:
 		return
 
-	if pane == null:
-		return
+	var header_local_mouse = header.get_local_mouse_position()
 
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if WindowManager and WindowManager.has_method("focus_window"):
-			WindowManager.focus_window(self)
+	# Only trigger resize if mouse is at very top (simulate border)
+	var resizing_on_top = (header_local_mouse.y <= resize_margin)
 
-	if event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
-		if pane.user_movable: # 👈 ADD THIS CHECK
+	if event is InputEventMouseMotion:
+		if resizing_on_top:
+			header.mouse_default_cursor_shape = Control.CURSOR_VSIZE
+		else:
+			header.mouse_default_cursor_shape = Control.CURSOR_ARROW
+
+		# Resize in progress?
+		if is_resizing and resize_dir == Vector2(0, -1):
+			# Let window _process handle resize math
+			return
+
+		# Dragging if not resizing and not on top edge
+		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and !resizing_on_top and pane.user_movable:
 			position += event.relative
 			_clamp_to_screen()
+
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				if WindowManager and WindowManager.has_method("focus_window"):
+					WindowManager.focus_window(self)
+
+				if resizing_on_top:
+					# Start resizing from the top edge!
+					is_resizing = true
+					resize_dir = Vector2(0, -1)
+					resize_start_mouse = get_global_mouse_position()
+					resize_start_size = size
+					resize_start_pos = global_position
+					return
+				# Otherwise, drag is handled in motion
+
+			else:
+				# On mouse release, stop resizing (if header started it)
+				if is_resizing and resize_dir == Vector2(0, -1):
+					is_resizing = false
+
+
 
 func _gui_input(event: InputEvent) -> void:
 	if window_state == WindowState.MINIMIZED:
