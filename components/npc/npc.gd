@@ -13,7 +13,7 @@ extends Resource
 @export var username: String
 @export var profile_pic: Texture2D
 
-@export_multiline var bio: String
+#@export_multiline var bio: String
 
 @export var occupation: String = "Funemployed"
 

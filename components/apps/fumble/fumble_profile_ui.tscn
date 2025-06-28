@@ -99,7 +99,7 @@ theme = ExtResource("1_a0w3w")
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 size_flags_vertical = 4
-mouse_filter = 1
+mouse_filter = 2
 theme = ExtResource("1_a0w3w")
 
 [node name="TagsScrollContainer" type="ScrollContainer" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer/Tags"]
@@ -110,6 +110,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 0
 
 [node name="TagsHBoxContainer" type="HBoxContainer" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer/Tags/TagsScrollContainer"]
 layout_mode = 2
@@ -132,7 +133,7 @@ theme = ExtResource("1_a0w3w")
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 size_flags_vertical = 4
-mouse_filter = 1
+mouse_filter = 2
 theme = ExtResource("1_a0w3w")
 
 [node name="LikesScrollContainer" type="ScrollContainer" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer/Likes"]
@@ -143,6 +144,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 0
 
 [node name="LikesHBoxContainer" type="HBoxContainer" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer/Likes/LikesScrollContainer"]
 layout_mode = 2

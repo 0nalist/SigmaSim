@@ -29,6 +29,10 @@ func load_npc(npc: NPC) -> void:
 
 	# Bio lines
 	var lines := []
+	if npc.fumble_bio and npc.fumble_bio != "":
+		lines.append(npc.fumble_bio)
+		lines.append("") # blank line for spacing
+	
 	lines.append("Occupation: %s" % npc.occupation)
 	lines.append("Relationship: %s" % npc.relationship_status)
 	lines.append("Affinity: %d"  % int(npc.affinity))
@@ -53,7 +57,7 @@ func load_npc(npc: NPC) -> void:
 	if npc.player_pet_names.size() > 0:
 		lines.append("Player Pets: [%s]" % ", ".join(npc.player_pet_names.map(func(p): return str(p))))
 	# Bio text
-	lines.append("Bio: %s" % npc.bio)
+	lines.append("Bio: %s" % npc.fumble_bio)
 
 	bio_label.text = "\n".join(lines.map(func(line): return str(line)))
 

@@ -13,6 +13,15 @@ const TRAIT_CONFIG = {
 	}
 }
 
+static var TAG_DATA = {}
+static var LIKE_DATA = {}
+static var FUMBLE_BIOS = []
+
+
+
+
+
+
 
 
 # -- M E T H O D S -- #
@@ -22,36 +31,185 @@ static func create_npc(npc_index: int) -> NPC:
 	var full_name = name_data["full_name"]
 
 	var npc = NPC.new()
+	print("Created npc of type: ", npc.get_class(), " is_class('NPC'): ", npc is NPC)
+
+	# Basic Info
 	npc.full_name = full_name
 	npc.first_name = name_data["first_name"]
 	npc.middle_initial = name_data["middle_initial"]
 	npc.last_name = name_data["last_name"]
 	npc.gender_vector = name_data["gender_vector"]
-
-	npc.affinity = _bounded_trait(full_name, "affinity")
-	npc.rizz = _bounded_trait(full_name, "rizz")
-	
-	# --- Multi-bucket Wealth ---
-	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
-
-	# --- Attractiveness as normal distribution [0,100] ---
-	npc.attractiveness = attractiveness_from_name(full_name)
-
-	# Greek stats
-	assign_greek_stats(npc, full_name)
-
-
 	npc.username = _generate_username(npc)
-	npc.bio = "This is a sample auto-generated NPC bio for %s." % npc.first_name
 	npc.occupation = "Unemployed"
 	npc.relationship_status = "Single"
-	npc.wall_posts = [] as Array[String]
-	npc.tags = [] as Array[String]
 
+	# Greek/Stats/Econ
+	npc.affinity = _bounded_trait(full_name, "affinity")
+	npc.rizz = _bounded_trait(full_name, "rizz")
+	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
+	npc.attractiveness = attractiveness_from_name(full_name)
+	assign_greek_stats(npc, full_name)
+
+	# Tags/likes must be set BEFORE generating bio
+	if "tags" in npc.get_property_list().map(func(x): return x.name):
+		npc.tags.clear()
+		npc.tags.append_array(generate_npc_tags(full_name, TAG_DATA, 3))
+	else:
+		push_error("NPC resource missing 'tags' property!")
+	if "likes" in npc.get_property_list().map(func(x): return x.name):
+		npc.likes.clear()
+		npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
+	else:
+		push_error("NPC resource missing 'likes' property!")
+
+	# Now generate fumble_bio (dynamic)
+	npc.fumble_bio = generate_npc_fumble_bio(npc)
+
+	# Set fallback static bio
+	#npc.bio = "This is a sample auto-generated NPC bio for %s." % npc.first_name
+
+	# Pet names
 	npc.preferred_pet_names = _generate_pet_names(full_name, "preferred")
 	npc.player_pet_names = _generate_pet_names(full_name, "player")
 
+	# Wall posts, etc, if needed...
+	# npc.wall_posts = []
+
 	return npc
+
+
+
+
+# --- Initialization --- #
+static func load_tag_data(path: String):
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+		TAG_DATA = JSON.parse_string(file.get_as_text())
+		# Remove "nan" entries from arrays
+		for k in TAG_DATA.keys():
+			TAG_DATA[k]["correlated"] = TAG_DATA[k].get("correlated", []).filter(func(x): return x != "nan")
+			TAG_DATA[k]["excluded"] = TAG_DATA[k].get("excluded", []).filter(func(x): return x != "nan")
+
+static func load_like_data(path: String):
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+		LIKE_DATA = JSON.parse_string(file.get_as_text())
+		for k in LIKE_DATA.keys():
+			LIKE_DATA[k]["correlated"] = LIKE_DATA[k].get("correlated", []).filter(func(x): return x != "nan")
+			LIKE_DATA[k]["excluded"] = LIKE_DATA[k].get("excluded", []).filter(func(x): return x != "nan")
+
+static func load_fumble_bios(path: String):
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+		FUMBLE_BIOS = JSON.parse_string(file.get_as_text())
+
+
+# --- Tag generation (with correlation/exclusion) --- #
+static func generate_npc_tags(seed: String, tag_data: Dictionary, tag_count: int = 3) -> Array:
+	var selected = []
+	var all_tags = tag_data.keys()
+	if all_tags.size() == 0:
+		return [] # Defensive: no tags available
+	var rng = RandomNumberGenerator.new()
+	rng.seed = djb2(seed + "tag")
+	
+	var t1 = all_tags[rng.randi_range(0, all_tags.size() - 1)]
+	selected.append(t1)
+	while selected.size() < tag_count:
+		var weights = {}
+		for t in all_tags:
+			if t in selected:
+				continue
+			var valid = true
+			for s in selected:
+				if _is_excluded_tag(t, s, tag_data):
+					valid = false
+					break
+			if not valid:
+				continue
+			weights[t] = 1
+			for s in selected:
+				if t in tag_data.get(s, {}).get("correlated", []):
+					weights[t] += 5
+		if weights.size() == 0:
+			break
+		var weighted_list = []
+		for t in weights.keys():
+			for i in range(weights[t]):
+				weighted_list.append(t)
+		var chosen = weighted_list[rng.randi_range(0, weighted_list.size() - 1)]
+		selected.append(chosen)
+	return selected
+
+static func _is_excluded_tag(tag_a: String, tag_b: String, tag_data: Dictionary) -> bool:
+	var excl_a = tag_data.get(tag_a, {}).get("excluded", [])
+	var excl_b = tag_data.get(tag_b, {}).get("excluded", [])
+	return tag_b in excl_a or tag_a in excl_b
+
+# --- Likes generation (can use same correlation/exclusion logic) --- #
+static func generate_npc_likes(seed: String, like_data: Dictionary, like_count: int = 3) -> Array:
+	var selected = []
+	var all_likes = like_data.keys()
+	if all_likes.size() == 0:
+		return []
+	var rng = RandomNumberGenerator.new()
+	rng.seed = djb2(seed + "like")
+	
+	var l1 = all_likes[rng.randi_range(0, all_likes.size() - 1)]
+	selected.append(l1)
+	while selected.size() < like_count:
+		var weights = {}
+		for l in all_likes:
+			if l in selected:
+				continue
+			var valid = true
+			for s in selected:
+				if _is_excluded_like(l, s, like_data):
+					valid = false
+					break
+			if not valid:
+				continue
+			weights[l] = 1
+			for s in selected:
+				if l in like_data.get(s, {}).get("correlated", []):
+					weights[l] += 5
+		if weights.size() == 0:
+			break
+		var weighted_list = []
+		for l in weights.keys():
+			for i in range(weights[l]):
+				weighted_list.append(l)
+		var chosen = weighted_list[rng.randi_range(0, weighted_list.size() - 1)]
+		selected.append(chosen)
+	return selected
+
+static func _is_excluded_like(like_a: String, like_b: String, like_data: Dictionary) -> bool:
+	var excl_a = like_data.get(like_a, {}).get("excluded", [])
+	var excl_b = like_data.get(like_b, {}).get("excluded", [])
+	return like_b in excl_a or like_a in excl_b
+
+
+static func generate_npc_fumble_bio(npc: NPC) -> String:
+	if FUMBLE_BIOS.size() == 0:
+		return ""
+	var idx = djb2(npc.full_name + "bio") % FUMBLE_BIOS.size()
+	var bio_dict = FUMBLE_BIOS[idx]
+	var bio_template = bio_dict["bio"]  # safely get the string
+
+	# Set first_like and likes_str without ternary
+	var first_like = "nothing"
+	var likes_str = "nothing"
+	if npc.likes.size() > 0:
+		first_like = npc.likes[0]
+		likes_str = ", ".join(npc.likes)
+
+	var bio = bio_template
+	bio = bio.replace("{like}", first_like)
+	bio = bio.replace("{likes}", likes_str)
+	return bio
+
+
+
 
 # ---- Trait generation helpers ----
 

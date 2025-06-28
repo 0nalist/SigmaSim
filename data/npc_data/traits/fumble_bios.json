@@ -1,0 +1,64 @@
+[
+  {
+	"bio": "idk",
+	"weight": 1.0,
+	"tags_required": [],
+	"tags_correlated": []
+  },
+  {
+	"bio": "I'm gonna steal the declaration of Independence",
+	"weight": 0.2,
+	"tags_required": [],
+	"tags_correlated": []
+  },
+  {
+	"bio": "Looking for the gaz to my crunkle",
+	"weight": 0.01,
+	"tags_required": [],
+	"tags_correlated": []
+  },
+  {
+	"bio": "show me your dog",
+	"weight": 1.0,
+	"tags_required": [],
+	"tags_correlated": []
+  },
+  {
+	"bio": "my mom can drop us off if your mom can pick us up",
+	"weight": 0.5,
+	"tags_required": [],
+	"tags_correlated": []
+  },
+  {
+	"bio": "do you ever get nervous?",
+	"weight": 0.5,
+	"tags_required": [],
+	"tags_correlated": []
+  },
+  {
+	"bio": "poly & partnered <3",
+	"weight": 1.0,
+	"tags_required": [],
+	"tags_correlated": [
+	  "nympho"
+	]
+  },
+  {
+	"bio": "Must love {like}",
+	"weight": 3.0,
+	"tags_required": [],
+	"tags_correlated": []
+  },
+  {
+	"bio": "Don't even talk to me if you don't like {like}",
+	"weight": 3.0,
+	"tags_required": [],
+	"tags_correlated": []
+  },
+  {
+	"bio": "Obsessed with {likes}",
+	"weight": 3.0,
+	"tags_required": [],
+	"tags_correlated": []
+  }
+]

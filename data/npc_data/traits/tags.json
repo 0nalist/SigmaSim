@@ -1,0 +1,170 @@
+{
+  "brat": {
+	"correlated": [
+	  "golddigger",
+	  "tease",
+	  "pickme"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "guru": {
+	"correlated": [
+	  "retired",
+	  "connected"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "employee": {
+	"correlated": [
+	  "hardworker",
+	  "slacker",
+	  "agitator"
+	],
+	"excluded": [
+	  "retired"
+	]
+  },
+  "golddigger": {
+	"correlated": [
+	  "brat",
+	  "hedonist"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "hardworker": {
+	"correlated": [
+	  "agitator"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "slacker": {
+	"correlated": [
+	  "agitator"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "agitator": {
+	"correlated": [
+	  "hardworker",
+	  "slacker"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "pickme": {
+	"correlated": [
+	  "simp",
+	  "brat"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "hedonist": {
+	"correlated": [
+	  
+	],
+	"excluded": [
+	  
+	]
+  },
+  "nympho": {
+	"correlated": [
+	  "brat"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "gossip": {
+	"correlated": [
+	  "brat"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "simp": {
+	"correlated": [
+	  
+	],
+	"excluded": [
+	  
+	]
+  },
+  "hard2get": {
+	"correlated": [
+	  "brat"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "musician": {
+	"correlated": [
+	  "artist"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "connected": {
+	"correlated": [
+	  "guru"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "retired": {
+	"correlated": [
+	  "guru"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "gambler": {
+	"correlated": [
+	  "slacker"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "artist": {
+	"correlated": [
+	  "musician"
+	],
+	"excluded": [
+	  
+	]
+  },
+  "parent": {
+	"correlated": [
+	  
+	],
+	"excluded": [
+	  
+	]
+  },
+  "saint": {
+	"correlated": [
+	  
+	],
+	"excluded": [
+	  
+	]
+  }
+}
