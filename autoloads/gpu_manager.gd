@@ -35,24 +35,24 @@ func _ready() -> void:
 	MarketManager.crypto_market_ready.connect(setup_crypto_cooldowns)
 
 func _on_minute_tick(_min):
-	print("Minute tick! mining_cooldowns:", mining_cooldowns)
+	#print("Minute tick! mining_cooldowns:", mining_cooldowns)
 	for symbol in mining_cooldowns.keys():
 		mining_cooldowns[symbol] -= 1.0
-		print("Cooldown for", symbol, "is now", mining_cooldowns[symbol])
+		#print("Cooldown for", symbol, "is now", mining_cooldowns[symbol])
 		if mining_cooldowns[symbol] <= 0.0:
-			print("Attempting to mine", symbol)
+		#	print("Attempting to mine", symbol)
 			var crypto = MarketManager.crypto_market.get(symbol)
 			if crypto:
 				_attempt_mine(crypto)
 				mining_cooldowns[symbol] = crypto.block_time
 
 func setup_crypto_cooldowns():
-	print("SETUP: crypto_market keys:", MarketManager.crypto_market.keys())
+	#print("SETUP: crypto_market keys:", MarketManager.crypto_market.keys())
 	mining_cooldowns.clear()
 	for crypto in MarketManager.crypto_market.values():
-		print("SETUP: Adding cooldown for", crypto.symbol, "=", crypto.block_time)
+	#	print("SETUP: Adding cooldown for", crypto.symbol, "=", crypto.block_time)
 		mining_cooldowns[crypto.symbol] = crypto.block_time
-	print("SETUP: Resulting mining_cooldowns:", mining_cooldowns)
+	#print("SETUP: Resulting mining_cooldowns:", mining_cooldowns)
 
 func get_time_until_next_block(symbol: String) -> int:
 	if not mining_cooldowns.has(symbol):

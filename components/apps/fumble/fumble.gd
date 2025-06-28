@@ -139,12 +139,3 @@ func _on_curiosity_h_slider_value_changed(value: float) -> void:
 	if card_stack:
 		card_stack.set_curiosity(curiosity)
 		card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
-
-
-
-func _process(_delta):
-	var hovered = get_viewport().gui_get_hovered_control()
-	if hovered:
-		print("Mouse is over: ", hovered.name, " (", hovered, ")")
-	else:
-		print("Nothing hovered")

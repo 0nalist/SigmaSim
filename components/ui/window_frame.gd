@@ -14,6 +14,7 @@ class_name WindowFrame
 var _windowless_mode := false
 @export var windowless_mode: bool:
 	set(value):
+		print("SETTING WINDOWLESS MODE: ", value, " for window ", self)
 		_set_windowless_mode(value)
 	get:
 		return _windowless_mode
