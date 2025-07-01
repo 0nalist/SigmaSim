@@ -330,6 +330,7 @@ func get_save_data() -> Array:
 			"position": SaveManager.vector2_to_dict(win.position),
 			"size": SaveManager.vector2_to_dict(win.size),
 			"minimized": not win.visible,
+			"windowless_mode": win.windowless_mode,
 			"custom_data": pane.get_custom_save_data() if pane.has_method("get_custom_save_data") else {},
 		})
 	return window_data
@@ -357,6 +358,9 @@ func load_from_data(window_data: Array) -> void:
 
 		register_window(window, pane.show_in_taskbar)
 
+		if entry.has("windowless_mode"):
+			window.windowless_mode = entry["windowless_mode"]
+		
 		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), pane.default_window_size)
 		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
 

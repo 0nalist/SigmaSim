@@ -12,7 +12,7 @@ class_name WindowFrame
 @export var window_can_maximize: bool = true
 
 var _windowless_mode := false
-@export var windowless_mode: bool:
+@export var windowless_mode: bool = false:
 	set(value):
 		print("SETTING WINDOWLESS MODE: ", value, " for window ", self)
 		_set_windowless_mode(value)
@@ -117,9 +117,9 @@ func _set_windowless_mode(enabled: bool) -> void:
 	header_container.visible = not enabled
 	if enabled:
 		_setup_windowless_drag()
-	#minimize_button.visible = not enabled and window_can_minimize
-	#maximize_button.visible = not enabled and window_can_maximize
-	#close_button.visible = not enabled and window_can_close
+	minimize_button.visible = not enabled and window_can_minimize
+	maximize_button.visible = not enabled and window_can_maximize
+	close_button.visible = not enabled and window_can_close
 
 	# Adjust content margins/padding
 	#content_panel.margin_top = 0 if enabled else DEFAULT_MARGIN

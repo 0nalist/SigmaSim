@@ -41,7 +41,9 @@ signal title_updated(title: String)
 func _ready() -> void:
 	#get_parent().get_parent().get_parent().window_can_close = window_can_close
 	#window_icon_changed.emit(window_icon)
-	pass
+	var window = get_parent().get_parent().get_parent()
+	window.call_deferred("set", "windowless_mode", request_windowless_mode)
+
 
 func get_drag_handle() -> Control:
 	var tab_bar = %TabBar.get_tab_bar() 
