@@ -32,14 +32,14 @@ func _ready():
 	update_sliders()
 
 func update_credit(used: float, limit: float):
-	credit_label.text = "Credit Used: $%.2f / $%.2f" % [used, limit]
+	credit_label.text = "Credit Used: $%.2f / $%.2f" % [NumberFormatter.format_commas(used), NumberFormatter.format_commas(limit)]
 	credit_bar.value = (used / limit) * 100.0
 	update_credit_interest_label()
 	update_sliders()
 
 func update_student_loans():
 	var loans := PortfolioManager.get_student_loans()
-	loan_label.text = "Student Loans: $%.2f" % loans
+	loan_label.text = "Student Loans: $%.2f" % NumberFormatter.format_commas(loans)
 	update_sliders()
 
 func update_credit_interest_label():
