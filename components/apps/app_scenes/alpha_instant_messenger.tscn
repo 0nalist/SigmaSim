@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_8iipa"]
 [ext_resource type="Script" uid="uid://cvvi4t7jawoa5" path="res://components/apps/alpha_instant_messenger/alpha_instant_messenger.gd" id="1_44ejv"]
 [ext_resource type="Texture2D" uid="uid://dhk1m8h1q7exf" path="res://assets/logos/AIMLogoMaster.png" id="3_8iipa"]
-[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/buttons/redbuttonpressed.png" id="4_bgumh"]
+[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="4_8iipa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w0u3w"]
 bg_color = Color(0.470588, 0.580392, 0.92549, 0.572549)
@@ -79,7 +79,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
 toggle_mode = true
 text = "Robert Cob
 @skazz"
-icon = ExtResource("4_bgumh")
+icon = ExtResource("4_8iipa")
 alignment = 0
 text_overrun_behavior = 3
 
@@ -99,106 +99,6 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
 theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
 toggle_mode = true
 text = "@soyboy69"
-icon = ExtResource("4_bgumh")
-alignment = 0
-text_overrun_behavior = 3
-
-[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_w0u3w")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
-theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
-toggle_mode = true
-text = "@soyboy69"
-icon = ExtResource("4_bgumh")
-alignment = 0
-text_overrun_behavior = 3
-
-[node name="Button4" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_w0u3w")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
-theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
-toggle_mode = true
-text = "@soyboy69"
-icon = ExtResource("4_bgumh")
-alignment = 0
-text_overrun_behavior = 3
-
-[node name="Button5" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_w0u3w")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
-theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
-toggle_mode = true
-text = "@soyboy69"
-icon = ExtResource("4_bgumh")
-alignment = 0
-text_overrun_behavior = 3
-
-[node name="Button6" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_w0u3w")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
-theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
-toggle_mode = true
-text = "@soyboy69"
-icon = ExtResource("4_bgumh")
-alignment = 0
-text_overrun_behavior = 3
-
-[node name="Button7" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_w0u3w")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
-theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
-toggle_mode = true
-text = "@soyboy69"
-icon = ExtResource("4_bgumh")
+icon = ExtResource("4_8iipa")
 alignment = 0
 text_overrun_behavior = 3
