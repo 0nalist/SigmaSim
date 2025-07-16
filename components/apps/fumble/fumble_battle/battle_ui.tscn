@@ -1,27 +1,46 @@
-[gd_scene load_steps=4 format=3 uid="uid://dcokams3wxd0e"]
+[gd_scene load_steps=8 format=3 uid="uid://cel7rmg2pea12"]
 
-[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_n4qvp"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_pog6m"]
+[ext_resource type="Script" uid="uid://b4cmpyad34a6u" path="res://components/apps/fumble/fumble_battle/battle_ui.gd" id="1_ctqjn"]
+[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_vooct"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_ctqjn"]
+[ext_resource type="PackedScene" uid="uid://dyv7bmgfriqht" path="res://components/apps/fumble/fumble_battle/chat_box.tscn" id="4_34iuq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pog6m"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67iqe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ydk2"]
 bg_color = Color(1, 0.866286, 0.772352, 1)
 
-[node name="BattlePane" type="PanelContainer"]
+[node name="BattleUI" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pog6m")
+script = ExtResource("1_ctqjn")
+chat_box_scene = ExtResource("4_34iuq")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 50
+theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GhostButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "<-- GHOST"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -40,7 +59,7 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("1_n4qvp")
+texture = ExtResource("1_vooct")
 
 [node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ProfilePic"]
 unique_name_in_owner = true
@@ -56,7 +75,7 @@ offset_right = 20.0
 offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_pog6m")
+theme = ExtResource("2_ctqjn")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
@@ -67,36 +86,45 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
-theme = ExtResource("2_pog6m")
+theme = ExtResource("2_ctqjn")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Name McNamerson"
 horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_67iqe")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
+[node name="ChatContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 alignment = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer2"]
+[node name="ChatBox" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer/ChatContainer" instance=ExtResource("4_34iuq")]
 layout_mode = 2
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer4"]
+[node name="NPCProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer4"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("1_n4qvp")
+texture = ExtResource("1_vooct")
 
-[node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer4/ProfilePic"]
+[node name="NPCAttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer4/NPCProfilePic"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -109,17 +137,18 @@ offset_right = 20.0
 offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_pog6m")
+theme = ExtResource("2_ctqjn")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 text = "0/10"
 horizontal_alignment = 1
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer4"]
+[node name="NPCNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer4"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
-theme = ExtResource("2_pog6m")
+theme = ExtResource("2_ctqjn")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Name McNamerson"
 horizontal_alignment = 1
@@ -155,14 +184,18 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="ActionButton1" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "RIZZ"
 
 [node name="ActionButton2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "SIMP"
 
@@ -172,25 +205,38 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="ActionButton3" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "NEG"
 
 [node name="ActionButton4" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "APOLOGIZE"
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="CatchButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+focus_mode = 0
 text = "CATCH"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="InventoryButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
 layout_mode = 2
-
-[node name="GhostButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "<-- GHOST"
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 0
+text = "INVENTORY"

@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=7 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
 [ext_resource type="Material" uid="uid://bl8moqb187o1d" path="res://components/apps/fumble/fumble_label_pride_month_material.tres" id="3_ye860"]
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="5_qj1tn"]
-[ext_resource type="PackedScene" uid="uid://dcokams3wxd0e" path="res://components/apps/fumble/fumble_battle/battle_pane.tscn" id="6_dmsn0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ye860"]
 bg_color = Color(2.22605e-07, 0.23204, 0.190425, 1)
@@ -451,9 +450,6 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 text = "Start a conversation with Mac Demarco"
 flat = true
-
-[node name="BattlePane" parent="MarginContainer/VBoxContainer/ChatsTab" instance=ExtResource("6_dmsn0")]
-layout_mode = 1
 
 [node name="TabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
