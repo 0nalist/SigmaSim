@@ -1,18 +1,17 @@
 [
   {
 	"move_type": "rizz",
-	"core": "you have an ethereal beauty, {npc_name}",
+	"core": "ou have an ethereal beauty",
 	"prefixes": [
-	  "\"\"",
-	  "\"Tbh",
-	  "\"",
-	  "\"Real talk",
-	  "\""
+	  "Tbh, y",
+	  "Real talk, y",
+	  "Y"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\"",
-	  "and it’s kinda scary.\""
+	  ".",
+	  ", and it’s kinda scary.",
+	  ", and I'm all about it.",
+	  ", and I f with it."
 	],
 	"response_id": "rizz_ethereal"
   },
@@ -20,16 +19,14 @@
 	"move_type": "rizz",
 	"core": "re you AI-generated",
 	"prefixes": [
-	  "\"Okay",
-	  "a\"",
-	  "\"A\""
+	  "Okay, a",
+	  "A"
 	],
 	"suffixes": [
-	  "\"?\"",
-	  "\"? Because your beauty is unreal.\"",
-	  "\"to be everything I've ever dreamed of?\"",
-	  "\"",
-	  "or are you just literally perfect?\""
+	  "?",
+	  "? Because your beauty is unreal.",
+	  "to be everything I've ever dreamed of?",
+	  ", or are you just literally perfect?"
 	],
 	"response_id": "rizz_ai_1"
   },
@@ -37,16 +34,24 @@
 	"move_type": "rizz",
 	"core": "I would move heaven and earth for you",
 	"prefixes": [
-	  "\"Immaculate vibes",
-	  "\"",
-	  "\"You are beyond dreamy",
-	  "\"",
-	  "\"Wow! \""
+	  "Immaculate vibes. ,",
+	  "You are beyond dreamy. ,",
+	  "Wow!"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\"",
-	  "if you let me.\""
+	  ".",
+	  ", if you let me."
+	],
+	"response_id": null
+  },
+  {
+	"move_type": "rizz",
+	"core": "Let's ruin each other's lives",
+	"prefixes": [
+	  ""
+	],
+	"suffixes": [
+	  "."
 	],
 	"response_id": null
   },
@@ -54,18 +59,14 @@
 	"move_type": "neg",
 	"core": "ou look like you peaked in middle school",
 	"prefixes": [
-	  "\"Y\"",
-	  "\"Lol",
-	  "y\"",
-	  "\"Honestly",
-	  "y\""
+	  "Y",
+	  "Lol, y",
+	  "Honestly, y"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\"",
-	  "sorry not sorry.\"",
-	  "\"",
-	  "someone had to say it.\""
+	  ".",
+	  ", sorry not sorry.",
+	  ", someone had to say it."
 	],
 	"response_id": "neg_middle_school"
   },
@@ -73,11 +74,11 @@
 	"move_type": "neg",
 	"core": "It's so refreshing to see someone who's not afraid to",
 	"prefixes": [
-	  "nan"
+	  ""
 	],
 	"suffixes": [
-	  "\" use goofy pictures on here.\"",
-	  "\" post pictures like yours.\""
+	  "use goofy pictures on here.",
+	  "post pictures like yours."
 	],
 	"response_id": null
   },
@@ -85,14 +86,12 @@
 	"move_type": "neg",
 	"core": "You look unlovable",
 	"prefixes": [
-	  "nan"
+	  ""
 	],
 	"suffixes": [
-	  "\"",
-	  "but I guess I could try.\"",
-	  "\". Rough!\"",
-	  "\"",
-	  "but lucky for you I'm in a charitable mood.\""
+	  ", but I guess I could try.",
+	  ". Rough!",
+	  ", but lucky for you I'm in a charitable mood."
 	],
 	"response_id": null
   },
@@ -100,15 +99,11 @@
 	"move_type": "flex",
 	"core": "I own 3 startups and 1 dying plant",
 	"prefixes": [
-	  "\"\"",
-	  "\"Btw",
-	  "\""
+	  "Btw,"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\"",
-	  "just so you know",
-	  "\""
+	  ".",
+	  ", just so you know."
 	],
 	"response_id": null
   },
@@ -116,16 +111,13 @@
 	"move_type": "flex",
 	"core": "I can get a table at Dorsia any night of the week",
 	"prefixes": [
-	  "nan"
+	  ""
 	],
 	"suffixes": [
-	  "\"\"",
-	  "\"",
-	  "just so you know.\"",
-	  "\".\"",
-	  "\"",
-	  "in case you were wondering.\"",
-	  "\". Have you ever been there before?\""
+	  ", just so you know.",
+	  ".",
+	  ", in case you were wondering.",
+	  ". Have you ever been there before?"
 	],
 	"response_id": "flex_dorsia"
   },
@@ -133,10 +125,10 @@
 	"move_type": "flex",
 	"core": "My greatest rivals refer to me as",
 	"prefixes": [
-	  "\" the god of b2b SaaS marketing.\""
+	  "the god of b2b SaaS marketing."
 	],
 	"suffixes": [
-	  "nan"
+	  ""
 	],
 	"response_id": null
   },
@@ -144,17 +136,14 @@
 	"move_type": "apology",
 	"core": "idk why I said that",
 	"prefixes": [
-	  "\"I'm sorry",
-	  "\"",
-	  "\"My apologies",
-	  "\"",
-	  "\"So sorry",
-	  "\""
+	  "I'm sorry,",
+	  "My apologies,",
+	  "So sorry,"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\". Please give me another chance\"",
-	  "\". Please don't block me!\""
+	  ".",
+	  ". Please give me another chance",
+	  ". Please don't block me!"
 	],
 	"response_id": null
   },
@@ -162,17 +151,14 @@
 	"move_type": "apology",
 	"core": "I can be a little much when I see someone as beautiful as you are.",
 	"prefixes": [
-	  "\"I'm sorry",
-	  "\"",
-	  "\"My apologies",
-	  "\"",
-	  "\"So sorry",
-	  "\""
+	  "I'm sorry,",
+	  "My apologies,",
+	  "So sorry,"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\". Please give me another chance\"",
-	  "\". Please don't block me!\""
+	  ".",
+	  ". Please give me another chance",
+	  ". Please don't block me!"
 	],
 	"response_id": null
   },
@@ -180,16 +166,12 @@
 	"move_type": "simp",
 	"core": "I would give up my career just to make you smile",
 	"prefixes": [
-	  "\"No joke",
-	  "\"",
-	  "\"Tbh",
-	  "\"",
-	  "\"\""
+	  "No joke,",
+	  "Tbh,"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\"",
-	  "and then I’d do it again.\""
+	  ".",
+	  ", and then I’d do it again."
 	],
 	"response_id": null
   },
@@ -197,16 +179,12 @@
 	"move_type": "simp",
 	"core": "I don’t deserve someone like you",
 	"prefixes": [
-	  "\"\"",
-	  "\"Let’s be real",
-	  "\"",
-	  "\"Honestly",
-	  "\""
+	  "Let’s be real,",
+	  "Honestly,"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\"",
-	  "but I’ll try my best anyway.\""
+	  ".",
+	  ", but I’ll try my best anyway."
 	],
 	"response_id": null
   },
@@ -214,15 +192,12 @@
 	"move_type": "simp",
 	"core": "I wrote a poem about you but it's too embarrassing to share",
 	"prefixes": [
-	  "\"Okay listen",
-	  "\"",
-	  "\"\"",
-	  "\"I wasn’t going to say this but\""
+	  "Okay listen,",
+	  "I wasn’t going to say this but"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\"",
-	  "maybe someday you’ll read it.\""
+	  ".",
+	  ", maybe someday you’ll read it."
 	],
 	"response_id": null
   },
@@ -230,14 +205,12 @@
 	"move_type": "simp",
 	"core": "I’d join a cult if you were the leader",
 	"prefixes": [
-	  "\"\"",
-	  "\"Not even kidding",
-	  "\""
+	  "",
+	  "Not even kidding,"
 	],
 	"suffixes": [
-	  "\".\"",
-	  "\"",
-	  "and I’d bring snacks.\""
+	  ".",
+	  ", and I’d bring snacks."
 	],
 	"response_id": null
   },
@@ -245,28 +218,24 @@
 	"move_type": "simp",
 	"core": "My friends told me not to simp too hard",
 	"prefixes": [
-	  "\"\""
+	  ""
 	],
 	"suffixes": [
-	  "\"",
-	  "but I don’t care.\"",
-	  "\"",
-	  "but I can't help it\"",
-	  "\"",
-	  "but the only person I listen to is you.\""
+	  ", but I don’t care.",
+	  ", but I can't help it",
+	  ", but the only person I listen to is you."
 	],
 	"response_id": null
   },
   {
 	"move_type": "catch",
-	"core": "anna skip the small talk and get a drink?",
+	"core": "anna skip the small talk and get a drink",
 	"prefixes": [
-	  "\"So",
-	  "w\"",
-	  "\"W\""
+	  "So, w",
+	  "W"
 	],
 	"suffixes": [
-	  "\"?\""
+	  "?"
 	],
 	"response_id": null
   },
@@ -274,10 +243,10 @@
 	"move_type": "catch",
 	"core": "Can I get your number before one of us says something cringe",
 	"prefixes": [
-	  "nan"
+	  ""
 	],
 	"suffixes": [
-	  "\"?\""
+	  "?"
 	],
 	"response_id": null
   },
@@ -285,23 +254,23 @@
 	"move_type": "catch",
 	"core": "hat if we skipped to the part where we go on a terrible first date and laugh about it",
 	"prefixes": [
-	  "\"W\"",
-	  "\"Hear me out",
-	  "w\""
+	  "W",
+	  "Hear me out, w"
 	],
 	"suffixes": [
-	  "\"?\""
+	  "?"
 	],
 	"response_id": null
   },
   {
 	"move_type": "catch",
-	"core": "What's your number? For science",
+	"core": "What's your number?",
 	"prefixes": [
-	  "nan"
+	  ""
 	],
 	"suffixes": [
-	  "nan"
+	  "",
+	  "For science."
 	],
 	"response_id": null
   },
@@ -309,11 +278,11 @@
 	"move_type": "catch",
 	"core": "I think we owe it to the world to see how chaotic we'd be IRL.",
 	"prefixes": [
-	  "nan"
+	  ""
 	],
 	"suffixes": [
-	  "\" Can I get your number?\"",
-	  "\"Let's take this offline.\""
+	  "Can I get your number?",
+	  "Let's take this offline."
 	],
 	"response_id": null
   },
@@ -321,10 +290,10 @@
 	"move_type": "catch",
 	"core": "If I asked you out, would that ruin whatever weird vibe we have going?",
 	"prefixes": [
-	  "nan"
+	  ""
 	],
 	"suffixes": [
-	  "nan"
+	  ""
 	],
 	"response_id": null
   }

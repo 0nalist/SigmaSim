@@ -110,9 +110,6 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 alignment = 2
 
-[node name="ChatBox" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer/ChatContainer" instance=ExtResource("4_34iuq")]
-layout_mode = 2
-
 [node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3

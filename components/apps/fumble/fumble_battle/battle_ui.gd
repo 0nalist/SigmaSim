@@ -45,8 +45,32 @@ func swap_move(slot_index: int, new_move: String):
 	equipped_moves[slot_index] = new_move
 	update_action_buttons()
 
+# Helper function to add a chat line in a proper HBox (left for player, right for NPC)
+func add_chat_line(text: String, is_player: bool) -> Control:
+	var hbox := HBoxContainer.new()
+	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+	var chat := chat_box_scene.instantiate()
+
+	if is_player:
+		hbox.add_child(chat)
+		var spacer = Control.new()
+		spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hbox.add_child(spacer)
+	else:
+		var spacer = Control.new()
+		spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hbox.add_child(spacer)
+		hbox.add_child(chat)
+
+	chat_container.add_child(hbox)
+	# Now chat is in the tree, onready properties are valid!
+	chat.text_label.text = text
+	chat.text_label.visible_ratio = 0.0
+	return chat
+
+
 func do_move(move_type: String):
-	# Find all eligible player lines for this move
 	move_type = move_type.to_lower()
 	var options = []
 	for line in RizzBattleData.player_lines:
@@ -60,31 +84,26 @@ func do_move(move_type: String):
 
 	var prefix := ""
 	if chosen_line["prefixes"].size() > 0:
-		prefix = chosen_line["prefixes"].pick_random() + " "
-
+		prefix = chosen_line["prefixes"].pick_random() #+ " "
 	var core = chosen_line["core"]
-
 	var suffix := ""
 	if chosen_line["suffixes"].size() > 0:
 		suffix = chosen_line["suffixes"].pick_random()
-
 	var full_line = prefix + core + suffix
 
-	# Show in chat box
-	var chat = chat_box_scene.instantiate()
-	chat_container.add_child(chat)  # Or wherever your chat log goes
-	chat.text_label.text = full_line
+	# Player chat (left aligned)
+	var chat = add_chat_line(full_line, true)
+	await animate_chat_text(chat, full_line)
 
-	# Handle response id for NPC reply
-	process_npc_response(move_type, chosen_line.get("response_id", null), true) # Replace with success/fail logic
+	await get_tree().create_timer(0.5).timeout
 
+	await process_npc_response(move_type, chosen_line.get("response_id", null), true) # Replace with success/fail logic
 
 func process_npc_response(move_type, response_id, success: bool):
 	var response_text = ""
 	var key = "FALSE"
 	if success:
 		key = "TRUE"
-
 	if response_id and RizzBattleData.npc_responses.has(response_id):
 		var pool = RizzBattleData.npc_responses[response_id][key]
 		if pool.size() > 0:
@@ -96,20 +115,17 @@ func process_npc_response(move_type, response_id, success: bool):
 	else:
 		response_text = "..."
 
-	var chat = chat_box_scene.instantiate()
-	chat_container.add_child(chat)
-	chat.text_label.text = response_text
+	# NPC chat (right aligned)
+	var chat = add_chat_line(response_text, false)
+	await animate_chat_text(chat, response_text)
 
 func animate_chat_text(chat_box: Control, text: String) -> void:
-	# Set the text, start hidden
 	var label = chat_box.text_label
 	label.text = text
 	label.visible_ratio = 0.0
 	
-	# Wait 0.5 seconds
 	await get_tree().create_timer(0.5).timeout
 	
-	# Animation duration depends on length
 	var chars = text.length()
 	var duration_per_char = 0.03 # seconds per character
 	var min_time = 0.4
