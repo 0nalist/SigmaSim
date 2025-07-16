@@ -173,7 +173,7 @@ func _refill_swipe_pool():
 		if not exclude.has(idx):
 			var npc = NPCManager.get_npc_by_index(idx)
 			var sim = gender_dot_similarity(preferred_gender, npc.gender_vector)
-			print("idx:", idx, "vec:", npc.gender_vector, "sim:", sim, "pref:", preferred_gender, "threshold:", gender_similarity_threshold)
+			#print("idx:", idx, "vec:", npc.gender_vector, "sim:", sim, "pref:", preferred_gender, "threshold:", gender_similarity_threshold)
 			if sim >= gender_similarity_threshold:
 				new_indices.append(idx)
 		if new_indices.size() >= num_new:

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c02crnsc8wbvh"]
+
+[ext_resource type="Script" uid="uid://qcfiganhtdal" path="res://components/apps/fumble/chat_battle_button.gd" id="1_xpvof"]
+
+[node name="ChatBattleButton" type="Button"]
+custom_minimum_size = Vector2(0, 36)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
+script = ExtResource("1_xpvof")

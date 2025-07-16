@@ -31,7 +31,7 @@ static func create_npc(npc_index: int) -> NPC:
 	var full_name = name_data["full_name"]
 
 	var npc = NPC.new()
-	print("Created npc of type: ", npc.get_class(), " is_class('NPC'): ", npc is NPC)
+	#print("Created npc of type: ", npc.get_class(), " is_class('NPC'): ", npc is NPC)
 
 	# Basic Info
 	npc.full_name = full_name

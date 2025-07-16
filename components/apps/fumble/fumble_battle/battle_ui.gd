@@ -20,10 +20,75 @@ class_name BattleUI
 @onready var catch_button: Button = %CatchButton
 @onready var inventory_button: Button = %InventoryButton
 
+@onready var chemistry_progress_bar: ProgressBar = %ChemistryProgressBar
+@onready var self_esteem_progress_bar: ProgressBar = %SelfEsteemProgressBar
+@onready var apprehension_progress_bar: ProgressBar = %ApprehensionProgressBar
+
+@onready var confidence_progress_bar: ProgressBar = %ConfidenceProgressBar
+
+
+
 @onready var chat_container: VBoxContainer = %ChatContainer
 
 var equipped_moves := ["RIZZ", "NEG", "FLEX", "SIMP"]
 var action_buttons := []
+
+var battle_id: String
+var npc: NPC
+var chatlog: Array = []
+var battle_stats := {
+	"self_esteem": 50,
+	"chemistry": 0,
+	"apprehension": 0
+}
+
+func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}):
+	battle_id = new_battle_id
+	npc = new_npc
+	chatlog = chatlog_in.duplicate() if chatlog_in.size() > 0 else []
+	
+	# Load stats (or use default values)
+	for stat in battle_stats.keys():
+		if stats_in.has(stat):
+			battle_stats[stat] = stats_in[stat]
+	
+	# Set up UI for player and npc
+	_update_profiles()
+	
+	# Rebuild chatlog in UI if provided
+	for child in chat_container.get_children():
+		child.queue_free()
+	for msg in chatlog:
+		# msg = {text: "hello", is_player: true/false}
+		add_chat_line(msg.text, msg.is_player)
+	update_action_buttons()
+	scroll_to_newest_chat()
+	update_progress_bars()
+
+func scroll_to_newest_chat():
+	var scroll = chat_container.get_parent()
+	if scroll is ScrollContainer:
+		# Let the tree process so the new child is visible
+		await get_tree().process_frame
+		scroll.scroll_vertical = scroll.get_v_scroll_bar().max_value
+
+func update_progress_bars():
+	chemistry_progress_bar.value     = battle_stats.get("chemistry", 0)
+	self_esteem_progress_bar.value   = battle_stats.get("self_esteem", 0)
+	apprehension_progress_bar.value  = battle_stats.get("apprehension", 0)
+	# Example for player confidence (set appropriately)
+	confidence_progress_bar.value    = battle_stats.get("confidence", 50)
+
+func _update_profiles():
+	# Player info (if needed)
+	# profile_pic.texture = ... (set if you want, or leave blank for now)
+	# attractiveness_label.text = ...
+	# name_label.text = ...
+	
+	# NPC info
+	npc_profile_pic.texture = npc.profile_pic if npc.profile_pic else preload("res://assets/prof_pics/silhouette.png")
+	npc_attractiveness_label.text = "❤️ %.1f/10" % (float(npc.attractiveness) / 10.0)
+	npc_name_label.text = npc.full_name
 
 func _ready():
 	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
@@ -67,6 +132,7 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 	# Now chat is in the tree, onready properties are valid!
 	chat.text_label.text = text
 	chat.text_label.visible_ratio = 0.0
+	scroll_to_newest_chat()
 	return chat
 
 

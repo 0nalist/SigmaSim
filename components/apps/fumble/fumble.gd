@@ -66,8 +66,6 @@ func _on_card_swiped_left(npc_idx):
 
 func _on_card_swiped_right(npc_idx):
 	NPCManager.set_relationship_status(npc_idx, "fumble", "liked")
-	# Optionally, NPCManager.promote_to_persistent(npc_idx)
-	# Add further logic if desired
 
 func highlight_active(button: Button):
 	team_button.modulate = Color.WHITE
@@ -92,6 +90,8 @@ func show_chat_tab():
 	field_tab.visible = false
 	chats_tab.visible = true
 	highlight_active(game_button)
+	chats_tab.refresh_matches()
+	chats_tab.refresh_battles()
 
 var pride_material = preload("res://components/apps/fumble/fumble_label_pride_month_material.tres")
 

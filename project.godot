@@ -43,6 +43,7 @@ NPCManager="*res://components/npc/npc_manager.gd"
 NameManager="*res://components/npc/name_manager.gd"
 DBManager="*res://autoloads/db_manager.gd"
 RizzBattleData="*res://autoloads/rizz_battle_data.gd"
+FumbleManager="*res://autoloads/fumble_manager.gd"
 
 [display]
 
