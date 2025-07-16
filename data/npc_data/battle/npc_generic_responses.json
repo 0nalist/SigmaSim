@@ -1,0 +1,47 @@
+{
+  "rizz": {
+	"TRUE": [
+	  "\"you’re actually smooth\"",
+	  "\"awww stopppp\"",
+	  "\"Say more\"",
+	  "\"You're going to make me puke :)\""
+	],
+	"FALSE": [
+	  "\"that felt forced\"",
+	  "\"you lost me there\"",
+	  "\"How long did you practice that one for?\"",
+	  "\"Booooooooo\"",
+	  "\"You're going to make me throw up\""
+	]
+  },
+  "neg": {
+	"TRUE": [
+	  "\"lol okay i’ll allow it\"",
+	  "\"I mean, you're not wrong\"",
+	  "\"Rude, but not innaccurate.\""
+	],
+	"FALSE": [
+	  "\"Nah, don't try that again\"",
+	  "\"You're not hot enough to pull off a line like that\""
+	]
+  },
+  "flex": {
+	"TRUE": [
+	  "\"okay mr. accomplished\"",
+	  "\"I can't pretend I'm not impressed\"",
+	  "\"what does that even mean\""
+	],
+	"FALSE": [
+	  "\"lol sure\"",
+	  "\"Is that supposed to impress me\""
+	]
+  },
+  "apology": {
+	"TRUE": [
+	  "\"I'm going to let you start over\""
+	],
+	"FALSE": [
+	  "\"I don't give second chances\""
+	]
+  }
+}

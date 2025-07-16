@@ -1,0 +1,40 @@
+{
+  "rizz_ethereal": {
+	"move_type": "rizz",
+	"TRUE": [
+	  "\"Aww stop\"",
+	  "\"That's very sweet of you to say\""
+	],
+	"FALSE": [
+	  "\"that's... dramatic\"",
+	  "\"you rehearsed that, huh?\""
+	]
+  },
+  "rizz_ai_1": {
+	"move_type": "rizz",
+	"TRUE": [
+	  "\"You caught me. I am a simulation.\""
+	],
+	"FALSE": [
+	  "\"No, but you’re corny.\""
+	]
+  },
+  "neg_middle": {
+	"move_type": "neg",
+	"TRUE": [
+	  "\"How did you know???\""
+	],
+	"FALSE": [
+	  "\"Go fuck yourself\""
+	]
+  },
+  "flex_dorsia": {
+	"move_type": "flex",
+	"TRUE": [
+	  "I've always wanted to go!"
+	],
+	"FALSE": [
+	  "Is that supposed to impress me?"
+	]
+  }
+}

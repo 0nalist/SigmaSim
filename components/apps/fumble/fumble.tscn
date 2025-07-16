@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=8 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
 [ext_resource type="Material" uid="uid://bl8moqb187o1d" path="res://components/apps/fumble/fumble_label_pride_month_material.tres" id="3_ye860"]
+[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="5_qj1tn"]
+[ext_resource type="PackedScene" uid="uid://dcokams3wxd0e" path="res://components/apps/fumble/fumble_battle/battle_pane.tscn" id="6_dmsn0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ye860"]
 bg_color = Color(2.22605e-07, 0.23204, 0.190425, 1)
@@ -200,6 +202,7 @@ layout_mode = 2
 
 [node name="FieldTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -294,33 +297,28 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
+[node name="ProfileButton" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
-text = "match "
+icon = ExtResource("5_qj1tn")
+icon_alignment = 1
+expand_icon = true
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-text = "match "
-
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-text = "match "
-
-[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-text = "match "
-
-[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-text = "match "
-
-[node name="Label6" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-text = "match "
-
-[node name="Label7" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-text = "match "
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer/ProfileButton"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -15.0
+offset_right = 135.0
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+text = "Mac DeMarco MacDonaldson"
+horizontal_alignment = 1
+autowrap_mode = 3
+text_direction = 1
 
 [node name="MatchesLabel" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -334,41 +332,128 @@ size_flags_vertical = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
 
-[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button4" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
 
-[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button5" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
 
-[node name="Label6" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button6" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
 
-[node name="Label7" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button7" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
 
-[node name="Label8" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button8" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
 
-[node name="Label9" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+[node name="Button9" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "conversation"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
+
+[node name="Button10" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
+
+[node name="Button11" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
+
+[node name="Button12" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
+
+[node name="Button13" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
+
+[node name="Button14" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
+
+[node name="Button15" type="Button" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Start a conversation with Mac Demarco"
+flat = true
+
+[node name="BattlePane" parent="MarginContainer/VBoxContainer/ChatsTab" instance=ExtResource("6_dmsn0")]
+layout_mode = 1
 
 [node name="TabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
