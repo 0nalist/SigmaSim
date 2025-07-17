@@ -198,32 +198,44 @@ func process_npc_response(move_type, response_id, success: bool):
 	var key = "FALSE"
 	if success:
 		key = "TRUE"
+	
+	var entry = null
+	
+	# Prefer npc_responses, else fallback to npc_generic_responses
 	if response_id and RizzBattleData.npc_responses.has(response_id):
 		var pool = RizzBattleData.npc_responses[response_id][key]
 		if pool.size() > 0:
-			var entry = pool.pick_random()
-			response_text = entry.response_line
-			# Optionally, add suffix:
-			if entry.has("response_suffix") and entry.response_suffix.size() > 0:
-				# Pick one at random if you want to use it
-				response_text += entry.response_suffix.pick_random()
+			entry = pool.pick_random()
 	elif RizzBattleData.npc_generic_responses.has(move_type):
 		var pool = RizzBattleData.npc_generic_responses[move_type][key]
-		if pool.size() > 0:
-			# For generic responses, assuming pool is a list of strings:
-			if typeof(pool[0]) == TYPE_DICTIONARY:
-				var entry = pool.pick_random()
-				response_text = entry.response_line
-				if entry.has("response_suffix") and entry.response_suffix.size() > 0:
-					response_text += entry.response_suffix.pick_random()
-			else:
-				response_text = pool.pick_random()
+		if pool.size() > 0 and typeof(pool[0]) == TYPE_DICTIONARY:
+			entry = pool.pick_random()
+	
+	if entry != null:
+		var prefix = ""
+		var suffix = ""
+		# Safely check for prefix
+		if entry.has("response_prefix") and entry.response_prefix is Array and entry.response_prefix.size() > 0:
+			prefix = entry.response_prefix.pick_random()
+		# Suffix
+		if entry.has("response_suffix") and entry.response_suffix is Array and entry.response_suffix.size() > 0:
+			suffix = entry.response_suffix.pick_random()
+		response_text = str(prefix) + str(entry.response_line) + str(suffix)
 	else:
-		response_text = "..."
+		# Fallback (old code, if generic response is just a string)
+		if RizzBattleData.npc_generic_responses.has(move_type):
+			var pool = RizzBattleData.npc_generic_responses[move_type][key]
+			if pool.size() > 0 and typeof(pool[0]) == TYPE_STRING:
+				response_text = pool.pick_random()
+			else:
+				response_text = "..."
+		else:
+			response_text = "..."
 
 	# NPC chat (right aligned)
 	var chat = add_chat_line(response_text, false)
 	await animate_chat_text(chat, response_text)
+
 
 
 func animate_chat_text(chat_box: Control, text: String) -> void:
@@ -243,6 +255,9 @@ func animate_chat_text(chat_box: Control, text: String) -> void:
 	while elapsed < duration:
 		var ratio = elapsed / duration
 		label.visible_ratio = ratio
+		# Scroll every frame while animating!
+		scroll_to_newest_chat()
 		await get_tree().process_frame
 		elapsed += get_process_delta_time()
 	label.visible_ratio = 1.0
+	scroll_to_newest_chat()

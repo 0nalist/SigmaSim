@@ -161,6 +161,17 @@
 		],
 		"response_line": "ou get it",
 		"response_suffix": []
+	  },
+	  {
+		"response_prefix": [
+		  "Hahaha, y",
+		  "Y"
+		],
+		"response_line": "ou're really obsessed with me",
+		"response_suffix": [
+		  ", aren't you?",
+		  ""
+		]
 	  }
 	],
 	"FALSE": [
@@ -177,25 +188,25 @@
   "catch": {
 	"TRUE": [
 	  {
-		"response_prefix": [
+		"response_prefix": [],
+		"response_line": "I thought you'd never ask",
+		"response_suffix": [
 		  "",
 		  " :)",
 		  ". "
-		],
-		"response_line": "I thought you'd never ask",
-		"response_suffix": []
+		]
 	  }
 	],
 	"FALSE": [
 	  {
-		"response_prefix": [
+		"response_prefix": [],
+		"response_line": "I don't think so",
+		"response_suffix": [
 		  "",
 		  " lol",
 		  "...",
 		  ". At least not yet"
-		],
-		"response_line": "I don't think so",
-		"response_suffix": []
+		]
 	  }
 	]
   },

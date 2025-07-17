@@ -108,7 +108,7 @@
     "suffixes": [
       "?",
       "? Because your beauty is unreal.",
-      "to be everything I've ever dreamed of?",
+      " to be everything I've ever dreamed of?",
       ", or are you just literally perfect?"
     ],
     "response_id": "rizz_ai_1"
@@ -348,7 +348,7 @@
     "suffixes": [
       ".",
       ", but I like a challenge.",
-      ". What’s your dialogue tree look like?"
+      ""
     ],
     "response_id": "neg_npc"
   },
