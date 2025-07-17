@@ -1,4 +1,4 @@
-extends Panel
+extends PanelContainer
 class_name WindowFrame
 
 @export var icon: Texture
@@ -270,50 +270,44 @@ func _process(_delta: float) -> void:
 	_clamp_to_screen()
 
 func _on_header_input(event: InputEvent) -> void:
-	if pane == null or !pane.user_resizable:
+	if pane == null or not pane.user_resizable:
 		return
 
-	var header_local_mouse = header.get_local_mouse_position()
+	var global_mouse = get_global_mouse_position()
+	var window_top = global_position.y
+	var resizing_on_top = (global_mouse.y <= window_top + resize_margin)
 
-	# Only trigger resize if mouse is at very top (simulate border)
-	var resizing_on_top = (header_local_mouse.y <= resize_margin)
-
+	# Set the correct cursor shape
 	if event is InputEventMouseMotion:
 		if resizing_on_top:
 			header.mouse_default_cursor_shape = Control.CURSOR_VSIZE
 		else:
 			header.mouse_default_cursor_shape = Control.CURSOR_ARROW
 
-		# Resize in progress?
+		# If we're resizing, let _process handle it
 		if is_resizing and resize_dir == Vector2(0, -1):
-			# Let window _process handle resize math
 			return
 
-		# Dragging if not resizing and not on top edge
-		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and !resizing_on_top and pane.user_movable:
+		# Dragging
+		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and not resizing_on_top and pane.user_movable:
 			position += event.relative
 			_clamp_to_screen()
 
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				if WindowManager and WindowManager.has_method("focus_window"):
-					WindowManager.focus_window(self)
+	# Mouse button logic
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			if WindowManager and WindowManager.has_method("focus_window"):
+				WindowManager.focus_window(self)
 
-				if resizing_on_top:
-					# Start resizing from the top edge!
-					is_resizing = true
-					resize_dir = Vector2(0, -1)
-					resize_start_mouse = get_global_mouse_position()
-					resize_start_size = size
-					resize_start_pos = global_position
-					return
-				# Otherwise, drag is handled in motion
+			if resizing_on_top:
+				is_resizing = true
+				resize_dir = Vector2(0, -1)
+				resize_start_mouse = get_global_mouse_position()
+				resize_start_size = size
+				resize_start_pos = global_position
+		else:
+			is_resizing = false
 
-			else:
-				# On mouse release, stop resizing (if header started it)
-				if is_resizing and resize_dir == Vector2(0, -1):
-					is_resizing = false
 
 
 

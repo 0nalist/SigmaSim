@@ -297,19 +297,27 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 156)
+layout_mode = 2
 size_flags_stretch_ratio = 0.5
 
-[node name="MatchContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="MatchContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MatchButton" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/MatchContainer" instance=ExtResource("6_wfdmb")]
+[node name="MatchButton" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer/MatchContainer" instance=ExtResource("6_wfdmb")]
 layout_mode = 2
+expand_icon = false
 
 [node name="MatchesLabel" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

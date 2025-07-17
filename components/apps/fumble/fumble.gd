@@ -147,4 +147,6 @@ func _on_curiosity_h_slider_value_changed(value: float) -> void:
 
 func _on_resize_x_requested(pixels):
 	# Bubble up to the window frame
-	request_resize_x_to.emit(pixels)
+	var window_frame = get_parent().get_parent().get_parent()
+	if window_frame.size.x < 800:
+		request_resize_x_to.emit(pixels)
