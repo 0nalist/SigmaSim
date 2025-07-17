@@ -31,8 +31,6 @@ static func create_npc(npc_index: int) -> NPC:
 	var full_name = name_data["full_name"]
 
 	var npc = NPC.new()
-	#print("Created npc of type: ", npc.get_class(), " is_class('NPC'): ", npc is NPC)
-
 	# Basic Info
 	npc.full_name = full_name
 	npc.first_name = name_data["first_name"]
@@ -43,12 +41,23 @@ static func create_npc(npc_index: int) -> NPC:
 	npc.occupation = "Unemployed"
 	npc.relationship_status = "Single"
 
-	# Greek/Stats/Econ
-	npc.affinity = _bounded_trait(full_name, "affinity")
-	npc.rizz = _bounded_trait(full_name, "rizz")
-	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
+	# Personality/OCEAN/Greek
+	var ocean = PersonalityEngine.generate_ocean(full_name)
+	npc.openness = ocean.openness
+	npc.conscientiousness = ocean.conscientiousness
+	npc.extraversion = ocean.extraversion
+	npc.agreeableness = ocean.agreeableness
+	npc.neuroticism = ocean.neuroticism
+	
 	npc.attractiveness = attractiveness_from_name(full_name)
-	assign_greek_stats(npc, full_name)
+
+	var greek = PersonalityEngine.get_greek(ocean)
+	for stat in greek.keys():
+		npc.set(stat, greek[stat])
+
+	npc.mbti = PersonalityEngine.get_mbti(ocean)
+	npc.zodiac = PersonalityEngine.get_zodiac(full_name)
+	npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
 
 	# Tags/likes must be set BEFORE generating bio
 	if "tags" in npc.get_property_list().map(func(x): return x.name):
@@ -268,8 +277,9 @@ static func djb2(s: String) -> int:
 
 # --- Normal Distribution Attractiveness [0,100] ---
 static func deterministic_randf(seed: String) -> float:
-	var h = djb2(seed)
-	return float(h % 1000000) / 1000000.0
+	var rng = RandomNumberGenerator.new()
+	rng.seed = djb2(seed)
+	return rng.randf()
 
 static func box_muller(seed_a: String, seed_b: String) -> float:
 	var u1 = deterministic_randf(seed_a)
@@ -280,9 +290,14 @@ static func box_muller(seed_a: String, seed_b: String) -> float:
 	return z0
 
 static func attractiveness_from_name(full_name: String) -> float:
-	var z = box_muller(full_name + "A", full_name + "B")
-	var bounded = clamp(z, -3.0, 3.0)
+	var u1 = deterministic_randf(full_name + "A")
+	var u2 = deterministic_randf(full_name + "B")
+	if u1 <= 0.0:
+		u1 = 0.000001
+	var z0 = sqrt(-2.0 * log(u1)) * cos(2.0 * PI * u2)
+	var bounded = clamp(z0, -3.0, 3.0)
 	return ((bounded + 3.0) / 6.0) * 100.0
+
 
 # --- Placeholder for pet names/username ---
 static func _generate_pet_names(seed_string: String, key: String) -> Array[String]:

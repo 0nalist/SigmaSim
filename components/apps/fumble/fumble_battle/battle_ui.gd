@@ -3,9 +3,14 @@ class_name BattleUI
 
 @export var chat_box_scene: PackedScene
 
+@export var battle_logic_resource: BattleLogic
+var logic: BattleLogic
+
 @onready var profile_pic: TextureRect = %ProfilePic
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
+@onready var npc_type_label: Label = %NPCTypeLabel
+
 
 @onready var npc_profile_pic: TextureRect = %NPCProfilePic
 @onready var npc_attractiveness_label: Label = %NPCAttractivenessLabel
@@ -55,24 +60,35 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	battle_id = new_battle_id
 	npc = new_npc
 	chatlog = chatlog_in.duplicate() if chatlog_in.size() > 0 else []
+
+	# If stats_in is empty, pull stats from npc resource
+	var battle_stats_to_use: Dictionary = {}
+	if stats_in.size() > 0:
+		battle_stats_to_use = stats_in.duplicate()
+	else:
+		battle_stats_to_use = {
+			"self_esteem": npc.self_esteem,
+			"chemistry": npc.chemistry,
+			"apprehension": npc.apprehension
+		}
 	
-	# Load stats (or use default values)
-	for stat in battle_stats.keys():
-		if stats_in.has(stat):
-			battle_stats[stat] = stats_in[stat]
-	
-	# Set up UI for player and npc
+	# Set up logic
+	if battle_logic_resource:
+		logic = battle_logic_resource.duplicate()
+	else:
+		logic = BattleLogic.new()
+	logic.setup(npc, battle_stats_to_use)
+	battle_stats = logic.get_stats()
+
 	_update_profiles()
-	
-	# Rebuild chatlog in UI if provided
 	for child in chat_container.get_children():
 		child.queue_free()
 	for msg in chatlog:
-		# msg = {text: "hello", is_player: true/false}
 		add_chat_line(msg.text, msg.is_player)
 	update_action_buttons()
 	scroll_to_newest_chat()
 	update_progress_bars()
+
 
 func scroll_to_newest_chat():
 	var scroll = chat_container.get_parent()
@@ -82,11 +98,20 @@ func scroll_to_newest_chat():
 		scroll.scroll_vertical = scroll.get_v_scroll_bar().max_value
 
 func update_progress_bars():
-	chemistry_progress_bar.value     = battle_stats.get("chemistry", 0)
-	self_esteem_progress_bar.value   = battle_stats.get("self_esteem", 0)
-	apprehension_progress_bar.value  = battle_stats.get("apprehension", 0)
-	# Example for player confidence (set appropriately)
-	confidence_progress_bar.value    = battle_stats.get("confidence", 50)
+	animate_progress_bar(chemistry_progress_bar,     battle_stats.get("chemistry", 0))
+	animate_progress_bar(self_esteem_progress_bar,   battle_stats.get("self_esteem", 0))
+	animate_progress_bar(apprehension_progress_bar,  battle_stats.get("apprehension", 0))
+	animate_progress_bar(confidence_progress_bar,    PlayerManager.get_stat("confidence"))
+
+func clamp100(val: float) -> float:
+	return clamp(val, 0, 100)
+
+func animate_progress_bar(bar: ProgressBar, target_value: float, duration: float = 0.35):
+	target_value = clamp100(target_value)
+	var tween = get_tree().create_tween()
+	tween.tween_property(bar, "value", target_value, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+
 
 func _update_profiles():
 	# Player info (if needed)
@@ -98,12 +123,13 @@ func _update_profiles():
 	npc_profile_pic.texture = npc.profile_pic if npc.profile_pic else preload("res://assets/prof_pics/silhouette.png")
 	npc_attractiveness_label.text = "❤️ %.1f/10" % (float(npc.attractiveness) / 10.0)
 	npc_name_label.text = npc.full_name
+	npc_type_label.text = npc.chat_battle_type
 
 
 
 func update_action_buttons():
 	for i in equipped_moves.size():
-		action_buttons[i].text = equipped_moves[i].capitalize()
+		action_buttons[i].text = equipped_moves[i].to_upper()
 		# Disconnect any previous signals to prevent stacking
 		if action_buttons[i].is_connected("pressed", Callable(self, "_on_action_button_pressed")):
 			action_buttons[i].disconnect("pressed", Callable(self, "_on_action_button_pressed"))
@@ -114,12 +140,12 @@ func _on_action_button_pressed(index):
 	if is_animating:
 		return
 	var move_type = equipped_moves[index]
-	do_move(move_type)
+	await do_move(move_type)
 
 func _on_catch_button_pressed():
 	if is_animating:
 		return
-	do_move("catch")
+	await do_move("catch")
 
 func _on_ghost_button_pressed():
 	if is_animating:
@@ -160,48 +186,66 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 	return chat
 
 
-func do_move(move_type: String):
-	if is_animating:
-		return
+func do_move(move_type: String) -> void:
 	is_animating = true
 	move_type = move_type.to_lower()
+	# Player line logic
 	var options = []
 	for line in RizzBattleData.player_lines:
 		if line["move_type"] == move_type:
 			options.append(line)
 	if options.is_empty():
 		print("No lines for move:", move_type)
+		is_animating = false
 		return
 
 	var chosen_line = options[randi() % options.size()]
-
 	var prefix := ""
 	if chosen_line["prefixes"].size() > 0:
-		prefix = chosen_line["prefixes"].pick_random() #+ " "
+		prefix = chosen_line["prefixes"].pick_random()
 	var core = chosen_line["core"]
 	var suffix := ""
 	if chosen_line["suffixes"].size() > 0:
 		suffix = chosen_line["suffixes"].pick_random()
 	var full_line = prefix + core + suffix
 
-	# Add player chat to left and animate
+	# Animate player line
 	var chat = add_chat_line(full_line, true)
 	await animate_chat_text(chat, full_line)
-
 	await get_tree().create_timer(0.5).timeout
 
-	await process_npc_response(move_type, chosen_line.get("response_id", null), true) # Replace with success/fail logic
+	# ---- resolve move with battle logic! ----
+	var result = logic.resolve_move(move_type)
+	_apply_effects(result.effects)
+	
+	await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
+	await get_tree().create_timer(.69).timeout
+	animate_success_or_fail(result.success)
+	await update_progress_bars()
 	is_animating = false
+
+func animate_success_or_fail(success):
+	if success:
+		pass
+		#make the last player chat and npc chat glow green
+	else:
+		pass
+		#make the last player chat and npc chat glow red
+
+
+func _apply_effects(effects: Dictionary):
+	for stat in effects.keys():
+		if battle_stats.has(stat):
+			battle_stats[stat] = clamp100(battle_stats[stat] + effects[stat])
+	# player stats (like confidence) handled by PlayerManager
+
 
 func process_npc_response(move_type, response_id, success: bool):
 	var response_text = ""
 	var key = "FALSE"
 	if success:
 		key = "TRUE"
-	
 	var entry = null
-	
-	# Prefer npc_responses, else fallback to npc_generic_responses
 	if response_id and RizzBattleData.npc_responses.has(response_id):
 		var pool = RizzBattleData.npc_responses[response_id][key]
 		if pool.size() > 0:
@@ -210,19 +254,15 @@ func process_npc_response(move_type, response_id, success: bool):
 		var pool = RizzBattleData.npc_generic_responses[move_type][key]
 		if pool.size() > 0 and typeof(pool[0]) == TYPE_DICTIONARY:
 			entry = pool.pick_random()
-	
 	if entry != null:
 		var prefix = ""
 		var suffix = ""
-		# Safely check for prefix
 		if entry.has("response_prefix") and entry.response_prefix is Array and entry.response_prefix.size() > 0:
 			prefix = entry.response_prefix.pick_random()
-		# Suffix
 		if entry.has("response_suffix") and entry.response_suffix is Array and entry.response_suffix.size() > 0:
 			suffix = entry.response_suffix.pick_random()
 		response_text = str(prefix) + str(entry.response_line) + str(suffix)
 	else:
-		# Fallback (old code, if generic response is just a string)
 		if RizzBattleData.npc_generic_responses.has(move_type):
 			var pool = RizzBattleData.npc_generic_responses[move_type][key]
 			if pool.size() > 0 and typeof(pool[0]) == TYPE_STRING:
@@ -231,10 +271,19 @@ func process_npc_response(move_type, response_id, success: bool):
 				response_text = "..."
 		else:
 			response_text = "..."
-
-	# NPC chat (right aligned)
+	
 	var chat = add_chat_line(response_text, false)
 	await animate_chat_text(chat, response_text)
+
+
+
+func persist_battle_stats_to_npc():
+	if npc and logic:
+		var current_stats = logic.get_stats()
+		npc.self_esteem = current_stats.get("self_esteem", npc.self_esteem)
+		npc.chemistry = current_stats.get("chemistry", npc.chemistry)
+		npc.apprehension = current_stats.get("apprehension", npc.apprehension)
+
 
 
 

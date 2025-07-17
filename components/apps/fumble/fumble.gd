@@ -106,9 +106,9 @@ func _on_gender_slider_changed(value):
 		y_slider.value / y_slider.max_value,
 		z_slider.value / z_slider.max_value
 	)
-	print("Sliders (scaled): X:", preferred_gender.x, "Y:", preferred_gender.y, "Z:", preferred_gender.z)
+	#print("Sliders (scaled): X:", preferred_gender.x, "Y:", preferred_gender.y, "Z:", preferred_gender.z)
 	
-	print("preferred gender: " + str(preferred_gender))
+	#print("preferred gender: " + str(preferred_gender))
 	# Pride label logic
 	if preferred_gender.z > 0 or (preferred_gender.x > 0 and preferred_gender.y > 0):
 		yassify_fumble_label()

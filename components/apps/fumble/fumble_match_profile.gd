@@ -20,7 +20,8 @@ func set_profile(profile_npc, profile_idx):
 	chat_button.visible = not already_in_battle
 
 func _ready():
-	chat_button.pressed.connect(_on_chat_button_pressed)
+	#chat_button.pressed.connect(_on_chat_button_pressed)
+	pass
 
 func _on_chat_button_pressed():
 	if not FumbleManager.has_active_battle(npc_idx):

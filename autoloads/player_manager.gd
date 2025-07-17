@@ -26,9 +26,13 @@ var default_user_data: Dictionary = {
 	"gpu_power": 1.0,
 	"worker_productivity": 100,
 	
-
+	# Chat Battle Stats
+		"attractiveness": 50,
+		"rizz": 1,
+		"confidence": 100,
 
 	# Other Traits
+
 	"zodiac_sign": "",
 	"mbti": "",
 

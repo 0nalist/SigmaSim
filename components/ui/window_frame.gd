@@ -275,25 +275,27 @@ func _process(_delta: float) -> void:
 		_clamp_to_screen()
 
 func _on_header_input(event: InputEvent) -> void:
-	if pane == null or not pane.user_resizable:
+	if pane == null:
 		return
 
 	var global_mouse = get_global_mouse_position()
 	var window_top = global_position.y
-	var resizing_on_top = (global_mouse.y - window_top) <= resize_margin
+	var resizing_on_top = false
+	if pane.user_resizable:
+		resizing_on_top = (global_mouse.y - window_top) <= resize_margin
 
 	if event is InputEventMouseMotion:
-		if resizing_on_top:
+		if pane.user_resizable and resizing_on_top:
 			header.mouse_default_cursor_shape = Control.CURSOR_VSIZE
 		else:
 			header.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		# No dragging logic here—handled in _process
+		# Drag handled in _process
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			if WindowManager and WindowManager.has_method("focus_window"):
 				WindowManager.focus_window(self)
-			if resizing_on_top:
+			if pane.user_resizable and resizing_on_top:
 				is_resizing = true
 				resize_dir = Vector2(0, -1)
 				resize_start_mouse = global_mouse
@@ -307,6 +309,7 @@ func _on_header_input(event: InputEvent) -> void:
 		else:
 			is_resizing = false
 			is_dragging = false
+
 
 
 

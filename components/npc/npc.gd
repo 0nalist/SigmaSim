@@ -22,7 +22,7 @@ extends Resource
 # Relationship with Player
 @export_range(-100, 100, 0.1) var affinity: float = 0.0 # 0–100
 @export_range(0, 100, 0.1) var rizz: int
-@export_range(0, 100, 0.1) var attractiveness: int
+@export_range(0, 100, 1) var attractiveness: int
 
 
 # === Economics ===
@@ -48,6 +48,22 @@ var wealth: int
 
 @export var fumble_bio: String
 
+
+# === Chat Battle Stats ===
+@export var self_esteem: int = 70
+@export var apprehension: int = 50
+@export var chemistry: int = 0
+@export var chat_battle_type: String
+
+@export var ocean: Dictionary
+@export var openness: float
+@export var conscientiousness: float
+@export var extraversion: float
+@export var agreeableness: float
+@export var neuroticism: float
+@export var mbti: String
+
+@export var zodiac: String
 
 # === Wall Posts / Social Feed ===
 @export var wall_posts: Array[String] = ["hello world"]
