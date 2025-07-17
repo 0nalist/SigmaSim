@@ -40,6 +40,9 @@ var resize_start_size := Vector2.ZERO
 var resize_start_pos := Vector2.ZERO
 var min_window_size := Vector2(120, 50)
 
+var is_dragging := false
+var drag_offset := Vector2.ZERO
+
 @onready var favicon: TextureRect = %Favicon
 @onready var title_label: Label = %TitleLabel
 @onready var header: HBoxContainer = %Header
@@ -249,25 +252,27 @@ func _clamp_to_screen() -> void:
 
 
 func _process(_delta: float) -> void:
-	if not is_resizing:
-		return
+	if is_resizing:
+		var mouse_delta := get_global_mouse_position() - resize_start_mouse
+		var new_size := resize_start_size
+		var new_pos := resize_start_pos
 
-	var mouse_delta := get_global_mouse_position() - resize_start_mouse
-	var new_size := resize_start_size
-	var new_pos := resize_start_pos
+		if resize_dir.x != 0:
+			new_size.x = max(resize_start_size.x + mouse_delta.x * resize_dir.x, min_window_size.x)
+			if resize_dir.x == -1:
+				new_pos.x = resize_start_pos.x + mouse_delta.x
+		if resize_dir.y != 0:
+			new_size.y = max(resize_start_size.y + mouse_delta.y * resize_dir.y, min_window_size.y)
+			if resize_dir.y == -1:
+				new_pos.y = resize_start_pos.y + mouse_delta.y
 
-	if resize_dir.x != 0:
-		new_size.x = max(resize_start_size.x + mouse_delta.x * resize_dir.x, min_window_size.x)
-		if resize_dir.x == -1:
-			new_pos.x = resize_start_pos.x + mouse_delta.x
-	if resize_dir.y != 0:
-		new_size.y = max(resize_start_size.y + mouse_delta.y * resize_dir.y, min_window_size.y)
-		if resize_dir.y == -1:
-			new_pos.y = resize_start_pos.y + mouse_delta.y
-
-	size = new_size
-	global_position = new_pos
-	_clamp_to_screen()
+		size = new_size
+		global_position = new_pos
+		_clamp_to_screen()
+	elif is_dragging:
+		# Move window to mouse minus drag offset
+		position = get_global_mouse_position() - drag_offset
+		_clamp_to_screen()
 
 func _on_header_input(event: InputEvent) -> void:
 	if pane == null or not pane.user_resizable:
@@ -275,38 +280,34 @@ func _on_header_input(event: InputEvent) -> void:
 
 	var global_mouse = get_global_mouse_position()
 	var window_top = global_position.y
-	var resizing_on_top = (global_mouse.y <= window_top + resize_margin)
+	var resizing_on_top = (global_mouse.y - window_top) <= resize_margin
 
-	# Set the correct cursor shape
 	if event is InputEventMouseMotion:
 		if resizing_on_top:
 			header.mouse_default_cursor_shape = Control.CURSOR_VSIZE
 		else:
 			header.mouse_default_cursor_shape = Control.CURSOR_ARROW
+		# No dragging logic here—handled in _process
 
-		# If we're resizing, let _process handle it
-		if is_resizing and resize_dir == Vector2(0, -1):
-			return
-
-		# Dragging
-		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and not resizing_on_top and pane.user_movable:
-			position += event.relative
-			_clamp_to_screen()
-
-	# Mouse button logic
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			if WindowManager and WindowManager.has_method("focus_window"):
 				WindowManager.focus_window(self)
-
 			if resizing_on_top:
 				is_resizing = true
 				resize_dir = Vector2(0, -1)
-				resize_start_mouse = get_global_mouse_position()
+				resize_start_mouse = global_mouse
 				resize_start_size = size
 				resize_start_pos = global_position
+				is_dragging = false
+			elif pane.user_movable:
+				is_dragging = true
+				drag_offset = global_mouse - position
+				is_resizing = false
 		else:
 			is_resizing = false
+			is_dragging = false
+
 
 
 
