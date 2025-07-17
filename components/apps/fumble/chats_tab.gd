@@ -1,6 +1,8 @@
 extends Control
 class_name ChatsTab
 
+signal request_resize_x_to(pixels)
+
 @onready var matches_label: Label = %MatchesLabel
 @onready var match_container: HBoxContainer = %MatchContainer
 @onready var chat_battles_container: VBoxContainer = %ChatBattlesContainer
@@ -41,7 +43,8 @@ func refresh_battles():
 
 func _on_match_button_pressed(npc, idx):
 	var match_profile = match_profile_scene.instantiate()
-	get_tree().root.add_child(match_profile)
+	#get_tree().root.
+	add_child(match_profile)
 	match_profile.set_profile(npc, idx)
 	match_profile.start_battle_requested.connect(_on_start_battle_requested)
 	
@@ -56,6 +59,9 @@ func _on_battle_button_pressed(battle_id, npc):
 func open_battle(battle_id, npc):
 	print("opening battle!")
 	var scene = battle_scene.instantiate()
-	get_tree().root.add_child(scene)
+	#get_tree().root.
+	add_child(scene)
 	scene.load_battle(battle_id, npc)
+	
+	request_resize_x_to.emit(800)
 	

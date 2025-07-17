@@ -1,40 +1,96 @@
 {
   "rizz_ethereal": {
-	"move_type": "rizz",
 	"TRUE": [
-	  "\"Aww stop\"",
-	  "\"That's very sweet of you to say\""
+	  {
+		"move_type": "rizz",
+		"response_prefix": [],
+		"response_line": "Aww stop",
+		"response_suffix": [
+		  " 😳",
+		  " (please don't)",
+		  " :)"
+		]
+	  },
+	  {
+		"move_type": "rizz",
+		"response_prefix": [],
+		"response_line": "That's very sweet of you to say",
+		"response_suffix": []
+	  }
 	],
 	"FALSE": [
-	  "\"that's... dramatic\"",
-	  "\"you rehearsed that, huh?\""
+	  {
+		"move_type": "rizz",
+		"response_prefix": [],
+		"response_line": "that's... dramatic",
+		"response_suffix": [
+		  ".",
+		  " XD"
+		]
+	  },
+	  {
+		"move_type": "rizz",
+		"response_prefix": [],
+		"response_line": "you rehearsed that, huh?",
+		"response_suffix": []
+	  }
 	]
   },
   "rizz_ai_1": {
-	"move_type": "rizz",
 	"TRUE": [
-	  "\"You caught me. I am a simulation.\""
+	  {
+		"move_type": "rizz",
+		"response_prefix": [],
+		"response_line": "You caught me. I am a simulation.",
+		"response_suffix": []
+	  }
 	],
 	"FALSE": [
-	  "\"No, but you’re corny.\""
+	  {
+		"move_type": "rizz",
+		"response_prefix": [],
+		"response_line": "No, but you’re corny.",
+		"response_suffix": []
+	  }
 	]
   },
   "neg_middle": {
-	"move_type": "neg",
 	"TRUE": [
-	  "\"How did you know???\""
+	  {
+		"move_type": "neg",
+		"response_prefix": [],
+		"response_line": "How did you know???",
+		"response_suffix": []
+	  }
 	],
 	"FALSE": [
-	  "\"Go fuck yourself\""
+	  {
+		"move_type": "neg",
+		"response_prefix": [],
+		"response_line": "Go fuck yourself",
+		"response_suffix": [
+		  ".",
+		  " lol"
+		]
+	  }
 	]
   },
   "flex_dorsia": {
-	"move_type": "flex",
 	"TRUE": [
-	  "I've always wanted to go!"
+	  {
+		"move_type": "flex",
+		"response_prefix": [],
+		"response_line": "I've always wanted to go!",
+		"response_suffix": []
+	  }
 	],
 	"FALSE": [
-	  "Is that supposed to impress me?"
+	  {
+		"move_type": "flex",
+		"response_prefix": [],
+		"response_line": "Is that supposed to impress me?",
+		"response_suffix": []
+	  }
 	]
   }
 }

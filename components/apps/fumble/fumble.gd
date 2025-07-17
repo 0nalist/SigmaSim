@@ -1,6 +1,8 @@
 class_name FumbleUI
 extends Pane
 
+signal request_resize_x_to(pixels)
+
 @onready var fumble_label: Label = %FumbleLabel
 @onready var profile_container: Control = %ProfileContainer
 @onready var swipe_left_button: Button = %SwipeLeftButton
@@ -34,6 +36,8 @@ func _ready():
 	if not card_stack:
 		push_error("ProfileCardStack not found in profile_container!")
 		return
+
+	chats_tab.request_resize_x_to.connect(_on_resize_x_requested)
 
 	# Connect swipe button signals to the stack's methods
 	swipe_left_button.pressed.connect(card_stack.swipe_left)
@@ -139,3 +143,8 @@ func _on_curiosity_h_slider_value_changed(value: float) -> void:
 	if card_stack:
 		card_stack.set_curiosity(curiosity)
 		card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
+
+
+func _on_resize_x_requested(pixels):
+	# Bubble up to the window frame
+	request_resize_x_to.emit(pixels)

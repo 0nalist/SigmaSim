@@ -26,8 +26,6 @@ class_name BattleUI
 
 @onready var confidence_progress_bar: ProgressBar = %ConfidenceProgressBar
 
-
-
 @onready var chat_container: VBoxContainer = %ChatContainer
 
 var equipped_moves := ["RIZZ", "NEG", "FLEX", "SIMP"]
@@ -41,6 +39,17 @@ var battle_stats := {
 	"chemistry": 0,
 	"apprehension": 0
 }
+
+var is_animating: bool = false
+
+
+func _ready():
+	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
+	update_action_buttons()
+	
+	catch_button.pressed.connect(_on_catch_button_pressed)
+	ghost_button.pressed.connect(_on_ghost_button_pressed)
+
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}):
 	battle_id = new_battle_id
@@ -90,9 +99,7 @@ func _update_profiles():
 	npc_attractiveness_label.text = "❤️ %.1f/10" % (float(npc.attractiveness) / 10.0)
 	npc_name_label.text = npc.full_name
 
-func _ready():
-	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
-	update_action_buttons()
+
 
 func update_action_buttons():
 	for i in equipped_moves.size():
@@ -101,10 +108,27 @@ func update_action_buttons():
 		if action_buttons[i].is_connected("pressed", Callable(self, "_on_action_button_pressed")):
 			action_buttons[i].disconnect("pressed", Callable(self, "_on_action_button_pressed"))
 		action_buttons[i].pressed.connect(_on_action_button_pressed.bind(i))
+	
 
 func _on_action_button_pressed(index):
+	if is_animating:
+		return
 	var move_type = equipped_moves[index]
 	do_move(move_type)
+
+func _on_catch_button_pressed():
+	if is_animating:
+		return
+	do_move("catch")
+
+func _on_ghost_button_pressed():
+	if is_animating:
+		return
+	var chat = add_chat_line("*ghosts*", true)
+	await animate_chat_text(chat, "*ghosts*")
+	await get_tree().create_timer(0.69).timeout
+	queue_free()
+
 
 func swap_move(slot_index: int, new_move: String):
 	equipped_moves[slot_index] = new_move
@@ -137,6 +161,9 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 
 
 func do_move(move_type: String):
+	if is_animating:
+		return
+	is_animating = true
 	move_type = move_type.to_lower()
 	var options = []
 	for line in RizzBattleData.player_lines:
@@ -157,13 +184,14 @@ func do_move(move_type: String):
 		suffix = chosen_line["suffixes"].pick_random()
 	var full_line = prefix + core + suffix
 
-	# Player chat (left aligned)
+	# Add player chat to left and animate
 	var chat = add_chat_line(full_line, true)
 	await animate_chat_text(chat, full_line)
 
 	await get_tree().create_timer(0.5).timeout
 
 	await process_npc_response(move_type, chosen_line.get("response_id", null), true) # Replace with success/fail logic
+	is_animating = false
 
 func process_npc_response(move_type, response_id, success: bool):
 	var response_text = ""
@@ -173,17 +201,30 @@ func process_npc_response(move_type, response_id, success: bool):
 	if response_id and RizzBattleData.npc_responses.has(response_id):
 		var pool = RizzBattleData.npc_responses[response_id][key]
 		if pool.size() > 0:
-			response_text = pool.pick_random()
+			var entry = pool.pick_random()
+			response_text = entry.response_line
+			# Optionally, add suffix:
+			if entry.has("response_suffix") and entry.response_suffix.size() > 0:
+				# Pick one at random if you want to use it
+				response_text += entry.response_suffix.pick_random()
 	elif RizzBattleData.npc_generic_responses.has(move_type):
 		var pool = RizzBattleData.npc_generic_responses[move_type][key]
 		if pool.size() > 0:
-			response_text = pool.pick_random()
+			# For generic responses, assuming pool is a list of strings:
+			if typeof(pool[0]) == TYPE_DICTIONARY:
+				var entry = pool.pick_random()
+				response_text = entry.response_line
+				if entry.has("response_suffix") and entry.response_suffix.size() > 0:
+					response_text += entry.response_suffix.pick_random()
+			else:
+				response_text = pool.pick_random()
 	else:
 		response_text = "..."
 
 	# NPC chat (right aligned)
 	var chat = add_chat_line(response_text, false)
 	await animate_chat_text(chat, response_text)
+
 
 func animate_chat_text(chat_box: Control, text: String) -> void:
 	var label = chat_box.text_label
