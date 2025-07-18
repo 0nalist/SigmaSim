@@ -10,7 +10,7 @@ var interest: float = 0.0
 var credit_limit: float = 2000.0
 var credit_used: float = 0.0
 var credit_interest_rate: float = 0.3  # 30% by default
-var credit_score: int = 1700
+var credit_score: int = 700
 
 var student_loans: float
 var student_loan_min_payment: float = 0.0

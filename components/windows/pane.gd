@@ -15,6 +15,9 @@ signal window_icon_changed(new_icon)
 @export var default_window_size: Vector2 = Vector2(400, 480)
 @export_enum("left", "center", "right") var default_position: String = "center"
 
+
+@export var request_windowless_mode: bool = false
+
 @export var show_in_taskbar: bool = true
 #@export var only_one_instance_allowed: bool = false
 
@@ -38,7 +41,14 @@ signal title_updated(title: String)
 func _ready() -> void:
 	#get_parent().get_parent().get_parent().window_can_close = window_can_close
 	#window_icon_changed.emit(window_icon)
-	pass
+	var window = get_parent().get_parent().get_parent()
+	window.call_deferred("set", "windowless_mode", request_windowless_mode)
+
+
+func get_drag_handle() -> Control:
+	var tab_bar = %TabBar.get_tab_bar() 
+	tab_bar.mouse_filter = Control.MOUSE_FILTER_PASS
+	return tab_bar
 
 
 func get_window_title() -> String:

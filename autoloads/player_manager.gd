@@ -26,9 +26,14 @@ var default_user_data: Dictionary = {
 	"gpu_power": 1.0,
 	"worker_productivity": 100,
 	
-
-
+	# Chat Battle Stats
+	"attractiveness": 50,
+	"rizz": 1,
+	"confidence": 100.0,
+	"confidence_regen_rate": 1.0,
+	
 	# Other Traits
+
 	"zodiac_sign": "",
 	"mbti": "",
 
@@ -38,6 +43,25 @@ var default_user_data: Dictionary = {
 }
 
 var user_data: Dictionary = default_user_data.duplicate(true)
+
+var suppressed_stat_updates: Dictionary = {}
+var deferred_stat_values: Dictionary = {}
+var _stat_signal_map: Dictionary = {}  # stat_name: Array[Callable]
+
+func connect_to_stat(stat: String, target: Object, method: String) -> void:
+	if !_stat_signal_map.has(stat):
+		_stat_signal_map[stat] = []
+	_stat_signal_map[stat].append(Callable(target, method))
+
+func disconnect_from_stat(stat: String, target: Object, method: String) -> void:
+	if _stat_signal_map.has(stat):
+		_stat_signal_map[stat] = _stat_signal_map[stat].filter(func(cb): return cb.get_object() != target or cb.get_method() != method)
+
+func _emit_stat_changed(stat: String, value: Variant) -> void:
+	if _stat_signal_map.has(stat):
+		for cb in _stat_signal_map[stat]:
+			if is_instance_valid(cb.get_object()):
+				cb.call(value)
 
 
 func get_var(key: String, default_value = null):
@@ -59,6 +83,8 @@ func get_stat(key: String) -> Variant:
 		_: return user_data.get(key)
 
 func set_stat(key: String, value: Variant) -> void:
+	if key == "confidence":
+		value = max(value, 0.0)
 	match key:
 		"cash": PortfolioManager.cash = value
 		"student_loans": PortfolioManager.student_loans = value
@@ -79,11 +105,26 @@ func ensure_default_stats() -> void:
 			user_data[key] = default_user_data[key]
 
 
+func suppress_stat(stat_name: String, suppress: bool) -> void:
+	suppressed_stat_updates[stat_name] = suppress
 
+	if !suppress and deferred_stat_values.has(stat_name):
+		_emit_stat_changed(stat_name, deferred_stat_values[stat_name])
+		deferred_stat_values.erase(stat_name)
+
+func is_stat_suppressed(stat_name: String) -> bool:
+	return suppressed_stat_updates.get(stat_name, false)
 
 func adjust_stat(stat: String, delta: float) -> void:
 	if user_data.has(stat):
 		user_data[stat] += delta
+		if stat == "confidence":
+			user_data[stat] = max(user_data[stat], 0.0)
+
+	if is_stat_suppressed(stat):
+		deferred_stat_values[stat] = user_data[stat]
+	else:
+		_emit_stat_changed(stat, user_data[stat])
 
 
 func has_seen(id: String) -> bool:

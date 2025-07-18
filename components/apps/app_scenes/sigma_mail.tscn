@@ -21,6 +21,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 script = ExtResource("2_wwi5a")
+window_title = "Sigma Mail"
 window_icon = ExtResource("3_wwi5a")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -70,49 +71,41 @@ alignment = 2
 
 [node name="Button" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
 layout_mode = 2
-size_flags_horizontal = 0
 size_flags_vertical = 8
 text = " from: jamie95@horizon.net Subject: "
 alignment = 0
 
 [node name="Button2" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
 layout_mode = 2
-size_flags_horizontal = 0
 text = " from: jamie95@horizon.net Subject: "
 alignment = 0
 
 [node name="Button3" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
 layout_mode = 2
-size_flags_horizontal = 0
 text = " from: jamie95@horizon.net Subject: "
 alignment = 0
 
 [node name="Button4" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
 layout_mode = 2
-size_flags_horizontal = 0
 text = " from: jamie95@horizon.net Subject: "
 alignment = 0
 
 [node name="Button5" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
 layout_mode = 2
-size_flags_horizontal = 0
 text = " from: jamie95@horizon.net Subject: "
 alignment = 0
 
 [node name="Button6" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
 layout_mode = 2
-size_flags_horizontal = 0
 text = " from: jamie95@horizon.net Subject: "
 alignment = 0
 
 [node name="Button7" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
 layout_mode = 2
-size_flags_horizontal = 0
 text = " from: jamie95@horizon.net Subject: "
 alignment = 0
 
 [node name="Button8" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
 layout_mode = 2
-size_flags_horizontal = 0
 text = " from: jamie95@horizon.net Subject: "
 alignment = 0

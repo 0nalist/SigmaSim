@@ -1,3 +1,4 @@
+# profile_ui.gd
 extends PanelContainer
 
 @onready var profile_pic: TextureRect = %ProfilePic

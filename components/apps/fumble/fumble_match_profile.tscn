@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://cndhqbvwm63oq"]
+
+[ext_resource type="Script" uid="uid://ctanldgm3ulrp" path="res://components/apps/fumble/fumble_match_profile.gd" id="1_ddbow"]
+[ext_resource type="PackedScene" uid="uid://cwin011rx52n7" path="res://components/apps/fumble/fumble_profile_ui.tscn" id="2_eqlwe"]
+
+[node name="FumbleMatchProfile" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ddbow")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="FumbleProfile" parent="VBoxContainer" instance=ExtResource("2_eqlwe")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ChatButton" type="Button" parent="VBoxContainer/FumbleProfile"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = " CHAT "
+
+[connection signal="pressed" from="VBoxContainer/FumbleProfile/ChatButton" to="." method="_on_chat_button_pressed"]

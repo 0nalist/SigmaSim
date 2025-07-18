@@ -13,7 +13,8 @@ var app_registry := {
 	"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
 	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
-	"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
+	#"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"), # OLD workforce
+	"WorkForce": preload("res://workforce.tscn"),
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
 	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
@@ -21,19 +22,22 @@ var app_registry := {
 	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
+	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 }
 
 var start_apps := {
 	"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
 	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
-	"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
+	#"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
+	"WorkForce": preload("res://workforce.tscn"),
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
 	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
 	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
+	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 }
 
 
@@ -326,6 +330,7 @@ func get_save_data() -> Array:
 			"position": SaveManager.vector2_to_dict(win.position),
 			"size": SaveManager.vector2_to_dict(win.size),
 			"minimized": not win.visible,
+			"windowless_mode": win.windowless_mode,
 			"custom_data": pane.get_custom_save_data() if pane.has_method("get_custom_save_data") else {},
 		})
 	return window_data
@@ -353,6 +358,9 @@ func load_from_data(window_data: Array) -> void:
 
 		register_window(window, pane.show_in_taskbar)
 
+		if entry.has("windowless_mode"):
+			window.windowless_mode = entry["windowless_mode"]
+		
 		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), pane.default_window_size)
 		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
 

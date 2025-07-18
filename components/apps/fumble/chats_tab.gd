@@ -1,0 +1,67 @@
+extends Control
+class_name ChatsTab
+
+signal request_resize_x_to(pixels)
+
+@onready var matches_label: Label = %MatchesLabel
+@onready var match_container: HBoxContainer = %MatchContainer
+@onready var chat_battles_container: VBoxContainer = %ChatBattlesContainer
+
+@export var match_button_scene: PackedScene 
+@export var battle_button_scene: PackedScene 
+@export var match_profile_scene : PackedScene
+@export var battle_scene: PackedScene
+
+func _ready():
+	refresh_matches()
+	refresh_battles()
+
+func refresh_matches():
+	for child in match_container.get_children():
+		child.queue_free()
+	var matches = FumbleManager.get_matches()
+	matches_label.text = "Matches: %d" % matches.size()
+	for idx in matches:
+		var npc = NPCManager.get_npc_by_index(idx)
+		var btn = match_button_scene.instantiate()
+		
+		btn.match_pressed.connect(_on_match_button_pressed)
+		match_container.add_child(btn)
+		btn.set_profile(npc, idx)
+
+func refresh_battles():
+	for child in chat_battles_container.get_children():
+		child.queue_free()
+	var battles = FumbleManager.get_active_battles()
+	for b in battles:
+		var npc = NPCManager.get_npc_by_index(b.npc_idx)
+		var btn = battle_button_scene.instantiate()
+		chat_battles_container.add_child(btn)
+		btn.set_battle(npc, b.battle_id, b.npc_idx)
+		btn.pressed.connect(func(): _on_battle_button_pressed(b.battle_id, npc))
+		
+
+func _on_match_button_pressed(npc, idx):
+	var match_profile = match_profile_scene.instantiate()
+	#get_tree().root.
+	add_child(match_profile)
+	match_profile.set_profile(npc, idx)
+	match_profile.start_battle_requested.connect(_on_start_battle_requested)
+	
+
+func _on_start_battle_requested(battle_id, npc):
+	open_battle(battle_id, npc)
+	refresh_battles()
+
+func _on_battle_button_pressed(battle_id, npc):
+	open_battle(battle_id, npc)
+
+func open_battle(battle_id, npc):
+	print("opening battle!")
+	var scene = battle_scene.instantiate()
+	#get_tree().root.
+	add_child(scene)
+	scene.load_battle(battle_id, npc)
+	
+	request_resize_x_to.emit(800)
+	

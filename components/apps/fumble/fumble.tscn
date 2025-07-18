@@ -1,0 +1,514 @@
+[gd_scene load_steps=15 format=3 uid="uid://cj2jq0j8tj4f3"]
+
+[ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
+[ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
+[ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
+[ext_resource type="Material" uid="uid://bl8moqb187o1d" path="res://components/apps/fumble/fumble_label_pride_month_material.tres" id="3_ye860"]
+[ext_resource type="Script" uid="uid://dqm2ovrgiyvhg" path="res://components/apps/fumble/chats_tab.gd" id="5_hf3uq"]
+[ext_resource type="PackedScene" uid="uid://cel7rmg2pea12" path="res://components/apps/fumble/fumble_battle/battle_ui.tscn" id="6_5fcgq"]
+[ext_resource type="PackedScene" uid="uid://3e434irx0gng" path="res://components/apps/fumble/match_button.tscn" id="6_wfdmb"]
+[ext_resource type="PackedScene" uid="uid://c02crnsc8wbvh" path="res://components/apps/fumble/chat_battle_button.tscn" id="7_jh1fk"]
+[ext_resource type="PackedScene" uid="uid://cndhqbvwm63oq" path="res://components/apps/fumble/fumble_match_profile.tscn" id="8_5uoqt"]
+[ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="10_jh1fk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ye860"]
+bg_color = Color(2.22605e-07, 0.23204, 0.190425, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wfdmb"]
+bg_color = Color(0.162066, 0.162066, 0.162065, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jh1fk"]
+bg_color = Color(0.766418, 0, 0.191791, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5uoqt"]
+bg_color = Color(0.541176, 0.807843, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Fumble" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_ye860")
+script = ExtResource("1_v4fb6")
+window_title = "Fumble"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FumbleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+material = ExtResource("3_ye860")
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 8
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = ExtResource("3_qj1tn")
+theme_override_font_sizes/font_size = 36
+text = "F  U  M  B  L  E"
+horizontal_alignment = 1
+
+[node name="SelfTab" type="Control" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+theme_override_constants/outline_size = 12
+text = "You"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Bio:"
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 10
+placeholder_text = "Write something!"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Your Gender:"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+focus_mode = 0
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="HBoxContainer99" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="GenderLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer99"]
+layout_mode = 2
+theme_override_constants/outline_size = 12
+text = "I'm interested in:"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer99"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 6
+text = "X"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer99"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "X"
+
+[node name="XHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Y"
+
+[node name="YHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Z"
+
+[node name="ZHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Curiosity"
+
+[node name="CuriosityHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="10px7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="PremiumFeaturesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 12
+text = "Premium Features"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer"]
+layout_mode = 2
+text = "Archetype: Beta"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer2"]
+layout_mode = 2
+text = "See your elo"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Autoswipe on all above a"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
+layout_mode = 2
+max_length = 1
+virtual_keyboard_type = 3
+
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SwipesTab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="ProfileContainer" type="Control" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="ProfileCardStack" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/ProfileContainer" instance=ExtResource("3_vq0mq")]
+layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 8
+
+[node name="SwipeLeftButton" type="Button" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "  🤮  "
+icon_alignment = 1
+
+[node name="SwipeRightButton" type="Button" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "  😍  "
+icon_alignment = 1
+
+[node name="ChatsTab" type="Control" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("5_hf3uq")
+match_button_scene = ExtResource("6_wfdmb")
+battle_button_scene = ExtResource("7_jh1fk")
+match_profile_scene = ExtResource("8_5uoqt")
+battle_scene = ExtResource("6_5fcgq")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChatsTab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 156)
+layout_mode = 2
+size_flags_stretch_ratio = 0.5
+
+[node name="MatchContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MatchButton" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer/MatchContainer" instance=ExtResource("6_wfdmb")]
+layout_mode = 2
+expand_icon = false
+
+[node name="MatchesLabel" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Matches: 0"
+
+[node name="AverageMatchLabel" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Average Match: 0"
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ChatBattlesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ChatBattleButton" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/ChatBattlesContainer" instance=ExtResource("7_jh1fk")]
+layout_mode = 2
+
+[node name="TabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="10px" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TabContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_wfdmb")
+theme_override_styles/fill = SubResource("StyleBoxFlat_jh1fk")
+value = 100.0
+show_percentage = false
+script = ExtResource("10_jh1fk")
+stat_name = "confidence"
+duration = 0.4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/ConfidenceProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "CON"
+
+[node name="10px2" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="10px5" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="SelfButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/h_separation = 8
+text = " Prof "
+flat = true
+
+[node name="SwipesButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/h_separation = 8
+text = " Swipe "
+flat = true
+
+[node name="ChatsButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/h_separation = 8
+text = " Chat "
+flat = true
+
+[node name="10px3" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="10px6" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="ExperienceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TabContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_wfdmb")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5uoqt")
+value = 2.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/ExperienceProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "EX"
+
+[node name="10px4" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4/CuriosityHSlider" to="." method="_on_curiosity_h_slider_value_changed"]

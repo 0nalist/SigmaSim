@@ -1,4 +1,4 @@
-extends Panel
+extends PanelContainer
 class_name WindowFrame
 
 @export var icon: Texture
@@ -10,6 +10,14 @@ class_name WindowFrame
 @export var window_can_close: bool = true
 @export var window_can_minimize: bool = true
 @export var window_can_maximize: bool = true
+
+var _windowless_mode := false
+@export var windowless_mode: bool = false:
+	set(value):
+		print("SETTING WINDOWLESS MODE: ", value, " for window ", self)
+		_set_windowless_mode(value)
+	get:
+		return _windowless_mode
 
 var window_title: String = "Window"
 var pane: Pane
@@ -32,9 +40,13 @@ var resize_start_size := Vector2.ZERO
 var resize_start_pos := Vector2.ZERO
 var min_window_size := Vector2(120, 50)
 
+var is_dragging := false
+var drag_offset := Vector2.ZERO
+
 @onready var favicon: TextureRect = %Favicon
 @onready var title_label: Label = %TitleLabel
 @onready var header: HBoxContainer = %Header
+@onready var header_container: PanelContainer = %HeaderContainer
 @onready var upgrade_button: Button = %UpgradeButton
 @onready var minimize_button: Button = %MinimizeButton
 @onready var maximize_button: Button = %MaximizeButton
@@ -63,8 +75,16 @@ func _ready() -> void:
 	maximize_button.pressed.connect(toggle_maximize)
 	close_button.pressed.connect(_on_close_pressed)
 	header.gui_input.connect(_on_header_input)
-
+	
 	call_deferred("_apply_default_window_size_and_position")
+	call_deferred("_finalize_window_size")
+	if windowless_mode:
+		call_deferred("_setup_windowless_drag")
+
+func _finalize_window_size():
+	if pane and default_size != Vector2.ZERO:
+		size = default_size
+		#min_size = default_size
 
 func load_pane(new_pane: Pane) -> void:
 	print("loading pane: " + str(new_pane))
@@ -81,15 +101,78 @@ func load_pane(new_pane: Pane) -> void:
 	
 	
 	default_size = pane.default_window_size
+	
+	if pane.has_signal("request_resize_x_to"):
+		# Clean up any previous connection first for robustness:
+		if is_connected("request_resize_x_to", _on_pane_resize_x_to):
+			disconnect("request_resize_x_to", _on_pane_resize_x_to)
+		pane.request_resize_x_to.connect(_on_pane_resize_x_to)
+	
 	pane.window_title_changed.connect(_on_pane_window_title_changed)
 	pane.window_icon_changed.connect(_on_window_icon_changed)
 	call_deferred("_set_content", pane)
+
+func _on_pane_resize_x_to(target_x: float, duration := 0.4):
+	animate_resize_x(target_x, duration)
+
+func animate_resize_x(target_x: float, duration: float = 0.4):
+	var new_size = size
+	new_size.x = target_x
+	var tween = create_tween()
+	tween.tween_property(self, "size:x", target_x, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	# You might want to clamp to screen, etc. as needed
+
 
 func _set_content(new_content: Control) -> void:
 	for child in content_panel.get_children():
 		child.queue_free()
 	content_panel.add_child(new_content)
 	_update_upgrade_button_state()
+	if windowless_mode:
+		call_deferred("_setup_windowless_drag")
+
+func _set_windowless_mode(enabled: bool) -> void:
+	_windowless_mode = enabled
+
+	# Hide or show frame UI
+	header_container.visible = not enabled
+	if enabled:
+		_setup_windowless_drag()
+	minimize_button.visible = not enabled and window_can_minimize
+	maximize_button.visible = not enabled and window_can_maximize
+	close_button.visible = not enabled and window_can_close
+
+	# Adjust content margins/padding
+	#content_panel.margin_top = 0 if enabled else DEFAULT_MARGIN
+
+func _setup_windowless_drag():
+	if not pane or not pane.has_method("get_drag_handle"):
+		return
+
+	var handle = pane.get_drag_handle()
+	if not is_instance_valid(handle):
+		return
+
+	# This connects to the entire tab container
+	handle.mouse_default_cursor_shape = Control.CURSOR_MOVE
+	handle.gui_input.connect(_on_custom_drag_input)
+
+	# 🔁 Connect to each tab button too
+	for child in handle.get_children():
+		if child is BaseButton:
+			child.mouse_default_cursor_shape = Control.CURSOR_MOVE
+			child.gui_input.connect(_on_custom_drag_input)
+
+
+func _on_custom_drag_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if WindowManager:
+			WindowManager.focus_window(self)
+
+	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+		position += event.relative
+		_clamp_to_screen()
+
 
 func _on_window_icon_changed(new_icon: Texture) -> void:
 	set_window_icon(new_icon)
@@ -123,6 +206,10 @@ func _on_pane_window_title_changed(new_title: String) -> void:
 static func instantiate_for_pane(pane: Pane) -> WindowFrame:
 	var window := preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 	window.load_pane(pane)
+	
+	window.call_deferred("set", "windowless_mode", pane.request_windowless_mode)
+
+	
 	return window
 
 func autoposition() -> void:
@@ -165,41 +252,68 @@ func _clamp_to_screen() -> void:
 
 
 func _process(_delta: float) -> void:
-	if not is_resizing:
-		return
+	if is_resizing:
+		var mouse_delta := get_global_mouse_position() - resize_start_mouse
+		var new_size := resize_start_size
+		var new_pos := resize_start_pos
 
-	var mouse_delta := get_global_mouse_position() - resize_start_mouse
-	var new_size := resize_start_size
-	var new_pos := resize_start_pos
+		if resize_dir.x != 0:
+			new_size.x = max(resize_start_size.x + mouse_delta.x * resize_dir.x, min_window_size.x)
+			if resize_dir.x == -1:
+				new_pos.x = resize_start_pos.x + mouse_delta.x
+		if resize_dir.y != 0:
+			new_size.y = max(resize_start_size.y + mouse_delta.y * resize_dir.y, min_window_size.y)
+			if resize_dir.y == -1:
+				new_pos.y = resize_start_pos.y + mouse_delta.y
 
-	if resize_dir.x != 0:
-		new_size.x = max(resize_start_size.x + mouse_delta.x * resize_dir.x, min_window_size.x)
-		if resize_dir.x == -1:
-			new_pos.x = resize_start_pos.x + mouse_delta.x
-	if resize_dir.y != 0:
-		new_size.y = max(resize_start_size.y + mouse_delta.y * resize_dir.y, min_window_size.y)
-		if resize_dir.y == -1:
-			new_pos.y = resize_start_pos.y + mouse_delta.y
-
-	size = new_size
-	global_position = new_pos
-	_clamp_to_screen()
+		size = new_size
+		global_position = new_pos
+		_clamp_to_screen()
+	elif is_dragging:
+		# Move window to mouse minus drag offset
+		position = get_global_mouse_position() - drag_offset
+		_clamp_to_screen()
 
 func _on_header_input(event: InputEvent) -> void:
-	if is_resizing:
-		return
-
 	if pane == null:
 		return
 
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if WindowManager and WindowManager.has_method("focus_window"):
-			WindowManager.focus_window(self)
+	var global_mouse = get_global_mouse_position()
+	var window_top = global_position.y
+	var resizing_on_top = false
+	if pane.user_resizable:
+		resizing_on_top = (global_mouse.y - window_top) <= resize_margin
 
-	if event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
-		if pane.user_movable: # 👈 ADD THIS CHECK
-			position += event.relative
-			_clamp_to_screen()
+	if event is InputEventMouseMotion:
+		if pane.user_resizable and resizing_on_top:
+			header.mouse_default_cursor_shape = Control.CURSOR_VSIZE
+		else:
+			header.mouse_default_cursor_shape = Control.CURSOR_ARROW
+		# Drag handled in _process
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			if WindowManager and WindowManager.has_method("focus_window"):
+				WindowManager.focus_window(self)
+			if pane.user_resizable and resizing_on_top:
+				is_resizing = true
+				resize_dir = Vector2(0, -1)
+				resize_start_mouse = global_mouse
+				resize_start_size = size
+				resize_start_pos = global_position
+				is_dragging = false
+			elif pane.user_movable:
+				is_dragging = true
+				drag_offset = global_mouse - position
+				is_resizing = false
+		else:
+			is_resizing = false
+			is_dragging = false
+
+
+
+
+
 
 func _gui_input(event: InputEvent) -> void:
 	if window_state == WindowState.MINIMIZED:

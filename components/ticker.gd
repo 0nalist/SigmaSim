@@ -36,6 +36,14 @@ var ticker_entries: Array = [
 		"text": "You can elect yourself CEO of a company if you own 50% + 1 of the shares",
 		"condition": null
 	},
+	{
+		"text": "Have you tried turning it off and then turning it back on again?",
+		"condition": null
+	},
+	{
+		"text": "An eagle soars, a lion hunts, a sigma locks in.",
+		"condition": null
+	},
 ]
 
 var ticker_variables := {

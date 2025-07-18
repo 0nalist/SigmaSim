@@ -1,3 +1,7 @@
+##
+# DEPRECATED !!!!!!!!!!!!!!!!!!!!
+## Old Work_Force is dependent on this, delete after completing WorkForce redesign
+
 extends Node
 # Autoload name: NameGenerator
 
@@ -18,9 +22,9 @@ const RECENT_NAME_LIMIT := 50
 # --- Init ---
 func _ready():
 	# Optional manual entries
-	_add_name("Jack", Vector3(0.0, 1.0, 0.0))
-	_add_name("Sophia", Vector3(1.0, 0.0, 0.0))
-	_add_name("Xylo", Vector3(0.0, 0.0, 0.1))
+	#_add_name("Jack", Vector3(0.0, 1.0, 0.0))
+	#_add_name("Sophia", Vector3(1.0, 0.0, 0.0))
+	#_add_name("Xylo", Vector3(0.0, 0.0, 0.1))
 
 	load_from_json("res://data/names.json")
 	print("✅ NameGenerator loaded %d names" % name_pool.size())

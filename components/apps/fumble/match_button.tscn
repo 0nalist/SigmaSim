@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://3e434irx0gng"]
+
+[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_jare7"]
+[ext_resource type="Script" uid="uid://fq44llbp4oi0" path="res://components/apps/fumble/match_button.gd" id="2_j67un"]
+
+[node name="MatchButton" type="Button"]
+custom_minimum_size = Vector2(128, 128)
+icon = ExtResource("1_jare7")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("2_j67un")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ProfilePic" type="TextureRect" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+text = "Mac DeMarco MacDonaldson"
+horizontal_alignment = 1
+autowrap_mode = 3
+text_direction = 1
+
+[node name="AttractivenessLabel" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+text = "5.5/10"
+horizontal_alignment = 1
+autowrap_mode = 3
+text_direction = 1

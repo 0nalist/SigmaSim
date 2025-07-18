@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://duberm11i2cqq"]
+
+[ext_resource type="Script" uid="uid://cr6snywdkctmc" path="res://components/apps/fumble/profile_card_stack.gd" id="1_iq52y"]
+[ext_resource type="PackedScene" uid="uid://cwin011rx52n7" path="res://components/apps/fumble/fumble_profile_ui.tscn" id="2_3jgf5"]
+
+[node name="ProfileCardStack" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_iq52y")
+profile_card_scene = ExtResource("2_3jgf5")

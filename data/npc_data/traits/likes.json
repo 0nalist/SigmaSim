@@ -1,0 +1,890 @@
+{
+  "Architecture": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Art": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Art deco": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Astronomy": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Audiobooks": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Aviation": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Baking": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Basketball": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Beekeeping": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Being romantic": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Bikes": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Birdwatching": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Board games": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Bonsai": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Brutalism": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Cats": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Chess": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Climbing": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Coffee": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Comedy": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Conspiracy theories": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Cooking": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Crystals": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Cycling": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Dancing": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "DJing": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Documentaries": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Dogs": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Doing puzzles": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Drugs": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Embroidery": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Fashion": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Fish": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Fishing": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Football": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Foraging": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Gambling": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Gaming": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Gardening": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Guitar": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Hiking": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Hip hop": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Hockey": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Horses": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Hungarian goulash": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Iceskating": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Improv": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Indian food": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Italian food": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Jazz": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Journaling": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "K-pop": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Kids": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Kombucha": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Littering": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Makeup": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Making candles": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Making mixtapes": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Meditation": {
+	"correlated": [
+	  "Guru"
+	],
+	"required": [
+	  
+	]
+  },
+  "Memes": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Mexican food": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Minimalism": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Mixology": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Mushrooms": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Music": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Musicals": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Opera": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Origami": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Painting": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Piano": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Pilates": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Poetry": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Poker": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Politics": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Pop": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Pottery": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Programming": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Psychology": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Reading": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Religion": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Rock tumbling": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Rollerskating": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Running": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Sailing": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Sci-fi": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Shopping": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Skincare": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Spirituality": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Sport betting": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Stargazing": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Superhero movies": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "sushi": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Swimming": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "tacos": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Tarot": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Tattoos": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Tea": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Thai food": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "The beach": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Thrift shopping": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Travel": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Trivia": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Ukelele": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Volunteering": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Weightlifting": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Wine": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Working": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Writing": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Yoga": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Therapy": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  },
+  "Scuba diving": {
+	"correlated": [
+	  
+	],
+	"required": [
+	  
+	]
+  }
+}

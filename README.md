@@ -63,4 +63,4 @@ Most simulation logic is organized into Autoload singletons, which are always av
 ---
 
 *This project is an early prototype using placeholder art and incomplete systems. For questions on system boundaries or contributing, see the source code or open an issue.*
-All rights reserved
+*All rights reserved*
