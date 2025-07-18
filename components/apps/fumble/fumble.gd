@@ -18,7 +18,8 @@ signal request_resize_x_to(pixels)
 @onready var chats_tab: ChatsTab = %ChatsTab
 
 
-@onready var confidence_progress_bar: ProgressBar = %ConfidenceProgressBar
+@onready var confidence_progress_bar: StatProgressBar = %ConfidenceProgressBar
+
 
 
 
@@ -71,9 +72,11 @@ func _ready():
 	show_swipes_tab()
 	cancel_pride()
 	
-	
+	PlayerManager.confidence_changed.connect(_on_confidence_changed)
 
 
+func _on_confidence_changed(value: float) -> void:
+	confidence_progress_bar.update_value(value)
 
 
 func _on_card_swiped_left(npc_idx):
@@ -82,6 +85,8 @@ func _on_card_swiped_left(npc_idx):
 
 func _on_card_swiped_right(npc_idx):
 	NPCManager.set_relationship_status(npc_idx, "fumble", "liked")
+	PlayerManager.adjust_stat("confidence", 1)
+
 
 func highlight_active(button: Button):
 	self_button.modulate = Color.WHITE

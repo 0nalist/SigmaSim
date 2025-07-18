@@ -1,6 +1,8 @@
 ## Autoload PlayerManager
 extends Node
 
+signal confidence_changed
+
 var slot_id = -1
 
 var default_user_data: Dictionary = {
@@ -98,7 +100,7 @@ func adjust_stat(stat: String, delta: float) -> void:
 		user_data[stat] += delta
 		if stat == "confidence":
 			user_data[stat] = max(user_data[stat], 0.0)
-
+			confidence_changed.emit(user_data[stat])
 
 
 func has_seen(id: String) -> bool:

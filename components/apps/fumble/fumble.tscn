@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=15 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://3e434irx0gng" path="res://components/apps/fumble/match_button.tscn" id="6_wfdmb"]
 [ext_resource type="PackedScene" uid="uid://c02crnsc8wbvh" path="res://components/apps/fumble/chat_battle_button.tscn" id="7_jh1fk"]
 [ext_resource type="PackedScene" uid="uid://cndhqbvwm63oq" path="res://components/apps/fumble/fumble_match_profile.tscn" id="8_5uoqt"]
+[ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="10_jh1fk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ye860"]
 bg_color = Color(2.22605e-07, 0.23204, 0.190425, 1)
@@ -406,6 +407,8 @@ theme_override_styles/background = SubResource("StyleBoxFlat_wfdmb")
 theme_override_styles/fill = SubResource("StyleBoxFlat_jh1fk")
 value = 100.0
 show_percentage = false
+script = ExtResource("10_jh1fk")
+duration = 0.4
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/ConfidenceProgressBar"]
 layout_mode = 1
