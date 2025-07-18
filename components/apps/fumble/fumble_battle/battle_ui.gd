@@ -36,6 +36,8 @@ var logic: BattleLogic
 var equipped_moves := ["RIZZ", "NEG", "FLEX", "SIMP"]
 var action_buttons := []
 
+var move_usage_counts := {}  # e.g. {"rizz": 0, "neg": 2, ...}
+
 var battle_id: String
 var npc: NPC
 var chatlog: Array = []
@@ -50,7 +52,7 @@ var is_animating: bool = false
 
 func _ready():
 	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
-	update_action_buttons()
+	
 	
 	catch_button.pressed.connect(_on_catch_button_pressed)
 	ghost_button.pressed.connect(_on_ghost_button_pressed)
@@ -85,6 +87,12 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 		child.queue_free()
 	for msg in chatlog:
 		add_chat_line(msg.text, msg.is_player)
+	
+	move_usage_counts.clear()
+	for move in equipped_moves:
+		move_usage_counts[move.to_lower()] = 0
+
+	
 	update_action_buttons()
 	scroll_to_newest_chat()
 	update_progress_bars()
@@ -128,13 +136,30 @@ func _update_profiles():
 
 
 func update_action_buttons():
+	if logic == null:
+		return
+
 	for i in equipped_moves.size():
-		action_buttons[i].text = equipped_moves[i].to_upper()
-		# Disconnect any previous signals to prevent stacking
+		var move_type = equipped_moves[i].to_lower()
+		var use_count = move_usage_counts.get(move_type, 0)
+
+		var label_base = equipped_moves[i].to_upper() + "\n"
+
+		if use_count >= 3:
+			var chance := logic.get_success_chance(move_type)
+			var chance_percent = round(chance * 100.0)
+			label_base += str(chance_percent) + "%"
+		else:
+			var mystery := String("?").repeat(3 - use_count)
+			label_base += mystery
+
+		action_buttons[i].text = label_base
+
+		# Prevent signal stacking
 		if action_buttons[i].is_connected("pressed", Callable(self, "_on_action_button_pressed")):
 			action_buttons[i].disconnect("pressed", Callable(self, "_on_action_button_pressed"))
 		action_buttons[i].pressed.connect(_on_action_button_pressed.bind(i))
-	
+
 
 func _on_action_button_pressed(index):
 	if is_animating:
@@ -189,6 +214,12 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 func do_move(move_type: String) -> void:
 	is_animating = true
 	move_type = move_type.to_lower()
+	
+	if move_usage_counts.has(move_type):
+		move_usage_counts[move_type] += 1
+	update_action_buttons()
+
+	
 	# Player line logic
 	var options = []
 	for line in RizzBattleData.player_lines:
@@ -222,6 +253,7 @@ func do_move(move_type: String) -> void:
 	await get_tree().create_timer(.69).timeout
 	animate_success_or_fail(result.success)
 	await update_progress_bars()
+	
 	is_animating = false
 
 func animate_success_or_fail(success):

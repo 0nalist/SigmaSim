@@ -7,12 +7,20 @@ signal request_resize_x_to(pixels)
 @onready var profile_container: Control = %ProfileContainer
 @onready var swipe_left_button: Button = %SwipeLeftButton
 @onready var swipe_right_button: Button = %SwipeRightButton
-@onready var team_button: Button = %TeamButton
-@onready var field_button: Button = %FieldButton
-@onready var game_button: Button = %GameButton
-@onready var team_tab: Control = %TeamTab
-@onready var field_tab: Control = %FieldTab
-@onready var chats_tab: Control = %ChatsTab
+
+
+@onready var self_button: Button = %SelfButton
+@onready var swipes_button: Button = %SwipesButton
+@onready var chats_button: Button = %ChatsButton
+
+@onready var self_tab: Control = %SelfTab
+@onready var swipes_tab: Control = %SwipesTab
+@onready var chats_tab: ChatsTab = %ChatsTab
+
+
+@onready var confidence_progress_bar: ProgressBar = %ConfidenceProgressBar
+
+
 
 # Team tab UI
 # Gender sliders
@@ -48,9 +56,9 @@ func _ready():
 	card_stack.card_swiped_right.connect(_on_card_swiped_right)
 
 	# Connect tab and slider events
-	team_button.pressed.connect(show_team_tab)
-	field_button.pressed.connect(show_field_tab)
-	game_button.pressed.connect(show_chat_tab)
+	self_button.pressed.connect(show_self_tab)
+	swipes_button.pressed.connect(show_swipes_tab)
+	chats_button.pressed.connect(show_chat_tab)
 	
 	x_slider.value_changed.connect(_on_gender_slider_changed)
 	y_slider.value_changed.connect(_on_gender_slider_changed)
@@ -60,10 +68,14 @@ func _ready():
 	y_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	# Start on field tab by default
-	show_field_tab()
+	show_swipes_tab()
 	cancel_pride()
+	
+	
 
-# These can be used to update your logic/UI in response to swipes
+
+
+
 func _on_card_swiped_left(npc_idx):
 	NPCManager.mark_npc_inactive_in_app(npc_idx, "fumble")
 	# Add further logic if desired
@@ -72,28 +84,28 @@ func _on_card_swiped_right(npc_idx):
 	NPCManager.set_relationship_status(npc_idx, "fumble", "liked")
 
 func highlight_active(button: Button):
-	team_button.modulate = Color.WHITE
-	field_button.modulate = Color.WHITE
-	game_button.modulate = Color.WHITE
+	self_button.modulate = Color.WHITE
+	swipes_button.modulate = Color.WHITE
+	chats_button.modulate = Color.WHITE
 	button.modulate = Color.YELLOW
 
-func show_team_tab():
-	team_tab.visible = true
-	field_tab.visible = false
+func show_self_tab():
+	self_tab.visible = true
+	swipes_tab.visible = false
 	chats_tab.visible = false
-	highlight_active(team_button)
+	highlight_active(self_button)
 
-func show_field_tab():
-	team_tab.visible = false
-	field_tab.visible = true
+func show_swipes_tab():
+	self_tab.visible = false
+	swipes_tab.visible = true
 	chats_tab.visible = false
-	highlight_active(field_button)
+	highlight_active(swipes_button)
 
 func show_chat_tab():
-	team_tab.visible = false
-	field_tab.visible = false
+	self_tab.visible = false
+	swipes_tab.visible = false
 	chats_tab.visible = true
-	highlight_active(game_button)
+	highlight_active(chats_button)
 	chats_tab.refresh_matches()
 	chats_tab.refresh_battles()
 

@@ -27,10 +27,11 @@ var default_user_data: Dictionary = {
 	"worker_productivity": 100,
 	
 	# Chat Battle Stats
-		"attractiveness": 50,
-		"rizz": 1,
-		"confidence": 100,
-
+	"attractiveness": 50,
+	"rizz": 1,
+	"confidence": 100.0,
+	"confidence_regen_rate": 1.0,
+	
 	# Other Traits
 
 	"zodiac_sign": "",
@@ -42,6 +43,11 @@ var default_user_data: Dictionary = {
 }
 
 var user_data: Dictionary = default_user_data.duplicate(true)
+
+
+
+
+
 
 
 func get_var(key: String, default_value = null):
@@ -63,6 +69,8 @@ func get_stat(key: String) -> Variant:
 		_: return user_data.get(key)
 
 func set_stat(key: String, value: Variant) -> void:
+	if key == "confidence":
+		value = max(value, 0.0)
 	match key:
 		"cash": PortfolioManager.cash = value
 		"student_loans": PortfolioManager.student_loans = value
@@ -88,6 +96,9 @@ func ensure_default_stats() -> void:
 func adjust_stat(stat: String, delta: float) -> void:
 	if user_data.has(stat):
 		user_data[stat] += delta
+		if stat == "confidence":
+			user_data[stat] = max(user_data[stat], 0.0)
+
 
 
 func has_seen(id: String) -> bool:

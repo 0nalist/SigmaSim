@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=14 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
@@ -17,6 +17,27 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wfdmb"]
+bg_color = Color(0.162066, 0.162066, 0.162065, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jh1fk"]
+bg_color = Color(0.766418, 0, 0.191791, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5uoqt"]
+bg_color = Color(0.541176, 0.807843, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Fumble" type="PanelContainer"]
 anchors_preset = 15
@@ -55,14 +76,13 @@ theme_override_font_sizes/font_size = 36
 text = "F  U  M  B  L  E"
 horizontal_alignment = 1
 
-[node name="TeamTab" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="SelfTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/TeamTab"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -75,142 +95,171 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
 layout_mode = 2
 theme_override_constants/outline_size = 12
 text = "You"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Bio:"
 
-[node name="TextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+[node name="TextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 10
 placeholder_text = "Write something!"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="GenderLabel" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/outline_size = 12
-text = "Gender Preference"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
-text = "X"
+text = "Your Gender:"
 
-[node name="XHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Y"
-
-[node name="YHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
-layout_mode = 2
-text = "Z"
-
-[node name="ZHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="HBoxContainer99" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+[node name="GenderLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer99"]
 layout_mode = 2
-text = "Curiosity"
+theme_override_constants/outline_size = 12
+text = "I'm interested in:"
 
-[node name="CuriosityHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer99"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 6
+text = "X"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer99"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "X"
+
+[node name="XHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Y"
+
+[node name="YHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Z"
+
+[node name="ZHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Curiosity"
+
+[node name="CuriosityHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2"]
 layout_mode = 2
 theme_override_constants/outline_size = 12
 text = "Premium Features"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 text = "Archetype: Beta"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
 text = "See your elo"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer3"]
 layout_mode = 2
 text = "Autoswipe on all above a"
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer3"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer3"]
 layout_mode = 2
 max_length = 1
 virtual_keyboard_type = 3
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer3"]
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer2/HBoxContainer3"]
 layout_mode = 2
 
-[node name="FieldTab" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/FieldTab"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SwipesTab"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -220,27 +269,27 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/margin_bottom = 5
 
-[node name="ProfileContainer" type="Control" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer"]
+[node name="ProfileContainer" type="Control" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 
-[node name="ProfileCardStack" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/ProfileContainer" instance=ExtResource("3_vq0mq")]
+[node name="ProfileCardStack" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/ProfileContainer" instance=ExtResource("3_vq0mq")]
 layout_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_bottom = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_constants/separation = 8
 
-[node name="SwipeLeftButton" type="Button" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/MarginContainer/HBoxContainer"]
+[node name="SwipeLeftButton" type="Button" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 35)
 layout_mode = 2
@@ -249,7 +298,7 @@ focus_mode = 0
 text = "  🤮  "
 icon_alignment = 1
 
-[node name="SwipeRightButton" type="Button" parent="MarginContainer/VBoxContainer/FieldTab/MarginContainer/MarginContainer/HBoxContainer"]
+[node name="SwipeRightButton" type="Button" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 35)
 layout_mode = 2
@@ -342,36 +391,114 @@ layout_mode = 2
 
 [node name="TabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 
-[node name="TeamButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="10px" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TabContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_wfdmb")
+theme_override_styles/fill = SubResource("StyleBoxFlat_jh1fk")
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/ConfidenceProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "CON"
+
+[node name="10px2" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="10px5" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+
+[node name="SelfButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/h_separation = 8
-text = " Team "
+text = " Prof "
 flat = true
 
-[node name="FieldButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="SwipesButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/h_separation = 8
-text = " Field "
+text = " Swipe "
 flat = true
 
-[node name="GameButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="ChatsButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/h_separation = 8
-text = " Game "
+text = " Chat "
 flat = true
 
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/TeamTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4/CuriosityHSlider" to="." method="_on_curiosity_h_slider_value_changed"]
+[node name="10px3" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="10px6" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="ExperienceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TabContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_wfdmb")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5uoqt")
+value = 2.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/ExperienceProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "EX"
+
+[node name="10px4" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4/CuriosityHSlider" to="." method="_on_curiosity_h_slider_value_changed"]
