@@ -47,8 +47,14 @@ var default_user_data: Dictionary = {
 var user_data: Dictionary = default_user_data.duplicate(true)
 
 
+## Stat update suppression
+var suppressed_stat_updates: Dictionary = {}
 
+func suppress_stat(stat_name: String, suppress: bool) -> void:
+	suppressed_stat_updates[stat_name] = suppress
 
+func is_stat_suppressed(stat_name: String) -> bool:
+	return suppressed_stat_updates.get(stat_name, false)
 
 
 

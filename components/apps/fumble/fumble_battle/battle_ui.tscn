@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://cel7rmg2pea12"]
+[gd_scene load_steps=18 format=3 uid="uid://cel7rmg2pea12"]
 
 [ext_resource type="Script" uid="uid://b4cmpyad34a6u" path="res://components/apps/fumble/fumble_battle/battle_ui.gd" id="1_ctqjn"]
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_vooct"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_ctqjn"]
 [ext_resource type="Script" uid="uid://ryyas7jb3kgr" path="res://components/apps/fumble/fumble_battle/battle_logic.gd" id="3_clyoa"]
 [ext_resource type="PackedScene" uid="uid://dyv7bmgfriqht" path="res://components/apps/fumble/fumble_battle/chat_box.tscn" id="4_34iuq"]
+[ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="6_d7cye"]
 [ext_resource type="PackedScene" uid="uid://cwin011rx52n7" path="res://components/apps/fumble/fumble_profile_ui.tscn" id="6_g0e31"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pog6m"]
@@ -22,6 +23,20 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4kvrx"]
+bg_color = Color(0.766418, 0, 0.191791, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbtd4"]
+bg_color = Color(0.162066, 0.162066, 0.162065, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ocgn8"]
 bg_color = Color(0.766418, 0, 0.191791, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
@@ -151,14 +166,43 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Name McNamerson"
 horizontal_alignment = 1
 
-[node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="ConfidenceProgressBarOLD" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_34iuq")
 theme_override_styles/fill = SubResource("StyleBoxFlat_4kvrx")
 value = 100.0
 show_percentage = false
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ConfidenceProgressBarOLD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "CONFIDENCE"
+
+[node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_tbtd4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ocgn8")
+value = 100.0
+show_percentage = false
+script = ExtResource("6_d7cye")
+duration = 0.4
+stat_name = "confidence"
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ConfidenceProgressBar"]
 layout_mode = 1

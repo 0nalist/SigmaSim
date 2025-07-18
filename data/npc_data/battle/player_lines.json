@@ -69,6 +69,17 @@
   },
   {
     "move_type": "simp",
+    "core": "My friends told me not to simp to hard",
+    "prefixes": [],
+    "suffixes": [
+      ", but I can't help it.",
+      ".",
+      ""
+    ],
+    "response_id": "simp_to_too"
+  },
+  {
+    "move_type": "simp",
     "core": "I would let you ruin my credit score",
     "prefixes": [
       "Unironically, ",
@@ -118,7 +129,7 @@
     "core": "I would move heaven and earth for you",
     "prefixes": [
       "Immaculate vibes. ",
-      "You are beyond dreamy. ,",
+      "You are beyond dreamy. ",
       "Wow! "
     ],
     "suffixes": [
@@ -163,21 +174,6 @@
       ", and I’m already online."
     ],
     "response_id": "rizz_wifi"
-  },
-  {
-    "move_type": "rizz",
-    "core": "f you were a vegetable, you'd be a cute-cumber",
-    "prefixes": [
-      "Dead serious, i",
-      "No joke, i",
-      "I"
-    ],
-    "suffixes": [
-      "!",
-      ", and I'm craving that pun.",
-      ", and it’s growing on me."
-    ],
-    "response_id": "rizz_cucumber"
   },
   {
     "move_type": "rizz",
@@ -407,15 +403,17 @@
   },
   {
     "move_type": "flex",
-    "core": "My therapist comes to me for advice",
+    "core": "y therapist comes to me for advice",
     "prefixes": [
-      "In case you were wondering, ",
-      "Dead serious, ",
-      "No joke, "
+      "In case you were wondering, m",
+      "Dead serious, m",
+      "No joke, m",
+      "M"
     ],
     "suffixes": [
       "",
-      " It's an interesting power dynamic."
+      ". It's an interesting power dynamic.",
+      ". So you know I'm a good listener"
     ],
     "response_id": "flex_therapist"
   },
@@ -458,9 +456,11 @@
       "W"
     ],
     "suffixes": [
-      "?"
+      "?",
+      "? I'm buying",
+      "? Or even skip the drink 😏"
     ],
-    "response_id": null
+    "response_id": "catch_drink"
   },
   {
     "move_type": "catch",
@@ -501,13 +501,6 @@
       " Can I get your number?",
       " Let's take this offline."
     ],
-    "response_id": null
-  },
-  {
-    "move_type": "catch",
-    "core": "If I asked you out, would that ruin whatever weird vibe we have going?",
-    "prefixes": [],
-    "suffixes": [],
     "response_id": null
   },
   {

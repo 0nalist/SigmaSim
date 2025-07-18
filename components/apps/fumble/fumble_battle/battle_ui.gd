@@ -9,9 +9,8 @@ var logic: BattleLogic
 @onready var profile_pic: TextureRect = %ProfilePic
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
+
 @onready var npc_type_label: Label = %NPCTypeLabel
-
-
 @onready var npc_profile_pic: TextureRect = %NPCProfilePic
 @onready var npc_attractiveness_label: Label = %NPCAttractivenessLabel
 @onready var npc_name_label: Label = %NPCNameLabel
@@ -29,7 +28,7 @@ var logic: BattleLogic
 @onready var self_esteem_progress_bar: ProgressBar = %SelfEsteemProgressBar
 @onready var apprehension_progress_bar: ProgressBar = %ApprehensionProgressBar
 
-@onready var confidence_progress_bar: ProgressBar = %ConfidenceProgressBar
+@onready var confidence_progress_bar: StatProgressBar = %ConfidenceProgressBar
 
 @onready var chat_container: VBoxContainer = %ChatContainer
 
@@ -122,14 +121,23 @@ func animate_progress_bar(bar: ProgressBar, target_value: float, duration: float
 
 
 func _update_profiles():
-	# Player info (if needed)
-	# profile_pic.texture = ... (set if you want, or leave blank for now)
-	# attractiveness_label.text = ...
-	# name_label.text = ...
+	# === Player info ===
+	var pic_path = PlayerManager.get_var("profile_picture_path", "")
+	if pic_path != "":
+		var img = load(pic_path)
+		if img is Texture2D:
+			profile_pic.texture = img
+		else:
+			profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
+	else:
+		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
+
+	attractiveness_label.text = "🔥 %.1f/10" % (float(PlayerManager.get_stat("attractiveness")) / 10.0)
+	name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info
 	npc_profile_pic.texture = npc.profile_pic if npc.profile_pic else preload("res://assets/prof_pics/silhouette.png")
-	npc_attractiveness_label.text = "❤️ %.1f/10" % (float(npc.attractiveness) / 10.0)
+	npc_attractiveness_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
 	npc_name_label.text = npc.full_name
 	npc_type_label.text = npc.chat_battle_type
 
@@ -213,6 +221,8 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 
 func do_move(move_type: String) -> void:
 	is_animating = true
+	PlayerManager.suppress_stat("confidence", true)
+	
 	move_type = move_type.to_lower()
 	
 	if move_usage_counts.has(move_type):
@@ -255,6 +265,9 @@ func do_move(move_type: String) -> void:
 	await update_progress_bars()
 	
 	is_animating = false
+	
+	PlayerManager.suppress_stat("confidence", false)
+	confidence_progress_bar.update_value(PlayerManager.get_stat("confidence"))
 
 func animate_success_or_fail(success):
 	if success:

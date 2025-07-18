@@ -54,7 +54,7 @@
 	  }
 	]
   },
-  "neg_middle": {
+  "neg_middle_school": {
 	"TRUE": [
 	  {
 		"move_type": "neg",
@@ -90,6 +90,81 @@
 		"response_prefix": [],
 		"response_line": "Is that supposed to impress me?",
 		"response_suffix": []
+	  }
+	]
+  },
+  "simp_to_too": {
+	"TRUE": [
+	  {
+		"move_type": "simp",
+		"response_prefix": [],
+		"response_line": "Simp *too hard. But maybe you should",
+		"response_suffix": [
+		  ".",
+		  "..."
+		]
+	  }
+	],
+	"FALSE": [
+	  {
+		"move_type": "simp",
+		"response_prefix": [],
+		"response_line": "*too",
+		"response_suffix": []
+	  }
+	]
+  },
+  "catch_drink": {
+	"TRUE": [
+	  {
+		"move_type": "catch",
+		"response_prefix": [
+		  "Sure! ",
+		  "I'm down. ",
+		  ""
+		],
+		"response_line": "Who knows where a couple of drinks could lead us",
+		"response_suffix": [
+		  " 😏",
+		  "...",
+		  "."
+		]
+	  },
+	  {
+		"move_type": "catch",
+		"response_prefix": [],
+		"response_line": "You don't need to get me drunk",
+		"response_suffix": [
+		  " to kiss me :)",
+		  ". You could just come over..."
+		]
+	  }
+	],
+	"FALSE": [
+	  {
+		"move_type": "catch",
+		"response_prefix": [
+		  "Lol a",
+		  "A"
+		],
+		"response_line": "re you trying to get me drunk",
+		"response_suffix": [
+		  "?",
+		  "??"
+		]
+	  },
+	  {
+		"move_type": "catch",
+		"response_prefix": [
+		  "Lol yeah y",
+		  "Yeah y",
+		  "Y"
+		],
+		"response_line": "ou'd have no chance sober.",
+		"response_suffix": [
+		  " I don't think so.",
+		  " Not that you even have a chance with me drunk."
+		]
 	  }
 	]
   }

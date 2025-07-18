@@ -9,6 +9,9 @@ class_name StatProgressBar
 @export var easing := Tween.EASE_OUT
 @export var transition := Tween.TRANS_CUBIC
 
+@export var stat_name: String
+
+
 var _tween: Tween = null
 
 func set_value_animated(target_value: float) -> void:
@@ -18,10 +21,13 @@ func set_value_animated(target_value: float) -> void:
 	_tween.tween_property(self, "value", clamp(target_value, min_value, max_value), duration).set_trans(transition).set_ease(easing)
 
 func update_value(new_value: float) -> void:
+	if stat_name != "" and PlayerManager.is_stat_suppressed(stat_name):
+		return  # Stat is currently suppressed
 	if animate:
 		set_value_animated(new_value)
 	else:
 		value = clamp(new_value, min_value, max_value)
+
 
 func _ready():
 	value = clamp(value, min_value, max_value)  # Clamp initial value
