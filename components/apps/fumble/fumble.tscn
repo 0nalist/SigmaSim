@@ -413,8 +413,8 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_jh1fk")
 value = 100.0
 show_percentage = false
 script = ExtResource("10_jh1fk")
-duration = 0.4
 stat_name = "confidence"
+duration = 0.4
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/ConfidenceProgressBar"]
 layout_mode = 1

@@ -71,12 +71,8 @@ func _ready():
 	# Start on field tab by default
 	show_swipes_tab()
 	cancel_pride()
-	
-	PlayerManager.confidence_changed.connect(_on_confidence_changed)
 
 
-func _on_confidence_changed(value: float) -> void:
-	confidence_progress_bar.update_value(value)
 
 
 func _on_card_swiped_left(npc_idx):

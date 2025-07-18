@@ -267,7 +267,7 @@ func do_move(move_type: String) -> void:
 	is_animating = false
 	
 	PlayerManager.suppress_stat("confidence", false)
-	confidence_progress_bar.update_value(PlayerManager.get_stat("confidence"))
+	#confidence_progress_bar.update_value(PlayerManager.get_stat("confidence"))
 
 func animate_success_or_fail(success):
 	if success:
