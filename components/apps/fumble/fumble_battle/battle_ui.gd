@@ -90,7 +90,7 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	move_usage_counts.clear()
 	for move in equipped_moves:
 		move_usage_counts[move.to_lower()] = 0
-
+	move_usage_counts["catch"] = 0
 	
 	update_action_buttons()
 	scroll_to_newest_chat()
@@ -167,6 +167,17 @@ func update_action_buttons():
 		if action_buttons[i].is_connected("pressed", Callable(self, "_on_action_button_pressed")):
 			action_buttons[i].disconnect("pressed", Callable(self, "_on_action_button_pressed"))
 		action_buttons[i].pressed.connect(_on_action_button_pressed.bind(i))
+	
+	# === Catch button logic ===
+	var catch_uses = move_usage_counts.get("catch", 0)
+	var label_base = "CATCH\n"
+	if catch_uses >= 3:
+		var catch_chance = logic.get_success_chance("catch")
+		label_base += str(round(catch_chance * 100.0)) + "%"
+	else:
+		var mystery := String("?").repeat(3 - catch_uses)
+		label_base += mystery
+	catch_button.text = label_base
 
 
 func _on_action_button_pressed(index):
@@ -229,7 +240,6 @@ func do_move(move_type: String) -> void:
 		move_usage_counts[move_type] += 1
 	update_action_buttons()
 
-	
 	# Player line logic
 	var options = []
 	for line in RizzBattleData.player_lines:
@@ -261,13 +271,28 @@ func do_move(move_type: String) -> void:
 	
 	await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
 	await get_tree().create_timer(.69).timeout
+
+	# SPECIAL LOGIC FOR CATCH
+	if move_type == "catch":
+		if result.success:
+			# Add NPC's number as a new message
+			var number_msg = "Here’s my number: %s" % str(NPCFactory.djb2(npc.full_name))
+			var chat2 = add_chat_line(number_msg, false)
+			await animate_chat_text(chat2, number_msg)
+			# (Optional: end the battle, or mark as "won", etc.)
+		else:
+			# Player loses confidence, NPC becomes more apprehensive
+			PlayerManager.adjust_stat("confidence", -10)
+			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
+			# Optionally animate/apply any feedback here too
+
+	# Animate effects/progress, etc.
 	animate_success_or_fail(result.success)
 	await update_progress_bars()
 	
 	is_animating = false
-	
 	PlayerManager.suppress_stat("confidence", false)
-	#confidence_progress_bar.update_value(PlayerManager.get_stat("confidence"))
+
 
 func animate_success_or_fail(success):
 	if success:
@@ -319,6 +344,7 @@ func process_npc_response(move_type, response_id, success: bool):
 	
 	var chat = add_chat_line(response_text, false)
 	await animate_chat_text(chat, response_text)
+	update_action_buttons()
 
 
 
