@@ -395,14 +395,14 @@ layout_mode = 2
 [node name="ChatBattleButton" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/ChatBattlesContainer" instance=ExtResource("7_jh1fk")]
 layout_mode = 2
 
-[node name="TabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MenuTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="10px" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="10px" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
@@ -416,7 +416,7 @@ script = ExtResource("10_jh1fk")
 stat_name = "confidence"
 duration = 0.4
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/ConfidenceProgressBar"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ConfidenceProgressBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -431,19 +431,19 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "CON"
 
-[node name="10px2" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="10px2" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="10px5" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="10px5" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="SelfButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
+[node name="SelfButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -453,7 +453,7 @@ theme_override_constants/h_separation = 8
 text = " Prof "
 flat = true
 
-[node name="SwipesButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
+[node name="SwipesButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -463,7 +463,7 @@ theme_override_constants/h_separation = 8
 text = " Swipe "
 flat = true
 
-[node name="ChatsButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/HBoxContainer"]
+[node name="ChatsButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -473,15 +473,15 @@ theme_override_constants/h_separation = 8
 text = " Chat "
 flat = true
 
-[node name="10px3" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="10px3" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="10px6" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="10px6" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="ExperienceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="ExperienceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
@@ -492,7 +492,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_5uoqt")
 value = 2.0
 show_percentage = false
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/ExperienceProgressBar"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ExperienceProgressBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -507,7 +507,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "EX"
 
-[node name="10px4" type="Control" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="10px4" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 

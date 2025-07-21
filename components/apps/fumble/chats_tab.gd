@@ -7,6 +7,9 @@ signal request_resize_x_to(pixels)
 @onready var match_container: HBoxContainer = %MatchContainer
 @onready var chat_battles_container: VBoxContainer = %ChatBattlesContainer
 
+@onready var average_match_label: Label = %AverageMatchLabel
+
+
 @export var match_button_scene: PackedScene 
 @export var battle_button_scene: PackedScene 
 @export var match_profile_scene : PackedScene

@@ -3,7 +3,7 @@ extends Node
 
 var active_battles: Array = [] # {npc_idx, battle_id}
 
-# Ask NPCManager for matches!
+
 func get_matches() -> Array:
 	return NPCManager.get_fumble_matches()
 
