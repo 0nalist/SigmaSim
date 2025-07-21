@@ -21,7 +21,7 @@ func set_profile(npc_ref, idx):
 		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png") # fallback
 	# Set name
 	name_label.text = npc.full_name
-	attractiveness_label.text = "❤️ %.1f/10" % (float(npc.attractiveness) / 10.0)
+	attractiveness_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
 
 
 func _ready():

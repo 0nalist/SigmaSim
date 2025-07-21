@@ -22,15 +22,36 @@ func _ready():
 func refresh_matches():
 	for child in match_container.get_children():
 		child.queue_free()
+
 	var matches = FumbleManager.get_matches()
-	matches_label.text = "Matches: %d" % matches.size()
+	var battles = FumbleManager.get_active_battles()
+	var battle_npc_indices = []
+	for b in battles:
+		battle_npc_indices.append(b.npc_idx)
+
+	var total_attractiveness = 0
+	var filtered_count = 0
+
 	for idx in matches:
+		# Only show if not in an active battle
+		if battle_npc_indices.has(idx):
+			continue
 		var npc = NPCManager.get_npc_by_index(idx)
+		total_attractiveness += npc.attractiveness
+		filtered_count += 1
 		var btn = match_button_scene.instantiate()
-		
 		btn.match_pressed.connect(_on_match_button_pressed)
 		match_container.add_child(btn)
 		btn.set_profile(npc, idx)
+
+	matches_label.text = "Matches: %d" % filtered_count
+
+	var avg_att = 0.0
+	if filtered_count > 0:
+		avg_att = float(total_attractiveness) / filtered_count
+	average_match_label.text = "Avg: 🔥 %.1f/10" % (avg_att / 10.0)
+
+
 
 func refresh_battles():
 	for child in chat_battles_container.get_children():
@@ -55,6 +76,7 @@ func _on_match_button_pressed(npc, idx):
 func _on_start_battle_requested(battle_id, npc):
 	open_battle(battle_id, npc)
 	refresh_battles()
+	refresh_matches()
 
 func _on_battle_button_pressed(battle_id, npc):
 	open_battle(battle_id, npc)

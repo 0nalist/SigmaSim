@@ -30,6 +30,12 @@ var logic: BattleLogic
 
 @onready var confidence_progress_bar: StatProgressBar = %ConfidenceProgressBar
 
+@onready var npc_profile_button: Button = %NPCProfileButton
+@onready var profile_center_container: CenterContainer = %ProfileCenterContainer
+@onready var fumble_profile: FumbleProfileUI = %FumbleProfile
+@onready var close_fumble_profile_button: Button = %CloseFumbleProfileButton
+
+
 @onready var chat_container: VBoxContainer = %ChatContainer
 
 var equipped_moves := ["RIZZ", "NEG", "FLEX", "SIMP"]
@@ -55,7 +61,10 @@ func _ready():
 	
 	catch_button.pressed.connect(_on_catch_button_pressed)
 	ghost_button.pressed.connect(_on_ghost_button_pressed)
-
+	
+	profile_center_container.hide()
+	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
+	close_fumble_profile_button.pressed.connect(_on_close_fumble_profile_button_pressed)
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}):
 	battle_id = new_battle_id
@@ -333,6 +342,18 @@ func animate_success_or_fail(success: bool):
 		last_player_chat.set_result_and_flash(player_result)
 	if last_npc_chat:
 		last_npc_chat.set_result_and_flash(npc_result)
+
+
+
+func _on_npc_profile_button_pressed():
+	profile_center_container.show()
+	fumble_profile.load_npc(npc)
+
+
+func _on_close_fumble_profile_button_pressed():
+	profile_center_container.hide()
+
+
 
 
 

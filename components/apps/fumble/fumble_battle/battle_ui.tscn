@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cel7rmg2pea12"]
+[gd_scene load_steps=24 format=3 uid="uid://cel7rmg2pea12"]
 
 [ext_resource type="Script" uid="uid://b4cmpyad34a6u" path="res://components/apps/fumble/fumble_battle/battle_ui.gd" id="1_ctqjn"]
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_vooct"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dyv7bmgfriqht" path="res://components/apps/fumble/fumble_battle/chat_box.tscn" id="4_34iuq"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="6_d7cye"]
 [ext_resource type="PackedScene" uid="uid://cwin011rx52n7" path="res://components/apps/fumble/fumble_profile_ui.tscn" id="6_g0e31"]
+[ext_resource type="Script" uid="uid://d4dkx4ch67ulp" path="res://components/apps/fumble/fumble_battle/click_to_dismiss.gd" id="8_4kvrx"]
+[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/buttons/redbuttonpressed.png" id="8_ocgn8"]
+[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/buttons/redbutton.png" id="9_msu7m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pog6m"]
 bg_color = Color(1, 1, 1, 1)
@@ -76,6 +79,27 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fmmgg"]
+texture = ExtResource("8_ocgn8")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i8wc4"]
+texture = ExtResource("8_ocgn8")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5wc8t"]
+texture = ExtResource("9_msu7m")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [node name="ChatBattleUI" type="PanelContainer"]
 anchors_preset = 15
@@ -278,6 +302,17 @@ theme_override_constants/outline_size = 2
 text = "0/10"
 horizontal_alignment = 1
 
+[node name="NPCProfileButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/NPCProfilePic"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -16.0
+offset_bottom = 27.0
+grow_horizontal = 0
+text = "?"
+
 [node name="NPCNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -455,12 +490,46 @@ size_flags_vertical = 3
 focus_mode = 0
 text = "INVENTORY"
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-visible = false
+[node name="ProfileCenterContainer" type="CenterContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="FumbleProfile" parent="CenterContainer" instance=ExtResource("6_g0e31")]
+[node name="FumbleProfile" parent="ProfileCenterContainer" instance=ExtResource("6_g0e31")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 512)
 layout_mode = 2
+
+[node name="CloseFumbleProfileButton" type="Button" parent="ProfileCenterContainer/FumbleProfile"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_fmmgg")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_i8wc4")
+theme_override_styles/normal = SubResource("StyleBoxTexture_5wc8t")
+text = "x"
+
+[node name="ClickToDismiss" type="Control" parent="ProfileCenterContainer"]
+visible = false
+layout_mode = 2
+script = ExtResource("8_4kvrx")
+
+[node name="PopupCenterContainer" type="CenterContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PopupCenterContainer"]
+custom_minimum_size = Vector2(128, 64)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PopupCenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="PopupCenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+text = "It's not very effective"
