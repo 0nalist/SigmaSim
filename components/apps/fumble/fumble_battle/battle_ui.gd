@@ -279,7 +279,8 @@ func do_move(move_type: String) -> void:
 			var number_msg = "Here’s my number: %s" % str(NPCFactory.djb2(npc.full_name))
 			var chat2 = add_chat_line(number_msg, false)
 			await animate_chat_text(chat2, number_msg)
-			# (Optional: end the battle, or mark as "won", etc.)
+			end_battle(true)
+			
 		else:
 			# Player loses confidence, NPC becomes more apprehensive
 			PlayerManager.adjust_stat("confidence", -10)
@@ -293,14 +294,47 @@ func do_move(move_type: String) -> void:
 	is_animating = false
 	PlayerManager.suppress_stat("confidence", false)
 
+func end_battle(success: bool) -> void:
+	pass
+	#gain experience
 
-func animate_success_or_fail(success):
-	if success:
-		pass
-		#make the last player chat and npc chat glow green
-	else:
-		pass
-		#make the last player chat and npc chat glow red
+
+func animate_success_or_fail(success: bool):
+	var player_result = "success"
+	var npc_result = "success"
+	if not success:
+		player_result = "fail"
+		npc_result = "fail"
+
+	var last_player_chat: ChatBox = null
+	var last_npc_chat: ChatBox = null
+
+	# Find last player and npc chat
+	for i in range(chat_container.get_child_count() - 1, -1, -1):
+		var hbox = chat_container.get_child(i)
+		if hbox.get_child_count() >= 2:
+			var left = hbox.get_child(0)
+			var right = hbox.get_child(1)
+			if left is ChatBox and last_player_chat == null:
+				last_player_chat = left
+			if right is ChatBox and last_npc_chat == null:
+				last_npc_chat = right
+		else:
+			var chat = hbox.get_child(0)
+			if chat is ChatBox:
+				if last_player_chat == null:
+					last_player_chat = chat
+				elif last_npc_chat == null:
+					last_npc_chat = chat
+		if last_player_chat and last_npc_chat:
+			break
+
+	if last_player_chat:
+		last_player_chat.set_result_and_flash(player_result)
+	if last_npc_chat:
+		last_npc_chat.set_result_and_flash(npc_result)
+
+
 
 
 func _apply_effects(effects: Dictionary):

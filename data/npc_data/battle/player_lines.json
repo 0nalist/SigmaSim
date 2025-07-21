@@ -1,584 +1,584 @@
 [
   {
-    "move_type": "simp",
-    "core": "I would give up my career just to make you smile",
-    "prefixes": [
-      "No joke, ",
-      "Tbh, ",
-      ""
-    ],
-    "suffixes": [
-      ".",
-      ", and then I’d do it again."
-    ],
-    "response_id": null
+	"move_type": "simp",
+	"core": "I would give up my career just to make you smile",
+	"prefixes": [
+	  "No joke, ",
+	  "Tbh, ",
+	  ""
+	],
+	"suffixes": [
+	  ".",
+	  ", and then I’d do it again."
+	],
+	"response_id": null
   },
   {
-    "move_type": "simp",
-    "core": "I don’t deserve someone like you",
-    "prefixes": [
-      "Let’s be real, ",
-      "Honestly, ",
-      ""
-    ],
-    "suffixes": [
-      ".",
-      ", but I’ll try my best anyway."
-    ],
-    "response_id": null
+	"move_type": "simp",
+	"core": "I don’t deserve someone like you",
+	"prefixes": [
+	  "Let’s be real, ",
+	  "Honestly, ",
+	  ""
+	],
+	"suffixes": [
+	  ".",
+	  ", but I’ll try my best anyway."
+	],
+	"response_id": null
   },
   {
-    "move_type": "simp",
-    "core": "I wrote a poem about you but it's too embarrassing to share",
-    "prefixes": [
-      "Okay listen, ",
-      "I wasn’t going to say this, but ",
-      ""
-    ],
-    "suffixes": [
-      ".",
-      ", maybe someday you’ll read it."
-    ],
-    "response_id": null
+	"move_type": "simp",
+	"core": "I wrote a poem about you but it's too embarrassing to share",
+	"prefixes": [
+	  "Okay listen, ",
+	  "I wasn’t going to say this, but ",
+	  ""
+	],
+	"suffixes": [
+	  ".",
+	  ", maybe someday you’ll read it."
+	],
+	"response_id": null
   },
   {
-    "move_type": "simp",
-    "core": "I’d join a cult if you were the leader",
-    "prefixes": [
-      "",
-      "Not even kidding, ",
-      ""
-    ],
-    "suffixes": [
-      ".",
-      ", and I’d bring snacks.",
-      ""
-    ],
-    "response_id": null
+	"move_type": "simp",
+	"core": "I’d join a cult if you were the leader",
+	"prefixes": [
+	  "",
+	  "Not even kidding, ",
+	  ""
+	],
+	"suffixes": [
+	  ".",
+	  ", and I’d bring snacks.",
+	  ""
+	],
+	"response_id": null
   },
   {
-    "move_type": "simp",
-    "core": "My friends told me not to simp too hard",
-    "prefixes": [],
-    "suffixes": [
-      ", but I don’t care.",
-      ", but I can't help it",
-      ", but the only person I listen to is you."
-    ],
-    "response_id": null
+	"move_type": "simp",
+	"core": "My friends told me not to simp too hard",
+	"prefixes": [],
+	"suffixes": [
+	  ", but I don’t care.",
+	  ", but I can't help it",
+	  ", but the only person I listen to is you."
+	],
+	"response_id": null
   },
   {
-    "move_type": "simp",
-    "core": "My friends told me not to simp to hard",
-    "prefixes": [],
-    "suffixes": [
-      ", but I can't help it.",
-      ".",
-      ""
-    ],
-    "response_id": "simp_to_too"
+	"move_type": "simp",
+	"core": "My friends told me not to simp to hard",
+	"prefixes": [],
+	"suffixes": [
+	  ", but I can't help it.",
+	  ".",
+	  ""
+	],
+	"response_id": "simp_to_too"
   },
   {
-    "move_type": "simp",
-    "core": "I would let you ruin my credit score",
-    "prefixes": [
-      "Unironically, ",
-      "Tbh, ",
-      "Real talk, "
-    ],
-    "suffixes": [
-      ".",
-      ", and then I'd thank you for the privilege.",
-      ", and I’d do it smiling."
-    ],
-    "response_id": null
+	"move_type": "simp",
+	"core": "I would let you ruin my credit score",
+	"prefixes": [
+	  "Unironically, ",
+	  "Tbh, ",
+	  "Real talk, "
+	],
+	"suffixes": [
+	  ".",
+	  ", and then I'd thank you for the privilege.",
+	  ", and I’d do it smiling."
+	],
+	"response_id": null
   },
   {
-    "move_type": "rizz",
-    "core": "ou have an ethereal beauty",
-    "prefixes": [
-      "Tbh, y",
-      "Real talk, y",
-      "Y"
-    ],
-    "suffixes": [
-      ".",
-      ", and it’s kinda scary.",
-      ", and I'm all about it.",
-      ", and I f with it."
-    ],
-    "response_id": "rizz_ethereal"
+	"move_type": "rizz",
+	"core": "ou have an ethereal beauty",
+	"prefixes": [
+	  "Tbh, y",
+	  "Real talk, y",
+	  "Y"
+	],
+	"suffixes": [
+	  ".",
+	  ", and it’s kinda scary.",
+	  ", and I'm all about it.",
+	  ", and I f with it."
+	],
+	"response_id": "rizz_ethereal"
   },
   {
-    "move_type": "rizz",
-    "core": "re you AI-generated",
-    "prefixes": [
-      "Okay, a",
-      "A"
-    ],
-    "suffixes": [
-      "?",
-      "? Because your beauty is unreal.",
-      " to be everything I've ever dreamed of?",
-      ", or are you just literally perfect?"
-    ],
-    "response_id": "rizz_ai_1"
+	"move_type": "rizz",
+	"core": "re you AI-generated",
+	"prefixes": [
+	  "Okay, a",
+	  "A"
+	],
+	"suffixes": [
+	  "?",
+	  "? Because your beauty is unreal.",
+	  " to be everything I've ever dreamed of?",
+	  ", or are you just literally perfect?"
+	],
+	"response_id": "rizz_ai_1"
   },
   {
-    "move_type": "rizz",
-    "core": "I would move heaven and earth for you",
-    "prefixes": [
-      "Immaculate vibes. ",
-      "You are beyond dreamy. ",
-      "Wow! "
-    ],
-    "suffixes": [
-      ".",
-      ", if you let me."
-    ],
-    "response_id": null
+	"move_type": "rizz",
+	"core": "I would move heaven and earth for you",
+	"prefixes": [
+	  "Immaculate vibes. ",
+	  "You are beyond dreamy. ",
+	  "Wow! "
+	],
+	"suffixes": [
+	  ".",
+	  ", if you let me."
+	],
+	"response_id": null
   },
   {
-    "move_type": "rizz",
-    "core": "Let's ruin each other's lives",
-    "prefixes": [],
-    "suffixes": [
-      "."
-    ],
-    "response_id": null
+	"move_type": "rizz",
+	"core": "Let's ruin each other's lives",
+	"prefixes": [],
+	"suffixes": [
+	  "."
+	],
+	"response_id": null
   },
   {
-    "move_type": "rizz",
-    "core": "’m not a photographer but I can picture us together",
-    "prefixes": [
-      "I"
-    ],
-    "suffixes": [
-      ".",
-      ", and that’s the truth.",
-      ", and I’m already smiling."
-    ],
-    "response_id": "rizz_photograph"
+	"move_type": "rizz",
+	"core": "’m not a photographer but I can picture us together",
+	"prefixes": [
+	  "I"
+	],
+	"suffixes": [
+	  ".",
+	  ", and that’s the truth.",
+	  ", and I’m already smiling."
+	],
+	"response_id": "rizz_photograph"
   },
   {
-    "move_type": "rizz",
-    "core": "ou must be WiFi because I feel a strong connection",
-    "prefixes": [
-      "Okay listen, y",
-      "Lowkey, y",
-      "Y"
-    ],
-    "suffixes": [
-      ".",
-      ", and I can’t stop noticing.",
-      ", and I’m already online."
-    ],
-    "response_id": "rizz_wifi"
+	"move_type": "rizz",
+	"core": "ou must be WiFi because I feel a strong connection",
+	"prefixes": [
+	  "Okay listen, y",
+	  "Lowkey, y",
+	  "Y"
+	],
+	"suffixes": [
+	  ".",
+	  ", and I can’t stop noticing.",
+	  ", and I’m already online."
+	],
+	"response_id": "rizz_wifi"
   },
   {
-    "move_type": "rizz",
-    "core": "you might be the reason I delete this app",
-    "prefixes": [
-      "Tbh, ",
-      "No joke, ",
-      "Lowkey,"
-    ],
-    "suffixes": [
-      ".",
-      " and I’ve barely opened it.",
-      " no pressure."
-    ],
-    "response_id": "rizz_delete"
+	"move_type": "rizz",
+	"core": "you might be the reason I delete this app",
+	"prefixes": [
+	  "Tbh, ",
+	  "No joke, ",
+	  "Lowkey,"
+	],
+	"suffixes": [
+	  ".",
+	  " and I’ve barely opened it.",
+	  " no pressure."
+	],
+	"response_id": "rizz_delete"
   },
   {
-    "move_type": "rizz",
-    "core": "we would cause too much trouble together",
-    "prefixes": [
-      "Realistically, ",
-      "Let’s be honest, ",
-      "I feel like "
-    ],
-    "suffixes": [
-      ".",
-      " and I’m kinda into it.",
-      " want to test that theory?",
-      ". I love that for us."
-    ],
-    "response_id": "rizz_trouble"
+	"move_type": "rizz",
+	"core": "we would cause too much trouble together",
+	"prefixes": [
+	  "Realistically, ",
+	  "Let’s be honest, ",
+	  "I feel like "
+	],
+	"suffixes": [
+	  ".",
+	  " and I’m kinda into it.",
+	  " want to test that theory?",
+	  ". I love that for us."
+	],
+	"response_id": "rizz_trouble"
   },
   {
-    "move_type": "rizz",
-    "core": "ou have main character energy",
-    "prefixes": [
-      "Ok, y",
-      "Not gonna lie, y",
-      "Lowkey, y",
-      "Y"
-    ],
-    "suffixes": [
-      ".",
-      " and I’m just happy to be in the pilot.",
-      " and I love that for you."
-    ],
-    "response_id": "rizz_main_character"
+	"move_type": "rizz",
+	"core": "ou have main character energy",
+	"prefixes": [
+	  "Ok, y",
+	  "Not gonna lie, y",
+	  "Lowkey, y",
+	  "Y"
+	],
+	"suffixes": [
+	  ".",
+	  " and I’m just happy to be in the pilot.",
+	  " and I love that for you."
+	],
+	"response_id": "rizz_main_character"
   },
   {
-    "move_type": "rizz",
-    "core": "e should probably get matching tattoos",
-    "prefixes": [
-      "Tbh, w",
-      "Okay hear me out, w",
-      "This might be weird, but w",
-      "W"
-    ],
-    "suffixes": [
-      ".",
-      ", maybe like a flaming eagle or something cool like that"
-    ],
-    "response_id": "rizz_tattoos"
+	"move_type": "rizz",
+	"core": "e should probably get matching tattoos",
+	"prefixes": [
+	  "Tbh, w",
+	  "Okay hear me out, w",
+	  "This might be weird, but w",
+	  "W"
+	],
+	"suffixes": [
+	  ".",
+	  ", maybe like a flaming eagle or something cool like that"
+	],
+	"response_id": "rizz_tattoos"
   },
   {
-    "move_type": "neg",
-    "core": "ou look like you peaked in middle school",
-    "prefixes": [
-      "Y",
-      "Lol, y",
-      "Honestly, y"
-    ],
-    "suffixes": [
-      ".",
-      ", sorry not sorry.",
-      ", someone had to say it."
-    ],
-    "response_id": "neg_middle_school"
+	"move_type": "neg",
+	"core": "ou look like you peaked in middle school",
+	"prefixes": [
+	  "Y",
+	  "Lol, y",
+	  "Honestly, y"
+	],
+	"suffixes": [
+	  ".",
+	  ", sorry not sorry.",
+	  ", someone had to say it."
+	],
+	"response_id": "neg_middle_school"
   },
   {
-    "move_type": "neg",
-    "core": "It's so refreshing to see someone who's not afraid to",
-    "prefixes": [],
-    "suffixes": [
-      " use goofy pictures on here.",
-      " post pictures like yours."
-    ],
-    "response_id": null
+	"move_type": "neg",
+	"core": "It's so refreshing to see someone who's not afraid to",
+	"prefixes": [],
+	"suffixes": [
+	  " use goofy pictures on here.",
+	  " post pictures like yours."
+	],
+	"response_id": null
   },
   {
-    "move_type": "neg",
-    "core": "You look unlovable",
-    "prefixes": [],
-    "suffixes": [
-      ", but I guess I could try.",
-      ". Rough!",
-      ", but lucky for you I'm in a charitable mood."
-    ],
-    "response_id": null
+	"move_type": "neg",
+	"core": "You look unlovable",
+	"prefixes": [],
+	"suffixes": [
+	  ", but I guess I could try.",
+	  ". Rough!",
+	  ", but lucky for you I'm in a charitable mood."
+	],
+	"response_id": null
   },
   {
-    "move_type": "neg",
-    "core": "Congrats on your weight loss journey!",
-    "prefixes": [
-      "Wow! ",
-      ""
-    ],
-    "suffixes": [
-      " You'll get there eventually.",
-      " That must have taken a lot of work.",
-      " You're almost halfway there."
-    ],
-    "response_id": "neg_weight_loss"
+	"move_type": "neg",
+	"core": "Congrats on your weight loss journey!",
+	"prefixes": [
+	  "Wow! ",
+	  ""
+	],
+	"suffixes": [
+	  " You'll get there eventually.",
+	  " That must have taken a lot of work.",
+	  " You're almost halfway there."
+	],
+	"response_id": "neg_weight_loss"
   },
   {
-    "move_type": "neg",
-    "core": "I can’t tell if your style is ironic or just tragic",
-    "prefixes": [
-      "Okay, ",
-      "Real talk, ",
-      "Not gonna lie,"
-    ],
-    "suffixes": [
-      ".",
-      ", but I’m intrigued.",
-      ", so I had to swipe."
-    ],
-    "response_id": "neg_ironic_tragic"
+	"move_type": "neg",
+	"core": "I can’t tell if your style is ironic or just tragic",
+	"prefixes": [
+	  "Okay, ",
+	  "Real talk, ",
+	  "Not gonna lie,"
+	],
+	"suffixes": [
+	  ".",
+	  ", but I’m intrigued.",
+	  ", so I had to swipe."
+	],
+	"response_id": "neg_ironic_tragic"
   },
   {
-    "move_type": "neg",
-    "core": "ou’re hot in the way that makes me question my standards",
-    "prefixes": [
-      "Tbh, y",
-      "Honestly, y",
-      "Let’s be real, y",
-      "Y"
-    ],
-    "suffixes": [
-      ".",
-      ", and I don’t even care.",
-      ", it's working."
-    ],
-    "response_id": "neg_standards"
+	"move_type": "neg",
+	"core": "ou’re hot in the way that makes me question my standards",
+	"prefixes": [
+	  "Tbh, y",
+	  "Honestly, y",
+	  "Let’s be real, y",
+	  "Y"
+	],
+	"suffixes": [
+	  ".",
+	  ", and I don’t even care.",
+	  ", it's working."
+	],
+	"response_id": "neg_standards"
   },
   {
-    "move_type": "neg",
-    "core": "I feel like you’re banned from multiple group chats",
-    "prefixes": [
-      "Tbh, ",
-      "No shade but ",
-      ""
-    ],
-    "suffixes": [
-      ".",
-      ", and I get it.",
-      ", and I’m not judging."
-    ],
-    "response_id": "neg_groupchat"
+	"move_type": "neg",
+	"core": "I feel like you’re banned from multiple group chats",
+	"prefixes": [
+	  "Tbh, ",
+	  "No shade but ",
+	  ""
+	],
+	"suffixes": [
+	  ".",
+	  ", and I get it.",
+	  ", and I’m not judging."
+	],
+	"response_id": "neg_groupchat"
   },
   {
-    "move_type": "neg",
-    "core": "this feels like flirting with an NPC",
-    "prefixes": [
-      "So, ",
-      "Lowkey, ",
-      "Yikes, "
-    ],
-    "suffixes": [
-      ".",
-      ", but I like a challenge.",
-      ""
-    ],
-    "response_id": "neg_npc"
+	"move_type": "neg",
+	"core": "this feels like flirting with an NPC",
+	"prefixes": [
+	  "So, ",
+	  "Lowkey, ",
+	  "Yikes, "
+	],
+	"suffixes": [
+	  ".",
+	  ", but I like a challenge.",
+	  ""
+	],
+	"response_id": "neg_npc"
   },
   {
-    "move_type": "flex",
-    "core": "I own 3 startups and 1 dying plant",
-    "prefixes": [
-      "Btw, ",
-      "In case you were wondering, "
-    ],
-    "suffixes": [
-      ".",
-      ", just so you know."
-    ],
-    "response_id": null
+	"move_type": "flex",
+	"core": "I own 3 startups and 1 dying plant",
+	"prefixes": [
+	  "Btw, ",
+	  "In case you were wondering, "
+	],
+	"suffixes": [
+	  ".",
+	  ", just so you know."
+	],
+	"response_id": null
   },
   {
-    "move_type": "flex",
-    "core": "I can get a table at Dorsia any night of the week",
-    "prefixes": [
-      "",
-      "In case you were wondering, "
-    ],
-    "suffixes": [
-      ", just so you know.",
-      ". Have you ever been there before?",
-      "."
-    ],
-    "response_id": "flex_dorsia"
+	"move_type": "flex",
+	"core": "I can get a table at Dorsia any night of the week",
+	"prefixes": [
+	  "",
+	  "In case you were wondering, "
+	],
+	"suffixes": [
+	  ", just so you know.",
+	  ". Have you ever been there before?",
+	  "."
+	],
+	"response_id": "flex_dorsia"
   },
   {
-    "move_type": "flex",
-    "core": "My greatest rivals refer to me as",
-    "prefixes": [],
-    "suffixes": [
-      " the god of b2b SaaS marketing.",
-      " The Dark Lord of crypto."
-    ],
-    "response_id": null
+	"move_type": "flex",
+	"core": "My greatest rivals refer to me as",
+	"prefixes": [],
+	"suffixes": [
+	  " the god of b2b SaaS marketing.",
+	  " The Dark Lord of crypto."
+	],
+	"response_id": null
   },
   {
-    "move_type": "flex",
-    "core": "y startup has a full legal team and theme song",
-    "prefixes": [
-      "Believe it or not, m",
-      "Not to flex, but m",
-      "FYI, m",
-      "M"
-    ],
-    "suffixes": [
-      ".",
-      ", and we use both regularly.",
-      ", it's that serious."
-    ],
-    "response_id": null
+	"move_type": "flex",
+	"core": "y startup has a full legal team and theme song",
+	"prefixes": [
+	  "Believe it or not, m",
+	  "Not to flex, but m",
+	  "FYI, m",
+	  "M"
+	],
+	"suffixes": [
+	  ".",
+	  ", and we use both regularly.",
+	  ", it's that serious."
+	],
+	"response_id": null
   },
   {
-    "move_type": "flex",
-    "core": "y therapist comes to me for advice",
-    "prefixes": [
-      "In case you were wondering, m",
-      "Dead serious, m",
-      "No joke, m",
-      "M"
-    ],
-    "suffixes": [
-      "",
-      ". It's an interesting power dynamic.",
-      ". So you know I'm a good listener"
-    ],
-    "response_id": "flex_therapist"
+	"move_type": "flex",
+	"core": "y therapist comes to me for advice",
+	"prefixes": [
+	  "In case you were wondering, m",
+	  "Dead serious, m",
+	  "No joke, m",
+	  "M"
+	],
+	"suffixes": [
+	  "",
+	  ". It's an interesting power dynamic.",
+	  ". So you know I'm a good listener"
+	],
+	"response_id": "flex_therapist"
   },
   {
-    "move_type": "flex",
-    "core": "My skincare routine is a trade secret",
-    "prefixes": [
-      "Not gonna lie, ",
-      "FYI, ",
-      ""
-    ],
-    "suffixes": [
-      ".",
-      ". Patent pending.",
-      ""
-    ],
-    "response_id": "flex_skincare"
+	"move_type": "flex",
+	"core": "My skincare routine is a trade secret",
+	"prefixes": [
+	  "Not gonna lie, ",
+	  "FYI, ",
+	  ""
+	],
+	"suffixes": [
+	  ".",
+	  ". Patent pending.",
+	  ""
+	],
+	"response_id": "flex_skincare"
   },
   {
-    "move_type": "flex",
-    "core": "y dog probably has more followers than you",
-    "prefixes": [
-      "Unironically, m",
-      "Fun fact, m",
-      "Real talk, m",
-      "M"
-    ],
-    "suffixes": [
-      ".",
-      ". He gets brand deals.",
-      ". I just carry the leash."
-    ],
-    "response_id": "flex_dogfluence"
+	"move_type": "flex",
+	"core": "y dog probably has more followers than you",
+	"prefixes": [
+	  "Unironically, m",
+	  "Fun fact, m",
+	  "Real talk, m",
+	  "M"
+	],
+	"suffixes": [
+	  ".",
+	  ". He gets brand deals.",
+	  ". I just carry the leash."
+	],
+	"response_id": "flex_dogfluence"
   },
   {
-    "move_type": "catch",
-    "core": "anna skip the small talk and get a drink",
-    "prefixes": [
-      "So, w",
-      "W"
-    ],
-    "suffixes": [
-      "?",
-      "? I'm buying",
-      "? Or even skip the drink 😏"
-    ],
-    "response_id": "catch_drink"
+	"move_type": "catch",
+	"core": "anna skip the small talk and get a drink",
+	"prefixes": [
+	  "So, w",
+	  "W"
+	],
+	"suffixes": [
+	  "?",
+	  "? I'm buying",
+	  "? Or even skip the drink 😏"
+	],
+	"response_id": "catch_drink"
   },
   {
-    "move_type": "catch",
-    "core": "Can I get your number before one of us says something cringe",
-    "prefixes": [],
-    "suffixes": [
-      "?"
-    ],
-    "response_id": null
+	"move_type": "catch",
+	"core": "Can I get your number before one of us says something cringe",
+	"prefixes": [],
+	"suffixes": [
+	  "?"
+	],
+	"response_id": null
   },
   {
-    "move_type": "catch",
-    "core": "hat if we skipped to the part where we go on a terrible first date and laugh about it",
-    "prefixes": [
-      "W",
-      "Hear me out, w"
-    ],
-    "suffixes": [
-      "?"
-    ],
-    "response_id": null
+	"move_type": "catch",
+	"core": "hat if we skipped to the part where we go on a terrible first date and laugh about it",
+	"prefixes": [
+	  "W",
+	  "Hear me out, w"
+	],
+	"suffixes": [
+	  "?"
+	],
+	"response_id": null
   },
   {
-    "move_type": "catch",
-    "core": "What's your number?",
-    "prefixes": [],
-    "suffixes": [
-      "",
-      " For science."
-    ],
-    "response_id": null
+	"move_type": "catch",
+	"core": "What's your number?",
+	"prefixes": [],
+	"suffixes": [
+	  "",
+	  " For science."
+	],
+	"response_id": null
   },
   {
-    "move_type": "catch",
-    "core": "I think we owe it to the world to see how chaotic we'd be IRL.",
-    "prefixes": [],
-    "suffixes": [
-      " Can I get your number?",
-      " Let's take this offline."
-    ],
-    "response_id": null
+	"move_type": "catch",
+	"core": "I think we owe it to the world to see how chaotic we'd be IRL.",
+	"prefixes": [],
+	"suffixes": [
+	  " Can I get your number?",
+	  " Let's take this offline."
+	],
+	"response_id": null
   },
   {
-    "move_type": "catch",
-    "core": "anna just go somewhere loud and flirt badly",
-    "prefixes": [
-      "W",
-      "So hear me out, w"
-    ],
-    "suffixes": [
-      "?",
-      ", no pressure.",
-      " and pretend we’re in a romcom."
-    ],
-    "response_id": null
+	"move_type": "catch",
+	"core": "anna just go somewhere loud and flirt badly",
+	"prefixes": [
+	  "W",
+	  "So hear me out, w"
+	],
+	"suffixes": [
+	  "?",
+	  ", no pressure.",
+	  " and pretend we’re in a romcom."
+	],
+	"response_id": null
   },
   {
-    "move_type": "apology",
-    "core": "idk why I said that",
-    "prefixes": [
-      "I'm sorry, ",
-      "My apologies, ",
-      "So sorry, "
-    ],
-    "suffixes": [
-      ".",
-      ". Please give me another chance",
-      ". Please don't block me!"
-    ],
-    "response_id": null
+	"move_type": "apology",
+	"core": "idk why I said that",
+	"prefixes": [
+	  "I'm sorry, ",
+	  "My apologies, ",
+	  "So sorry, "
+	],
+	"suffixes": [
+	  ".",
+	  ". Please give me another chance",
+	  ". Please don't block me!"
+	],
+	"response_id": null
   },
   {
-    "move_type": "apology",
-    "core": "I can be a little much when I see someone as beautiful as you are.",
-    "prefixes": [
-      "I'm sorry, ",
-      "My apologies, ",
-      "So sorry, "
-    ],
-    "suffixes": [
-      ".",
-      ". Please give me another chance",
-      ". Please don't block me!"
-    ],
-    "response_id": null
+	"move_type": "apology",
+	"core": "I can be a little much when I see someone as beautiful as you are.",
+	"prefixes": [
+	  "I'm sorry, ",
+	  "My apologies, ",
+	  "So sorry, "
+	],
+	"suffixes": [
+	  ".",
+	  ". Please give me another chance",
+	  ". Please don't block me!"
+	],
+	"response_id": null
   },
   {
-    "move_type": "apology",
-    "core": "ometimes I joke to hide the fact that I care",
-    "prefixes": [
-      "Okay, real talk, s",
-      "I’m working on it. S",
-      "Genuinely, s",
-      "S"
-    ],
-    "suffixes": [
-      ".",
-      ". Hope that makes sense.",
-      ". Please be patient with me.",
-      ". I hope you can accept me at my most vulnerable.",
-      ". I hope you can accept that."
-    ],
-    "response_id": null
+	"move_type": "apology",
+	"core": "ometimes I joke to hide the fact that I care",
+	"prefixes": [
+	  "Okay, real talk, s",
+	  "I’m working on it. S",
+	  "Genuinely, s",
+	  "S"
+	],
+	"suffixes": [
+	  ".",
+	  ". Hope that makes sense.",
+	  ". Please be patient with me.",
+	  ". I hope you can accept me at my most vulnerable.",
+	  ". I hope you can accept that."
+	],
+	"response_id": null
   },
   {
-    "move_type": "apology",
-    "core": "hat was supposed to be funny, not mean",
-    "prefixes": [
-      "Oops, t",
-      "Didn’t mean it like that, t",
-      "So sorry, t",
-      "T"
-    ],
-    "suffixes": [
-      ".",
-      ". Hope you’ll forgive me.",
-      ". Let’s pretend that didn’t happen."
-    ],
-    "response_id": null
+	"move_type": "apology",
+	"core": "hat was supposed to be funny, not mean",
+	"prefixes": [
+	  "Oops, t",
+	  "Didn’t mean it like that, t",
+	  "So sorry, t",
+	  "T"
+	],
+	"suffixes": [
+	  ".",
+	  ". Hope you’ll forgive me.",
+	  ". Let’s pretend that didn’t happen."
+	],
+	"response_id": null
   }
 ]

@@ -2,12 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bem114rcr3lcc" path="res://components/apps/fumble/fumble_battle/chat_box.gd" id="1_i1vjr"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nc0qy"]
-bg_color = Color(0, 0.607843, 0.27451, 0.423529)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i1vjr"]
+bg_color = Color(1, 1, 1, 0.556863)
 
 [node name="ChatBox" type="MarginContainer"]
 anchors_preset = 14
@@ -27,7 +23,7 @@ script = ExtResource("1_i1vjr")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_nc0qy")
+theme_override_styles/panel = SubResource("StyleBoxFlat_i1vjr")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -39,4 +35,5 @@ theme_override_constants/margin_bottom = 5
 [node name="TextLabel" type="Label" parent="PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 autowrap_mode = 3

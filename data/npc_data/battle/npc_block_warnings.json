@@ -1,50 +1,50 @@
 [
   {
-    "core": "You're on thin ice",
-    "suffixes": [
-      "!",
-      "."
-    ]
+	"core": "You're on thin ice",
+	"suffixes": [
+	  "!",
+	  "."
+	]
   },
   {
-    "core": "Be very careful what you say to me next",
-    "suffixes": [
-      "!",
-      "."
-    ]
+	"core": "Be very careful what you say to me next",
+	"suffixes": [
+	  "!",
+	  "."
+	]
   },
   {
-    "core": "I'm not enjoying this conversation",
-    "suffixes": [
-      "!",
-      "."
-    ]
+	"core": "I'm not enjoying this conversation",
+	"suffixes": [
+	  "!",
+	  "."
+	]
   },
   {
-    "core": "You're really bad at this",
-    "suffixes": [
-      "!",
-      ".",
-      " lmfao"
-    ]
+	"core": "You're really bad at this",
+	"suffixes": [
+	  "!",
+	  ".",
+	  " lmfao"
+	]
   },
   {
-    "core": "I'm not afraid to block you",
-    "suffixes": [
-      "!",
-      "."
-    ]
+	"core": "I'm not afraid to block you",
+	"suffixes": [
+	  "!",
+	  "."
+	]
   },
   {
-    "core": "The next words out of your mouth",
-    "suffixes": [
-      " might be your last to me.",
-      " better be about how sorry you are.",
-      " better be an apology."
-    ]
+	"core": "The next words out of your mouth",
+	"suffixes": [
+	  " might be your last to me.",
+	  " better be about how sorry you are.",
+	  " better be an apology."
+	]
   },
   {
-    "core": "I'm obviously no longer interested in communicating with you after that message",
-    "suffixes": []
+	"core": "I'm obviously no longer interested in communicating with you after that message",
+	"suffixes": []
   }
 ]
