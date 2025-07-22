@@ -47,6 +47,11 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67iqe"]
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -484,6 +489,7 @@ text = "CATCH"
 
 [node name="InventoryButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -492,12 +498,13 @@ text = "INVENTORY"
 
 [node name="ProfileCenterContainer" type="CenterContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
 [node name="FumbleProfile" parent="ProfileCenterContainer" instance=ExtResource("6_g0e31")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(256, 512)
+custom_minimum_size = Vector2(311, 420)
 layout_mode = 2
 
 [node name="CloseFumbleProfileButton" type="Button" parent="ProfileCenterContainer/FumbleProfile"]
