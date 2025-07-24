@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dyv7bmgfriqht"]
+[gd_scene load_steps=4 format=3 uid="uid://dyv7bmgfriqht"]
 
 [ext_resource type="Script" uid="uid://bem114rcr3lcc" path="res://components/apps/fumble/fumble_battle/chat_box.gd" id="1_i1vjr"]
+[ext_resource type="Texture2D" uid="uid://b8piqndlfnolp" path="res://assets/early_bird/wojak_bird_1.png" id="2_ugbyc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i1vjr"]
 bg_color = Color(1, 1, 1, 0.556863)
@@ -25,19 +26,68 @@ theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 script = ExtResource("1_i1vjr")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="MessageContainer" type="PanelContainer" parent="MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i1vjr")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MessageContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="TextLabel" type="Label" parent="PanelContainer/MarginContainer"]
+[node name="TextLabel" type="Label" parent="MarginContainer/MessageContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 autowrap_mode = 3
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="EmojiReaction" type="TextureRect" parent="Control"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+offset_left = 1878.0
+offset_right = 1910.0
+offset_bottom = 32.0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture = ExtResource("2_ugbyc")
+stretch_mode = 5
+
+[node name="Control2" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="EffectIconsHBox" type="HBoxContainer" parent="Control2"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 104.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control2/EffectIconsHBox"]
+layout_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="Control2/EffectIconsHBox"]
+layout_mode = 2
+
+[node name="TextureRect3" type="TextureRect" parent="Control2/EffectIconsHBox"]
+layout_mode = 2

@@ -4,6 +4,7 @@ extends Resource
 var npc: NPC
 var stats = {}
 
+
 func setup(npc_ref, stats_dict = {}):
 	npc = npc_ref
 	stats = stats_dict.duplicate()
@@ -11,14 +12,29 @@ func setup(npc_ref, stats_dict = {}):
 func resolve_move(move_type: String) -> Dictionary:
 	var chance = get_success_chance(move_type)
 	var success = randf() < chance
+	var mod = get_move_type_modifier(npc.chat_battle_type, move_type)
+	var reaction = ""
+	if mod == 2.0:
+		reaction = "heart"
+	elif mod == 0.5:
+		reaction = "zzz"
+	elif mod == 0.0:
+		reaction = "thumbs_down"
+	# Default: no reaction or normal (could add more)
 	var effects = apply_move_effects(move_type, success)
 	return {
 		"success": success,
 		"chance": chance,
-		"effects": effects
+		"effects": effects,
+		"reaction": reaction
 	}
 
+
 func get_success_chance(move_type: String) -> float:
+	var npc_type = npc.chat_battle_type if npc.chat_battle_type != null else ""
+	var mod = BattleLogic.get_move_type_modifier(npc_type, move_type)
+	if mod == 0.0:
+		return 0.0
 	
 	# Special handling for "catch"
 	if move_type == "catch":
@@ -108,33 +124,40 @@ var multipliers = {
 func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 	var result = {}
 	var dime_delta = get_attractiveness_delta()
+	var npc_type = npc.chat_battle_type if npc.chat_battle_type != null else ""
+	var mod = BattleLogic.get_move_type_modifier(npc_type, move_type)
 
+	# Set emoji reaction based on mod
+	if mod == 0.0:
+		result["reaction"] = "thumbs_down" # immune
+		# Fill result with zero for all relevant stats for that move
+		var stats_set = []
+		if move_type in SUCCESS_FX:
+			stats_set = SUCCESS_FX[move_type].keys()
+		elif move_type in FAIL_FX:
+			stats_set = FAIL_FX[move_type].keys()
+		for stat in stats_set:
+			result[stat] = 0
+		return result
 
 	# === Handle move effects ===
 	if success:
 		var base = SUCCESS_FX.get(move_type, {})
-		var multi = multipliers.get(move_type, 1.0)
-		# Chemistry
+		var multi = multipliers.get(move_type, 1.0) * mod
 		if base.has("chemistry"):
 			var c_val = base["chemistry"] + dime_delta * multi
 			stats["chemistry"] = clamp(stats.get("chemistry", 0) + c_val, 0, 100)
 			result["chemistry"] = c_val
-		# Apprehension (should be negative here!)
 		if base.has("apprehension"):
 			var a_val = base["apprehension"]
 			stats["apprehension"] = clamp(stats.get("apprehension", 0) + a_val, 0, 100)
 			result["apprehension"] = a_val
-		# Confidence (may be negative or positive)
 		if base.has("confidence"):
 			var conf_val = base["confidence"] - dime_delta
-			print("Confidence before:", PlayerManager.get_stat("confidence"))
 			PlayerManager.adjust_stat("confidence", conf_val)
-			print("Confidence after:", PlayerManager.get_stat("confidence"))
 			result["confidence"] = conf_val
-		# Self-esteem (only positive changes allowed)
 		if base.has("self_esteem"):
 			var se_val = base["self_esteem"] + dime_delta * multi
-			# Allow both positive and negative deltas!
 			stats["self_esteem"] = clamp(stats.get("self_esteem", 0) + se_val, 0, 100)
 			result["self_esteem"] = se_val
 	else:
@@ -144,21 +167,46 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 			var conf_val = fail["confidence"] - dime_delta
 			PlayerManager.adjust_stat("confidence", conf_val)
 			result["confidence"] = conf_val
-		# Apprehension (only for neg/flex on fail, always positive here!)
 		if fail.has("apprehension"):
 			var a_val = fail["apprehension"]
-			# Only allow positive (should always be positive for fail)
 			stats["apprehension"] = clamp(stats.get("apprehension", 0) + a_val, 0, 100)
 			result["apprehension"] = a_val
-	# You can expand this with logic to double/halve effects based on NPC type, player upgrades, etc.
+		if fail.has("chemistry"):
+			var c_val = fail["chemistry"]
+			stats["chemistry"] = clamp(stats.get("chemistry", 0) + c_val, 0, 100)
+			result["chemistry"] = c_val
+		if fail.has("self_esteem"):
+			var se_val = fail["self_esteem"]
+			stats["self_esteem"] = clamp(stats.get("self_esteem", 0) + se_val, 0, 100)
+			result["self_esteem"] = se_val
 	return result
+
+
 
 
 func get_attractiveness_delta() -> float: # + if player is more attractive than npc
 	var dime_delta: float = ((PlayerManager.get_stat("attractiveness") - npc.attractiveness)/10.0)
-	print("dime delta: " + str(dime_delta))
+	#print("dime delta: " + str(dime_delta))
 	return dime_delta
 
 
 func get_stats() -> Dictionary:
 	return stats.duplicate()
+
+
+
+static func get_move_type_modifier(npc_type: String, move_type: String) -> float:
+	npc_type = npc_type.strip_edges().to_lower()
+	move_type = move_type.strip_edges().to_lower()
+	var mods = RizzBattleData.type_mods.get(npc_type, null)
+	print("Looking up npc_type=", npc_type, " move_type=", move_type)
+	print("Type data:", mods)
+	if mods == null:
+		return 1.0
+	if move_type in mods["immune"]:
+		return 0.0
+	if move_type in mods["strong"]:
+		return 2.0
+	if move_type in mods["weak"]:
+		return 0.5
+	return 1.0

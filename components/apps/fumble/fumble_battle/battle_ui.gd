@@ -55,6 +55,20 @@ var battle_stats := {
 var is_animating: bool = false
 
 
+const REACTION_EMOJI = {
+	"heart": preload("res://assets/emojis/red_heart_emoji_x32.png"),
+	"zzz": preload("res://assets/emojis/zzz_emoji_x32.png"),
+	"thumbs_down": preload("res://assets/emojis/thumbsdown_emoji_x32.png")
+}
+const REACTION_TOOLTIP = {
+	"heart": "This type of line is **Very Effective!**",
+	"zzz": "This type of line is **Not Very Effective.**",
+	"thumbs_down": "This type of line is **Totally Not Effective.**"
+}
+
+
+
+
 func _ready():
 	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
 	
@@ -271,16 +285,50 @@ func do_move(move_type: String) -> void:
 
 	# Animate player line
 	var chat = add_chat_line(full_line, true)
+	chat.clear_reaction()
 	await animate_chat_text(chat, full_line)
 	await get_tree().create_timer(0.5).timeout
 
 	# ---- resolve move with battle logic! ----
+
 	var result = logic.resolve_move(move_type)
 	_apply_effects(result.effects)
+
+	
+
+	
 	
 	await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
 	await get_tree().create_timer(.69).timeout
 
+	var use_count = move_usage_counts.get(move_type, 0)
+	var reaction = result.get("reaction", "")
+	if result.success:
+		# Only show heart/zzz on success
+		if reaction == "heart" or reaction == "zzz":
+			chat.set_reaction(
+				REACTION_EMOJI[reaction],
+				REACTION_TOOLTIP[reaction]
+			)
+		else:
+			chat.clear_reaction()
+	elif use_count >= 3 and reaction == "thumbs_down":
+		# Show thumbs_down for immune moves only after ??? is cleared
+		chat.set_reaction(
+			REACTION_EMOJI["thumbs_down"],
+			REACTION_TOOLTIP["thumbs_down"]
+		)
+	else:
+		chat.clear_reaction()
+	
+	await get_tree().create_timer(0.25).timeout
+	
+	# Animate effects/progress, etc.
+	animate_success_or_fail(result.success)
+	await update_progress_bars()
+	
+	chat.set_stat_effects(result.effects, true)
+	
 	# SPECIAL LOGIC FOR CATCH
 	if move_type == "catch":
 		if result.success:
@@ -295,10 +343,8 @@ func do_move(move_type: String) -> void:
 			PlayerManager.adjust_stat("confidence", -10)
 			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
 			# Optionally animate/apply any feedback here too
-
-	# Animate effects/progress, etc.
-	animate_success_or_fail(result.success)
-	await update_progress_bars()
+	
+	
 	
 	is_animating = false
 	PlayerManager.suppress_stat("confidence", false)

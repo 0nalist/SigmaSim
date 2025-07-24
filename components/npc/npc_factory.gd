@@ -198,24 +198,34 @@ static func _is_excluded_like(like_a: String, like_b: String, like_data: Diction
 	return like_b in excl_a or like_a in excl_b
 
 
+# Returns a random bio_dict from FUMBLE_BIOS, weighted by .weight
+static func pick_weighted_bio(rng: RandomNumberGenerator) -> Dictionary:
+	if FUMBLE_BIOS.size() == 0:
+		return {}
+	var total_weight = 0.0
+	for bio_dict in FUMBLE_BIOS:
+		total_weight += bio_dict.get("weight", 1.0)
+	var r = rng.randf_range(0, total_weight)
+	for bio_dict in FUMBLE_BIOS:
+		r -= bio_dict.get("weight", 1.0)
+		if r < 0:
+			return bio_dict
+	# Fallback: last one
+	return FUMBLE_BIOS[FUMBLE_BIOS.size() - 1]
+
+
+
 static func generate_npc_fumble_bio(npc: NPC) -> String:
 	if FUMBLE_BIOS.size() == 0:
 		return ""
-	var idx = djb2(npc.full_name + "bio") % FUMBLE_BIOS.size()
-	var bio_dict = FUMBLE_BIOS[idx]
-	var bio_template = bio_dict["bio"]  # safely get the string
+	var rng = RandomNumberGenerator.new()
+	# Seed using full_name or another property if you want deterministic results for an NPC
+	rng.seed = djb2(npc.full_name + "bio_weighted")
+	var bio_dict = pick_weighted_bio(rng)
+	var bio_template = bio_dict.get("bio", "")
+	return MarkupParser.parse(bio_template, npc)
 
-	# Set first_like and likes_str without ternary
-	var first_like = "nothing"
-	var likes_str = "nothing"
-	if npc.likes.size() > 0:
-		first_like = npc.likes[0]
-		likes_str = ", ".join(npc.likes)
 
-	var bio = bio_template
-	bio = bio.replace("{like}", first_like)
-	bio = bio.replace("{likes}", likes_str)
-	return bio
 
 
 

@@ -6,6 +6,9 @@ extends PanelContainer
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
 
+@onready var type_label: Label = %TypeLabel
+
+
 #@onready var tags_container: HBoxContainer = %TagsHBoxContainer
 
 @onready var bio_label: Label = %BioLabel
@@ -19,6 +22,7 @@ func load_npc(npc: NPC) -> void:
 	# Core info
 	name_label.text = npc.full_name
 	attractiveness_label.text = "%0.1f/10" % (float(npc.attractiveness) / 10.0)
+	type_label.text = str(npc.chat_battle_type)
 
 	# Tags
 	#_clear_container(tags_container)
