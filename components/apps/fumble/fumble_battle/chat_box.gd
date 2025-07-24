@@ -49,8 +49,8 @@ func _ready():
 	set_result("neutral") # start neutral
 	clear_reaction()
 	
-	emoji_reaction.size = Vector2(32, 32)
-	emoji_reaction.custom_minimum_size = Vector2(32, 32)
+	#emoji_reaction.size = Vector2(32, 32)
+	#emoji_reaction.custom_minimum_size = Vector2(32, 32)
 	emoji_reaction.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 
 
@@ -166,7 +166,7 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 			var icon = TextureRect.new()
 			icon.texture = icon_texture
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			icon.custom_minimum_size = Vector2(32, 32)
+			#icon.custom_minimum_size = Vector2(32, 32)
 			icon.tooltip_text = "%s: %s" % [effect_name.capitalize(), label_text]
 			icon.scale = Vector2(0.1, 0.1)
 
@@ -192,8 +192,12 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 			right_icons_to_animate.append(icon)
 
 	for icon in right_icons_to_animate:
+		icon.visible = false
+		icon.scale = Vector2(0.1, 0.1)
+		# animate in
 		icon.visible = true
 		var tween = get_tree().create_tween()
-		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		await get_tree().create_timer(1.17).timeout
+		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12)
+		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10)
+		await get_tree().create_timer(1.10).timeout  # much shorter delay
+		icon.custom_minimum_size = Vector2(32, 32)  # if you want a minimum after anim
