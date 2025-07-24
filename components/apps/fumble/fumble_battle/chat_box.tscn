@@ -87,9 +87,12 @@ grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="EffectIcons/EffectIconsHBox"]
 layout_mode = 2
+mouse_filter = 0
 
 [node name="TextureRect2" type="TextureRect" parent="EffectIcons/EffectIconsHBox"]
 layout_mode = 2
+mouse_filter = 0
 
 [node name="TextureRect3" type="TextureRect" parent="EffectIcons/EffectIconsHBox"]
 layout_mode = 2
+mouse_filter = 0

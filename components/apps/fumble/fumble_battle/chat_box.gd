@@ -107,22 +107,20 @@ func animate_emoji_reaction():
 	tween.tween_property(emoji_reaction, "scale", Vector2(1.2, 1.2), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(emoji_reaction, "scale", Vector2(1.0, 1.0), 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
-func set_stat_effects(effects: Dictionary, for_player: bool = true):
+func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension"]):
 	# Remove all previous effect icons+labels
 	for child in effect_icons_hbox.get_children():
 		child.queue_free()
 	
-	var effect_order = []
-	if for_player:
-		effect_order = ["chemistry", "self_esteem", "apprehension"]
-	else:
-		effect_order = ["confidence"]
+	var left_icons_to_animate = []
+	var right_icons_to_animate = []
 	
-	var icons_to_animate = []
-	
-	for effect_name in effect_order:
+	for effect_name in stat_order:
 		if effects.has(effect_name):
 			var delta = int(effects[effect_name])
+			if abs(delta) < 1:
+				continue
+
 			var icon_texture: Texture2D = null
 			var color = Color.WHITE
 			var label_text = ""
@@ -131,37 +129,36 @@ func set_stat_effects(effects: Dictionary, for_player: bool = true):
 				"chemistry":
 					if delta > 0:
 						icon_texture = ICONS["chem_up"]
-						color = Color("53ee83") # green
+						color = Color("53ee83")
 					elif delta < 0:
 						icon_texture = ICONS["chem_down"]
-						color = Color("e74c3c") # red
+						color = Color("e74c3c")
 					label_text = ("%+d" % delta)
 				"self_esteem":
 					if delta > 0:
 						icon_texture = ICONS["esteem_up"]
-						color = Color("e74c3c") # red (up = red)
+						color = Color("e74c3c")
 					elif delta < 0:
 						icon_texture = ICONS["esteem_down"]
-						color = Color("53ee83") # green (down = green)
+						color = Color("53ee83")
 					label_text = ("%+d" % delta)
 				"apprehension":
 					if delta < 0:
 						icon_texture = ICONS["appre_down"]
-						color = Color("53ee83") # green (less apprehension)
+						color = Color("53ee83")
 					else:
 						icon_texture = ICONS["appre_up"]
-						color = Color("e74c3c") # red (more apprehension)
+						color = Color("e74c3c")
 					label_text = ("%+d" % delta)
 				"confidence":
 					if delta > 0:
 						icon_texture = ICONS["conf_up"]
-						color = Color("53ee83") # green
+						color = Color("53ee83")
 					elif delta < 0:
 						icon_texture = ICONS["conf_down"]
-						color = Color("e74c3c") # red
+						color = Color("e74c3c")
 					label_text = ("%+d" % delta)
 			
-			# Build the icon+label stack
 			var vbox = VBoxContainer.new()
 			vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 
@@ -170,7 +167,7 @@ func set_stat_effects(effects: Dictionary, for_player: bool = true):
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			icon.custom_minimum_size = Vector2(32, 32)
 			icon.tooltip_text = "%s: %s" % [effect_name.capitalize(), label_text]
-			icon.scale = Vector2(0.1, 0.1)  # Start tiny, for animation
+			icon.scale = Vector2(0.1, 0.1)
 
 			var label = Label.new()
 			label.text = label_text
@@ -182,15 +179,21 @@ func set_stat_effects(effects: Dictionary, for_player: bool = true):
 
 			vbox.add_child(icon)
 			vbox.add_child(label)
-			effect_icons_hbox.add_child(vbox)
+			
+			# Place confidence on left, others on right
+			if effect_name == "confidence":
+				effect_icons_hbox.add_child(vbox, 0) # Insert at index 0 (left)
+				effect_icons.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+				left_icons_to_animate.append(icon)
+			else:
+				effect_icons_hbox.add_child(vbox)    # Append at end (right)
+				effect_icons.size_flags_horizontal = Control.SIZE_SHRINK_END
+				right_icons_to_animate.append(icon)
 
-			# Store icon for animation
-			icons_to_animate.append(icon)
-
-	# Animate icons one by one (pop-in)
-	for icon in icons_to_animate:
+	# Animate confidence icon(s) left, then all others right, in the order they appear
+	for icon in left_icons_to_animate + right_icons_to_animate:
 		icon.visible = true
 		var tween = get_tree().create_tween()
 		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		await get_tree().create_timer(0.07).timeout  # Stagger effect (adjust as you like)
+		await get_tree().create_timer(0.07).timeout

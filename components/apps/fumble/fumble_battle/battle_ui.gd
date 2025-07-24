@@ -298,8 +298,9 @@ func do_move(move_type: String) -> void:
 
 	
 	
-	await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
+	var npc_chat: ChatBox = await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
 	await get_tree().create_timer(.69).timeout
+	
 
 	var use_count = move_usage_counts.get(move_type, 0)
 	var reaction = result.get("reaction", "")
@@ -327,7 +328,11 @@ func do_move(move_type: String) -> void:
 	animate_success_or_fail(result.success)
 	await update_progress_bars()
 	
-	chat.set_stat_effects(result.effects, true)
+	chat.set_stat_effects(result.effects)
+	
+	if result.effects.has("confidence"):
+		print("confidence changed")
+		npc_chat.set_stat_effects({"confidence": result.effects.confidence}, ["confidence"])
 	
 	# SPECIAL LOGIC FOR CATCH
 	if move_type == "catch":
@@ -411,7 +416,8 @@ func _apply_effects(effects: Dictionary):
 	# player stats (like confidence) handled by PlayerManager
 
 
-func process_npc_response(move_type, response_id, success: bool):
+func process_npc_response(move_type, response_id, success: bool) -> ChatBox:
+
 	var response_text = ""
 	var key = "FALSE"
 	if success:
@@ -446,7 +452,7 @@ func process_npc_response(move_type, response_id, success: bool):
 	var chat = add_chat_line(response_text, false)
 	await animate_chat_text(chat, response_text)
 	update_action_buttons()
-
+	return chat
 
 
 func persist_battle_stats_to_npc():
