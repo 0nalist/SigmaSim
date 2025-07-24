@@ -107,7 +107,8 @@ func animate_emoji_reaction():
 	tween.tween_property(emoji_reaction, "scale", Vector2(1.2, 1.2), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(emoji_reaction, "scale", Vector2(1.0, 1.0), 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
-func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension"]):
+func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"]):
+
 	# Remove all previous effect icons+labels
 	for child in effect_icons_hbox.get_children():
 		child.queue_free()
@@ -181,19 +182,18 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 			vbox.add_child(label)
 			
 			# Place confidence on left, others on right
-			if effect_name == "confidence":
-				effect_icons_hbox.add_child(vbox, 0) # Insert at index 0 (left)
-				effect_icons.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-				left_icons_to_animate.append(icon)
-			else:
-				effect_icons_hbox.add_child(vbox)    # Append at end (right)
-				effect_icons.size_flags_horizontal = Control.SIZE_SHRINK_END
-				right_icons_to_animate.append(icon)
+			#if effect_name == "confidence":
+			#	effect_icons_hbox.add_child(vbox, 0) # Insert at index 0 (left)
+			#	effect_icons.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+			#	left_icons_to_animate.append(icon)
+			#else:
+			effect_icons_hbox.add_child(vbox)    # Append at end (right)
+			effect_icons.size_flags_horizontal = Control.SIZE_SHRINK_END
+			right_icons_to_animate.append(icon)
 
-	# Animate confidence icon(s) left, then all others right, in the order they appear
-	for icon in left_icons_to_animate + right_icons_to_animate:
+	for icon in right_icons_to_animate:
 		icon.visible = true
 		var tween = get_tree().create_tween()
 		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		await get_tree().create_timer(0.07).timeout
+		await get_tree().create_timer(1.17).timeout
