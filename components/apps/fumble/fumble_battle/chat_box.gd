@@ -20,11 +20,12 @@ const ICONS = {
 
 @onready var message_container: PanelContainer = %MessageContainer
 
-
-@onready var effect_icon_label_1: Label = %EffectIconLabel1
-@onready var effect_icon_label_2: Label = %EffectIconLabel2
-@onready var effect_icon_label_3: Label = %EffectIconLabel3
-
+func _input(event):
+	if event is InputEventMouseMotion:
+		var mouse_pos = get_viewport().get_mouse_position()
+		var control = get_viewport().gui_get_hovered_control()
+		if control:
+			print("Hovering over: ", control.name, " (", control, ")")
 
 
 
@@ -52,7 +53,8 @@ func _ready():
 	#emoji_reaction.size = Vector2(32, 32)
 	#emoji_reaction.custom_minimum_size = Vector2(32, 32)
 	emoji_reaction.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-
+	effect_icons.mouse_filter = Control.MOUSE_FILTER_PASS
+	effect_icons_hbox.mouse_filter = Control.MOUSE_FILTER_PASS
 
 # Call this to set the result ("success" or "fail" or "neutral") and animate flash
 func set_result_and_flash(new_result: String, duration := 0.4):
@@ -98,40 +100,38 @@ func clear_reaction():
 	emoji_reaction.tooltip_text = ""
 
 func animate_emoji_reaction():
-	# Reset scale to tiny, make visible
+	emoji_reaction.visible = false
 	emoji_reaction.scale = Vector2(0.1, 0.1)
+	await get_tree().create_timer(0.09).timeout # optional: staggers it to match icons
 	emoji_reaction.visible = true
 
-	# Create the pop tween
 	var tween = get_tree().create_tween()
-	tween.tween_property(emoji_reaction, "scale", Vector2(1.2, 1.2), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property(emoji_reaction, "scale", Vector2(1.0, 1.0), 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_property(emoji_reaction, "scale", Vector2(1.2, 1.2), 0.12)
+	tween.tween_property(emoji_reaction, "scale", Vector2(1.0, 1.0), 0.10)
+
 
 func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"]):
-
-	# Remove all previous effect icons+labels
 	for child in effect_icons_hbox.get_children():
 		child.queue_free()
-	
-	var left_icons_to_animate = []
-	var right_icons_to_animate = []
-	
+
+	var icons_to_animate = []
 	for effect_name in stat_order:
 		if effects.has(effect_name):
 			var delta = int(effects[effect_name])
 			if abs(delta) < 1:
 				continue
 
+			# setup icon as before...
 			var icon_texture: Texture2D = null
 			var color = Color.WHITE
 			var label_text = ""
-			
+
 			match effect_name:
 				"chemistry":
 					if delta > 0:
 						icon_texture = ICONS["chem_up"]
 						color = Color("53ee83")
-					elif delta < 0:
+					else:
 						icon_texture = ICONS["chem_down"]
 						color = Color("e74c3c")
 					label_text = ("%+d" % delta)
@@ -139,7 +139,7 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 					if delta > 0:
 						icon_texture = ICONS["esteem_up"]
 						color = Color("e74c3c")
-					elif delta < 0:
+					else:
 						icon_texture = ICONS["esteem_down"]
 						color = Color("53ee83")
 					label_text = ("%+d" % delta)
@@ -155,20 +155,24 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 					if delta > 0:
 						icon_texture = ICONS["conf_up"]
 						color = Color("53ee83")
-					elif delta < 0:
+					else:
 						icon_texture = ICONS["conf_down"]
 						color = Color("e74c3c")
 					label_text = ("%+d" % delta)
-			
+
 			var vbox = VBoxContainer.new()
 			vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+			vbox.mouse_filter = Control.MOUSE_FILTER_PASS
+
 
 			var icon = TextureRect.new()
 			icon.texture = icon_texture
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			#icon.custom_minimum_size = Vector2(32, 32)
+			icon.custom_minimum_size = Vector2(32, 32)
 			icon.tooltip_text = "%s: %s" % [effect_name.capitalize(), label_text]
 			icon.scale = Vector2(0.1, 0.1)
+			icon.mouse_filter = Control.MOUSE_FILTER_STOP
+			icon.visible = false 
 
 			var label = Label.new()
 			label.text = label_text
@@ -180,24 +184,17 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 
 			vbox.add_child(icon)
 			vbox.add_child(label)
-			
-			# Place confidence on left, others on right
-			#if effect_name == "confidence":
-			#	effect_icons_hbox.add_child(vbox, 0) # Insert at index 0 (left)
-			#	effect_icons.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-			#	left_icons_to_animate.append(icon)
-			#else:
-			effect_icons_hbox.add_child(vbox)    # Append at end (right)
-			effect_icons.size_flags_horizontal = Control.SIZE_SHRINK_END
-			right_icons_to_animate.append(icon)
+			effect_icons_hbox.add_child(vbox)
+			icons_to_animate.append(icon)
 
-	for icon in right_icons_to_animate:
-		icon.visible = false
-		icon.scale = Vector2(0.1, 0.1)
-		# animate in
+	# animate one by one!
+	for icon in icons_to_animate:
+		var label = icon.get_parent().get_child(1) # the Label is the second child of the VBox
+		label.visible = false
 		icon.visible = true
+		icon.scale = Vector2(0.1, 0.1)
 		var tween = get_tree().create_tween()
 		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12)
 		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10)
-		await get_tree().create_timer(1.10).timeout  # much shorter delay
-		icon.custom_minimum_size = Vector2(32, 32)  # if you want a minimum after anim
+		await get_tree().create_timer(0.09).timeout
+		label.visible = true

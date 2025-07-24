@@ -60,12 +60,18 @@ const REACTION_EMOJI = {
 	"zzz": preload("res://assets/emojis/zzz_emoji_x32.png"),
 	"thumbs_down": preload("res://assets/emojis/thumbsdown_emoji_x32.png")
 }
-const REACTION_TOOLTIP = {
-	"heart": "This type of line is **Very Effective!**",
-	"zzz": "This type of line is **Not Very Effective.**",
-	"thumbs_down": "This type of line is **Totally Not Effective.**"
-}
 
+
+func get_reaction_tooltip(reaction: String) -> String:
+	match reaction:
+		"heart":
+			return npc.first_name + " loved this line!"
+		"zzz":
+			return "Success, but a different line might work better."
+		"thumbs_down":
+			return "This type of line is not happening with " + npc.first_name
+		_:
+			return ""
 
 
 
@@ -309,7 +315,7 @@ func do_move(move_type: String) -> void:
 		if reaction == "heart" or reaction == "zzz":
 			chat.set_reaction(
 				REACTION_EMOJI[reaction],
-				REACTION_TOOLTIP[reaction]
+				get_reaction_tooltip(reaction)
 			)
 		else:
 			chat.clear_reaction()
@@ -317,7 +323,7 @@ func do_move(move_type: String) -> void:
 		# Show thumbs_down for immune moves only after ??? is cleared
 		chat.set_reaction(
 			REACTION_EMOJI["thumbs_down"],
-			REACTION_TOOLTIP["thumbs_down"]
+			get_reaction_tooltip("thumbs_down")
 		)
 	else:
 		chat.clear_reaction()

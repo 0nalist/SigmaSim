@@ -11,15 +11,13 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="ChatBox" type="MarginContainer"]
-anchors_preset = 14
-anchor_top = 0.5
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -12.5
-offset_bottom = 12.5
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
@@ -28,6 +26,7 @@ script = ExtResource("1_i1vjr")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 5
@@ -35,10 +34,12 @@ theme_override_constants/margin_bottom = 5
 [node name="MessageContainer" type="PanelContainer" parent="MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i1vjr")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MessageContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 8
@@ -55,6 +56,7 @@ custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="EmojiReaction" type="TextureRect" parent="Control"]
 unique_name_in_owner = true
@@ -73,17 +75,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
+mouse_filter = 2
 
 [node name="EffectIconsHBox" type="HBoxContainer" parent="EffectIcons"]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -20.0
 offset_right = 104.0
-offset_bottom = 20.0
-grow_vertical = 2
+offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="EffectIcons/EffectIconsHBox"]
 layout_mode = 2
