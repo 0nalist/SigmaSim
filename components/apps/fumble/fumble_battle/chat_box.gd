@@ -4,8 +4,8 @@ class_name ChatBox
 @onready var text_label: Label = %TextLabel
 @onready var emoji_reaction: TextureRect = %EmojiReaction
 
-
-@onready var effect_icons_hbox: HBoxContainer = $Control2/EffectIconsHBox
+@onready var effect_icons: Control = %EffectIcons
+@onready var effect_icons_hbox: HBoxContainer = %EffectIconsHBox
 
 const ICONS = {
 	"chem_up": preload("res://assets/emojis/testtube_emoji_x32.png"),
@@ -107,7 +107,6 @@ func animate_emoji_reaction():
 	tween.tween_property(emoji_reaction, "scale", Vector2(1.2, 1.2), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(emoji_reaction, "scale", Vector2(1.0, 1.0), 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
-
 func set_stat_effects(effects: Dictionary, for_player: bool = true):
 	# Remove all previous effect icons+labels
 	for child in effect_icons_hbox.get_children():
@@ -118,6 +117,8 @@ func set_stat_effects(effects: Dictionary, for_player: bool = true):
 		effect_order = ["chemistry", "self_esteem", "apprehension"]
 	else:
 		effect_order = ["confidence"]
+	
+	var icons_to_animate = []
 	
 	for effect_name in effect_order:
 		if effects.has(effect_name):
@@ -169,6 +170,7 @@ func set_stat_effects(effects: Dictionary, for_player: bool = true):
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			icon.custom_minimum_size = Vector2(32, 32)
 			icon.tooltip_text = "%s: %s" % [effect_name.capitalize(), label_text]
+			icon.scale = Vector2(0.1, 0.1)  # Start tiny, for animation
 
 			var label = Label.new()
 			label.text = label_text
@@ -181,3 +183,14 @@ func set_stat_effects(effects: Dictionary, for_player: bool = true):
 			vbox.add_child(icon)
 			vbox.add_child(label)
 			effect_icons_hbox.add_child(vbox)
+
+			# Store icon for animation
+			icons_to_animate.append(icon)
+
+	# Animate icons one by one (pop-in)
+	for icon in icons_to_animate:
+		icon.visible = true
+		var tween = get_tree().create_tween()
+		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		await get_tree().create_timer(0.07).timeout  # Stagger effect (adjust as you like)

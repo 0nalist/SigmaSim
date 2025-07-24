@@ -68,12 +68,14 @@ size_flags_vertical = 0
 texture = ExtResource("2_ugbyc")
 stretch_mode = 5
 
-[node name="Control2" type="Control" parent="."]
+[node name="EffectIcons" type="Control" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 
-[node name="EffectIconsHBox" type="HBoxContainer" parent="Control2"]
+[node name="EffectIconsHBox" type="HBoxContainer" parent="EffectIcons"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -83,11 +85,11 @@ offset_right = 104.0
 offset_bottom = 20.0
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="Control2/EffectIconsHBox"]
+[node name="TextureRect" type="TextureRect" parent="EffectIcons/EffectIconsHBox"]
 layout_mode = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Control2/EffectIconsHBox"]
+[node name="TextureRect2" type="TextureRect" parent="EffectIcons/EffectIconsHBox"]
 layout_mode = 2
 
-[node name="TextureRect3" type="TextureRect" parent="Control2/EffectIconsHBox"]
+[node name="TextureRect3" type="TextureRect" parent="EffectIcons/EffectIconsHBox"]
 layout_mode = 2

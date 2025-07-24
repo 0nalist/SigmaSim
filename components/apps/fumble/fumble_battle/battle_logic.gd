@@ -184,6 +184,7 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 
 
 
+
 func get_attractiveness_delta() -> float: # + if player is more attractive than npc
 	var dime_delta: float = ((PlayerManager.get_stat("attractiveness") - npc.attractiveness)/10.0)
 	#print("dime delta: " + str(dime_delta))
@@ -199,8 +200,8 @@ static func get_move_type_modifier(npc_type: String, move_type: String) -> float
 	npc_type = npc_type.strip_edges().to_lower()
 	move_type = move_type.strip_edges().to_lower()
 	var mods = RizzBattleData.type_mods.get(npc_type, null)
-	print("Looking up npc_type=", npc_type, " move_type=", move_type)
-	print("Type data:", mods)
+	#print("Looking up npc_type=", npc_type, " move_type=", move_type)
+	#print("Type data:", mods)
 	if mods == null:
 		return 1.0
 	if move_type in mods["immune"]:
