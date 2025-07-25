@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=13 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
 [ext_resource type="Material" uid="uid://bl8moqb187o1d" path="res://components/apps/fumble/fumble_label_pride_month_material.tres" id="3_ye860"]
+[ext_resource type="Texture2D" uid="uid://bq0jn8wlfmaae" path="res://assets/Flag_of_Turkey.svg.png" id="4_hf3uq"]
 [ext_resource type="PackedScene" uid="uid://buvfo6k8fhu53" path="res://components/apps/fumble/chats_tab.tscn" id="5_dmsn0"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="10_jh1fk"]
 
@@ -14,6 +15,11 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5fcgq"]
+texture = ExtResource("4_hf3uq")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wfdmb"]
 bg_color = Color(0.162066, 0.162066, 0.162065, 1)
@@ -254,6 +260,62 @@ virtual_keyboard_type = 3
 [node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
 layout_mode = 2
 
+[node name="FumbleShopContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5fcgq")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Pull Hotter People INSTANTLY With This One INSANE Trick."
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "TURKISH HAIR SURGERY"
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "+ 1.0 🔥to your dime status. "
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = " BUY NOW 
+  $25,000"
+
 [node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
@@ -311,6 +373,7 @@ icon_alignment = 1
 
 [node name="ChatsTab" parent="MarginContainer/VBoxContainer" instance=ExtResource("5_dmsn0")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="MenuTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
