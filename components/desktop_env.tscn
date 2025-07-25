@@ -550,6 +550,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
+mouse_filter = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
@@ -616,31 +617,31 @@ text = " 11:11 AM "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control" type="Control" parent="TaskbarLayer"]
-visible = false
+[node name="CalendarContainer" type="Control" parent="TaskbarLayer"]
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+grow_horizontal = 0
+grow_vertical = 0
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="CalendarPopupUI" parent="TaskbarLayer/Control" instance=ExtResource("16_g75lf")]
+[node name="CalendarPopupUI" parent="TaskbarLayer/CalendarContainer" instance=ExtResource("16_g75lf")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(650, 450)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
-offset_left = -390.0
-offset_top = -319.0
-offset_right = 260.0
-offset_bottom = 131.0
+offset_left = -650.0
+offset_top = -500.0
+offset_bottom = -50.0
 grow_horizontal = 0
 grow_vertical = 0
-scale = Vector2(0.6, 0.6)
+pivot_offset = Vector2(36, 36)
 day_panel_scene = ExtResource("20_vxmwr")
 
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]
