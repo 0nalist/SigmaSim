@@ -1,7 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://cndhqbvwm63oq"]
+[gd_scene load_steps=8 format=3 uid="uid://cndhqbvwm63oq"]
 
 [ext_resource type="Script" uid="uid://ctanldgm3ulrp" path="res://components/apps/fumble/fumble_match_profile.gd" id="1_ddbow"]
 [ext_resource type="PackedScene" uid="uid://cwin011rx52n7" path="res://components/apps/fumble/fumble_profile_ui.tscn" id="2_eqlwe"]
+[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/buttons/redbuttonpressed.png" id="3_0t11s"]
+[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/buttons/redbutton.png" id="4_fee1p"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wiqbq"]
+texture = ExtResource("3_0t11s")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cted4"]
+texture = ExtResource("3_0t11s")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_545u1"]
+texture = ExtResource("4_fee1p")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [node name="FumbleMatchProfile" type="Control"]
 layout_mode = 3
@@ -34,7 +57,20 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ChatButton" type="Button" parent="MarginContainer/VBoxContainer/FumbleProfile"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FumbleProfile"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="BlockButton" type="Button" parent="MarginContainer/VBoxContainer/FumbleProfile/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = " CHAT "
+
+[node name="ChatButton" type="Button" parent="MarginContainer/VBoxContainer/FumbleProfile/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
@@ -42,4 +78,15 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 text = " CHAT "
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/FumbleProfile/ChatButton" to="." method="_on_chat_button_pressed"]
+[node name="CloseFumbleProfileButton" type="Button" parent="MarginContainer/VBoxContainer/FumbleProfile"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_wiqbq")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_cted4")
+theme_override_styles/normal = SubResource("StyleBoxTexture_545u1")
+text = "x"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/FumbleProfile/HBoxContainer/ChatButton" to="." method="_on_chat_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/FumbleProfile/CloseFumbleProfileButton" to="." method="_on_close_fumble_profile_button_pressed"]

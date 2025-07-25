@@ -79,7 +79,7 @@ var SUCCESS_FX = {
 	"flex": {
 		"chemistry": 8,
 		"apprehension": -8,
-		"confidence": 6,
+		"confidence": 12,
 		"self_esteem": -3
 	},
 	"neg": {

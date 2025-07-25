@@ -1,3 +1,8 @@
+
+##             ##
+## NOT WORKING ##
+##             ## 
+
 extends Control
 class_name ClickToDismiss
 

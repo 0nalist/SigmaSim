@@ -88,5 +88,5 @@ func open_battle(battle_id, npc):
 	add_child(scene)
 	scene.load_battle(battle_id, npc)
 	
-	request_resize_x_to.emit(800)
+	request_resize_x_to.emit(860)
 	

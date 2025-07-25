@@ -8,25 +8,26 @@ class_name ChatBox
 @onready var effect_icons_hbox: HBoxContainer = %EffectIconsHBox
 
 const ICONS = {
-	"chem_up": preload("res://assets/emojis/testtube_emoji_x32.png"),
-	"chem_down": preload("res://assets/emojis/testtube_emoji_x32.png"),
-	"esteem_up": preload("res://assets/emojis/crown_emoji_x32.png"),
-	"esteem_down": preload("res://assets/emojis/crown_emoji_x32.png"),
-	"appre_up": preload("res://assets/emojis/grimace_emoji_x32.png"),
-	"appre_down": preload("res://assets/emojis/smiley_eyes_x32.png"),
-	"conf_up": preload("res://assets/emojis/sunglasses_smiley_emoji_x32.png"),
-	"conf_down": preload("res://assets/emojis/peek_emoji_x32.png"),
+	"chem_up": preload("res://assets/emojis/test_tube_twemoji_x72_1f9ea.png"),
+	"chem_down": preload("res://assets/emojis/test_tube_twemoji_x72_1f9ea.png"),
+	"esteem_up": preload("res://assets/emojis/mirror_twemoji_x72_1fa9e.png"),
+	"esteem_down": preload("res://assets/emojis/mirror_twemoji_x72_1fa9e.png"),
+	"appre_up": preload("res://assets/emojis/grimace_twemoji_x72_1f62c.png"),
+	"appre_down": preload("res://assets/emojis/smiling_eyes_blush_twemoji_x72_1f60a.png"),
+	"conf_up": preload("res://assets/emojis/sunglasses_smiley_twemoji_x72_1f60e.png"),
+	"conf_down": preload("res://assets/emojis/flushed_face_twemoji_x72_1f633.png"),
 }
 
 @onready var message_container: PanelContainer = %MessageContainer
 
+'''
 func _input(event):
 	if event is InputEventMouseMotion:
 		var mouse_pos = get_viewport().get_mouse_position()
 		var control = get_viewport().gui_get_hovered_control()
 		if control:
 			print("Hovering over: ", control.name, " (", control, ")")
-
+'''
 
 
 var text: String = ""
@@ -168,10 +169,14 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 			var icon = TextureRect.new()
 			icon.texture = icon_texture
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			icon.custom_minimum_size = Vector2(32, 32)
+			icon.custom_minimum_size = Vector2(18, 18)
+			icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+			icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			icon.tooltip_text = "%s: %s" % [effect_name.capitalize(), label_text]
 			icon.scale = Vector2(0.1, 0.1)
 			icon.mouse_filter = Control.MOUSE_FILTER_STOP
+			#icon.set_size(Vector2(36, 36))
 			icon.visible = false 
 
 			var label = Label.new()

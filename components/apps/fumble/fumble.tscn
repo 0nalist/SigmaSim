@@ -1,14 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=11 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
 [ext_resource type="Material" uid="uid://bl8moqb187o1d" path="res://components/apps/fumble/fumble_label_pride_month_material.tres" id="3_ye860"]
-[ext_resource type="Script" uid="uid://dqm2ovrgiyvhg" path="res://components/apps/fumble/chats_tab.gd" id="5_hf3uq"]
-[ext_resource type="PackedScene" uid="uid://cel7rmg2pea12" path="res://components/apps/fumble/fumble_battle/battle_ui.tscn" id="6_5fcgq"]
-[ext_resource type="PackedScene" uid="uid://3e434irx0gng" path="res://components/apps/fumble/match_button.tscn" id="6_wfdmb"]
-[ext_resource type="PackedScene" uid="uid://c02crnsc8wbvh" path="res://components/apps/fumble/chat_battle_button.tscn" id="7_jh1fk"]
-[ext_resource type="PackedScene" uid="uid://cndhqbvwm63oq" path="res://components/apps/fumble/fumble_match_profile.tscn" id="8_5uoqt"]
+[ext_resource type="PackedScene" uid="uid://buvfo6k8fhu53" path="res://components/apps/fumble/chats_tab.tscn" id="5_dmsn0"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="10_jh1fk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ye860"]
@@ -260,6 +256,7 @@ layout_mode = 2
 
 [node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -312,86 +309,8 @@ focus_mode = 0
 text = "  😍  "
 icon_alignment = 1
 
-[node name="ChatsTab" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="ChatsTab" parent="MarginContainer/VBoxContainer" instance=ExtResource("5_dmsn0")]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 1
-script = ExtResource("5_hf3uq")
-match_button_scene = ExtResource("6_wfdmb")
-battle_button_scene = ExtResource("7_jh1fk")
-match_profile_scene = ExtResource("8_5uoqt")
-battle_scene = ExtResource("6_5fcgq")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChatsTab"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
-custom_minimum_size = Vector2(0, 156)
-layout_mode = 2
-size_flags_stretch_ratio = 0.5
-
-[node name="MatchContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MatchButton" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer/MatchContainer" instance=ExtResource("6_wfdmb")]
-layout_mode = 2
-expand_icon = false
-
-[node name="MatchesLabel" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Matches: 0"
-
-[node name="AverageMatchLabel" type="Label" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Average Match: 0"
-
-[node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ChatBattlesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="ChatBattleButton" parent="MarginContainer/VBoxContainer/ChatsTab/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/ChatBattlesContainer" instance=ExtResource("7_jh1fk")]
 layout_mode = 2
 
 [node name="MenuTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]

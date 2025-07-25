@@ -30,3 +30,8 @@ func _on_chat_button_pressed():
 		queue_free()  # Close the profile popup
 	else:
 		print("Already in a battle with this NPC.")
+
+
+func _on_close_fumble_profile_button_pressed() -> void:
+	#TODO animate
+	queue_free()

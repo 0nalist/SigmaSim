@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cwin011rx52n7"]
+[gd_scene load_steps=7 format=3 uid="uid://cwin011rx52n7"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_a0w3w"]
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_m5oeo"]
 [ext_resource type="Script" uid="uid://ck1rp36ofvy52" path="res://components/apps/fumble/fumble_profile.gd" id="1_r7irv"]
+[ext_resource type="PackedScene" uid="uid://bo7jj5gh57d4n" path="res://components/greek_stats_ui.tscn" id="4_5ticg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ticg"]
 bg_color = Color(0.968627, 0.968627, 1, 1)
@@ -195,3 +196,14 @@ autowrap_mode = 3
 [node name="Control4" type="Control" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
+
+[node name="GreekStatsUI" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_5ticg")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="Control5" type="Control" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
