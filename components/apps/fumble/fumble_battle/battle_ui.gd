@@ -6,6 +6,13 @@ class_name BattleUI
 @export var battle_logic_resource: BattleLogic
 var logic: BattleLogic
 
+@onready var end_battle_screen_container: CenterContainer = %EndBattleScreenContainer
+
+var victorious: bool = false
+var blocked: bool = false
+
+
+
 @onready var profile_pic: TextureRect = %ProfilePic
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
@@ -89,6 +96,9 @@ func _ready():
 	profile_center_container.hide()
 	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
 	close_fumble_profile_button.pressed.connect(_on_close_fumble_profile_button_pressed)
+	
+	end_battle_screen_container.hide()
+	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}):
 	battle_id = new_battle_id
@@ -287,7 +297,7 @@ func do_move(move_type: String) -> void:
 		print("No lines for move:", move_type)
 		is_animating = false
 		return
-
+	
 	var chosen_line = options[randi() % options.size()]
 	var prefix := ""
 	if chosen_line["prefixes"].size() > 0:
@@ -303,7 +313,17 @@ func do_move(move_type: String) -> void:
 	player_chat.clear_reaction()
 	await animate_chat_text(player_chat, full_line)
 	await get_tree().create_timer(0.5).timeout
-
+	
+	# Edge case response if number already given
+	if victorious:
+		var npc_chat: ChatBox = null
+		var response_text = "You already have my number, text me!"
+		var chat = add_chat_line(response_text, false)
+		await animate_chat_text(chat, response_text)
+		update_action_buttons()
+		return
+	
+	
 	# --- Resolve move ---
 	var result = logic.resolve_move(move_type)
 	var use_count = move_usage_counts.get(move_type, 0)
@@ -376,12 +396,12 @@ func do_move(move_type: String) -> void:
 		if result.success:
 			var raw_number = str(NPCFactory.djb2(npc.full_name))
 			var number_msg = "Here’s my number: [url=number][u]%s[/u][/url]" % raw_number
-			var chat2: Control = add_chat_line(number_msg, false, true) # <-- Pass true for is_victory_number
-			# If needed, connect signals here:
+			var chat2: VictoryNumberChatBox = add_victory_number_chat_line(number_msg)
 			if chat2.has_signal("victory_number_clicked"):
 				chat2.victory_number_clicked.connect(_on_victory_number_clicked)
 			await animate_chat_text(chat2, number_msg)
-			await end_battle(true, npc)
+			#await end_battle(true, npc)
+			victorious = true
 			PlayerManager.adjust_stat("confidence", 1 + npc.attractiveness/10)
 		else:
 			PlayerManager.adjust_stat("confidence", -10)
@@ -392,15 +412,35 @@ func do_move(move_type: String) -> void:
 	PlayerManager.suppress_stat("confidence", false)
 
 
+func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
+	var hbox := HBoxContainer.new()
+	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+	var chat := victory_number_chat_box_scene.instantiate()
+	chat.is_npc_message = true
+
+	var spacer = Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_child(spacer)
+	hbox.add_child(chat)
+
+	chat_container.add_child(hbox)
+	chat.text_label.text = text
+	chat.text_label.visible_ratio = 0.0
+	scroll_to_newest_chat()
+	return chat
+
+
 func _on_victory_number_clicked() -> void:
 	show_victory_screen()
 
 func show_victory_screen():
-	print("victory!")
+	end_battle_screen_container.show() #animate
+	await end_battle(victorious, npc)
 
 func end_battle(success: bool, npc: NPC) -> void:
 	# Lock out further player interaction
-	#_disable_all_action_buttons()
+	_disable_all_action_buttons()
 
 	if success:
 		var ex_award = npc.attractiveness
@@ -564,3 +604,8 @@ func animate_chat_text(chat_box: Control, text: String) -> void:
 		elapsed += get_process_delta_time()
 	label.visible_ratio = 1.0
 	scroll_to_newest_chat()
+
+
+func _on_close_chat_button_pressed() -> void:
+	#set chat state as either Victory! or BLOCKED!
+	queue_free()
