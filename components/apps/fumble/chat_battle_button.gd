@@ -14,7 +14,11 @@ func set_battle(npc_obj, battle_id_str, idx):
 
 	var name = npc.full_name
 	var score = "%.1f/10" % (float(npc.attractiveness) / 10.0)
-	var type_str = str(npc.chat_battle_type) if npc.has("chat_battle_type") and npc.chat_battle_type != "" else "Unknown"
+
+	var type_str = "Unknown"
+	if npc.chat_battle_type != null and str(npc.chat_battle_type) != "":
+		type_str = str(npc.chat_battle_type)
+	
 	self.text = "%s (%s)  [%s]" % [name, score, type_str]
 
 func _ready():
