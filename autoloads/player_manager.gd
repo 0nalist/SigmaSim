@@ -31,6 +31,7 @@ var default_user_data: Dictionary = {
 	"rizz": 1,
 	"confidence": 100.0,
 	"confidence_regen_rate": 1.0,
+	"ex": 0.00,
 	
 	# Other Traits
 

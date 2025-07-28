@@ -2,7 +2,7 @@ extends PanelContainer
 class_name BattleUI
 
 @export var chat_box_scene: PackedScene
-
+@export var victory_number_chat_box_scene: PackedScene
 @export var battle_logic_resource: BattleLogic
 var logic: BattleLogic
 
@@ -238,11 +238,16 @@ func swap_move(slot_index: int, new_move: String):
 	update_action_buttons()
 
 # Helper function to add a chat line in a proper HBox (left for player, right for NPC)
-func add_chat_line(text: String, is_player: bool) -> Control:
+func add_chat_line(text: String, is_player: bool, is_victory_number := false) -> Control:
 	var hbox := HBoxContainer.new()
 	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	var chat := chat_box_scene.instantiate()
+	var chat
+	if is_victory_number:
+		chat = victory_number_chat_box_scene.instantiate()
+	else:
+		chat = chat_box_scene.instantiate()
+
 	chat.is_npc_message = not is_player
 
 	if is_player:
@@ -257,11 +262,11 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 		hbox.add_child(chat)
 
 	chat_container.add_child(hbox)
-
 	chat.text_label.text = text
 	chat.text_label.visible_ratio = 0.0
 	scroll_to_newest_chat()
 	return chat
+
 
 
 func do_move(move_type: String) -> void:
@@ -305,7 +310,7 @@ func do_move(move_type: String) -> void:
 	var reaction = result.get("reaction", "")
 	var filtered_effects = result.effects.duplicate() # For "haha" case
 
-	# Special case: "haha" (cry_laugh) = skip NPC reply and confidence, show player only
+	# Special case: "haha"  = skip NPC reply and confidence, show player only
 	if result.success and reaction == "haha":
 		player_chat.set_reaction(
 			REACTION_EMOJI["cry_laugh"],
@@ -369,25 +374,52 @@ func do_move(move_type: String) -> void:
 	# Special logic for catch
 	if move_type == "catch":
 		if result.success:
-			var number_msg = "Here’s my number: %s" % str(NPCFactory.djb2(npc.full_name))
-			var chat2: ChatBox = add_chat_line(number_msg, false)
+			var raw_number = str(NPCFactory.djb2(npc.full_name))
+			var number_msg = "Here’s my number: [url=number][u]%s[/u][/url]" % raw_number
+			var chat2: Control = add_chat_line(number_msg, false, true) # <-- Pass true for is_victory_number
+			# If needed, connect signals here:
+			if chat2.has_signal("victory_number_clicked"):
+				chat2.victory_number_clicked.connect(_on_victory_number_clicked)
 			await animate_chat_text(chat2, number_msg)
-			end_battle(true)
+			await end_battle(true, npc)
+			PlayerManager.adjust_stat("confidence", 1 + npc.attractiveness/10)
 		else:
 			PlayerManager.adjust_stat("confidence", -10)
 			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
+
 
 	is_animating = false
 	PlayerManager.suppress_stat("confidence", false)
 
 
+func _on_victory_number_clicked() -> void:
+	show_victory_screen()
+
+func show_victory_screen():
+	print("victory!")
+
+func end_battle(success: bool, npc: NPC) -> void:
+	# Lock out further player interaction
+	#_disable_all_action_buttons()
+
+	if success:
+		var ex_award = npc.attractiveness
+		PlayerManager.adjust_stat("ex", ex_award)
+		#animate_progress_bar(ex_progress_bar, PlayerManager.get_stat("ex"))
+		#_show_ex_reward_popup(ex_award)
+		# Optionally, show a badge or "Victory!" panel here
+	else:
+		# Optionally handle loss logic here
+		pass
+
+func _disable_all_action_buttons() -> void:
+	for btn in action_buttons:
+		btn.disabled = true
+	catch_button.disabled = true
+	#ghost_button should switch to "ttyl" and blink
+	inventory_button.disabled = true
 
 
-
-
-func end_battle(success: bool) -> void:
-	pass
-	#gain experience
 
 
 func _reveal_chat_effects_and_results(player_chat: ChatBox, player_result: String, npc_chat: ChatBox, npc_result: String, player_effects: Dictionary, npc_effects: Dictionary) -> void:

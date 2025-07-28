@@ -29,12 +29,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5uoqt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dmsn0"]
 bg_color = Color(0.541176, 0.807843, 0, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 
 [node name="Fumble" type="PanelContainer"]
 anchors_preset = 15
@@ -348,6 +344,7 @@ offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "CON"
+horizontal_alignment = 1
 
 [node name="10px2" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
@@ -399,18 +396,22 @@ layout_mode = 2
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="ExperienceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
+[node name="ExProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_styles/background = SubResource("StyleBoxFlat_wfdmb")
-theme_override_styles/fill = SubResource("StyleBoxFlat_5uoqt")
-value = 2.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_dmsn0")
+max_value = 1.0
 show_percentage = false
+script = ExtResource("10_jh1fk")
+stat_name = "ex"
+duration = 0.4
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ExperienceProgressBar"]
+[node name="ExLabel" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ExProgressBar"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -424,6 +425,7 @@ offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "EX"
+horizontal_alignment = 1
 
 [node name="10px4" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)

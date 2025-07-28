@@ -5,7 +5,7 @@
 extends Node
 # Autoload name: NameGenerator
 
-# Vector3(x = femininity, y = masculinity, z = androgyny)
+# Vector3(x = femininity, y = masculinity, z = enbygyny)
 class NameEntry:
 	var name: String
 	var gender_vector: Vector3
@@ -30,12 +30,12 @@ func _ready():
 	print("✅ NameGenerator loaded %d names" % name_pool.size())
 
 # --- Public API ---
-func get_random_name(fem: float = 0.0, masc: float = 0.0, andro: float = 0.0, top_n: int = 1) -> String:
+func get_random_name(fem: float = 0.0, masc: float = 0.0, enby: float = 0.0, top_n: int = 1) -> String:
 	if name_pool.is_empty():
 		printerr("⚠️ Name pool is empty!")
 		return "Unnamed"
 
-	if fem + masc + andro == 0.0:
+	if fem + masc + enby == 0.0:
 		# Choose random name when called without arguments
 		var available := name_pool.map(func(e): return e.name)
 		available.shuffle()
@@ -43,7 +43,7 @@ func get_random_name(fem: float = 0.0, masc: float = 0.0, andro: float = 0.0, to
 		_add_to_recent(name)
 		return name
 
-	var target_vector := Vector3(fem, masc, andro).normalized()
+	var target_vector := Vector3(fem, masc, enby).normalized()
 	var scored_names: Array = []
 
 	# Score all names
@@ -118,5 +118,5 @@ func load_from_json(path: String):
 
 	for entry in data:
 		var name = entry.get("name", "")
-		var vector := Vector3(entry.get("fem", 0.0), entry.get("masc", 0.0), entry.get("andro", 0.0))
+		var vector := Vector3(entry.get("fem", 0.0), entry.get("masc", 0.0), entry.get("enby", 0.0))
 		_add_name(name, vector)
