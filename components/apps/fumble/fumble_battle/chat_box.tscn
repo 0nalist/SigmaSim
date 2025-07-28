@@ -126,24 +126,4 @@ offset_left = -116.0
 offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
-
-[node name="TextureRect" type="TextureRect" parent="LeftEffectIcons/LeftEffectIconsHBox"]
-custom_minimum_size = Vector2(36, 36)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 0
-
-[node name="TextureRect2" type="TextureRect" parent="LeftEffectIcons/LeftEffectIconsHBox"]
-custom_minimum_size = Vector2(36, 36)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 0
-
-[node name="TextureRect3" type="TextureRect" parent="LeftEffectIcons/LeftEffectIconsHBox"]
-custom_minimum_size = Vector2(36, 36)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 0
+alignment = 2
