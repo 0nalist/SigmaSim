@@ -157,6 +157,7 @@ func _create_stat_icon(effect_name: String, delta: int) -> VBoxContainer:
 	var vbox = VBoxContainer.new()
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	vbox.mouse_filter = Control.MOUSE_FILTER_PASS
+	vbox.add_theme_constant_override("separation", -1)
 
 	var icon = TextureRect.new()
 	icon.texture = icon_texture
@@ -198,6 +199,7 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 				if abs(delta) < 1:
 					continue
 				var vbox = _create_stat_icon(effect_name, delta)
+				vbox.add_theme_constant_override("separation", -1)
 				if vbox != null:
 					left_effect_icons_hbox.add_child(vbox)
 					icons_to_animate.append(vbox.get_child(0))
@@ -213,6 +215,7 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 			if abs(delta) < 1:
 				continue
 			var vbox = _create_stat_icon(effect_name, delta)
+			vbox.add_theme_constant_override("separation", -1)
 			if vbox != null:
 				effect_icons_hbox.add_child(vbox)
 				icons_to_animate.append(vbox.get_child(0))
