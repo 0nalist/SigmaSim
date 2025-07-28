@@ -120,6 +120,75 @@ func animate_emoji_reaction():
 
 
 func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"]):
+	if is_npc_message:
+		for child in left_effect_icons_hbox.get_children():
+			child.queue_free()
+		var icons_to_animate = []
+		for effect_name in stat_order:
+			if effects.has(effect_name):
+				var delta = int(effects[effect_name])
+				if abs(delta) < 1:
+					continue
+
+				# setup icon as before...
+				var icon_texture: Texture2D = null
+				var color = Color.WHITE
+				var label_text = ""
+				match effect_name:
+					"confidence":
+						if delta > 0:
+							icon_texture = ICONS["conf_up"]
+							color = Color("53ee83")
+						else:
+							icon_texture = ICONS["conf_down"]
+							color = Color("e74c3c")
+						label_text = ("%+d" % delta)
+				var vbox = VBoxContainer.new()
+				vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+				vbox.mouse_filter = Control.MOUSE_FILTER_PASS
+
+
+				var icon = TextureRect.new()
+				icon.texture = icon_texture
+				icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				icon.custom_minimum_size = Vector2(18, 18)
+				icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+				icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+				icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				icon.tooltip_text = "%s: %s" % [effect_name.capitalize(), label_text]
+				icon.scale = Vector2(0.1, 0.1)
+				icon.mouse_filter = Control.MOUSE_FILTER_STOP
+				#icon.set_size(Vector2(36, 36))
+				icon.visible = false 
+
+				var label = Label.new()
+				label.text = label_text
+				label.modulate = color
+				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+				label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+				label.custom_minimum_size = Vector2(32, 14)
+				label.tooltip_text = icon.tooltip_text
+
+				vbox.add_child(icon)
+				vbox.add_child(label)
+				left_effect_icons_hbox.add_child(vbox)
+				icons_to_animate.append(icon)
+
+		# animate one by one!
+		for icon in icons_to_animate:
+			var label = icon.get_parent().get_child(1) # the Label is the second child of the VBox
+			label.visible = false
+			icon.visible = true
+			icon.scale = Vector2(0.1, 0.1)
+			var tween = get_tree().create_tween()
+			tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12)
+			tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10)
+			await get_tree().create_timer(0.09).timeout
+			label.visible = true
+		return
+	
+	
+	
 	for child in effect_icons_hbox.get_children():
 		child.queue_free()
 
@@ -160,14 +229,14 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 						icon_texture = ICONS["appre_up"]
 						color = Color("e74c3c")
 					label_text = ("%+d" % delta)
-				"confidence":
-					if delta > 0:
-						icon_texture = ICONS["conf_up"]
-						color = Color("53ee83")
-					else:
-						icon_texture = ICONS["conf_down"]
-						color = Color("e74c3c")
-					label_text = ("%+d" % delta)
+				#"confidence":
+				#	if delta > 0:
+				#		icon_texture = ICONS["conf_up"]
+				#		color = Color("53ee83")
+				#	else:
+				#		icon_texture = ICONS["conf_down"]
+				#		color = Color("e74c3c")
+				#	label_text = ("%+d" % delta)
 
 			var vbox = VBoxContainer.new()
 			vbox.alignment = BoxContainer.ALIGNMENT_CENTER
