@@ -305,7 +305,7 @@ func do_move(move_type: String) -> void:
 	var reaction = result.get("reaction", "")
 	var filtered_effects = result.effects.duplicate() # For "haha" case
 
-	# "haha" (cry_laugh) = skip NPC reply and confidence, show player only
+	# Special case: "haha" (cry_laugh) = skip NPC reply and confidence, show player only
 	if result.success and reaction == "haha":
 		player_chat.set_reaction(
 			REACTION_EMOJI["cry_laugh"],
@@ -313,9 +313,13 @@ func do_move(move_type: String) -> void:
 		)
 		filtered_effects.erase("confidence")
 		await get_tree().create_timer(0.25).timeout
-		await update_progress_bars()
 		await player_chat.set_stat_effects(filtered_effects)
 		await player_chat.reveal_result_color("success")
+
+		# Now update stats/progress bars
+		battle_stats = logic.get_stats().duplicate()
+		await update_progress_bars()
+
 		is_animating = false
 		PlayerManager.suppress_stat("confidence", false)
 		return
@@ -335,7 +339,8 @@ func do_move(move_type: String) -> void:
 		player_chat.clear_reaction()
 
 	await get_tree().create_timer(0.25).timeout
-	await update_progress_bars()
+
+	# DO NOT update battle_stats or progress bars yet!
 
 	# Prepare for NPC reply (or skip if not needed)
 	var npc_chat: ChatBox = null
@@ -357,6 +362,10 @@ func do_move(move_type: String) -> void:
 		result.effects # Or use different effects if you want
 	)
 
+	# === Only now, after ALL animations, update UI bars ===
+	battle_stats = logic.get_stats().duplicate()
+	await update_progress_bars()
+
 	# Special logic for catch
 	if move_type == "catch":
 		if result.success:
@@ -370,6 +379,7 @@ func do_move(move_type: String) -> void:
 
 	is_animating = false
 	PlayerManager.suppress_stat("confidence", false)
+
 
 
 
