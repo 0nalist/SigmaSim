@@ -58,7 +58,8 @@ var is_animating: bool = false
 const REACTION_EMOJI = {
 	"heart": preload("res://assets/emojis/red_heart_emoji_x32.png"),
 	"zzz": preload("res://assets/emojis/zzz_emoji_x32.png"),
-	"thumbs_down": preload("res://assets/emojis/thumbsdown_emoji_x32.png")
+	"thumbs_down": preload("res://assets/emojis/thumbsdown_emoji_x32.png"),
+	"cry_laugh": preload("res://assets/emojis/cry_laughing_twemoji_x32_1f602.png"),
 }
 
 
@@ -70,6 +71,9 @@ func get_reaction_tooltip(reaction: String) -> String:
 			return "Success, but a different line might work better."
 		"thumbs_down":
 			return "This type of line is not happening with " + npc.first_name
+		"cry_laugh":
+			return npc.first_name + " thought this was funny, but not enough to respond."
+		
 		_:
 			return ""
 
@@ -263,14 +267,13 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 func do_move(move_type: String) -> void:
 	is_animating = true
 	PlayerManager.suppress_stat("confidence", true)
-	
+
 	move_type = move_type.to_lower()
-	
 	if move_usage_counts.has(move_type):
 		move_usage_counts[move_type] += 1
 	update_action_buttons()
 
-	# Player line logic
+	# --- Choose player's line ---
 	var options = []
 	for line in RizzBattleData.player_lines:
 		if line["move_type"] == move_type:
@@ -290,81 +293,77 @@ func do_move(move_type: String) -> void:
 		suffix = chosen_line["suffixes"].pick_random()
 	var full_line = prefix + core + suffix
 
-	# Animate player line
+	# --- Animate player line ---
 	var chat = add_chat_line(full_line, true)
 	chat.clear_reaction()
 	await animate_chat_text(chat, full_line)
 	await get_tree().create_timer(0.5).timeout
 
-	# ---- resolve move with battle logic! ----
-
+	# --- Resolve move ---
 	var result = logic.resolve_move(move_type)
-	_apply_effects(result.effects)
-
-	
-
-	
-	
-	var npc_chat: ChatBox = await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
-	await get_tree().create_timer(.69).timeout
-	
-
 	var use_count = move_usage_counts.get(move_type, 0)
 	var reaction = result.get("reaction", "")
-	if result.success:
-		# Only show heart/zzz on success
-		if reaction == "heart" or reaction == "zzz":
-			chat.set_reaction(
-				REACTION_EMOJI[reaction],
-				get_reaction_tooltip(reaction)
-			)
-		else:
-			chat.clear_reaction()
-	elif use_count >= 3 and reaction == "thumbs_down":
-		# Show thumbs_down for immune moves only after ??? is cleared
+	var filtered_effects = result.effects.duplicate() # We'll use this for "haha" case
+
+	# Special: "haha" (cry_laugh) successful move—skip confidence and skip NPC reply
+	if result.success and reaction == "haha":
+		chat.set_reaction(
+			REACTION_EMOJI["cry_laugh"],
+			get_reaction_tooltip("cry_laugh")
+		)
+		filtered_effects.erase("confidence")
+		await get_tree().create_timer(0.25).timeout
+		animate_success_or_fail(true)
+		await update_progress_bars()
+		chat.set_stat_effects(filtered_effects)
+		is_animating = false
+		PlayerManager.suppress_stat("confidence", false)
+		return
+
+	# Heart/success
+	if result.success and reaction == "heart":
+		chat.set_reaction(
+			REACTION_EMOJI["heart"],
+			get_reaction_tooltip("heart")
+		)
+	elif not result.success and use_count >= 3 and reaction == "thumbs_down":
 		chat.set_reaction(
 			REACTION_EMOJI["thumbs_down"],
 			get_reaction_tooltip("thumbs_down")
 		)
 	else:
 		chat.clear_reaction()
-	
+
 	await get_tree().create_timer(0.25).timeout
-	
-	# Animate effects/progress, etc.
+
+	# Animate effects/progress (player chat always shows effects)
 	animate_success_or_fail(result.success)
 	await update_progress_bars()
-	
-	#chat.set_stat_effects(result.effects)
-	
-	#if result.effects.has("confidence"):
-	#	print("confidence changed")
-	#	npc_chat.set_stat_effects({"confidence": result.effects.confidence}, ["confidence"])
-	
 	chat.set_stat_effects(result.effects)
-	npc_chat.set_stat_effects(result.effects)
-	
-	
-	
-	# SPECIAL LOGIC FOR CATCH
+
+	# Normal NPC reply for all but "haha" success
+	var npc_should_respond = true
+	if result.success and reaction == "haha":
+		npc_should_respond = false
+	if npc_should_respond:
+		var npc_chat: ChatBox = await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
+		npc_chat.set_stat_effects(result.effects)
+
+	# Special logic for catch
 	if move_type == "catch":
 		if result.success:
-			# Add NPC's number as a new message
 			var number_msg = "Here’s my number: %s" % str(NPCFactory.djb2(npc.full_name))
 			var chat2 = add_chat_line(number_msg, false)
 			await animate_chat_text(chat2, number_msg)
 			end_battle(true)
-			
 		else:
-			# Player loses confidence, NPC becomes more apprehensive
 			PlayerManager.adjust_stat("confidence", -10)
 			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
-			# Optionally animate/apply any feedback here too
-	
-	
-	
+
 	is_animating = false
 	PlayerManager.suppress_stat("confidence", false)
+
+
 
 func end_battle(success: bool) -> void:
 	pass

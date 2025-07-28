@@ -2,7 +2,7 @@ extends MarginContainer
 class_name ChatBox
 
 var is_npc_message: bool = false
-
+var resolved: bool = false
 
 @onready var text_label: Label = %TextLabel
 @onready var emoji_reaction: TextureRect = %EmojiReaction
@@ -67,8 +67,11 @@ func _ready():
 
 # Call this to set the result ("success" or "fail" or "neutral") and animate flash
 func set_result_and_flash(new_result: String, duration := 0.4):
+	if resolved:
+		return
 	set_result(new_result)
 	flash_result(duration)
+	resolved = true
 
 # Just sets the persistent color, does NOT animate
 func set_result(new_result: String):

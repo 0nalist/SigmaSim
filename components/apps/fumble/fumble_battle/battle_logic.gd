@@ -17,7 +17,7 @@ func resolve_move(move_type: String) -> Dictionary:
 	if mod == 2.0:
 		reaction = "heart"
 	elif mod == 0.5:
-		reaction = "zzz"
+		reaction = "haha"
 	elif mod == 0.0:
 		reaction = "thumbs_down"
 	# Default: no reaction or normal (could add more)
