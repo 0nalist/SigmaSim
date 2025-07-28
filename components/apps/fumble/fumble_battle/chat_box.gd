@@ -1,11 +1,19 @@
 extends MarginContainer
 class_name ChatBox
 
+var is_npc_message: bool = false
+
+
 @onready var text_label: Label = %TextLabel
 @onready var emoji_reaction: TextureRect = %EmojiReaction
 
 @onready var effect_icons: Control = %EffectIcons
 @onready var effect_icons_hbox: HBoxContainer = %EffectIconsHBox
+
+@onready var left_effect_icons: Control = %LeftEffectIcons
+@onready var left_effect_icons_hbox: HBoxContainer = $LeftEffectIcons/LeftEffectIconsHBox
+
+
 
 const ICONS = {
 	"chem_up": preload("res://assets/emojis/test_tube_twemoji_x72_1f9ea.png"),

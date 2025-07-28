@@ -239,6 +239,7 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	var chat := chat_box_scene.instantiate()
+	chat.is_npc_message = not is_player
 
 	if is_player:
 		hbox.add_child(chat)
@@ -252,7 +253,7 @@ func add_chat_line(text: String, is_player: bool) -> Control:
 		hbox.add_child(chat)
 
 	chat_container.add_child(hbox)
-	# Now chat is in the tree, onready properties are valid!
+
 	chat.text_label.text = text
 	chat.text_label.visible_ratio = 0.0
 	scroll_to_newest_chat()
@@ -334,11 +335,16 @@ func do_move(move_type: String) -> void:
 	animate_success_or_fail(result.success)
 	await update_progress_bars()
 	
-	chat.set_stat_effects(result.effects)
+	#chat.set_stat_effects(result.effects)
 	
-	if result.effects.has("confidence"):
-		print("confidence changed")
-		npc_chat.set_stat_effects({"confidence": result.effects.confidence}, ["confidence"])
+	#if result.effects.has("confidence"):
+	#	print("confidence changed")
+	#	npc_chat.set_stat_effects({"confidence": result.effects.confidence}, ["confidence"])
+	
+	chat.set_stat_effects(result.effects)
+	npc_chat.set_stat_effects(result.effects)
+	
+	
 	
 	# SPECIAL LOGIC FOR CATCH
 	if move_type == "catch":
