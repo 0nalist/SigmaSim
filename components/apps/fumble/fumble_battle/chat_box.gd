@@ -65,7 +65,13 @@ func _ready():
 	effect_icons.mouse_filter = Control.MOUSE_FILTER_PASS
 	effect_icons_hbox.mouse_filter = Control.MOUSE_FILTER_PASS
 
-# Call this to set the result ("success" or "fail" or "neutral") and animate flash
+
+func reveal_result_color(result: String) -> void:
+	# Use await to make it sync with the rest of the animations if needed
+	await get_tree().process_frame
+	set_result_and_flash(result)
+
+
 func set_result_and_flash(new_result: String, duration := 0.4):
 	if resolved:
 		return

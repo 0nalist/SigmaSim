@@ -294,66 +294,74 @@ func do_move(move_type: String) -> void:
 	var full_line = prefix + core + suffix
 
 	# --- Animate player line ---
-	var chat = add_chat_line(full_line, true)
-	chat.clear_reaction()
-	await animate_chat_text(chat, full_line)
+	var player_chat: ChatBox = add_chat_line(full_line, true)
+	player_chat.clear_reaction()
+	await animate_chat_text(player_chat, full_line)
 	await get_tree().create_timer(0.5).timeout
 
 	# --- Resolve move ---
 	var result = logic.resolve_move(move_type)
 	var use_count = move_usage_counts.get(move_type, 0)
 	var reaction = result.get("reaction", "")
-	var filtered_effects = result.effects.duplicate() # We'll use this for "haha" case
+	var filtered_effects = result.effects.duplicate() # For "haha" case
 
-	# Special: "haha" (cry_laugh) successful move—skip confidence and skip NPC reply
+	# "haha" (cry_laugh) = skip NPC reply and confidence, show player only
 	if result.success and reaction == "haha":
-		chat.set_reaction(
+		player_chat.set_reaction(
 			REACTION_EMOJI["cry_laugh"],
 			get_reaction_tooltip("cry_laugh")
 		)
 		filtered_effects.erase("confidence")
 		await get_tree().create_timer(0.25).timeout
-		animate_success_or_fail(true)
 		await update_progress_bars()
-		chat.set_stat_effects(filtered_effects)
+		await player_chat.set_stat_effects(filtered_effects)
+		await player_chat.reveal_result_color("success")
 		is_animating = false
 		PlayerManager.suppress_stat("confidence", false)
 		return
 
-	# Heart/success
+	# Handle other reactions
 	if result.success and reaction == "heart":
-		chat.set_reaction(
+		player_chat.set_reaction(
 			REACTION_EMOJI["heart"],
 			get_reaction_tooltip("heart")
 		)
 	elif not result.success and use_count >= 3 and reaction == "thumbs_down":
-		chat.set_reaction(
+		player_chat.set_reaction(
 			REACTION_EMOJI["thumbs_down"],
 			get_reaction_tooltip("thumbs_down")
 		)
 	else:
-		chat.clear_reaction()
+		player_chat.clear_reaction()
 
 	await get_tree().create_timer(0.25).timeout
-
-	# Animate effects/progress (player chat always shows effects)
-	animate_success_or_fail(result.success)
 	await update_progress_bars()
-	chat.set_stat_effects(result.effects)
 
-	# Normal NPC reply for all but "haha" success
-	var npc_should_respond = true
-	if result.success and reaction == "haha":
-		npc_should_respond = false
-	if npc_should_respond:
-		var npc_chat: ChatBox = await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
-		npc_chat.set_stat_effects(result.effects)
+	# Prepare for NPC reply (or skip if not needed)
+	var npc_chat: ChatBox = null
+	if not (result.success and reaction == "haha"):
+		npc_chat = await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
+
+	# Both messages: reveal icons and flash color *after* all text is done
+	var player_result = "fail"
+	if result.success:
+		player_result = "success"
+	var npc_result = player_result # Use same result for now, or adjust as needed
+
+	await _reveal_chat_effects_and_results(
+		player_chat,
+		player_result,
+		npc_chat,
+		npc_result,
+		result.effects,
+		result.effects # Or use different effects if you want
+	)
 
 	# Special logic for catch
 	if move_type == "catch":
 		if result.success:
 			var number_msg = "Here’s my number: %s" % str(NPCFactory.djb2(npc.full_name))
-			var chat2 = add_chat_line(number_msg, false)
+			var chat2: ChatBox = add_chat_line(number_msg, false)
 			await animate_chat_text(chat2, number_msg)
 			end_battle(true)
 		else:
@@ -365,9 +373,24 @@ func do_move(move_type: String) -> void:
 
 
 
+
+
 func end_battle(success: bool) -> void:
 	pass
 	#gain experience
+
+
+func _reveal_chat_effects_and_results(player_chat: ChatBox, player_result: String, npc_chat: ChatBox, npc_result: String, player_effects: Dictionary, npc_effects: Dictionary) -> void:
+	# Show icons and then flash color for both chats, in sync
+	if player_chat:
+		await player_chat.set_stat_effects(player_effects)
+	if npc_chat:
+		await npc_chat.set_stat_effects(npc_effects)
+	# Flash both after icons
+	if player_chat:
+		await player_chat.reveal_result_color(player_result)
+	if npc_chat:
+		await npc_chat.reveal_result_color(npc_result)
 
 
 func animate_success_or_fail(success: bool):
