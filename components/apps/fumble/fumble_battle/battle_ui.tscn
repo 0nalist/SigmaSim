@@ -1,11 +1,13 @@
-[gd_scene load_steps=31 format=3 uid="uid://cel7rmg2pea12"]
+[gd_scene load_steps=40 format=3 uid="uid://cel7rmg2pea12"]
 
 [ext_resource type="Script" uid="uid://b4cmpyad34a6u" path="res://components/apps/fumble/fumble_battle/battle_ui.gd" id="1_ctqjn"]
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_vooct"]
+[ext_resource type="Texture2D" uid="uid://dqig7emb4n7md" path="res://assets/80scarpet.png" id="2_7gtst"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_ctqjn"]
 [ext_resource type="PackedScene" uid="uid://5esyyyvfivml" path="res://components/apps/fumble/fumble_battle/victory_number_chat_box.tscn" id="3_an8fo"]
 [ext_resource type="Script" uid="uid://ryyas7jb3kgr" path="res://components/apps/fumble/fumble_battle/battle_logic.gd" id="3_clyoa"]
 [ext_resource type="PackedScene" uid="uid://dyv7bmgfriqht" path="res://components/apps/fumble/fumble_battle/chat_box.tscn" id="4_34iuq"]
+[ext_resource type="Shader" uid="uid://dmvq6llcpnr8g" path="res://assets/shaders/distortion_1.gdshader" id="6_7gtst"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="6_d7cye"]
 [ext_resource type="PackedScene" uid="uid://cwin011rx52n7" path="res://components/apps/fumble/fumble_profile_ui.tscn" id="6_g0e31"]
 [ext_resource type="Texture2D" uid="uid://bp4vhobq5bq8o" path="res://assets/emojis/flushed_face_twemoji_x72_1f633.png" id="6_jpfxt"]
@@ -18,17 +20,86 @@
 [ext_resource type="Texture2D" uid="uid://dnvlxo5xu0ypo" path="res://assets/emojis/smiling_eyes_blush_twemoji_x72_1f60a.png" id="11_7gtst"]
 [ext_resource type="Texture2D" uid="uid://8icgbuxae2a8" path="res://assets/emojis/grimace_twemoji_x72_1f62c.png" id="12_mq0jq"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pog6m"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_51y15"]
+
+[sub_resource type="Shader" id="Shader_6oduf"]
+code = "/* 
+Earthbound battle backgrounds shader with scrolling effect and palette cycling like in the original game.
+@retr0_dev
+	
+Apply the shader to a TextureRect or a Sprite. Use a texture with some shapes in a transparent background for best results.
+You can then use a ColorRect or another method to paint the background.
+You can use the shader on multiple TextureRects and obtain a double-buffer effect tweaking the values for each one, remember to Make Unique the shader material.
+*/
+shader_type canvas_item;
+
+uniform float screen_height = 640.0;
+uniform float amplitude = 0.075;
+uniform float frequency = 10.0;
+uniform float speed = 2.0;
+uniform float amplitude_vertical = 0.0;
+uniform float frequency_vertical = 0.0;
+uniform float speed_vertical = 0.0;
+uniform vec2 scroll_direction = vec2(0.0, 0.0);
+uniform float scrolling_speed = 0.08;
+uniform bool enable_palette_cycling = false;
+uniform sampler2D palette;
+uniform float palette_speed = 0.1;
+
+void fragment()
+{
+	float diff_x = amplitude * sin((frequency * UV.y) + (speed * TIME));
+	float diff_y = amplitude_vertical * sin((frequency_vertical * UV.y)  + (speed_vertical * TIME));
+	vec2 scroll = scroll_direction * TIME * scrolling_speed;
+	vec4 tex = texture(TEXTURE, vec2(UV.x + diff_x, UV.y + diff_y) + scroll);
+	float palette_swap = mod(tex.r - TIME * palette_speed, 1.0);
+	
+	if (enable_palette_cycling)
+	{
+		COLOR = vec4(texture(palette, vec2(palette_swap, 0)).rgb, tex.a);
+	}
+	else COLOR = tex;
+	COLOR = mix(vec4(0.0), COLOR, float(int(UV.y * screen_height) % 2));
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_51y15"]
+shader = SubResource("Shader_6oduf")
+shader_parameter/screen_height = 640.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 0.69
+shader_parameter/amplitude_vertical = 0.0
+shader_parameter/frequency_vertical = 0.0
+shader_parameter/speed_vertical = 0.0
+shader_parameter/scroll_direction = Vector2(0.2, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7gtst"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mq0jq"]
+noise = SubResource("FastNoiseLite_7gtst")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nhbld"]
+shader = ExtResource("6_7gtst")
+shader_parameter/texture_albedo = ExtResource("2_7gtst")
+shader_parameter/noise = SubResource("NoiseTexture2D_mq0jq")
+shader_parameter/distortion_intensity = 3.02
+shader_parameter/distortion_tiling = Vector2(0, 0)
+shader_parameter/distortion_offset_speed = Vector2(0.29, 0.135)
+
+[sub_resource type="QuadMesh" id="QuadMesh_6oduf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhbld"]
+bg_color = Color(1, 1, 1, 0.490196)
 border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+shadow_size = 36
+shadow_offset = Vector2(2.655, 22.475)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbtd4"]
 bg_color = Color(0.162066, 0.162066, 0.162065, 1)
@@ -45,6 +116,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_67iqe"]
+bg_color = Color(0.868985, 0.868985, 0.868985, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -54,6 +126,8 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+shadow_size = 36
+shadow_offset = Vector2(0, 18.415)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34iuq"]
 bg_color = Color(0.162066, 0.162066, 0.162065, 1)
@@ -94,6 +168,8 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+shadow_size = 36
+shadow_offset = Vector2(0, 17.21)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fmmgg"]
 texture = ExtResource("8_ocgn8")
@@ -134,11 +210,41 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pog6m")
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_51y15")
 script = ExtResource("1_ctqjn")
 chat_box_scene = ExtResource("4_34iuq")
 victory_number_chat_box_scene = ExtResource("3_an8fo")
 battle_logic_resource = ExtResource("3_clyoa")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_51y15")
+layout_mode = 2
+texture = ExtResource("2_7gtst")
+expand_mode = 2
+stretch_mode = 1
+flip_v = true
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_51y15")
+layout_mode = 2
+texture = ExtResource("2_7gtst")
+expand_mode = 2
+stretch_mode = 1
+flip_h = true
+flip_v = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_nhbld")
+position = Vector2(1000.25, 571.75)
+scale = Vector2(2001.5, 1144.5)
+mesh = SubResource("QuadMesh_6oduf")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -164,6 +270,7 @@ text = "<- GHOST"
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
+theme_override_constants/separation = 12
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -181,14 +288,30 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_nhbld")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 texture = ExtResource("1_vooct")
 stretch_mode = 3
 
-[node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ProfilePic"]
+[node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ProfilePic"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -209,7 +332,7 @@ theme_override_constants/outline_size = 2
 text = "0/10"
 horizontal_alignment = 1
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
@@ -218,17 +341,17 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Name McNamerson"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 modulate = Color(1, 0.529412, 1, 1)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = ExtResource("6_jpfxt")
 expand_mode = 3
 
-[node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
@@ -242,7 +365,7 @@ script = ExtResource("6_d7cye")
 stat_name = "confidence"
 duration = 0.4
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/ConfidenceProgressBar"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ConfidenceProgressBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -257,7 +380,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "CONFIDENCE"
 
-[node name="TextureRect2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 modulate = Color(0.890196, 1, 0, 1)
 layout_mode = 2
 texture = ExtResource("8_an8fo")
@@ -270,12 +393,16 @@ size_flags_stretch_ratio = 2.6
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_67iqe")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
-[node name="ChatContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer"]
+[node name="ChatContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/ScrollContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 64)
 layout_mode = 2
@@ -297,14 +424,30 @@ theme_override_constants/margin_bottom = 5
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="NPCProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_nhbld")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="NPCProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("1_vooct")
 
-[node name="NPCAttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/NPCProfilePic"]
+[node name="NPCAttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/NPCProfilePic"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -325,7 +468,7 @@ theme_override_constants/outline_size = 2
 text = "0/10"
 horizontal_alignment = 1
 
-[node name="NPCProfileButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/NPCProfilePic"]
+[node name="NPCProfileButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/NPCProfilePic"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
@@ -336,7 +479,7 @@ offset_bottom = 27.0
 grow_horizontal = 0
 text = "?"
 
-[node name="NPCNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="NPCNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
@@ -345,7 +488,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Name McNamerson"
 horizontal_alignment = 1
 
-[node name="NPCTypeLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="NPCTypeLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
@@ -354,32 +497,33 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Name McNamerson"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="GridContainer2" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="GridContainer2" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 columns = 3
 
-[node name="LowChemistryTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer2"]
+[node name="LowChemistryTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer2"]
 modulate = Color(1, 0.273989, 0.21327, 1)
 layout_mode = 2
 texture = ExtResource("9_1tq0p")
 expand_mode = 2
 
-[node name="ChemistryProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer2"]
+[node name="ChemistryProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/outline_size = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_34iuq")
 theme_override_styles/fill = SubResource("StyleBoxFlat_g0e31")
 show_percentage = false
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer2/ChemistryProgressBar"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer2/ChemistryProgressBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -394,33 +538,35 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "CHEMISTRY"
 
-[node name="HighChemistyTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer2"]
+[node name="HighChemistyTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer2"]
 modulate = Color(3.24401e-05, 0.93414, 0.694745, 1)
 layout_mode = 2
 texture = ExtResource("9_1tq0p")
 expand_mode = 2
 
-[node name="GridContainer3" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="GridContainer3" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 columns = 3
 
-[node name="LowSelfEsteemTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer3"]
+[node name="LowSelfEsteemTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer3"]
 self_modulate = Color(0.665227, 0.00673677, 0.52689, 1)
 layout_mode = 2
 texture = ExtResource("10_6oduf")
 expand_mode = 2
 
-[node name="SelfEsteemProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer3"]
+[node name="SelfEsteemProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer3"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_34iuq")
 theme_override_styles/fill = SubResource("StyleBoxFlat_d7cye")
 value = 69.0
 show_percentage = false
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer3/SelfEsteemProgressBar"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer3/SelfEsteemProgressBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -435,36 +581,38 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "SELF-ESTEEM"
 
-[node name="HighSelfEsteemTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer3"]
+[node name="HighSelfEsteemTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer3"]
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("10_6oduf")
 expand_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 columns = 3
 
-[node name="LowApprehensionTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer"]
+[node name="LowApprehensionTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer"]
 modulate = Color(1, 1, 0.160784, 1)
 layout_mode = 2
 texture = ExtResource("11_7gtst")
 expand_mode = 2
 
-[node name="ApprehensionProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer"]
+[node name="ApprehensionProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_34iuq")
 theme_override_styles/fill = SubResource("StyleBoxFlat_clyoa")
 value = 50.0
 show_percentage = false
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer/ApprehensionProgressBar"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer/ApprehensionProgressBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -479,7 +627,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "APPREHENSION"
 
-[node name="HighApprehensionTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/GridContainer"]
+[node name="HighApprehensionTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/GridContainer"]
 modulate = Color(1, 0.733333, 0.713726, 1)
 layout_mode = 2
 size_flags_vertical = 3
@@ -489,6 +637,10 @@ expand_mode = 2
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

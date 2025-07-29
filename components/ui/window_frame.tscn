@@ -13,7 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/buttons/redbutton.png" id="5_ohtq3"]
 [ext_resource type="Texture2D" uid="uid://b2yvstkafcjto" path="res://assets/icons/icon_maximize.png" id="6_jw2h1"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_74cm5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5uc2"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+shadow_size = 11
+shadow_offset = Vector2(0, 17)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l8046"]
 texture = ExtResource("4_f5uc2")
@@ -91,7 +94,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_i8u7u")
-theme_override_styles/panel = SubResource("StyleBoxEmpty_74cm5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_f5uc2")
 script = ExtResource("2_ogx7f")
 icon = ExtResource("3_kln2c")
 default_size = Vector2(350, 400)
