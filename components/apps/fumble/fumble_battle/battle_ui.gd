@@ -402,7 +402,7 @@ func do_move(move_type: String) -> void:
 			await animate_chat_text(chat2, number_msg)
 			#await end_battle(true, npc)
 			victorious = true
-			PlayerManager.adjust_stat("confidence", 1 + npc.attractiveness/10)
+			PlayerManager.adjust_stat("confidence", 1 + npc.attractiveness/10.0)
 		else:
 			PlayerManager.adjust_stat("confidence", -10)
 			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
@@ -436,7 +436,7 @@ func _on_victory_number_clicked() -> void:
 
 func show_victory_screen():
 	end_battle_screen_container.show() #animate
-	await end_battle(victorious, npc)
+	end_battle(victorious, npc)
 
 func end_battle(success: bool, npc: NPC) -> void:
 	# Lock out further player interaction
