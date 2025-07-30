@@ -103,13 +103,20 @@ func get_all_fumble_relationships() -> Dictionary:
 	return out
 
 func save_fumble_battle(battle_id: String, npc_id: int, chatlog: Array, stats: Dictionary, outcome: String) -> void:
-	db.insert_row("fumble_battles", {
-			"battle_id": battle_id,
-			"npc_id": npc_id,
-			"chatlog": to_json(chatlog),
-			"stats": to_json(stats),
-			"outcome": outcome
-	})
+        var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["battle_id"])
+        var data = {
+                        "battle_id": battle_id,
+                        "npc_id": npc_id,
+                        "chatlog": to_json(chatlog),
+                        "stats": to_json(stats),
+                        "outcome": outcome
+        }
+        if rows.size() > 0 and db.has_method("update_rows"):
+                        db.update_rows("fumble_battles", data, "battle_id = '%s'" % battle_id)
+        else:
+                        if rows.size() > 0:
+                                db.query("DELETE FROM fumble_battles WHERE battle_id = '%s'" % battle_id)
+                        db.insert_row("fumble_battles", data)
 
 func load_fumble_battle(battle_id: String) -> Dictionary:
 	var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["*"])

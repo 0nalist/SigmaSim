@@ -36,7 +36,13 @@ var default_user_data: Dictionary = {
 	# Other Traits
 
 	"zodiac_sign": "",
-	"mbti": "",
+        "mbti": "",
+
+        # Fumble preferences
+        "fumble_pref_x": 0.0,
+        "fumble_pref_y": 0.0,
+        "fumble_pref_z": 0.0,
+        "fumble_curiosity": 50.0,
 
 	# Flags and progression
 	"unlocked_perks": [],
