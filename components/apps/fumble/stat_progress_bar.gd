@@ -23,11 +23,15 @@ func _on_stat_updated(value: float) -> void:
 func update_value(new_value: float) -> void:
 	var display_value = new_value
 	if fractional:
-			display_value = fmod(new_value, max_value)
+		display_value = fmod(new_value, max_value)
 	if animate:
-			set_value_animated(display_value)
+		set_value_animated(display_value)
 	else:
-			value = clamp(display_value, min_value, max_value)
+		value = clamp(display_value, min_value, max_value)
+
+	var str_val = "%.2f" % display_value if fractional else str(display_value)
+	tooltip_text = "%s: %s" % [stat_name, str_val]
+
 
 func set_value_animated(target_value: float) -> void:
 	if _tween:
