@@ -39,12 +39,28 @@ func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, out
 			DBManager.save_fumble_battle(battle_id, npc_idx, chatlog, stats, outcome)
 
 func load_battle_state(battle_id: String) -> Dictionary:
-	var data = DBManager.load_fumble_battle(battle_id)
-	if data.size() == 0:
-			return {}
-	return {
-			"npc_idx": int(data.npc_id),
-			"chatlog": DBManager.from_json(data.chatlog),
-			"stats": DBManager.from_json(data.stats),
-			"outcome": data.outcome
-	}
+        # Prefer in-memory data first
+        for b in active_battles:
+                if b.battle_id == battle_id:
+                        return {
+                                "npc_idx": b.npc_idx,
+                                "chatlog": b.chatlog.duplicate(),
+                                "stats": b.stats.duplicate(),
+                                "outcome": b.outcome
+                        }
+
+        var data = DBManager.load_fumble_battle(battle_id)
+        if data.size() == 0:
+                return {}
+        var parsed_chatlog = DBManager.from_json(data.chatlog)
+        if parsed_chatlog == null:
+                parsed_chatlog = []
+        var parsed_stats = DBManager.from_json(data.stats)
+        if parsed_stats == null:
+                parsed_stats = {}
+        return {
+                "npc_idx": int(data.npc_id),
+                "chatlog": parsed_chatlog,
+                "stats": parsed_stats,
+                "outcome": data.outcome
+        }
