@@ -207,10 +207,17 @@ func update_action_buttons():
 		action_buttons[i].text = label_base
 
 		# Prevent signal stacking
-		if action_buttons[i].is_connected("pressed", Callable(self, "_on_action_button_pressed")):
-			action_buttons[i].disconnect("pressed", Callable(self, "_on_action_button_pressed"))
-		action_buttons[i].pressed.connect(_on_action_button_pressed.bind(i))
-	
+	#	if action_buttons[i].is_connected("pressed", Callable(self, "_on_action_button_pressed")):
+	#		action_buttons[i].disconnect("pressed", Callable(self, "_on_action_button_pressed"))
+	#	action_buttons[i].pressed.connect(_on_action_button_pressed.bind(i))
+	#			# Prevent signal stacking
+		var cb := Callable(self, "_on_action_button_pressed").bind(i)
+		if action_buttons[i].is_connected("pressed", cb):
+				action_buttons[i].disconnect("pressed", cb)
+		action_buttons[i].pressed.connect(cb)
+
+
+
 	# === Catch button logic ===
 	var catch_uses = move_usage_counts.get("catch", 0)
 	var label_base = "CATCH\n"

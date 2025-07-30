@@ -160,6 +160,10 @@ size_flags_horizontal = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "X"
@@ -169,7 +173,15 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
@@ -181,7 +193,15 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control5" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
@@ -192,6 +212,10 @@ text = "Z"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Control6" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
 custom_minimum_size = Vector2(0, 4)
@@ -208,6 +232,10 @@ text = "Curiosity"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
 
 [node name="10px7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(10, 0)
@@ -252,6 +280,7 @@ layout_mode = 2
 
 [node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1

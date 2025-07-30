@@ -20,7 +20,12 @@
 [ext_resource type="Texture2D" uid="uid://dnvlxo5xu0ypo" path="res://assets/emojis/smiling_eyes_blush_twemoji_x72_1f60a.png" id="11_7gtst"]
 [ext_resource type="Texture2D" uid="uid://8icgbuxae2a8" path="res://assets/emojis/grimace_twemoji_x72_1f62c.png" id="12_mq0jq"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_51y15"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6oduf"]
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_51y15"]
 shader = ExtResource("5_7gtst")
@@ -159,7 +164,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxTexture_51y15")
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_6oduf")
 script = ExtResource("1_ctqjn")
 chat_box_scene = ExtResource("4_34iuq")
 victory_number_chat_box_scene = ExtResource("3_an8fo")
@@ -739,7 +745,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "You earned X ex"
+text = "You earned X Ex"
 horizontal_alignment = 1
 
 [node name="CloseChatButton" type="Button" parent="EndBattleScreenContainer/PanelContainer/MarginContainer/VBoxContainer"]

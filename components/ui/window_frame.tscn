@@ -16,7 +16,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5uc2"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 shadow_size = 7
-shadow_offset = Vector2(0, 17)
+shadow_offset = Vector2(2, 7)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l8046"]
 texture = ExtResource("4_f5uc2")
