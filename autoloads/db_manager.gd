@@ -33,23 +33,23 @@ func _create_tables():
 		"likes": { "data_type": "text" }, # comma-separated
 		"fumble_bio": { "data_type": "text" }
 	}
-        db.create_table("npc", npc_table)
+	db.create_table("npc", npc_table)
 
-       # -- Fumble Tables --
-       var relationships_table := {
-               "npc_id": { "data_type": "int", "primary_key": true },
-               "status": { "data_type": "text" }
-       }
-       db.create_table("fumble_relationships", relationships_table)
+	# -- Fumble Tables --
+	var relationships_table := {
+			"npc_id": { "data_type": "int", "primary_key": true },
+			"status": { "data_type": "text" }
+	}
+	db.create_table("fumble_relationships", relationships_table)
 
-       var battles_table := {
-               "battle_id": { "data_type": "text", "primary_key": true },
-               "npc_id": { "data_type": "int" },
-               "chatlog": { "data_type": "text" },
-               "stats": { "data_type": "text" },
-               "outcome": { "data_type": "text" }
-       }
-       db.create_table("fumble_battles", battles_table)
+	var battles_table := {
+			"battle_id": { "data_type": "text", "primary_key": true },
+			"npc_id": { "data_type": "int" },
+			"chatlog": { "data_type": "text" },
+			"stats": { "data_type": "text" },
+			"outcome": { "data_type": "text" }
+	}
+	db.create_table("fumble_battles", battles_table)
 
 
 func save_npc(idx: int, npc: NPC):
@@ -59,7 +59,7 @@ func save_npc(idx: int, npc: NPC):
 		"middle_initial": npc.middle_initial,
 		"last_name": npc.last_name,
 		"gender_vector": to_json(npc.gender_vector),
-		"bio": npc.bio,
+		"bio": npc.fumble_bio,
 		"occupation": npc.occupation,
 		"relationship_status": npc.relationship_status,
 		"affinity": npc.affinity,
@@ -82,50 +82,50 @@ func load_npc(idx: int) -> Dictionary:
 	return result[0] if result.size() > 0 else null
 
 func has_npc(idx: int) -> bool:
-        var rows = db.select_rows("npc", "id = %d" % idx, ["id"])
-        return rows.size() > 0
+		var rows = db.select_rows("npc", "id = %d" % idx, ["id"])
+		return rows.size() > 0
 
 func save_fumble_relationship(npc_id: int, status: String) -> void:
-       db.insert_row("fumble_relationships", {
-               "npc_id": npc_id,
-               "status": status
-       })
+	db.insert_row("fumble_relationships", {
+			"npc_id": npc_id,
+			"status": status
+	})
 
 func get_fumble_relationship(npc_id: int) -> String:
-       var rows = db.select_rows("fumble_relationships", "npc_id = %d" % npc_id, ["status"])
-       return rows[0].status if rows.size() > 0 else ""
+	var rows = db.select_rows("fumble_relationships", "npc_id = %d" % npc_id, ["status"])
+	return rows[0].status if rows.size() > 0 else ""
 
 func get_all_fumble_relationships() -> Dictionary:
-       var rows = db.select_rows("fumble_relationships", "", ["npc_id", "status"])
-       var out := {}
-       for r in rows:
-               out[r.npc_id] = r.status
-       return out
+	var rows = db.select_rows("fumble_relationships", "", ["npc_id", "status"])
+	var out := {}
+	for r in rows:
+			out[r.npc_id] = r.status
+	return out
 
 func save_fumble_battle(battle_id: String, npc_id: int, chatlog: Array, stats: Dictionary, outcome: String) -> void:
-       db.insert_row("fumble_battles", {
-               "battle_id": battle_id,
-               "npc_id": npc_id,
-               "chatlog": to_json(chatlog),
-               "stats": to_json(stats),
-               "outcome": outcome
-       })
+	db.insert_row("fumble_battles", {
+			"battle_id": battle_id,
+			"npc_id": npc_id,
+			"chatlog": to_json(chatlog),
+			"stats": to_json(stats),
+			"outcome": outcome
+	})
 
 func load_fumble_battle(battle_id: String) -> Dictionary:
-       var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["*"])
-       return rows[0] if rows.size() > 0 else {}
+	var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["*"])
+	return rows[0] if rows.size() > 0 else {}
 
 func get_active_fumble_battles() -> Array:
-       var rows = db.select_rows("fumble_battles", "outcome = 'active'", ["battle_id", "npc_id", "chatlog", "stats"])
-       var out := []
-       for r in rows:
-               out.append({
-                       "battle_id": r.battle_id,
-                       "npc_idx": int(r.npc_id),
-                       "chatlog": from_json(r.chatlog),
-                       "stats": from_json(r.stats)
-               })
-       return out
+	var rows = db.select_rows("fumble_battles", "outcome = 'active'", ["battle_id", "npc_id", "chatlog", "stats"])
+	var out := []
+	for r in rows:
+			out.append({
+					"battle_id": r.battle_id,
+					"npc_idx": int(r.npc_id),
+					"chatlog": from_json(r.chatlog),
+					"stats": from_json(r.stats)
+			})
+	return out
 
 func to_json(value: Variant) -> String:
 	match typeof(value):

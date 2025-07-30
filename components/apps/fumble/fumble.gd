@@ -82,9 +82,9 @@ func _on_card_swiped_left(npc_idx):
 	# Add further logic if desired
 
 func _on_card_swiped_right(npc_idx):
-       NPCManager.set_relationship_status(npc_idx, "fumble", "liked")
-       NPCManager.promote_to_persistent(npc_idx)
-       PlayerManager.adjust_stat("confidence", 1)
+	NPCManager.set_relationship_status(npc_idx, "fumble", "liked")
+	NPCManager.promote_to_persistent(npc_idx)
+	PlayerManager.adjust_stat("confidence", 1)
 
 
 func highlight_active(button: Button):

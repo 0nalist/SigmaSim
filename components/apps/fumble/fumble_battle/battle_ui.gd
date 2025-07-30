@@ -101,14 +101,14 @@ func _ready():
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}):
-       battle_id = new_battle_id
-       npc = new_npc
-       if chatlog_in.size() == 0 and stats_in.size() == 0:
-               var data = FumbleManager.load_battle_state(battle_id)
-               if data.size() > 0:
-                       chatlog = data.chatlog
-                       stats_in = data.stats
-       chatlog = chatlog_in.duplicate() if chatlog_in.size() > 0 else chatlog
+	battle_id = new_battle_id
+	npc = new_npc
+	if chatlog_in.size() == 0 and stats_in.size() == 0:
+			var data = FumbleManager.load_battle_state(battle_id)
+			if data.size() > 0:
+					chatlog = data.chatlog
+					stats_in = data.stats
+	chatlog = chatlog_in.duplicate() if chatlog_in.size() > 0 else chatlog
 
 	# If stats_in is empty, pull stats from npc resource
 	var battle_stats_to_use: Dictionary = {}
@@ -153,10 +153,10 @@ func scroll_to_newest_chat():
 		scroll.scroll_vertical = scroll.get_v_scroll_bar().max_value
 
 func update_progress_bars():
-	animate_progress_bar(chemistry_progress_bar,     battle_stats.get("chemistry", 0))
-	animate_progress_bar(self_esteem_progress_bar,   battle_stats.get("self_esteem", 0))
+	animate_progress_bar(chemistry_progress_bar,  battle_stats.get("chemistry", 0))
+	animate_progress_bar(self_esteem_progress_bar,battle_stats.get("self_esteem", 0))
 	animate_progress_bar(apprehension_progress_bar,  battle_stats.get("apprehension", 0))
-	animate_progress_bar(confidence_progress_bar,    PlayerManager.get_stat("confidence"))
+	animate_progress_bar(confidence_progress_bar, PlayerManager.get_stat("confidence"))
 
 func clamp100(val: float) -> float:
 	return clamp(val, 0, 100)
@@ -247,13 +247,13 @@ func _on_catch_button_pressed():
 	await do_move("catch")
 
 func _on_ghost_button_pressed():
-       if is_animating:
-               return
-       var chat = add_chat_line("*ghosts*", true)
-       await animate_chat_text(chat, "*ghosts*")
-       await get_tree().create_timer(0.69).timeout
-       FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
-       queue_free()
+	if is_animating:
+			return
+	var chat = add_chat_line("*ghosts*", true)
+	await animate_chat_text(chat, "*ghosts*")
+	await get_tree().create_timer(0.69).timeout
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
+	queue_free()
 
 
 func swap_move(slot_index: int, new_move: String):
@@ -284,13 +284,13 @@ func add_chat_line(text: String, is_player: bool, is_victory_number := false) ->
 		hbox.add_child(spacer)
 		hbox.add_child(chat)
 
-       chat_container.add_child(hbox)
-       chat.text_label.text = text
-       chat.text_label.visible_ratio = 0.0
-       scroll_to_newest_chat()
-       chatlog.append({"text": text, "is_player": is_player})
-       FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-       return chat
+	chat_container.add_child(hbox)
+	chat.text_label.text = text
+	chat.text_label.visible_ratio = 0.0
+	scroll_to_newest_chat()
+	chatlog.append({"text": text, "is_player": is_player})
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+	return chat
 
 
 
@@ -453,14 +453,14 @@ func _on_victory_number_clicked() -> void:
 var ex_award: float
 
 func show_victory_screen():
-       ex_award = npc.attractiveness/1000.0
+	ex_award = npc.attractiveness/1000.0
 
-       victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+	victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
 
 
-       end_battle_screen_container.show() #animate
-       end_battle(victorious, npc)
-       FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "victory")
+	end_battle_screen_container.show() #animate
+	end_battle(victorious, npc)
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "victory")
 
 func end_battle(success: bool, npc: NPC) -> void:
 	# Lock out further player interaction
@@ -629,6 +629,6 @@ func animate_chat_text(chat_box: Control, text: String) -> void:
 
 
 func _on_close_chat_button_pressed() -> void:
-       #set chat state as either Victory! or BLOCKED!
-       FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-       queue_free()
+	#set chat state as either Victory! or BLOCKED!
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+	queue_free()
