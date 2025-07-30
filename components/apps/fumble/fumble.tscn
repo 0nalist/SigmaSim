@@ -31,6 +31,10 @@ corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dmsn0"]
 bg_color = Color(0.541176, 0.807843, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Fumble" type="PanelContainer"]
 anchors_preset = 15
@@ -463,5 +467,3 @@ horizontal_alignment = 1
 [node name="10px4" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
-
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4/CuriosityHSlider" to="." method="_on_curiosity_h_slider_value_changed"]
