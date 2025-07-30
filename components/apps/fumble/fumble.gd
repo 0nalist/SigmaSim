@@ -67,8 +67,10 @@ func _ready():
 	
 	x_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	y_slider.drag_ended.connect(_on_gender_slider_drag_ended)
-	z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
-	# Start on field tab by default
+       z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
+       curiosity_slider.value_changed.connect(_on_curiosity_h_slider_value_changed)
+       curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
+       # Start on field tab by default
 	show_swipes_tab()
 	cancel_pride()
 
@@ -145,17 +147,19 @@ func cancel_pride() -> void:
 
 
 func _on_curiosity_h_slider_value_changed(value: float) -> void:
-	# If your slider goes 0-100, normalize to 0-1:
-	var t = value
-	if curiosity_slider.max_value > 1.01:
-		t = value / curiosity_slider.max_value
-	# Interpolate from 0.85 down to 0.01
-	curiosity = lerp(0.85, 0.01, t)
-	# Optionally print/debug
-	#print("Curiosity %.2f  threshold: %.3f" % [t, curiosity])
-	if card_stack:
-		card_stack.set_curiosity(curiosity)
-		card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
+        # If your slider goes 0-100, normalize to 0-1:
+        var t = value
+        if curiosity_slider.max_value > 1.01:
+                t = value / curiosity_slider.max_value
+        # Interpolate from 0.85 down to 0.01
+        curiosity = lerp(0.85, 0.01, t)
+        # Optionally print/debug
+        #print("Curiosity %.2f  threshold: %.3f" % [t, curiosity])
+
+func _on_curiosity_h_slider_drag_ended(_changed) -> void:
+       if card_stack:
+               card_stack.set_curiosity(curiosity)
+               card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
 
 
 func _on_resize_x_requested(pixels):
