@@ -6,7 +6,7 @@ class_name StatProgressBar
 @export var duration: float = 0.3
 @export var easing := Tween.EASE_OUT
 @export var transition := Tween.TRANS_CUBIC
-
+@export var fractional:= true
 var _tween: Tween = null
 
 func _ready():
@@ -21,10 +21,13 @@ func _on_stat_updated(value: float) -> void:
 	update_value(value)
 
 func update_value(new_value: float) -> void:
+	var display_value = new_value
+	if fractional:
+			display_value = fmod(new_value, max_value)
 	if animate:
-		set_value_animated(new_value)
+			set_value_animated(display_value)
 	else:
-		value = clamp(new_value, min_value, max_value)
+			value = clamp(display_value, min_value, max_value)
 
 func set_value_animated(target_value: float) -> void:
 	if _tween:
