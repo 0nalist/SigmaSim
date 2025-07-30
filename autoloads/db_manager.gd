@@ -103,20 +103,33 @@ func get_all_fumble_relationships() -> Dictionary:
 	return out
 
 func save_fumble_battle(battle_id: String, npc_id: int, chatlog: Array, stats: Dictionary, outcome: String) -> void:
-        var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["battle_id"])
-        var data = {
-                        "battle_id": battle_id,
-                        "npc_id": npc_id,
-                        "chatlog": to_json(chatlog),
-                        "stats": to_json(stats),
-                        "outcome": outcome
-        }
-        if rows.size() > 0 and db.has_method("update_rows"):
-                        db.update_rows("fumble_battles", data, "battle_id = '%s'" % battle_id)
-        else:
-                        if rows.size() > 0:
-                                db.query("DELETE FROM fumble_battles WHERE battle_id = '%s'" % battle_id)
-                        db.insert_row("fumble_battles", data)
+	var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["battle_id"])
+	var data = {
+		"battle_id": battle_id,
+		"npc_id": npc_id,
+		"chatlog": to_json(chatlog),
+		"stats": to_json(stats),
+		"outcome": outcome
+	}
+	if rows.size() > 0 and db.has_method("update_rows"):
+		var set_parts = []
+		for k in data.keys():
+			var v = data[k]
+			# Wrap strings in single quotes and escape any single quotes in value
+			if typeof(v) == TYPE_STRING:
+				set_parts.append("%s = '%s'" % [k, v.replace("'", "''")])
+			else:
+				set_parts.append("%s = %s" % [k, str(v)])
+		var set_string = ", ".join(set_parts)
+		db.update_rows("fumble_battles", set_string, { "battle_id": battle_id })
+	else:
+		if rows.size() > 0:
+			db.query("DELETE FROM fumble_battles WHERE battle_id = '%s'" % battle_id)
+		db.insert_row("fumble_battles", data)
+
+
+
+
 
 func load_fumble_battle(battle_id: String) -> Dictionary:
 	var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["*"])

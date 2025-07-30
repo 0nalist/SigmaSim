@@ -116,7 +116,7 @@ func _load_npc_from_db(idx: int) -> NPC:
 		npc.gender_vector = Vector3(gv.x, gv.y, gv.z)
 	else:
 		npc.gender_vector = Vector3(0,0,1)
-	npc.bio = data.get("bio", "")
+	npc.fumble_bio = data.get("fumble_bio", "")
 	npc.occupation = data.get("occupation", "")
 	npc.relationship_status = data.get("relationship_status", "")
 	npc.affinity = data.get("affinity", 0.0)
@@ -130,7 +130,14 @@ func _load_npc_from_db(idx: int) -> NPC:
 	npc.omega = data.get("omega", 0.0)
 	npc.sigma = data.get("sigma", 0.0)
 	var tags_str: String = data.get("tags", "")
-	npc.tags = tags_str.split(",") if tags_str.length() > 0 else []
+	var tags_arr: Array[String] = []
+	if tags_str.length() > 0:
+		for t in tags_str.split(","):
+			tags_arr.append(String(t))
+	npc.tags = tags_arr
+
+
+
 	npc.fumble_bio = data.get("fumble_bio", "")
 	return npc
 

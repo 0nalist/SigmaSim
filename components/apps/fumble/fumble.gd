@@ -67,21 +67,21 @@ func _ready():
 	
 	x_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	y_slider.drag_ended.connect(_on_gender_slider_drag_ended)
-        z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
-        curiosity_slider.value_changed.connect(_on_curiosity_h_slider_value_changed)
-        curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
+	z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
+	curiosity_slider.value_changed.connect(_on_curiosity_h_slider_value_changed)
+	curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
 
-        # --- Load saved preferences ---
-        x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
-        y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
-        z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
-        curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
+	# --- Load saved preferences ---
+	x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
+	y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
+	z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
+	curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
 
-        _on_gender_slider_changed(0)
-        _on_curiosity_h_slider_value_changed(curiosity_slider.value)
-        # Start on field tab by default
-        show_swipes_tab()
-        cancel_pride()
+	_on_gender_slider_changed(0)
+	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
+	# Start on field tab by default
+	show_swipes_tab()
+	cancel_pride()
 
 
 
@@ -141,12 +141,12 @@ func _on_gender_slider_changed(value):
 		cancel_pride()
 
 func _on_gender_slider_drag_ended(_changed):
-        # (Redundant to clamp now, as values are already scaled)
-        if card_stack:
-                card_stack.refresh_pool_under_top_with_gender(preferred_gender)
-        PlayerManager.set_var("fumble_pref_x", x_slider.value)
-        PlayerManager.set_var("fumble_pref_y", y_slider.value)
-        PlayerManager.set_var("fumble_pref_z", z_slider.value)
+		# (Redundant to clamp now, as values are already scaled)
+		if card_stack:
+				card_stack.refresh_pool_under_top_with_gender(preferred_gender)
+		PlayerManager.set_var("fumble_pref_x", x_slider.value)
+		PlayerManager.set_var("fumble_pref_y", y_slider.value)
+		PlayerManager.set_var("fumble_pref_z", z_slider.value)
 
 
 func yassify_fumble_label() -> void:
@@ -170,10 +170,10 @@ func _on_curiosity_h_slider_value_changed(value: float) -> void:
 		#print("Curiosity %.2f  threshold: %.3f" % [t, curiosity])
 
 func _on_curiosity_h_slider_drag_ended(_changed) -> void:
-        if card_stack:
-                        card_stack.set_curiosity(curiosity)
-                        card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
-        PlayerManager.set_var("fumble_curiosity", curiosity_slider.value)
+		if card_stack:
+						card_stack.set_curiosity(curiosity)
+						card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
+		PlayerManager.set_var("fumble_curiosity", curiosity_slider.value)
 
 
 func _on_resize_x_requested(pixels):
