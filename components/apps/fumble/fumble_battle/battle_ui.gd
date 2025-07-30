@@ -134,8 +134,8 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	_update_profiles()
 	for child in chat_container.get_children():
 		child.queue_free()
-        for msg in chatlog:
-                add_chat_line(msg.text, msg.is_player, false, false)
+	for msg in chatlog:
+		add_chat_line(msg.text, msg.is_player, false, false)
 	
 	move_usage_counts.clear()
 	for move in equipped_moves:
@@ -291,9 +291,9 @@ func add_chat_line(text: String, is_player: bool, is_victory_number := false, re
 	chat.text_label.text = text
 	chat.text_label.visible_ratio = 0.0
 	scroll_to_newest_chat()
-        if record:
-                chatlog.append({"text": text, "is_player": is_player})
-                FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+	if record:
+			chatlog.append({"text": text, "is_player": is_player})
+			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
 	return chat
 
 
