@@ -59,10 +59,10 @@ func refresh_battles():
 	var battles = FumbleManager.get_active_battles()
 	for b in battles:
 		var npc = NPCManager.get_npc_by_index(b.npc_idx)
-               var btn = battle_button_scene.instantiate()
-               chat_battles_container.add_child(btn)
-               btn.set_battle(npc, b.battle_id, b.npc_idx)
-               btn.pressed.connect(func(): _on_battle_button_pressed(b.battle_id, npc, b.npc_idx))
+		var btn = battle_button_scene.instantiate()
+		chat_battles_container.add_child(btn)
+		btn.set_battle(npc, b.battle_id, b.npc_idx)
+		btn.pressed.connect(func(): _on_battle_button_pressed(b.battle_id, npc, b.npc_idx))
 		
 
 func _on_match_button_pressed(npc, idx):
@@ -70,23 +70,23 @@ func _on_match_button_pressed(npc, idx):
 	#get_tree().root.
 	add_child(match_profile)
 	match_profile.set_profile(npc, idx)
-       match_profile.start_battle_requested.connect(_on_start_battle_requested)
+	match_profile.start_battle_requested.connect(_on_start_battle_requested)
 	
 
 func _on_start_battle_requested(battle_id, npc, idx):
-       open_battle(battle_id, npc, idx)
-       refresh_battles()
-       refresh_matches()
+	open_battle(battle_id, npc, idx)
+	refresh_battles()
+	refresh_matches()
 
 func _on_battle_button_pressed(battle_id, npc, idx):
-       open_battle(battle_id, npc, idx)
+	open_battle(battle_id, npc, idx)
 
 func open_battle(battle_id, npc, idx):
-        print("opening battle!")
-        var scene = battle_scene.instantiate()
-        #get_tree().root.
-        add_child(scene)
-        scene.load_battle(battle_id, npc, [], {}, idx)
+		print("opening battle!")
+		var scene = battle_scene.instantiate()
+		#get_tree().root.
+		add_child(scene)
+		scene.load_battle(battle_id, npc, [], {}, idx)
 
-        request_resize_x_to.emit(860)
+		request_resize_x_to.emit(860)
 	

@@ -102,9 +102,9 @@ func _ready():
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1):
-       battle_id = new_battle_id
-       npc = new_npc
-       npc_idx = new_npc_idx
+	battle_id = new_battle_id
+	npc = new_npc
+	npc_idx = new_npc_idx
 	if chatlog_in.size() == 0 and stats_in.size() == 0:
 			var data = FumbleManager.load_battle_state(battle_id)
 			if data.size() > 0:
@@ -249,14 +249,14 @@ func _on_catch_button_pressed():
 	await do_move("catch")
 
 func _on_ghost_button_pressed():
-       if is_animating:
-                       return
-       var chat = add_chat_line("*ghosts*", true)
-       await animate_chat_text(chat, "*ghosts*")
-       await get_tree().create_timer(0.69).timeout
-       FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
-       persist_battle_stats_to_npc()
-       queue_free()
+	if is_animating:
+					return
+	var chat = add_chat_line("*ghosts*", true)
+	await animate_chat_text(chat, "*ghosts*")
+	await get_tree().create_timer(0.69).timeout
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
+	persist_battle_stats_to_npc()
+	queue_free()
 
 
 func swap_move(slot_index: int, new_move: String):
@@ -360,9 +360,9 @@ func do_move(move_type: String) -> void:
 		await player_chat.reveal_result_color("success")
 
 		# Now update stats/progress bars
-                battle_stats = logic.get_stats().duplicate()
-                await update_progress_bars()
-                FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+		battle_stats = logic.get_stats().duplicate()
+		await update_progress_bars()
+		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
 
 		is_animating = false
 		PlayerManager.suppress_stat("confidence", false)
@@ -407,9 +407,9 @@ func do_move(move_type: String) -> void:
 	)
 
 	# === Only now, after ALL animations, update UI bars ===
-        battle_stats = logic.get_stats().duplicate()
-        await update_progress_bars()
-        FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+	battle_stats = logic.get_stats().duplicate()
+	await update_progress_bars()
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
 
 	# Special logic for catch
 	if move_type == "catch":
@@ -463,10 +463,10 @@ func show_victory_screen():
 	victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
 
 
-       end_battle_screen_container.show() #animate
-       end_battle(victorious, npc)
-       FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "victory")
-       persist_battle_stats_to_npc()
+	end_battle_screen_container.show() #animate
+	end_battle(victorious, npc)
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "victory")
+	persist_battle_stats_to_npc()
 
 func end_battle(success: bool, npc: NPC) -> void:
 	# Lock out further player interaction
@@ -600,18 +600,18 @@ func process_npc_response(move_type, response_id, success: bool) -> ChatBox:
 
 
 func persist_battle_stats_to_npc():
-       if npc and logic:
-               var current_stats = logic.get_stats()
-               var se = current_stats.get("self_esteem", npc.self_esteem)
-               var chem = current_stats.get("chemistry", npc.chemistry)
-               var app = current_stats.get("apprehension", npc.apprehension)
-               npc.self_esteem = se
-               npc.chemistry = chem
-               npc.apprehension = app
-               if npc_idx != -1:
-                       NPCManager.set_npc_field(npc_idx, "self_esteem", se)
-                       NPCManager.set_npc_field(npc_idx, "chemistry", chem)
-                       NPCManager.set_npc_field(npc_idx, "apprehension", app)
+	if npc and logic:
+			var current_stats = logic.get_stats()
+			var se = current_stats.get("self_esteem", npc.self_esteem)
+			var chem = current_stats.get("chemistry", npc.chemistry)
+			var app = current_stats.get("apprehension", npc.apprehension)
+			npc.self_esteem = se
+			npc.chemistry = chem
+			npc.apprehension = app
+			if npc_idx != -1:
+					NPCManager.set_npc_field(npc_idx, "self_esteem", se)
+					NPCManager.set_npc_field(npc_idx, "chemistry", chem)
+					NPCManager.set_npc_field(npc_idx, "apprehension", app)
 
 
 
@@ -642,7 +642,7 @@ func animate_chat_text(chat_box: Control, text: String) -> void:
 
 
 func _on_close_chat_button_pressed() -> void:
-       #set chat state as either Victory! or BLOCKED!
-       FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-       persist_battle_stats_to_npc()
-       queue_free()
+	#set chat state as either Victory! or BLOCKED!
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+	persist_battle_stats_to_npc()
+	queue_free()
