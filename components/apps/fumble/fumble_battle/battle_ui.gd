@@ -434,7 +434,15 @@ func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
 func _on_victory_number_clicked() -> void:
 	show_victory_screen()
 
+@onready var victory_ex_label: Label = %VictoryExLabel
+var ex_award: float
+
 func show_victory_screen():
+	ex_award = npc.attractiveness/1000.0
+	
+	victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+	
+	
 	end_battle_screen_container.show() #animate
 	end_battle(victorious, npc)
 
@@ -443,11 +451,8 @@ func end_battle(success: bool, npc: NPC) -> void:
 	_disable_all_action_buttons()
 
 	if success:
-		var ex_award = npc.attractiveness
 		PlayerManager.adjust_stat("ex", ex_award)
-		#animate_progress_bar(ex_progress_bar, PlayerManager.get_stat("ex"))
-		#_show_ex_reward_popup(ex_award)
-		# Optionally, show a badge or "Victory!" panel here
+		#PlayerManager.adjust_stat("ex", 0.002)
 	else:
 		# Optionally handle loss logic here
 		pass
@@ -456,6 +461,7 @@ func _disable_all_action_buttons() -> void:
 	for btn in action_buttons:
 		btn.disabled = true
 	catch_button.disabled = true
+	ghost_button.text = "TTYL"
 	#ghost_button should switch to "ttyl" and blink
 	inventory_button.disabled = true
 

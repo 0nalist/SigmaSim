@@ -127,14 +127,7 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 	# Handle immune (immediate block)
 	if type_mod == 0.0:
 		result["reaction"] = "thumbs_down"
-		var stats_set = []
-		if move_type in SUCCESS_FX:
-			stats_set = SUCCESS_FX[move_type].keys()
-		elif move_type in FAIL_FX:
-			stats_set = FAIL_FX[move_type].keys()
-		for stat in stats_set:
-			result[stat] = 0
-		return result
+		success = false
 
 	# Prepare raw effect values (no type mod yet)
 	var raw_effects = {}
