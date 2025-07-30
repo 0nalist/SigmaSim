@@ -200,9 +200,9 @@ custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 
 [node name="GreekStatsUI" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_5ticg")]
+custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 
 [node name="Control5" type="Control" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer"]
