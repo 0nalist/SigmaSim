@@ -134,8 +134,8 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	_update_profiles()
 	for child in chat_container.get_children():
 		child.queue_free()
-	for msg in chatlog:
-		add_chat_line(msg.text, msg.is_player)
+        for msg in chatlog:
+                add_chat_line(msg.text, msg.is_player, false, false)
 	
 	move_usage_counts.clear()
 	for move in equipped_moves:
@@ -264,7 +264,7 @@ func swap_move(slot_index: int, new_move: String):
 	update_action_buttons()
 
 # Helper function to add a chat line in a proper HBox (left for player, right for NPC)
-func add_chat_line(text: String, is_player: bool, is_victory_number := false) -> Control:
+func add_chat_line(text: String, is_player: bool, is_victory_number := false, record := true) -> Control:
 	var hbox := HBoxContainer.new()
 	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
@@ -291,8 +291,9 @@ func add_chat_line(text: String, is_player: bool, is_victory_number := false) ->
 	chat.text_label.text = text
 	chat.text_label.visible_ratio = 0.0
 	scroll_to_newest_chat()
-	chatlog.append({"text": text, "is_player": is_player})
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+        if record:
+                chatlog.append({"text": text, "is_player": is_player})
+                FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
 	return chat
 
 
