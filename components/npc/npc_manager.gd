@@ -182,21 +182,22 @@ func mark_npc_inactive_in_app(idx: int, app_name: String) -> void:
 		active_npcs_by_app[app_name].erase(idx)
 
 func set_relationship_status(idx: int, app_name: String, status: String) -> void:
-	if not relationship_status.has(idx):
-		relationship_status[idx] = {}
-	relationship_status[idx][app_name] = status
+        if not relationship_status.has(idx):
+                relationship_status[idx] = {}
+        relationship_status[idx][app_name] = status
+
+       if app_name == "fumble":
+               DBManager.save_fumble_relationship(idx, status)
 
 
 # Returns all NPC indices the player has "liked" in Fumble
 func get_fumble_matches() -> Array:
-	var matches = []
-	#print("Checking encountered NPCs for fumble:", encountered_npcs_by_app.get("fumble", []))
-	for idx in encountered_npcs_by_app.get("fumble", []):
-		var status = relationship_status.get(idx, {}).get("fumble", "")
-		#print("NPC", idx, "status:", status)
-		if status == "liked":
-			matches.append(idx)
-	return matches
+        var matches = []
+       var rels = DBManager.get_all_fumble_relationships()
+       for idx in rels.keys():
+               if rels[idx] == "liked":
+                       matches.append(int(idx))
+       return matches
 
 # Returns true if a battle is active with this NPC (FumbleManager sets this flag)
 func is_fumble_battle_active(npc_idx: int) -> bool:
