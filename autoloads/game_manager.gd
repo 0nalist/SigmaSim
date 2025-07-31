@@ -125,7 +125,7 @@ func _on_pause_resume():
 	_close_pause_screen()
 
 func _on_pause_save():
-	SaveManager.save_to_slot(PlayerManager.get_slot_id())
+	SaveManager.save_to_slot(SaveManager.current_slot_id)
 	print("Game saved from pause menu")
 
 

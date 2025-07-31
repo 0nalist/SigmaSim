@@ -81,4 +81,4 @@ func open_battle(battle_id, npc, idx):
 	var scene = battle_scene.instantiate()
 	add_child(scene)
 	scene.load_battle(battle_id, npc, [], {}, idx)
-	request_resize_x_to.emit(860)
+	request_resize_x_to.emit(911)
