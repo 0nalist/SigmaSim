@@ -86,7 +86,7 @@ func open_battle(battle_id, npc, idx):
 		var scene = battle_scene.instantiate()
 		#get_tree().root.
 		add_child(scene)
-		scene.call_deferred("load_battle", battle_id, npc, [], {}, idx)
+		scene.load_battle(battle_id, npc, [], {}, idx)
 
 		request_resize_x_to.emit(860)
 	
