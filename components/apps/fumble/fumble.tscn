@@ -400,7 +400,7 @@ size_flags_horizontal = 4
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/h_separation = 8
-text = " Prof "
+text = " You "
 flat = true
 
 [node name="SwipesButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]

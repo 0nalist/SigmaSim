@@ -69,6 +69,7 @@ size_flags_vertical = 3
 
 [node name="MatchButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer/MatchContainer" instance=ExtResource("2_qddv1")]
 layout_mode = 2
+size_flags_vertical = 4
 expand_icon = false
 
 [node name="MatchesLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
