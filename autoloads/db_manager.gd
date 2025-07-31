@@ -5,43 +5,40 @@ var db: SQLite
 
 const SCHEMA := {
 	"npc": {
-		"id": "int",
-		"slot_id": "int",
-		"first_name": "text",
-		"middle_initial": "text",
-		"last_name": "text",
-		"gender_vector": "text",
-		"bio": "text",
-		"occupation": "text",
-		"relationship_status": "text",
-		"affinity": "real",
-		"rizz": "int",
-		"attractiveness": "int",
-		"wealth": "int",
-		"alpha": "real",
-		"beta": "real",
-		"gamma": "real",
-		"delta": "real",
-		"omega": "real",
-		"sigma": "real",
-		"tags": "text",
-		"fumble_bio": "text",
-		"primary_key": ["id", "slot_id"]
+		"id": {"data_type": "int", "primary_key": true},
+		"slot_id": {"data_type": "int", "primary_key": true},
+		"first_name": {"data_type": "text"},
+		"middle_initial": {"data_type": "text"},
+		"last_name": {"data_type": "text"},
+		"gender_vector": {"data_type": "text"},
+		"bio": {"data_type": "text"},
+		"occupation": {"data_type": "text"},
+		"relationship_status": {"data_type": "text"},
+		"affinity": {"data_type": "real"},
+		"rizz": {"data_type": "int"},
+		"attractiveness": {"data_type": "int"},
+		"wealth": {"data_type": "int"},
+		"alpha": {"data_type": "real"},
+		"beta": {"data_type": "real"},
+		"gamma": {"data_type": "real"},
+		"delta": {"data_type": "real"},
+		"omega": {"data_type": "real"},
+		"sigma": {"data_type": "real"},
+		"tags": {"data_type": "text"},
+		"fumble_bio": {"data_type": "text"}
 	},
 	"fumble_relationships": {
-		"npc_id": "int",
-		"slot_id": "int",
-		"status": "text",
-		"primary_key": ["npc_id", "slot_id"]
+		"npc_id": {"data_type": "int", "primary_key": true},
+		"slot_id": {"data_type": "int", "primary_key": true},
+		"status": {"data_type": "text"}
 	},
 	"fumble_battles": {
-		"battle_id": "text",
-		"slot_id": "int",
-		"npc_id": "int",
-		"chatlog": "text",
-		"stats": "text",
-		"outcome": "text",
-		"primary_key": ["battle_id", "slot_id"]
+		"battle_id": {"data_type": "text", "primary_key": true},
+		"slot_id": {"data_type": "int", "primary_key": true},
+		"npc_id": {"data_type": "int"},
+		"chatlog": {"data_type": "text"},
+		"stats": {"data_type": "text"},
+		"outcome": {"data_type": "text"}
 	}
 }
 
@@ -69,7 +66,11 @@ func _migrate_table(table_name: String, fields: Dictionary):
 	for k in fields.keys():
 		if k == "primary_key":
 			continue
-		column_defs[k] = fields[k]
+		var def = fields[k]
+		if typeof(def) == TYPE_DICTIONARY:
+			column_defs[k] = def.get("data_type", "text")
+		else:
+			column_defs[k] = str(def)
 	db.query("PRAGMA table_info(%s)" % table_name)
 	var cols = db.query_result
 	var existing = []
@@ -105,11 +106,16 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 		"sigma": npc.sigma,
 		"tags": ",".join(npc.tags),
 		"fumble_bio": npc.fumble_bio,
-	}
+		}
+
+	var update_data = data.duplicate()
+	update_data.erase("id")
+	update_data.erase("slot_id")
+
 	var updated = db.update_rows(
 		"npc",
-		_make_update_string(data),
-		{ "id": idx, "slot_id": slot_id }
+		"id = %d AND slot_id = %d" % [idx, slot_id],
+		update_data
 	)
 	if updated == false:
 		db.insert_row("npc", data)
@@ -132,12 +138,12 @@ func save_fumble_relationship(npc_id: int, status: String, slot_id: int = SaveMa
 		"npc_id": npc_id,
 		"slot_id": slot_id,
 		"status": status
-	}
+}
 	print("Saving relationship: npc_id =", npc_id, "status =", status, "slot_id =", slot_id)
 	var updated = db.update_rows(
 		"fumble_relationships",
-		"status = '%s'" % status.replace("'", "''"),
-		{ "npc_id": npc_id, "slot_id": slot_id }
+		"npc_id = %d AND slot_id = %d" % [npc_id, slot_id],
+		{ "status": status }
 	)
 	if updated == false:
 		db.insert_row("fumble_relationships", data)
@@ -173,15 +179,14 @@ func save_fumble_battle(
 		"stats": to_json(stats),
 		"outcome": outcome
 	}
+	var update_data = data.duplicate()
+	update_data.erase("battle_id")
+	update_data.erase("slot_id")
+
 	var updated = db.update_rows(
 		"fumble_battles",
-		"npc_id = %d, chatlog = '%s', stats = '%s', outcome = '%s'" % [
-			npc_id,
-			data.chatlog.replace("'", "''"),
-			data.stats.replace("'", "''"),
-			outcome.replace("'", "''")
-		],
-		{ "battle_id": battle_id, "slot_id": slot_id }
+		"battle_id = '%s' AND slot_id = %d" % [battle_id, slot_id],
+		update_data
 	)
 	if updated == false:
 		db.insert_row("fumble_battles", data)
