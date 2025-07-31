@@ -188,13 +188,13 @@ func mark_npc_inactive_in_app(idx: int, app_name: String) -> void:
 	if active_npcs_by_app.has(app_name):
 		active_npcs_by_app[app_name].erase(idx)
 
-func set_relationship_status(idx: int, app_name: String, status: String) -> void:
+func set_relationship_status(idx: int, app_name: String, status: FumbleManager.FumbleStatus) -> void:
 	if not relationship_status.has(idx):
 			relationship_status[idx] = {}
 	relationship_status[idx][app_name] = status
 
 	if app_name == "fumble":
-			DBManager.save_fumble_relationship(idx, status)
+		DBManager.save_fumble_relationship(idx, status)
 
 
 # Returns all NPC indices the player has "liked" in Fumble
@@ -202,9 +202,9 @@ func get_fumble_matches() -> Array:
 	var matches = []
 	var rels = DBManager.get_all_fumble_relationships()
 	for idx in rels.keys():
-		var status_str = rels[idx]
+		var status_enum: FumbleManager.FumbleStatus = rels[idx]
 		# Show only if currently "liked" or "matched"
-		if status_str == "liked" or status_str == "matched":
+		if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
 			matches.append(int(idx))
 	return matches
 

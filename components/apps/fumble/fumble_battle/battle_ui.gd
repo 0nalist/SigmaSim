@@ -259,7 +259,7 @@ func _on_ghost_button_pressed():
 	await animate_chat_text(chat, "*ghosts*")
 	await get_tree().create_timer(0.69).timeout
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
-	DBManager.save_fumble_relationship(npc_idx, "liked") # Returns to liked/match pool
+	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
 	persist_battle_stats_to_npc()
 	queue_free()
 
@@ -491,7 +491,7 @@ func show_victory_screen():
 	end_battle_screen_container.show()
 	end_battle(victorious, npc)
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "victory")
-	DBManager.save_fumble_relationship(npc_idx, "victory") # Remove from battles pool
+	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
 	persist_battle_stats_to_npc()
 
 func end_battle(success: bool, npc: NPC) -> void:
@@ -683,6 +683,6 @@ func animate_chat_text(chat_box: Control, text: String) -> void:
 func _on_close_chat_button_pressed() -> void:
 	# If the battle is still active, keep relationship in active_chat
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-	DBManager.save_fumble_relationship(npc_idx, "active_chat")
+	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
 	persist_battle_stats_to_npc()
 	queue_free()

@@ -48,6 +48,19 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye860")
 script = ExtResource("1_v4fb6")
 window_title = "Fumble"
+default_window_size = null
+default_position = null
+request_windowless_mode = null
+show_in_taskbar = null
+allow_multiple = null
+unique_popup_key = null
+is_popup = null
+window_can_close = null
+window_can_minimize = null
+window_can_maximize = null
+user_movable = null
+user_resizable = null
+stay_on_top = null
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -310,6 +323,11 @@ mouse_filter = 1
 
 [node name="ProfileCardStack" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/ProfileContainer" instance=ExtResource("3_vq0mq")]
 layout_mode = 1
+app_name = null
+min_recycled_percent = null
+max_recycled_percent = null
+max_recycled_cap_index = null
+swipe_pool_size = null
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer"]
 layout_mode = 2

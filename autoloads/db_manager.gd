@@ -135,13 +135,15 @@ func has_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> bool:
 
 # -- Relationships --
 
-func save_fumble_relationship(npc_id: int, status: String, slot_id: int = SaveManager.current_slot_id) -> void:
+func save_fumble_relationship(npc_id: int, status: FumbleManager.FumbleStatus, slot_id: int = SaveManager.current_slot_id) -> void:
+	# Convert enum to string for DB storage
+	var status_str = FumbleManager.FUMBLE_STATUS_STRINGS[status]
 	var data = {
 		"npc_id": npc_id,
 		"slot_id": slot_id,
-		"status": status
-}
-	print("Saving relationship: npc_id =", npc_id, "status =", status, "slot_id =", slot_id)
+		"status": status_str
+	}
+	print("Saving relationship: npc_id =", npc_id, "status =", status_str, "slot_id =", slot_id)
 	var rows = db.select_rows(
 		"fumble_relationships",
 		"npc_id = %d AND slot_id = %d" % [npc_id, slot_id],
@@ -151,21 +153,23 @@ func save_fumble_relationship(npc_id: int, status: String, slot_id: int = SaveMa
 		db.update_rows(
 			"fumble_relationships",
 			"npc_id = %d AND slot_id = %d" % [npc_id, slot_id],
-			{ "status": status }
+			{ "status": status_str }
 		)
 	else:
-		db.insert_row("fumble_relationships", data)
+			db.insert_row("fumble_relationships", data)
 
-func get_fumble_relationship(npc_id: int, slot_id: int = SaveManager.current_slot_id) -> String:
-	var rows = db.select_rows("fumble_relationships", "npc_id = %d AND slot_id = %d" % [npc_id, slot_id], ["status"])
-	return rows[0].status if rows.size() > 0 else ""
+func get_fumble_relationship(npc_id: int, slot_id: int = SaveManager.current_slot_id) -> FumbleManager.FumbleStatus:
+		var rows = db.select_rows("fumble_relationships", "npc_id = %d AND slot_id = %d" % [npc_id, slot_id], ["status"])
+		var status_str = rows[0].status if rows.size() > 0 else ""
+		return FumbleManager.FUMBLE_STATUS_LOOKUP.get(status_str, FumbleManager.FumbleStatus.LIKED)
+
 
 func get_all_fumble_relationships(slot_id: int = SaveManager.current_slot_id) -> Dictionary:
 	var rows = db.select_rows("fumble_relationships", "slot_id = %d" % slot_id, ["npc_id", "status"])
 	print("Queried fumble_relationships for slot_id =", slot_id, "| Rows:", rows.size())
 	var out := {}
 	for r in rows:
-		out[r.npc_id] = r.status
+			out[r.npc_id] = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
 	print("Loaded relationships:", out)
 	return out
 

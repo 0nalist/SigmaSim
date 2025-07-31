@@ -61,12 +61,12 @@ func start_battle(npc_idx: int) -> String:
 			"active"
 		)
 		NPCManager.promote_to_persistent(npc_idx)
-		DBManager.save_fumble_relationship(npc_idx, "active_chat") # This MUST be set
+		DBManager.save_fumble_relationship(npc_idx, FumbleStatus.ACTIVE_CHAT)
 		return battle_id
 	# If already in a battle, forcibly set status to active_chat as well:
 	for b in get_active_battles():
 		if b.npc_idx == npc_idx:
-			DBManager.save_fumble_relationship(npc_idx, "active_chat")
+			DBManager.save_fumble_relationship(npc_idx, FumbleStatus.ACTIVE_CHAT)
 			return b.battle_id
 	return ""
 
