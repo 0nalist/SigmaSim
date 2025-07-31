@@ -137,7 +137,7 @@ func _load_npc_from_db(idx: int) -> NPC:
 	npc.tags = tags_arr
 
 
-	npc.chat_battle_type = data.get("chat_battle_type")
+	#npc.chat_battle_type = data.get("chat_battle_type")
 	npc.fumble_bio = data.get("fumble_bio", "")
 	return npc
 

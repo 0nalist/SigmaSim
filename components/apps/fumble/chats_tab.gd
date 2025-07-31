@@ -64,7 +64,7 @@ func refresh_battles():
 		btn.set_battle(npc, b.battle_id, b.npc_idx)
 		btn.pressed.connect(func(): _on_battle_button_pressed(b.battle_id, npc, b.npc_idx))
 		chat_battles_container.add_child(btn)
-	print("Active battles: " + str(FumbleManager.get_active_battles()))
+	#print("Active battles: " + str(FumbleManager.get_active_battles())) # Sooooo much text
 
 func _on_match_button_pressed(npc, idx):
 	var match_profile = match_profile_scene.instantiate()
