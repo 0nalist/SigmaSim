@@ -17,14 +17,14 @@ func _ready() -> void:
 	
 	call_deferred("_deferred_load_save")
 	launch_startup_apps()
-
+	print("Active slot_id:", SaveManager.current_slot_id)
 
 func launch_startup_apps() -> void:
 	WindowManager.launch_app_by_name("BrokeRage")
 
 
 func _deferred_load_save():
-	SaveManager.load_from_slot(PlayerManager.get_slot_id())
+	SaveManager.load_from_slot(SaveManager.current_slot_id)
 	var path = PlayerManager.user_data.get("background_path", "")
 	if path != "":
 		var tex = load(path)
@@ -57,8 +57,8 @@ func open_trash_folder() -> void:
 
 
 func _on_save_button_pressed() -> void:
-	SaveManager.save_to_slot(PlayerManager.slot_id)
+	SaveManager.save_to_slot(SaveManager.current_slot_id)
 
 
 func _on_load_button_pressed() -> void:
-	SaveManager.load_from_slot(PlayerManager.slot_id)
+	SaveManager.load_from_slot(SaveManager.current_slot_id)

@@ -40,6 +40,12 @@ func _input(event):
 
 var text: String = ""
 var result: String = "neutral" # "neutral", "success", "fail"
+var reaction_name: String = ""
+var reaction_tooltip: String = ""
+var effects: Dictionary = {}
+var is_victory_number: bool = false
+var chatlog_index: int = -1
+
 
 # Persistent color tints for result
 const COLOR_PERSIST_NEUTRAL = Color(1, 1, 1)
@@ -108,12 +114,20 @@ func flash_result(duration := 0.4):
 	tween.tween_property(self, "modulate", persist_color, duration * 0.7).set_trans(Tween.TRANS_CUBIC)
 
 
-func set_reaction(emoji: Texture2D, tooltip_text: String):
+func set_reaction(emoji: Texture2D, tooltip_text: String, animate := true, name: String = ""):
+	reaction_name = name
+	reaction_tooltip = tooltip_text
 	emoji_reaction.texture = emoji
 	emoji_reaction.tooltip_text = tooltip_text
-	animate_emoji_reaction()
+	if animate:
+			animate_emoji_reaction()
+	else:
+			emoji_reaction.visible = true
+			emoji_reaction.scale = Vector2(1, 1)
 
 func clear_reaction():
+	reaction_name = ""
+	reaction_tooltip = ""
 	emoji_reaction.visible = false
 	emoji_reaction.tooltip_text = ""
 
@@ -187,7 +201,8 @@ func _create_stat_icon(effect_name: String, delta: int) -> VBoxContainer:
 
 
 
-func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"]):
+func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"], animate := true):
+	self.effects = effects.duplicate()
 	var icons_to_animate: Array = []
 
 	if is_npc_message:
@@ -203,8 +218,11 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 				if vbox != null:
 					left_effect_icons_hbox.add_child(vbox)
 					icons_to_animate.append(vbox.get_child(0))
-		await _animate_icons(icons_to_animate)
-		return
+				if animate:
+					await _animate_icons(icons_to_animate, true)
+				else:
+					_animate_icons(icons_to_animate, false)
+				return
 
 	# For player: show only non-confidence effects
 	for child in effect_icons_hbox.get_children():
@@ -219,17 +237,46 @@ func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_est
 			if vbox != null:
 				effect_icons_hbox.add_child(vbox)
 				icons_to_animate.append(vbox.get_child(0))
-	await _animate_icons(icons_to_animate)
+			if animate:
+				await _animate_icons(icons_to_animate, true)
+			else:
+				_animate_icons(icons_to_animate, false)
 
 
-func _animate_icons(icons: Array) -> void:
-	for icon in icons:
-		var label = icon.get_parent().get_child(1)
-		label.visible = false
-		icon.visible = true
-		icon.scale = Vector2(0.1, 0.1)
-		var tween = get_tree().create_tween()
-		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12)
-		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10)
-		await get_tree().create_timer(0.09).timeout
-		label.visible = true
+func _animate_icons(icons: Array, animate := true) -> void:
+		for icon in icons:
+				var label = icon.get_parent().get_child(1)
+				if animate:
+						label.visible = false
+						icon.visible = true
+						icon.scale = Vector2(0.1, 0.1)
+						var tween = get_tree().create_tween()
+						tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12)
+						tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10)
+						await get_tree().create_timer(0.09).timeout
+						label.visible = true
+				else:
+						icon.visible = true
+						icon.scale = Vector2(1,1)
+						label.visible = true
+
+func apply_saved_state(data: Dictionary, reaction_texture: Texture2D = null) -> void:
+	text = data.get("text", "")
+	result = data.get("result", "neutral")
+	reaction_name = data.get("reaction_name", "")
+	reaction_tooltip = data.get("reaction_tooltip", "")
+	effects = data.get("effects", {})
+	is_victory_number = data.get("is_victory_number", false)
+	text_label.text = text
+	text_label.visible_ratio = 1.0
+	set_result(result)
+	if reaction_name != "":
+		emoji_reaction.texture = reaction_texture
+		emoji_reaction.tooltip_text = reaction_tooltip
+		emoji_reaction.visible = true
+		emoji_reaction.scale = Vector2(1,1)
+	else:
+		clear_reaction()
+	if effects.size() > 0:
+		set_stat_effects(effects, ["chemistry", "self_esteem", "apprehension", "confidence"], false)
+	resolved = true

@@ -4,6 +4,8 @@ extends Node
 const SAVE_DIR := "user://saves/"
 const INDEX_PATH := SAVE_DIR + "save_index.json"
 
+var current_slot_id: int = -1
+
 func _ready():
 	var dir := DirAccess.open("user://")
 	if not dir.dir_exists("saves"):
@@ -40,27 +42,19 @@ func get_next_available_slot() -> int:
 	return i
 
 
+
 func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
 	reset_managers()
+	current_slot_id = slot_id
 	
 	PlayerManager.user_data = user_data.duplicate(true)
-	PlayerManager.set_slot_id(slot_id)
 
 	var background = user_data.get("background", "")
 	if background != "":
 		PlayerManager.apply_background_effects(background)
-
-	''' Not sure if this is needed
-	BillManager.load_from_data({
-			"autopay_enabled": false,
-			"lifestyle_categories": BillManager.lifestyle_categories,
-			"lifestyle_indices": BillManager.lifestyle_indices,
-			"pane_data": []
-		})
-	'''
 
 	save_to_slot(slot_id)
 
@@ -77,13 +71,12 @@ func save_to_slot(slot_id: int) -> void:
 		"market": MarketManager.get_save_data(),
 		"tasks": TaskManager.get_save_data(),
 		"player": PlayerManager.get_save_data(),
-                "workers": WorkerManager.get_save_data(),
-                "bills": BillManager.get_save_data(),
-                "gpus": GPUManager.get_save_data(),
-                "upgrades": UpgradeManager.get_save_data(),
-                "windows": WindowManager.get_save_data(),
-                "fumble": FumbleManager.get_save_data(),
-        }
+		"workers": WorkerManager.get_save_data(),
+		"bills": BillManager.get_save_data(),
+		"gpus": GPUManager.get_save_data(),
+		"upgrades": UpgradeManager.get_save_data(),
+		"windows": WindowManager.get_save_data(),
+	}
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
@@ -107,11 +100,13 @@ func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
+	
 
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
 	reset_managers()
+	current_slot_id = slot_id
 	var file := FileAccess.open(path, FileAccess.READ)
 	var text := file.get_as_text()
 	file.close()
@@ -137,21 +132,18 @@ func load_from_slot(slot_id: int) -> void:
 		#GPUManager.refresh_timers_after_market_loaded()
 	if data.has("player"):
 		PlayerManager.load_from_data(data["player"])
-		PlayerManager.set_slot_id(slot_id)
+		#PlayerManager.set_slot_id(slot_id)
 	if data.has("workers"):
 		WorkerManager.load_from_data(data["workers"])
 	
-        if data.has("gpus"):
-                GPUManager.load_from_data(data["gpus"])
-        if data.has("bills"):
-                BillManager.load_from_data(data["bills"])
-
-        if data.has("fumble"):
-                FumbleManager.load_from_data(data["fumble"])
+	if data.has("gpus"):
+		GPUManager.load_from_data(data["gpus"])
+	if data.has("bills"):
+		BillManager.load_from_data(data["bills"])
 
 
-        if data.has("windows"): ##Always load windows last (I think)
-                WindowManager.load_from_data(data["windows"])
+	if data.has("windows"): ##Always load windows last (I think)
+		WindowManager.load_from_data(data["windows"])
 
 func reset_game_state() -> void:
 	# Reset all relevant managers to blank state
@@ -161,12 +153,11 @@ func reset_game_state() -> void:
 	TimeManager.reset()
 	TaskManager.reset()
 	EffectManager.reset()
-        WorkerManager.reset()
-        MarketManager.reset()
-        GPUManager.reset()
-        FumbleManager.reset()
-        #BillManager.reset()
-        #UpgradeManager.reset()
+	WorkerManager.reset()
+	MarketManager.reset()
+	GPUManager.reset()
+	#BillManager.reset()
+	#UpgradeManager.reset()
 
 
 
@@ -175,12 +166,11 @@ func reset_managers():
 	PlayerManager.reset()
 	WindowManager.reset()
 	TimeManager.reset()
-        WorkerManager.reset()
-        EffectManager.reset()
-        TaskManager.reset()
-        GPUManager.reset()
-        EffectManager.reset()
-        FumbleManager.reset()
+	WorkerManager.reset()
+	EffectManager.reset()
+	TaskManager.reset()
+	GPUManager.reset()
+	EffectManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)

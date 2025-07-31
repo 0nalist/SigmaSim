@@ -100,7 +100,7 @@ func advance_time(minutes_to_add: int) -> void:
 			autosave_hour_counter += 1
 			if autosave_enabled and autosave_hour_counter >= autosave_interval:
 				autosave_hour_counter = 0
-				SaveManager.save_to_slot(PlayerManager.get_slot_id())
+				SaveManager.save_to_slot(SaveManager.current_slot_id)
 				print("💾 Autosave triggered at hour %d" % current_hour)
 
 		if in_game_minutes >= 24 * 60:

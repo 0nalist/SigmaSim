@@ -1,6 +1,6 @@
 extends Control
 
-signal profile_created(slot_id: int)
+signal profile_created()
 signal new_profile_abandoned
 
 @onready var back_button: Button = %BackButton
