@@ -112,12 +112,14 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	update_data.erase("id")
 	update_data.erase("slot_id")
 
-	var updated = db.update_rows(
-		"npc",
-		"id = %d AND slot_id = %d" % [idx, slot_id],
-		update_data
-	)
-	if updated == false:
+	var rows = db.select_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], ["id"])
+	if rows.size() > 0:
+		db.update_rows(
+			"npc",
+			"id = %d AND slot_id = %d" % [idx, slot_id],
+			update_data
+		)
+	else:
 		db.insert_row("npc", data)
 
 func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
@@ -140,12 +142,18 @@ func save_fumble_relationship(npc_id: int, status: String, slot_id: int = SaveMa
 		"status": status
 }
 	print("Saving relationship: npc_id =", npc_id, "status =", status, "slot_id =", slot_id)
-	var updated = db.update_rows(
+	var rows = db.select_rows(
 		"fumble_relationships",
 		"npc_id = %d AND slot_id = %d" % [npc_id, slot_id],
-		{ "status": status }
+		["npc_id"]
 	)
-	if updated == false:
+	if rows.size() > 0:
+		db.update_rows(
+			"fumble_relationships",
+			"npc_id = %d AND slot_id = %d" % [npc_id, slot_id],
+			{ "status": status }
+		)
+	else:
 		db.insert_row("fumble_relationships", data)
 
 func get_fumble_relationship(npc_id: int, slot_id: int = SaveManager.current_slot_id) -> String:
@@ -183,12 +191,18 @@ func save_fumble_battle(
 	update_data.erase("battle_id")
 	update_data.erase("slot_id")
 
-	var updated = db.update_rows(
+	var rows = db.select_rows(
 		"fumble_battles",
 		"battle_id = '%s' AND slot_id = %d" % [battle_id, slot_id],
-		update_data
+		["battle_id"]
 	)
-	if updated == false:
+	if rows.size() > 0:
+		db.update_rows(
+			"fumble_battles",
+			"battle_id = '%s' AND slot_id = %d" % [battle_id, slot_id],
+			update_data
+		)
+	else:
 		db.insert_row("fumble_battles", data)
 
 func load_fumble_battle(battle_id: String, slot_id: int = SaveManager.current_slot_id) -> Dictionary:

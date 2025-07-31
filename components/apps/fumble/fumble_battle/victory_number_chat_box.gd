@@ -1,13 +1,14 @@
-extends MarginContainer
+extends ChatBox
 class_name VictoryNumberChatBox
 
 signal victory_number_clicked
 
-var is_npc_message = true
+#var is_npc_message = true
 
-@onready var text_label: RichTextLabel = %TextLabel
+#@onready var text_label: RichTextLabel = %TextLabel
 
 func _ready():
+	super._ready()
 	text_label.bbcode_enabled = true
 	text_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	#text_label.connect("meta_clicked", _on_meta_clicked)

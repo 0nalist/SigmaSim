@@ -446,6 +446,7 @@ show_percentage = false
 script = ExtResource("10_jh1fk")
 stat_name = "ex"
 duration = 0.4
+reset_on_overflow = true
 
 [node name="ExLabel" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ExProgressBar"]
 unique_name_in_owner = true

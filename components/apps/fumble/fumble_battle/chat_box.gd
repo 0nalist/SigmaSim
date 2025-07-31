@@ -4,7 +4,7 @@ class_name ChatBox
 var is_npc_message: bool = false
 var resolved: bool = false
 
-@onready var text_label: Label = %TextLabel
+@onready var text_label = %TextLabel
 @onready var emoji_reaction: TextureRect = %EmojiReaction
 
 @onready var effect_icons: Control = %EffectIcons

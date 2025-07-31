@@ -486,7 +486,7 @@ var ex_award: float
 
 func show_victory_screen():
 	#ex_award = npc.attractiveness/1000.0
-	ex_award = npc.attractiveness/1000.0 # TEMP
+	ex_award = npc.attractiveness/10.0 # TEMP
 
 	victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
 
