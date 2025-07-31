@@ -4,6 +4,8 @@ extends Node
 
 var active_battles: Array = [] # {npc_idx, battle_id}
 
+const VALID_OUTCOMES := ["active", "ghosted", "victory"]
+
 
 enum FumbleStatus {
 	LIKED,
@@ -51,8 +53,13 @@ func has_active_battle(npc_idx: int) -> bool:
 	return false
 
 func start_battle(npc_idx: int) -> String:
+	if SaveManager.current_slot_id <= 0:
+		push_warning("start_battle called with invalid slot_id %d" % SaveManager.current_slot_id)
+		return ""
+
 	if not has_active_battle(npc_idx):
 		var battle_id = "%s_%d" % [str(Time.get_unix_time_from_system()), randi() % 1000000]
+		print("Creating new fumble battle", battle_id, "slot", SaveManager.current_slot_id)
 		DBManager.save_fumble_battle(
 			battle_id,
 			npc_idx,
@@ -72,11 +79,19 @@ func start_battle(npc_idx: int) -> String:
 
 
 
-
 func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, outcome: String) -> void:
+	if SaveManager.current_slot_id <= 0:
+		push_warning("save_battle_state called with invalid slot_id %d" % SaveManager.current_slot_id)
+		return
+
+	if outcome.strip_edges() == "" or not VALID_OUTCOMES.has(outcome):
+		push_warning("save_battle_state received invalid outcome '%s'" % outcome)
+		return
+
 	var data = DBManager.load_fumble_battle(battle_id, SaveManager.current_slot_id)
 	var npc_idx = int(data.npc_id) if data.size() > 0 else -1
 	if npc_idx != -1:
+		print("Saving battle", battle_id, "slot", SaveManager.current_slot_id, "outcome", outcome)
 		DBManager.save_fumble_battle(
 			battle_id,
 			npc_idx,

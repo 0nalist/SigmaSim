@@ -258,7 +258,7 @@ func _on_ghost_button_pressed():
 	var chat = add_chat_line("*ghosts*", true)
 	await animate_chat_text(chat, "*ghosts*")
 	await get_tree().create_timer(0.69).timeout
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
 	persist_battle_stats_to_npc()
 	queue_free()

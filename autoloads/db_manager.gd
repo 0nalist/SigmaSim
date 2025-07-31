@@ -176,13 +176,17 @@ func get_all_fumble_relationships(slot_id: int = SaveManager.current_slot_id) ->
 # -- Battles --
 
 func save_fumble_battle(
-	battle_id: String,
-	npc_id: int,
-	chatlog: Array,
-	stats: Dictionary,
-	outcome: String,
-	slot_id: int = SaveManager.current_slot_id
-) -> void:
+		battle_id: String,
+		npc_id: int,
+		chatlog: Array,
+		stats: Dictionary,
+		outcome: String,
+		slot_id: int = SaveManager.current_slot_id
+	) -> void:
+	if outcome.strip_edges() == "" or not FumbleManager.VALID_OUTCOMES.has(outcome):
+		push_warning("save_fumble_battle received invalid outcome '%s'" % outcome)
+
+	print("DB save_fumble_battle: id=", battle_id, "slot=", slot_id, "outcome=", outcome)
 	var data = {
 		"battle_id": battle_id,
 		"slot_id": slot_id,
@@ -214,9 +218,11 @@ func load_fumble_battle(battle_id: String, slot_id: int = SaveManager.current_sl
 	return rows[0] if rows.size() > 0 else {}
 
 func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Array:
-	var rows = db.select_rows("fumble_battles", "slot_id = %d AND outcome = 'active'" % slot_id, ["battle_id", "npc_id", "chatlog", "stats"])
+	print("DB get_active_fumble_battles slot=", slot_id)
+	var rows = db.select_rows("fumble_battles", "slot_id = %d AND outcome = 'active'" % slot_id, ["battle_id", "npc_id", "chatlog", "stats", "outcome"])
 	var out := []
 	for r in rows:
+		print(" -> battle", r.battle_id, "outcome", r.outcome)
 		out.append({
 			"battle_id": r.battle_id,
 			"npc_idx": int(r.npc_id),
