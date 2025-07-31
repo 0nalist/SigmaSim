@@ -100,12 +100,13 @@ func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
-	current_slot_id = slot_id
+	
 
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
 	reset_managers()
+	current_slot_id = slot_id
 	var file := FileAccess.open(path, FileAccess.READ)
 	var text := file.get_as_text()
 	file.close()
