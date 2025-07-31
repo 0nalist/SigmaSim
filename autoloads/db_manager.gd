@@ -3,71 +3,82 @@ extends Node
 
 var db: SQLite
 
+const SCHEMA := {
+	"npc": {
+		"id": "int",
+		"slot_id": "int",
+		"first_name": "text",
+		"middle_initial": "text",
+		"last_name": "text",
+		"gender_vector": "text",
+		"bio": "text",
+		"occupation": "text",
+		"relationship_status": "text",
+		"affinity": "real",
+		"rizz": "int",
+		"attractiveness": "int",
+		"wealth": "int",
+		"alpha": "real",
+		"beta": "real",
+		"gamma": "real",
+		"delta": "real",
+		"omega": "real",
+		"sigma": "real",
+		"tags": "text",
+		"fumble_bio": "text",
+		"primary_key": ["id", "slot_id"]
+	},
+	"fumble_relationships": {
+		"npc_id": "int",
+		"slot_id": "int",
+		"status": "text",
+		"primary_key": ["npc_id", "slot_id"]
+	},
+	"fumble_battles": {
+		"battle_id": "text",
+		"slot_id": "int",
+		"npc_id": "int",
+		"chatlog": "text",
+		"stats": "text",
+		"outcome": "text",
+		"primary_key": ["battle_id", "slot_id"]
+	}
+}
+
 func _ready():
 	db = SQLite.new()
 	db.path = "user://sigmasim.db"
 	db.open_db()
-	# Check if slot_id exists
-	db.query("PRAGMA table_info(npc)")
-	var columns = db.query_result
-	var has_slot_id = false
-	for col in columns:
-		if col["name"] == "slot_id":
-			has_slot_id = true
-			break
-	if not has_slot_id:
-		db.query("ALTER TABLE npc ADD COLUMN slot_id int")
-	_create_tables()
+	_init_schema()
 
+func _init_schema():
+	for table_name in SCHEMA.keys():
+		var fields = SCHEMA[table_name]
+		db.create_table(table_name, fields)
+		_migrate_table(table_name, fields)
+		# Indices
+		if table_name == "npc":
+			db.query("CREATE INDEX IF NOT EXISTS idx_npc_slot_id ON npc(slot_id)")
+		if table_name == "fumble_relationships":
+			db.query("CREATE INDEX IF NOT EXISTS idx_rel_slot_id ON fumble_relationships(slot_id)")
+		if table_name == "fumble_battles":
+			db.query("CREATE INDEX IF NOT EXISTS idx_battle_slot_id ON fumble_battles(slot_id)")
 
-func _create_tables():
-	var npc_table := {
-		"id": { "data_type": "int" },
-		"slot_id": { "data_type": "int" },
-		"first_name": { "data_type": "text" },
-		"middle_initial": { "data_type": "text" },
-		"last_name": { "data_type": "text" },
-		"gender_vector": { "data_type": "text" },
-		"bio": { "data_type": "text" },
-		"occupation": { "data_type": "text" },
-		"relationship_status": { "data_type": "text" },
-		"affinity": { "data_type": "real" },
-		"rizz": { "data_type": "int" },
-		"attractiveness": { "data_type": "int" },
-		"wealth": { "data_type": "int" },
-		"alpha": { "data_type": "real" },
-		"beta": { "data_type": "real" },
-		"gamma": { "data_type": "real" },
-		"delta": { "data_type": "real" },
-		"omega": { "data_type": "real" },
-		"sigma": { "data_type": "real" },
-		"tags": { "data_type": "text" },
-		"fumble_bio": { "data_type": "text" },
-		"primary_key": ["id", "slot_id"]
-	}
-	db.create_table("npc", npc_table)
-	db.query("CREATE INDEX IF NOT EXISTS idx_npc_slot_id ON npc(slot_id)")
-
-	var relationships_table := {
-		"npc_id": { "data_type": "int" },
-		"slot_id": { "data_type": "int" },
-		"status": { "data_type": "text" },
-		"primary_key": ["npc_id", "slot_id"]
-	}
-	db.create_table("fumble_relationships", relationships_table)
-	db.query("CREATE INDEX IF NOT EXISTS idx_rel_slot_id ON fumble_relationships(slot_id)")
-
-	var battles_table := {
-		"battle_id": { "data_type": "text" },
-		"slot_id": { "data_type": "int" },
-		"npc_id": { "data_type": "int" },
-		"chatlog": { "data_type": "text" },
-		"stats": { "data_type": "text" },
-		"outcome": { "data_type": "text" },
-		"primary_key": ["battle_id", "slot_id"]
-	}
-	db.create_table("fumble_battles", battles_table)
-	db.query("CREATE INDEX IF NOT EXISTS idx_battle_slot_id ON fumble_battles(slot_id)")
+func _migrate_table(table_name: String, fields: Dictionary):
+	var column_defs := {}
+	for k in fields.keys():
+		if k == "primary_key":
+			continue
+		column_defs[k] = fields[k]
+	db.query("PRAGMA table_info(%s)" % table_name)
+	var cols = db.query_result
+	var existing = []
+	for col in cols:
+		existing.append(col["name"])
+	for cname in column_defs.keys():
+		if not existing.has(cname):
+			print("DBManager: Adding missing column %s to table %s" % [cname, table_name])
+			db.query("ALTER TABLE %s ADD COLUMN %s %s" % [table_name, cname, column_defs[cname]])
 
 # -- NPCs --
 
@@ -95,7 +106,6 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 		"tags": ",".join(npc.tags),
 		"fumble_bio": npc.fumble_bio,
 	}
-	# UPSERT: update first, insert if not updated
 	var updated = db.update_rows(
 		"npc",
 		_make_update_string(data),
@@ -145,7 +155,6 @@ func get_all_fumble_relationships(slot_id: int = SaveManager.current_slot_id) ->
 	print("Loaded relationships:", out)
 	return out
 
-
 # -- Battles --
 
 func save_fumble_battle(
@@ -174,7 +183,7 @@ func save_fumble_battle(
 		],
 		{ "battle_id": battle_id, "slot_id": slot_id }
 	)
-	if updated == 0:
+	if updated == false:
 		db.insert_row("fumble_battles", data)
 
 func load_fumble_battle(battle_id: String, slot_id: int = SaveManager.current_slot_id) -> Dictionary:
