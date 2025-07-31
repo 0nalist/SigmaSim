@@ -15,52 +15,57 @@ signal request_resize_x_to(pixels)
 @export var battle_scene: PackedScene
 
 func _ready():
+	refresh_ui()
+
+func refresh_ui():
 	refresh_matches()
 	refresh_battles()
 
 func refresh_matches():
+	# Always clear
 	for child in match_container.get_children():
 		child.queue_free()
 
+	# Gather all "liked" or "matched" NPCs, but not currently in a chat battle
 	var matches: Array = FumbleManager.get_matches()
 	var battles: Array = FumbleManager.get_active_battles()
-	var battle_npc_indices: Array = []
-	for b in battles:
-		battle_npc_indices.append(b.npc_idx)
+	var battle_npc_indices := battles.map(func(b): return b.npc_idx)
 
-	var total_attractiveness = 0
-	var filtered_count = 0
+	var total_attractiveness := 0
+	var filtered_count := 0
 
 	for idx in matches:
 		if battle_npc_indices.has(idx):
-			continue
+			continue # Already chatting, show only in battles section
 		var npc = NPCManager.get_npc_by_index(idx)
 		total_attractiveness += npc.attractiveness
 		filtered_count += 1
 		var btn = match_button_scene.instantiate()
-		btn.match_pressed.connect(_on_match_button_pressed)
 		match_container.add_child(btn)
 		btn.set_profile(npc, idx)
+		btn.match_pressed.connect(_on_match_button_pressed)
+		
 
 	matches_label.text = "Matches: %d" % filtered_count
 
-	var avg_att = 0.0
+	var avg_att := 0.0
 	if filtered_count > 0:
 		avg_att = float(total_attractiveness) / filtered_count
 	average_match_label.text = "Avg: 🔥 %.1f/10" % (avg_att / 10.0)
 
 func refresh_battles():
+	# Always clear
 	for child in chat_battles_container.get_children():
 		child.queue_free()
+
+	# Show all current active chat battles
 	var battles: Array = FumbleManager.get_active_battles()
 	for b in battles:
-			var npc = NPCManager.get_npc_by_index(b.npc_idx)
-			var btn = battle_button_scene.instantiate()
-			chat_battles_container.add_child(btn)
-			btn.set_battle(npc, b.battle_id, b.npc_idx)
-			btn.pressed.connect(func() -> void:
-					_on_battle_button_pressed(b.battle_id, npc, b.npc_idx)
-			)
+		var npc = NPCManager.get_npc_by_index(b.npc_idx)
+		var btn = battle_button_scene.instantiate()
+		btn.set_battle(npc, b.battle_id, b.npc_idx)
+		btn.pressed.connect(func(): _on_battle_button_pressed(b.battle_id, npc, b.npc_idx))
+		chat_battles_container.add_child(btn)
 
 func _on_match_button_pressed(npc, idx):
 	var match_profile = match_profile_scene.instantiate()
@@ -70,8 +75,7 @@ func _on_match_button_pressed(npc, idx):
 
 func _on_start_battle_requested(battle_id, npc, idx):
 	open_battle(battle_id, npc, idx)
-	refresh_battles()
-	refresh_matches()
+	refresh_ui()
 
 func _on_battle_button_pressed(battle_id, npc, idx):
 	open_battle(battle_id, npc, idx)
@@ -81,3 +85,7 @@ func open_battle(battle_id, npc, idx):
 	add_child(scene)
 	scene.load_battle(battle_id, npc, [], {}, idx)
 	request_resize_x_to.emit(911)
+
+# Optional: If you want to always re-sync when the chats tab is shown from parent UI
+func on_tab_selected():
+	refresh_ui()

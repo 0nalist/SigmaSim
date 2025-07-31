@@ -202,9 +202,15 @@ func get_fumble_matches() -> Array:
 	var matches = []
 	var rels = DBManager.get_all_fumble_relationships()
 	for idx in rels.keys():
-			if rels[idx] == "liked":
-					matches.append(int(idx))
+		var status_str = rels[idx]
+		# Show only if currently "liked" or "matched"
+		if status_str == "liked" or status_str == "matched":
+			matches.append(int(idx))
 	return matches
+
+
+
+
 
 # Returns true if a battle is active with this NPC (FumbleManager sets this flag)
 func is_fumble_battle_active(npc_idx: int) -> bool:

@@ -1,7 +1,38 @@
 extends Node
 #Autoload: FumbleManager
+# "res://autoloads/fumble_manager.gd"
 
 var active_battles: Array = [] # {npc_idx, battle_id}
+
+
+enum FumbleStatus {
+	LIKED,
+	MATCHED,
+	ACTIVE_CHAT,
+	BLOCKED_PLAYER,
+	VICTORY,
+}
+
+const FUMBLE_STATUS_STRINGS := {
+	FumbleStatus.LIKED: "liked",
+	FumbleStatus.MATCHED: "matched",
+	FumbleStatus.ACTIVE_CHAT: "active_chat",
+	FumbleStatus.BLOCKED_PLAYER: "blocked_player",
+	FumbleStatus.VICTORY: "victory",
+}
+const FUMBLE_STATUS_LOOKUP := {
+	"liked": FumbleStatus.LIKED,
+	"matched": FumbleStatus.MATCHED,
+	"active_chat": FumbleStatus.ACTIVE_CHAT,
+	"blocked_player": FumbleStatus.BLOCKED_PLAYER,
+	"victory": FumbleStatus.VICTORY,
+}
+
+
+
+
+
+
 
 func _ready():
 	#active_battles = DBManager.get_active_fumble_battles(SaveManager.current_slot_id)
@@ -30,11 +61,16 @@ func start_battle(npc_idx: int) -> String:
 			"active"
 		)
 		NPCManager.promote_to_persistent(npc_idx)
+		DBManager.save_fumble_relationship(npc_idx, "active_chat") # This MUST be set
 		return battle_id
+	# If already in a battle, forcibly set status to active_chat as well:
 	for b in get_active_battles():
 		if b.npc_idx == npc_idx:
+			DBManager.save_fumble_relationship(npc_idx, "active_chat")
 			return b.battle_id
 	return ""
+
+
 
 
 func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, outcome: String) -> void:
