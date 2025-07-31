@@ -104,16 +104,25 @@ func load_pane(new_pane: Pane) -> void:
 	
 	if pane.has_signal("request_resize_x_to"):
 		# Clean up any previous connection first for robustness:
-		if is_connected("request_resize_x_to", _on_pane_resize_x_to):
-			disconnect("request_resize_x_to", _on_pane_resize_x_to)
+		if pane.request_resize_x_to.is_connected(_on_pane_resize_x_to):
+			pane.request_resize_x_to.disconnect(_on_pane_resize_x_to)
 		pane.request_resize_x_to.connect(_on_pane_resize_x_to)
-	
+
+	if pane.has_signal("request_resize_y_to"):
+		if pane.request_resize_y_to.is_connected(_on_pane_resize_y_to):
+			pane.request_resize_y_to.disconnect(_on_pane_resize_y_to)
+		pane.request_resize_y_to.connect(_on_pane_resize_y_to)
+
+
 	pane.window_title_changed.connect(_on_pane_window_title_changed)
 	pane.window_icon_changed.connect(_on_window_icon_changed)
 	call_deferred("_set_content", pane)
 
 func _on_pane_resize_x_to(target_x: float, duration := 0.4):
 	animate_resize_x(target_x, duration)
+
+func _on_pane_resize_y_to(target_y: float, duration := 0.4):
+	animate_resize_y(target_y, duration)
 
 func animate_resize_x(target_x: float, duration: float = 0.4):
 	var new_size = size
@@ -122,6 +131,9 @@ func animate_resize_x(target_x: float, duration: float = 0.4):
 	tween.tween_property(self, "size:x", target_x, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	# You might want to clamp to screen, etc. as needed
 
+func animate_resize_y(target_y: float, duration: float = 0.4):
+	var tween = create_tween()
+	tween.tween_property(self, "size:y", target_y, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _set_content(new_content: Control) -> void:
 	for child in content_panel.get_children():

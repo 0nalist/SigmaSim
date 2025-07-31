@@ -2,6 +2,7 @@ class_name FumbleUI
 extends Pane
 
 signal request_resize_x_to(pixels)
+signal request_resize_y_to(pixels)
 
 @onready var fumble_label: Label = %FumbleLabel
 @onready var profile_container: Control = %ProfileContainer
@@ -39,6 +40,7 @@ func _ready():
 		return
 
 	chats_tab.request_resize_x_to.connect(_on_resize_x_requested)
+	chats_tab.request_resize_y_to.connect(_on_resize_y_requested)
 
 	swipe_left_button.pressed.connect(card_stack.swipe_left)
 	swipe_right_button.pressed.connect(card_stack.swipe_right)
@@ -149,3 +151,8 @@ func _on_resize_x_requested(pixels):
 	var window_frame = get_parent().get_parent().get_parent()
 	if window_frame.size.x < 800:
 		request_resize_x_to.emit(pixels)
+
+func _on_resize_y_requested(pixels):
+	var window_frame = get_parent().get_parent().get_parent()
+	if window_frame.size.y < 666:
+		request_resize_y_to.emit(pixels)

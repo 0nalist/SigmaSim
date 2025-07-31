@@ -2,6 +2,7 @@ extends Control
 class_name ChatsTab
 
 signal request_resize_x_to(pixels)
+signal request_resize_y_to(pixels)
 
 @onready var matches_label: Label = %MatchesLabel
 @onready var match_container: HBoxContainer = %MatchContainer
@@ -90,6 +91,7 @@ func open_battle(battle_id, npc, idx):
 		idx
 	)
 	request_resize_x_to.emit(911)
+	request_resize_y_to.emit(666)
 
 
 # Optional: If you want to always re-sync when the chats tab is shown from parent UI
