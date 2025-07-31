@@ -4,7 +4,7 @@ extends Node
 var active_battles: Array = [] # {npc_idx, battle_id}
 
 func _ready():
-	active_battles = DBManager.get_active_fumble_battles()
+	active_battles = DBManager.get_active_fumble_battles(SaveManager.current_slot_id)
 
 
 func get_matches() -> Array:
@@ -18,7 +18,14 @@ func start_battle(npc_idx: int) -> String:
 		var battle_id = "%s_%d" % [str(Time.get_unix_time_from_system()), randi() % 1000000]
 		var entry = { "npc_idx": npc_idx, "battle_id": battle_id, "chatlog": [], "stats": {}, "outcome": "active" }
 		active_battles.append(entry)
-		DBManager.save_fumble_battle(battle_id, npc_idx, [], {}, "active")
+		DBManager.save_fumble_battle(
+			battle_id,
+			npc_idx,   # <-- this is npc_id (int)
+			[],        # chatlog (Array)
+			{},        # stats (Dictionary)
+			"active"   # outcome (String)
+			# slot_id defaults to SaveManager.current_slot_id
+		)
 		NPCManager.promote_to_persistent(npc_idx)
 		return battle_id
 	return active_battles.filter(func(b): b.npc_idx == npc_idx)[0].battle_id
@@ -29,17 +36,26 @@ func get_active_battles():
 func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, outcome: String) -> void:
 	var npc_idx := -1
 	for b in active_battles:
-			if b.battle_id == battle_id:
-					npc_idx = b.npc_idx
-					b.chatlog = chatlog.duplicate()
-					b.stats = stats.duplicate()
-					b.outcome = outcome
-					break
+		if b.battle_id == battle_id:
+			npc_idx = b.npc_idx
+			b.chatlog = chatlog.duplicate()
+			b.stats = stats.duplicate()
+			b.outcome = outcome
+			break
 	if npc_idx != -1:
-			DBManager.save_fumble_battle(battle_id, npc_idx, chatlog, stats, outcome)
+		DBManager.save_fumble_battle(
+			battle_id,
+			npc_idx,   # <-- this is npc_id (int)
+			chatlog,   # Array
+			stats,     # Dictionary
+			outcome    # String
+			# slot_id defaults to SaveManager.current_slot_id
+		)
+
+
 
 func load_battle_state(battle_id: String) -> Dictionary:
-	var data = DBManager.load_fumble_battle(battle_id)
+	var data = DBManager.load_fumble_battle(battle_id, SaveManager.current_slot_id)
 	if data.size() == 0:
 			return {}
 	return {

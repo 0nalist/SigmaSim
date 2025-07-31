@@ -53,7 +53,8 @@ func trigger_game_over(reason: String) -> void:
 
 # Handle delete save action
 func _on_delete_save():
-	SaveManager.delete_save(PlayerManager.get_slot_id())
+	SaveManager.delete_save(SaveManager.current_slot_id)
+	SaveManager.current_slot_id = -1
 	#TODO: Shift other save slots to fill gaps (eg. if slot 1 is deleted, slot 2 becomes slot 1)
 	reset_managers()
 
@@ -67,9 +68,9 @@ func reset_managers() -> void:
 	# Add more as systems grow
 
 func _on_reload_save():
-	if SaveManager.get_slot_path(PlayerManager.slot_id) == null:
+	if SaveManager.get_slot_path(SaveManager.current_slot_id) == null:
 		return
-	SaveManager.load_from_slot(PlayerManager.slot_id)
+	SaveManager.load_from_slot(SaveManager.current_slot_id)
 
 	# Close Game Over screen
 	for child in get_tree().get_root().get_children():
@@ -157,9 +158,9 @@ func load_login_screen():
 	TimeManager.set_time_paused(true)
 	get_tree().change_scene_to_packed(login_scene)
 
-func load_desktop_env(slot_id: int):
+func load_desktop_env(slot_id: int = SaveManager.current_slot_id):
 	in_game = true
-	PlayerManager.set_slot_id(slot_id)
+	SaveManager.current_slot_id = slot_id
 	get_tree().change_scene_to_packed(desktop_scene)
 
 # Save and load functionality (optional, depends on how you handle it)

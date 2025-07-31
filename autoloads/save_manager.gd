@@ -4,6 +4,8 @@ extends Node
 const SAVE_DIR := "user://saves/"
 const INDEX_PATH := SAVE_DIR + "save_index.json"
 
+var current_slot_id: int = -1
+
 func _ready():
 	var dir := DirAccess.open("user://")
 	if not dir.dir_exists("saves"):
@@ -40,27 +42,19 @@ func get_next_available_slot() -> int:
 	return i
 
 
+
 func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
 	reset_managers()
+	current_slot_id = slot_id
 	
 	PlayerManager.user_data = user_data.duplicate(true)
-	PlayerManager.set_slot_id(slot_id)
 
 	var background = user_data.get("background", "")
 	if background != "":
 		PlayerManager.apply_background_effects(background)
-
-	''' Not sure if this is needed
-	BillManager.load_from_data({
-			"autopay_enabled": false,
-			"lifestyle_categories": BillManager.lifestyle_categories,
-			"lifestyle_indices": BillManager.lifestyle_indices,
-			"pane_data": []
-		})
-	'''
 
 	save_to_slot(slot_id)
 
@@ -106,6 +100,7 @@ func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
+	current_slot_id = slot_id
 
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
@@ -136,7 +131,7 @@ func load_from_slot(slot_id: int) -> void:
 		#GPUManager.refresh_timers_after_market_loaded()
 	if data.has("player"):
 		PlayerManager.load_from_data(data["player"])
-		PlayerManager.set_slot_id(slot_id)
+		#PlayerManager.set_slot_id(slot_id)
 	if data.has("workers"):
 		WorkerManager.load_from_data(data["workers"])
 	

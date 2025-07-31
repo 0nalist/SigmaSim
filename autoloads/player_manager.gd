@@ -1,7 +1,6 @@
 ## Autoload PlayerManager
 extends Node
-
-var slot_id = -1
+ 	
 
 var default_user_data: Dictionary = {
 	# Identity
@@ -103,7 +102,7 @@ func set_stat(key: String, value: Variant) -> void:
 
 func reset():
 	user_data = default_user_data.duplicate(true)
-	slot_id = -1
+	SaveManager.current_slot_id = -1
 
 
 func ensure_default_stats() -> void:
@@ -153,13 +152,6 @@ func load_from_data(data: Dictionary) -> void:
 	ensure_default_stats()
 	
 
-
-# Called once during login from SaveManager, like other systems
-func set_slot_id(slot: int) -> void:
-	slot_id = slot
-
-func get_slot_id() -> int:
-	return slot_id
 
 
 ## -- BACKGROUNDS ## probably make this its own resource late

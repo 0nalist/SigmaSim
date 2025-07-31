@@ -22,7 +22,7 @@ func get_npc_by_index(idx: int) -> NPC:
 
 	var npc: NPC
 
-	if DBManager.has_npc(idx):
+	if DBManager.has_npc(idx, SaveManager.current_slot_id):
 		npc = _load_npc_from_db(idx)
 	else:
 		npc = NPCFactory.create_npc(idx)

@@ -1,5 +1,5 @@
 extends Node
-#Autoload: DBManager
+# Autoload: DBManager
 
 var db: SQLite
 
@@ -7,15 +7,27 @@ func _ready():
 	db = SQLite.new()
 	db.path = "user://sigmasim.db"
 	db.open_db()
+	# Check if slot_id exists
+	db.query("PRAGMA table_info(npc)")
+	var columns = db.query_result
+	var has_slot_id = false
+	for col in columns:
+		if col["name"] == "slot_id":
+			has_slot_id = true
+			break
+	if not has_slot_id:
+		db.query("ALTER TABLE npc ADD COLUMN slot_id int")
 	_create_tables()
+
 
 func _create_tables():
 	var npc_table := {
-		"id": { "data_type": "int", "primary_key": true },
+		"id": { "data_type": "int" },
+		"slot_id": { "data_type": "int" },
 		"first_name": { "data_type": "text" },
 		"middle_initial": { "data_type": "text" },
 		"last_name": { "data_type": "text" },
-		"gender_vector": { "data_type": "text" }, # Store as comma-separated string or JSON
+		"gender_vector": { "data_type": "text" },
 		"bio": { "data_type": "text" },
 		"occupation": { "data_type": "text" },
 		"relationship_status": { "data_type": "text" },
@@ -29,32 +41,40 @@ func _create_tables():
 		"delta": { "data_type": "real" },
 		"omega": { "data_type": "real" },
 		"sigma": { "data_type": "real" },
-		"tags": { "data_type": "text" }, # comma-separated
-		"likes": { "data_type": "text" }, # comma-separated
-		"fumble_bio": { "data_type": "text" }
+		"tags": { "data_type": "text" },
+		"fumble_bio": { "data_type": "text" },
+		"primary_key": ["id", "slot_id"]
 	}
 	db.create_table("npc", npc_table)
+	db.query("CREATE INDEX IF NOT EXISTS idx_npc_slot_id ON npc(slot_id)")
 
-	# -- Fumble Tables --
 	var relationships_table := {
-			"npc_id": { "data_type": "int", "primary_key": true },
-			"status": { "data_type": "text" }
+		"npc_id": { "data_type": "int" },
+		"slot_id": { "data_type": "int" },
+		"status": { "data_type": "text" },
+		"primary_key": ["npc_id", "slot_id"]
 	}
 	db.create_table("fumble_relationships", relationships_table)
+	db.query("CREATE INDEX IF NOT EXISTS idx_rel_slot_id ON fumble_relationships(slot_id)")
 
 	var battles_table := {
-			"battle_id": { "data_type": "text", "primary_key": true },
-			"npc_id": { "data_type": "int" },
-			"chatlog": { "data_type": "text" },
-			"stats": { "data_type": "text" },
-			"outcome": { "data_type": "text" }
+		"battle_id": { "data_type": "text" },
+		"slot_id": { "data_type": "int" },
+		"npc_id": { "data_type": "int" },
+		"chatlog": { "data_type": "text" },
+		"stats": { "data_type": "text" },
+		"outcome": { "data_type": "text" },
+		"primary_key": ["battle_id", "slot_id"]
 	}
 	db.create_table("fumble_battles", battles_table)
+	db.query("CREATE INDEX IF NOT EXISTS idx_battle_slot_id ON fumble_battles(slot_id)")
 
+# -- NPCs --
 
-func save_npc(idx: int, npc: NPC):
+func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	var data = {
 		"id": idx,
+		"slot_id": slot_id,
 		"first_name": npc.first_name,
 		"middle_initial": npc.middle_initial,
 		"last_name": npc.last_name,
@@ -75,86 +95,122 @@ func save_npc(idx: int, npc: NPC):
 		"tags": ",".join(npc.tags),
 		"fumble_bio": npc.fumble_bio,
 	}
-	db.insert_row("npc", data)
+	# UPSERT: update first, insert if not updated
+	var updated = db.update_rows(
+		"npc",
+		_make_update_string(data),
+		{ "id": idx, "slot_id": slot_id }
+	)
+	if updated == false:
+		db.insert_row("npc", data)
 
-func load_npc(idx: int) -> Dictionary:
-	var result = db.select_rows("npc", "id = %d" % idx, ["*"])
+func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
+	return db.select_rows("npc", "slot_id = %d" % slot_id, ["*"])
+
+func load_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> Dictionary:
+	var result = db.select_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], ["*"])
 	return result[0] if result.size() > 0 else null
 
-func has_npc(idx: int) -> bool:
-		var rows = db.select_rows("npc", "id = %d" % idx, ["id"])
-		return rows.size() > 0
+func has_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> bool:
+	var rows = db.select_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], ["id"])
+	return rows.size() > 0
 
-func save_fumble_relationship(npc_id: int, status: String) -> void:
-	db.insert_row("fumble_relationships", {
-			"npc_id": npc_id,
-			"status": status
-	})
+# -- Relationships --
 
-func get_fumble_relationship(npc_id: int) -> String:
-	var rows = db.select_rows("fumble_relationships", "npc_id = %d" % npc_id, ["status"])
+func save_fumble_relationship(npc_id: int, status: String, slot_id: int = SaveManager.current_slot_id) -> void:
+	var data = {
+		"npc_id": npc_id,
+		"slot_id": slot_id,
+		"status": status
+	}
+	print("Saving relationship: npc_id =", npc_id, "status =", status, "slot_id =", slot_id)
+	var updated = db.update_rows(
+		"fumble_relationships",
+		"status = '%s'" % status.replace("'", "''"),
+		{ "npc_id": npc_id, "slot_id": slot_id }
+	)
+	if updated == false:
+		db.insert_row("fumble_relationships", data)
+
+func get_fumble_relationship(npc_id: int, slot_id: int = SaveManager.current_slot_id) -> String:
+	var rows = db.select_rows("fumble_relationships", "npc_id = %d AND slot_id = %d" % [npc_id, slot_id], ["status"])
 	return rows[0].status if rows.size() > 0 else ""
 
-func get_all_fumble_relationships() -> Dictionary:
-	var rows = db.select_rows("fumble_relationships", "", ["npc_id", "status"])
+func get_all_fumble_relationships(slot_id: int = SaveManager.current_slot_id) -> Dictionary:
+	var rows = db.select_rows("fumble_relationships", "slot_id = %d" % slot_id, ["npc_id", "status"])
+	print("Queried fumble_relationships for slot_id =", slot_id, "| Rows:", rows.size())
 	var out := {}
 	for r in rows:
-			out[r.npc_id] = r.status
+		out[r.npc_id] = r.status
+	print("Loaded relationships:", out)
 	return out
 
-func save_fumble_battle(battle_id: String, npc_id: int, chatlog: Array, stats: Dictionary, outcome: String) -> void:
-	var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["battle_id"])
+
+# -- Battles --
+
+func save_fumble_battle(
+	battle_id: String,
+	npc_id: int,
+	chatlog: Array,
+	stats: Dictionary,
+	outcome: String,
+	slot_id: int = SaveManager.current_slot_id
+) -> void:
 	var data = {
 		"battle_id": battle_id,
+		"slot_id": slot_id,
 		"npc_id": npc_id,
 		"chatlog": to_json(chatlog),
 		"stats": to_json(stats),
 		"outcome": outcome
 	}
-	if rows.size() > 0 and db.has_method("update_rows"):
-		var set_parts = []
-		for k in data.keys():
-			var v = data[k]
-			# Wrap strings in single quotes and escape any single quotes in value
-			if typeof(v) == TYPE_STRING:
-				set_parts.append("%s = '%s'" % [k, v.replace("'", "''")])
-			else:
-				set_parts.append("%s = %s" % [k, str(v)])
-		var set_string = ", ".join(set_parts)
-		db.update_rows("fumble_battles", set_string, { "battle_id": battle_id })
-	else:
-		if rows.size() > 0:
-			db.query("DELETE FROM fumble_battles WHERE battle_id = '%s'" % battle_id)
+	var updated = db.update_rows(
+		"fumble_battles",
+		"npc_id = %d, chatlog = '%s', stats = '%s', outcome = '%s'" % [
+			npc_id,
+			data.chatlog.replace("'", "''"),
+			data.stats.replace("'", "''"),
+			outcome.replace("'", "''")
+		],
+		{ "battle_id": battle_id, "slot_id": slot_id }
+	)
+	if updated == 0:
 		db.insert_row("fumble_battles", data)
 
-
-
-
-
-func load_fumble_battle(battle_id: String) -> Dictionary:
-	var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["*"])
+func load_fumble_battle(battle_id: String, slot_id: int = SaveManager.current_slot_id) -> Dictionary:
+	var rows = db.select_rows("fumble_battles", "battle_id = '%s' AND slot_id = %d" % [battle_id, slot_id], ["*"])
 	return rows[0] if rows.size() > 0 else {}
 
-func get_active_fumble_battles() -> Array:
-	var rows = db.select_rows("fumble_battles", "outcome = 'active'", ["battle_id", "npc_id", "chatlog", "stats"])
+func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Array:
+	var rows = db.select_rows("fumble_battles", "slot_id = %d AND outcome = 'active'" % slot_id, ["battle_id", "npc_id", "chatlog", "stats"])
 	var out := []
 	for r in rows:
-			out.append({
-					"battle_id": r.battle_id,
-					"npc_idx": int(r.npc_id),
-					"chatlog": from_json(r.chatlog),
-					"stats": from_json(r.stats)
-			})
+		out.append({
+			"battle_id": r.battle_id,
+			"npc_idx": int(r.npc_id),
+			"chatlog": from_json(r.chatlog),
+			"stats": from_json(r.stats)
+		})
 	return out
+
+# -- Utilities --
+
+func _make_update_string(data: Dictionary) -> String:
+	var out := []
+	for k in data.keys():
+		if k in ["id", "slot_id"]:
+			continue
+		var v = data[k]
+		if typeof(v) == TYPE_STRING:
+			out.append("%s = '%s'" % [k, v.replace("'", "''")])
+		else:
+			out.append("%s = %s" % [k, str(v)])
+	return ", ".join(out)
 
 func to_json(value: Variant) -> String:
 	match typeof(value):
 		TYPE_VECTOR3:
-			return JSON.stringify({
-				"x": value.x,
-				"y": value.y,
-				"z": value.z
-			})
+			return JSON.stringify({ "x": value.x, "y": value.y, "z": value.z })
 		TYPE_DICTIONARY, TYPE_ARRAY:
 			return JSON.stringify(value)
 		_:
