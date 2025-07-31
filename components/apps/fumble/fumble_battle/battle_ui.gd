@@ -132,11 +132,11 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	battle_stats = logic.get_stats()
 
 	_update_profiles()
-	for child in chat_container.get_children():
-		child.queue_free()
-	for msg in chatlog:
-		var is_victory = msg.get("victory_number", false)
-		add_chat_line(msg.text, msg.is_player, is_victory, false)
+       for child in chat_container.get_children():
+               child.queue_free()
+       for msg in chatlog:
+               var is_victory := msg.get("victory_number", false)
+               add_chat_line(msg.text, msg.is_player, is_victory, false)
 	
 	move_usage_counts.clear()
 	for move in equipped_moves:
@@ -446,13 +446,13 @@ func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
 	hbox.add_child(spacer)
 	hbox.add_child(chat)
 
-	chat_container.add_child(hbox)
-	chat.text_label.text = text
-	chat.text_label.visible_ratio = 0.0
-	scroll_to_newest_chat()
-	chatlog.append({"text": text, "is_player": false, "victory_number": true})
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-	return chat
+       chat_container.add_child(hbox)
+       chat.text_label.text = text
+       chat.text_label.visible_ratio = 0.0
+       scroll_to_newest_chat()
+       chatlog.append({"text": text, "is_player": false, "victory_number": true})
+       FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+       return chat
 
 
 func _on_victory_number_clicked() -> void:

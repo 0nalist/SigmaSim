@@ -131,7 +131,6 @@ func save_fumble_battle(battle_id: String, npc_id: int, chatlog: Array, stats: D
 
 
 
-
 func load_fumble_battle(battle_id: String) -> Dictionary:
 	var rows = db.select_rows("fumble_battles", "battle_id = '%s'" % battle_id, ["*"])
 	return rows[0] if rows.size() > 0 else {}
