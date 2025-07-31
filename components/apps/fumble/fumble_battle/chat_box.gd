@@ -13,7 +13,11 @@ var resolved: bool = false
 @onready var left_effect_icons: Control = %LeftEffectIcons
 @onready var left_effect_icons_hbox: HBoxContainer = $LeftEffectIcons/LeftEffectIconsHBox
 
+var reaction_key: String = ""
+var effects: Dictionary = {}
+var result: String = "neutral" # "neutral", "success", "fail"
 
+var text: String = ""
 
 const ICONS = {
 	"chem_up": preload("res://assets/emojis/test_tube_twemoji_x72_1f9ea.png"),
@@ -28,60 +32,74 @@ const ICONS = {
 
 @onready var message_container: PanelContainer = %MessageContainer
 
-'''
-func _input(event):
-	if event is InputEventMouseMotion:
-		var mouse_pos = get_viewport().get_mouse_position()
-		var control = get_viewport().gui_get_hovered_control()
-		if control:
-			print("Hovering over: ", control.name, " (", control, ")")
-'''
-
-
-var text: String = ""
-var result: String = "neutral" # "neutral", "success", "fail"
-
-# Persistent color tints for result
 const COLOR_PERSIST_NEUTRAL = Color(1, 1, 1)
 const COLOR_PERSIST_SUCCESS = Color(0.78, 1.0, 0.78)
 const COLOR_PERSIST_FAIL    = Color(1.0, 0.76, 0.76)
-
-# Flash colors for "dopamine hit"
 const COLOR_FLASH_SUCCESS = Color(0.5, 1.2, 0.5)
 const COLOR_FLASH_FAIL    = Color(1.2, 0.3, 0.3)
 
-
-
-
-
 func _ready():
 	text_label.text = text
-	set_result("neutral") # start neutral
+	set_result_color_instant("neutral")
 	clear_reaction()
-	
-	#emoji_reaction.size = Vector2(32, 32)
-	#emoji_reaction.custom_minimum_size = Vector2(32, 32)
+
 	emoji_reaction.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	effect_icons.mouse_filter = Control.MOUSE_FILTER_PASS
 	effect_icons_hbox.mouse_filter = Control.MOUSE_FILTER_PASS
 
+# === INSTANT-RESTORE METHODS ===
 
-func reveal_result_color(result: String) -> void:
-	# Use await to make it sync with the rest of the animations if needed
-	await get_tree().process_frame
-	set_result_and_flash(result)
+func set_text_instant(new_text: String) -> void:
+	text = new_text
+	text_label.text = text
+	text_label.visible_ratio = 1.0
 
+func set_reaction_instant(key: String, tooltip: String) -> void:
+	reaction_key = key
+	if key != "" and ICONS.has(key): # For emoji reactions that are also stat icons
+		emoji_reaction.texture = ICONS[key]
+		emoji_reaction.visible = true
+		emoji_reaction.tooltip_text = tooltip
+	else:
+		emoji_reaction.visible = false
+		emoji_reaction.texture = null
+		emoji_reaction.tooltip_text = ""
 
-func set_result_and_flash(new_result: String, duration := 0.4):
-	if resolved:
-		return
-	set_result(new_result)
-	flash_result(duration)
-	resolved = true
+func set_stat_effects_instant(effects_dict: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"]) -> void:
+	effects = effects_dict.duplicate()
+	# Clear icons first
+	for child in left_effect_icons_hbox.get_children():
+		child.queue_free()
+	for child in effect_icons_hbox.get_children():
+		child.queue_free()
+	if is_npc_message:
+		for effect_name in stat_order:
+			if effect_name == "confidence" and effects.has(effect_name):
+				var delta = int(effects[effect_name])
+				if abs(delta) < 1:
+					continue
+				var vbox = _create_stat_icon(effect_name, delta)
+				vbox.add_theme_constant_override("separation", -1)
+				if vbox != null:
+					left_effect_icons_hbox.add_child(vbox)
+					vbox.get_child(0).visible = true
+					vbox.get_child(1).visible = true
+	else:
+		for effect_name in stat_order:
+			if effect_name != "confidence" and effects.has(effect_name):
+				var delta = int(effects[effect_name])
+				if abs(delta) < 1:
+					continue
+				var vbox = _create_stat_icon(effect_name, delta)
+				vbox.add_theme_constant_override("separation", -1)
+				if vbox != null:
+					effect_icons_hbox.add_child(vbox)
+					vbox.get_child(0).visible = true
+					vbox.get_child(1).visible = true
 
-# Just sets the persistent color, does NOT animate
-func set_result(new_result: String):
+func set_result_color_instant(new_result: String) -> void:
 	result = new_result
+	# Do NOT set resolved here. Only for replay/restored.
 	if result == "success":
 		message_container.modulate = COLOR_PERSIST_SUCCESS
 	elif result == "fail":
@@ -89,7 +107,22 @@ func set_result(new_result: String):
 	else:
 		message_container.modulate = COLOR_PERSIST_NEUTRAL
 
-# Animates a dopamine flash, then settles on result color
+
+# === ANIMATED METHODS FOR NEW MESSAGES ===
+
+func reveal_result_color(result: String) -> void:
+	await get_tree().process_frame
+	set_result_and_flash(result)
+
+func set_result_and_flash(new_result: String, duration := 0.4):
+	# Only prevent flash if it's already resolved (restored/replayed)
+	if resolved:
+		return
+	set_result_color_instant(new_result)
+	flash_result(duration)
+	resolved = true  # Mark as done only after first run!
+
+
 func flash_result(duration := 0.4):
 	var flash_color = COLOR_FLASH_SUCCESS
 	if result == "fail":
@@ -107,8 +140,8 @@ func flash_result(duration := 0.4):
 	tween.tween_property(self, "modulate", flash_color, duration * 0.3).set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(self, "modulate", persist_color, duration * 0.7).set_trans(Tween.TRANS_CUBIC)
 
-
 func set_reaction(emoji: Texture2D, tooltip_text: String):
+	reaction_key = "" # Animated version doesn't use icon key (optional)
 	emoji_reaction.texture = emoji
 	emoji_reaction.tooltip_text = tooltip_text
 	animate_emoji_reaction()
@@ -120,14 +153,59 @@ func clear_reaction():
 func animate_emoji_reaction():
 	emoji_reaction.visible = false
 	emoji_reaction.scale = Vector2(0.1, 0.1)
-	await get_tree().create_timer(0.09).timeout # optional: staggers it to match icons
+	await get_tree().create_timer(0.09).timeout
 	emoji_reaction.visible = true
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(emoji_reaction, "scale", Vector2(1.2, 1.2), 0.12)
 	tween.tween_property(emoji_reaction, "scale", Vector2(1.0, 1.0), 0.10)
 
+func set_stat_effects(effects_dict: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"]):
+	effects = effects_dict.duplicate()
+	var icons_to_animate: Array = []
 
+	for child in left_effect_icons_hbox.get_children():
+		child.queue_free()
+	for child in effect_icons_hbox.get_children():
+		child.queue_free()
+	if is_npc_message:
+		for effect_name in stat_order:
+			if effect_name == "confidence" and effects.has(effect_name):
+				var delta = int(effects[effect_name])
+				if abs(delta) < 1:
+					continue
+				var vbox = _create_stat_icon(effect_name, delta)
+				vbox.add_theme_constant_override("separation", -1)
+				if vbox != null:
+					left_effect_icons_hbox.add_child(vbox)
+					icons_to_animate.append(vbox.get_child(0))
+		await _animate_icons(icons_to_animate)
+		return
+
+	# For player: show only non-confidence effects
+	for effect_name in stat_order:
+		if effect_name != "confidence" and effects.has(effect_name):
+			var delta = int(effects[effect_name])
+			if abs(delta) < 1:
+				continue
+			var vbox = _create_stat_icon(effect_name, delta)
+			vbox.add_theme_constant_override("separation", -1)
+			if vbox != null:
+				effect_icons_hbox.add_child(vbox)
+				icons_to_animate.append(vbox.get_child(0))
+	await _animate_icons(icons_to_animate)
+
+func _animate_icons(icons: Array) -> void:
+	for icon in icons:
+		var label = icon.get_parent().get_child(1)
+		label.visible = false
+		icon.visible = true
+		icon.scale = Vector2(0.1, 0.1)
+		var tween = get_tree().create_tween()
+		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12)
+		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10)
+		await get_tree().create_timer(0.09).timeout
+		label.visible = true
 
 func _create_stat_icon(effect_name: String, delta: int) -> VBoxContainer:
 	var icon_texture: Texture2D = null
@@ -167,9 +245,9 @@ func _create_stat_icon(effect_name: String, delta: int) -> VBoxContainer:
 	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.tooltip_text = "%s: %s" % [effect_name.capitalize(), label_text]
-	icon.scale = Vector2(0.1, 0.1)
+	icon.scale = Vector2(1.0, 1.0)
 	icon.mouse_filter = Control.MOUSE_FILTER_STOP
-	icon.visible = false
+	icon.visible = true
 
 	var label = Label.new()
 	label.text = label_text
@@ -182,54 +260,3 @@ func _create_stat_icon(effect_name: String, delta: int) -> VBoxContainer:
 	vbox.add_child(icon)
 	vbox.add_child(label)
 	return vbox
-
-
-
-
-
-func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"]):
-	var icons_to_animate: Array = []
-
-	if is_npc_message:
-		for child in left_effect_icons_hbox.get_children():
-			child.queue_free()
-		for effect_name in stat_order:
-			if effect_name == "confidence" and effects.has(effect_name):
-				var delta = int(effects[effect_name])
-				if abs(delta) < 1:
-					continue
-				var vbox = _create_stat_icon(effect_name, delta)
-				vbox.add_theme_constant_override("separation", -1)
-				if vbox != null:
-					left_effect_icons_hbox.add_child(vbox)
-					icons_to_animate.append(vbox.get_child(0))
-		await _animate_icons(icons_to_animate)
-		return
-
-	# For player: show only non-confidence effects
-	for child in effect_icons_hbox.get_children():
-		child.queue_free()
-	for effect_name in stat_order:
-		if effect_name != "confidence" and effects.has(effect_name):
-			var delta = int(effects[effect_name])
-			if abs(delta) < 1:
-				continue
-			var vbox = _create_stat_icon(effect_name, delta)
-			vbox.add_theme_constant_override("separation", -1)
-			if vbox != null:
-				effect_icons_hbox.add_child(vbox)
-				icons_to_animate.append(vbox.get_child(0))
-	await _animate_icons(icons_to_animate)
-
-
-func _animate_icons(icons: Array) -> void:
-	for icon in icons:
-		var label = icon.get_parent().get_child(1)
-		label.visible = false
-		icon.visible = true
-		icon.scale = Vector2(0.1, 0.1)
-		var tween = get_tree().create_tween()
-		tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.12)
-		tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.10)
-		await get_tree().create_timer(0.09).timeout
-		label.visible = true

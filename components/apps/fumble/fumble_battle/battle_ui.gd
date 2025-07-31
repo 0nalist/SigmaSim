@@ -7,49 +7,35 @@ class_name BattleUI
 var logic: BattleLogic
 
 @onready var end_battle_screen_container: CenterContainer = %EndBattleScreenContainer
-
-var victorious: bool = false
-var blocked: bool = false
-
-
-
 @onready var profile_pic: TextureRect = %ProfilePic
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
-
 @onready var npc_type_label: Label = %NPCTypeLabel
 @onready var npc_profile_pic: TextureRect = %NPCProfilePic
 @onready var npc_attractiveness_label: Label = %NPCAttractivenessLabel
 @onready var npc_name_label: Label = %NPCNameLabel
-
 @onready var action_button_1: Button = %ActionButton1
 @onready var action_button_2: Button = %ActionButton2
 @onready var action_button_3: Button = %ActionButton3
 @onready var action_button_4: Button = %ActionButton4
-
 @onready var ghost_button: Button = %GhostButton
 @onready var catch_button: Button = %CatchButton
 @onready var inventory_button: Button = %InventoryButton
-
 @onready var chemistry_progress_bar: ProgressBar = %ChemistryProgressBar
 @onready var self_esteem_progress_bar: ProgressBar = %SelfEsteemProgressBar
 @onready var apprehension_progress_bar: ProgressBar = %ApprehensionProgressBar
-
 @onready var confidence_progress_bar: StatProgressBar = %ConfidenceProgressBar
-
 @onready var npc_profile_button: Button = %NPCProfileButton
 @onready var profile_center_container: CenterContainer = %ProfileCenterContainer
 @onready var fumble_profile: FumbleProfileUI = %FumbleProfile
 @onready var close_fumble_profile_button: Button = %CloseFumbleProfileButton
-
-
 @onready var chat_container: VBoxContainer = %ChatContainer
 
+var victorious: bool = false
+var blocked: bool = false
 var equipped_moves := ["RIZZ", "NEG", "FLEX", "SIMP"]
 var action_buttons := []
-
-var move_usage_counts := {}  # e.g. {"rizz": 0, "neg": 2, ...}
-
+var move_usage_counts := {}
 var battle_id: String
 var npc: NPC
 var npc_idx: int = -1
@@ -59,9 +45,7 @@ var battle_stats := {
 	"chemistry": 0,
 	"apprehension": 0
 }
-
 var is_animating: bool = false
-
 
 const REACTION_EMOJI = {
 	"heart": preload("res://assets/emojis/red_heart_emoji_x32.png"),
@@ -69,7 +53,6 @@ const REACTION_EMOJI = {
 	"thumbs_down": preload("res://assets/emojis/thumbsdown_emoji_x32.png"),
 	"cry_laugh": preload("res://assets/emojis/cry_laughing_twemoji_x32_1f602.png"),
 }
-
 
 func get_reaction_tooltip(reaction: String) -> String:
 	match reaction:
@@ -81,38 +64,29 @@ func get_reaction_tooltip(reaction: String) -> String:
 			return "This type of line is not happening with " + npc.first_name
 		"cry_laugh":
 			return npc.first_name + " thought this was funny, but not enough to respond."
-		
 		_:
 			return ""
 
-
-
 func _ready():
 	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
-	
-	
 	catch_button.pressed.connect(_on_catch_button_pressed)
 	ghost_button.pressed.connect(_on_ghost_button_pressed)
-	
 	profile_center_container.hide()
 	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
 	close_fumble_profile_button.pressed.connect(_on_close_fumble_profile_button_pressed)
-	
 	end_battle_screen_container.hide()
-	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1):
 	battle_id = new_battle_id
 	npc = new_npc
 	npc_idx = new_npc_idx
 	if chatlog_in.size() == 0 and stats_in.size() == 0:
-			var data = FumbleManager.load_battle_state(battle_id)
-			if data.size() > 0:
-					chatlog = data.chatlog
-					stats_in = data.stats
+		var data = FumbleManager.load_battle_state(battle_id)
+		if data.size() > 0:
+			chatlog = data.chatlog
+			stats_in = data.stats
 	chatlog = chatlog_in.duplicate() if chatlog_in.size() > 0 else chatlog
 
-	# If stats_in is empty, pull stats from npc resource
 	var battle_stats_to_use: Dictionary = {}
 	if stats_in.size() > 0:
 		battle_stats_to_use = stats_in.duplicate()
@@ -122,8 +96,7 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 			"chemistry": npc.chemistry,
 			"apprehension": npc.apprehension
 		}
-	
-	# Set up logic
+
 	if battle_logic_resource:
 		logic = battle_logic_resource.duplicate()
 	else:
@@ -136,22 +109,27 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 		child.queue_free()
 	for msg in chatlog:
 		var is_victory = msg.get("victory_number", false)
-		add_chat_line(msg.text, msg.is_player, is_victory, false)
-	
+		var is_player = msg.get("is_player", false)
+		var chat: ChatBox = add_chat_line(msg["text"], is_player, is_victory, false)
+		chat.set_text_instant(msg["text"])
+		if msg.has("reaction"):
+			var reaction_key = msg["reaction"]
+			chat.set_reaction_instant(reaction_key, get_reaction_tooltip(reaction_key))
+		if msg.has("effects"):
+			chat.set_stat_effects_instant(msg["effects"])
+		if msg.has("result"):
+			chat.set_result_color_instant(msg["result"])
 	move_usage_counts.clear()
 	for move in equipped_moves:
 		move_usage_counts[move.to_lower()] = 0
 	move_usage_counts["catch"] = 0
-	
 	update_action_buttons()
 	scroll_to_newest_chat()
 	update_progress_bars()
 
-
 func scroll_to_newest_chat():
 	var scroll = chat_container.get_parent()
 	if scroll is ScrollContainer:
-		# Let the tree process so the new child is visible
 		await get_tree().process_frame
 		scroll.scroll_vertical = scroll.get_v_scroll_bar().max_value
 
@@ -169,10 +147,7 @@ func animate_progress_bar(bar: ProgressBar, target_value: float, duration: float
 	var tween = get_tree().create_tween()
 	tween.tween_property(bar, "value", target_value, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-
-
 func _update_profiles():
-	# === Player info ===
 	var pic_path = PlayerManager.get_var("profile_picture_path", "")
 	if pic_path != "":
 		var img = load(pic_path)
@@ -182,28 +157,20 @@ func _update_profiles():
 			profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
 	else:
 		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
-
 	attractiveness_label.text = "🔥 %.1f/10" % (float(PlayerManager.get_stat("attractiveness")) / 10.0)
 	name_label.text = PlayerManager.get_var("name", "You")
-	
-	# NPC info
 	npc_profile_pic.texture = npc.profile_pic if npc.profile_pic else preload("res://assets/prof_pics/silhouette.png")
 	npc_attractiveness_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
 	npc_name_label.text = npc.full_name
 	npc_type_label.text = npc.chat_battle_type
 
-
-
 func update_action_buttons():
 	if logic == null:
 		return
-
 	for i in equipped_moves.size():
 		var move_type = equipped_moves[i].to_lower()
 		var use_count = move_usage_counts.get(move_type, 0)
-
 		var label_base = equipped_moves[i].to_upper() + "\n"
-
 		if use_count >= 3:
 			var chance := logic.get_success_chance(move_type)
 			var chance_percent = round(chance * 100.0)
@@ -211,22 +178,11 @@ func update_action_buttons():
 		else:
 			var mystery := String("?").repeat(3 - use_count)
 			label_base += mystery
-
 		action_buttons[i].text = label_base
-
-		# Prevent signal stacking
-	#	if action_buttons[i].is_connected("pressed", Callable(self, "_on_action_button_pressed")):
-	#		action_buttons[i].disconnect("pressed", Callable(self, "_on_action_button_pressed"))
-	#	action_buttons[i].pressed.connect(_on_action_button_pressed.bind(i))
-	#			# Prevent signal stacking
 		var cb := Callable(self, "_on_action_button_pressed").bind(i)
 		if action_buttons[i].is_connected("pressed", cb):
-				action_buttons[i].disconnect("pressed", cb)
+			action_buttons[i].disconnect("pressed", cb)
 		action_buttons[i].pressed.connect(cb)
-
-
-
-	# === Catch button logic ===
 	var catch_uses = move_usage_counts.get("catch", 0)
 	var label_base = "CATCH\n"
 	if catch_uses >= 3:
@@ -236,7 +192,6 @@ func update_action_buttons():
 		var mystery := String("?").repeat(3 - catch_uses)
 		label_base += mystery
 	catch_button.text = label_base
-
 
 func _on_action_button_pressed(index):
 	if is_animating:
@@ -251,7 +206,7 @@ func _on_catch_button_pressed():
 
 func _on_ghost_button_pressed():
 	if is_animating:
-					return
+		return
 	var chat = add_chat_line("*ghosts*", true)
 	await animate_chat_text(chat, "*ghosts*")
 	await get_tree().create_timer(0.69).timeout
@@ -259,24 +214,19 @@ func _on_ghost_button_pressed():
 	persist_battle_stats_to_npc()
 	queue_free()
 
-
 func swap_move(slot_index: int, new_move: String):
 	equipped_moves[slot_index] = new_move
 	update_action_buttons()
 
-# Helper function to add a chat line in a proper HBox (left for player, right for NPC)
 func add_chat_line(text: String, is_player: bool, is_victory_number := false, record := true) -> Control:
 	var hbox := HBoxContainer.new()
 	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
 	var chat
 	if is_victory_number:
 		chat = victory_number_chat_box_scene.instantiate()
 	else:
 		chat = chat_box_scene.instantiate()
-
 	chat.is_npc_message = not is_player
-
 	if is_player:
 		hbox.add_child(chat)
 		var spacer = Control.new()
@@ -287,28 +237,30 @@ func add_chat_line(text: String, is_player: bool, is_victory_number := false, re
 		spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		hbox.add_child(spacer)
 		hbox.add_child(chat)
-
 	chat_container.add_child(hbox)
 	chat.text_label.text = text
 	chat.text_label.visible_ratio = 0.0
 	scroll_to_newest_chat()
 	if record:
-			chatlog.append({"text": text, "is_player": is_player})
-			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+		var entry = {
+			"text": text,
+			"is_player": is_player,
+			"victory_number": is_victory_number,
+			"reaction": "",
+			"effects": {},
+			"result": ""
+		}
+		chatlog.append(entry)
+		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
 	return chat
-
-
 
 func do_move(move_type: String) -> void:
 	is_animating = true
 	PlayerManager.suppress_stat("confidence", true)
-
 	move_type = move_type.to_lower()
 	if move_usage_counts.has(move_type):
 		move_usage_counts[move_type] += 1
 	update_action_buttons()
-
-	# --- Choose player's line ---
 	var options = []
 	for line in RizzBattleData.player_lines:
 		if line["move_type"] == move_type:
@@ -317,7 +269,6 @@ func do_move(move_type: String) -> void:
 		print("No lines for move:", move_type)
 		is_animating = false
 		return
-	
 	var chosen_line = options[randi() % options.size()]
 	var prefix := ""
 	if chosen_line["prefixes"].size() > 0:
@@ -327,125 +278,100 @@ func do_move(move_type: String) -> void:
 	if chosen_line["suffixes"].size() > 0:
 		suffix = chosen_line["suffixes"].pick_random()
 	var full_line = prefix + core + suffix
-
 	# --- Animate player line ---
 	var player_chat: ChatBox = add_chat_line(full_line, true)
 	player_chat.clear_reaction()
 	await animate_chat_text(player_chat, full_line)
 	await get_tree().create_timer(0.5).timeout
-	
 	# Edge case response if number already given
 	if victorious:
-		var npc_chat: ChatBox = null
 		var response_text = "You already have my number, text me!"
 		var chat = add_chat_line(response_text, false)
 		await animate_chat_text(chat, response_text)
 		update_action_buttons()
 		return
-	
-	
 	# --- Resolve move ---
-	var result = logic.resolve_move(move_type)
+	var move_result = logic.resolve_move(move_type)
 	var use_count = move_usage_counts.get(move_type, 0)
-	var reaction = result.get("reaction", "")
-	var filtered_effects = result.effects.duplicate() # For "haha" case
-
-	# Special case: "haha"  = skip NPC reply and confidence, show player only
-	if result.success and reaction == "haha":
-		player_chat.set_reaction(
-			REACTION_EMOJI["cry_laugh"],
-			get_reaction_tooltip("cry_laugh")
-		)
+	var reaction = move_result.get("reaction", "")
+	var filtered_effects = move_result.effects.duplicate()
+	if move_result.success and reaction == "haha":
+		player_chat.set_reaction(REACTION_EMOJI["cry_laugh"], get_reaction_tooltip("cry_laugh"))
 		filtered_effects.erase("confidence")
 		await get_tree().create_timer(0.25).timeout
 		await player_chat.set_stat_effects(filtered_effects)
 		await player_chat.reveal_result_color("success")
-
-		# Now update stats/progress bars
 		battle_stats = logic.get_stats().duplicate()
 		await update_progress_bars()
+		# --- Update chatlog entry with resolved fields ---
+		_update_last_chatlog_entry(player_chat.reaction_key, filtered_effects, "success")
 		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-
 		is_animating = false
 		PlayerManager.suppress_stat("confidence", false)
 		return
-
-	# Handle other reactions
-	if result.success and reaction == "heart":
-		player_chat.set_reaction(
-			REACTION_EMOJI["heart"],
-			get_reaction_tooltip("heart")
-		)
-	elif not result.success and use_count >= 3 and reaction == "thumbs_down":
-		player_chat.set_reaction(
-			REACTION_EMOJI["thumbs_down"],
-			get_reaction_tooltip("thumbs_down")
-		)
+	if move_result.success and reaction == "heart":
+		player_chat.set_reaction(REACTION_EMOJI["heart"], get_reaction_tooltip("heart"))
+	elif not move_result.success and use_count >= 3 and reaction == "thumbs_down":
+		player_chat.set_reaction(REACTION_EMOJI["thumbs_down"], get_reaction_tooltip("thumbs_down"))
 	else:
 		player_chat.clear_reaction()
-
 	await get_tree().create_timer(0.25).timeout
-
-	# DO NOT update battle_stats or progress bars yet!
-
 	# Prepare for NPC reply (or skip if not needed)
 	var npc_chat: ChatBox = null
-	if not (result.success and reaction == "haha"):
-		npc_chat = await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
-
+	if not (move_result.success and reaction == "haha"):
+		npc_chat = await process_npc_response(move_type, chosen_line.get("response_id", null), move_result.success)
 	# Both messages: reveal icons and flash color *after* all text is done
 	var player_result = "fail"
-	if result.success:
+	if move_result.success:
 		player_result = "success"
-	var npc_result = player_result # Use same result for now, or adjust as needed
-
+	var npc_result = player_result
 	await _reveal_chat_effects_and_results(
 		player_chat,
 		player_result,
 		npc_chat,
 		npc_result,
-		result.effects,
-		result.effects # Or use different effects if you want
+		move_result.effects,
+		move_result.effects
 	)
-
-	# === Only now, after ALL animations, update UI bars ===
+	# --- Update chatlog entry with resolved fields ---
+	_update_last_chatlog_entry(player_chat.reaction_key, move_result.effects, player_result)
 	battle_stats = logic.get_stats().duplicate()
 	await update_progress_bars()
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-
 	# Special logic for catch
 	if move_type == "catch":
-		if result.success:
+		if move_result.success:
 			var raw_number = str(NPCFactory.djb2(npc.full_name))
 			var number_msg = "Here’s my number: [url=number][u]%s[/u][/url]" % raw_number
 			var chat2: VictoryNumberChatBox = add_victory_number_chat_line(number_msg)
 			if chat2.has_signal("victory_number_clicked"):
 				chat2.victory_number_clicked.connect(_on_victory_number_clicked)
 			await animate_chat_text(chat2, number_msg)
-			#await end_battle(true, npc)
 			victorious = true
 			PlayerManager.adjust_stat("confidence", 1 + npc.attractiveness/10.0)
 		else:
 			PlayerManager.adjust_stat("confidence", -10)
 			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
-
-
 	is_animating = false
 	PlayerManager.suppress_stat("confidence", false)
 
+func _update_last_chatlog_entry(reaction, effects, result):
+	if chatlog.size() > 0:
+		var last = chatlog[chatlog.size() - 1]
+		last["reaction"] = reaction if reaction != null else ""
+		last["effects"] = effects if effects != null else {}
+		last["result"] = result if result != null else ""
+		chatlog[chatlog.size() - 1] = last
 
 func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
 	var hbox := HBoxContainer.new()
 	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
 	var chat := victory_number_chat_box_scene.instantiate()
 	chat.is_npc_message = true
-
 	var spacer = Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hbox.add_child(spacer)
 	hbox.add_child(chat)
-
 	chat_container.add_child(hbox)
 	chat.text_label.text = text
 	chat.text_label.visible_ratio = 0.0
@@ -453,7 +379,6 @@ func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
 	chatlog.append({"text": text, "is_player": false, "victory_number": true})
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
 	return chat
-
 
 func _on_victory_number_clicked() -> void:
 	show_victory_screen()
