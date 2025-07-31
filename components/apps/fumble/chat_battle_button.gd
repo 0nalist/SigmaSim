@@ -18,7 +18,7 @@ func set_battle(npc_obj, battle_id_str, idx):
 	var type_str = "Unknown"
 	if npc.chat_battle_type != null and str(npc.chat_battle_type) != "":
 		type_str = str(npc.chat_battle_type)
-	
+
 	self.text = "%s (%s)  [%s]" % [name, score, type_str]
 
 func _ready():

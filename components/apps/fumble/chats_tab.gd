@@ -54,14 +54,13 @@ func refresh_battles():
 		child.queue_free()
 	var battles: Array = FumbleManager.get_active_battles()
 	for b in battles:
-		var npc = NPCManager.get_npc_by_index(b.npc_idx)
-		var btn = battle_button_scene.instantiate()
-		chat_battles_container.add_child(btn)
-		btn.set_battle(npc, b.battle_id, b.npc_idx)
-		# Closure to capture the correct arguments (Godot 4)
-		btn.pressed.connect(func() -> void:
-			_on_battle_button_pressed(b.battle_id, npc, b.npc_idx)
-		)
+			var npc = NPCManager.get_npc_by_index(b.npc_idx)
+			var btn = battle_button_scene.instantiate()
+			chat_battles_container.add_child(btn)
+			btn.set_battle(npc, b.battle_id, b.npc_idx)
+			btn.pressed.connect(func() -> void:
+					_on_battle_button_pressed(b.battle_id, npc, b.npc_idx)
+			)
 
 func _on_match_button_pressed(npc, idx):
 	var match_profile = match_profile_scene.instantiate()
