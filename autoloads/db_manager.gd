@@ -86,10 +86,17 @@ func has_npc(idx: int) -> bool:
 		return rows.size() > 0
 
 func save_fumble_relationship(npc_id: int, status: String) -> void:
-	db.insert_row("fumble_relationships", {
+	var rows = db.select_rows("fumble_relationships", "npc_id = %d" % npc_id, ["npc_id"])
+	if rows.size() > 0 and db.has_method("update_rows"):
+		# Update
+		db.update_rows("fumble_relationships", "status = '%s'" % status.replace("'", "''"), { "npc_id": npc_id })
+	else:
+		# Insert
+		db.insert_row("fumble_relationships", {
 			"npc_id": npc_id,
 			"status": status
-	})
+		})
+
 
 func get_fumble_relationship(npc_id: int) -> String:
 	var rows = db.select_rows("fumble_relationships", "npc_id = %d" % npc_id, ["status"])

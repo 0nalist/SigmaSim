@@ -99,13 +99,18 @@ func set_stat_effects_instant(effects_dict: Dictionary, stat_order := ["chemistr
 
 func set_result_color_instant(new_result: String) -> void:
 	result = new_result
-	# Do NOT set resolved here. Only for replay/restored.
+	var target_node = message_container
+	# If you use different nodes for player/NPC bubbles, add logic here:
+	# For example, if player bubbles use the root node's modulate:
+	if not is_npc_message:
+		target_node = self  # Or whatever node is the colored panel for player bubbles
 	if result == "success":
-		message_container.modulate = COLOR_PERSIST_SUCCESS
+		target_node.modulate = COLOR_PERSIST_SUCCESS
 	elif result == "fail":
-		message_container.modulate = COLOR_PERSIST_FAIL
+		target_node.modulate = COLOR_PERSIST_FAIL
 	else:
-		message_container.modulate = COLOR_PERSIST_NEUTRAL
+		target_node.modulate = COLOR_PERSIST_NEUTRAL
+
 
 
 # === ANIMATED METHODS FOR NEW MESSAGES ===
