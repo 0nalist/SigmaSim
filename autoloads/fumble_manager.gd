@@ -8,6 +8,7 @@ func _ready():
 
 
 func get_matches() -> Array:
+	active_battles = DBManager.get_active_fumble_battles(SaveManager.current_slot_id)
 	return NPCManager.get_fumble_matches()
 
 func has_active_battle(npc_idx: int) -> bool:
