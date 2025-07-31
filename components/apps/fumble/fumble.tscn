@@ -310,11 +310,6 @@ mouse_filter = 1
 
 [node name="ProfileCardStack" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/ProfileContainer" instance=ExtResource("3_vq0mq")]
 layout_mode = 1
-app_name = null
-min_recycled_percent = null
-max_recycled_percent = null
-max_recycled_cap_index = null
-swipe_pool_size = null
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer"]
 layout_mode = 2

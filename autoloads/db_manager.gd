@@ -85,6 +85,7 @@ func _migrate_table(table_name: String, fields: Dictionary):
 
 func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	var data = {
+		# Used
 		"id": idx,
 		"slot_id": slot_id,
 		"first_name": npc.first_name,
@@ -94,18 +95,24 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 		"bio": npc.fumble_bio,
 		"occupation": npc.occupation,
 		"relationship_status": npc.relationship_status,
-		"affinity": npc.affinity,
-		"rizz": npc.rizz,
+		
 		"attractiveness": npc.attractiveness,
 		"wealth": npc.wealth,
+		"tags": ",".join(npc.tags),
+		"fumble_bio": npc.fumble_bio,
+		"chat_battle_type": npc.chat_battle_type,
+		
+		# Not used (yet)
+		"affinity": npc.affinity,
+		"rizz": npc.rizz,
+		
 		"alpha": npc.alpha,
 		"beta": npc.beta,
 		"gamma": npc.gamma,
 		"delta": npc.delta,
 		"omega": npc.omega,
 		"sigma": npc.sigma,
-		"tags": ",".join(npc.tags),
-		"fumble_bio": npc.fumble_bio,
+
 		}
 
 	var update_data = data.duplicate()

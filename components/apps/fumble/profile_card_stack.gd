@@ -77,8 +77,9 @@ func swipe_right():
 	is_animating = true
 	var card = cards[cards.size() - 1]
 	var idx = npc_indices[npc_indices.size() - 1]
+	NPCManager.set_relationship_status(idx, app_name, FumbleManager.FumbleStatus.LIKED)
 	card.animate_swipe_right(func():
-		NPCManager.set_relationship_status(idx, app_name, FumbleManager.FumbleStatus.LIKED)
+		
 		emit_signal("card_swiped_right", idx)
 		card.queue_free()
 		cards.pop_back()

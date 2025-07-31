@@ -151,6 +151,7 @@ script = ExtResource("2_yrrt2")
 [node name="EarlyBirdPlayerSprite" type="Sprite2D" parent="EarlyBirdPlayer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_eegpt")
+use_parent_material = true
 position = Vector2(-4.50611e-05, -4.17233e-06)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("9_y10ql")
@@ -163,6 +164,7 @@ unique_name_in_owner = true
 script = ExtResource("9_tm5dr")
 
 [node name="BankArea" type="Area2D" parent="."]
+visible = false
 position = Vector2(584, 927)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BankArea" groups=["bank"]]
@@ -206,7 +208,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 48
-text = "Bank"
 
 [node name="GameMenuContainer" type="VBoxContainer" parent="HUD/MarginContainer"]
 unique_name_in_owner = true

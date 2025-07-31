@@ -111,7 +111,7 @@ func _load_npc_from_db(idx: int) -> NPC:
 	npc.last_name = data.get("last_name", "")
 	npc.full_name = "%s %s. %s" % [npc.first_name, npc.middle_initial, npc.last_name]
 	# Rebuild gender_vector from JSON string
-	var gv = JSON.parse_string(data.get("gender_vector", "{\"x\":0,\"y\":0,\"z\":1}"))
+	var gv = JSON.parse_string(data.get("gender_vector", "{\"x\":0,\"y\":0,\"z\":1}")) # Is this right? TODO
 	if typeof(gv) == TYPE_DICTIONARY and gv.has("x") and gv.has("y") and gv.has("z"):
 		npc.gender_vector = Vector3(gv.x, gv.y, gv.z)
 	else:
@@ -137,7 +137,7 @@ func _load_npc_from_db(idx: int) -> NPC:
 	npc.tags = tags_arr
 
 
-
+	npc.chat_battle_type = data.get("chat_battle_type")
 	npc.fumble_bio = data.get("fumble_bio", "")
 	return npc
 
