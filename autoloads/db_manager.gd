@@ -5,8 +5,9 @@ var db: SQLite
 
 const SCHEMA := {
 	"npc": {
-		"id": {"data_type": "int", "primary_key": true},
-		"slot_id": {"data_type": "int", "primary_key": true},
+		"primary_key": ["id", "slot_id"],
+		"id": {"data_type": "int"},
+		"slot_id": {"data_type": "int"},
 		"full_name": {"data_type": "text"},
 		"first_name": {"data_type": "text"},
 		"middle_initial": {"data_type": "text"},
@@ -47,18 +48,16 @@ const SCHEMA := {
 		"wall_posts": {"data_type": "text"}
 	},
 	"fumble_relationships": {
-		"npc_id": {"data_type": "int", "primary_key": true},
-		"slot_id": {"data_type": "int", "primary_key": true},
+		"primary_key": ["npc_id", "slot_id"],
+		"npc_id": {"data_type": "int"},
+		"slot_id": {"data_type": "int"},
 		"status": {"data_type": "text"}
 	},
 	"fumble_battles": {
-		"battle_id": {"data_type": "text", "primary_key": true},
-		"slot_id": {"data_type": "int", "primary_key": true},
-		"npc_id": {"data_type": "int"},
-		"chatlog": {"data_type": "text"},
-		"stats": {"data_type": "text"},
-		"outcome": {"data_type": "text"}
-	}
+		"primary_key": ["battle_id", "slot_id"],
+		"battle_id": {"data_type": "text"},
+		"slot_id": {"data_type": "int"},
+		}
 }
 
 func _ready():
@@ -70,6 +69,7 @@ func _ready():
 func _init_schema():
 	for table_name in SCHEMA.keys():
 		var fields = SCHEMA[table_name]
+		_ensure_primary_keys(table_name, fields)
 		db.create_table(table_name, fields)
 		_migrate_table(table_name, fields)
 		# Indices
@@ -284,11 +284,30 @@ func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Ar
 
 
 # -- Slot Maintenance --
-
 func delete_slot_data(slot_id: int) -> void:
 	db.delete_rows("npc", "slot_id = %d" % slot_id)
 	db.delete_rows("fumble_relationships", "slot_id = %d" % slot_id)
 	db.delete_rows("fumble_battles", "slot_id = %d" % slot_id)
+
+func _ensure_primary_keys(table_name: String, fields: Dictionary) -> void:
+	db.query("PRAGMA table_info(%s)" % table_name)
+	var rows = db.query_result
+	if rows.size() == 0:
+		return
+	var current_pk := []
+	for r in rows:
+		if int(r.get("pk", 0)) > 0:
+			current_pk.append(r.get("name", ""))
+	var expected_pk := []
+	for col in fields.keys():
+		var def = fields[col]
+		if typeof(def) == TYPE_DICTIONARY and def.get("primary_key", false):
+			expected_pk.append(col)
+	current_pk.sort()
+	expected_pk.sort()
+	if current_pk != expected_pk:
+		push_warning("Recreating table %s to update primary keys" % table_name)
+		db.drop_table(table_name)
 
 
 # -- Utilities --
