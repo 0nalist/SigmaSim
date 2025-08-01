@@ -282,6 +282,15 @@ func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Ar
 		})
 	return out
 
+
+# -- Slot Maintenance --
+
+func delete_slot_data(slot_id: int) -> void:
+	db.delete_rows("npc", "slot_id = %d" % slot_id)
+	db.delete_rows("fumble_relationships", "slot_id = %d" % slot_id)
+	db.delete_rows("fumble_battles", "slot_id = %d" % slot_id)
+
+
 # -- Utilities --
 
 func _make_update_string(data: Dictionary) -> String:
@@ -306,5 +315,10 @@ func to_json(value: Variant) -> String:
 			return str(value)
 
 func from_json(json_str: String) -> Variant:
-	var result = JSON.parse_string(json_str)
-	return result if result != null else null
+	if typeof(json_str) != TYPE_STRING:
+			return null
+	var json := JSON.new()
+	var err = json.parse(json_str)
+	if err == OK:
+		return json.data
+	return null
