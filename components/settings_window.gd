@@ -42,6 +42,7 @@ func _on_fullscreen_check_box_pressed() -> void:
 func _on_windowed_check_box_pressed() -> void:
 	if windowed_check_box.button_pressed:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_size(Vector2i(1280, 720))
 		fullscreen_check_box.button_pressed = false
 
 

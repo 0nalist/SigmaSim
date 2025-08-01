@@ -367,7 +367,7 @@ func do_move(move_type: String) -> void:
 	var filtered_effects = result.effects.duplicate() # For "haha" case
 
 	# Special case: "haha"  = skip NPC reply and confidence, show player only
-	if result.success and reaction == "haha":
+	if result.success and reaction == "haha" and move_type != "catch":
 		player_chat.set_reaction(
 			REACTION_EMOJI["cry_laugh"],
 			get_reaction_tooltip("cry_laugh"),
@@ -431,7 +431,7 @@ func do_move(move_type: String) -> void:
 
 	# Prepare for NPC reply (or skip if not needed)
 	var npc_chat: ChatBox = null
-	if not (result.success and reaction == "haha"):
+	if not (result.success and reaction == "haha" and move_type != "catch"):
 		npc_chat = await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
 
 	# Both messages: reveal icons and flash color *after* all text is done
