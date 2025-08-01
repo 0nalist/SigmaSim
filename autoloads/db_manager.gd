@@ -58,7 +58,7 @@ const SCHEMA := {
 		"chatlog": {"data_type": "text"},
 		"stats": {"data_type": "text"},
 		"outcome": {"data_type": "text"}
-	}
+	   }
 }
 
 func _ready():
@@ -70,6 +70,7 @@ func _ready():
 func _init_schema():
 	for table_name in SCHEMA.keys():
 		var fields = SCHEMA[table_name]
+
 		db.create_table(table_name, fields)
 		_migrate_table(table_name, fields)
 		# Indices
@@ -284,11 +285,11 @@ func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Ar
 
 
 # -- Slot Maintenance --
-
 func delete_slot_data(slot_id: int) -> void:
 	db.delete_rows("npc", "slot_id = %d" % slot_id)
 	db.delete_rows("fumble_relationships", "slot_id = %d" % slot_id)
 	db.delete_rows("fumble_battles", "slot_id = %d" % slot_id)
+
 
 
 # -- Utilities --
