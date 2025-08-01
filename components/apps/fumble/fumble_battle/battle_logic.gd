@@ -17,7 +17,7 @@ func resolve_move(move_type: String) -> Dictionary:
 	if mod == 2.0:
 		reaction = "heart"
 	elif mod == 0.5:
-		reaction = "zzz"
+		reaction = "haha"
 	elif mod == 0.0:
 		reaction = "thumbs_down"
 	# Default: no reaction or normal (could add more)
@@ -35,31 +35,27 @@ func get_success_chance(move_type: String) -> float:
 	var mod = BattleLogic.get_move_type_modifier(npc_type, move_type)
 	if mod == 0.0:
 		return 0.0
-	
+
 	# Special handling for "catch"
 	if move_type == "catch":
 		var chemistry = stats.get("chemistry", 0)
 		var apprehension = stats.get("apprehension", 0)
-		
-		# If chemistry > 99 and apprehension < 1, guaranteed success
 		if chemistry > 99 and apprehension < 1:
 			return 1.0
-		# If apprehension > chemistry, guaranteed failure
 		elif apprehension > chemistry:
 			return 0.0
 		else:
-			# The more chemistry exceeds apprehension, the higher the chance of success
-			# When chemistry == apprehension, chance = 0
-			# When chemistry == 100 and apprehension == 0, chance = 1
 			var chance = float(chemistry - apprehension) / max(1.0, (100.0 - min(apprehension, chemistry)))
-			# Clamp between 0 and 1 for safety
 			return clamp(chance, 0.0, 1.0)
-	
+
+	var base_chance = 0.5 + (get_attractiveness_delta() / 10.0)
 	if move_type == "simp":
-		return 0.65 + (get_attractiveness_delta() / 10.0)
-	
-	# Default success rate
-	return 0.5 + (get_attractiveness_delta() / 10.0)
+		base_chance = 0.65 + (get_attractiveness_delta() / 10.0)
+
+	var type_chance_adj = RizzBattleData.get_type_mod_chance_adjust(npc_type, move_type)
+
+	return clamp(base_chance + type_chance_adj, 0.0, 1.0)
+
 
 
 
@@ -68,7 +64,7 @@ var SUCCESS_FX = {
 	"rizz": {
 		"chemistry": 10,
 		"apprehension": -5,
-		"confidence": 3
+		"confidence": 5
 	},
 	"simp": {
 		"chemistry": 12,
@@ -86,7 +82,7 @@ var SUCCESS_FX = {
 		"chemistry": 4,
 		"apprehension": -5,
 		"confidence": 10,
-		"self_esteem": -8  
+		"self_esteem": -18  
 	}
 }
 
@@ -125,61 +121,70 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 	var result = {}
 	var dime_delta = get_attractiveness_delta()
 	var npc_type = npc.chat_battle_type if npc.chat_battle_type != null else ""
-	var mod = BattleLogic.get_move_type_modifier(npc_type, move_type)
+	var type_mod = BattleLogic.get_move_type_modifier(npc_type, move_type)
+	var multi = multipliers.get(move_type, 1.0)
 
-	# Set emoji reaction based on mod
-	if mod == 0.0:
-		result["reaction"] = "thumbs_down" # immune
-		# Fill result with zero for all relevant stats for that move
-		var stats_set = []
-		if move_type in SUCCESS_FX:
-			stats_set = SUCCESS_FX[move_type].keys()
-		elif move_type in FAIL_FX:
-			stats_set = FAIL_FX[move_type].keys()
-		for stat in stats_set:
-			result[stat] = 0
-		return result
+	# Handle immune (immediate block)
+	if type_mod == 0.0:
+		result["reaction"] = "thumbs_down"
+		success = false
 
-	# === Handle move effects ===
+	# Prepare raw effect values (no type mod yet)
+	var raw_effects = {}
+
 	if success:
 		var base = SUCCESS_FX.get(move_type, {})
-		var multi = multipliers.get(move_type, 1.0) * mod
 		if base.has("chemistry"):
-			var c_val = base["chemistry"] + dime_delta * multi
-			stats["chemistry"] = clamp(stats.get("chemistry", 0) + c_val, 0, 100)
-			result["chemistry"] = c_val
+			raw_effects["chemistry"] = base["chemistry"] + dime_delta
 		if base.has("apprehension"):
-			var a_val = base["apprehension"]
-			stats["apprehension"] = clamp(stats.get("apprehension", 0) + a_val, 0, 100)
-			result["apprehension"] = a_val
-		if base.has("confidence"):
-			var conf_val = base["confidence"] - dime_delta
-			PlayerManager.adjust_stat("confidence", conf_val)
-			result["confidence"] = conf_val
+			raw_effects["apprehension"] = base["apprehension"]
+			if base.has("confidence"):
+				var conf_base = base["confidence"]
+				var conf_delta = conf_base - dime_delta
+				# Allow negative delta only when the move is designed to be negative
+				if conf_base >= 0 and conf_delta < 0:
+					conf_delta = 0
+				raw_effects["confidence"] = conf_delta
+
 		if base.has("self_esteem"):
-			var se_val = base["self_esteem"] + dime_delta * multi
-			stats["self_esteem"] = clamp(stats.get("self_esteem", 0) + se_val, 0, 100)
-			result["self_esteem"] = se_val
+			raw_effects["self_esteem"] = base["self_esteem"] + dime_delta
+
+		# **Apply multipliers, then type mod (ONLY ON SUCCESS)**
+		for stat in raw_effects.keys():
+			var val = raw_effects[stat]
+			var final_val = val * multi * type_mod
+			if stat == "confidence":
+				PlayerManager.adjust_stat("confidence", final_val)
+				result[stat] = final_val
+			elif stat in stats:
+				stats[stat] = clamp(stats.get(stat, 0) + final_val, 0, 100)
+				result[stat] = final_val
+
 	else:
 		var fail = FAIL_FX.get(move_type, {})
-		# Confidence always applied
-		if fail.has("confidence"):
-			var conf_val = fail["confidence"] - dime_delta
-			PlayerManager.adjust_stat("confidence", conf_val)
-			result["confidence"] = conf_val
-		if fail.has("apprehension"):
-			var a_val = fail["apprehension"]
-			stats["apprehension"] = clamp(stats.get("apprehension", 0) + a_val, 0, 100)
-			result["apprehension"] = a_val
 		if fail.has("chemistry"):
-			var c_val = fail["chemistry"]
-			stats["chemistry"] = clamp(stats.get("chemistry", 0) + c_val, 0, 100)
-			result["chemistry"] = c_val
+			raw_effects["chemistry"] = fail["chemistry"]
+		if fail.has("apprehension"):
+			raw_effects["apprehension"] = fail["apprehension"]
+		if fail.has("confidence"):
+			raw_effects["confidence"] = fail["confidence"] - dime_delta
 		if fail.has("self_esteem"):
-			var se_val = fail["self_esteem"]
-			stats["self_esteem"] = clamp(stats.get("self_esteem", 0) + se_val, 0, 100)
-			result["self_esteem"] = se_val
+			raw_effects["self_esteem"] = fail["self_esteem"]
+
+		# **On failure, only multipliers are applied**
+		for stat in raw_effects.keys():
+			var val = raw_effects[stat]
+			var final_val = val * multi
+			if stat == "confidence":
+				PlayerManager.adjust_stat("confidence", final_val)
+				result[stat] = final_val
+			elif stat in stats:
+				stats[stat] = clamp(stats.get(stat, 0) + final_val, 0, 100)
+				result[stat] = final_val
+
 	return result
+
+
 
 
 

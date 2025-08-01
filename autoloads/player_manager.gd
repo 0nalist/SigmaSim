@@ -1,7 +1,6 @@
 ## Autoload PlayerManager
 extends Node
-
-var slot_id = -1
+ 	
 
 var default_user_data: Dictionary = {
 	# Identity
@@ -31,11 +30,18 @@ var default_user_data: Dictionary = {
 	"rizz": 1,
 	"confidence": 100.0,
 	"confidence_regen_rate": 1.0,
+	"ex": 0.00,
 	
 	# Other Traits
 
 	"zodiac_sign": "",
-	"mbti": "",
+		"mbti": "",
+
+		# Fumble preferences
+		"fumble_pref_x": 0.0,
+		"fumble_pref_y": 0.0,
+		"fumble_pref_z": 0.0,
+		"fumble_curiosity": 50.0,
 
 	# Flags and progression
 	"unlocked_perks": [],
@@ -84,7 +90,7 @@ func get_stat(key: String) -> Variant:
 
 func set_stat(key: String, value: Variant) -> void:
 	if key == "confidence":
-		value = max(value, 0.0)
+		value = clamp(value, 0.0, 100.0)
 	match key:
 		"cash": PortfolioManager.cash = value
 		"student_loans": PortfolioManager.student_loans = value
@@ -96,7 +102,7 @@ func set_stat(key: String, value: Variant) -> void:
 
 func reset():
 	user_data = default_user_data.duplicate(true)
-	slot_id = -1
+	SaveManager.current_slot_id = -1
 
 
 func ensure_default_stats() -> void:
@@ -119,7 +125,7 @@ func adjust_stat(stat: String, delta: float) -> void:
 	if user_data.has(stat):
 		user_data[stat] += delta
 		if stat == "confidence":
-			user_data[stat] = max(user_data[stat], 0.0)
+			user_data[stat] = clamp(user_data[stat], 0.0, 100.0)
 
 	if is_stat_suppressed(stat):
 		deferred_stat_values[stat] = user_data[stat]
@@ -144,15 +150,9 @@ func get_save_data() -> Dictionary:
 func load_from_data(data: Dictionary) -> void:
 	user_data = data.duplicate(true)
 	ensure_default_stats()
-	
+	if user_data.has("confidence"):
+		user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
 
-
-# Called once during login from SaveManager, like other systems
-func set_slot_id(slot: int) -> void:
-	slot_id = slot
-
-func get_slot_id() -> int:
-	return slot_id
 
 
 ## -- BACKGROUNDS ## probably make this its own resource late

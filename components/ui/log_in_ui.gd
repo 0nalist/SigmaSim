@@ -47,6 +47,8 @@ func load_and_display_saved_profiles():
 var dot_time = .1
 
 func _on_profile_login_requested(slot_id: int) -> void:
+	SaveManager.current_slot_id = slot_id
+	print("login requested, slot_id:", slot_id)
 	print("login requested")
 	await get_tree().create_timer(0.2).timeout
 	profile_v_box_container.hide()

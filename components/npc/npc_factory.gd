@@ -58,7 +58,9 @@ static func create_npc(npc_index: int) -> NPC:
 	npc.mbti = PersonalityEngine.get_mbti(ocean)
 	npc.zodiac = PersonalityEngine.get_zodiac(full_name)
 	npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
-
+	
+	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
+	
 	# Tags/likes must be set BEFORE generating bio
 	if "tags" in npc.get_property_list().map(func(x): return x.name):
 		npc.tags.clear()
@@ -240,7 +242,8 @@ static func generate_multi_bucket_trait(seed_string: String, trait_name: String)
 	var buckets = TRAIT_CONFIG[trait_name].buckets
 	var percentile = float(_bounded_trait(seed_string, trait_name) + 100) / 200.0  # [0,1]
 	for bucket in buckets:
-		if percentile < bucket.cutoff:
+		# Allow the upper bound of the final bucket by checking <=
+		if percentile <= bucket.cutoff:
 			var r = bucket.range
 			var val = int(deterministic_randf(seed_string + str(bucket.cutoff)) * (r.y - r.x + 1)) + int(r.x)
 			return val

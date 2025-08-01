@@ -1,63 +1,123 @@
 {
-  "rizz": {
+  "apology": {
 	"TRUE": [
 	  {
 		"response_prefix": [],
-		"response_line": "you’re actually smooth",
-		"response_suffix": [
-		  " wtf",
-		  " asf",
-		  " as fuck."
-		]
-	  },
-	  {
-		"response_prefix": [],
-		"response_line": "awww stopppp",
-		"response_suffix": []
-	  },
-	  {
-		"response_prefix": [],
-		"response_line": "Say more",
-		"response_suffix": [
-		  ".",
-		  "!",
-		  " :)"
-		]
-	  },
-	  {
-		"response_prefix": [],
-		"response_line": "You're going to make me puke :)",
+		"response_line": "I'm going to let you start over",
 		"response_suffix": []
 	  }
 	],
 	"FALSE": [
 	  {
 		"response_prefix": [],
-		"response_line": "that felt forced",
+		"response_line": "I don't give second chances",
+		"response_suffix": []
+	  }
+	]
+  },
+  "catch": {
+	"TRUE": [
+	  {
+		"response_prefix": [],
+		"response_line": "I thought you'd never ask",
+		"response_suffix": [
+		  "",
+		  " :)",
+		  ". "
+		]
+	  }
+	],
+	"FALSE": [
+	  {
+		"response_prefix": [],
+		"response_line": "I don't think so",
+		"response_suffix": [
+		  "",
+		  " lol",
+		  "...",
+		  ". At least not yet"
+		]
+	  }
+	]
+  },
+  "flex": {
+	"TRUE": [
+	  {
+		"response_prefix": [],
+		"response_line": "okay mr. accomplished",
 		"response_suffix": []
 	  },
 	  {
 		"response_prefix": [],
-		"response_line": "you lost me there",
+		"response_line": "I can't pretend I'm not impressed",
+		"response_suffix": []
+	  },
+	  {
+		"response_prefix": [],
+		"response_line": "What does that even mean",
+		"response_suffix": [
+		  " 😭",
+		  "?",
+		  "??",
+		  "???"
+		]
+	  },
+	  {
+		"response_prefix": [
+		  "Wait, why ",
+		  ""
+		],
+		"response_line": "is that so attractive",
+		"response_suffix": [
+		  "?",
+		  "??"
+		]
+	  }
+	],
+	"FALSE": [
+	  {
+		"response_prefix": [],
+		"response_line": "lol sure",
 		"response_suffix": [
 		  ".",
-		  ", not that you ever really had a chance."
+		  ", fat chance."
 		]
 	  },
 	  {
 		"response_prefix": [],
-		"response_line": "How long did you practice that one for?",
-		"response_suffix": []
+		"response_line": "Is that supposed to impress me",
+		"response_suffix": [
+		  "?",
+		  "? Lol"
+		]
 	  },
 	  {
-		"response_prefix": [],
-		"response_line": "Booooooooo",
-		"response_suffix": []
+		"response_prefix": [
+		  "Uh, t",
+		  "T",
+		  "Lol, t"
+		],
+		"response_line": "hanks for sharing",
+		"response_suffix": [
+		  "?",
+		  "??",
+		  ".",
+		  "...",
+		  ""
+		]
 	  },
 	  {
-		"response_prefix": [],
-		"response_line": "You're going to make me throw up",
-		"response_suffix": []
+		"response_prefix": [
+		  "Really? ",
+		  "Lol. "
+		],
+		"response_line": "That's your big flex",
+		"response_suffix": [
+		  "",
+		  "?",
+		  "??",
+		  "? I expect better from you."
+		]
 	  }
 	]
   },
@@ -166,60 +226,85 @@
 	  }
 	]
   },
-  "flex": {
+  "rizz": {
 	"TRUE": [
 	  {
-		"response_prefix": [],
-		"response_line": "okay mr. accomplished",
-		"response_suffix": []
-	  },
-	  {
-		"response_prefix": [],
-		"response_line": "I can't pretend I'm not impressed",
-		"response_suffix": []
-	  },
-	  {
-		"response_prefix": [],
-		"response_line": "What does that even mean",
+		"response_prefix": [
+		  "You're ",
+		  ""
+		],
+		"response_line": "actually smooth",
 		"response_suffix": [
-		  " 😭",
-		  "?",
-		  "??",
-		  "???"
+		  " wtf",
+		  " asf",
+		  " as fuck."
 		]
-	  }
-	],
-	"FALSE": [
+	  },
 	  {
-		"response_prefix": [],
-		"response_line": "lol sure",
+		"response_prefix": [
+		  "Awwww ",
+		  " Awwwwwww"
+		],
+		"response_line": "stopppp",
+		"response_suffix": []
+	  },
+	  {
+		"response_prefix": [
+		  "",
+		  "!! "
+		],
+		"response_line": "Say more",
 		"response_suffix": [
 		  ".",
-		  ", fat chance."
+		  "!",
+		  " :)"
 		]
 	  },
 	  {
 		"response_prefix": [],
-		"response_line": "Is that supposed to impress me",
-		"response_suffix": [
-		  "?",
-		  "? Lol"
-		]
-	  }
-	]
-  },
-  "apology": {
-	"TRUE": [
-	  {
-		"response_prefix": [],
-		"response_line": "I'm going to let you start over",
+		"response_line": "You're going to make me puke :)",
 		"response_suffix": []
 	  }
 	],
 	"FALSE": [
 	  {
+		"response_prefix": [
+		  "That "
+		],
+		"response_line": "felt forced",
+		"response_suffix": []
+	  },
+	  {
+		"response_prefix": [
+		  "You "
+		],
+		"response_line": "lost me there",
+		"response_suffix": [
+		  ".",
+		  ", not that you ever really had a chance."
+		]
+	  },
+	  {
 		"response_prefix": [],
-		"response_line": "I don't give second chances",
+		"response_line": "How long did you practice that one for?",
+		"response_suffix": [
+		  "",
+		  " It wasn't long enough!",
+		  ""
+		]
+	  },
+	  {
+		"response_prefix": [],
+		"response_line": "Booooooooo",
+		"response_suffix": [
+		  "",
+		  "ooooooooo",
+		  ""
+		]
+	  },
+	  {
+		"response_prefix": [],
+		"response_line": "You're going to make me throw up",
 		"response_suffix": []
 	  }
 	]
@@ -237,11 +322,38 @@
 	  {
 		"response_prefix": [
 		  "Hahaha, y",
-		  "Y"
+		  "Y",
+		  "Wow y",
+		  "Hahaha wow, y"
 		],
 		"response_line": "ou're really obsessed with me",
 		"response_suffix": [
 		  ", aren't you?",
+		  ".",
+		  ". I like that."
+		]
+	  },
+	  {
+		"response_prefix": [
+		  "Ok, honestly ",
+		  "Lol, that's "
+		],
+		"response_line": "kinda cute",
+		"response_suffix": [
+		  ".",
+		  "...",
+		  "!"
+		]
+	  },
+	  {
+		"response_prefix": [
+		  "Hahaha, ",
+		  "Keep going, ",
+		  "Oh my god, "
+		],
+		"response_line": "I'm listening",
+		"response_suffix": [
+		  ".",
 		  ""
 		]
 	  }
@@ -254,41 +366,69 @@
 		  ".",
 		  "..."
 		]
-	  }
-	]
-  },
-  "catch": {
-	"TRUE": [
+	  },
 	  {
-		"response_prefix": [],
-		"response_line": "I thought you'd never ask",
+		"response_prefix": [
+		  "Red"
+		],
+		"response_line": "flag alert",
 		"response_suffix": [
 		  "",
-		  " :)",
-		  ". "
+		  "!",
+		  "."
 		]
-	  }
-	],
-	"FALSE": [
+	  },
 	  {
-		"response_prefix": [],
-		"response_line": "I don't think so",
+		"response_prefix": [
+		  "Um, that's ",
+		  "Hmm, that's "
+		],
+		"response_line": "a bit much",
 		"response_suffix": [
-		  "",
-		  " lol",
-		  "...",
-		  ". At least not yet"
+		  ".",
+		  ". Yikes."
 		]
-	  }
-	]
-  },
-  "": {
-	"TRUE": [],
-	"FALSE": [
+	  },
 	  {
-		"response_prefix": [],
-		"response_line": "",
+		"response_prefix": [
+		  "Ok, well that ",
+		  "Um, that ",
+		  "Well that "
+		],
+		"response_line": "gave me the ick",
 		"response_suffix": []
+	  },
+	  {
+		"response_prefix": [
+		  "Lol chill ",
+		  "Woah, chill "
+		],
+		"response_line": "out",
+		"response_suffix": [
+		  "please.",
+		  ". You don't need to do all that."
+		]
+	  },
+	  {
+		"response_prefix": [
+		  "Lol."
+		],
+		"response_line": "That's a lot",
+		"response_suffix": [
+		  ".",
+		  ". Dial it back a little."
+		]
+	  },
+	  {
+		"response_prefix": [
+		  "Ok... ",
+		  ""
+		],
+		"response_line": "I'm getting stalker vibes here",
+		"response_suffix": [
+		  ".",
+		  " and it's freaking me out a little."
+		]
 	  }
 	]
   }

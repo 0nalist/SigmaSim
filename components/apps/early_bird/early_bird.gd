@@ -13,11 +13,6 @@ class_name EarlyBird
 @onready var autopilot: Node = %EarlyBirdAutopilot
 
 
-var current_speed: float = 0.0
-var speed_timer := 0.0
-
-var window_frame: WindowFrame = null
-
 @export var base_width: float = 440.0
 @export var max_width: float = 1920.0
 @export var fixed_height: float = 600.0
@@ -35,10 +30,26 @@ var window_frame: WindowFrame = null
 
 
 
+var current_speed: float = 0.0
+var speed_timer := 0.0
 
+var window_frame: WindowFrame = null
 
 
 var game_active: bool = false
+
+
+## Data to Save/Load ##
+var cash_per_score: float = 0.01
+
+
+
+
+
+
+
+
+
 
 func _ready() -> void:
 	
@@ -48,7 +59,6 @@ func _ready() -> void:
 	round_manager.round_started.connect(_on_round_started)
 	round_manager.round_ended.connect(_on_round_ended)
 	player.died.connect(_on_player_died)
-	player.banked.connect(_on_player_banked)
 	player.scored_point.connect(_on_player_scored)
 	hud.restart_pressed.connect(_on_restart_pressed)
 	hud.quit_pressed.connect(_on_quit_pressed)
@@ -125,10 +135,8 @@ func _input(event: InputEvent) -> void:
 func _on_round_started(round_type: String) -> void:
 	if round_type == "pipe":
 		pipe_manager.start_spawning()
-		hud.show_bank_prompt(false)
-	elif round_type == "break":
-		pipe_manager.stop_spawning()
-		hud.show_bank_prompt(true)
+		
+
 
 func _on_round_ended(round_type: String) -> void:
 	pass # You could add bonus logic here later.
@@ -139,10 +147,6 @@ func _on_player_died() -> void:
 	hud.show_game_over(player.score)
 	%Worm.hide()
 
-func _on_player_banked() -> void:
-	game_active = false
-	round_manager.stop_round_cycle()
-	hud.show_bank_success(player.score)
 
 func _on_player_scored() -> void:
 	hud.update_score(player.score)

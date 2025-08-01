@@ -35,7 +35,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5uoqt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dmsn0"]
 bg_color = Color(0.541176, 0.807843, 0, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
@@ -170,6 +170,10 @@ size_flags_horizontal = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "X"
@@ -179,7 +183,15 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
@@ -191,7 +203,15 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control5" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
@@ -202,6 +222,10 @@ text = "Z"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Control6" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
 custom_minimum_size = Vector2(0, 4)
@@ -218,6 +242,10 @@ text = "Curiosity"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
 
 [node name="10px7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(10, 0)
@@ -331,6 +359,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
 [node name="ProfileContainer" type="Control" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer"]
@@ -411,6 +442,7 @@ offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "CON"
+horizontal_alignment = 1
 
 [node name="10px2" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
@@ -431,7 +463,7 @@ size_flags_horizontal = 4
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/h_separation = 8
-text = " Prof "
+text = " You "
 flat = true
 
 [node name="SwipesButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
@@ -462,18 +494,25 @@ layout_mode = 2
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="ExperienceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
+[node name="ExProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_styles/background = SubResource("StyleBoxFlat_wfdmb")
-theme_override_styles/fill = SubResource("StyleBoxFlat_5uoqt")
-value = 2.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_dmsn0")
+max_value = 1.0
+step = 0.001
+allow_greater = true
 show_percentage = false
+script = ExtResource("10_jh1fk")
+stat_name = "ex"
+duration = 0.4
+reset_on_overflow = true
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ExperienceProgressBar"]
+[node name="ExLabel" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ExProgressBar"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -487,9 +526,8 @@ offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "EX"
+horizontal_alignment = 1
 
 [node name="10px4" type="Control" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
-
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer4/CuriosityHSlider" to="." method="_on_curiosity_h_slider_value_changed"]

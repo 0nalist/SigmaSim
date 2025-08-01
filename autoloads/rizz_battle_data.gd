@@ -6,6 +6,10 @@ var npc_responses = {}
 var npc_generic_responses = {}
 var npc_block_warnings = {}
 
+var strong_type_chance_bonus: float = 0.05
+var weak_type_chance_penalty: float = -0.05
+
+
 # Chat Battle Type Modifiers: type_name -> { strong: [], weak: [], immune: [] }
 var type_mods = {}
 
@@ -53,3 +57,16 @@ func _split(val: String) -> Array:
 	for s in val.split(",", false):
 		out.append(s.strip_edges().to_lower())
 	return out
+
+
+static func get_type_mod_chance_adjust(npc_type: String, move_type: String) -> float:
+	npc_type = npc_type.strip_edges().to_lower()
+	move_type = move_type.strip_edges().to_lower()
+	var mods = RizzBattleData.type_mods.get(npc_type, null)
+	if mods == null:
+		return 0.0
+	if move_type in mods["strong"]:
+		return RizzBattleData.strong_type_chance_bonus
+	if move_type in mods["weak"]:
+		return RizzBattleData.weak_type_chance_penalty
+	return 0.0

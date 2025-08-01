@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://w6i86gevyjfo"]
 
-[ext_resource type="Script" uid="uid://dgiwk055acon0" path="res://tools/scene_validator.gd" id="1_f6vxs"]
+[ext_resource type="Script" uid="uid://c37doe4b3xseo" path="res://tools/npc_type_sampler.gd" id="1_emdj3"]
 
 [node name="Node" type="Node"]
-script = ExtResource("1_f6vxs")
+script = ExtResource("1_emdj3")

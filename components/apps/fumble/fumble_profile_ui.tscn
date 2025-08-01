@@ -15,6 +15,8 @@ corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
+shadow_size = 17
+shadow_offset = Vector2(4, 11)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0w3w"]
 bg_color = Color(0.804743, 0.804743, 0.804743, 1)
@@ -198,9 +200,9 @@ custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 
 [node name="GreekStatsUI" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_5ticg")]
+custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 
 [node name="Control5" type="Control" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer"]

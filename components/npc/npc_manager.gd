@@ -22,7 +22,7 @@ func get_npc_by_index(idx: int) -> NPC:
 
 	var npc: NPC
 
-	if DBManager.has_npc(idx):
+	if DBManager.has_npc(idx, SaveManager.current_slot_id):
 		npc = _load_npc_from_db(idx)
 	else:
 		npc = NPCFactory.create_npc(idx)
@@ -100,38 +100,10 @@ func _index_persistent_npc(idx: int) -> void:
 	persistent_by_wealth[w].append(idx)
 
 func _load_npc_from_db(idx: int) -> NPC:
-	var data: Dictionary = DBManager.load_npc(idx)
-	if data == null:
+	var npc: NPC = DBManager.load_npc(idx)
+	if npc == null:
 		push_error("Tried to load NPC index %d but not found in DB!" % idx)
 		return NPCFactory.create_npc(idx)
-
-	var npc = NPC.new()
-	npc.first_name = data.get("first_name", "")
-	npc.middle_initial = data.get("middle_initial", "")
-	npc.last_name = data.get("last_name", "")
-	npc.full_name = "%s %s. %s" % [npc.first_name, npc.middle_initial, npc.last_name]
-	# Rebuild gender_vector from JSON string
-	var gv = JSON.parse_string(data.get("gender_vector", "{\"x\":0,\"y\":0,\"z\":1}"))
-	if typeof(gv) == TYPE_DICTIONARY and gv.has("x") and gv.has("y") and gv.has("z"):
-		npc.gender_vector = Vector3(gv.x, gv.y, gv.z)
-	else:
-		npc.gender_vector = Vector3(0,0,1)
-	npc.bio = data.get("bio", "")
-	npc.occupation = data.get("occupation", "")
-	npc.relationship_status = data.get("relationship_status", "")
-	npc.affinity = data.get("affinity", 0.0)
-	npc.rizz = data.get("rizz", 0)
-	npc.attractiveness = data.get("attractiveness", 0)
-	npc.wealth = data.get("wealth", 0)
-	npc.alpha = data.get("alpha", 0.0)
-	npc.beta = data.get("beta", 0.0)
-	npc.gamma = data.get("gamma", 0.0)
-	npc.delta = data.get("delta", 0.0)
-	npc.omega = data.get("omega", 0.0)
-	npc.sigma = data.get("sigma", 0.0)
-	var tags_str: String = data.get("tags", "")
-	npc.tags = tags_str.split(",") if tags_str.length() > 0 else []
-	npc.fumble_bio = data.get("fumble_bio", "")
 	return npc
 
 # === BATCH HELPERS ===
@@ -181,22 +153,29 @@ func mark_npc_inactive_in_app(idx: int, app_name: String) -> void:
 	if active_npcs_by_app.has(app_name):
 		active_npcs_by_app[app_name].erase(idx)
 
-func set_relationship_status(idx: int, app_name: String, status: String) -> void:
+func set_relationship_status(idx: int, app_name: String, status: FumbleManager.FumbleStatus) -> void:
 	if not relationship_status.has(idx):
-		relationship_status[idx] = {}
+			relationship_status[idx] = {}
 	relationship_status[idx][app_name] = status
+
+	if app_name == "fumble":
+		DBManager.save_fumble_relationship(idx, status)
 
 
 # Returns all NPC indices the player has "liked" in Fumble
 func get_fumble_matches() -> Array:
 	var matches = []
-	#print("Checking encountered NPCs for fumble:", encountered_npcs_by_app.get("fumble", []))
-	for idx in encountered_npcs_by_app.get("fumble", []):
-		var status = relationship_status.get(idx, {}).get("fumble", "")
-		#print("NPC", idx, "status:", status)
-		if status == "liked":
-			matches.append(idx)
+	var rels = DBManager.get_all_fumble_relationships()
+	for idx in rels.keys():
+		var status_enum: FumbleManager.FumbleStatus = rels[idx]
+		# Show only if currently "liked" or "matched"
+		if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+			matches.append(int(idx))
 	return matches
+
+
+
+
 
 # Returns true if a battle is active with this NPC (FumbleManager sets this flag)
 func is_fumble_battle_active(npc_idx: int) -> bool:

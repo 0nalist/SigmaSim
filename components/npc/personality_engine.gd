@@ -30,7 +30,7 @@ const CHAT_BATTLE_TYPES = [
 # Data-driven: map chat battle types to OCEAN preference
 const CHAT_BATTLE_OCEAN_RULES = {
 	"Brat": {"agreeableness": [-100, 45], "extraversion": [50, 100]},
-	"Crypto Bro": {"openness": [30, 100], "conscientiousness": [40, 80]},
+	"Crypto Bro": {"openness": [50, 100], "conscientiousness": [0, 45]},
 	"Edgelord": {"agreeableness": [-100, 30], "openness": [30, 100]},
 	"Ghoster": {"agreeableness": [-100, 40], "conscientiousness": [-100, 50]},
 	"Gym Rat": {"extraversion": [50, 100], "conscientiousness": [60, 100]},
@@ -78,29 +78,49 @@ static func get_zodiac(full_name: String) -> String:
 	var idx = djb2(full_name + "zodiac") % ZODIAC_SIGNS.size()
 	return ZODIAC_SIGNS[idx]
 
-static func get_chat_battle_type(ocean: Dictionary, full_name: String) -> String:
-	# Try to match rules first; if multiple match, pick most 'on brand' by scoring, else pick pseudo-random
-	var best_type = ""
-	var best_score = -1.0
-	for type in CHAT_BATTLE_OCEAN_RULES.keys():
-		var rule = CHAT_BATTLE_OCEAN_RULES[type]
-		var score = 0
-		var matches = true
-		for k in rule.keys():
-			var val = ocean[k]
-			var bounds = rule[k]
-			if val < bounds[0] or val > bounds[1]:
-				matches = false
-				break
-			score += abs(val - (bounds[0] + bounds[1]) * 0.5)
-		if matches and (best_score == -1 or score < best_score):
-			best_score = score
-			best_type = type
-	# If none match, pick a deterministic pseudo-random type
-	if best_type == "":
-		var idx = djb2(full_name + "chat_type") % CHAT_BATTLE_TYPES.size()
-		best_type = CHAT_BATTLE_TYPES[idx]
-	return best_type
+static func get_chat_battle_type(ocean: Dictionary, seed: String) -> String:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = djb2(seed + "_cbt")      # still 100 % deterministic per NPC
+
+	var scores: Dictionary = {}         # {type: raw_score}
+	for t in CHAT_BATTLE_TYPES:
+		scores[t] = _rule_match_score(ocean, CHAT_BATTLE_OCEAN_RULES.get(t, {}))
+
+	# --- convert to weights ---
+	var total := 0.0
+	for t in scores:
+		scores[t] = max(scores[t], 0.01)   # keep everything >0
+		total += scores[t]
+
+	# target an **even prior** by inverting the weight:
+	var weights := {}
+	for t in scores:
+		weights[t] = (1.0 / total) * scores[t]      # flatten high peaks
+
+	# --- deterministic, weighted pick ---
+	var roll := rng.randf()
+	for t in weights:
+		roll -= weights[t]
+		if roll <= 0.0:
+			return t
+
+	return CHAT_BATTLE_TYPES[0]                    # fallback (shouldn’t hit)
+
+static func _rule_match_score(o: Dictionary, rule: Dictionary) -> float:
+	if rule.is_empty():
+		return 1.0                                 # “generic” fit
+
+	var score := 0.0
+	for k in rule:
+		var val = o[k]
+		var r = rule[k]
+		if val < r[0] or val > r[1]:
+			return 0.0                              # outside band → no weight
+		# distance from center of band (closer = higher):
+		var center = (r[0] + r[1]) * 0.5
+		score += 1.0 / (1.0 + abs(val - center))
+	return score
+
 
 static func _normalized_weighted_sum(data: Dictionary, weights: Dictionary) -> float:
 	var sum = 0.0

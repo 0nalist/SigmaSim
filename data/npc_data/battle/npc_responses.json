@@ -21,8 +21,10 @@
 	"FALSE": [
 	  {
 		"move_type": "rizz",
-		"response_prefix": [],
-		"response_line": "that's... dramatic",
+		"response_prefix": [
+		  "T"
+		],
+		"response_line": "hat's... dramatic",
 		"response_suffix": [
 		  ".",
 		  " XD"
@@ -30,8 +32,10 @@
 	  },
 	  {
 		"move_type": "rizz",
-		"response_prefix": [],
-		"response_line": "you rehearsed that, huh?",
+		"response_prefix": [
+		  "Y"
+		],
+		"response_line": "ou rehearsed that, huh?",
 		"response_suffix": []
 	  }
 	]
@@ -42,6 +46,30 @@
 		"move_type": "rizz",
 		"response_prefix": [],
 		"response_line": "You caught me. I am a simulation.",
+		"response_suffix": [
+		  "",
+		  " Beep boop."
+		]
+	  }
+	],
+	"FALSE": [
+	  {
+		"move_type": "rizz",
+		"response_prefix": [],
+		"response_line": "No",
+		"response_suffix": [
+		  ". Why does everyone think that??",
+		  "."
+		]
+	  }
+	]
+  },
+  "rizz_tattoo": {
+	"TRUE": [
+	  {
+		"move_type": "rizz",
+		"response_prefix": [],
+		"response_line": "Hell yeah, I'm so down",
 		"response_suffix": []
 	  }
 	],
@@ -49,8 +77,10 @@
 	  {
 		"move_type": "rizz",
 		"response_prefix": [],
-		"response_line": "No, but you’re corny.",
-		"response_suffix": []
+		"response_line": "Not a chance",
+		"response_suffix": [
+		  "!"
+		]
 	  }
 	]
   },
@@ -70,7 +100,9 @@
 		"response_line": "Go fuck yourself",
 		"response_suffix": [
 		  ".",
-		  " lol"
+		  " lol",
+		  ". You probably peaked as a baby.",
+		  ". You'll never be as cool as I was in middle school."
 		]
 	  }
 	]
@@ -101,7 +133,8 @@
 		"response_line": "Simp *too hard. But maybe you should",
 		"response_suffix": [
 		  ".",
-		  "..."
+		  "...",
+		  " :)"
 		]
 	  }
 	],
@@ -164,6 +197,35 @@
 		"response_suffix": [
 		  " I don't think so.",
 		  " Not that you even have a chance with me drunk."
+		]
+	  }
+	]
+  },
+  "apology_start_over": {
+	"TRUE": [
+	  {
+		"move_type": "apology",
+		"response_prefix": [
+		  "Ok I'm going to give you the benefit of the doubt.",
+		  ""
+		],
+		"response_line": "Hi, nice to meet you",
+		"response_suffix": [
+		  "",
+		  " :)"
+		]
+	  }
+	],
+	"FALSE": [
+	  {
+		"move_type": "apology",
+		"response_prefix": [
+		  "Uhh no, ",
+		  ""
+		],
+		"response_line": "I don't give second chances",
+		"response_suffix": [
+		  "."
 		]
 	  }
 	]
