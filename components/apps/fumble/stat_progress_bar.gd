@@ -27,11 +27,13 @@ func update_value(new_value: float) -> void:
 	var display_value = new_value
 	if reset_on_overflow:
 		display_value = fmod(new_value, max_value)
-		if display_value < 0: # Ensure positive value
+		if display_value < 0:
 			display_value += max_value
-	elif fractional:
-		display_value = fmod(new_value, max_value)
-	# else: leave as-is for non-fractional, non-reset mode
+	else:
+		# If fractional, show as float, but do NOT wrap/reset
+		if not fractional:
+			display_value = int(new_value)
+		# Otherwise just use the float value (including > max_value if overflows)
 
 	if animate:
 		set_value_animated(display_value)
@@ -47,5 +49,9 @@ func set_value_animated(target_value: float) -> void:
 	_tween.tween_callback(Callable(self, "update_tooltip").bind(target_value))
 
 func update_tooltip(val: float) -> void:
-	var str_val = "%.2f" % val if fractional or reset_on_overflow else str(val)
+	var str_val: String
+	if fractional:
+		str_val = "%.2f" % val
+	else:
+		str_val = str(int(val))
 	tooltip_text = "%s: %s" % [stat_name, str_val]

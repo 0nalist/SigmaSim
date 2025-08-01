@@ -176,6 +176,8 @@ func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
+	if DBManager != null:
+		DBManager.delete_slot_data(slot_id)
 	var metadata = load_slot_metadata()
 	metadata.erase("slot_%d" % slot_id)
 	save_slot_metadata(metadata)

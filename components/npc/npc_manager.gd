@@ -100,47 +100,10 @@ func _index_persistent_npc(idx: int) -> void:
 	persistent_by_wealth[w].append(idx)
 
 func _load_npc_from_db(idx: int) -> NPC:
-	var data: Dictionary = DBManager.load_npc(idx)
-	if data == null:
+	var npc: NPC = DBManager.load_npc(idx)
+	if npc == null:
 		push_error("Tried to load NPC index %d but not found in DB!" % idx)
 		return NPCFactory.create_npc(idx)
-
-	var npc = NPC.new()
-	npc.first_name = data.get("first_name", "")
-	npc.middle_initial = data.get("middle_initial", "")
-	npc.last_name = data.get("last_name", "")
-	npc.full_name = "%s %s. %s" % [npc.first_name, npc.middle_initial, npc.last_name]
-	# Rebuild gender_vector from JSON string
-	var gv = JSON.parse_string(data.get("gender_vector", "{\"x\":0,\"y\":0,\"z\":1}")) # Is this right? TODO
-	if typeof(gv) == TYPE_DICTIONARY and gv.has("x") and gv.has("y") and gv.has("z"):
-		npc.gender_vector = Vector3(gv.x, gv.y, gv.z)
-	else:
-		npc.gender_vector = Vector3(0,0,1)
-	npc.fumble_bio = data.get("fumble_bio", "")
-	npc.occupation = data.get("occupation", "")
-	npc.relationship_status = data.get("relationship_status", "")
-	npc.affinity = data.get("affinity", 0.0)
-	npc.rizz = data.get("rizz", 0)
-	npc.attractiveness = data.get("attractiveness", 0)
-	npc.wealth = data.get("wealth", 0)
-	npc.alpha = data.get("alpha", 0.0)
-	npc.beta = data.get("beta", 0.0)
-	npc.gamma = data.get("gamma", 0.0)
-	npc.delta = data.get("delta", 0.0)
-	npc.omega = data.get("omega", 0.0)
-	npc.sigma = data.get("sigma", 0.0)
-	var tags_str: String = data.get("tags", "")
-	var tags_arr: Array[String] = []
-	if tags_str.length() > 0:
-		for t in tags_str.split(","):
-			tags_arr.append(String(t))
-	npc.tags = tags_arr
-
-
-	var cbt = data.get("chat_battle_type", "")
-	if cbt == null:
-		cbt = ""
-	npc.chat_battle_type = cbt
 	return npc
 
 # === BATCH HELPERS ===

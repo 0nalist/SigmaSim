@@ -90,7 +90,7 @@ func get_stat(key: String) -> Variant:
 
 func set_stat(key: String, value: Variant) -> void:
 	if key == "confidence":
-		value = max(value, 0.0)
+		value = clamp(value, 0.0, 100.0)
 	match key:
 		"cash": PortfolioManager.cash = value
 		"student_loans": PortfolioManager.student_loans = value
@@ -125,7 +125,7 @@ func adjust_stat(stat: String, delta: float) -> void:
 	if user_data.has(stat):
 		user_data[stat] += delta
 		if stat == "confidence":
-			user_data[stat] = max(user_data[stat], 0.0)
+			user_data[stat] = clamp(user_data[stat], 0.0, 100.0)
 
 	if is_stat_suppressed(stat):
 		deferred_stat_values[stat] = user_data[stat]
@@ -150,7 +150,8 @@ func get_save_data() -> Dictionary:
 func load_from_data(data: Dictionary) -> void:
 	user_data = data.duplicate(true)
 	ensure_default_stats()
-	
+	if user_data.has("confidence"):
+		user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
 
 
 
