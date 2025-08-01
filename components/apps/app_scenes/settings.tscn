@@ -101,6 +101,7 @@ text = "Popups Break Fourth Wall"
 
 [node name="SiggyButton" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
