@@ -25,7 +25,8 @@ const SCHEMA := {
 		"omega": {"data_type": "real"},
 		"sigma": {"data_type": "real"},
 		"tags": {"data_type": "text"},
-		"fumble_bio": {"data_type": "text"}
+		"fumble_bio": {"data_type": "text"},
+		"chat_battle_type": {"data_type": "text"},
 	},
 	"fumble_relationships": {
 		"npc_id": {"data_type": "int", "primary_key": true},
