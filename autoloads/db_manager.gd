@@ -7,17 +7,22 @@ const SCHEMA := {
 	"npc": {
 		"id": {"data_type": "int", "primary_key": true},
 		"slot_id": {"data_type": "int", "primary_key": true},
+		"full_name": {"data_type": "text"},
 		"first_name": {"data_type": "text"},
 		"middle_initial": {"data_type": "text"},
 		"last_name": {"data_type": "text"},
 		"gender_vector": {"data_type": "text"},
-		"bio": {"data_type": "text"},
+		"username": {"data_type": "text"},
+		# NOTE: profile_pic_path needs refactor before persistence
 		"occupation": {"data_type": "text"},
 		"relationship_status": {"data_type": "text"},
 		"affinity": {"data_type": "real"},
 		"rizz": {"data_type": "int"},
 		"attractiveness": {"data_type": "int"},
+		"income": {"data_type": "int"},
 		"wealth": {"data_type": "int"},
+		"preferred_pet_names": {"data_type": "text"},
+		"player_pet_names": {"data_type": "text"},
 		"alpha": {"data_type": "real"},
 		"beta": {"data_type": "real"},
 		"gamma": {"data_type": "real"},
@@ -25,8 +30,21 @@ const SCHEMA := {
 		"omega": {"data_type": "real"},
 		"sigma": {"data_type": "real"},
 		"tags": {"data_type": "text"},
+		"likes": {"data_type": "text"},
 		"fumble_bio": {"data_type": "text"},
+		"self_esteem": {"data_type": "int"},
+		"apprehension": {"data_type": "int"},
+		"chemistry": {"data_type": "int"},
 		"chat_battle_type": {"data_type": "text"},
+		"ocean": {"data_type": "text"},
+		"openness": {"data_type": "real"},
+		"conscientiousness": {"data_type": "real"},
+		"extraversion": {"data_type": "real"},
+		"agreeableness": {"data_type": "real"},
+		"neuroticism": {"data_type": "real"},
+		"mbti": {"data_type": "text"},
+		"zodiac": {"data_type": "text"},
+		"wall_posts": {"data_type": "text"}
 	},
 	"fumble_relationships": {
 		"npc_id": {"data_type": "int", "primary_key": true},
@@ -85,61 +103,67 @@ func _migrate_table(table_name: String, fields: Dictionary):
 # -- NPCs --
 
 func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
-	var data = {
-		# Used
-		"id": idx,
-		"slot_id": slot_id,
-		"first_name": npc.first_name,
-		"middle_initial": npc.middle_initial,
-		"last_name": npc.last_name,
-		"gender_vector": to_json(npc.gender_vector),
-		"bio": npc.fumble_bio,
-		"occupation": npc.occupation,
-		"relationship_status": npc.relationship_status,
-		
-		"attractiveness": npc.attractiveness,
-		"wealth": npc.wealth,
-		"tags": ",".join(npc.tags),
-		"fumble_bio": npc.fumble_bio,
-		"chat_battle_type": npc.chat_battle_type,
-		
-		# Not used (yet)
-		"affinity": npc.affinity,
-		"rizz": npc.rizz,
-		
-		"alpha": npc.alpha,
-		"beta": npc.beta,
-		"gamma": npc.gamma,
-		"delta": npc.delta,
-		"omega": npc.omega,
-		"sigma": npc.sigma,
+	var dict = npc.to_dict()
+	dict["id"] = idx
+	dict["slot_id"] = slot_id
+	# Serialize all complex fields as JSON
+	dict["gender_vector"] = to_json(dict.get("gender_vector", {"x":0,"y":0,"z":1}))
+	dict["tags"] = to_json(dict.get("tags", []))
+	dict["likes"] = to_json(dict.get("likes", []))
+	dict["preferred_pet_names"] = to_json(dict.get("preferred_pet_names", []))
+	dict["player_pet_names"] = to_json(dict.get("player_pet_names", []))
+	dict["ocean"] = to_json(dict.get("ocean", {}))
+	dict["wall_posts"] = to_json(dict.get("wall_posts", []))
+	# Profile pic is not natively serializable; see below
 
-		}
-
-	var update_data = data.duplicate()
+	var update_data = dict.duplicate()
 	update_data.erase("id")
 	update_data.erase("slot_id")
 
 	var rows = db.select_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], ["id"])
 	if rows.size() > 0:
-		db.update_rows(
-			"npc",
-			"id = %d AND slot_id = %d" % [idx, slot_id],
-			update_data
-		)
+		db.update_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], update_data)
 	else:
-		db.insert_row("npc", data)
+		db.insert_row("npc", dict)
+
+func load_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> NPC:
+	var result = db.select_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], ["*"])
+	if result.size() == 0:
+		return null
+	var row = result[0]
+	# Deserialize JSON fields safely
+	row["gender_vector"] = _safe_from_json(row.get("gender_vector", null), '{"x":0,"y":0,"z":1}')
+	row["tags"] = _safe_from_json(row.get("tags", null), "[]")
+	row["likes"] = _safe_from_json(row.get("likes", null), "[]")
+	row["preferred_pet_names"] = _safe_from_json(row.get("preferred_pet_names", null), "[]")
+	row["player_pet_names"] = _safe_from_json(row.get("player_pet_names", null), "[]")
+	row["ocean"] = _safe_from_json(row.get("ocean", null), "{}")
+	row["wall_posts"] = _safe_from_json(row.get("wall_posts", null), "[]")
+	return NPC.from_dict(row)
 
 func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
-	return db.select_rows("npc", "slot_id = %d" % slot_id, ["*"])
+	var raw_rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["*"])
+	var out: Array = []
+	for row in raw_rows:
+		row["gender_vector"] = _safe_from_json(row.get("gender_vector", null), '{"x":0,"y":0,"z":1}')
+		row["tags"] = _safe_from_json(row.get("tags", null), "[]")
+		row["likes"] = _safe_from_json(row.get("likes", null), "[]")
+		row["preferred_pet_names"] = _safe_from_json(row.get("preferred_pet_names", null), "[]")
+		row["player_pet_names"] = _safe_from_json(row.get("player_pet_names", null), "[]")
+		row["ocean"] = _safe_from_json(row.get("ocean", null), "{}")
+		row["wall_posts"] = _safe_from_json(row.get("wall_posts", null), "[]")
+		out.append(NPC.from_dict(row))
+	return out
 
-func load_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> Dictionary:
-	var result = db.select_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], ["*"])
-	return result[0] if result.size() > 0 else null
+func _safe_from_json(value, fallback: String) -> Variant:
+	if typeof(value) != TYPE_STRING or value == null:
+		return JSON.parse_string(fallback)
+	return from_json(value)
 
 func has_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> bool:
 	var rows = db.select_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], ["id"])
 	return rows.size() > 0
+
 
 # -- Relationships --
 
