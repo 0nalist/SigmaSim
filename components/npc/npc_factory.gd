@@ -242,7 +242,8 @@ static func generate_multi_bucket_trait(seed_string: String, trait_name: String)
 	var buckets = TRAIT_CONFIG[trait_name].buckets
 	var percentile = float(_bounded_trait(seed_string, trait_name) + 100) / 200.0  # [0,1]
 	for bucket in buckets:
-		if percentile < bucket.cutoff:
+		# Allow the upper bound of the final bucket by checking <=
+		if percentile <= bucket.cutoff:
 			var r = bucket.range
 			var val = int(deterministic_randf(seed_string + str(bucket.cutoff)) * (r.y - r.x + 1)) + int(r.x)
 			return val
