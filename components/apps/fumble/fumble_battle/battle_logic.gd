@@ -64,7 +64,7 @@ var SUCCESS_FX = {
 	"rizz": {
 		"chemistry": 10,
 		"apprehension": -5,
-		"confidence": 3
+		"confidence": 5
 	},
 	"simp": {
 		"chemistry": 12,
@@ -82,7 +82,7 @@ var SUCCESS_FX = {
 		"chemistry": 4,
 		"apprehension": -5,
 		"confidence": 10,
-		"self_esteem": -8  
+		"self_esteem": -18  
 	}
 }
 
@@ -138,8 +138,12 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 			raw_effects["chemistry"] = base["chemistry"] + dime_delta
 		if base.has("apprehension"):
 			raw_effects["apprehension"] = base["apprehension"]
-		if base.has("confidence"):
-			raw_effects["confidence"] = base["confidence"] - dime_delta
+			if base.has("confidence"):
+					var conf_delta = base["confidence"] - dime_delta
+					# On a successful move, confidence should never decrease
+					if conf_delta < 0:
+							conf_delta = 0
+					raw_effects["confidence"] = conf_delta
 		if base.has("self_esteem"):
 			raw_effects["self_esteem"] = base["self_esteem"] + dime_delta
 
