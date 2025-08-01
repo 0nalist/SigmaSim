@@ -77,26 +77,26 @@ static func _safe_string_array(val, fallback := []) -> Array:
 	if val == null:
 			return fallback.duplicate()
 	match typeof(val):
-			TYPE_ARRAY:
-					for v in val:
-							if typeof(v) == TYPE_STRING:
-									arr.append(v)
-							else:
-									arr.append(str(v))
-					return arr
-			TYPE_STRING:
-					if val.strip_edges() == "":
-							return fallback.duplicate()
-					var parsed = JSON.parse_string(val)
-					if typeof(parsed) == TYPE_ARRAY:
-							return _safe_string_array(parsed, fallback)
-					for seg in val.split(","):
-							var s = String(seg).strip_edges()
-							if s != "":
-									arr.append(s)
-					return arr if arr.size() > 0 else fallback.duplicate()
-			_:
-					return [str(val)]
+		TYPE_ARRAY:
+			for v in val:
+				if typeof(v) == TYPE_STRING:
+						arr.append(v)
+				else:
+						arr.append(str(v))
+			return arr
+		TYPE_STRING:
+			if val.strip_edges() == "":
+				return fallback.duplicate()
+			var parsed = JSON.parse_string(val)
+			if typeof(parsed) == TYPE_ARRAY:
+				return _safe_string_array(parsed, fallback)
+			for seg in val.split(","):
+				var s = String(seg).strip_edges()
+				if s != "":
+					arr.append(s)
+			return arr if arr.size() > 0 else fallback.duplicate()
+		_:
+			return [str(val)]
 
 
 # Godot 4: Only fill arrays, never reassign!
