@@ -139,11 +139,13 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 		if base.has("apprehension"):
 			raw_effects["apprehension"] = base["apprehension"]
 			if base.has("confidence"):
-					var conf_delta = base["confidence"] - dime_delta
-					# On a successful move, confidence should never decrease
-					if conf_delta < 0:
-							conf_delta = 0
-					raw_effects["confidence"] = conf_delta
+				var conf_base = base["confidence"]
+				var conf_delta = conf_base - dime_delta
+				# Allow negative delta only when the move is designed to be negative
+				if conf_base >= 0 and conf_delta < 0:
+					conf_delta = 0
+				raw_effects["confidence"] = conf_delta
+
 		if base.has("self_esteem"):
 			raw_effects["self_esteem"] = base["self_esteem"] + dime_delta
 
