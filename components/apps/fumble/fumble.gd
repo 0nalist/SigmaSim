@@ -79,9 +79,10 @@ func _on_card_swiped_left(npc_idx):
 	# Add further logic if needed
 
 func _on_card_swiped_right(npc_idx):
-	NPCManager.set_relationship_status(npc_idx, "fumble", FumbleManager.FumbleStatus.LIKED)
 	NPCManager.promote_to_persistent(npc_idx)
+	NPCManager.set_relationship_status(npc_idx, "fumble", FumbleManager.FumbleStatus.LIKED)
 	PlayerManager.adjust_stat("confidence", 1)
+	chats_tab.refresh_matches()
 
 func highlight_active(button: Button):
 	self_button.modulate = Color.WHITE
