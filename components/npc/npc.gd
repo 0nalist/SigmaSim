@@ -70,20 +70,41 @@ static func _safe_float(val, fallback := 0.0):
 	return float(val) if typeof(val) in [TYPE_FLOAT, TYPE_INT] and val != null else fallback
 
 static func _safe_dict(val, fallback := {}):
-	return val if typeof(val) == TYPE_DICTIONARY and val != null else fallback
+			return val if typeof(val) == TYPE_DICTIONARY and val != null else fallback
+
+static func _safe_string_array(val, fallback := []) -> Array:
+	var arr: Array = []
+	if val == null:
+			return fallback.duplicate()
+	match typeof(val):
+			TYPE_ARRAY:
+					for v in val:
+							if typeof(v) == TYPE_STRING:
+									arr.append(v)
+							else:
+									arr.append(str(v))
+					return arr
+			TYPE_STRING:
+					if val.strip_edges() == "":
+							return fallback.duplicate()
+					var parsed = JSON.parse_string(val)
+					if typeof(parsed) == TYPE_ARRAY:
+							return _safe_string_array(parsed, fallback)
+					for seg in val.split(","):
+							var s = String(seg).strip_edges()
+							if s != "":
+									arr.append(s)
+					return arr if arr.size() > 0 else fallback.duplicate()
+			_:
+					return [str(val)]
+
 
 # Godot 4: Only fill arrays, never reassign!
-static func _assign_string_array(target: Array, source, fallback = null) -> void:
+static func _assign_string_array(target: Array, source, fallback := []) -> void:
+	var arr := _safe_string_array(source, fallback)
 	target.clear()
-	var arr := []
-	if typeof(source) == TYPE_ARRAY and source != null:
-		for v in source:
-			if typeof(v) == TYPE_STRING and v != null:
-				target.append(v)
-	elif fallback != null:
-		for v in fallback:
-			if typeof(v) == TYPE_STRING and v != null:
-				target.append(v)
+	for v in arr:
+		target.append(v)
 
 # === CONVERSION ===
 
@@ -130,7 +151,7 @@ func to_dict() -> Dictionary:
 
 static func from_dict(data: Dictionary) -> NPC:
 	var npc = NPC.new()
-	npc.full_name         = _safe_string(data.get("full_name"))
+	npc.full_name      = _safe_string(data.get("full_name"))
 	npc.first_name        = _safe_string(data.get("first_name"))
 	npc.middle_initial    = _safe_string(data.get("middle_initial"))
 	npc.last_name         = _safe_string(data.get("last_name"))

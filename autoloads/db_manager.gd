@@ -156,9 +156,28 @@ func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
 	return out
 
 func _safe_from_json(value, fallback: String) -> Variant:
-	if typeof(value) != TYPE_STRING or value == null:
+	if value == null:
 		return JSON.parse_string(fallback)
-	return from_json(value)
+	if typeof(value) in [TYPE_ARRAY, TYPE_DICTIONARY]:
+		return value
+	if typeof(value) == TYPE_STRING:
+		var parsed = from_json(value)
+		if parsed != null:
+				return parsed
+		if fallback.begins_with("["):
+				return _csv_to_array(value)
+		return JSON.parse_string(fallback)
+	return JSON.parse_string(fallback)
+
+func _csv_to_array(str_val: String) -> Array:
+	var arr: Array = []
+	if str_val == null:
+		return arr
+	for part in str_val.split(","):
+		var s = String(part).strip_edges()
+		if s != "":
+			arr.append(s)
+	return arr
 
 func has_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> bool:
 	var rows = db.select_rows("npc", "id = %d AND slot_id = %d" % [idx, slot_id], ["id"])
