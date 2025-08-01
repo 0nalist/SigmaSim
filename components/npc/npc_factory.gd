@@ -58,7 +58,9 @@ static func create_npc(npc_index: int) -> NPC:
 	npc.mbti = PersonalityEngine.get_mbti(ocean)
 	npc.zodiac = PersonalityEngine.get_zodiac(full_name)
 	npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
-
+	
+	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
+	
 	# Tags/likes must be set BEFORE generating bio
 	if "tags" in npc.get_property_list().map(func(x): return x.name):
 		npc.tags.clear()
