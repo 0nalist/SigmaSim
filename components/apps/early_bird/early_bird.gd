@@ -13,11 +13,6 @@ class_name EarlyBird
 @onready var autopilot: Node = %EarlyBirdAutopilot
 
 
-var current_speed: float = 0.0
-var speed_timer := 0.0
-
-var window_frame: WindowFrame = null
-
 @export var base_width: float = 440.0
 @export var max_width: float = 1920.0
 @export var fixed_height: float = 600.0
@@ -35,10 +30,26 @@ var window_frame: WindowFrame = null
 
 
 
+var current_speed: float = 0.0
+var speed_timer := 0.0
 
+var window_frame: WindowFrame = null
 
 
 var game_active: bool = false
+
+
+## Data to Save/Load ##
+var cash_per_score: float = 0.01
+
+
+
+
+
+
+
+
+
 
 func _ready() -> void:
 	

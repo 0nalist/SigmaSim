@@ -14,6 +14,7 @@ signal quit_pressed
 @onready var game_label: Label = %GameLabel
 @onready var go_button: Button = %GoButton
 @onready var quit_button: Button = %QuitButton
+@onready var winnings_label: Label = %WinningsLabel
 
 
 
@@ -25,7 +26,7 @@ func _ready() -> void:
 
 func update_score(new_score: int) -> void:
 	score_label.text = str(new_score)
-
+	
 
 
 func show_game_over(final_score: int) -> void:

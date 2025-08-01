@@ -5,7 +5,7 @@ signal request_resize_x_to(pixels)
 signal request_resize_y_to(pixels)
 
 @onready var matches_label: Label = %MatchesLabel
-@onready var match_container: HBoxContainer = %MatchContainer
+@onready var matches_container: HBoxContainer = %MatchesContainer
 @onready var chat_battles_container: VBoxContainer = %ChatBattlesContainer
 
 @onready var average_match_label: Label = %AverageMatchLabel
@@ -24,7 +24,7 @@ func refresh_ui():
 
 func refresh_matches():
 	# Always clear
-	for child in match_container.get_children():
+	for child in matches_container.get_children():
 		child.queue_free()
 
 	# Gather all "liked" or "matched" NPCs, but not currently in a chat battle
@@ -42,7 +42,7 @@ func refresh_matches():
 		total_attractiveness += npc.attractiveness
 		filtered_count += 1
 		var btn = match_button_scene.instantiate()
-		match_container.add_child(btn)
+		matches_container.add_child(btn)
 		btn.set_profile(npc, idx)
 		btn.match_pressed.connect(_on_match_button_pressed)
 		
@@ -97,3 +97,9 @@ func open_battle(battle_id, npc, idx):
 # Optional: If you want to always re-sync when the chats tab is shown from parent UI
 func on_tab_selected():
 	refresh_ui()
+
+
+func sort_containers_by_recency() -> void:
+	pass
+	#sort matches_container with the most recent additions on the left
+	#sort chat_battles_container with the most recently interacted on top
