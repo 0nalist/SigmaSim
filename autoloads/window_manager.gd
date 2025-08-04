@@ -23,6 +23,7 @@ var app_registry := {
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
 	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
+	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
 }
 
 var start_apps := {
@@ -38,6 +39,7 @@ var start_apps := {
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
 	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
+	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
 }
 
 

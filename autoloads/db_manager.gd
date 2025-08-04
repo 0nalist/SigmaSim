@@ -323,3 +323,35 @@ func from_json(json_str: String) -> Variant:
 	if err == OK:
 		return json.data
 	return null
+
+
+# -- Daterbase Helpers --
+
+func get_daterbase_entries(slot_id: int = SaveManager.current_slot_id) -> Array:
+	var q = "SELECT npc_id, battle_id FROM fumble_battles WHERE slot_id = %d AND outcome = 'victory'" % slot_id
+	db.query(q)
+	var rows = db.query_result
+	var latest := {}
+	for r in rows:
+		var npc_id = int(r.npc_id)
+		var b_id = str(r.battle_id)
+		var t = int(b_id.split("_")[0]) if "_" in b_id else 0
+		if not latest.has(npc_id) or t > latest[npc_id]:
+			latest[npc_id] = t
+	var out: Array = []
+	for n in latest.keys():
+		out.append({"npc_id": n, "timestamp": latest[n]})
+	return out
+
+func execute_select(query: String) -> Array:
+	var trimmed = query.strip_edges()
+	var lower = trimmed.to_lower()
+	if not lower.begins_with("select"):
+		push_warning("execute_select only allows SELECT statements")
+		return []
+	for bad in ["drop", "delete", "update", "insert", "alter", "pragma"]:
+		if bad in lower:
+			push_warning("Unsafe keyword detected in query: %s" % bad)
+			return []
+	db.query(trimmed)
+	return db.query_result
