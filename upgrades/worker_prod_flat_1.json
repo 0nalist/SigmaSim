@@ -1,0 +1,15 @@
+{
+  "id": "worker_prod_flat_1",
+  "name": "Worker Productivity +1",
+  "description": "Each worker gains +1 productivity and higher day rate",
+  "systems": ["Workforce"],
+  "dependencies": [],
+  "max_level": -1,
+  "cost_per_level": {"cash": 100},
+  "scale_by_formula": true,
+  "cost_formula": {"cash": "base_cost.cash * pow(1.5, level - 1)"},
+  "effects": [
+    {"target": "worker_productivity_per_tick", "operation": "add", "value": 1},
+    {"target": "worker_day_rate", "operation": "mul", "value": 2}
+  ]
+}

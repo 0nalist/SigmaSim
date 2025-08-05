@@ -7,13 +7,16 @@ func set_cards(dict: Dictionary) -> void:
 	queue_redraw()
 
 func _draw():
-	for upgrade_id in card_dict:
-		var card = card_dict[upgrade_id]
-		if not card.upgrade or not card.upgrade.prerequisites:
-			continue
-		var from_pos = card.global_position + card.size / 2
-		for prereq_id in card.upgrade.prerequisites:
-			if card_dict.has(prereq_id):
-				var prereq_card = card_dict[prereq_id]
-				var to_pos = prereq_card.global_position + prereq_card.size / 2
-				draw_line(from_pos, to_pos, Color.WHITE, 4.0)
+        for upgrade_id in card_dict:
+                var card = card_dict[upgrade_id]
+                if not card.upgrade:
+                        continue
+                var deps = card.upgrade.get("dependencies", [])
+                if deps.is_empty():
+                        continue
+                var from_pos = card.global_position + card.size / 2
+                for prereq_id in deps:
+                        if card_dict.has(prereq_id):
+                                var prereq_card = card_dict[prereq_id]
+                                var to_pos = prereq_card.global_position + prereq_card.size / 2
+                                draw_line(from_pos, to_pos, Color.WHITE, 4.0)

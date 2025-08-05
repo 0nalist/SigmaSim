@@ -195,14 +195,11 @@ func _on_assign_worker_pressed():
 
 
 func _on_grind_button_pressed():
-	var prod_gain = EffectManager.get_final_value(
-		"productivity_per_click",
-		PlayerManager.get_stat("productivity_per_click")
-	)
-	gig.apply_productivity(prod_gain)
-	_refresh_progress()
-	print("Cursor position (local): ", CursorManager.cursor.position)
-	print("Cursor position (global): ", CursorManager.cursor.global_position)
+        var prod_gain = StatManager.get_stat("productivity_per_click")
+        gig.apply_productivity(prod_gain)
+        _refresh_progress()
+        print("Cursor position (local): ", CursorManager.cursor.position)
+        print("Cursor position (global): ", CursorManager.cursor.global_position)
 	StatpopManager.spawn("+" + str(NumberFormatter.format_number(prod_gain)), get_viewport().get_mouse_position())
 
 func _on_work_force_button_pressed() -> void:
