@@ -41,7 +41,7 @@ var game_active: bool = false
 
 ## Data to Save/Load ##
 var cash_per_score: float = 0.01
-
+var winnings: float = 0.00
 
 
 
@@ -78,6 +78,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# Escalate speed over time
+	# Adjust window stretch
 	speed_timer += delta
 	current_speed = min(base_speed + speed_growth_rate * speed_timer, max_speed)
 	pipe_manager.set_move_speed(current_speed)
@@ -113,10 +114,12 @@ func start_game() -> void:
 	player.reset()
 	pipe_manager.reset()
 	round_manager.start_round_cycle()
-	hud.reset()
+	winnings = 0.0
+	hud.reset(cash_per_score)
 	window_frame.size = Vector2(base_width, fixed_height)
 	reset_speed()
 	%Worm.show()
+
 
 func reset_speed():
 	speed_timer = 0.0
@@ -128,7 +131,10 @@ func _input(event: InputEvent) -> void:
 	if not game_active:
 		return
 
-	if (event is InputEventMouseButton and event.pressed) or (event is InputEventKey and event.pressed and event.keycode == KEY_SPACE):
+	if (
+		(event is InputEventMouseButton and event.pressed)
+		or (event is InputEventKey and event.pressed and event.keycode == KEY_SPACE)
+	):
 		player.flap()
 
 
@@ -144,12 +150,14 @@ func _on_round_ended(round_type: String) -> void:
 func _on_player_died() -> void:
 	game_active = false
 	round_manager.stop_round_cycle()
-	hud.show_game_over(player.score)
+	hud.show_game_over(winnings)
 	%Worm.hide()
 
 
 func _on_player_scored() -> void:
+	winnings += cash_per_score
 	hud.update_score(player.score)
+	hud.update_winnings(winnings)
 
 func _on_restart_pressed() -> void:
 	start_game()

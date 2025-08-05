@@ -30,11 +30,8 @@ func _process(delta: float) -> void:
 			player.flap()
 	
 	if next_pipe:
-		var target_y = next_pipe.get_gap_center_y() - 51 # Adjust magic number for fine tuning
-
-		if player.position.y < target_y:
-			pass
-		elif player.position.y > target_y:
+		var target_y = next_pipe.get_gap_center_y() #- 51 # Adjust magic number for fine tuning
+		if player.global_position.y > target_y:
 			player.flap()
 			
 	#print(player.global_position)
