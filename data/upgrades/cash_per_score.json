@@ -14,7 +14,7 @@
 	],
 	"dependencies": [],
 	"cost_per_level": {
-	  "cash": 100
+	  "cash": 1
 	},
 	"scale_by_formula": true,
 	"cost_formula": {

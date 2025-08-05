@@ -36,7 +36,7 @@ signal window_icon_changed(new_icon)
 @export var upgrade_pane: PackedScene # upgrade_pane_scene if I am using scenes. But are packed scenes best here?
 
 
-signal title_updated(title: String)
+#signal title_updated(title: String) #unused, for now
 
 func _ready() -> void:
 	#get_parent().get_parent().get_parent().window_can_close = window_can_close
