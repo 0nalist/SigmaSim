@@ -1,3 +1,4 @@
+
 extends Node
 ## UpgradeManager: loads upgrade definitions from JSON and tracks player upgrade levels.
 ##
