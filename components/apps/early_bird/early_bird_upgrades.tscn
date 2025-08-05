@@ -1,9 +1,13 @@
-[gd_scene format=3 uid="uid://beb1rv52x4xjt"]
+[gd_scene load_steps=2 format=3 uid="uid://beb1rv52x4xjt"]
 
-[node name="EarlyBirdUpgrades" type="Control"]
-layout_mode = 3
+[ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="1_hpanc"]
+
+[node name="EarlyBirdUpgrades" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="SystemUpgradeUI" parent="." instance=ExtResource("1_hpanc")]
+layout_mode = 2
