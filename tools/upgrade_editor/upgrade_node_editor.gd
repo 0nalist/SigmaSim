@@ -9,7 +9,7 @@ signal input_circle_pressed(node, global_pos)
 
 @export var tool_mode: bool = false
 
-@export var upgrade_resource: UpgradeResource
+@export var upgrade_resource: Resource
 @export var display_name: String = ""
 @export var is_major: bool = false
 
@@ -93,7 +93,7 @@ func _on_input_circle_input(event):
 	if event is InputEventMouseButton and event.pressed:
 		emit_signal("input_circle_pressed", self, get_global_mouse_position())
 
-func set_upgrade_resource(new_resource: UpgradeResource):
+func set_upgrade_resource(new_resource: Resource):
 	upgrade_resource = new_resource
 	if upgrade_resource:
 		if upgrade_resource.upgrade_name != "":

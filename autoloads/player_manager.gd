@@ -188,29 +188,15 @@ func _apply_manager() -> void:
 	#Grinderr.set_first_employee_free(true)
 
 func _apply_postgrad() -> void:
-	PortfolioManager.set_student_loans(360000.0)
+        PortfolioManager.set_student_loans(360000.0)
 
-	var upgrade = UpgradeResource.new()
-	upgrade.upgrade_name = "Postgrad"
-	upgrade.source = "Background"
+        # Background perks are applied directly to base stats so they
+        # participate in normal upgrade recalculation.
+        var current_ppc = StatManager.get_base_stat("productivity_per_click", 1.0)
+        StatManager.set_base_stat("productivity_per_click", current_ppc * 2.0)
 
-	var effect1 = EffectResource.new()
-	effect1.target_variable = "productivity_per_click"
-	effect1.operation = "mult"
-	effect1.value = 2.0
-	upgrade.effects.append(effect1)
-
-	var effect2 = EffectResource.new()
-	effect2.target_variable = "gpu_power"
-	effect2.operation = "mult"
-	effect2.value = 2.0
-	upgrade.effects.append(effect2)
-
-	upgrade.apply_all()
-
-	# Unlock features
-	#AppManager.unlock_feature("ScroogebergTerminal")
-	#PlayerManager.set_var("can_see_stock_sentiment", true)
+        var current_gpu = StatManager.get_base_stat("gpu_power", 1.0)
+        StatManager.set_base_stat("gpu_power", current_gpu * 2.0)
 
 func _apply_stoic() -> void:
 	PortfolioManager.credit_used = 100000.0

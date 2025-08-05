@@ -147,30 +147,29 @@ func load_from_slot(slot_id: int) -> void:
 
 func reset_game_state() -> void:
 	# Reset all relevant managers to blank state
-	PortfolioManager.reset()
-	PlayerManager.reset()
-	WindowManager.reset()
-	TimeManager.reset()
-	TaskManager.reset()
-	EffectManager.reset()
-	WorkerManager.reset()
-	MarketManager.reset()
-	GPUManager.reset()
-	#BillManager.reset()
-	#UpgradeManager.reset()
+        PortfolioManager.reset()
+        PlayerManager.reset()
+        WindowManager.reset()
+        TimeManager.reset()
+        TaskManager.reset()
+        StatManager.reset()
+        WorkerManager.reset()
+        MarketManager.reset()
+        GPUManager.reset()
+        #BillManager.reset()
+        #UpgradeManager.reset()
 
 
 
 func reset_managers():
-	PortfolioManager.reset()
-	PlayerManager.reset()
-	WindowManager.reset()
-	TimeManager.reset()
-	WorkerManager.reset()
-	EffectManager.reset()
-	TaskManager.reset()
-	GPUManager.reset()
-	EffectManager.reset()
+        PortfolioManager.reset()
+        PlayerManager.reset()
+        WindowManager.reset()
+        TimeManager.reset()
+        WorkerManager.reset()
+        StatManager.reset()
+        TaskManager.reset()
+        GPUManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)

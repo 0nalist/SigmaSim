@@ -43,14 +43,15 @@ func update_active_status(current_tick_of_day: int, tick_interval: float, can_be
 # --- Stat Getters --- #
 
 func get_day_rate() -> float:
-	print("day rate: " + str(EffectManager.get_final_value("worker_day_rate", day_rate)))
-	return EffectManager.get_final_value("worker_day_rate", day_rate)
+        var mult = StatManager.get_stat("worker_day_rate", 1.0)
+        return day_rate * mult
 	
 
 func get_hire_cost() -> float:
-	var base_cost = sign_on_bonus + day_rate
-	var scaled_cost = base_cost * pow(1.25, WorkerManager.total_workers_hired)
-	return EffectManager.get_final_value("worker_hire_cost", scaled_cost)
+        var base_cost = sign_on_bonus + day_rate
+        var scaled_cost = base_cost * pow(1.25, WorkerManager.total_workers_hired)
+        var mult = StatManager.get_stat("worker_hire_cost", 1.0)
+        return scaled_cost * mult
 
 
 
@@ -77,8 +78,9 @@ func apply_productivity() -> void:
 		push_error("❌ assigned_task is not a valid instance for: " + name)
 		return
 
-	var final_productivity = EffectManager.get_final_value("worker_productivity_per_tick", productivity_per_tick)
-	var output = final_productivity * (1.0 + get_specialization_bonus())
+        var prod_mult = StatManager.get_stat("worker_productivity_per_tick", 1.0)
+        var final_productivity = productivity_per_tick * prod_mult
+        var output = final_productivity * (1.0 + get_specialization_bonus())
 
 	#print("👷", name, "applying", output, "to", assigned_task.title)
 
