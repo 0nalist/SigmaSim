@@ -212,6 +212,7 @@ size_flags_horizontal = 4
 
 [node name="ScorePanel" type="PanelContainer" parent="HUD/MarginContainer/ScoreVBox"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_hew32")
 
 [node name="ScoreRow" type="HBoxContainer" parent="HUD/MarginContainer/ScoreVBox/ScorePanel"]
@@ -221,17 +222,21 @@ size_flags_horizontal = 4
 [node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 2
 theme_override_font_sizes/font_size = 24
 text = "0"
+horizontal_alignment = 2
 
 [node name="MultiplyLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "x"
+horizontal_alignment = 1
 
 [node name="CashPerScoreLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 2
 theme_override_font_sizes/font_size = 24
 text = "$0.00"
 

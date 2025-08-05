@@ -41,7 +41,7 @@ var game_active: bool = false
 
 ## Data to Save/Load ##
 var cash_per_score: float = 0.01
-
+var winnings: float = 0.00
 
 
 
@@ -114,10 +114,12 @@ func start_game() -> void:
 	player.reset()
 	pipe_manager.reset()
 	round_manager.start_round_cycle()
+	winnings = 0.0
 	hud.reset(cash_per_score)
 	window_frame.size = Vector2(base_width, fixed_height)
 	reset_speed()
 	%Worm.show()
+
 
 func reset_speed():
 	speed_timer = 0.0
@@ -148,13 +150,14 @@ func _on_round_ended(round_type: String) -> void:
 func _on_player_died() -> void:
 	game_active = false
 	round_manager.stop_round_cycle()
-	hud.show_game_over(player.score * cash_per_score)
+	hud.show_game_over(winnings)
 	%Worm.hide()
 
 
 func _on_player_scored() -> void:
+	winnings += cash_per_score
 	hud.update_score(player.score)
-	hud.update_winnings(player.score * cash_per_score)
+	hud.update_winnings(winnings)
 
 func _on_restart_pressed() -> void:
 	start_game()
