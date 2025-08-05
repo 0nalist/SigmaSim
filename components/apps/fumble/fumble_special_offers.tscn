@@ -72,25 +72,3 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 10
 text = "BUY: $10"
-
-[node name="SpecialOfferUI2" type="PanelContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_khcxl")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SpecialOfferUI2"]
-layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SpecialOfferUI2/MarginContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Confidence Boost: $10"
-
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SpecialOfferUI2/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 10
-text = "BUY: $10"
