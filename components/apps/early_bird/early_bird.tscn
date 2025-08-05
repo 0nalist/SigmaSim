@@ -196,6 +196,7 @@ theme_override_constants/margin_bottom = 25
 
 [node name="ScoreLabel" type="Label" parent="HUD/MarginContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -212,6 +213,7 @@ text = "3"
 
 [node name="BankLabel" type="Label" parent="HUD/MarginContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
