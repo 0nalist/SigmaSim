@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://beb1rv52x4xjt"]
+
+[ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="1_hpanc"]
+[ext_resource type="Script" uid="uid://fui5fvndjnyo" path="res://components/apps/early_bird/early_bird_upgrades.gd" id="1_spqtb"]
+
+[node name="EarlyBirdUpgrades" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_spqtb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Microtransactions!"
+horizontal_alignment = 1
+
+[node name="SystemUpgradeUI" parent="VBoxContainer" instance=ExtResource("1_hpanc")]
+layout_mode = 2
+size_flags_vertical = 3
+system_name = "earlybird"

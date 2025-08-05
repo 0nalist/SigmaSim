@@ -36,7 +36,24 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_uifmq")
+tree_title = null
+upgrade_filter = null
+upgrades = null
 upgrade_card_scene = ExtResource("2_l6ni6")
+window_title = null
+default_window_size = null
+default_position = null
+request_windowless_mode = null
+show_in_taskbar = null
+allow_multiple = null
+unique_popup_key = null
+is_popup = null
+window_can_close = null
+window_can_minimize = null
+window_can_maximize = null
+user_movable = null
+user_resizable = null
+stay_on_top = null
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

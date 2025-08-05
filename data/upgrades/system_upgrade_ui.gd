@@ -12,38 +12,38 @@ class_name SystemUpgradeUI
 @export var upgrade_ui: PackedScene 
 
 func _ready() -> void:
-	UpgradeManagerJson.connect("upgrade_purchased", _on_upgrade_changed)
+	UpgradeManager.connect("upgrade_purchased", _on_upgrade_changed)
 	# If you add an "upgrade_unlocked" signal, connect here.
 	refresh_upgrades()
 
 func _exit_tree() -> void:
-	if UpgradeManagerJson.is_connected("upgrade_purchased", _on_upgrade_changed):
-		UpgradeManagerJson.disconnect("upgrade_purchased", _on_upgrade_changed)
+	if UpgradeManager.is_connected("upgrade_purchased", _on_upgrade_changed):
+		UpgradeManager.disconnect("upgrade_purchased", _on_upgrade_changed)
 	# Repeat for any other signals
 
 func refresh_upgrades() -> void:
 	for child in upgrades_list.get_children():
 		child.queue_free()
-	var upgrades = UpgradeManagerJson.get_upgrades_for_system(system_name, show_locked)
+	var upgrades = UpgradeManager.get_upgrades_for_system(system_name, show_locked)
 	upgrades.sort_custom(_sort_by_unlock_then_id) # Optional: unlocked first, then by id/name
 	for upgrade in upgrades:
 		var row = upgrade_ui.instantiate()
 		row.set_upgrade(upgrade)
-		row.set_locked(UpgradeManagerJson.is_locked(upgrade["id"]))
-		row.set_level(UpgradeManagerJson.get_level(upgrade["id"]))
+		row.set_locked(UpgradeManager.is_locked(upgrade["id"]))
+		row.set_level(UpgradeManager.get_level(upgrade["id"]))
 		row.connect("purchase_requested", _on_purchase_requested)
 		upgrades_list.add_child(row)
 
 func _sort_by_unlock_then_id(a, b):
 	# Show unlocked upgrades first, then by id
-	var a_locked = UpgradeManagerJson.is_locked(a["id"])
-	var b_locked = UpgradeManagerJson.is_locked(b["id"])
+	var a_locked = UpgradeManager.is_locked(a["id"])
+	var b_locked = UpgradeManager.is_locked(b["id"])
 	if a_locked == b_locked:
 		return a["id"] < b["id"]
 	return int(a_locked) - int(b_locked)
 
 func _on_purchase_requested(upgrade_id: String):
-	if UpgradeManagerJson.purchase(upgrade_id):
+	if UpgradeManager.purchase(upgrade_id):
 		_display_message("Upgrade purchased: %s" % upgrade_id)
 		refresh_upgrades()
 	else:

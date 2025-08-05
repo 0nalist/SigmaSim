@@ -48,8 +48,8 @@ func _get_upgrade_card_under_mouse(mouse_pos: Vector2) -> Node:
 func _get_upgrade_list() -> Array:
 	if upgrades.size() > 0:
 		return upgrades
-        elif upgrade_filter != "":
-                return UpgradeManager.get_upgrades_for_system(upgrade_filter)
+	elif upgrade_filter != "":
+		return UpgradeManager.get_upgrades_for_system(upgrade_filter)
 	else:
 		push_warning("UpgradeTreeUI: No upgrades provided or filter set.")
 		return []
@@ -75,8 +75,8 @@ func layout_tree():
 			card.set_upgrade(upgrade)
 			var x = i * X_SPACING - layer_width / 2
 			card.position = Vector2(x, y)
-                        card_canvas.add_child(card)
-                        card_dict[upgrade.get("id")] = card
+			card_canvas.add_child(card)
+			card_dict[upgrade.get("id")] = card
 			card.set_hovered(false)
 			card.set_selected(false)
 			card.hovered.connect(_on_card_hovered)
@@ -100,10 +100,10 @@ func _on_card_clicked(upgrade, _global_pos):
 	if last_selected_card:
 		last_selected_card.set_selected(false)
 	# Select new card
-        var card = card_dict.get(upgrade.get("id"))
-	if card:
-		card.set_selected(true)
-		last_selected_card = card
+		var card = card_dict.get(upgrade.get("id"))
+		if card:
+			card.set_selected(true)
+			last_selected_card = card
 	selected_upgrade = upgrade
 	tooltip.show_tooltip(upgrade)
 
@@ -111,8 +111,8 @@ func clear_upgrade_selection():
 	if last_selected_card:
 		last_selected_card.set_selected(false)
 		last_selected_card = null
-	selected_upgrade = null
-	hovered_upgrade = null
+	selected_upgrade = {}
+	hovered_upgrade = {}
 	tooltip.hide_tooltip()
 
 func _update_tooltip_display(card_under_mouse: Node) -> void:

@@ -188,15 +188,15 @@ func _apply_manager() -> void:
 	#Grinderr.set_first_employee_free(true)
 
 func _apply_postgrad() -> void:
-        PortfolioManager.set_student_loans(360000.0)
+		PortfolioManager.set_student_loans(360000.0)
 
-        # Background perks are applied directly to base stats so they
-        # participate in normal upgrade recalculation.
-        var current_ppc = StatManager.get_base_stat("productivity_per_click", 1.0)
-        StatManager.set_base_stat("productivity_per_click", current_ppc * 2.0)
+		# Background perks are applied directly to base stats so they
+		# participate in normal upgrade recalculation.
+		var current_ppc = StatManager.get_base_stat("productivity_per_click", 1.0)
+		StatManager.set_base_stat("productivity_per_click", current_ppc * 2.0)
 
-        var current_gpu = StatManager.get_base_stat("gpu_power", 1.0)
-        StatManager.set_base_stat("gpu_power", current_gpu * 2.0)
+		var current_gpu = StatManager.get_base_stat("gpu_power", 1.0)
+		StatManager.set_base_stat("gpu_power", current_gpu * 2.0)
 
 func _apply_stoic() -> void:
 	PortfolioManager.credit_used = 100000.0

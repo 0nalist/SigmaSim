@@ -68,7 +68,7 @@ func _ready() -> void:
 			minimize()
 	)
 	PortfolioManager.cash_updated.connect(_on_relevant_stat_changed)
-	UpgradeManager.upgrade_unlocked.connect(_on_relevant_stat_changed)
+	#UpgradeManager.upgrade_unlocked.connect(_on_relevant_stat_changed) #not implemented yet TODO
 	UpgradeManager.upgrade_purchased.connect(_on_relevant_stat_changed)
 
 
@@ -453,17 +453,17 @@ func _update_upgrade_button_state() -> void:
 		upgrade_button.visible = false
 		return
 
-        var upgrades = UpgradeManager.get_upgrades_for_system(pane.window_title)
+		var upgrades = UpgradeManager.get_upgrades_for_system(pane.window_title)
 
-        var any_available := false
-        for upgrade in upgrades:
-                var id = upgrade.get("id")
-                if not UpgradeManager.is_locked(id) and UpgradeManager.can_purchase(id):
-                        any_available = true
-                        break
+		var any_available := false
+		for upgrade in upgrades:
+				var id = upgrade.get("id")
+				if not UpgradeManager.is_locked(id) and UpgradeManager.can_purchase(id):
+						any_available = true
+						break
 
-        upgrade_button.visible = true
-        upgrade_button.flat = not any_available
+		upgrade_button.visible = true
+		upgrade_button.flat = not any_available
 
 
 

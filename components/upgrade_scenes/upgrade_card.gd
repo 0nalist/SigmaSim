@@ -14,24 +14,24 @@ var is_hovered := false
 var is_selected := false
 
 func set_upgrade(upg: Dictionary):
-        upgrade = upg
-        upgrade_queued = true
-        if is_inside_tree():
-                _refresh_upgrade()
+		upgrade = upg
+		upgrade_queued = true
+		if is_inside_tree():
+				_refresh_upgrade()
 
 func _ready():
 	if upgrade_queued:
 		_refresh_upgrade()
 
 func _refresh_upgrade():
-        if upgrade.is_empty():
-                return
-        if name_label:
-                name_label.text = upgrade.get("name", upgrade.get("id", ""))
-        if icon and upgrade.has("icon") and upgrade.get("icon") != null:
-                icon.texture = upgrade.get("icon")
-        var can_purchase = UpgradeManager.can_purchase(upgrade.get("id"))
-        modulate = Color(1, 1, 1) if can_purchase else Color(0.6, 0.6, 0.6)
+		if upgrade.is_empty():
+				return
+		if name_label:
+				name_label.text = upgrade.get("name", upgrade.get("id", ""))
+		if icon and upgrade.has("icon") and upgrade.get("icon") != null:
+				icon.texture = upgrade.get("icon")
+		var can_purchase = UpgradeManager.can_purchase(upgrade.get("id"))
+		modulate = Color(1, 1, 1) if can_purchase else Color(0.6, 0.6, 0.6)
 
 func set_hovered(value: bool):
 	is_hovered = value
@@ -52,7 +52,7 @@ func _update_modulate():
 		print("hovered mod")
 	else:
 		# Default: white or gray for unpurchasable
-                var can_purchase = UpgradeManager.can_purchase(upgrade.get("id"))
+				var can_purchase = UpgradeManager.can_purchase(upgrade.get("id"))
 		modulate = Color(1, 1, 1, 1) if can_purchase else Color(0.6, 0.6, 0.6, 1)
 
 
