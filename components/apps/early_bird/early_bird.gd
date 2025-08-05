@@ -186,3 +186,4 @@ func _on_stat_changed(stat: String, value: float) -> void:
 	if stat == "cash_per_score":
 		cash_per_score = value
 		hud.update_cash_per_score(cash_per_score)
+	# TERRIBLE design. Literally the exact opposite of why we redesigned the whole upgrade system

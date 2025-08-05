@@ -153,6 +153,7 @@ func reset_game_state() -> void:
 		TimeManager.reset()
 		TaskManager.reset()
 		StatManager.reset()
+		UpgradeManager.reset()
 		WorkerManager.reset()
 		MarketManager.reset()
 		GPUManager.reset()
