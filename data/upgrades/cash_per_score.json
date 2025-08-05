@@ -1,5 +1,4 @@
-[
-  {
+{
 	"id": "earlybird_cash_per_score",
 	"name": "Score Dividend",
 	"description": "Each level increases cash per score by $0.01.",
@@ -22,4 +21,3 @@
 	  "cash": "base_cost[\"cash\"] * pow(1.5, level-1)"
 	}
   }
-]
