@@ -5,18 +5,3 @@
 [node name="UpgradeTreeUI" instance=ExtResource("1_lq7ey")]
 tree_title = "Upgrade Your WorkForce"
 upgrade_filter = "Workforce"
-upgrades = null
-window_title = null
-default_window_size = null
-default_position = null
-request_windowless_mode = null
-show_in_taskbar = null
-allow_multiple = null
-unique_popup_key = null
-is_popup = null
-window_can_close = null
-window_can_minimize = null
-window_can_maximize = null
-user_movable = null
-user_resizable = null
-stay_on_top = null

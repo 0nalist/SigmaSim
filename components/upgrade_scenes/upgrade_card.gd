@@ -52,7 +52,7 @@ func _update_modulate():
 		print("hovered mod")
 	else:
 		# Default: white or gray for unpurchasable
-				var can_purchase = UpgradeManager.can_purchase(upgrade.get("id"))
+		var can_purchase = UpgradeManager.can_purchase(upgrade.get("id"))
 		modulate = Color(1, 1, 1, 1) if can_purchase else Color(0.6, 0.6, 0.6, 1)
 
 
