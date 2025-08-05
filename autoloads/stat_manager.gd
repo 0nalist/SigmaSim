@@ -20,6 +20,7 @@ signal stat_changed(stat: String, value: float)
 
 var base_stats: Dictionary = {}
 var stats: Dictionary = {}
+var _stat_signal_map: Dictionary = {}
 
 func _ready() -> void:
 		_load_base_stats()
@@ -59,8 +60,20 @@ func set_base_stat(stat_name: String, value: float) -> void:
 		_recalculate_all()
 
 func reset() -> void:
-		_load_base_stats()
-		_recalculate_all()
+	_load_base_stats()
+	_recalculate_all()
+
+func connect_to_stat(stat: String, target: Object, method: String) -> void:
+	if !_stat_signal_map.has(stat):
+		_stat_signal_map[stat] = []
+	_stat_signal_map[stat].append(Callable(target, method))
+
+func disconnect_from_stat(stat: String, target: Object, method: String) -> void:
+	if _stat_signal_map.has(stat):
+		_stat_signal_map[stat] = _stat_signal_map[stat].filter(
+			func(cb):
+				return cb.get_object() != target or cb.get_method() != method
+				)
 
 ## Recalculation -----------------------------------------------------
 
@@ -81,8 +94,10 @@ func _recalculate_all() -> void:
 						for effect in upg.get("effects", []):
 								_apply_effect(effect, level)
 		for key in stats.keys():
-				if old_stats.get(key) != stats[key]:
-						emit_signal("stat_changed", key, stats[key])
+			if old_stats.get(key) != stats[key]:
+				emit_signal("stat_changed", key, stats[key])
+				_emit_stat_callbacks(key, stats[key])
+
 
 func _apply_effect(effect: Dictionary, level: int) -> void:
 		var target = effect.get("target", "")
@@ -106,3 +121,9 @@ func _apply_effect(effect: Dictionary, level: int) -> void:
 						stats[target] = value
 				_:
 						push_warning("StatManager: unknown operation '%s' for stat '%s'" % [op, target])
+
+func _emit_stat_callbacks(stat: String, value: float) -> void:
+	if _stat_signal_map.has(stat):
+		for cb in _stat_signal_map[stat]:
+			if is_instance_valid(cb.get_object()):
+				cb.call(value)

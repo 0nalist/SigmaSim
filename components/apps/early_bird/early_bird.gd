@@ -63,7 +63,7 @@ func _ready() -> void:
 	hud.quit_pressed.connect(_on_quit_pressed)
 
 	if Engine.has_singleton("StatManager"):
-		StatManager.stat_changed.connect(_on_stat_changed)
+		StatManager.connect_to_stat("cash_per_score", self, "_on_cash_per_score_changed")
 
 	start_game()
 
@@ -182,8 +182,6 @@ func _update_cash_per_score() -> void:
 	else:
 		cash_per_score = 0.01
 
-func _on_stat_changed(stat: String, value: float) -> void:
-	if stat == "cash_per_score":
-		cash_per_score = value
-		hud.update_cash_per_score(cash_per_score)
-	# TERRIBLE design. Literally the exact opposite of why we redesigned the whole upgrade system
+func _on_cash_per_score_changed(value: float) -> void:
+	cash_per_score = value
+	hud.update_cash_per_score(cash_per_score)
