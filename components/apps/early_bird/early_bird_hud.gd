@@ -25,8 +25,9 @@ func _ready() -> void:
 	reset()
 
 func update_score(new_score: int) -> void:
+
 	score_label.text = str(new_score)
-	
+	#winnings_label.text = str(winnings)
 
 
 func show_game_over(final_score: int) -> void:
