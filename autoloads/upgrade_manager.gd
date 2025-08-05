@@ -37,7 +37,7 @@ func _ready() -> void:
 
 func load_all_upgrades() -> void:
 		upgrades.clear()
-		_load_dir("res://upgrades", false)
+		_load_dir("res://data/upgrades", false)
 		_load_dir("user://mods/upgrades", true)
 		emit_signal("levels_changed") # upgrades may define new stats
 

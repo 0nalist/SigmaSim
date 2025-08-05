@@ -28,11 +28,13 @@ func refresh_upgrades() -> void:
 	upgrades.sort_custom(_sort_by_unlock_then_id) # Optional: unlocked first, then by id/name
 	for upgrade in upgrades:
 		var row = upgrade_ui.instantiate()
+		upgrades_list.add_child(row)
+		
 		row.set_upgrade(upgrade)
 		row.set_locked(UpgradeManager.is_locked(upgrade["id"]))
 		row.set_level(UpgradeManager.get_level(upgrade["id"]))
 		row.connect("purchase_requested", _on_purchase_requested)
-		upgrades_list.add_child(row)
+		
 
 func _sort_by_unlock_then_id(a, b):
 	# Show unlocked upgrades first, then by id
