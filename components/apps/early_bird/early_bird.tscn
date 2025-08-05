@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=25 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
@@ -27,6 +27,18 @@ radius = 22.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yrrt2"]
 size = Vector2(1971, 69)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hew32"]
+bg_color = Color(0.72549, 0.568627, 0.364706, 0.741176)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tgvyg"]
 shader = ExtResource("16_hew32")
@@ -194,22 +206,42 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer"]
-unique_name_in_owner = true
-visible = false
+[node name="ScoreVBox" type="VBoxContainer" parent="HUD/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
-theme_override_font_sizes/font_size = 48
-text = "3"
 
-[node name="WinningsLabel" type="Label" parent="HUD/MarginContainer"]
+[node name="ScorePanel" type="PanelContainer" parent="HUD/MarginContainer/ScoreVBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hew32")
+
+[node name="ScoreRow" type="HBoxContainer" parent="HUD/MarginContainer/ScoreVBox/ScorePanel"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "0"
+
+[node name="MultiplyLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "x"
+
+[node name="CashPerScoreLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "$0.00"
+
+[node name="WinningsLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 48
-text = "3"
+text = "0"
 
 [node name="BankLabel" type="Label" parent="HUD/MarginContainer"]
 unique_name_in_owner = true
