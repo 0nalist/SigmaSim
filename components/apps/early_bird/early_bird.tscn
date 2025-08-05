@@ -274,13 +274,13 @@ text = "EARLY BIRD"
 
 [node name="GoButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("17_5sugq")
 theme_override_font_sizes/font_size = 48
 text = " Get that worm! "
-vertical_icon_alignment = 0
 
 [node name="QuitButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
 unique_name_in_owner = true

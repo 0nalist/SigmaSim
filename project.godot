@@ -45,6 +45,7 @@ DBManager="*res://autoloads/db_manager.gd"
 RizzBattleData="*res://autoloads/rizz_battle_data.gd"
 FumbleManager="*res://autoloads/fumble_manager.gd"
 MarkupParser="*res://autoloads/markup_parser.gd"
+UpgradeManagerJson="*res://autoloads/upgrade_manager_json.gd"
 
 [display]
 
