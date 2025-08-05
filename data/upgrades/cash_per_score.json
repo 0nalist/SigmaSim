@@ -1,0 +1,25 @@
+[
+  {
+	"id": "earlybird_cash_per_score",
+	"name": "Score Dividend",
+	"description": "Each level increases cash per score by $0.01.",
+	"effects": [
+	  {
+		"target": "cash_per_score",
+		"operation": "add",
+		"value": 0.01
+	  }
+	],
+	"systems": [
+	  "earlybird"
+	],
+	"dependencies": [],
+	"cost_per_level": {
+	  "cash": 100
+	},
+	"scale_by_formula": true,
+	"cost_formula": {
+	  "cash": "base_cost[\"cash\"] * pow(1.5, level-1)"
+	}
+  }
+]
