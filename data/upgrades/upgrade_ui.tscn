@@ -3,13 +3,19 @@
 [ext_resource type="Script" uid="uid://bvdlihlsbqn6h" path="res://data/upgrades/upgrade_ui.gd" id="1_7ywy8"]
 
 [node name="UpgradeUi" type="PanelContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -33.5
+offset_top = -17.0
+offset_right = 33.5
+offset_bottom = 17.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 4
+mouse_filter = 1
 script = ExtResource("1_7ywy8")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]

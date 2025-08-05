@@ -445,7 +445,7 @@ func _on_close_pressed() -> void:
 	else:
 		queue_free()
 
-func _on_relevant_stat_changed(_x = null):
+func _on_relevant_stat_changed(_a = null, _b = null):
 	_update_upgrade_button_state()
 
 

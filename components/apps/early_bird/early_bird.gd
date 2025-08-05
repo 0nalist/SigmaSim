@@ -52,17 +52,19 @@ var winnings: float = 0.00
 
 
 func _ready() -> void:
-	
 	window_frame = find_parent_window_frame()
 	reset_speed()
-	
+
 	round_manager.round_started.connect(_on_round_started)
 	round_manager.round_ended.connect(_on_round_ended)
 	player.died.connect(_on_player_died)
 	player.scored_point.connect(_on_player_scored)
 	hud.restart_pressed.connect(_on_restart_pressed)
 	hud.quit_pressed.connect(_on_quit_pressed)
-	
+
+	if Engine.has_singleton("StatManager"):
+		StatManager.stat_changed.connect(_on_stat_changed)
+
 	start_game()
 
 func find_parent_window_frame() -> WindowFrame:
@@ -110,6 +112,7 @@ func _adjust_window_size() -> void:
 
 
 func start_game() -> void:
+	_update_cash_per_score()
 	game_active = true
 	player.reset()
 	pipe_manager.reset()
@@ -172,3 +175,14 @@ func _on_quit_pressed() -> void:
 func _on_autopilot_button_pressed() -> void:
 	if autopilot:
 		autopilot.enabled = !autopilot.enabled
+
+func _update_cash_per_score() -> void:
+	if Engine.has_singleton("StatManager"):
+		cash_per_score = StatManager.get_stat("cash_per_score", 0.01)
+	else:
+		cash_per_score = 0.01
+
+func _on_stat_changed(stat: String, value: float) -> void:
+	if stat == "cash_per_score":
+		cash_per_score = value
+		hud.update_cash_per_score(cash_per_score)
