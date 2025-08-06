@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=35 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
 [ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://components/ticker.gd" id="5_g75lf"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
+[ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="7_c7kal"]
 [ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://components/clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="9_m483i"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="10_0utxc"]
@@ -30,6 +31,13 @@ texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bnui0"]
 bg_color = Color(0.47451, 0.639216, 0.627451, 0.780392)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dag3j"]
+shader = ExtResource("7_c7kal")
+shader_parameter/line_thickness = 1.0
+shader_parameter/sin_frequency = 0.1
+shader_parameter/sin_offset = 0.0
+shader_parameter/light_offset = 0.5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
 
@@ -184,12 +192,15 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Cash:"
 
 [node name="CashLabel" type="Label" parent="TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_dag3j")
 layout_mode = 2
 size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 24
 text = "$"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

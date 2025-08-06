@@ -8,9 +8,12 @@ const LONG_UNITS = [
 ]
 
 # Add commas: 1,234,567.89
-static func format_commas(number: float, decimals: int = 2) -> String:
-	var parts = str("%.*f" % [decimals, number]).split(".")
-	var int_part = parts[0]
+static func format_commas(number: float, decimals: int = 2, hide_trailing_zeroes: bool = false) -> String:
+	var s = "%.*f" % [decimals, number]
+	var int_part = s.split(".")[0]
+	var frac_part = ""
+	if decimals > 0:
+		frac_part = s.split(".")[1]
 	var sign = ""
 	if int_part.begins_with("-"):
 		sign = "-"
@@ -20,9 +23,18 @@ static func format_commas(number: float, decimals: int = 2) -> String:
 		out = "," + int_part.right(3) + out
 		int_part = int_part.left(int_part.length() - 3)
 	out = int_part + out
-	if parts.size() > 1 and decimals > 0:
-		return sign + out + "." + parts[1]
+	if decimals > 0:
+		var frac_trimmed = frac_part.rstrip("0")
+		if hide_trailing_zeroes:
+			if frac_trimmed == "":
+				return sign + out
+			return sign + out + "." + frac_trimmed
+		else:
+			return sign + out + "." + frac_part
 	return sign + out
+
+
+
 
 # Short text: 4.2M, 9.8T
 static func format_short(number: float, decimals: int = 2) -> String:

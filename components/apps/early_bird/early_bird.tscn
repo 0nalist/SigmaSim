@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=27 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
@@ -30,11 +30,23 @@ radius = 22.0
 size = Vector2(1971, 69)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hew32"]
-bg_color = Color(0.72549, 0.568627, 0.364706, 0.741176)
+bg_color = Color(0.839216, 0.498039, 0.388235, 0.596078)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sugq"]
+bg_color = Color(0.67451, 0.603922, 0.133333, 0.564706)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
@@ -242,13 +254,21 @@ size_flags_horizontal = 2
 theme_override_font_sizes/font_size = 24
 text = "$0.00"
 
-[node name="WinningsLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox"]
+[node name="PanelContainer" type="PanelContainer" parent="HUD/MarginContainer/ScoreVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_5sugq")
+
+[node name="WinningsLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 48
 text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BankLabel" type="Label" parent="HUD/MarginContainer"]
 unique_name_in_owner = true
@@ -312,10 +332,6 @@ unique_name_in_owner = true
 position = Vector2(1709, 238)
 script = ExtResource("12_im8xc")
 
-[node name="Sprite2D" type="Sprite2D" parent="Worm"]
-visible = false
-texture = ExtResource("13_8hmpk")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Worm"]
 position = Vector2(3, -4)
 shape = SubResource("CircleShape2D_y10ql")
@@ -333,8 +349,10 @@ size_flags_vertical = 4
 texture = ExtResource("13_8hmpk")
 
 [node name="Timer" type="Timer" parent="Worm"]
-wait_time = 2.319
+wait_time = 1.913
 autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Worm"]
 
 [connection signal="pressed" from="HUD/AutopilotButton" to="." method="_on_autopilot_button_pressed"]
 [connection signal="input_event" from="Worm" to="Worm" method="_on_input_event"]

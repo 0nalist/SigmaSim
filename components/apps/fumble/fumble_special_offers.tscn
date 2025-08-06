@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dptnj8nxnr760"]
+[gd_scene load_steps=5 format=3 uid="uid://dptnj8nxnr760"]
 
 [ext_resource type="Script" uid="uid://bor5y5ucmdl07" path="res://components/apps/fumble/fumble_special_offers.gd" id="1_jpqxb"]
+[ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2_khcxl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jpqxb"]
 bg_color = Color(0.785822, 0.709012, 0.382482, 1)
@@ -16,6 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_jpqxb")
 script = ExtResource("1_jpqxb")
 
@@ -44,6 +46,7 @@ layout_mode = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.14
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
@@ -72,3 +75,8 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 10
 text = "BUY: $10"
+
+[node name="SystemUpgradeUI" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_khcxl")]
+layout_mode = 2
+size_flags_vertical = 3
+system_name = "fumble"

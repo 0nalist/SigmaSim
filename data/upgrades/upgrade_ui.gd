@@ -41,7 +41,16 @@ func _refresh_cost() -> void:
 	var cost_strs = []
 	for currency in cost.keys():
 		var amount = float(cost[currency])
-		cost_strs.append("%s: %.2f" % [currency.capitalize(), amount])
+		if currency == "cash":
+			var formatted = NumberFormatter.format_commas(amount, 2)
+			# Handle negative values for cash
+			if amount < 0:
+				cost_strs.append("-$" + formatted.substr(1)) # Remove extra '-'
+			else:
+				cost_strs.append("$" + formatted)
+		else:
+			# Default to 2 decimals and capitalized currency name
+			cost_strs.append("%s: %s" % [currency.capitalize(), NumberFormatter.format_commas(amount, 2)])
 	cost_label.text = "Cost: " + " / ".join(cost_strs)
 
 func _on_buy_button_pressed() -> void:
