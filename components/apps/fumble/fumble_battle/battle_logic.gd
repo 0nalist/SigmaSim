@@ -64,32 +64,33 @@ var SUCCESS_FX = {
 	"rizz": {
 		"chemistry": 10,
 		"apprehension": -5,
-		"confidence": 5
+		"confidence": 5,
+		"self_esteem": 1
 	},
 	"simp": {
-		"chemistry": 12,
+		"chemistry": 13,
 		"apprehension": -4,
 		"confidence": -4,
 		"self_esteem": 5
 	},
 	"flex": {
-		"chemistry": 8,
+		"chemistry": 7,
 		"apprehension": -8,
-		"confidence": 12,
-		"self_esteem": -3
+		"confidence": 14,
+		"self_esteem": -4
 	},
 	"neg": {
-		"chemistry": 4,
+		"chemistry": 3,
 		"apprehension": -5,
 		"confidence": 10,
-		"self_esteem": -18  
+		"self_esteem": -18
 	}
 }
 
 var FAIL_FX = {
 	"rizz": {
 		"confidence": -10,
-		"chemistry": -3,
+		"chemistry": -4,
 	},
 	"simp": {
 		"confidence": -10,
