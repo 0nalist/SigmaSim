@@ -166,6 +166,8 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	elif blocked:
 		blocked_container.show()
 		_disable_all_action_buttons()
+		ghost_button.disabled = false
+		ghost_button.text = "bye forever!"
 
 
 func scroll_to_newest_chat():
@@ -272,6 +274,12 @@ func _on_catch_button_pressed():
 func _on_ghost_button_pressed():
 	if is_animating:
 		return
+	if blocked:
+		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "blocked")
+		DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
+		persist_battle_stats_to_npc()
+		queue_free()
+		return
 	var chat = add_chat_line("*ghosts*", true)
 	await animate_chat_text(chat, "*ghosts*")
 	await get_tree().create_timer(0.69).timeout
@@ -279,6 +287,7 @@ func _on_ghost_button_pressed():
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
 	persist_battle_stats_to_npc()
 	queue_free()
+
 
 
 func swap_move(slot_index: int, new_move: String):

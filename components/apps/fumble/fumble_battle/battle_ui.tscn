@@ -761,6 +761,7 @@ text = " Close chat "
 [node name="BlockedContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7gtst")
 
 [node name="Label" type="Label" parent="BlockedContainer"]
