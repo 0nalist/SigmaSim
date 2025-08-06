@@ -18,6 +18,7 @@ signal request_resize_y_to(pixels)
 @onready var chats_tab: ChatsTab = %ChatsTab
 
 @onready var confidence_progress_bar: StatProgressBar = %ConfidenceProgressBar
+@onready var ex_progress_bar: StatProgressBar = %ExProgressBar
 
 # Team tab UI
 @onready var x_slider: HSlider = %XHSlider
@@ -68,8 +69,12 @@ func _ready():
 	z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
 	curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
 
+	confidence_progress_bar.update_value(PlayerManager.get_stat("confidence"))
+	ex_progress_bar.update_value(PlayerManager.get_stat("ex"))
+	
 	_on_gender_slider_changed(0)
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
+	await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
 
 	show_swipes_tab()
 	cancel_pride()

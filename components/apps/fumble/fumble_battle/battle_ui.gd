@@ -502,7 +502,7 @@ func do_move(move_type: String) -> void:
 			return
 		block_warning_active = false
 
-	if battle_stats.get("apprehension", 0) >= 90:
+	if battle_stats.get("apprehension", 0) >= 90 and not result.success:
 		var warning_text = RizzBattleData.get_random_block_warning()
 		if warning_text != "":
 			var warning_chat: ChatBox = add_chat_line(warning_text, false)
