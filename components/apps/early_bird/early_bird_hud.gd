@@ -39,7 +39,7 @@ func update_cash_per_score(cps: float) -> void:
 
 
 func show_game_over(final_winnings: float) -> void:
-	game_label.text = "Game Over!\nWinnings: " + str(final_winnings)
+	game_label.text = "Game Over!\nWinnings: $" + str(final_winnings)
 	PortfolioManager.add_cash(final_winnings)
 	game_menu_container.show()
 
