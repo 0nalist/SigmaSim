@@ -27,7 +27,7 @@ func refresh_matches():
 	for child in matches_container.get_children():
 		child.queue_free()
 
-	# Gather all "liked" or "matched" NPCs, but not currently in a chat battle
+# Gather all "liked" or "matched" NPCs, but not currently in a chat battle
 	var matches: Array = FumbleManager.get_matches()
 	var battles: Array = FumbleManager.get_active_battles()
 	var battle_npc_indices := battles.map(func(b): return b.npc_idx)
@@ -45,13 +45,18 @@ func refresh_matches():
 		matches_container.add_child(btn)
 		btn.set_profile(npc, idx)
 		btn.match_pressed.connect(_on_match_button_pressed)
-		
 
-	matches_label.text = "Matches: %d" % filtered_count
+	# Include NPCs currently in battles in the totals
+	for b in battles:
+		var npc = NPCManager.get_npc_by_index(b.npc_idx)
+		total_attractiveness += npc.attractiveness
+
+	var total_count := filtered_count + battles.size()
+	matches_label.text = "Matches: %d" % total_count
 
 	var avg_att := 0.0
-	if filtered_count > 0:
-		avg_att = float(total_attractiveness) / filtered_count
+	if total_count > 0:
+		avg_att = float(total_attractiveness) / total_count
 	average_match_label.text = "Avg: 🔥 %.1f/10" % (avg_att / 10.0)
 
 func refresh_battles():

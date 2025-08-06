@@ -78,6 +78,7 @@ horizontal_alignment = 1
 
 [node name="SelfTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -288,7 +289,6 @@ layout_mode = 2
 
 [node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -346,6 +346,7 @@ icon_alignment = 1
 
 [node name="ChatsTab" parent="MarginContainer/VBoxContainer" instance=ExtResource("5_dmsn0")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="MenuTabContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
