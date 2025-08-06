@@ -68,6 +68,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MatchButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer/MatchesContainer" instance=ExtResource("2_qddv1")]
+custom_minimum_size = Vector2(128, 96)
 layout_mode = 2
 size_flags_vertical = 4
 expand_icon = false

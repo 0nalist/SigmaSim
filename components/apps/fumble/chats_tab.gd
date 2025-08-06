@@ -58,6 +58,7 @@ func refresh_battles():
 	for child in chat_battles_container.get_children():
 		child.queue_free()
 		var battles: Array = FumbleManager.get_active_battles()
+		print("active battles: " + str(FumbleManager.get_active_battles()))
 		for b in battles:
 			var npc = NPCManager.get_npc_by_index(b.npc_idx)
 			var btn = battle_button_scene.instantiate()

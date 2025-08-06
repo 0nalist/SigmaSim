@@ -49,6 +49,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye860")
 script = ExtResource("1_v4fb6")
 window_title = "Fumble"
+default_window_size = Vector2(420, 560)
 upgrade_pane = ExtResource("2_hf3uq")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
