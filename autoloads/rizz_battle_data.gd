@@ -70,3 +70,14 @@ static func get_type_mod_chance_adjust(npc_type: String, move_type: String) -> f
 	if move_type in mods["weak"]:
 		return RizzBattleData.weak_type_chance_penalty
 	return 0.0
+
+func get_random_block_warning() -> String:
+	if npc_block_warnings is Array and npc_block_warnings.size() > 0:
+		var entry = npc_block_warnings.pick_random()
+		var core = str(entry.get("core", ""))
+		var suffixes = entry.get("suffixes", [])
+		var suffix = ""
+		if suffixes is Array and suffixes.size() > 0:
+			suffix = str(suffixes.pick_random())
+		return core + suffix
+	return ""

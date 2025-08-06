@@ -7,10 +7,11 @@ class_name BattleUI
 var logic: BattleLogic
 
 @onready var end_battle_screen_container: CenterContainer = %EndBattleScreenContainer
+@onready var blocked_container: PanelContainer = %BlockedContainer
 
 var victorious: bool = false
 var blocked: bool = false
-
+var block_warning_active: bool = false
 
 
 @onready var profile_pic: TextureRect = %ProfilePic
@@ -41,6 +42,8 @@ var blocked: bool = false
 @onready var profile_center_container: CenterContainer = %ProfileCenterContainer
 @onready var fumble_profile: FumbleProfileUI = %FumbleProfile
 @onready var close_fumble_profile_button: Button = %CloseFumbleProfileButton
+
+
 
 
 @onready var chat_container: VBoxContainer = %ChatContainer
@@ -97,8 +100,9 @@ func _ready():
 	profile_center_container.hide()
 	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
 	close_fumble_profile_button.pressed.connect(_on_close_fumble_profile_button_pressed)
-	
+
 	end_battle_screen_container.hide()
+	blocked_container.hide()
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1):
@@ -461,7 +465,7 @@ func do_move(move_type: String) -> void:
 			var number_msg = "Here’s my number: [url=number][u]%s[/u][/url]" % raw_number
 			var chat2: VictoryNumberChatBox = add_victory_number_chat_line(number_msg)
 			if chat2.has_signal("victory_number_clicked"):
-				chat2.victory_number_clicked.connect(_on_victory_number_clicked)
+					chat2.victory_number_clicked.connect(_on_victory_number_clicked)
 			await animate_chat_text(chat2, number_msg)
 			#await end_battle(true, npc)
 			victorious = true
@@ -470,6 +474,19 @@ func do_move(move_type: String) -> void:
 			PlayerManager.adjust_stat("confidence", -10)
 			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
 
+	if block_warning_active:
+		if not result.success:
+			await block_player()
+			return
+		block_warning_active = false
+
+	if battle_stats.get("apprehension", 0) >= 90:
+		var warning_text = RizzBattleData.get_random_block_warning()
+		if warning_text != "":
+			var warning_chat: ChatBox = add_chat_line(warning_text, false)
+			await animate_chat_text(warning_chat, warning_text)
+			update_action_buttons()
+		block_warning_active = true
 
 	is_animating = false
 	PlayerManager.suppress_stat("confidence", false)
@@ -478,6 +495,15 @@ func do_move(move_type: String) -> void:
 func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
 	return add_chat_line(text, false, true, true) as VictoryNumberChatBox
 
+func block_player() -> void:
+	blocked = true
+	blocked_container.show()
+	end_battle(false, npc)
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
+	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
+	persist_battle_stats_to_npc()
+	await get_tree().create_timer(0.69).timeout
+	queue_free()
 
 func _on_victory_number_clicked() -> void:
 	show_victory_screen()
@@ -509,8 +535,8 @@ func _disable_all_action_buttons() -> void:
 	for btn in action_buttons:
 		btn.disabled = true
 	catch_button.disabled = true
+	ghost_button.disabled = true
 	ghost_button.text = "TTYL"
-	#ghost_button should switch to "ttyl" and blink
 	inventory_button.disabled = true
 
 
