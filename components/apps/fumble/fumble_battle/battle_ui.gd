@@ -7,10 +7,11 @@ class_name BattleUI
 var logic: BattleLogic
 
 @onready var end_battle_screen_container: CenterContainer = %EndBattleScreenContainer
+@onready var blocked_container: PanelContainer = %BlockedContainer
 
 var victorious: bool = false
 var blocked: bool = false
-
+var block_warning_active: bool = false
 
 
 @onready var profile_pic: TextureRect = %ProfilePic
@@ -41,6 +42,8 @@ var blocked: bool = false
 @onready var profile_center_container: CenterContainer = %ProfileCenterContainer
 @onready var fumble_profile: FumbleProfileUI = %FumbleProfile
 @onready var close_fumble_profile_button: Button = %CloseFumbleProfileButton
+
+
 
 
 @onready var chat_container: VBoxContainer = %ChatContainer
@@ -97,14 +100,19 @@ func _ready():
 	profile_center_container.hide()
 	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
 	close_fumble_profile_button.pressed.connect(_on_close_fumble_profile_button_pressed)
-	
+
 	end_battle_screen_container.hide()
+	blocked_container.hide()
 	
 
-func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1):
+func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
 	battle_id = new_battle_id
 	npc = new_npc
 	npc_idx = new_npc_idx
+	if outcome == "victory":
+		victorious = true
+	elif outcome == "blocked":
+		blocked = true
 	if chatlog_in.size() == 0 and stats_in.size() == 0:
 			var data = FumbleManager.load_battle_state(battle_id)
 			if data.size() > 0:
@@ -149,6 +157,17 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	update_action_buttons()
 	scroll_to_newest_chat()
 	update_progress_bars()
+
+	if victorious:
+		ex_award = npc.attractiveness / 10.0
+		victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+		end_battle_screen_container.show()
+		_disable_all_action_buttons()
+	elif blocked:
+		blocked_container.show()
+		_disable_all_action_buttons()
+		ghost_button.disabled = false
+		ghost_button.text = "bye forever!"
 
 
 func scroll_to_newest_chat():
@@ -255,13 +274,20 @@ func _on_catch_button_pressed():
 func _on_ghost_button_pressed():
 	if is_animating:
 		return
+	if blocked:
+		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "blocked")
+		DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
+		persist_battle_stats_to_npc()
+		queue_free()
+		return
 	var chat = add_chat_line("*ghosts*", true)
 	await animate_chat_text(chat, "*ghosts*")
 	await get_tree().create_timer(0.69).timeout
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
+	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
 	persist_battle_stats_to_npc()
 	queue_free()
+
 
 
 func swap_move(slot_index: int, new_move: String):
@@ -461,7 +487,7 @@ func do_move(move_type: String) -> void:
 			var number_msg = "Here’s my number: [url=number][u]%s[/u][/url]" % raw_number
 			var chat2: VictoryNumberChatBox = add_victory_number_chat_line(number_msg)
 			if chat2.has_signal("victory_number_clicked"):
-				chat2.victory_number_clicked.connect(_on_victory_number_clicked)
+					chat2.victory_number_clicked.connect(_on_victory_number_clicked)
 			await animate_chat_text(chat2, number_msg)
 			#await end_battle(true, npc)
 			victorious = true
@@ -470,6 +496,19 @@ func do_move(move_type: String) -> void:
 			PlayerManager.adjust_stat("confidence", -10)
 			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
 
+	if block_warning_active:
+		if not result.success:
+			await block_player()
+			return
+		block_warning_active = false
+
+	if battle_stats.get("apprehension", 0) >= 90:
+		var warning_text = RizzBattleData.get_random_block_warning()
+		if warning_text != "":
+			var warning_chat: ChatBox = add_chat_line(warning_text, false)
+			await animate_chat_text(warning_chat, warning_text)
+			update_action_buttons()
+		block_warning_active = true
 
 	is_animating = false
 	PlayerManager.suppress_stat("confidence", false)
@@ -478,6 +517,15 @@ func do_move(move_type: String) -> void:
 func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
 	return add_chat_line(text, false, true, true) as VictoryNumberChatBox
 
+func block_player() -> void:
+	blocked = true
+	blocked_container.show()
+	end_battle(false, npc)
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "blocked")
+	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
+	persist_battle_stats_to_npc()
+	await get_tree().create_timer(0.69).timeout
+	queue_free()
 
 func _on_victory_number_clicked() -> void:
 	show_victory_screen()
@@ -509,8 +557,8 @@ func _disable_all_action_buttons() -> void:
 	for btn in action_buttons:
 		btn.disabled = true
 	catch_button.disabled = true
+	ghost_button.disabled = true
 	ghost_button.text = "TTYL"
-	#ghost_button should switch to "ttyl" and blink
 	inventory_button.disabled = true
 
 
@@ -681,8 +729,15 @@ func animate_chat_text(chat_box: Control, text: String) -> void:
 
 
 func _on_close_chat_button_pressed() -> void:
-	# If the battle is still active, keep relationship in active_chat
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
+	var outcome := "active"
+	var rel_status := FumbleManager.FumbleStatus.ACTIVE_CHAT
+	if victorious:
+		outcome = "victory"
+		rel_status = FumbleManager.FumbleStatus.LIKED
+	elif blocked:
+		outcome = "blocked"
+		rel_status = FumbleManager.FumbleStatus.BLOCKED_PLAYER
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, outcome)
+	DBManager.save_fumble_relationship(npc_idx, rel_status)
 	persist_battle_stats_to_npc()
 	queue_free()

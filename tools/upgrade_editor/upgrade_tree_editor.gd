@@ -424,7 +424,9 @@ func _on_attach_upgrade_selected(idx):
 	var file_name = attach_upgrade_button.get_popup().get_item_text(idx)
 	var full_path = current_upgrade_folder + "/" + file_name
 	var resource = load(full_path)
-	if resource is UpgradeResource:
-		selected_node.set_upgrade_resource(resource)
-		selected_node.display_name = resource.upgrade_name
-		selected_node.queue_redraw()
+	if resource is Resource:
+			if selected_node.has_method("set_upgrade_resource"):
+					selected_node.set_upgrade_resource(resource)
+			#if resource.has_method("get") and resource.get("upgrade_name", "") != "":
+			#		selected_node.display_name = resource.get("upgrade_name")
+			#selected_node.queue_redraw()

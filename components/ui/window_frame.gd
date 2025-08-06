@@ -60,15 +60,16 @@ func _ready() -> void:
 
 	upgrade_button.visible = false
 
-	minimize_button.pressed.connect(func():
-		if WindowManager and WindowManager.has_method("get_taskbar_icon_center"):
-			var icon_center = WindowManager.get_taskbar_icon_center(self)
-			minimize(icon_center)
-		else:
-			minimize()
+	minimize_button.pressed.connect(
+		func():
+			if WindowManager and WindowManager.has_method("get_taskbar_icon_center"):
+				var icon_center = WindowManager.get_taskbar_icon_center(self)
+				minimize(icon_center)
+			else:
+				minimize()
 	)
 	PortfolioManager.cash_updated.connect(_on_relevant_stat_changed)
-	UpgradeManager.upgrade_unlocked.connect(_on_relevant_stat_changed)
+	#UpgradeManager.upgrade_unlocked.connect(_on_relevant_stat_changed) #not implemented yet TODO
 	UpgradeManager.upgrade_purchased.connect(_on_relevant_stat_changed)
 
 
@@ -444,7 +445,7 @@ func _on_close_pressed() -> void:
 	else:
 		queue_free()
 
-func _on_relevant_stat_changed(_x = null):
+func _on_relevant_stat_changed(_a = null, _b = null):
 	_update_upgrade_button_state()
 
 
@@ -453,15 +454,16 @@ func _update_upgrade_button_state() -> void:
 		upgrade_button.visible = false
 		return
 
-	var upgrades = UpgradeManager.get_upgrades_by_source(pane.window_title)
-	
+	var upgrades = UpgradeManager.get_upgrades_for_system(pane.window_title)
+
 	var any_available := false
 	for upgrade in upgrades:
-		if UpgradeManager.is_unlocked(upgrade.upgrade_id) and not UpgradeManager.is_purchased(upgrade.upgrade_id):
-			var cost = upgrade.get_current_cost()
-			if PortfolioManager.cash >= cost:
-				any_available = true
-				break
+		var id = upgrade.get("id")
+		if not UpgradeManager.is_locked(id) and UpgradeManager.can_purchase(id):
+			any_available = true
+			break
+	upgrade_button.visible = true
+	upgrade_button.flat = not any_available
 
 	upgrade_button.visible = true
 	upgrade_button.flat = not any_available
