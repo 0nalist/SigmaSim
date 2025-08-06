@@ -64,7 +64,7 @@ func _ready() -> void:
 
 	
 	StatManager.connect_to_stat("cash_per_score", self, "_on_cash_per_score_changed")
-	StatManager.stat_changed.connect(_on_stat_changed)
+	#StatManager.stat_changed.connect(_on_stat_changed)
 	start_game()
 
 func find_parent_window_frame() -> WindowFrame:
@@ -176,15 +176,17 @@ func _on_autopilot_button_pressed() -> void:
 	if autopilot:
 		autopilot.enabled = !autopilot.enabled
 
+'''
 func _on_stat_changed(stat: String, value: float) -> void:
 	if stat == "cash_per_score":
 		_on_cash_per_score_changed(value)
-
+'''
 
 
 func _update_cash_per_score() -> void:
 	cash_per_score = StatManager.get_stat("cash_per_score", 0.01)
 
 func _on_cash_per_score_changed(value: float) -> void:
+	print("EarlyBird: cash_per_score changed to", value)
 	cash_per_score = value
 	hud.update_cash_per_score(cash_per_score)
