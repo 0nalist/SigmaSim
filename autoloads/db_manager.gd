@@ -270,8 +270,14 @@ func load_fumble_battle(battle_id: String, slot_id: int = SaveManager.current_sl
 	return rows[0] if rows.size() > 0 else {}
 
 func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Array:
-	print("DB get_active_fumble_battles slot=", slot_id)
-	var rows = db.select_rows("fumble_battles", "slot_id = %d AND outcome = 'active'" % slot_id, ["battle_id", "npc_id", "chatlog", "stats", "outcome"])
+	# Note: despite the name, this now returns all battles regardless of outcome
+	# so that the UI can show results such as victories or blocks.
+	print("DB get_fumble_battles slot=", slot_id)
+	var rows = db.select_rows(
+		"fumble_battles",
+		"slot_id = %d" % slot_id,
+		["battle_id", "npc_id", "chatlog", "stats", "outcome"]
+	)
 	var out := []
 	for r in rows:
 		print(" -> battle", r.battle_id, "outcome", r.outcome)
@@ -279,7 +285,8 @@ func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Ar
 			"battle_id": r.battle_id,
 			"npc_idx": int(r.npc_id),
 			"chatlog": from_json(r.chatlog),
-			"stats": from_json(r.stats)
+			"stats": from_json(r.stats),
+			"outcome": r.outcome,
 		})
 	return out
 

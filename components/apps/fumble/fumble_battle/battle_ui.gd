@@ -105,10 +105,14 @@ func _ready():
 	blocked_container.hide()
 	
 
-func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1):
+func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
 	battle_id = new_battle_id
 	npc = new_npc
 	npc_idx = new_npc_idx
+	if outcome == "victory":
+		victorious = true
+	elif outcome == "blocked":
+		blocked = true
 	if chatlog_in.size() == 0 and stats_in.size() == 0:
 			var data = FumbleManager.load_battle_state(battle_id)
 			if data.size() > 0:
@@ -153,6 +157,15 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	update_action_buttons()
 	scroll_to_newest_chat()
 	update_progress_bars()
+
+	if victorious:
+		ex_award = npc.attractiveness / 10.0
+		victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+		end_battle_screen_container.show()
+		_disable_all_action_buttons()
+	elif blocked:
+		blocked_container.show()
+		_disable_all_action_buttons()
 
 
 func scroll_to_newest_chat():
@@ -262,8 +275,8 @@ func _on_ghost_button_pressed():
 	var chat = add_chat_line("*ghosts*", true)
 	await animate_chat_text(chat, "*ghosts*")
 	await get_tree().create_timer(0.69).timeout
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
+	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
 	persist_battle_stats_to_npc()
 	queue_free()
 
@@ -499,7 +512,7 @@ func block_player() -> void:
 	blocked = true
 	blocked_container.show()
 	end_battle(false, npc)
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "blocked")
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
 	persist_battle_stats_to_npc()
 	await get_tree().create_timer(0.69).timeout
@@ -707,8 +720,15 @@ func animate_chat_text(chat_box: Control, text: String) -> void:
 
 
 func _on_close_chat_button_pressed() -> void:
-	# If the battle is still active, keep relationship in active_chat
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
-	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
+	var outcome := "active"
+	var rel_status := FumbleManager.FumbleStatus.ACTIVE_CHAT
+	if victorious:
+		outcome = "victory"
+		rel_status = FumbleManager.FumbleStatus.LIKED
+	elif blocked:
+		outcome = "blocked"
+		rel_status = FumbleManager.FumbleStatus.BLOCKED_PLAYER
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, outcome)
+	DBManager.save_fumble_relationship(npc_idx, rel_status)
 	persist_battle_stats_to_npc()
 	queue_free()
