@@ -248,6 +248,7 @@ custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
 [node name="PremiumFeaturesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
