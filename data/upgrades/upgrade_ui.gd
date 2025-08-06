@@ -40,7 +40,8 @@ func _refresh_cost() -> void:
 	var cost = UpgradeManager.get_cost_for_next_level(upgrade_data["id"])
 	var cost_strs = []
 	for currency in cost.keys():
-			cost_strs.append("%s: %d" % [currency.capitalize(), int(round(cost[currency]))])
+		var amount = float(cost[currency])
+		cost_strs.append("%s: %.2f" % [currency.capitalize(), amount])
 	cost_label.text = "Cost: " + " / ".join(cost_strs)
 
 func _on_buy_button_pressed() -> void:
