@@ -225,7 +225,7 @@ func _get_cost_for_level(upgrade: Dictionary, level: int) -> Dictionary:
 					)
 					result[currency] = base_cost.get(currency, 0.0)
 			return result
-		elif typeof(formula) == TYPE_STRING:
+		if typeof(formula) == TYPE_STRING: #elif?
 			var expr := Expression.new()
 			if expr.parse(formula, ["level", "base_cost", "prev_cost"]) != OK:
 				push_error("UpgradeManager: bad cost formula for %s" % upgrade.get("id"))
@@ -237,9 +237,8 @@ func _get_cost_for_level(upgrade: Dictionary, level: int) -> Dictionary:
 				"UpgradeManager: cost formula for %s must return Dictionary" % upgrade.get("id")
 			)
 			return base_cost
-		else:
-			push_error("UpgradeManager: cost_formula missing for %s" % upgrade.get("id"))
-			return base_cost
+		push_error("UpgradeManager: cost_formula missing for %s" % upgrade.get("id"))
+		return base_cost
 	return base_cost
 
 
@@ -252,7 +251,7 @@ func _get_base_cost(upgrade: Dictionary, level: int) -> Dictionary:
 		if level - 1 < cpl.size():
 			return cpl[level - 1]
 		return cpl[-1]
-	elif typeof(cpl) == TYPE_DICTIONARY:
+	if typeof(cpl) == TYPE_DICTIONARY:
 		return cpl
 	return {}
 
@@ -263,11 +262,22 @@ func _get_currency_amount(currency: String) -> float:
 			return PortfolioManager.cash
 	return PortfolioManager.get_crypto_amount(currency)
 
-func _deduct_currency(currency: String, amount: float) -> void:
+func _deduct_currency(currency: String, amount: float) -> bool:
 	if currency == "cash":
-		PortfolioManager.spend_cash(amount)
-	else:
-		PortfolioManager.add_crypto(currency, -amount)
+		return PortfolioManager.attempt_spend(amount)
+	if PortfolioManager.get_crypto_amount(currency) < amount:
+		return false
+	PortfolioManager.add_crypto(currency, -amount)
+	StatpopManager.spawn(
+		"-%s %s" % [NumberFormatter.format_number(amount), currency],
+		get_viewport().get_mouse_position(),
+		"click",
+		Color.YELLOW
+	)
+	return true
+
+
+
 
 func can_purchase(id: String) -> bool:
 	if is_locked(id):
@@ -277,18 +287,28 @@ func can_purchase(id: String) -> bool:
 		return false
 	var cost := get_cost_for_next_level(id)
 	for currency in cost.keys():
-		if _get_currency_amount(currency) < cost[currency]:
-			return false
+		var amount: float = cost[currency]
+		if currency == "cash":
+			if PortfolioManager.can_pay_with_cash(amount):
+				continue
+			var remainder := amount - PortfolioManager.cash
+			if remainder <= 0:
+				continue
+			if not PortfolioManager.can_pay_with_credit(remainder):
+				return false
+		else:
+			if PortfolioManager.get_crypto_amount(currency) < amount:
+				return false
 	return true
 
 func purchase(id: String) -> bool:
-	print("UpgradeManager.purchase called for", id)
-	if not can_purchase(id):
-		print("UpgradeManager.purchase: cannot purchase", id)
+	var upgrade := get_upgrade(id)
+	if upgrade == null:
 		return false
 	var cost := get_cost_for_next_level(id)
 	for currency in cost.keys():
-		_deduct_currency(currency, cost[currency])
+		if not _deduct_currency(currency, cost[currency]):
+			return false
 	var level := get_level(id) + 1
 	player_levels[id] = level
 	print("UpgradeManager.purchase: emitting upgrade_purchased for", id, "level", level)
