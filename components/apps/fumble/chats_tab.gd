@@ -27,7 +27,7 @@ func refresh_matches():
 	for child in matches_container.get_children():
 		child.queue_free()
 
-	# Gather all "liked" or "matched" NPCs, but not currently in a chat battle
+# Gather all "liked" or "matched" NPCs, but not currently in a chat battle
 	var matches: Array = FumbleManager.get_matches()
 	var battles: Array = FumbleManager.get_active_battles()
 	var battle_npc_indices := battles.map(func(b): return b.npc_idx)
@@ -45,26 +45,31 @@ func refresh_matches():
 		matches_container.add_child(btn)
 		btn.set_profile(npc, idx)
 		btn.match_pressed.connect(_on_match_button_pressed)
-		
 
-	matches_label.text = "Matches: %d" % filtered_count
+	# Include NPCs currently in battles in the totals
+	for b in battles:
+		var npc = NPCManager.get_npc_by_index(b.npc_idx)
+		total_attractiveness += npc.attractiveness
+
+	var total_count := filtered_count + battles.size()
+	matches_label.text = "Matches: %d" % total_count
 
 	var avg_att := 0.0
-	if filtered_count > 0:
-		avg_att = float(total_attractiveness) / filtered_count
+	if total_count > 0:
+		avg_att = float(total_attractiveness) / total_count
 	average_match_label.text = "Avg: 🔥 %.1f/10" % (avg_att / 10.0)
 
 func refresh_battles():
 	for child in chat_battles_container.get_children():
 		child.queue_free()
+
 	var battles: Array = FumbleManager.get_active_battles()
 	for b in battles:
 		var npc = NPCManager.get_npc_by_index(b.npc_idx)
 		var btn = battle_button_scene.instantiate()
-		btn.set_battle(npc, b.battle_id, b.npc_idx)
+		btn.set_battle(npc, b.battle_id, b.npc_idx, b.get("outcome", "active"))
 		btn.pressed.connect(func(): _on_battle_button_pressed(b.battle_id, npc, b.npc_idx))
 		chat_battles_container.add_child(btn)
-	#print("Active battles: " + str(FumbleManager.get_active_battles())) # Sooooo much text
 
 func _on_match_button_pressed(npc, idx):
 	var match_profile = match_profile_scene.instantiate()
@@ -88,7 +93,8 @@ func open_battle(battle_id, npc, idx):
 		npc,
 		battle_data.chatlog,
 		battle_data.stats,
-		idx
+		idx,
+		battle_data.get("outcome", "active"),
 	)
 	request_resize_x_to.emit(911)
 	request_resize_y_to.emit(666)

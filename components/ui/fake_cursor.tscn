@@ -4,6 +4,7 @@
 
 [node name="FakeCursor" type="CanvasLayer"]
 layer = 128
+visible = false
 
 [node name="FakeCursor" type="TextureRect" parent="."]
 z_index = 1024

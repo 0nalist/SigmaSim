@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=12 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
+[ext_resource type="PackedScene" uid="uid://dptnj8nxnr760" path="res://components/apps/fumble/fumble_special_offers.tscn" id="2_hf3uq"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
 [ext_resource type="Material" uid="uid://bl8moqb187o1d" path="res://components/apps/fumble/fumble_label_pride_month_material.tres" id="3_ye860"]
@@ -54,6 +55,8 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye860")
 script = ExtResource("1_v4fb6")
 window_title = "Fumble"
+default_window_size = Vector2(420, 560)
+upgrade_pane = ExtResource("2_hf3uq")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -81,6 +84,7 @@ horizontal_alignment = 1
 
 [node name="SelfTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -252,6 +256,7 @@ custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
 [node name="PremiumFeaturesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
@@ -346,7 +351,6 @@ text = " BUY NOW
 
 [node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1

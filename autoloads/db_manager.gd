@@ -270,8 +270,14 @@ func load_fumble_battle(battle_id: String, slot_id: int = SaveManager.current_sl
 	return rows[0] if rows.size() > 0 else {}
 
 func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Array:
-	print("DB get_active_fumble_battles slot=", slot_id)
-	var rows = db.select_rows("fumble_battles", "slot_id = %d AND outcome = 'active'" % slot_id, ["battle_id", "npc_id", "chatlog", "stats", "outcome"])
+	# Note: despite the name, this now returns all battles regardless of outcome
+	# so that the UI can show results such as victories or blocks.
+	print("DB get_fumble_battles slot=", slot_id)
+	var rows = db.select_rows(
+		"fumble_battles",
+		"slot_id = %d" % slot_id,
+		["battle_id", "npc_id", "chatlog", "stats", "outcome"]
+	)
 	var out := []
 	for r in rows:
 		print(" -> battle", r.battle_id, "outcome", r.outcome)
@@ -279,7 +285,8 @@ func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Ar
 			"battle_id": r.battle_id,
 			"npc_idx": int(r.npc_id),
 			"chatlog": from_json(r.chatlog),
-			"stats": from_json(r.stats)
+			"stats": from_json(r.stats),
+			"outcome": r.outcome,
 		})
 	return out
 
@@ -323,3 +330,35 @@ func from_json(json_str: String) -> Variant:
 	if err == OK:
 		return json.data
 	return null
+
+
+# -- Daterbase Helpers --
+
+func get_daterbase_entries(slot_id: int = SaveManager.current_slot_id) -> Array:
+	var q = "SELECT npc_id, battle_id FROM fumble_battles WHERE slot_id = %d AND outcome = 'victory'" % slot_id
+	db.query(q)
+	var rows = db.query_result
+	var latest := {}
+	for r in rows:
+		var npc_id = int(r.npc_id)
+		var b_id = str(r.battle_id)
+		var t = int(b_id.split("_")[0]) if "_" in b_id else 0
+		if not latest.has(npc_id) or t > latest[npc_id]:
+			latest[npc_id] = t
+	var out: Array = []
+	for n in latest.keys():
+		out.append({"npc_id": n, "timestamp": latest[n]})
+	return out
+
+func execute_select(query: String) -> Array:
+	var trimmed = query.strip_edges()
+	var lower = trimmed.to_lower()
+	if not lower.begins_with("select"):
+		push_warning("execute_select only allows SELECT statements")
+		return []
+	for bad in ["drop", "delete", "update", "insert", "alter", "pragma"]:
+		if bad in lower:
+			push_warning("Unsafe keyword detected in query: %s" % bad)
+			return []
+	db.query(trimmed)
+	return db.query_result

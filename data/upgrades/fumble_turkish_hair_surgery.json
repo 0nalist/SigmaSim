@@ -1,0 +1,21 @@
+{
+  "id": "fumble_turkish_hair_surgery",
+  "name": "Turkish Hair Surgery",
+  "description": "Undergo Turkish hair surgery. Increases dime status by 0.6.",
+  "effects": [
+	{
+	  "target": "dime_status",
+	  "operation": "add",
+	  "value": 0.6
+	}
+  ],
+  "systems": [
+	"fumble"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+	"cash": 25000
+  },
+  "max_level": 1,
+  "scale_by_formula": false
+}

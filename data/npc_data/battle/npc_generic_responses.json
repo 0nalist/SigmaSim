@@ -43,9 +43,15 @@
   "flex": {
 	"TRUE": [
 	  {
-		"response_prefix": [],
-		"response_line": "okay mr. accomplished",
-		"response_suffix": []
+		"response_prefix": [
+		  "Okay, ",
+		  "Well "
+		],
+		"response_line": "that's quite the accomplishment",
+		"response_suffix": [
+		  "!",
+		  "."
+		]
 	  },
 	  {
 		"response_prefix": [],
@@ -64,10 +70,10 @@
 	  },
 	  {
 		"response_prefix": [
-		  "Wait, why ",
-		  ""
+		  "Wait, why is that ",
+		  "That's actually "
 		],
-		"response_line": "is that so attractive",
+		"response_line": "so attractive",
 		"response_suffix": [
 		  "?",
 		  "??"
@@ -230,8 +236,7 @@
 	"TRUE": [
 	  {
 		"response_prefix": [
-		  "You're ",
-		  ""
+		  "You're "
 		],
 		"response_line": "actually smooth",
 		"response_suffix": [
@@ -405,13 +410,13 @@
 		],
 		"response_line": "out",
 		"response_suffix": [
-		  "please.",
+		  " please.",
 		  ". You don't need to do all that."
 		]
 	  },
 	  {
 		"response_prefix": [
-		  "Lol."
+		  "Lol. "
 		],
 		"response_line": "That's a lot",
 		"response_suffix": [

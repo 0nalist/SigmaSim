@@ -1,10 +1,11 @@
-[gd_scene load_steps=24 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=27 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
 [ext_resource type="Script" uid="uid://dye2qhymstgb7" path="res://components/apps/early_bird/early_bird_hud.gd" id="2_jcpj0"]
 [ext_resource type="Script" uid="uid://bhg1mfe5e11r4" path="res://components/apps/early_bird/early_bird_player.gd" id="2_yrrt2"]
 [ext_resource type="Script" uid="uid://dbmpwkk7dhfby" path="res://components/apps/early_bird/round_manager.gd" id="3_4pdpe"]
+[ext_resource type="PackedScene" uid="uid://beb1rv52x4xjt" path="res://components/apps/early_bird/early_bird_upgrades.tscn" id="3_5sugq"]
 [ext_resource type="Script" uid="uid://k2ttxoaqe66c" path="res://components/apps/early_bird/pipe_manager.gd" id="3_kqjgp"]
 [ext_resource type="Texture2D" uid="uid://6l6nhs2hrxjx" path="res://assets/early_bird/high_clouds.png" id="3_tm5dr"]
 [ext_resource type="Texture2D" uid="uid://dto483mcrx8w2" path="res://assets/early_bird/grass.png" id="4_tm5dr"]
@@ -27,6 +28,30 @@ radius = 22.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yrrt2"]
 size = Vector2(1971, 69)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hew32"]
+bg_color = Color(0.839216, 0.498039, 0.388235, 0.596078)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5sugq"]
+bg_color = Color(0.67451, 0.603922, 0.133333, 0.564706)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tgvyg"]
 shader = ExtResource("16_hew32")
@@ -54,6 +79,7 @@ window_icon = ExtResource("13_8hmpk")
 default_window_size = Vector2(440, 960)
 window_can_maximize = false
 user_resizable = false
+upgrade_pane = ExtResource("3_5sugq")
 
 [node name="Parallax" type="Node2D" parent="."]
 
@@ -194,24 +220,59 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer"]
-unique_name_in_owner = true
+[node name="ScoreVBox" type="VBoxContainer" parent="HUD/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
-theme_override_font_sizes/font_size = 48
-text = "3"
 
-[node name="WinningsLabel" type="Label" parent="HUD/MarginContainer"]
+[node name="ScorePanel" type="PanelContainer" parent="HUD/MarginContainer/ScoreVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_hew32")
+
+[node name="ScoreRow" type="HBoxContainer" parent="HUD/MarginContainer/ScoreVBox/ScorePanel"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 2
+
+[node name="MultiplyLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "x"
+horizontal_alignment = 1
+
+[node name="CashPerScoreLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/ScorePanel/ScoreRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "$0.00"
+
+[node name="PanelContainer" type="PanelContainer" parent="HUD/MarginContainer/ScoreVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_5sugq")
+
+[node name="WinningsLabel" type="Label" parent="HUD/MarginContainer/ScoreVBox/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 48
-text = "3"
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BankLabel" type="Label" parent="HUD/MarginContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -233,13 +294,13 @@ text = "EARLY BIRD"
 
 [node name="GoButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("17_5sugq")
 theme_override_font_sizes/font_size = 48
 text = " Get that worm! "
-vertical_icon_alignment = 0
 
 [node name="QuitButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
 unique_name_in_owner = true
@@ -271,10 +332,6 @@ unique_name_in_owner = true
 position = Vector2(1709, 238)
 script = ExtResource("12_im8xc")
 
-[node name="Sprite2D" type="Sprite2D" parent="Worm"]
-visible = false
-texture = ExtResource("13_8hmpk")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Worm"]
 position = Vector2(3, -4)
 shape = SubResource("CircleShape2D_y10ql")
@@ -292,8 +349,10 @@ size_flags_vertical = 4
 texture = ExtResource("13_8hmpk")
 
 [node name="Timer" type="Timer" parent="Worm"]
-wait_time = 2.319
+wait_time = 1.913
 autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Worm"]
 
 [connection signal="pressed" from="HUD/AutopilotButton" to="." method="_on_autopilot_button_pressed"]
 [connection signal="input_event" from="Worm" to="Worm" method="_on_input_event"]

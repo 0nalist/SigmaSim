@@ -4,7 +4,7 @@ extends Node
 
 var active_battles: Array = [] # {npc_idx, battle_id}
 
-const VALID_OUTCOMES := ["active", "ghosted", "victory"]
+const VALID_OUTCOMES := ["active", "ghosted", "victory", "blocked"]
 
 
 enum FumbleStatus {
@@ -44,6 +44,7 @@ func get_matches() -> Array:
 	return NPCManager.get_fumble_matches()
 
 func get_active_battles() -> Array:
+	# Returns all battles for the current slot, including finished ones.
 	return DBManager.get_active_fumble_battles(SaveManager.current_slot_id)
 
 func has_active_battle(npc_idx: int) -> bool:

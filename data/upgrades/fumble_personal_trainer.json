@@ -1,0 +1,23 @@
+{
+  "id": "fumble_personal_trainer",
+  "name": "Personal Trainer",
+  "description": "Hire a personal trainer. Repeatable every week. Soft limit 10. Increases dime status by up to 0.1, scaling down to +0.01 as dime approaches 9.",
+  "effects": [
+	{
+	  "target": "dime_status",
+	  "operation": "add_formula",
+	  "value_formula": "max(0.01, 0.1 - clamp((current_dime_status - 8) * 0.09, 0, 0.09))"
+	}
+  ],
+  "systems": [
+	"fumble"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+	"cash": 1500
+  },
+  "max_level": 9999,
+  "soft_limit": 10,
+  "repeatable_cooldown_days": 7,
+  "scale_by_formula": false
+}

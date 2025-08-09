@@ -1,0 +1,2 @@
+extends Pane
+class_name FumbleSpecialOffers

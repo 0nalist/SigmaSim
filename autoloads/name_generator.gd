@@ -39,9 +39,9 @@ func get_random_name(fem: float = 0.0, masc: float = 0.0, enby: float = 0.0, top
 		# Choose random name when called without arguments
 		var available := name_pool.map(func(e): return e.name)
 		available.shuffle()
-		var name = available[0]
-		_add_to_recent(name)
-		return name
+		var new_name = available[0]
+		_add_to_recent(new_name)
+		return new_name
 
 	var target_vector := Vector3(fem, masc, enby).normalized()
 	var scored_names: Array = []

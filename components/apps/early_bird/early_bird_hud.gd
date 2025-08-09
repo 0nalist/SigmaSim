@@ -8,7 +8,7 @@ signal quit_pressed
 
 @onready var hud: Control = %HUD
 @onready var score_label: Label = %ScoreLabel
-#@onready var bank_label: Label = %BankLabel
+@onready var cash_per_score_label: Label = %CashPerScoreLabel
 
 @onready var game_menu_container: VBoxContainer = %GameMenuContainer
 @onready var game_label: Label = %GameLabel
@@ -25,21 +25,34 @@ func _ready() -> void:
 	reset()
 
 func update_score(new_score: int) -> void:
+
 	score_label.text = str(new_score)
-	
+	#winnings_label.text = str(winnings)
+
+func update_winnings(new_winnings: float) -> void:
+	winnings_label.text = "$%.2f" % new_winnings
 
 
-func show_game_over(final_score: int) -> void:
-	#game_label.text = "Game Over!\nScore: " + str(final_score)
+
+func update_cash_per_score(cps: float) -> void:
+	cash_per_score_label.text = "$%.2f" % cps
+
+
+func show_game_over(final_winnings: float) -> void:
+	game_label.text = "Game Over!\nWinnings: $" + str(NumberFormatter.format_commas(final_winnings))
+	PortfolioManager.add_cash(final_winnings)
+	if final_winnings > 0:
+		StatpopManager.spawn("+$" + str(NumberFormatter.format_commas(final_winnings)), winnings_label.global_position + Vector2(55,55))
 	game_menu_container.show()
 
 
 
-func reset() -> void:
+func reset(cps: float = 0.0) -> void:
 	update_score(0)
-	
+	update_cash_per_score(cps)
+	update_winnings(0)
+
 	game_menu_container.hide()
-	#game_label.hide()
 
 func _on_go_button_pressed() -> void:
 	emit_signal("restart_pressed")

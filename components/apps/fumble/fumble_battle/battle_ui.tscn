@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cel7rmg2pea12"]
+[gd_scene load_steps=37 format=3 uid="uid://cel7rmg2pea12"]
 
 [ext_resource type="Script" uid="uid://b4cmpyad34a6u" path="res://components/apps/fumble/fumble_battle/battle_ui.gd" id="1_ctqjn"]
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_vooct"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://cq21pla351uw0" path="res://assets/emojis/mirror_twemoji_x72_1fa9e.png" id="10_6oduf"]
 [ext_resource type="Texture2D" uid="uid://dnvlxo5xu0ypo" path="res://assets/emojis/smiling_eyes_blush_twemoji_x72_1f60a.png" id="11_7gtst"]
 [ext_resource type="Texture2D" uid="uid://8icgbuxae2a8" path="res://assets/emojis/grimace_twemoji_x72_1f62c.png" id="12_mq0jq"]
+[ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="20_7gtst"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6oduf"]
 border_color = Color(0, 0, 0, 1)
@@ -758,14 +759,17 @@ layout_mode = 2
 text = " Close chat "
 
 [node name="BlockedContainer" type="PanelContainer" parent="."]
-visible = false
+unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7gtst")
 
 [node name="Label" type="Label" parent="BlockedContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("20_7gtst")
 theme_override_font_sizes/font_size = 64
-text = "BLOCKED"
+text = "BLOCKED!"
 
 [connection signal="pressed" from="EndBattleScreenContainer/PanelContainer/MarginContainer/VBoxContainer/CloseChatButton" to="." method="_on_close_chat_button_pressed"]

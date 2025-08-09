@@ -45,6 +45,9 @@
   },
   {
     "core": "I'm obviously no longer interested in communicating with you after that message",
-    "suffixes": []
+    "suffixes": [
+      "!",
+      ". You should know not to try that again with anyone else."
+    ]
   }
 ]

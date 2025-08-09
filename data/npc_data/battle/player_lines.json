@@ -106,7 +106,7 @@
     "core": "your name tattooed on my chest",
     "prefixes": [
       "I'm trying to get ",
-      " I'm going to get ",
+      "I'm going to get ",
       "I need "
     ],
     "suffixes": [
@@ -141,8 +141,8 @@
     ],
     "suffixes": [
       ".",
-      " Worth it though.",
-      " I regret nothing."
+      ", worth it though.",
+      ". I regret nothing."
     ],
     "response_id": "simp_crack"
   },
@@ -254,9 +254,9 @@
       "Y"
     ],
     "suffixes": [
-      "because I feel a strong connection ",
-      "because I'd kms without you",
-      "because I'm trying to connect my devices to you"
+      " because I feel a strong connection ",
+      " because I'd kms without you",
+      " because I'm trying to connect my devices to you"
     ],
     "response_id": "rizz_wifi"
   },
