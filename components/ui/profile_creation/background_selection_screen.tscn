@@ -42,6 +42,7 @@ text = "Choose your background"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 5
@@ -137,7 +138,100 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "The Gamer"
 
+[node name="DemoBackgrounds" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+
+[node name="Panel" type="TextureRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
+custom_minimum_size = Vector2(192, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Start with a crisp $20 bill"
+texture = ExtResource("2_lnamk")
+
+[node name="GrandmasButton" type="Button" parent="MarginContainer/VBoxContainer/DemoBackgrounds/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Start with a crisp $20 bill"
+focus_mode = 0
+theme_override_font_sizes/font_size = 20
+text = "Grandma's Favorite
+"
+
+[node name="Panel2" type="TextureRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
+custom_minimum_size = Vector2(192, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Start as a 6/10 instead of a 5/10"
+texture = ExtResource("3_umkxt")
+
+[node name="PrettyButton" type="Button" parent="MarginContainer/VBoxContainer/DemoBackgrounds/Panel2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Start as a 6/10 instead of a 5/10"
+tooltip_auto_translate_mode = 1
+focus_mode = 0
+theme_override_font_sizes/font_size = 20
+text = "Pretty Privilege"
+
+[node name="Panel3" type="TextureRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
+custom_minimum_size = Vector2(192, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Start with 1 GPU"
+texture = ExtResource("4_rlyer")
+
+[node name="Gamer2Button" type="Button" parent="MarginContainer/VBoxContainer/DemoBackgrounds/Panel3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -29.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Start with 1 GPU"
+tooltip_auto_translate_mode = 1
+focus_mode = 0
+theme_override_font_sizes/font_size = 20
+text = "The Gamer"
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 5
@@ -262,6 +356,9 @@ autowrap_mode = 3
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel/DropoutButton" to="." method="_on_dropout_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel2/BurnoutButton" to="." method="_on_burnout_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel3/GamerButton" to="." method="_on_gamer_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/DemoBackgrounds/Panel/GrandmasButton" to="." method="_on_grandmas_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/DemoBackgrounds/Panel2/PrettyButton" to="." method="_on_pretty_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/DemoBackgrounds/Panel3/Gamer2Button" to="." method="_on_gamer_2_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Panel/ManagerButton" to="." method="_on_manager_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Panel2/PostgradButton" to="." method="_on_postgrad_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Panel3/StoicButton" to="." method="_on_stoic_button_pressed"]
