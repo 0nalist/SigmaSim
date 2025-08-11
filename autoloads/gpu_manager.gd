@@ -39,30 +39,33 @@ func _ready() -> void:
 	MarketManager.crypto_market_ready.connect(setup_crypto_cooldowns)
 
 func _on_minute_tick(_unused: int) -> void:
-		var current_time = TimeManager.total_minutes_elapsed
-		for symbol in next_block_time.keys():
-			var next_time: float = next_block_time[symbol]
-			var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
-			if not crypto:
-				continue
+	var current_time = TimeManager.total_minutes_elapsed
+	
+	#var now = 
+	
+	for symbol in next_block_time.keys():
+		var next_time: float = next_block_time[symbol]
+		var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
+		if not crypto:
+			continue
 
-			var power := get_power_for(symbol)
-			if power <= 0:
-				while current_time >= next_time:
-					next_time += crypto.block_time
-				next_block_time[symbol] = next_time
-				continue
-
+		var power := get_power_for(symbol)
+		if power <= 0:
 			while current_time >= next_time:
-				emit_signal("block_attempted", symbol)
-				var random_difficulty = randi_range(0, crypto.power_required)
-				if power >= random_difficulty:
-					PortfolioManager.add_crypto(symbol, crypto.block_size)
-					emit_signal("crypto_mined", crypto)
 				next_time += crypto.block_time
 			next_block_time[symbol] = next_time
+			continue
 
-		emit_signal("gpus_changed")  # Notify Minerr UI to refresh
+		while current_time >= next_time:
+			emit_signal("block_attempted", symbol)
+			var random_difficulty = randi_range(0, crypto.power_required)
+			if power >= random_difficulty:
+				PortfolioManager.add_crypto(symbol, crypto.block_size)
+				emit_signal("crypto_mined", crypto)
+			next_time += crypto.block_time
+		next_block_time[symbol] = next_time
+
+	emit_signal("gpus_changed")  # Notify Minerr UI to refresh
 
 func setup_crypto_cooldowns() -> void:
 		next_block_time.clear()
@@ -71,8 +74,9 @@ func setup_crypto_cooldowns() -> void:
 
 func get_time_until_next_block(symbol: String) -> int:
 	if not next_block_time.has(symbol):
-		return -1
-	return int(ceil(next_block_time[symbol] - TimeManager.in_game_minutes))
+			return -1
+	# Use total_minutes_elapsed to handle day rollovers correctly
+	return int(ceil(next_block_time[symbol] - TimeManager.total_minutes_elapsed))
 
 
 
