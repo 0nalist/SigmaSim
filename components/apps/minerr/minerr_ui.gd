@@ -82,8 +82,8 @@ func _update_gpu_prices() -> void:
 	var new_price = GPUManager.get_new_gpu_price()
 	var used_price = GPUManager.get_used_gpu_price()
 
-	new_gpu_price_label.text = "New GPU: $%.2f" % new_price
-	used_gpu_price_label.text = "Used GPU: $%.2f" % used_price
+	new_gpu_price_label.text = "New GPU: $" + NumberFormatter.format_commas(new_price)
+	used_gpu_price_label.text = "Used GPU: $" + NumberFormatter.format_commas(used_price)	
 
 
 func _on_resource_changed(resource_name: String, _value: float) -> void:
