@@ -7,7 +7,11 @@ signal gpu_burned_out(index: int)
 signal crypto_mined(crypto)
 signal block_attempted(symbol: String)
 
-var mining_cooldowns := {}  # symbol -> float (remaining cooldown in minutes)
+#var mining_cooldowns := {}  # symbol -> float (remaining cooldown in minutes)
+
+var next_block_time := {}  # symbol -> float (absolute in-game minute when next roll occurs)
+
+
 
 
 # GPU Pricing
@@ -34,53 +38,60 @@ func _ready() -> void:
 	TimeManager.minute_passed.connect(_on_minute_tick)
 	MarketManager.crypto_market_ready.connect(setup_crypto_cooldowns)
 
-func _on_minute_tick(_min):
-	#print("Minute tick! mining_cooldowns:", mining_cooldowns)
-	for symbol in mining_cooldowns.keys():
-		mining_cooldowns[symbol] -= 1.0
-		#print("Cooldown for", symbol, "is now", mining_cooldowns[symbol])
-		if mining_cooldowns[symbol] <= 0.0:
-		#	print("Attempting to mine", symbol)
-			var crypto = MarketManager.crypto_market.get(symbol)
-			if crypto:
-				_attempt_mine(crypto)
-				mining_cooldowns[symbol] = crypto.block_time
+func _on_minute_tick(_unused: int) -> void:
+	var current_time = TimeManager.total_minutes_elapsed
+	
+	#var now = 
+	
+	for symbol in next_block_time.keys():
+		var next_time: float = next_block_time[symbol]
+		var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
+		if not crypto:
+			continue
 
-func setup_crypto_cooldowns():
-	#print("SETUP: crypto_market keys:", MarketManager.crypto_market.keys())
-	mining_cooldowns.clear()
-	for crypto in MarketManager.crypto_market.values():
-	#	print("SETUP: Adding cooldown for", crypto.symbol, "=", crypto.block_time)
-		mining_cooldowns[crypto.symbol] = crypto.block_time
-	#print("SETUP: Resulting mining_cooldowns:", mining_cooldowns)
+		var power := get_power_for(symbol)
+		if power <= 0:
+			while current_time >= next_time:
+				next_time += crypto.block_time
+			next_block_time[symbol] = next_time
+			continue
+
+		while current_time >= next_time:
+			emit_signal("block_attempted", symbol)
+			var random_difficulty = randi_range(0, crypto.power_required)
+			if power >= random_difficulty:
+				PortfolioManager.add_crypto(symbol, crypto.block_size)
+				emit_signal("crypto_mined", crypto)
+			next_time += crypto.block_time
+		next_block_time[symbol] = next_time
+
+	emit_signal("gpus_changed")  # Notify Minerr UI to refresh
+
+func setup_crypto_cooldowns() -> void:
+		next_block_time.clear()
+		for crypto in MarketManager.crypto_market.values():
+			next_block_time[crypto.symbol] = TimeManager.total_minutes_elapsed + crypto.block_time
 
 func get_time_until_next_block(symbol: String) -> int:
-	if not mining_cooldowns.has(symbol):
-		return -1
-	return int(ceil(mining_cooldowns[symbol]))
+	if not next_block_time.has(symbol):
+			return -1
+	# Use total_minutes_elapsed to handle day rollovers correctly
+	return int(ceil(next_block_time[symbol] - TimeManager.total_minutes_elapsed))
 
 
 
-
-func _attempt_mine(crypto: Cryptocurrency) -> void:
-	emit_signal("block_attempted", crypto.symbol)
-	var current_power = get_power_for(crypto.symbol)
-
-	if current_power <= 0:
-		return
-
-	var random_difficulty = randi_range(0, crypto.power_required)
-	if current_power >= random_difficulty:
-		PortfolioManager.add_crypto(crypto.symbol, crypto.block_size)
-		emit_signal("crypto_mined", crypto)
-	emit_signal("gpus_changed")  # Notify Minerr UI to refresh
 
 func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 	gpu_cryptos.append(crypto_symbol)
-	is_overclocked.append(1 if overclocked else 0)
+	if overclocked:
+		is_overclocked.append(1)
+	else:
+		is_overclocked.append(0)
 	burnout_chances.append(0.0)
 
-	var power := int(base_power * overclock_power_multiplier) if overclocked else base_power
+	var power := base_power
+	if overclocked:
+		power = int(base_power * overclock_power_multiplier)
 	total_power += power
 
 	emit_signal("gpus_changed")
@@ -106,7 +117,7 @@ func get_free_gpu_count() -> int:
 
 # Modified assign_gpu function (to assign a free GPU to a crypto)
 func assign_free_gpu(symbol: String) -> bool:
-	for i in gpu_cryptos.size():
+	for i in range(gpu_cryptos.size()):
 		if gpu_cryptos[i] == "":
 			gpu_cryptos[i] = symbol
 			emit_signal("gpus_changed")
@@ -121,11 +132,17 @@ func set_overclocked(index: int, overclocked: bool) -> void:
 
 	var was_overclocked = bool(is_overclocked[index])
 	if was_overclocked != overclocked:
-		var old_power = int(base_power * overclock_power_multiplier) if was_overclocked else base_power
-		var new_power = int(base_power * overclock_power_multiplier) if overclocked else base_power
+		var old_power = base_power
+		if was_overclocked:
+			old_power = int(base_power * overclock_power_multiplier)
+		var new_power = base_power
+		if overclocked:
+			new_power = int(base_power * overclock_power_multiplier)
 		total_power += new_power - old_power
-
-	is_overclocked[index] = 1 if overclocked else 0
+		if overclocked:
+			is_overclocked[index] = 1
+		else:
+			is_overclocked[index] = 0
 
 
 func process_gpu_tick() -> void:
@@ -201,7 +218,7 @@ func get_gpu_count_for(symbol: String) -> int:
 
 func get_power_for(symbol: String) -> int:
 	var total := 0
-	for i in gpu_cryptos.size():
+	for i in range(gpu_cryptos.size()):
 		if gpu_cryptos[i] == symbol:
 			var power = base_power
 			if is_overclocked[i]:
@@ -226,20 +243,20 @@ func reset() -> void:
 	total_power = 0
 	current_gpu_price = gpu_base_price
 
-	mining_cooldowns.clear()
+	next_block_time.clear()
 
 
 func get_save_data() -> Dictionary:
-	var cooldowns: Dictionary = {}
-	for symbol in mining_cooldowns:
-		cooldowns[symbol] = mining_cooldowns[symbol]
+	var next_times: Dictionary = {}
+	for symbol in next_block_time:
+		next_times[symbol] = next_block_time[symbol]
 
 	return {
 		"current_gpu_price": current_gpu_price,
 		"gpu_cryptos": gpu_cryptos,
 		"is_overclocked": is_overclocked,
 		"burnout_chances": burnout_chances,
-		"mining_cooldowns": cooldowns
+		"next_block_time": next_times
 	}
 
 
@@ -276,9 +293,9 @@ func load_from_data(data: Dictionary) -> void:
 
 	setup_crypto_cooldowns()
 
-	var saved_cooldowns = data.get("mining_cooldowns", {})
-	for symbol in saved_cooldowns.keys():
-		mining_cooldowns[symbol] = float(saved_cooldowns[symbol])
+	var saved_times = data.get("next_block_time", {})
+	for symbol in saved_times.keys():
+		next_block_time[symbol] = float(saved_times[symbol])
 
 	emit_signal("gpus_changed")
 

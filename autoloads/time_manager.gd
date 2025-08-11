@@ -15,6 +15,8 @@ var autosave_enabled := true
 var in_game_minutes := 23 * 60 
 var time_accumulator := 0.0
 
+var total_minutes_elapsed: int = 0
+
 @export var autosave_interval: int = 6 # Number of in-game hours between autosaves
 var autosave_hour_counter := 0
 
@@ -43,6 +45,7 @@ var month_names := [
 
 func _ready() -> void:
 	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
+	total_minutes_elapsed = get_total_days_since_start(current_day, current_month, current_year) * 24 * 60 + in_game_minutes
 	time_ticking = false
 
 func start_time() -> void: ## refactor to set_time_paused
@@ -90,6 +93,7 @@ func parse_date(date_str: String) -> Dictionary:
 func advance_time(minutes_to_add: int) -> void:
 	for _i in minutes_to_add:
 		in_game_minutes += 1
+		total_minutes_elapsed += 1
 		current_hour = (in_game_minutes / 60) % 24
 		current_minute = in_game_minutes % 60
 
@@ -229,6 +233,7 @@ func get_default_save_data() -> Dictionary:
 func get_save_data() -> Dictionary:
 	return {
 		"in_game_minutes": in_game_minutes,
+		"total_minutes_elapsed": total_minutes_elapsed,
 		"current_day": current_day,
 		"current_month": current_month,
 		"current_year": current_year,
@@ -245,7 +250,9 @@ func load_from_data(data: Dictionary) -> void:
 	current_month = data.get("current_month", 1)
 	current_year = data.get("current_year", 2025)
 	day_of_week = data.get("day_of_week", get_weekday_for_date(current_day, current_month, current_year))
-
+	var days_since_start = get_total_days_since_start(current_day, current_month, current_year)
+	total_minutes_elapsed = data.get("total_minutes_elapsed", days_since_start * 24 * 60 + in_game_minutes)
+	
 	is_fast_forwarding = false
 	fast_forward_minutes_left = 0
 
@@ -267,6 +274,8 @@ func reset() -> void:
 	current_hour = (in_game_minutes / 60) % 24
 	current_minute = in_game_minutes % 60
 	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
+	var days_since_start = get_total_days_since_start(current_day, current_month, current_year)
+	total_minutes_elapsed = days_since_start * 24 * 60 + in_game_minutes
 
 	time_accumulator = 0.0
 	is_fast_forwarding = false
