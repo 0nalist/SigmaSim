@@ -29,6 +29,9 @@ var resizing_column_index: int = -1
 var resize_start_mouse_x: float = 0.0
 var resize_start_column_width: int = 0
 
+var column_user_min_widths: Array[int] = []  # per-column min widths from user drag, 0 = not set yet
+
+
 func _ready() -> void:
 	run_query_button.pressed.connect(_on_run_query_pressed)
 	show_all_button.pressed.connect(_on_show_all_pressed)
@@ -146,6 +149,11 @@ func _render_table(header_names: Array[String], row_dictionaries: Array) -> void
 	results_tree.columns = header_names.size()
 	results_tree.column_titles_visible = header_names.size() > 0
 
+	# init user min widths
+	column_user_min_widths.resize(current_headers.size())
+	for init_index in range(column_user_min_widths.size()):
+		column_user_min_widths[init_index] = 0
+
 	for column_index in range(header_names.size()):
 		results_tree.set_column_title(column_index, header_names[column_index])
 		results_tree.set_column_expand(column_index, true)
@@ -155,14 +163,21 @@ func _render_table(header_names: Array[String], row_dictionaries: Array) -> void
 	_rebuild_tree_items()
 	_update_header_arrows()
 
+
 func _rebuild_tree_items() -> void:
-	var root_item: TreeItem = results_tree.create_item()
+	var root_item: TreeItem = results_tree.get_root()
+	if root_item == null:
+		root_item = results_tree.create_item()
+	else:
+		_clear_tree_rows()
+
 	for row_dictionary in current_rows:
 		var row_item: TreeItem = results_tree.create_item(root_item)
 		for column_index in range(current_headers.size()):
 			var column_key_name: String = current_headers[column_index]
 			var cell_value: Variant = row_dictionary.get(column_key_name, "")
 			row_item.set_text(column_index, _variant_to_string(cell_value))
+
 
 # =========================================
 # Sorting (header click only)
@@ -229,7 +244,10 @@ func _update_header_arrows() -> void:
 				results_tree.set_column_title(column_index, "%s ↓" % base_title)
 		else:
 			results_tree.set_column_title(column_index, base_title)
+	# This may increase a column if the arrow makes the title wider;
+	# it will not decrease below the user's chosen width.
 	_apply_header_min_widths()
+
 
 # =========================================
 # Column widths (min = header text width + 10px)
@@ -243,9 +261,16 @@ func _apply_header_min_widths() -> void:
 	for column_index in range(current_headers.size()):
 		var title_text: String = results_tree.get_column_title(column_index)
 		var measured_size: Vector2 = header_font.get_string_size(title_text, header_font_size)
-		var min_width: int = int(ceil(measured_size.x)) + EXTRA_HEADER_PADDING
-		results_tree.set_column_custom_minimum_width(column_index, min_width)
+		var base_min_width: int = int(ceil(measured_size.x)) + EXTRA_HEADER_PADDING
+
+		var user_min_width: int = 0
+		if column_index < column_user_min_widths.size():
+			user_min_width = column_user_min_widths[column_index]
+
+		var final_min_width: int = max(base_min_width, user_min_width)
+		results_tree.set_column_custom_minimum_width(column_index, final_min_width)
 		results_tree.set_column_expand(column_index, true)
+
 
 func _get_header_text_min_width(column_index: int) -> int:
 	var header_font: Font = results_tree.get_theme_font("font", "Tree")
@@ -282,6 +307,9 @@ func _on_mouse_motion(event: InputEventMouseMotion) -> void:
 	if is_resizing_column:
 		var delta_x: float = pointer_position.x - resize_start_mouse_x
 		var new_width: int = max(int(resize_start_column_width + delta_x), _get_header_text_min_width(resizing_column_index))
+		# remember the user’s choice so header arrow updates won’t shrink it
+		if resizing_column_index >= 0 and resizing_column_index < column_user_min_widths.size():
+			column_user_min_widths[resizing_column_index] = new_width
 		results_tree.set_column_custom_minimum_width(resizing_column_index, new_width)
 		return
 
@@ -316,6 +344,24 @@ func _on_mouse_left_pressed(local_pos: Vector2) -> void:
 			_sort_rows(clicked_column, sort_ascending)
 			_rebuild_tree_items()
 			_update_header_arrows()
+
+
+
+
+func _clear_tree_rows() -> void:
+	var root_item: TreeItem = results_tree.get_root()
+	if root_item == null:
+		return
+	var child_item: TreeItem = root_item.get_first_child()
+	while child_item != null:
+		var next_item: TreeItem = child_item.get_next()
+		child_item.free()  # TreeItem is not a Node; free() removes it from the Tree
+		child_item = next_item
+
+
+
+
+
 
 func _on_mouse_left_released() -> void:
 	if is_resizing_column:
