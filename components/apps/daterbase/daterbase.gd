@@ -22,6 +22,13 @@ var numeric_regex: RegEx
 # --- Config ---
 const EXTRA_HEADER_PADDING: int = 10
 
+# --- Column-resize state ---
+const RESIZE_MARGIN: int = 6
+var is_resizing_column: bool = false
+var resizing_column_index: int = -1
+var resize_start_mouse_x: float = 0.0
+var resize_start_column_width: int = 0
+
 func _ready() -> void:
 	run_query_button.pressed.connect(_on_run_query_pressed)
 	show_all_button.pressed.connect(_on_show_all_pressed)
@@ -54,20 +61,6 @@ func _build_table_shell() -> void:
 
 func _on_item_activated() -> void:
 	pass
-
-func _on_tree_gui_input(input_event: InputEvent) -> void:
-	var mouse_event := input_event as InputEventMouseButton
-	if mouse_event == null:
-		return
-	if not mouse_event.pressed:
-		return
-	if mouse_event.button_index != MOUSE_BUTTON_LEFT:
-		return
-
-	# Sort on click anywhere in that column (header or body).
-	var clicked_column: int = results_tree.get_column_at_position(mouse_event.position)
-	if clicked_column >= 0:
-		_on_column_clicked(clicked_column)
 
 # =========================================
 # Buttons
@@ -136,8 +129,8 @@ func _display_generic_rows(result_rows: Array) -> void:
 	var header_names: Array[String] = []
 	for key_name in first_row_dictionary.keys():
 		header_names.append(str(key_name))
-
 	header_names.sort()
+
 	_render_table(header_names, result_rows)
 
 # =========================================
@@ -172,19 +165,8 @@ func _rebuild_tree_items() -> void:
 			row_item.set_text(column_index, _variant_to_string(cell_value))
 
 # =========================================
-# Sorting
+# Sorting (header click only)
 # =========================================
-func _on_column_clicked(column_index: int) -> void:
-	if sort_column_index == column_index:
-		sort_ascending = not sort_ascending
-	else:
-		sort_column_index = column_index
-		sort_ascending = true
-
-	_sort_rows(column_index, sort_ascending)
-	_rebuild_tree_items()
-	_update_header_arrows()
-
 func _sort_rows(column_index: int, ascending_sort: bool) -> void:
 	if current_headers.size() == 0:
 		return
@@ -247,7 +229,6 @@ func _update_header_arrows() -> void:
 				results_tree.set_column_title(column_index, "%s ↓" % base_title)
 		else:
 			results_tree.set_column_title(column_index, base_title)
-	# keep widths consistent with changed titles
 	_apply_header_min_widths()
 
 # =========================================
@@ -263,9 +244,119 @@ func _apply_header_min_widths() -> void:
 		var title_text: String = results_tree.get_column_title(column_index)
 		var measured_size: Vector2 = header_font.get_string_size(title_text, header_font_size)
 		var min_width: int = int(ceil(measured_size.x)) + EXTRA_HEADER_PADDING
-		# Godot 4.4: use set_column_custom_minimum_width, not set_column_min_width
-		results_tree.set_column_custom_minimum_width(column_index, min_width) # 4.4 API
+		results_tree.set_column_custom_minimum_width(column_index, min_width)
 		results_tree.set_column_expand(column_index, true)
+
+func _get_header_text_min_width(column_index: int) -> int:
+	var header_font: Font = results_tree.get_theme_font("font", "Tree")
+	if header_font == null:
+		header_font = get_theme_default_font()
+	var header_font_size: int = results_tree.get_theme_font_size("font_size", "Tree")
+	var title_text: String = results_tree.get_column_title(column_index)
+	var measured_size: Vector2 = header_font.get_string_size(title_text, header_font_size)
+	return int(ceil(measured_size.x)) + EXTRA_HEADER_PADDING
+
+# =========================================
+# Drag-resize + header click handling (no get_header_height)
+# =========================================
+func _on_tree_gui_input(input_event: InputEvent) -> void:
+	var mouse_button_event := input_event as InputEventMouseButton
+	var mouse_motion_event := input_event as InputEventMouseMotion
+
+	if mouse_motion_event != null:
+		_on_mouse_motion(mouse_motion_event)
+		return
+
+	if mouse_button_event == null:
+		return
+
+	if mouse_button_event.button_index == MOUSE_BUTTON_LEFT and mouse_button_event.pressed:
+		_on_mouse_left_pressed(mouse_button_event.position)
+	elif mouse_button_event.button_index == MOUSE_BUTTON_LEFT and not mouse_button_event.pressed:
+		_on_mouse_left_released()
+
+func _on_mouse_motion(event: InputEventMouseMotion) -> void:
+	var pointer_position: Vector2 = event.position
+	var header_threshold_y: float = _header_y_threshold()
+
+	if is_resizing_column:
+		var delta_x: float = pointer_position.x - resize_start_mouse_x
+		var new_width: int = max(int(resize_start_column_width + delta_x), _get_header_text_min_width(resizing_column_index))
+		results_tree.set_column_custom_minimum_width(resizing_column_index, new_width)
+		return
+
+	# Only show resize cursor above header line and near a divider
+	if pointer_position.y <= header_threshold_y:
+		var divider_index: int = _get_nearby_divider_index(pointer_position.x)
+		if divider_index != -1:
+			results_tree.mouse_default_cursor_shape = Control.CURSOR_HSIZE
+			return
+
+	results_tree.mouse_default_cursor_shape = Control.CURSOR_ARROW
+
+func _on_mouse_left_pressed(local_pos: Vector2) -> void:
+	var header_threshold_y: float = _header_y_threshold()
+
+	if local_pos.y <= header_threshold_y:
+		var divider_index: int = _get_nearby_divider_index(local_pos.x)
+		if divider_index != -1:
+			is_resizing_column = true
+			resizing_column_index = divider_index
+			resize_start_mouse_x = local_pos.x
+			resize_start_column_width = results_tree.get_column_width(resizing_column_index)
+			return
+
+		var clicked_column: int = _get_column_from_x(local_pos.x)
+		if clicked_column >= 0:
+			if sort_column_index == clicked_column:
+				sort_ascending = not sort_ascending
+			else:
+				sort_column_index = clicked_column
+				sort_ascending = true
+			_sort_rows(clicked_column, sort_ascending)
+			_rebuild_tree_items()
+			_update_header_arrows()
+
+func _on_mouse_left_released() -> void:
+	if is_resizing_column:
+		is_resizing_column = false
+		resizing_column_index = -1
+
+# Map an x-position to a column by summing widths
+func _get_column_from_x(xpos: float) -> int:
+	var running_sum: float = 0.0
+	for column_index in range(current_headers.size()):
+		running_sum += float(results_tree.get_column_width(column_index))
+		if xpos < running_sum:
+			return column_index
+	return -1
+
+# Find divider near x (returns left column index), only between columns
+func _get_nearby_divider_index(xpos: float) -> int:
+	var running_sum: float = 0.0
+	for column_index in range(current_headers.size() - 1):
+		running_sum += float(results_tree.get_column_width(column_index))
+		if abs(xpos - running_sum) <= float(RESIZE_MARGIN):
+			return column_index
+	return -1
+
+# Compute the header/beginning-of-rows Y threshold without get_header_height()
+func _header_y_threshold() -> float:
+	# If there is a visible first row, use its top as the divider
+	var root_item: TreeItem = results_tree.get_root()
+	if root_item != null:
+		var first_child: TreeItem = root_item.get_first_child()
+		if first_child != null:
+			var first_row_rect: Rect2 = results_tree.get_item_area_rect(first_child, -1, -1)
+			return first_row_rect.position.y
+
+	# Fallback: font height + a little padding
+	var header_font: Font = results_tree.get_theme_font("font", "Tree")
+	if header_font == null:
+		header_font = get_theme_default_font()
+	var header_font_size: int = results_tree.get_theme_font_size("font_size", "Tree")
+	var font_height: float = header_font.get_height(header_font_size)
+	return max(20.0, font_height + 6.0)
 
 # =========================================
 # Utilities
