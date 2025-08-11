@@ -39,7 +39,7 @@ func _on_cash_updated(_cash: float) -> void:
 	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
 
 	await get_tree().process_frame
-	emit_signal("title_updated", "BrokeRage - $%.2f" % cash) # Not currently working
+	#emit_signal("title_updated", "BrokeRage - $%.2f" % cash) # Not currently working
 
 
 

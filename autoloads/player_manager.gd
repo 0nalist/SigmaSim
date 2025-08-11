@@ -164,7 +164,7 @@ var background_effects := {
 	"The Manager": _apply_manager,
 	"The Postgrad": _apply_postgrad,
 	"The Stoic": _apply_stoic,
-	"Grandmas Favorite": _apply_grandma,
+	"Grandma's Favorite": _apply_grandma,
 	"Pretty Privilege": _apply_pretty_privilege,
 }
 
