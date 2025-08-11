@@ -96,9 +96,14 @@ func open_battle(battle_id, npc, idx):
 		idx,
 		battle_data.get("outcome", "active"),
 	)
+	scene.chat_closed.connect(_on_chat_closed)
 	request_resize_x_to.emit(911)
 	request_resize_y_to.emit(666)
 
+
+func _on_chat_closed() -> void:
+	print("chat closed")
+	refresh_ui()
 
 # Optional: If you want to always re-sync when the chats tab is shown from parent UI
 func on_tab_selected():

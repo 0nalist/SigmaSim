@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dptnj8nxnr760"]
+[gd_scene load_steps=6 format=3 uid="uid://dptnj8nxnr760"]
 
 [ext_resource type="Script" uid="uid://bor5y5ucmdl07" path="res://components/apps/fumble/fumble_special_offers.gd" id="1_jpqxb"]
+[ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="2_exat5"]
 [ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2_khcxl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jpqxb"]
@@ -35,6 +36,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_exat5")
 theme_override_font_sizes/font_size = 32
 text = "Special Offers"
 horizontal_alignment = 1
@@ -43,34 +45,29 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.14
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
-[node name="SpecialOfferUI" type="PanelContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="SpecialOfferUI" type="PanelContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_khcxl")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SpecialOfferUI"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/SpecialOfferUI"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SpecialOfferUI/MarginContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/SpecialOfferUI/MarginContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Confidence Boost: $10"
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SpecialOfferUI/MarginContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/SpecialOfferUI/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 10

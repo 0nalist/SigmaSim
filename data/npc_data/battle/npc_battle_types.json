@@ -1,128 +1,128 @@
 [
   {
-    "Type": "Brat",
-    "Strong vs.": "flex, rizz",
-    "Weak vs.": "catch, simp",
-    "Immune to": "ghost"
+	"Type": "Brat",
+	"Strong vs.": "flex, rizz",
+	"Weak vs.": "catch, simp",
+	"Immune to": "ghost"
   },
   {
-    "Type": "Crypto Bro",
-    "Strong vs.": "simp, flex",
-    "Weak vs.": "flex, neg",
-    "Immune to": "ghost"
+	"Type": "Crypto Bro",
+	"Strong vs.": "simp, flex",
+	"Weak vs.": "flex, neg",
+	"Immune to": "ghost"
   },
   {
-    "Type": "Edgelord",
-    "Strong vs.": "meme, simp",
-    "Weak vs.": "rizz",
-    "Immune to": "neg"
+	"Type": "Edgelord",
+	"Strong vs.": "meme, simp",
+	"Weak vs.": "rizz",
+	"Immune to": "neg"
   },
   {
-    "Type": "Ghoster",
-    "Strong vs.": "catch",
-    "Weak vs.": "simp",
-    "Immune to": "ghost"
+	"Type": "Ghoster",
+	"Strong vs.": "catch",
+	"Weak vs.": "simp",
+	"Immune to": "ghost"
   },
   {
-    "Type": "Gym Rat",
-    "Strong vs.": "neg, simp",
-    "Weak vs.": "flex",
-    "Immune to": ""
+	"Type": "Gym Rat",
+	"Strong vs.": "neg, simp",
+	"Weak vs.": "flex",
+	"Immune to": ""
   },
   {
-    "Type": "Hypebeast",
-    "Strong vs.": "neg, flex",
-    "Weak vs.": "simp",
-    "Immune to": ""
+	"Type": "Hypebeast",
+	"Strong vs.": "neg, flex",
+	"Weak vs.": "simp",
+	"Immune to": ""
   },
   {
-    "Type": "Influencer",
-    "Strong vs.": "neg, simp",
-    "Weak vs.": "flex, meme",
-    "Immune to": "ghost"
+	"Type": "Influencer",
+	"Strong vs.": "neg, simp",
+	"Weak vs.": "flex, meme",
+	"Immune to": "ghost"
   },
   {
-    "Type": "INTJ",
-    "Strong vs.": "flex",
-    "Weak vs.": "catch, simp, neg",
-    "Immune to": "rizz"
+	"Type": "INTJ",
+	"Strong vs.": "flex",
+	"Weak vs.": "catch, simp, neg",
+	"Immune to": "rizz"
   },
   {
-    "Type": "Irony-poisoned",
-    "Strong vs.": "simp, meme",
-    "Weak vs.": "neg",
-    "Immune to": "rizz"
+	"Type": "Irony-poisoned",
+	"Strong vs.": "simp, meme",
+	"Weak vs.": "neg",
+	"Immune to": "rizz"
   },
   {
-    "Type": "Manic Pixie",
-    "Strong vs.": "ghost, simp",
-    "Weak vs.": "flex, catch",
-    "Immune to": ""
+	"Type": "Manic Pixie",
+	"Strong vs.": "ghost, simp",
+	"Weak vs.": "flex, catch",
+	"Immune to": ""
   },
   {
-    "Type": "Normie",
-    "Strong vs.": "",
-    "Weak vs.": "",
-    "Immune to": ""
+	"Type": "Normie",
+	"Strong vs.": "",
+	"Weak vs.": "",
+	"Immune to": ""
   },
   {
-    "Type": "Nympho",
-    "Strong vs.": "simp, rizz, catch",
-    "Weak vs.": "",
-    "Immune to": "flex, neg"
+	"Type": "Nympho",
+	"Strong vs.": "simp, rizz, catch",
+	"Weak vs.": "",
+	"Immune to": "flex, neg"
   },
   {
-    "Type": "Pickme",
-    "Strong vs.": "catch, rizz, simp, neg, ghost",
-    "Weak vs.": "flex",
-    "Immune to": ""
+	"Type": "Pickme",
+	"Strong vs.": "catch, rizz, simp, neg, ghost",
+	"Weak vs.": "flex",
+	"Immune to": ""
   },
   {
-    "Type": "Romantic",
-    "Strong vs.": "rizz",
-    "Weak vs.": "catch",
-    "Immune to": "meme"
+	"Type": "Romantic",
+	"Strong vs.": "rizz",
+	"Weak vs.": "catch",
+	"Immune to": "meme"
   },
   {
-    "Type": "Sapiosexual",
-    "Strong vs.": "flex",
-    "Weak vs.": "neg, meme",
-    "Immune to": "rizz"
+	"Type": "Sapiosexual",
+	"Strong vs.": "flex",
+	"Weak vs.": "neg, meme",
+	"Immune to": "rizz"
   },
   {
-    "Type": "Sigma",
-    "Strong vs.": "flex",
-    "Weak vs.": "neg",
-    "Immune to": "simp"
+	"Type": "Sigma",
+	"Strong vs.": "flex",
+	"Weak vs.": "neg",
+	"Immune to": "simp"
   },
   {
-    "Type": "Softie",
-    "Strong vs.": "neg, rizz, simp",
-    "Weak vs.": "meme",
-    "Immune to": "flex"
+	"Type": "Softie",
+	"Strong vs.": "neg, rizz, simp",
+	"Weak vs.": "meme",
+	"Immune to": "flex"
   },
   {
-    "Type": "Stoner",
-    "Strong vs.": "meme",
-    "Weak vs.": "ghost, rizz",
-    "Immune to": ""
+	"Type": "Stoner",
+	"Strong vs.": "meme",
+	"Weak vs.": "ghost, rizz",
+	"Immune to": ""
   },
   {
-    "Type": "Validation-seeker",
-    "Strong vs.": "neg, rizz, ghost",
-    "Weak vs.": "meme",
-    "Immune to": "flex"
+	"Type": "Validation-seeker",
+	"Strong vs.": "neg, rizz, ghost",
+	"Weak vs.": "meme",
+	"Immune to": "flex"
   },
   {
-    "Type": "Wallflower",
-    "Strong vs.": "",
-    "Weak vs.": "simp, neg, catch",
-    "Immune to": "ghost"
+	"Type": "Wallflower",
+	"Strong vs.": "",
+	"Weak vs.": "simp, neg, catch",
+	"Immune to": "ghost"
   },
   {
-    "Type": "Yuppie",
-    "Strong vs.": "simp, flex",
-    "Weak vs.": "rizz, catch",
-    "Immune to": ""
+	"Type": "Yuppie",
+	"Strong vs.": "simp, flex",
+	"Weak vs.": "rizz, catch",
+	"Immune to": ""
   }
 ]

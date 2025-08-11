@@ -1,6 +1,8 @@
 extends PanelContainer
 class_name BattleUI
 
+signal chat_closed
+
 @export var chat_box_scene: PackedScene
 @export var victory_number_chat_box_scene: PackedScene
 @export var battle_logic_resource: BattleLogic
@@ -286,6 +288,7 @@ func _on_ghost_button_pressed():
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
 	persist_battle_stats_to_npc()
+	chat_closed.emit()
 	queue_free()
 
 
@@ -525,6 +528,7 @@ func block_player() -> void:
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
 	persist_battle_stats_to_npc()
 	await get_tree().create_timer(0.69).timeout
+	chat_closed.emit()
 	queue_free()
 
 func _on_victory_number_clicked() -> void:
@@ -740,4 +744,5 @@ func _on_close_chat_button_pressed() -> void:
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, outcome)
 	DBManager.save_fumble_relationship(npc_idx, rel_status)
 	persist_battle_stats_to_npc()
+	chat_closed.emit()
 	queue_free()

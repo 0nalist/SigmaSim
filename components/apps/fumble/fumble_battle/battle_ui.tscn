@@ -725,6 +725,7 @@ layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="EndBattleScreenContainer"]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_an8fo")
 
 [node name="MarginContainer" type="MarginContainer" parent="EndBattleScreenContainer/PanelContainer"]
