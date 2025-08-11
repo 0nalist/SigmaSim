@@ -164,10 +164,19 @@ var background_effects := {
 	"The Manager": _apply_manager,
 	"The Postgrad": _apply_postgrad,
 	"The Stoic": _apply_stoic,
+	"Grandmas Favorite": _apply_grandma,
+	"Pretty Privilege": _apply_pretty_privilege,
 }
 
 
-# First, define real functions
+func _apply_grandma() -> void:
+	PortfolioManager.add_cash(20.00)
+	var center = get_viewport().get_visible_rect().size / 2
+	StatpopManager.spawn("+$20.00", center)
+
+func _apply_pretty_privilege() -> void:
+	PlayerManager.adjust_stat("attractiveness", 10)
+
 func _apply_dropout() -> void:
 	PortfolioManager.cash = 300.0
 	PortfolioManager.set_student_loans(0.0)
@@ -180,6 +189,7 @@ func _apply_burnout() -> void:
 func _apply_gamer() -> void:
 	PortfolioManager.set_student_loans(40000.0)
 	#AppManager.unlock_app("Minerr")
+	GPUManager.add_gpu("")
 	#ResourceManager.add_gpu("BasicGPU", 3)
 
 func _apply_manager() -> void:

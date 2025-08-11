@@ -9,6 +9,12 @@ signal step_valid(valid: bool)
 @onready var postgrad_button: Button = %PostgradButton
 @onready var stoic_button: Button = %StoicButton
 
+@onready var grandmas_button: Button = %GrandmasButton
+@onready var pretty_button: Button = %PrettyButton
+@onready var gamer_2_button: Button = %Gamer2Button
+
+
+
 @onready var tooltip_popup: PanelContainer = %TooltipPopup
 @onready var tooltip_label: Label = %TooltipLabel
 
@@ -121,3 +127,24 @@ func _on_stoic_button_pressed() -> void:
 
 func get_path_to_texture_of_panel(tex_rect: TextureRect) -> String:
 	return tex_rect.texture.resource_path if tex_rect.texture else ""
+
+
+func _on_grandmas_button_pressed() -> void:
+	var panel = grandmas_button.get_parent()
+	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background_name = "Grandma's Favorite"
+	_on_background_selected(grandmas_button)
+
+
+func _on_pretty_button_pressed() -> void:
+	var panel = pretty_button.get_parent()
+	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background_name = "Pretty Privilege"
+	_on_background_selected(pretty_button)
+
+
+func _on_gamer_2_button_pressed() -> void:
+	var panel = gamer_2_button.get_parent()
+	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background_name = "The Gamer"
+	_on_background_selected(gamer_2_button)
