@@ -303,7 +303,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer"]
-visible = false
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer"]
@@ -314,41 +313,42 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="TurkishHairSurgery" type="PanelContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_5fcgq")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery"]
 layout_mode = 2
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Pull Hotter People INSTANTLY With This One INSANE Trick."
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "TURKISH HAIR SURGERY"
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "+ 1.0 🔥to your dime status. "
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
