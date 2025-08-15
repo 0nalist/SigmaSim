@@ -17,7 +17,7 @@ var next_block_time := {}  # symbol -> float (absolute in-game minute when next 
 # GPU Pricing
 var gpu_base_price: float = 100.0
 var current_gpu_price: float = gpu_base_price
-var gpu_price_growth: float = 1.4  # price multiplier each purchase
+var gpu_price_growth: float = 1.2  # price multiplier each purchase
 
 
 @export var base_power: int = 10
