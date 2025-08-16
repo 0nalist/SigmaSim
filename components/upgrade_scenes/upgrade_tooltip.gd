@@ -38,8 +38,8 @@ func _update_display():
 				effect_label.text = describe_effect(effect)
 				effect_list.add_child(effect_label)
 
-		var can_purchase = UpgradeManager.can_purchase(id)
-		var maxed = UpgradeManager.max_level(id) != -1 and UpgradeManager.get_level(id) >= UpgradeManager.max_level(id)
+                var can_purchase = UpgradeManager.can_purchase(id)
+                var maxed = UpgradeManager.max_level(id) != -1 and StatManager.get_upgrade_level(id) >= UpgradeManager.max_level(id)
 
 		buy_button.disabled = not can_purchase or maxed
 		buy_button.text = "Maxed Out" if maxed else "Buy"
@@ -85,7 +85,7 @@ func get_status_text(upgrade: Dictionary) -> String:
 		var id = upgrade.get("id", "")
 		if id == "":
 				return ""
-		if UpgradeManager.max_level(id) != -1 and UpgradeManager.get_level(id) >= UpgradeManager.max_level(id):
+                if UpgradeManager.max_level(id) != -1 and StatManager.get_upgrade_level(id) >= UpgradeManager.max_level(id):
 				return "Maxed Out"
 		if UpgradeManager.is_locked(id):
 				return "Locked"

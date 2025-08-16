@@ -2,7 +2,7 @@ extends Node
 #Autoload name PortfolioManager
 
 ## --- Basic numeric resources
-var cash: float = 100.0
+var cash: float = StatManager.get_stat("cash", 100.0)
 var rent: float = 0.0
 var interest: float = 0.0
 
@@ -40,8 +40,10 @@ signal resource_changed(name: String, value: float)
 signal investments_updated(amount: float)
 
 func _ready():
-	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
-	TimeManager.day_passed.connect(_on_day_passed)
+        cash = StatManager.get_stat("cash", cash)
+        StatManager.set_base_stat("cash", cash)
+        MarketManager.stock_price_updated.connect(_on_stock_price_updated)
+        TimeManager.day_passed.connect(_on_day_passed)
 
 ## --- Spending Router
 func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool = false) -> bool:
@@ -71,10 +73,11 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 				StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 
 		if can_pay_with_credit(remainder):
-			var total_with_interest := remainder * (1.0 + credit_interest_rate)
-			credit_used += total_with_interest
-			cash = 0.0
-			emit_signal("cash_updated", cash)
+                        var total_with_interest := remainder * (1.0 + credit_interest_rate)
+                        credit_used += total_with_interest
+                        cash = 0.0
+                        StatManager.set_base_stat("cash", cash)
+                        emit_signal("cash_updated", cash)
 			emit_signal("credit_updated", credit_used, credit_limit)
 			_recalculate_credit_score()
 			emit_signal("resource_changed", "debt", get_total_debt())
@@ -96,30 +99,34 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 
 ## --- Cash Methods
 func add_cash(amount: float):
-	if amount < 0.0:
-		printerr("Tried to add negative cash")
-		return
-	cash = snapped(cash + amount, 0.01)
-	emit_signal("cash_updated", cash)
-	emit_signal("resource_changed", "cash", cash)
+        if amount < 0.0:
+                printerr("Tried to add negative cash")
+                return
+        cash = snapped(cash + amount, 0.01)
+        StatManager.set_base_stat("cash", cash)
+        emit_signal("cash_updated", cash)
+        emit_signal("resource_changed", "cash", cash)
 
 func spend_cash(amount: float):
-	if amount < 0.0:
-		printerr("Tried to spend negative cash")
-		return
-	cash = snapped(cash - amount, 0.01)
-	emit_signal("cash_updated", cash)
-	emit_signal("resource_changed", "cash", cash)
+        if amount < 0.0:
+                printerr("Tried to spend negative cash")
+                return
+        cash = snapped(cash - amount, 0.01)
+        StatManager.set_base_stat("cash", cash)
+        emit_signal("cash_updated", cash)
+        emit_signal("resource_changed", "cash", cash)
 
 func can_pay_with_cash(amount: float) -> bool:
 	return cash >= amount
 
 func pay_with_cash(amount: float) -> bool:
-	if can_pay_with_cash(amount):
-		cash -= amount
-		emit_signal("cash_updated", cash)
-		return true
-	return false
+        if can_pay_with_cash(amount):
+                cash -= amount
+                StatManager.set_base_stat("cash", cash)
+                emit_signal("cash_updated", cash)
+                emit_signal("resource_changed", "cash", cash)
+                return true
+        return false
 
 
 

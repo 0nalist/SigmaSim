@@ -180,10 +180,10 @@ func scroll_to_newest_chat():
 		scroll.scroll_vertical = scroll.get_v_scroll_bar().max_value
 
 func update_progress_bars():
-	animate_progress_bar(chemistry_progress_bar,  battle_stats.get("chemistry", 0))
-	animate_progress_bar(self_esteem_progress_bar,battle_stats.get("self_esteem", 0))
-	animate_progress_bar(apprehension_progress_bar,  battle_stats.get("apprehension", 0))
-	animate_progress_bar(confidence_progress_bar, PlayerManager.get_stat("confidence"))
+        animate_progress_bar(chemistry_progress_bar,  battle_stats.get("chemistry", 0))
+        animate_progress_bar(self_esteem_progress_bar,battle_stats.get("self_esteem", 0))
+        animate_progress_bar(apprehension_progress_bar,  battle_stats.get("apprehension", 0))
+        animate_progress_bar(confidence_progress_bar, StatManager.get_stat("confidence"))
 
 func clamp100(val: float) -> float:
 	return clamp(val, 0, 100)
@@ -197,7 +197,7 @@ func animate_progress_bar(bar: ProgressBar, target_value: float, duration: float
 
 func _update_profiles():
 	# === Player info ===
-	var pic_path = PlayerManager.get_var("profile_picture_path", "")
+        var pic_path = PlayerManager.get_var("profile_picture_path", "")
 	if pic_path != "":
 		var img = load(pic_path)
 		if img is Texture2D:
@@ -207,7 +207,7 @@ func _update_profiles():
 	else:
 		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
 
-	attractiveness_label.text = "🔥 %.1f/10" % (float(PlayerManager.get_stat("attractiveness")) / 10.0)
+        attractiveness_label.text = "🔥 %.1f/10" % (float(StatManager.get_stat("attractiveness")) / 10.0)
 	name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info
@@ -346,7 +346,7 @@ func add_chat_line(text: String, is_player: bool, is_victory_number := false, re
 
 func do_move(move_type: String) -> void:
 	is_animating = true
-	PlayerManager.suppress_stat("confidence", true)
+        # No need to suppress stat signals with centralized StatManager
 
 	move_type = move_type.to_lower()
 	if move_usage_counts.has(move_type):
@@ -419,7 +419,7 @@ func do_move(move_type: String) -> void:
 		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
 
 		is_animating = false
-		PlayerManager.suppress_stat("confidence", false)
+            pass
 		return
 
 	# Handle other reactions
@@ -494,9 +494,11 @@ func do_move(move_type: String) -> void:
 			await animate_chat_text(chat2, number_msg)
 			#await end_battle(true, npc)
 			victorious = true
-			PlayerManager.adjust_stat("confidence", 1 + npc.attractiveness/10.0)
-		else:
-			PlayerManager.adjust_stat("confidence", -10)
+                    var increased_conf := clamp(StatManager.get_stat("confidence") + 1 + npc.attractiveness/10.0, 0.0, 100.0)
+                    StatManager.set_base_stat("confidence", increased_conf)
+                else:
+                    var decreased_conf := clamp(StatManager.get_stat("confidence") - 10.0, 0.0, 100.0)
+                    StatManager.set_base_stat("confidence", decreased_conf)
 			battle_stats["apprehension"] = clamp(battle_stats.get("apprehension", 0) + 7, 0, 100)
 
 	if block_warning_active:
@@ -514,7 +516,7 @@ func do_move(move_type: String) -> void:
 		block_warning_active = true
 
 	is_animating = false
-	PlayerManager.suppress_stat("confidence", false)
+    pass
 
 
 func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
@@ -551,8 +553,8 @@ func end_battle(success: bool, npc: NPC) -> void:
 	_disable_all_action_buttons()
 
 	if success:
-		PlayerManager.adjust_stat("ex", ex_award)
-		#PlayerManager.adjust_stat("ex", 0.002)
+            StatManager.set_base_stat("ex", StatManager.get_stat("ex") + ex_award)
+            #StatManager.set_base_stat("ex", StatManager.get_stat("ex") + 0.002)
 	else:
 		# Optionally handle loss logic here
 		pass
@@ -648,7 +650,7 @@ func _apply_effects(effects: Dictionary):
 	for stat in effects.keys():
 		if battle_stats.has(stat):
 			battle_stats[stat] = clamp100(battle_stats[stat] + effects[stat])
-	# player stats (like confidence) handled by PlayerManager
+    # player stats (like confidence) handled by StatManager
 
 
 func process_npc_response(move_type, response_id, success: bool) -> ChatBox:
