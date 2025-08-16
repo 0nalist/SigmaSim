@@ -199,8 +199,8 @@ func process_command(command: String) -> bool:
 						return false
 
 					StatManager.set_base_stat(stat_name, value)
-					if PlayerManager.user_data.has(stat_name):
-						PlayerManager.set_var(stat_name, value)
+					#if PlayerManager.user_data.has(stat_name):
+					#	PlayerManager.set_var(stat_name, value)
 					return true
 
 				"list_stats":
