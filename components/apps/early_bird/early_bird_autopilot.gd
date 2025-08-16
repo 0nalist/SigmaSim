@@ -4,7 +4,7 @@ extends Node
 @onready var player: EarlyBirdPlayer = %EarlyBirdPlayer
 @onready var pipe_manager: EarlyBirdPipeManager = %PipeManager
 
-var enabled: bool = true
+var enabled: bool = false
 
 func _process(delta: float) -> void:
 	if not enabled or not player or not player.is_alive:
