@@ -182,7 +182,7 @@ func process_command(command: String) -> bool:
 								_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
 								return false
 
-						var current_cash := StatManager.get_stat("cash")
+						var current_cash = StatManager.get_stat("cash")
 						StatManager.set_base_stat("cash", current_cash + amount)
 						return true
 
@@ -199,6 +199,8 @@ func process_command(command: String) -> bool:
 						return false
 
 					StatManager.set_base_stat(stat_name, value)
+					if PlayerManager.user_data.has(stat_name):
+						PlayerManager.set_var(stat_name, value)
 					return true
 
 				"list_stats":

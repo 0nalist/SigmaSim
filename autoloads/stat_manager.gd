@@ -59,10 +59,12 @@ func get_stat(stat_name: String, default := 0.0) -> float:
 
 
 func get_all_stats() -> Dictionary:
-		var result := computed_stats.duplicate(true)
-		for key in temporary_overrides.keys():
-				result[key] = temporary_overrides[key]
-		return result
+	var result := PlayerManager.user_data.duplicate(true)
+	for key in computed_stats.keys():
+		result[key] = computed_stats[key]
+	for key in temporary_overrides.keys():
+		result[key] = temporary_overrides[key]
+	return result
 
 
 func get_base_stat(stat_name: String, default := 0.0) -> float:

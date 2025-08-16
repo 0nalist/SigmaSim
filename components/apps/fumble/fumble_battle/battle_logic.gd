@@ -198,7 +198,8 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 func get_attractiveness_delta() -> float: # + if player is more attractive than npc
 	var dime_delta: float = ((StatManager.get_stat("attractiveness") - npc.attractiveness)/10.0)
 	#print("dime delta: " + str(dime_delta))
-	return dime_delta
+	print("dime delta: " + str(dime_delta))
+	return -dime_delta
 
 
 func get_stats() -> Dictionary:
