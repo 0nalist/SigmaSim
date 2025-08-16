@@ -2,9 +2,9 @@ extends CanvasLayer
 class_name DebugConsole
 
 @onready var panel: PanelContainer = $PanelContainer
-@onready var command_line: LineEdit = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CommandLine
-@onready var enter_button: Button = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/EnterButton
-@onready var feedback_label: Label = $PanelContainer/MarginContainer/VBoxContainer/FeedbackLabel
+@onready var command_line: LineEdit = %CommandLine
+@onready var enter_button: Button = %EnterButton
+@onready var feedback_label: Label = %FeedbackLabel
 
 func _ready() -> void:
 	# Fullscreen anchor on the actual control (not CanvasLayer)
@@ -24,9 +24,12 @@ func _ready() -> void:
 
 	enter_button.pressed.connect(_on_enter_pressed)
 	command_line.text_submitted.connect(_on_text_submitted)
+	
+	enter_button.focus_mode = Control.FOCUS_NONE
 
 func open() -> void:
 	print("opening debug")
+	visible = true
 	panel.visible = true
 	call_deferred("_focus_line")
 
@@ -64,6 +67,7 @@ func _submit_command() -> void:
 	var cmd := command_line.text.strip_edges()
 	if cmd == "":
 		_set_feedback("No command entered.", false)
+		call_deferred("_refocus_line")
 		return
 
 	var ok := process_command(cmd)
@@ -74,7 +78,22 @@ func _submit_command() -> void:
 			_set_feedback("Unknown or invalid command.", false)
 
 	command_line.text = ""
-	command_line.grab_focus()
+	call_deferred("_refocus_line")
+
+
+func _refocus_line() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if is_instance_valid(command_line):
+		get_viewport().set_input_as_handled()
+		command_line.release_focus()  # Explicitly release
+		await get_tree().process_frame
+		command_line.grab_focus()     # Reassign after release
+		command_line.caret_column = command_line.text.length()
+
+
+
+
 
 func _set_feedback(msg: String, success: bool) -> void:
 	if success:
@@ -94,14 +113,14 @@ func process_command(command: String) -> bool:
 		if parts.size() < 2:
 			_set_feedback("Usage: add_cash <amount>", false)
 			return false
+
 		var amount_str := parts[1]
 		var amount = _parse_number(amount_str)
+
 		if amount == null:
-			_set_feedback("Invalid amount: " + amount_str, false)
+			_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
 			return false
-		if not _has_portfolio_manager():
-			_set_feedback("PortfolioManager not found.", false)
-			return false
+
 		if PortfolioManager.has_method("add_cash"):
 			PortfolioManager.add_cash(amount)
 		else:
@@ -110,24 +129,19 @@ func process_command(command: String) -> bool:
 				return false
 			var current_cash = PortfolioManager.get_cash()
 			PortfolioManager.set_cash(current_cash + amount)
+
 		return true
 
 	return false
 
-func _parse_number(s: String):
-	if s.find(".") != -1:
-		var f := s.to_float()
-		if str(f) == "nan":
-			return null
-		return f
-	else:
-		var i := s.to_int()
-		if s != "0" and i == 0 and not s.strip_edges().begins_with("0"):
-			var tmp := s.to_float()
-			if str(tmp) == "nan":
-				return null
-			return tmp
-		return i
 
-func _has_portfolio_manager() -> bool:
-	return (typeof(PortfolioManager) != TYPE_NIL)
+func _parse_number(s: String) -> Variant:
+	s = s.strip_edges()
+
+	var regex := RegEx.new()
+	regex.compile("^[-+]?[0-9]+(\\.[0-9]+)?$")
+
+	if not regex.search(s):
+		return null
+
+	return s.to_float()
