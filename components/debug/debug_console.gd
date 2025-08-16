@@ -166,25 +166,25 @@ func process_command(command: String) -> bool:
 
 		match cmd:
 				"help":
-						_set_feedback("Available commands listed below.", true)
-						_populate_command_list()
-						command_list_parent_container.visible = true
-						return true
+					_set_feedback("Available commands listed below.", true)
+					_populate_command_list()
+					command_list_parent_container.visible = true
+					return true
 
 				"add_cash":
-						if parts.size() < 2:
-								_set_feedback("Usage: add_cash <amount>", false)
-								return false
+					if parts.size() < 2:
+						_set_feedback("Usage: add_cash <amount>", false)
+						return false
 
-						var amount_str := parts[1]
-						var amount = _parse_number(amount_str)
-						if amount == null:
-								_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
-								return false
+					var amount_str := parts[1]
+					var amount = _parse_number(amount_str)
+					if amount == null:
+						_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
+						return false
 
-						var current_cash = StatManager.get_stat("cash")
-						StatManager.set_base_stat("cash", current_cash + amount)
-						return true
+					var current_cash = StatManager.get_stat("cash")
+					StatManager.set_base_stat("cash", current_cash + amount)
+					return true
 
 				"set_stat":
 					if parts.size() < 3:
