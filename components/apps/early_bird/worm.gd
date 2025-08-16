@@ -42,7 +42,7 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		PortfolioManager.cash += 1.0
 		if StatpopManager:
 			print("worm statpop")
-			StatpopManager.spawn("+$1", global_position, "click")
+			StatpopManager.spawn("+$1", global_position, "click", Color.GREEN)
 
 
 func _on_worm_texture_mouse_entered() -> void:
