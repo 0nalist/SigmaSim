@@ -1,7 +1,7 @@
 {
 	"id": "earlybird_cash_per_score",
-	"name": "Score Dividend",
-	"description": "Each level increases cash per score by $0.01.",
+	"name": "Pipe Pennies",
+	"description": "Each level increases cash per pipe by $0.01.",
 	"effects": [
 	  {
 		"target": "cash_per_score",

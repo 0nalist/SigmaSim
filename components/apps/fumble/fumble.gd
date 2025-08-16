@@ -76,7 +76,7 @@ func _ready():
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
 	await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
 
-	show_swipes_tab()
+	#show_swipes_tab()
 	cancel_pride()
 
 func _on_card_swiped_left(npc_idx):

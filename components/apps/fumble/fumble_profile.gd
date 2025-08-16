@@ -23,7 +23,7 @@ func load_npc(npc: NPC) -> void:
 	name_label.text = npc.full_name
 	attractiveness_label.text = "%0.1f/10" % (float(npc.attractiveness) / 10.0)
 	type_label.text = str(npc.chat_battle_type)
-	print("type label = " + str(npc.chat_battle_type))
+	#print("type label = " + str(npc.chat_battle_type))
 
 	# Tags
 	#_clear_container(tags_container)
