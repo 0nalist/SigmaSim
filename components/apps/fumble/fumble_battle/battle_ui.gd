@@ -207,7 +207,7 @@ func _update_profiles():
 	else:
 		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
 
-		attractiveness_label.text = "🔥 %.1f/10" % (float(StatManager.get_stat("attractiveness")) / 10.0)
+	attractiveness_label.text = "🔥 %.1f/10" % (float(StatManager.get_stat("attractiveness")) / 10.0)
 	name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info

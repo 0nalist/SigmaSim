@@ -71,6 +71,7 @@ func get_stat(stat_name: String, default := 0.0) -> float:
 	# Computed stats include all base stats after recalculation
 	if computed_stats.has(stat_name):
 		return computed_stats[stat_name]
+		
 	# Fallback to player-specific data stored in PlayerManager
 	return PlayerManager.user_data.get(stat_name, default)
 
