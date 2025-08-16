@@ -12,18 +12,22 @@ class_name DebugConsole
 
 
 var commands := {
-	"add_cash": {
-		"args": "<amount>",
-		"description": "Adds the given amount of cash to your portfolio."
-	},
-	"help": {
-		"args": "",
-		"description": "Displays a list of available debug commands."
-	},
-	"set_stat": {
-			"args": "<stat_name> <value>",
-			"description": "Sets the specified player stat to the given value."
-	},
+        "add_cash": {
+                "args": "<amount>",
+                "description": "Adds the given amount of cash to your portfolio.",
+        },
+        "help": {
+                "args": "",
+                "description": "Displays a list of available debug commands.",
+        },
+        "set_stat": {
+                        "args": "<stat_name> <value>",
+                        "description": "Sets the specified player stat to the given value.",
+        },
+        "list_stats": {
+                        "args": "",
+                        "description": "Lists all current stats and values.",
+        },
 }
 
 func _ready() -> void:
@@ -154,59 +158,59 @@ func _populate_command_list() -> void:
 
 
 func process_command(command: String) -> bool:
-	var parts := command.split(" ", false)
-	if parts.size() == 0:
-		return false
+        var parts := command.split(" ", false)
+        if parts.size() == 0:
+                return false
 
-	var cmd := parts[0].to_lower()
+        var cmd := parts[0].to_lower()
 
-	match cmd:
-		"help":
-			_set_feedback("Available commands listed below.", true)
-			_populate_command_list()
-			command_list_parent_container.visible = true
-			return true
+        match cmd:
+                "help":
+                        _set_feedback("Available commands listed below.", true)
+                        _populate_command_list()
+                        command_list_parent_container.visible = true
+                        return true
 
+                "add_cash":
+                        if parts.size() < 2:
+                                _set_feedback("Usage: add_cash <amount>", false)
+                                return false
 
-		"add_cash":
-			if parts.size() < 2:
-				_set_feedback("Usage: add_cash <amount>", false)
-				return false
+                        var amount_str := parts[1]
+                        var amount = _parse_number(amount_str)
+                        if amount == null:
+                                _set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
+                                return false
 
-			var amount_str := parts[1]
-			var amount = _parse_number(amount_str)
-			if amount == null:
-				_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
-				return false
+                        var current_cash := StatManager.get_stat("cash")
+                        StatManager.set_base_stat("cash", current_cash + amount)
+                        return true
 
-			if PortfolioManager.has_method("add_cash"):
-				PortfolioManager.add_cash(amount)
-			else:
-				_set_feedback("PortfolioManager lacks add_cash", false)
-				return false
+                "set_stat":
+                        if parts.size() < 3:
+                                _set_feedback("Usage: set_stat <stat_name> <value>", false)
+                                return false
 
-			return true
-		"set_stat":
-			if parts.size() < 3:
-				_set_feedback("Usage: set_stat <stat_name> <value>", false)
-				return false
+                        var stat_name := parts[1]
+                        var value_str := parts[2]
+                        var value = _parse_number(value_str)
+                        if value == null:
+                                _set_feedback("❌ 'set_stat' requires a numeric value. '%s' is not valid.".format([value_str]),false)
+                                return false
 
-			var stat_name := parts[1]
-			var value_str := parts[2]
-			var value = _parse_number(value_str)
-			if value == null:
-				_set_feedback("❌ 'set_stat' requires a numeric value. '%s' is not valid.".format([value_str]), false)
-				return false
+                        StatManager.set_base_stat(stat_name, value)
+                        return true
 
-			if PlayerManager.has_method("set_stat"):
-				PlayerManager.set_stat(stat_name, value)
-			else:
-				_set_feedback("PlayerManager lacks set_stat method.", false)
-				return false
+                "list_stats":
+                        var all_stats := StatManager.get_all_stats()
+                        for stat_key in all_stats.keys().sort():
+                                var label := Label.new()
+                                label.text = "%s: %s" % [stat_key, str(all_stats[stat_key])]
+                                command_log_container.add_child(label)
+                        return true
 
-			return true
-		_:
-			return false
+                _:
+                        return false
 
 func _parse_number(s: String) -> Variant:
 	s = s.strip_edges()
