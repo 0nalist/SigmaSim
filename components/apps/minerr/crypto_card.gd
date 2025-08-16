@@ -111,9 +111,13 @@ func _on_click_boost() -> void:
 	# Optional: animate miner_sprite or play feedback
 
 func _on_sell_pressed() -> void:
-	PortfolioManager.sell_crypto(crypto.symbol, 1.0)
 	var statpop_pos = sell_button.global_position
-	StatpopManager.spawn("+$" + NumberFormatter.format_commas(crypto.price, 0), statpop_pos, "click", Color.GREEN)
+	
+	if PortfolioManager.sell_crypto(crypto.symbol, 1.0):
+		StatpopManager.spawn("+$" + NumberFormatter.format_commas(crypto.price, 0), statpop_pos, "click", Color.GREEN)
+	else:
+		StatpopManager.spawn("DECLINED", statpop_pos, "click", Color.RED)
+	
 	update_display()
 
 func _on_price_updated(symbol: String, _crypto: Cryptocurrency) -> void:
