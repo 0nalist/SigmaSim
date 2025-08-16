@@ -1,0 +1,24 @@
+[gd_scene load_steps=3]
+
+[ext_resource type="Script" path="res://components/debug/debug_console.gd" id="1_ekq6y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xw1n"]
+bg_color = Color(0, 0, 0, 0.7)
+
+[node name="DebugConsole" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0xw1n")
+script = ExtResource("1_ekq6y")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "SigmaSim Debug Console"
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="CommandLine" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="EnterButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+text = "Enter"
+[node name="FeedbackLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = ""

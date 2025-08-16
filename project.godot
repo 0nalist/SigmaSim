@@ -46,6 +46,7 @@ FumbleManager="*res://autoloads/fumble_manager.gd"
 MarkupParser="*res://autoloads/markup_parser.gd"
 StatManager="*res://autoloads/stat_manager.gd"
 Events="*res://autoloads/events.gd"
+DebugConsoleManager="*res://autoload/debug_console_manager.gd"
 
 [display]
 
