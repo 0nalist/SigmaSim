@@ -291,7 +291,7 @@ func can_purchase(id: String) -> bool:
 		if currency == "cash":
 			if PortfolioManager.can_pay_with_cash(amount):
 				continue
-			var remainder := amount - PortfolioManager.cash
+			var remainder = amount - PortfolioManager.cash
 			if remainder <= 0:
 				continue
 			if not PortfolioManager.can_pay_with_credit(remainder):

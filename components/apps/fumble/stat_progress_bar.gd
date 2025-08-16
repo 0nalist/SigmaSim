@@ -13,14 +13,14 @@ var _tween: Tween = null
 var _actual_value: float = 0.0
 
 func _ready():
-        if stat_name != "":
-                StatManager.connect_to_stat(stat_name, self, "_on_stat_updated")
+	if stat_name != "":
+		StatManager.connect_to_stat(stat_name, self, "_on_stat_updated")
 	_actual_value = value
 	update_tooltip(value)
 
 func _exit_tree():
-        if stat_name != "":
-                StatManager.disconnect_from_stat(stat_name, self, "_on_stat_updated")
+		if stat_name != "":
+				StatManager.disconnect_from_stat(stat_name, self, "_on_stat_updated")
 
 func _on_stat_updated(value: float) -> void:
 	update_value(value)

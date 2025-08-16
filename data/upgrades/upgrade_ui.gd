@@ -21,7 +21,7 @@ func set_upgrade(upgrade: Dictionary) -> void:
 	upgrade_data = upgrade
 	name_label.text = upgrade.get("name", upgrade.get("id", "???"))
 	desc_label.text = upgrade.get("description", "")
-        set_level(StatManager.get_upgrade_level(upgrade["id"]))
+	set_level(StatManager.get_upgrade_level(upgrade["id"]))
 	_refresh_cost()
 	set_locked(UpgradeManager.is_locked(upgrade["id"]))
 

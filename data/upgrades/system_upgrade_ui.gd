@@ -32,7 +32,7 @@ func refresh_upgrades() -> void:
 		
 		row.set_upgrade(upgrade)
 		row.set_locked(UpgradeManager.is_locked(upgrade["id"]))
-                row.set_level(StatManager.get_upgrade_level(upgrade["id"]))
+		row.set_level(StatManager.get_upgrade_level(upgrade["id"]))
 		row.connect("purchase_requested", _on_purchase_requested)
 		
 

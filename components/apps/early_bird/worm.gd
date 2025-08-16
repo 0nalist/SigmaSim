@@ -39,7 +39,7 @@ func _start_pulsing() -> void:
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	print("worm clicked")
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-                PortfolioManager.add_cash(1.0)
+		PortfolioManager.add_cash(1.0)
 		if StatpopManager:
 			print("worm statpop")
 			StatpopManager.spawn("+$1", global_position, "click", Color.GREEN)

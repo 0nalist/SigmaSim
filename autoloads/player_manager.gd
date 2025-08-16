@@ -116,18 +116,18 @@ func _apply_grandma() -> void:
 	StatpopManager.spawn("+$20.00", center)
 
 func _apply_pretty_privilege() -> void:
-        var new_attractiveness := StatManager.get_stat("attractiveness") + 10.0
-        StatManager.set_base_stat("attractiveness", new_attractiveness)
+		var new_attractiveness := StatManager.get_stat("attractiveness") + 10.0
+		StatManager.set_base_stat("attractiveness", new_attractiveness)
 
 func _apply_dropout() -> void:
-        PortfolioManager.cash = 300.0
-        StatManager.set_base_stat("cash", PortfolioManager.cash)
-        PortfolioManager.set_student_loans(0.0)
+		PortfolioManager.cash = 300.0
+		StatManager.set_base_stat("cash", PortfolioManager.cash)
+		PortfolioManager.set_student_loans(0.0)
 
 func _apply_burnout() -> void:
-        PortfolioManager.credit_used = 10000.0
-        PortfolioManager.credit_limit = 25000.0
-        PortfolioManager.set_student_loans(0.0)
+		PortfolioManager.credit_used = 10000.0
+		PortfolioManager.credit_limit = 25000.0
+		PortfolioManager.set_student_loans(0.0)
 
 func _apply_gamer() -> void:
 	PortfolioManager.set_student_loans(40000.0)
