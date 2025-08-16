@@ -19,7 +19,11 @@ var commands := {
 	"help": {
 		"args": "",
 		"description": "Displays a list of available debug commands."
-	}
+	},
+	"set_stat": {
+			"args": "<stat_name> <value>",
+			"description": "Sets the specified player stat to the given value."
+	},
 }
 
 func _ready() -> void:
@@ -177,15 +181,30 @@ func process_command(command: String) -> bool:
 
 			if PortfolioManager.has_method("add_cash"):
 				PortfolioManager.add_cash(amount)
-			elif PortfolioManager.has_method("get_cash") and PortfolioManager.has_method("set_cash"):
-				var current_cash = PortfolioManager.get_cash()
-				PortfolioManager.set_cash(current_cash + amount)
 			else:
-				_set_feedback("PortfolioManager lacks add_cash or get/set methods.", false)
+				_set_feedback("PortfolioManager lacks add_cash", false)
 				return false
 
 			return true
+		"set_stat":
+			if parts.size() < 3:
+				_set_feedback("Usage: set_stat <stat_name> <value>", false)
+				return false
 
+			var stat_name := parts[1]
+			var value_str := parts[2]
+			var value = _parse_number(value_str)
+			if value == null:
+				_set_feedback("❌ 'set_stat' requires a numeric value. '%s' is not valid.".format([value_str]), false)
+				return false
+
+			if PlayerManager.has_method("set_stat"):
+				PlayerManager.set_stat(stat_name, value)
+			else:
+				_set_feedback("PlayerManager lacks set_stat method.", false)
+				return false
+
+			return true
 		_:
 			return false
 
