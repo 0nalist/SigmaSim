@@ -31,7 +31,7 @@ layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Debug Console"
+text = "Developer Console"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -41,6 +41,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+placeholder_text = "Type \"help\" for a list of available commands"
 
 [node name="EnterButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -50,3 +51,50 @@ text = "Enter"
 [node name="FeedbackLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+text = "Command Log
+"
+horizontal_alignment = 1
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CommandLogContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/ScrollContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CommandListParentContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/CommandListParentContainer"]
+layout_mode = 2
+text = "Available Commands
+"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/CommandListParentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CommandListContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/CommandListParentContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

@@ -5,16 +5,32 @@ class_name DebugConsole
 @onready var command_line: LineEdit = %CommandLine
 @onready var enter_button: Button = %EnterButton
 @onready var feedback_label: Label = %FeedbackLabel
+@onready var command_list_container: VBoxContainer = %CommandListContainer
+@onready var command_log_container: VBoxContainer = %CommandLogContainer
+
+@onready var command_list_parent_container: VBoxContainer = %CommandListParentContainer
+
+
+var commands := {
+	"add_cash": {
+		"args": "<amount>",
+		"description": "Adds the given amount of cash to your portfolio."
+	},
+	"help": {
+		"args": "",
+		"description": "Displays a list of available debug commands."
+	}
+}
 
 func _ready() -> void:
-	# Fullscreen anchor on the actual control (not CanvasLayer)
+	# Fullscreen anchor
 	panel.anchors_preset = Control.PRESET_FULL_RECT
 	panel.offset_left = 0
 	panel.offset_top = 0
 	panel.offset_right = 0
 	panel.offset_bottom = 0
 
-	# Background style for visibility
+	# Background style
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0, 0, 0, 0.7)
 	panel.add_theme_stylebox_override("panel", sb)
@@ -24,8 +40,12 @@ func _ready() -> void:
 
 	enter_button.pressed.connect(_on_enter_pressed)
 	command_line.text_submitted.connect(_on_text_submitted)
-	
 	enter_button.focus_mode = Control.FOCUS_NONE
+
+	_populate_command_list()
+	#command_list_container.visible = false
+	command_list_parent_container.visible = false
+	
 
 func open() -> void:
 	print("opening debug")
@@ -47,15 +67,15 @@ func _focus_line() -> void:
 		command_line.grab_focus()
 		command_line.caret_column = command_line.text.length()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if not panel.visible:
-		return
-	if event.is_action_pressed("ui_accept"):
-		_submit_command()
+func _refocus_line() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if is_instance_valid(command_line):
 		get_viewport().set_input_as_handled()
-	if event.is_action_pressed("ui_cancel"):
-		close()
-		get_viewport().set_input_as_handled()
+		command_line.release_focus()
+		await get_tree().process_frame
+		command_line.grab_focus()
+		command_line.caret_column = command_line.text.length()
 
 func _on_enter_pressed() -> void:
 	_submit_command()
@@ -63,12 +83,24 @@ func _on_enter_pressed() -> void:
 func _on_text_submitted(_text: String) -> void:
 	_submit_command()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if not panel.visible:
+		return
+	if event.is_action_pressed("ui_accept"):
+		_submit_command()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_cancel"):
+		close()
+		get_viewport().set_input_as_handled()
+
 func _submit_command() -> void:
 	var cmd := command_line.text.strip_edges()
 	if cmd == "":
 		_set_feedback("No command entered.", false)
 		call_deferred("_refocus_line")
 		return
+
+	_log_command(cmd)  # ← Add this
 
 	var ok := process_command(cmd)
 	if ok:
@@ -81,26 +113,41 @@ func _submit_command() -> void:
 	call_deferred("_refocus_line")
 
 
-func _refocus_line() -> void:
-	await get_tree().process_frame
-	await get_tree().process_frame
-	if is_instance_valid(command_line):
-		get_viewport().set_input_as_handled()
-		command_line.release_focus()  # Explicitly release
-		await get_tree().process_frame
-		command_line.grab_focus()     # Reassign after release
-		command_line.caret_column = command_line.text.length()
-
-
-
+func _log_command(cmd: String) -> void:
+	var label := Label.new()
+	label.text = "> " + cmd
+	command_log_container.add_child(label)
 
 
 func _set_feedback(msg: String, success: bool) -> void:
+	feedback_label.text = msg
+
 	if success:
 		feedback_label.modulate = Color(0.6, 1.0, 0.6, 1.0)
 	else:
 		feedback_label.modulate = Color(1.0, 0.6, 0.6, 1.0)
-	feedback_label.text = msg
+
+
+func _populate_command_list() -> void:
+	for child in command_list_container.get_children():
+		child.queue_free()
+
+	for cmd in commands.keys():
+		var data = commands[cmd]
+		var label := Label.new()
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD
+
+		var args := ""
+		if data.has("args"):
+			args = data["args"]
+
+		var desc := ""
+		if data.has("description"):
+			desc = data["description"]
+
+		label.text = cmd + " " + args + ":\n  " + desc
+		command_list_container.add_child(label)
+
 
 func process_command(command: String) -> bool:
 	var parts := command.split(" ", false)
@@ -109,39 +156,43 @@ func process_command(command: String) -> bool:
 
 	var cmd := parts[0].to_lower()
 
-	if cmd == "add_cash":
-		if parts.size() < 2:
-			_set_feedback("Usage: add_cash <amount>", false)
-			return false
+	match cmd:
+		"help":
+			_set_feedback("Available commands listed below.", true)
+			_populate_command_list()
+			command_list_parent_container.visible = true
+			return true
 
-		var amount_str := parts[1]
-		var amount = _parse_number(amount_str)
 
-		if amount == null:
-			_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
-			return false
-
-		if PortfolioManager.has_method("add_cash"):
-			PortfolioManager.add_cash(amount)
-		else:
-			if not PortfolioManager.has_method("get_cash") or not PortfolioManager.has_method("set_cash"):
-				_set_feedback("PortfolioManager lacks add_cash and get/set APIs.", false)
+		"add_cash":
+			if parts.size() < 2:
+				_set_feedback("Usage: add_cash <amount>", false)
 				return false
-			var current_cash = PortfolioManager.get_cash()
-			PortfolioManager.set_cash(current_cash + amount)
 
-		return true
+			var amount_str := parts[1]
+			var amount = _parse_number(amount_str)
+			if amount == null:
+				_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
+				return false
 
-	return false
+			if PortfolioManager.has_method("add_cash"):
+				PortfolioManager.add_cash(amount)
+			elif PortfolioManager.has_method("get_cash") and PortfolioManager.has_method("set_cash"):
+				var current_cash = PortfolioManager.get_cash()
+				PortfolioManager.set_cash(current_cash + amount)
+			else:
+				_set_feedback("PortfolioManager lacks add_cash or get/set methods.", false)
+				return false
 
+			return true
+
+		_:
+			return false
 
 func _parse_number(s: String) -> Variant:
 	s = s.strip_edges()
-
 	var regex := RegEx.new()
 	regex.compile("^[-+]?[0-9]+(\\.[0-9]+)?$")
-
 	if not regex.search(s):
 		return null
-
 	return s.to_float()
