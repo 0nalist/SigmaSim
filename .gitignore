@@ -3,3 +3,8 @@
 /android/
 
 addons/godot-sqlite/bin/~libgdsqlite.windows.template_debug.x86_64.dll
+# Ignore large portrait assets
+assets/modular_portrait_pieces/**/*.png
+assets/modular_portrait_pieces/**/*.import
+art/portraits/**/*.png
+art/portraits/**/*.import
