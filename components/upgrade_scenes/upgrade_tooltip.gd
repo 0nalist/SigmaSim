@@ -84,14 +84,14 @@ func describe_effect(effect: Dictionary) -> String:
 		var value = effect.get("value", 0)
 		var target = effect.get("target", "")
 		match op:
-				"add":
-						return "+%s %s" % [str(value), target]
-				"mul":
-						return "x%s %s" % [str(value), target]
-				"set":
-						return "Set %s to %s" % [target, str(value)]
-				_:
-						return "%s %s %s" % [op, str(value), target]
+			"add":
+				return "+%s %s" % [str(value), target]
+			"mul":
+				return "x%s %s" % [str(value), target]
+			"set":
+				return "Set %s to %s" % [target, str(value)]
+			_:
+				return "%s %s %s" % [op, str(value), target]
 
 func get_status_text(upgrade: Dictionary) -> String:
 	var id = upgrade.get("id", "")
@@ -100,25 +100,25 @@ func get_status_text(upgrade: Dictionary) -> String:
 	
 	var level = StatManager.get_upgrade_level(id)
 	if not UpgradeManager.is_repeatable(id) and level >= 1:
-					return "Purchased"
+		return "Purchased"
 	if UpgradeManager.max_level(id) != -1 and level >= UpgradeManager.max_level(id):
-					return "Maxed Out"
+		return "Maxed Out"
 	
-		if UpgradeManager.is_locked(id):
-				return "Locked"
+	if UpgradeManager.is_locked(id):
+		return "Locked"
 
-		var remaining = ceil(UpgradeManager.get_cooldown_remaining(id))
-		if remaining > 0:
-				return "Cooldown: %s" % _format_minutes(int(remaining))
+	var remaining = ceil(UpgradeManager.get_cooldown_remaining(id))
+	if remaining > 0:
+			return "Cooldown: %s" % _format_minutes(int(remaining))
 
-		var cost = UpgradeManager.get_cost_for_next_level(id)
-		for currency in cost.keys():
-				if currency == "cash" and PortfolioManager.cash < cost[currency]:
-						return "Not enough funds"
-				if currency != "cash" and PortfolioManager.get_crypto_amount(currency) < cost[currency]:
-						return "Not enough funds"
+	var cost = UpgradeManager.get_cost_for_next_level(id)
+	for currency in cost.keys():
+			if currency == "cash" and PortfolioManager.cash < cost[currency]:
+					return "Not enough funds"
+			if currency != "cash" and PortfolioManager.get_crypto_amount(currency) < cost[currency]:
+					return "Not enough funds"
 
-		return ""
+	return ""
 
 func _on_minute_passed(_m: int) -> void:
 		if current_upgrade.is_empty():

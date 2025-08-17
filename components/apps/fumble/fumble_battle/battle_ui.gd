@@ -99,15 +99,15 @@ func _ready():
 	catch_button.pressed.connect(_on_catch_button_pressed)
 	ghost_button.pressed.connect(_on_ghost_button_pressed)
 	
-        profile_center_container.hide()
-        npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
-        close_fumble_profile_button.pressed.connect(_on_close_fumble_profile_button_pressed)
+	profile_center_container.hide()
+	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
+	close_fumble_profile_button.pressed.connect(_on_close_fumble_profile_button_pressed)
 
-        end_battle_screen_container.hide()
-        blocked_container.hide()
+	end_battle_screen_container.hide()
+	blocked_container.hide()
 
-        StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
-        _update_player_attractiveness_label()
+	StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
+	_update_player_attractiveness_label()
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
@@ -210,23 +210,23 @@ func _update_profiles():
 	else:
 		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
 
-        _update_player_attractiveness_label()
-        name_label.text = PlayerManager.get_var("name", "You")
+		_update_player_attractiveness_label()
+		name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info
 	if npc.portrait_config != null:
 			npc_portrait.apply_config(npc.portrait_config)
 	npc_attractiveness_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
 	npc_name_label.text = npc.full_name
-        npc_type_label.text = npc.chat_battle_type
+	npc_type_label.text = npc.chat_battle_type
 
 
 func _on_dime_status_changed(_value: float) -> void:
-        _update_player_attractiveness_label()
+	_update_player_attractiveness_label()
 
 
 func _update_player_attractiveness_label() -> void:
-        attractiveness_label.text = "🔥 %.1f/10" % float(StatManager.get_stat("dime_status"))
+		attractiveness_label.text = "🔥 %.1f/10" % float(StatManager.get_stat("dime_status"))
 
 
 func update_action_buttons():
