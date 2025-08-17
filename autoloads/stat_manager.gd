@@ -1,7 +1,7 @@
 extends Node
 ## StatManager is the single authority for every gameplay statistic.  All
 ## systems should use this class to query or modify stats rather than reaching
-## into other managers.  The manager supports permanent base values, upgrade
+## into other managers.	 The manager supports permanent base values, upgrade
 ## effects, and temporary overrides used by buffs or special events.
 
 signal stat_changed(stat: String, value: Variant)
@@ -256,6 +256,33 @@ func _recalculate_stat(stat: String, emit := true) -> void:
 				"set":
 					value = eff_value
 					applied = true
+				"add_formula":
+					var formula: String = effect.get("value_formula", "")
+					if formula == "":
+						push_warning("StatManager: missing value_formula for add_formula on stat '%s'" % stat)
+					else:
+						var vars: Dictionary = {
+							"level": float(level),
+							"current_value": value,
+						}
+						vars["current_%s" % stat] = value
+						if stat == "attractiveness":
+							vars["current_dime_status"] = value / 10.0
+						var names: Array[String] = []
+						var vals: Array = []
+						for k in vars.keys():
+							names.append(k)
+							vals.append(vars[k])
+						var expr := Expression.new()
+						if expr.parse(formula, names) != OK:
+							push_warning("StatManager: bad value_formula '%s' for stat '%s'" % [formula, stat])
+						else:
+							var result = expr.execute(vals)
+							if typeof(result) in [TYPE_FLOAT, TYPE_INT]:
+								value += float(result)
+								applied = true
+							else:
+								push_warning("StatManager: value_formula for stat '%s' did not return number" % stat)
 				_:
 					push_warning("StatManager: unknown operation '%s' for stat '%s'" % [op, stat])
 	if value != previous:
