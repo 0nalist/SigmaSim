@@ -144,7 +144,8 @@ layout_mode = 2
 size_flags_vertical = 0
 text = "Bio:"
 
-[node name="TextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+[node name="BioTextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
