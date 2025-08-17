@@ -5,6 +5,7 @@ func _ready() -> void:
 	pass
 
 func apply_config(cfg: PortraitConfig) -> void:
+
         for layer in PortraitCache.layers_order():
                 var rect: TextureRect = get_node_or_null(layer)
                 if rect == null:

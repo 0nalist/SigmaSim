@@ -34,4 +34,3 @@ static func from_dict(src: Dictionary) -> PortraitConfig:
 			out[k] = Color(float(arr[0]), float(arr[1]), float(arr[2]), a)
 	cfg.colors = out
 	return cfg
-

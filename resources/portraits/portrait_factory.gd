@@ -20,29 +20,39 @@ static func generate_config_for_name(full_name: String) -> PortraitConfig:
 	cfg.seed = seed
 
 	for layer in PortraitCache.layers_order():
-		var info := PortraitCache.layer_info(layer)
-		var textures := info.get("textures", []) as Array
-		var count := textures.size()
-		var idx := 0
+			var info := PortraitCache.layer_info(layer)
+			var textures := info.get("textures", []) as Array
+			var count := textures.size()
+			var idx := 0
 
-		match layer:
-			"face":
-				if count > 0:
-					idx = rng.randi_range(1, count)
-			"hair_back":
-				if count > 0 and rng.randf() < 0.4:
-					idx = rng.randi_range(1, count)
-			"hair":
-				if count > 0 and rng.randf() < 0.95:
-					idx = rng.randi_range(1, count)
-			_:
-				# Eyes/Nose/Mouth/Shirt: 0.1% chance to be missing
-				if count > 0 and rng.randf() >= 0.001:
-					idx = rng.randi_range(1, count)
+			match layer:
+					"face":
+							if count > 0:
+									idx = rng.randi_range(1, count)
+					"hair_back":
+							if count > 0 and rng.randf() < 0.4:
+									idx = rng.randi_range(1, count)
+					"hair":
+							if count > 0 and rng.randf() < 0.95:
+									idx = rng.randi_range(1, count)
+					_:
+							# Eyes/Nose/Mouth/Shirt: 0.1% chance to be missing
+							if count > 0 and rng.randf() >= 0.001:
+									idx = rng.randi_range(1, count)
 
-		cfg.indices[layer] = idx
-		if idx > 0:
-			cfg.colors[layer] = Color(rng.randf(), rng.randf(), rng.randf(), 1.0)
+			cfg.indices[layer] = idx
+			if idx > 0 and layer != "hair" and layer != "hair_back":
+					cfg.colors[layer] = Color(rng.randf(), rng.randf(), rng.randf(), 1.0)
+
+	var hair_idx = cfg.indices.get("hair", 0)
+	var hair_back_idx = cfg.indices.get("hair_back", 0)
+	if hair_idx > 0:
+			var col = Color(rng.randf(), rng.randf(), rng.randf(), 1.0)
+			cfg.colors["hair"] = col
+			if hair_back_idx > 0:
+					cfg.colors["hair_back"] = col
+	elif hair_back_idx > 0:
+			cfg.colors["hair_back"] = Color(rng.randf(), rng.randf(), rng.randf(), 1.0)
 
 	return cfg
 
