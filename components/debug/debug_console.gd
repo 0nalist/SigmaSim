@@ -189,24 +189,23 @@ func process_command(command: String) -> bool:
 				#StatManager.set_base_stat("cash", current_cash + amount)
 				return true
 
-			"set_stat":
-				if parts.size() < 3:
-					_set_feedback("Usage: set_stat <stat_name> <value>", false)
-					return false
+                        "set_stat":
+                                if parts.size() < 3:
+                                        _set_feedback("Usage: set_stat <stat_name> <value>", false)
+                                        return false
 
-				var stat_name := parts[1]
-				var value_str := parts[2]
-				var value = _parse_number(value_str)
-				if value == null:
-					_set_feedback("❌ 'set_stat' requires a numeric value. '%s' is not valid.".format([value_str]),false)
-					return false
+                                var stat_name := parts[1]
+                                var value_str := parts.slice(2).join(" ")
+                                var value = _parse_number(value_str)
+                                if value == null:
+                                        value = value_str
 
-				StatManager.set_base_stat(stat_name, value)
-				var label := Label.new()
-				label.text = "%s's value is now %s" % [stat_name, str(value)]
-				command_log_container.add_child(label)
+                                StatManager.set_base_stat(stat_name, value)
+                                var label := Label.new()
+                                label.text = "%s's value is now %s" % [stat_name, str(value)]
+                                command_log_container.add_child(label)
 
-				return true
+                                return true
 
 			"list_stats":
 				var all_stats := StatManager.get_all_stats()
