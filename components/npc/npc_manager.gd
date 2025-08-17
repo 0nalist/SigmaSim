@@ -164,27 +164,27 @@ func set_relationship_status(idx: int, app_name: String, status: FumbleManager.F
 
 # Returns all NPC indices the player has "liked" in Fumble
 func get_fumble_matches() -> Array:
-        var matches = []
-        var rels = DBManager.get_all_fumble_relationships()
-        for idx in rels.keys():
-                var status_enum: FumbleManager.FumbleStatus = rels[idx]
-                # Show only if currently "liked" or "matched"
-                if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
-                        matches.append(int(idx))
-        return matches
+		var matches = []
+		var rels = DBManager.get_all_fumble_relationships()
+		for idx in rels.keys():
+				var status_enum: FumbleManager.FumbleStatus = rels[idx]
+				# Show only if currently "liked" or "matched"
+				if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+						matches.append(int(idx))
+		return matches
 
 func get_fumble_matches_with_times() -> Array:
-        var out: Array = []
-        var rows = DBManager.get_all_fumble_relationship_rows()
-        for r in rows:
-                var status_enum: FumbleManager.FumbleStatus = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
-                if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
-                        out.append({
-                                "npc_id": int(r.npc_id),
-                                "created_at": int(r.created_at),
-                                "updated_at": int(r.updated_at)
-                        })
-        return out
+		var out: Array = []
+		var rows = DBManager.get_all_fumble_relationship_rows()
+		for r in rows:
+				var status_enum: FumbleManager.FumbleStatus = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
+				if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+						out.append({
+								"npc_id": int(r.npc_id),
+								"created_at": int(r.created_at),
+								"updated_at": int(r.updated_at)
+						})
+		return out
 
 
 
