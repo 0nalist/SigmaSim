@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://by7ye7kt412u3"]
+[gd_scene load_steps=12 format=3 uid="uid://by7ye7kt412u3"]
 
 [ext_resource type="Script" uid="uid://ce5ge1lmsdy7g" path="res://components/apps/ower_view/ower_view.gd" id="1_t43hg"]
 [ext_resource type="Texture2D" uid="uid://chka0bjnrrdmr" path="res://assets/ui/buttons/dark_purple_normal.png" id="3_aemln"]
 [ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="3_svf65"]
+[ext_resource type="Shader" uid="uid://dwdg8fcaxgjbp" path="res://assets/shaders/maroon_warp_shader.gdshader" id="4_6w1kr"]
 [ext_resource type="Texture2D" uid="uid://dpko7w8bh0pq1" path="res://assets/ui/buttons/english_violet_normal.png" id="4_svf65"]
 [ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/buttons/lilac_normal.png" id="5_6w1kr"]
 
@@ -12,6 +13,15 @@ texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_11odt"]
+shader = ExtResource("4_6w1kr")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_njqv2"]
 texture = ExtResource("4_svf65")
@@ -49,6 +59,10 @@ window_title = "OwerView"
 window_icon = ExtResource("3_svf65")
 default_window_size = Vector2(600, 500)
 default_position = "left"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_11odt")
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
