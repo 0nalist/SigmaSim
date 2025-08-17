@@ -56,27 +56,28 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="MatchesHBox" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MatchesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox"]
 custom_minimum_size = Vector2(0, 156)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="MatchesHBox" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MatchesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer/MatchesHBox"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="MatchesContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer/MatchesHBox"]
+[node name="MatchesContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MatchButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer/MatchesHBox/MatchesContainer" instance=ExtResource("2_qddv1")]
+[node name="MatchButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/ScrollContainer/MatchesContainer" instance=ExtResource("2_qddv1")]
 custom_minimum_size = Vector2(128, 96)
 layout_mode = 2
 size_flags_vertical = 4
@@ -92,22 +93,22 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Average Match: 0"
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ChatBattlesVBox" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2"]
+[node name="ChatBattlesVBox" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ChatBattlesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/ChatBattlesVBox"]
+[node name="ChatBattlesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ChatBattlesContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/ChatBattlesVBox"]
+[node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ChatBattlesContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox/ScrollContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ChatBattleButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer2/ChatBattlesVBox/ChatBattlesContainer" instance=ExtResource("3_3cmco")]
+[node name="ChatBattleButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox/ScrollContainer2/ChatBattlesContainer" instance=ExtResource("3_3cmco")]
 layout_mode = 2
