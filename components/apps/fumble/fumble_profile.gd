@@ -2,7 +2,7 @@ class_name FumbleProfileUI
 extends PanelContainer
 
 
-@onready var profile_pic: TextureRect = %ProfilePic
+@onready var portrait: PortraitView = %ProfilePic
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
 
@@ -19,7 +19,8 @@ extends PanelContainer
 
 
 func load_npc(npc: NPC) -> void:
-	# Core info
+       portrait.apply_config(npc.portrait_config)
+       # Core info
 	name_label.text = npc.full_name
 	attractiveness_label.text = "%0.1f/10" % (float(npc.attractiveness) / 10.0)
 	type_label.text = str(npc.chat_battle_type)
