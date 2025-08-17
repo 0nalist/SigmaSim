@@ -38,6 +38,7 @@ func get_success_chance(move_type: String) -> float:
 
 	# Special handling for "catch"
 	if move_type == "catch":
+<<<<<<< Updated upstream
 			var chemistry = stats.get("chemistry", 0)
 			var apprehension = stats.get("apprehension", 0)
 			var self_esteem = stats.get("self_esteem", 50)
@@ -49,6 +50,19 @@ func get_success_chance(move_type: String) -> float:
 					var chance = float(chemistry - apprehension) / max(1.0, (100.0 - min(apprehension, chemistry)))
 					var self_esteem_bonus = max(0, 50 - self_esteem) * 0.01
 					return clamp(chance + self_esteem_bonus, 0.0, 1.0)
+=======
+		var chemistry = stats.get("chemistry", 0)
+		var apprehension = stats.get("apprehension", 0)
+		var self_esteem = stats.get("self_esteem", 50)
+		if chemistry > 99 and apprehension < 1:
+			return 1.0
+		elif apprehension > chemistry:
+			return 0.0
+		else:
+			var chance = float(chemistry - apprehension) / max(1.0, (100.0 - min(apprehension, chemistry)))
+			var self_esteem_bonus = max(0, 50 - self_esteem) * 0.01
+			return clamp(chance + self_esteem_bonus, 0.0, 1.0)
+>>>>>>> Stashed changes
 
 	var base_chance = 0.5 + (get_attractiveness_delta() / 10.0)
 	if move_type == "simp":

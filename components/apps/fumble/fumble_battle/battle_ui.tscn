@@ -264,24 +264,17 @@ layout_mode = 2
 texture = ExtResource("1_vooct")
 stretch_mode = 3
 
-[node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ProfilePic"]
+[node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -7.5
-offset_right = 20.0
-offset_bottom = 7.5
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme = ExtResource("2_ctqjn")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 24
 text = "0/10"
 horizontal_alignment = 1
 
@@ -389,6 +382,13 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
+[node name="NPCProfileButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "?"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
@@ -399,37 +399,19 @@ custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="NPCAttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/NPCProfilePic"]
+[node name="NPCAttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -7.5
-offset_right = 20.0
-offset_bottom = 7.5
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme = ExtResource("2_ctqjn")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 24
 text = "0/10"
 horizontal_alignment = 1
-
-[node name="NPCProfileButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/NPCProfilePic"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -16.0
-offset_bottom = 27.0
-grow_horizontal = 0
-text = "?"
 
 [node name="NPCNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -470,6 +452,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "The higher your chemistry, the more likely you are to catch their number"
 theme_override_constants/outline_size = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_34iuq")
 theme_override_styles/fill = SubResource("StyleBoxFlat_g0e31")
@@ -511,6 +494,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Low self esteem = easy catch"
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_34iuq")
@@ -557,6 +541,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "When Apprehension gets too high, you'll be blocked on your next failed line"
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_34iuq")
