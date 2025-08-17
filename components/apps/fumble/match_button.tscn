@@ -25,7 +25,9 @@ theme_override_constants/margin_bottom = 5
 
 [node name="ProfilePic" parent="MarginContainer" instance=ExtResource("3_dvkw6")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
+scale = Vector2(2, 2)
 
 [node name="AttractivenessLabel" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true

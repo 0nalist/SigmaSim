@@ -58,8 +58,10 @@ theme_override_constants/separation = 8
 
 [node name="ProfilePic" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("5_pv")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
+scale = Vector2(2, 2)
 
 [node name="AttractivenessLabel" type="Label" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer/ProfilePic"]
 unique_name_in_owner = true
