@@ -27,10 +27,9 @@ func get_npc_by_index(idx: int) -> NPC:
 	else:
 		npc = NPCFactory.create_npc(idx)
 
-	# Apply persistent or override data
-	var data: Dictionary = persistent_npcs.get(idx, npc_overrides.get(idx, {}))
-	for key in data.keys():
-		npc.set(key, data[key])
+        # Apply persistent or override data without clobbering existing fields
+        var data: Dictionary = persistent_npcs.get(idx, npc_overrides.get(idx, {}))
+        _merge_npc_data(npc, data)
 
 	if npc.portrait_config == null:
 		npc.portrait_config = PortraitFactory.ensure_config_for_npc(idx, npc.full_name)
@@ -74,9 +73,43 @@ func get_npcs_by_gender_dot(app_name: String, preferred_gender: Vector3, min_sim
 	return matches.slice(0, count)
 
 func gender_dot_similarity(a: Vector3, b: Vector3) -> float:
-	if a.length() == 0 or b.length() == 0:
-		return 0.0
-	return a.dot(b) / (a.length() * b.length()) # [0,1]
+        if a.length() == 0 or b.length() == 0:
+                return 0.0
+        return a.dot(b) / (a.length() * b.length()) # [0,1]
+
+
+
+func _merge_npc_data(npc: NPC, data: Dictionary) -> void:
+        if data.is_empty():
+                return
+        var exported: Dictionary = {}
+        for prop in npc.get_property_list():
+                if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+                        exported[prop.name] = true
+        for key in data.keys():
+                if not exported.has(key):
+                        continue
+                var override_val = data[key]
+                var existing_val = npc.get(key)
+                match typeof(override_val):
+                        TYPE_ARRAY:
+                                if typeof(existing_val) == TYPE_ARRAY:
+                                        existing_val.clear()
+                                        for v in override_val:
+                                                existing_val.append(v)
+                                else:
+                                        npc.set(key, override_val.duplicate())
+                        TYPE_DICTIONARY:
+                                if typeof(existing_val) == TYPE_DICTIONARY:
+                                        for sub_key in override_val.keys():
+                                                existing_val[sub_key] = override_val[sub_key]
+                                else:
+                                        npc.set(key, override_val.duplicate())
+                        TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING:
+                                npc.set(key, override_val)
+                        _:
+                                if existing_val == null:
+                                        npc.set(key, override_val)
 
 
 
