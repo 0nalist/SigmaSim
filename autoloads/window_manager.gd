@@ -14,7 +14,7 @@ var app_registry := {
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
 	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
 	#"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"), # OLD workforce
-	"WorkForce": preload("res://workforce.tscn"),
+	#"WorkForce": preload("res://workforce.tscn"),
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
 	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
