@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://cwin011rx52n7"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_a0w3w"]
-[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_m5oeo"]
 [ext_resource type="Script" uid="uid://ck1rp36ofvy52" path="res://components/apps/fumble/fumble_profile.gd" id="1_r7irv"]
 [ext_resource type="PackedScene" uid="uid://bo7jj5gh57d4n" path="res://components/greek_stats_ui.tscn" id="4_5ticg"]
+[ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="5_pv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ticg"]
 bg_color = Color(0.968627, 0.968627, 1, 1)
@@ -56,25 +56,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
-[node name="ProfilePic" type="TextureRect" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer"]
+[node name="ProfilePic" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("5_pv")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("1_m5oeo")
 
-[node name="AttractivenessLabel" type="Label" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer/ProfilePic"]
+[node name="AttractivenessLabel" type="Label" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -31.0
-offset_top = -30.0
-offset_right = 31.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 2
 theme = ExtResource("1_a0w3w")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)

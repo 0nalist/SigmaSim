@@ -21,7 +21,7 @@ var block_warning_active: bool = false
 @onready var name_label: Label = %NameLabel
 
 @onready var npc_type_label: Label = %NPCTypeLabel
-@onready var npc_profile_pic: TextureRect = %NPCProfilePic
+@onready var npc_portrait: PortraitView = %NPCProfilePic
 @onready var npc_attractiveness_label: Label = %NPCAttractivenessLabel
 @onready var npc_name_label: Label = %NPCNameLabel
 
@@ -211,7 +211,8 @@ func _update_profiles():
 	name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info
-	npc_profile_pic.texture = npc.profile_pic if npc.profile_pic else preload("res://assets/prof_pics/silhouette.png")
+	if npc.portrait_config != null:
+			npc_portrait.apply_config(npc.portrait_config)
 	npc_attractiveness_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
 	npc_name_label.text = npc.full_name
 	npc_type_label.text = npc.chat_battle_type

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b33jep62eow8j"]
 
-[ext_resource type="Script" uid="uid://dquuqenatgw5y" path="res://workforce.gd" id="1_jlt70"]
+[ext_resource type="Script" uid="uid://dquuqenatgw5y" path="res://trash/workforce.gd" id="1_jlt70"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e167l"]
 bg_color = Color(0, 0, 0, 1)
