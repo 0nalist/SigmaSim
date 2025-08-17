@@ -17,7 +17,8 @@
 	  "cash": 1
 	},
 	"scale_by_formula": true,
-	"cost_formula": {
-	  "cash": "base_cost[\"cash\"] * pow(1.2, level-1)"
-	}
+        "cost_formula": {
+          "cash": "base_cost[\"cash\"] * pow(1.2, level-1)"
+        },
+        "repeatable": true
   }
