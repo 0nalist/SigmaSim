@@ -129,20 +129,20 @@ func _on_apply_pressed() -> void:
 
 
 func _sync_ui_with_config() -> void:
-		hair_color_sync = config.colors.get("hair") == config.colors.get("hair_back")
-		for layer in PortraitCache.layers_order():
-				var idx = config.indices.get(layer, 0)
-				var btns = layer_controls.get(layer, {})
-				if btns.has("index") and btns["index"] is OptionButton:
-						var ob: OptionButton = btns["index"]
-						if idx < 0 or idx >= ob.item_count:
-								idx = 0
-								config.indices[layer] = idx
-						ob.select(idx)
-				var col = config.colors.get(layer, Color.WHITE)
-				if hair_color_sync and layer == "hair_back":
-						col = config.colors.get("hair", Color.WHITE)
-				if btns.has("color") and btns["color"] is ColorPickerButton:
-						btns["color"].color = col
-				if (layer == "hair" or layer == "hair_back") and btns.has("sync") and btns["sync"] is CheckBox:
-						btns["sync"].button_pressed = hair_color_sync
+	hair_color_sync = config.colors.get("hair") == config.colors.get("hair_back")
+	for layer in PortraitCache.layers_order():
+		var idx = config.indices.get(layer, 0)
+		var btns = layer_controls.get(layer, {})
+		if btns.has("index") and btns["index"] is OptionButton:
+			var ob: OptionButton = btns["index"]
+			if idx < 0 or idx >= ob.item_count:
+				idx = 0
+				config.indices[layer] = idx
+			ob.select(idx)
+		var col = config.colors.get(layer, Color.WHITE)
+		if hair_color_sync and layer == "hair_back":
+			col = config.colors.get("hair", Color.WHITE)
+		if btns.has("color") and btns["color"] is ColorPickerButton:
+			btns["color"].color = col
+		if (layer == "hair" or layer == "hair_back") and btns.has("sync") and btns["sync"] is CheckBox:
+			btns["sync"].button_pressed = hair_color_sync
