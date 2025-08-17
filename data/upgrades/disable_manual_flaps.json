@@ -4,11 +4,11 @@
   "description": "Unlocks a checkbox to disable manual flaps.",
   "effects": [],
   "systems": [
-    "earlybird"
+	"earlybird"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "cash": 100
+	"cash": 1000
   },
   "max_level": 1
 }
