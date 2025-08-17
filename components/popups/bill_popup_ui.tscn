@@ -110,5 +110,14 @@ text = "*Paying by credit imposes a 30% fee"
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="AutopayCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+text = "Autopay Bills"
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/PayNowButton" to="." method="_on_pay_now_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/PayByCreditButton" to="." method="_on_pay_by_credit_button_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/AutopayCheckBox" to="." method="_on_autopay_check_box_toggled"]
