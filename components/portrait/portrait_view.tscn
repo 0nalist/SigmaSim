@@ -9,21 +9,49 @@ script = ExtResource("1")
 
 [node name="shirt" type="TextureRect" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 3
+stretch_mode = 5
 
 [node name="hair_back" type="TextureRect" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 3
+stretch_mode = 5
 
 [node name="face" type="TextureRect" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 3
+stretch_mode = 5
 
 [node name="eyes" type="TextureRect" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 3
+stretch_mode = 5
 
 [node name="nose" type="TextureRect" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 3
+stretch_mode = 5
 
 [node name="mouth" type="TextureRect" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 3
+stretch_mode = 5
 
 [node name="hair" type="TextureRect" parent="."]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 3
+stretch_mode = 5
