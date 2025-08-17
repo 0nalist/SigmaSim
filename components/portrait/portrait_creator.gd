@@ -39,8 +39,9 @@ func _setup_layers() -> void:
 		var index_btn := OptionButton.new()
 		index_btn.name = "Index"
 		var tex_arr: Array = info.get("textures", [])
+		index_btn.add_item("0", 0)
 		for i in range(tex_arr.size()):
-				index_btn.add_item(str(i + 1), i)
+				index_btn.add_item(str(i + 1), i + 1)
 		index_btn.item_selected.connect(_on_index_changed.bind(layer))
 		row.add_child(index_btn)
 		var color_btn := ColorPickerButton.new()
@@ -97,7 +98,11 @@ func _sync_ui_with_config() -> void:
 		var idx = config.indices.get(layer, 0)
 		var btns = layer_controls.get(layer, {})
 		if btns.has("index") and btns["index"] is OptionButton:
-			btns["index"].select(idx)
+			var ob: OptionButton = btns["index"]
+			if idx < 0 or idx >= ob.item_count:
+				idx = 0
+				config.indices[layer] = idx
+			ob.select(idx)
 		var col = config.colors.get(layer, Color.WHITE)
 		if layer == "hair_back":
 			col = config.colors.get("hair_back", config.colors.get("hair", Color.WHITE))
