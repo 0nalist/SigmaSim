@@ -25,6 +25,9 @@ const PULSE_DOWN_DUR: float = 0.13
 @onready var quit_button: Button = %QuitButton
 @onready var winnings_label: Label = %WinningsLabel
 
+@onready var autopilot_button: Button = %AutopilotButton
+
+
 func _ready() -> void:
 	game_label.text = "Early Bird"
 	go_button.pressed.connect(_on_go_button_pressed)

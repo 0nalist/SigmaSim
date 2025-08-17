@@ -49,11 +49,11 @@ func _ready() -> void:
 	hud.restart_pressed.connect(_on_restart_pressed)
 	hud.quit_pressed.connect(_on_quit_pressed)
 
-        StatManager.connect_to_stat("cash_per_score", self, "_on_cash_per_score_changed")
-        autopilot_cost = StatManager.get_stat("autopilot_cost", 1.0)
-        UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
-        _update_autopilot_button_text()
-        start_game()
+	StatManager.connect_to_stat("cash_per_score", self, "_on_cash_per_score_changed")
+	autopilot_cost = StatManager.get_stat("autopilot_cost", 1.0)
+	UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
+	_update_autopilot_button_text()
+	start_game()
 
 func find_parent_window_frame() -> WindowFrame:
 	var parent = get_parent()
@@ -105,10 +105,10 @@ func start_game() -> void:
 	round_manager.start_round_cycle()
 	winnings = 0.0
 	hud.reset(cash_per_score)
-        window_frame.size = Vector2(base_width, fixed_height)
-        reset_speed()
-        %Worm.show()
-        _update_autopilot_button_text()
+	window_frame.size = Vector2(base_width, fixed_height)
+	reset_speed()
+	%Worm.show()
+	_update_autopilot_button_text()
 
 func reset_speed():
 	speed_timer = 0.0
@@ -136,6 +136,11 @@ func _on_player_died() -> void:
 	round_manager.stop_round_cycle()
 	hud.show_game_over(winnings)
 	%Worm.hide()
+	
+	
+	autopilot.enabled = false
+	autopilot_button.button_pressed = false
+	_update_autopilot_button_text()
 
 func _on_player_scored() -> void:
 	winnings += cash_per_score
@@ -152,37 +157,37 @@ func _on_quit_pressed() -> void:
 		window_frame.queue_free()
 
 func _on_autopilot_button_pressed() -> void:
-        if autopilot == null:
-                return
-        var cost := _get_autopilot_cost()
-        if not autopilot.enabled:
-                if cost > 0.0 and not PortfolioManager.attempt_spend(cost):
-                        autopilot_button.button_pressed = false
-                        return
-                autopilot.enabled = true
-                if cost > 0.0:
-                        autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
-                        StatManager.set_base_stat("autopilot_cost", autopilot_cost)
-        else:
-                autopilot.enabled = false
-        _update_autopilot_button_text()
+		if autopilot == null:
+				return
+		var cost := _get_autopilot_cost()
+		if not autopilot.enabled:
+				if cost > 0.0 and not PortfolioManager.attempt_spend(cost):
+						autopilot_button.button_pressed = false
+						return
+				autopilot.enabled = true
+				if cost > 0.0:
+						autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
+						StatManager.set_base_stat("autopilot_cost", autopilot_cost)
+		else:
+				autopilot.enabled = false
+		_update_autopilot_button_text()
 
 func _get_autopilot_cost() -> float:
-        if UpgradeManager.get_level("earlybird_autopilot_free") > 0:
-                return 0.0
-        return autopilot_cost
+		if UpgradeManager.get_level("earlybird_autopilot_free") > 0:
+				return 0.0
+		return autopilot_cost
 
 func _update_autopilot_button_text() -> void:
-        autopilot_button.button_pressed = autopilot.enabled
-        if not autopilot.enabled:
-                var cost := _get_autopilot_cost()
-                autopilot_button.text = "Autopilot: $" + NumberFormatter.format_commas(cost, 2, true)
-        else:
-                autopilot_button.text = "Autopilot"
+		autopilot_button.button_pressed = autopilot.enabled
+		if not autopilot.enabled:
+				var cost := _get_autopilot_cost()
+				autopilot_button.text = "Autopilot: $" + NumberFormatter.format_commas(cost, 2, true)
+		else:
+				autopilot_button.text = "Autopilot"
 
 func _on_upgrade_purchased(id: String, _level: int) -> void:
-        if id == "earlybird_autopilot_free":
-                _update_autopilot_button_text()
+		if id == "earlybird_autopilot_free":
+				_update_autopilot_button_text()
 
 func _update_cash_per_score() -> void:
 	cash_per_score = StatManager.get_stat("cash_per_score", 0.01)
