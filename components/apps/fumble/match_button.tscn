@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://3e434irx0gng"]
+[gd_scene load_steps=4 format=3 uid="uid://3e434irx0gng"]
 
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_jare7"]
 [ext_resource type="Script" uid="uid://fq44llbp4oi0" path="res://components/apps/fumble/match_button.gd" id="2_j67un"]
+[ext_resource type="PackedScene" uid="uid://portrait_view" path="res://components/portrait/portrait_view.tscn" id="3_dvkw6"]
 
 [node name="MatchButton" type="Button"]
 custom_minimum_size = Vector2(128, 128)
@@ -22,7 +23,7 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ProfilePic" type="TextureRect" parent="MarginContainer"]
+[node name="ProfilePic" parent="MarginContainer" instance=ExtResource("3_dvkw6")]
 unique_name_in_owner = true
 layout_mode = 2
 

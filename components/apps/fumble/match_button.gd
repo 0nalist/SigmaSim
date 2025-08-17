@@ -3,7 +3,7 @@ class_name MatchButton
 
 signal match_pressed(npc, npc_idx)
 
-@onready var profile_pic: TextureRect = %ProfilePic
+@onready var portrait: PortraitView = %ProfilePic
 @onready var name_label: Label = %NameLabel
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var type_label: Label = %TypeLabel
@@ -17,11 +17,9 @@ var npc_idx: int
 func set_profile(npc_ref, idx):
 	npc = npc_ref
 	npc_idx = idx
-	# Set picture
-	if npc.profile_pic and typeof(npc.profile_pic) == TYPE_OBJECT:
-		profile_pic.texture = npc.profile_pic
-	else:
-		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png") # fallback
+        # Set portrait
+        if npc.portrait_config != null:
+                portrait.apply_config(npc.portrait_config)
 	# Set name
 	name_label.text = npc.full_name
 	type_label.text = npc.chat_battle_type
