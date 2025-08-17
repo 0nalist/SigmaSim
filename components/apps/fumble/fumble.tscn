@@ -66,7 +66,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye860")
 script = ExtResource("1_v4fb6")
 window_title = "Fumble"
-default_window_size = Vector2(420, 560)
+default_window_size = Vector2(660, 720)
 upgrade_pane = ExtResource("2_hf3uq")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -118,6 +118,11 @@ theme_override_constants/margin_bottom = 25
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 16
+
+[node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 1
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
 layout_mode = 2
@@ -267,9 +272,6 @@ size_flags_horizontal = 3
 
 [node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
 custom_minimum_size = Vector2(25, 0)
-layout_mode = 2
-
-[node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]
 layout_mode = 2
 
 [node name="10px7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
