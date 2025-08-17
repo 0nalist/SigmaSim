@@ -43,6 +43,9 @@ func _ready():
 func get_matches() -> Array:
 	return NPCManager.get_fumble_matches()
 
+static func get_matches_with_times() -> Array:
+	return NPCManager.get_fumble_matches_with_times()
+
 func get_active_battles() -> Array:
 	# Returns all battles for the current slot, including finished ones.
 	return DBManager.get_active_fumble_battles(SaveManager.current_slot_id)

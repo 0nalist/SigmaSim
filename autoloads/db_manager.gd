@@ -49,7 +49,9 @@ const SCHEMA := {
 	"fumble_relationships": {
 		"npc_id": {"data_type": "int", "primary_key": true},
 		"slot_id": {"data_type": "int", "primary_key": true},
-		"status": {"data_type": "text"}
+		"status": {"data_type": "text"},
+		"created_at": {"data_type": "int"},
+		"updated_at": {"data_type": "int"}
 	},
 	"fumble_battles": {
 		"battle_id": {"data_type": "text", "primary_key": true},
@@ -188,13 +190,8 @@ func has_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> bool:
 # -- Relationships --
 
 func save_fumble_relationship(npc_id: int, status: FumbleManager.FumbleStatus, slot_id: int = SaveManager.current_slot_id) -> void:
-	# Convert enum to string for DB storage
 	var status_str = FumbleManager.FUMBLE_STATUS_STRINGS[status]
-	var data = {
-		"npc_id": npc_id,
-		"slot_id": slot_id,
-		"status": status_str
-	}
+	var now := int(Time.get_unix_time_from_system())
 	print("Saving relationship: npc_id =", npc_id, "status =", status_str, "slot_id =", slot_id)
 	var rows = db.select_rows(
 		"fumble_relationships",
@@ -205,10 +202,22 @@ func save_fumble_relationship(npc_id: int, status: FumbleManager.FumbleStatus, s
 		db.update_rows(
 			"fumble_relationships",
 			"npc_id = %d AND slot_id = %d" % [npc_id, slot_id],
-			{ "status": status_str }
+			{
+				"status": status_str,
+				"updated_at": now
+			}
 		)
 	else:
-			db.insert_row("fumble_relationships", data)
+		db.insert_row(
+			"fumble_relationships",
+			{
+				"npc_id": npc_id,
+				"slot_id": slot_id,
+				"status": status_str,
+				"created_at": now,
+				"updated_at": now
+			}
+		)
 
 func get_fumble_relationship(npc_id: int, slot_id: int = SaveManager.current_slot_id) -> FumbleManager.FumbleStatus:
 		var rows = db.select_rows("fumble_relationships", "npc_id = %d AND slot_id = %d" % [npc_id, slot_id], ["status"])
@@ -223,6 +232,28 @@ func get_all_fumble_relationships(slot_id: int = SaveManager.current_slot_id) ->
 	for r in rows:
 			out[r.npc_id] = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
 	print("Loaded relationships:", out)
+	return out
+
+func get_all_fumble_relationship_rows(slot_id: int = SaveManager.current_slot_id) -> Array:
+	var rows = db.select_rows(
+		"fumble_relationships",
+		"slot_id = %d" % slot_id,
+		["npc_id", "status", "created_at", "updated_at"]
+	)
+	var out: Array = []
+	for r in rows:
+		var c = r.get("created_at", 0)
+		if c == null:
+			c = 0
+		var u = r.get("updated_at", 0)
+		if u == null:
+			u = 0
+		out.append({
+			"npc_id": int(r.npc_id),
+			"status": str(r.status),
+			"created_at": int(c),
+			"updated_at": int(u)
+		})
 	return out
 
 # -- Battles --
