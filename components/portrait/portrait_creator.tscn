@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bfyjk22acyf56"]
 
 [ext_resource type="Script" uid="uid://dqgdi7wtja52i" path="res://components/portrait/portrait_creator.gd" id="1"]
-[ext_resource type="PackedScene" path="res://components/portrait/portrait_view.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="2"]
 
 [node name="PortraitCreator" type="Control"]
 layout_mode = 3
@@ -27,6 +27,7 @@ layout_mode = 2
 
 [node name="Preview" parent="VBox" instance=ExtResource("2")]
 unique_name_in_owner = true
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
 
