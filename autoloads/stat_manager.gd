@@ -140,11 +140,26 @@ func clear_temp_override(stat_name: String) -> void:
 
 
 func reset() -> void:
-	temporary_overrides.clear()
-	_load_base_stats()
-	_build_upgrade_cache()
-	_build_dependents_map()
-	recalculate_all_stats_once()
+		temporary_overrides.clear()
+		_load_base_stats()
+		_build_upgrade_cache()
+		_build_dependents_map()
+		recalculate_all_stats_once()
+
+
+func get_save_data() -> Dictionary:
+		return base_stats.duplicate(true)
+
+
+func load_from_data(data: Dictionary) -> void:
+		temporary_overrides.clear()
+		_load_base_stats()
+		if typeof(data) == TYPE_DICTIONARY:
+				for key in data.keys():
+						base_stats[key] = float(data[key])
+		_build_upgrade_cache()
+		_build_dependents_map()
+		recalculate_all_stats_once()
 
 
 func connect_to_stat(stat: String, target: Object, method: String) -> void:
