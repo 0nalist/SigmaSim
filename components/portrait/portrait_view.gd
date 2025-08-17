@@ -1,31 +1,40 @@
 class_name PortraitView
 extends Control
 
+const PORTRAIT_SCALE := 2.0
+
 func _ready() -> void:
 	pass
 
 func apply_config(cfg: PortraitConfig) -> void:
+	for layer in PortraitCache.layers_order():
+		var rect: TextureRect = get_node_or_null(layer)
+		if rect == null:
+			continue
 
-        for layer in PortraitCache.layers_order():
-                var rect: TextureRect = get_node_or_null(layer)
-                if rect == null:
-                        continue
-                var idx: int = cfg.indices.get(layer, 0)
-                var tex := PortraitCache.get_texture(layer, idx)
-                rect.texture = tex
+		var idx: int = cfg.indices.get(layer, 0)
+		var tex := PortraitCache.get_texture(layer, idx)
 
-                # Ensure crisp pixel-art rendering and scale to 2× the source size.
-                # custom_minimum_size keeps Containers from shrinking the rect.
-                # A project-wide default for NEAREST filtering can be set under
-                # Rendering → Textures → Default Texture Filter.
-                rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-                rect.stretch_mode = TextureRect.STRETCH_SCALE
-                var scaled_size: Vector2 = tex.get_size() * 2
-                rect.custom_minimum_size = scaled_size
-                rect.size = scaled_size
+		# Crisp sampling + scale-by-size
+		rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		rect.stretch_mode = TextureRect.STRETCH_SCALE
 
-                var col_val = cfg.colors.get(layer, Color.WHITE)
-                if col_val is String:
-                        rect.modulate = Color(col_val)
-                else:
-                        rect.modulate = col_val
+		if tex is Texture2D:
+			rect.texture = tex
+			var native_size: Vector2 = (tex as Texture2D).get_size()
+			var scaled_size: Vector2 = native_size * PORTRAIT_SCALE
+			rect.custom_minimum_size = scaled_size
+			rect.size = scaled_size
+			rect.visible = true
+		else:
+			# No texture selected for this layer
+			rect.texture = null
+			rect.custom_minimum_size = Vector2.ZERO
+			rect.size = Vector2.ZERO
+			rect.visible = false
+
+		var col_val = cfg.colors.get(layer, Color.WHITE)
+		if col_val is String:
+			rect.modulate = Color(col_val)
+		else:
+			rect.modulate = col_val
