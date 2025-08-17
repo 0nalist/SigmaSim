@@ -40,10 +40,26 @@ signal resource_changed(name: String, value: float)
 signal investments_updated(amount: float)
 
 func _ready():
-	cash = StatManager.get_stat("cash", cash)
-	StatManager.set_base_stat("cash", cash)
-	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
-	TimeManager.day_passed.connect(_on_day_passed)
+        cash = StatManager.get_stat("cash", cash)
+        StatManager.set_base_stat("cash", cash)
+        rent = StatManager.get_stat("rent", rent)
+        StatManager.set_base_stat("rent", rent)
+        interest = StatManager.get_stat("interest", interest)
+        StatManager.set_base_stat("interest", interest)
+        credit_limit = StatManager.get_stat("credit_limit", credit_limit)
+        StatManager.set_base_stat("credit_limit", credit_limit)
+        credit_used = StatManager.get_stat("credit_used", credit_used)
+        StatManager.set_base_stat("credit_used", credit_used)
+        credit_interest_rate = StatManager.get_stat("credit_interest_rate", credit_interest_rate)
+        StatManager.set_base_stat("credit_interest_rate", credit_interest_rate)
+        student_loans = StatManager.get_stat("student_loans", student_loans)
+        StatManager.set_base_stat("student_loans", student_loans)
+        employee_income = StatManager.get_stat("employee_income", employee_income)
+        StatManager.set_base_stat("employee_income", employee_income)
+        passive_income = StatManager.get_stat("passive_income", passive_income)
+        StatManager.set_base_stat("passive_income", passive_income)
+        MarketManager.stock_price_updated.connect(_on_stock_price_updated)
+        TimeManager.day_passed.connect(_on_day_passed)
 
 ## --- Spending Router
 func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool = false) -> bool:
@@ -72,14 +88,15 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 			if not silent:
 				StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 
-		if can_pay_with_credit(remainder):
-			var total_with_interest := remainder * (1.0 + credit_interest_rate)
-			credit_used += total_with_interest
-			cash = 0.0
-			StatManager.set_base_stat("cash", cash)
-			emit_signal("cash_updated", cash)
-			emit_signal("credit_updated", credit_used, credit_limit)
-			_recalculate_credit_score()
+                if can_pay_with_credit(remainder):
+                        var total_with_interest := remainder * (1.0 + credit_interest_rate)
+                        credit_used += total_with_interest
+                        StatManager.set_base_stat("credit_used", credit_used)
+                        cash = 0.0
+                        StatManager.set_base_stat("cash", cash)
+                        emit_signal("cash_updated", cash)
+                        emit_signal("credit_updated", credit_used, credit_limit)
+                        _recalculate_credit_score()
 			emit_signal("resource_changed", "debt", get_total_debt())
 			if not silent:
 				StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
@@ -136,21 +153,23 @@ func can_pay_with_credit(amount: float) -> bool:
 
 
 func pay_with_credit(amount: float) -> bool:
-	if can_pay_with_credit(amount):
-		var total_with_interest := amount * (1.0 + credit_interest_rate)
-		credit_used += total_with_interest
-		emit_signal("credit_updated", credit_used, credit_limit)
-		_recalculate_credit_score()
-		emit_signal("resource_changed", "debt", get_total_debt())
-		WindowManager.launch_app_by_name("OwerView")
-		return true
-	return false
+        if can_pay_with_credit(amount):
+                var total_with_interest := amount * (1.0 + credit_interest_rate)
+                credit_used += total_with_interest
+                StatManager.set_base_stat("credit_used", credit_used)
+                emit_signal("credit_updated", credit_used, credit_limit)
+                _recalculate_credit_score()
+                emit_signal("resource_changed", "debt", get_total_debt())
+                WindowManager.launch_app_by_name("OwerView")
+                return true
+        return false
 
 func get_credit_remaining() -> float:
 	return credit_limit - credit_used
 
 func set_credit_interest_rate(new_rate: float) -> void:
-	credit_interest_rate = new_rate
+        credit_interest_rate = new_rate
+        StatManager.set_base_stat("credit_interest_rate", credit_interest_rate)
 
 func get_total_debt() -> float:
 	return snapped(credit_used + student_loans, 0.01)
@@ -177,24 +196,26 @@ func _recalculate_credit_score():
 	credit_score = clamp(base_score, 300, 850)
 
 func pay_down_credit(amount: float) -> bool:
-	if attempt_spend(amount, 9999):
-		credit_used = max(credit_used - amount, 0.0)
-		emit_signal("credit_updated", credit_used, credit_limit)
-		emit_signal("resource_changed", "debt", get_total_debt())
-		return true
-	return false
+        if attempt_spend(amount, 9999):
+                credit_used = max(credit_used - amount, 0.0)
+                StatManager.set_base_stat("credit_used", credit_used)
+                emit_signal("credit_updated", credit_used, credit_limit)
+                emit_signal("resource_changed", "debt", get_total_debt())
+                return true
+        return false
 
 func _on_day_passed(_d: int, _m: int, _y: int) -> void:
 	_accrue_student_loan_interest()
 
 func _accrue_student_loan_interest():
-		if student_loans <= 0.0:
-				return
-		var interest_amount := student_loans * STUDENT_LOAN_INTEREST_DAILY
-		student_loans = snapped(student_loans + interest_amount, 0.01)
-		_update_student_loan_min_payment()
-		emit_signal("resource_changed", "student_loans", student_loans)
-		emit_signal("resource_changed", "debt", get_total_debt())
+                if student_loans <= 0.0:
+                                return
+                var interest_amount := student_loans * STUDENT_LOAN_INTEREST_DAILY
+                student_loans = snapped(student_loans + interest_amount, 0.01)
+                StatManager.set_base_stat("student_loans", student_loans)
+                _update_student_loan_min_payment()
+                emit_signal("resource_changed", "student_loans", student_loans)
+                emit_signal("resource_changed", "debt", get_total_debt())
 
 func _update_student_loan_min_payment():
 	student_loan_min_payment = max(snapped(student_loans * 0.01, 0.01), 0.0)
@@ -284,15 +305,17 @@ func get_crypto_total() -> float:
 
 ## Student loans
 func set_student_loans(amount: float):
-	student_loans = snapped(amount, 0.01)
-	emit_signal("resource_changed", "student_loans", student_loans)
-	emit_signal("resource_changed", "debt", get_total_debt())
-	_recalculate_credit_score()
+        student_loans = snapped(amount, 0.01)
+        StatManager.set_base_stat("student_loans", student_loans)
+        emit_signal("resource_changed", "student_loans", student_loans)
+        emit_signal("resource_changed", "debt", get_total_debt())
+        _recalculate_credit_score()
 
 func add_student_loans(amount: float):
-	student_loans = snapped(student_loans + amount, 0.01)
-	emit_signal("resource_changed", "student_loans", student_loans)
-	emit_signal("resource_changed", "debt", get_total_debt())
+        student_loans = snapped(student_loans + amount, 0.01)
+        StatManager.set_base_stat("student_loans", student_loans)
+        emit_signal("resource_changed", "student_loans", student_loans)
+        emit_signal("resource_changed", "debt", get_total_debt())
 
 func get_student_loans() -> float:
 	return student_loans
@@ -327,63 +350,58 @@ func _on_stock_price_updated(symbol: String, stock: Stock) -> void:
 ## -- Save/Load
 
 func get_save_data() -> Dictionary:
-	return {
-		"cash": cash,
-		"rent": rent,
-		"interest": interest,
-		"student_loans": student_loans,
-		"credit_limit": credit_limit,
-		"credit_used": credit_used,
-		"credit_interest_rate": credit_interest_rate,
-		"employee_income": employee_income,
-		"passive_income": passive_income,
-		"stocks_owned": stocks_owned.duplicate(),
-		"crypto_owned": crypto_owned.duplicate(),
-
-	}
+        return {
+                "stocks_owned": stocks_owned.duplicate(),
+                "crypto_owned": crypto_owned.duplicate(),
+        }
 
 
 func load_from_data(data: Dictionary) -> void:
-	cash = data.get("cash", 0.0)
-	student_loans = data.get("student_loans", 0.0)
-	rent = data.get("rent", 0.0)
-	interest = data.get("interest", 0.0)
+        stocks_owned = data.get("stocks_owned", {})
+        crypto_owned = data.get("crypto_owned", {})
 
-	credit_limit = data.get("credit_limit", 0.0)
-	credit_used = data.get("credit_used", 0.0)
-	credit_interest_rate = data.get("credit_interest_rate", 0.3)
+        cash = StatManager.get_stat("cash", 0.0)
+        rent = StatManager.get_stat("rent", 0.0)
+        interest = StatManager.get_stat("interest", 0.0)
+        student_loans = StatManager.get_stat("student_loans", 0.0)
+        credit_limit = StatManager.get_stat("credit_limit", 0.0)
+        credit_used = StatManager.get_stat("credit_used", 0.0)
+        credit_interest_rate = StatManager.get_stat("credit_interest_rate", 0.3)
+        employee_income = StatManager.get_stat("employee_income", 0.0)
+        passive_income = StatManager.get_stat("passive_income", 0.0)
 
-	employee_income = data.get("employee_income", 0.0)
-	passive_income = data.get("passive_income", 0.0)
-
-	stocks_owned = data.get("stocks_owned", {})
-	crypto_owned = data.get("crypto_owned", {})
-
-
-	emit_signal("cash_updated", cash)
-	emit_signal("credit_updated", credit_used, credit_limit)
-	emit_investment_update()
+        emit_signal("cash_updated", cash)
+        emit_signal("credit_updated", credit_used, credit_limit)
+        emit_investment_update()
+        _recalculate_credit_score()
 
 
 func reset():
-	cash = 0.0
-	rent = 0.0
-	interest = 0.0
+        cash = 0.0
+        rent = 0.0
+        interest = 0.0
+        credit_limit = 2000.0
+        credit_used = 0.0
+        credit_interest_rate = 0.3
+        student_loans = 0.0
+        employee_income = 0.0
+        passive_income = 0.0
 
-	credit_limit = 2000.0
-	credit_used = 0.0
-	credit_interest_rate = 0.3
+        StatManager.set_base_stat("cash", cash)
+        StatManager.set_base_stat("rent", rent)
+        StatManager.set_base_stat("interest", interest)
+        StatManager.set_base_stat("credit_limit", credit_limit)
+        StatManager.set_base_stat("credit_used", credit_used)
+        StatManager.set_base_stat("credit_interest_rate", credit_interest_rate)
+        StatManager.set_base_stat("student_loans", student_loans)
+        StatManager.set_base_stat("employee_income", employee_income)
+        StatManager.set_base_stat("passive_income", passive_income)
 
-	student_loans = 0.0
-
-	employee_income = 0.0
-	passive_income = 0.0
-
-	stocks_owned.clear()
-	crypto_owned.clear()
-	stock_data.clear()
-	miners.clear()
-	businesses.clear()
+        stocks_owned.clear()
+        crypto_owned.clear()
+        stock_data.clear()
+        miners.clear()
+        businesses.clear()
 
 	emit_signal("cash_updated", cash)
 	emit_signal("credit_updated", credit_used, credit_limit)
