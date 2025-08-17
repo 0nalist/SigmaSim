@@ -11,6 +11,7 @@ extends Resource
 
 @export var username: String
 @export var profile_pic: Texture2D
+@export var portrait_config: PortraitConfig
 @export var occupation: String = "Funemployed"
 @export var relationship_status: String = "Single"
 
@@ -147,7 +148,8 @@ func to_dict() -> Dictionary:
 		"mbti": mbti,
 		"zodiac": zodiac,
 		"wall_posts": wall_posts.duplicate(),
-	}
+		"portrait_config": portrait_config.to_dict() if portrait_config != null else null,
+}
 
 static func from_dict(data: Dictionary) -> NPC:
 	var npc = NPC.new()
@@ -194,6 +196,11 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.neuroticism       = _safe_float(data.get("neuroticism"))
 	npc.mbti              = _safe_string(data.get("mbti"))
 	npc.zodiac            = _safe_string(data.get("zodiac"))
+	var pc_src = data.get("portrait_config")
+	if typeof(pc_src) == TYPE_DICTIONARY and pc_src.size() > 0:
+		npc.portrait_config = PortraitConfig.from_dict(pc_src)
+	else:
+		npc.portrait_config = null
 	_assign_string_array(npc.wall_posts, data.get("wall_posts"), ["hello world"])
 	return npc
 

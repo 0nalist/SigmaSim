@@ -32,6 +32,10 @@ func get_npc_by_index(idx: int) -> NPC:
 	for key in data.keys():
 		npc.set(key, data[key])
 
+	if npc.portrait_config == null:
+		npc.portrait_config = PortraitFactory.ensure_config_for_npc(idx, npc.full_name)
+
+
 	npcs[idx] = npc
 	return npc
 

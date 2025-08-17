@@ -44,8 +44,9 @@ const SCHEMA := {
 		"neuroticism": {"data_type": "real"},
 		"mbti": {"data_type": "text"},
 		"zodiac": {"data_type": "text"},
-		"wall_posts": {"data_type": "text"}
-	},
+		"wall_posts": {"data_type": "text"},
+		"portrait_config": {"data_type": "text"}
+},
 	"fumble_relationships": {
 		"npc_id": {"data_type": "int", "primary_key": true},
 		"slot_id": {"data_type": "int", "primary_key": true},
@@ -117,6 +118,8 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	dict["player_pet_names"] = to_json(dict.get("player_pet_names", []))
 	dict["ocean"] = to_json(dict.get("ocean", {}))
 	dict["wall_posts"] = to_json(dict.get("wall_posts", []))
+		var pc = dict.get("portrait_config", null)
+		dict["portrait_config"] = to_json(pc) if pc != null else ""
 	# Profile pic is not natively serializable; see below
 
 	var update_data = dict.duplicate()
@@ -142,6 +145,7 @@ func load_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> NPC:
 	row["player_pet_names"] = _safe_from_json(row.get("player_pet_names", null), "[]")
 	row["ocean"] = _safe_from_json(row.get("ocean", null), "{}")
 	row["wall_posts"] = _safe_from_json(row.get("wall_posts", null), "[]")
+		row["portrait_config"] = _safe_from_json(row.get("portrait_config", null), "{}")
 	return NPC.from_dict(row)
 
 func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
@@ -155,6 +159,7 @@ func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
 		row["player_pet_names"] = _safe_from_json(row.get("player_pet_names", null), "[]")
 		row["ocean"] = _safe_from_json(row.get("ocean", null), "{}")
 		row["wall_posts"] = _safe_from_json(row.get("wall_posts", null), "[]")
+		row["portrait_config"] = _safe_from_json(row.get("portrait_config", null), "{}")
 		out.append(NPC.from_dict(row))
 	return out
 

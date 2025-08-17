@@ -6,36 +6,32 @@ class_name PortraitConfig
 @export var indices: Dictionary = {}
 @export var colors: Dictionary = {}
 
-func _init() -> void:
-	pass
-
 func to_dict() -> Dictionary:
-	var data: Dictionary = {}
-	data["name"] = name
-	data["seed"] = seed
-	data["indices"] = indices.duplicate(true)
-	var color_copy: Dictionary = {}
-	for key in colors.keys():
-		var value = colors[key]
-		if value is Color:
-			color_copy[key] = value.to_html()
-		else:
-			color_copy[key] = value
-	data["colors"] = color_copy
-	return data
+	var d := {}
+	d["name"] = name
+	d["seed"] = seed
+	d["indices"] = indices.duplicate(true)
+	var cols := {}
+	for k in colors.keys():
+		var c: Color = colors[k]
+		cols[k] = [c.r, c.g, c.b, c.a]
+	d["colors"] = cols
+	return d
 
-static func from_dict(d: Dictionary) -> PortraitConfig:
+static func from_dict(src: Dictionary) -> PortraitConfig:
 	var cfg := PortraitConfig.new()
-	cfg.name = d.get("name", "")
-	cfg.seed = d.get("seed", 0)
-	cfg.indices = d.get("indices", {}).duplicate(true)
-	var color_dict: Dictionary = {}
-	var src_colors: Dictionary = d.get("colors", {})
-	for key in src_colors.keys():
-		var val = src_colors[key]
-		if typeof(val) == TYPE_STRING:
-			color_dict[key] = Color(val)
-		else:
-			color_dict[key] = val
-	cfg.colors = color_dict
+	cfg.name = src.get("name", "")
+	cfg.seed = int(src.get("seed", 0))
+	cfg.indices = src.get("indices", {}).duplicate(true)
+	var col_in: Dictionary = src.get("colors", {})
+	var out := {}
+	for k in col_in.keys():
+		var arr: Array = col_in[k]
+		if typeof(arr) == TYPE_ARRAY and arr.size() >= 3:
+			var a = 1.0
+			if arr.size() >= 4:
+				a = float(arr[3])
+			out[k] = Color(float(arr[0]), float(arr[1]), float(arr[2]), a)
+	cfg.colors = out
 	return cfg
+
