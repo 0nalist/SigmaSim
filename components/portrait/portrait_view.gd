@@ -4,7 +4,8 @@ extends Control
 const PORTRAIT_SCALE := 2.0
 
 func _ready() -> void:
-	pass
+	await get_tree().process_frame
+	pivot_offset = size / 2
 
 func apply_config(cfg: PortraitConfig) -> void:
 	for layer in PortraitCache.layers_order():
