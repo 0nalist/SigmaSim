@@ -24,10 +24,14 @@ var ticker_entries: Array = [
 		"text": "Did you know that pets have souls?",
 		"condition": null
 	},
+	
+	
 	{
 		"text": "No news is good news?     No!     News is good news.",
 		"condition": null
 	},
+	
+	
 	{
 		"text": "Nine out of ten dentists regret loving me",
 		"condition": null
