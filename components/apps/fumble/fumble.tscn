@@ -1,10 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=14 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="PackedScene" uid="uid://dptnj8nxnr760" path="res://components/apps/fumble/fumble_special_offers.tscn" id="2_hf3uq"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
-[ext_resource type="Material" uid="uid://bl8moqb187o1d" path="res://components/apps/fumble/fumble_label_pride_month_material.tres" id="3_ye860"]
 [ext_resource type="Texture2D" uid="uid://bq0jn8wlfmaae" path="res://assets/Flag_of_Turkey.svg.png" id="4_hf3uq"]
 [ext_resource type="PackedScene" uid="uid://buvfo6k8fhu53" path="res://components/apps/fumble/chats_tab.tscn" id="5_dmsn0"]
 [ext_resource type="Script" uid="uid://bf65ryfqtiq6i" path="res://components/apps/fumble/fumble_search_criteria_ui.gd" id="5_wfdmb"]
@@ -57,18 +56,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ye860")
 script = ExtResource("1_v4fb6")
 window_title = "Fumble"
 default_window_size = Vector2(420, 560)
-default_position = null
-request_windowless_mode = null
-show_in_taskbar = null
-allow_multiple = null
-unique_popup_key = null
-is_popup = null
-window_can_close = null
-window_can_minimize = null
-window_can_maximize = null
-user_movable = null
-user_resizable = null
-stay_on_top = null
 upgrade_pane = ExtResource("2_hf3uq")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -83,17 +70,16 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="FumbleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="FumbleLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-material = ExtResource("3_ye860")
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/line_spacing = 8
-theme_override_constants/outline_size = 16
-theme_override_fonts/font = ExtResource("3_qj1tn")
-theme_override_font_sizes/font_size = 36
+theme_override_constants/outline_size = 12
+theme_override_fonts/normal_font = ExtResource("3_qj1tn")
+theme_override_font_sizes/normal_font_size = 36
 text = "F  U  M  B  L  E"
+fit_content = true
 horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="SelfTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

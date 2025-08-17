@@ -4,7 +4,7 @@ extends Pane
 signal request_resize_x_to(pixels)
 signal request_resize_y_to(pixels)
 
-@onready var fumble_label: Label = %FumbleLabel
+@onready var fumble_label = %FumbleLabel
 @onready var profile_container: Control = %ProfileContainer
 @onready var swipe_left_button: Button = %SwipeLeftButton
 @onready var swipe_right_button: Button = %SwipeRightButton

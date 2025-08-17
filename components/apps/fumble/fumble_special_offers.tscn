@@ -1,11 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://dptnj8nxnr760"]
+[gd_scene load_steps=8 format=3 uid="uid://dptnj8nxnr760"]
 
 [ext_resource type="Script" uid="uid://bor5y5ucmdl07" path="res://components/apps/fumble/fumble_special_offers.gd" id="1_jpqxb"]
+[ext_resource type="Shader" uid="uid://dw5y8ehkp7c1r" path="res://assets/shaders/pink_warp.gdshader" id="2_0pp1p"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="2_exat5"]
 [ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2_khcxl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jpqxb"]
 bg_color = Color(0.785822, 0.709012, 0.382482, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vkkf1"]
+shader = ExtResource("2_0pp1p")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khcxl"]
 bg_color = Color(0.241284, 0.689959, 0.689887, 0.647059)
@@ -22,6 +32,10 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_jpqxb")
 script = ExtResource("1_jpqxb")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_vkkf1")
+layout_mode = 2
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 25
@@ -32,13 +46,22 @@ theme_override_constants/margin_bottom = 25
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 12
+theme_override_fonts/normal_font = ExtResource("2_exat5")
+theme_override_font_sizes/normal_font_size = 36
+text = "Special Offers"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 2
+
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_exat5")
 theme_override_font_sizes/font_size = 32
-text = "Special Offers"
 horizontal_alignment = 1
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
