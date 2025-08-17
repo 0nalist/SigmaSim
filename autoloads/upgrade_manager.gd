@@ -9,6 +9,7 @@ extends Node
 ## - systems: Array of system tags (e.g. "Workforce")
 ## - dependencies: Array of upgrade ids required before unlocking
 ## - max_level: -1 for unlimited
+## - repeatable: if false, upgrade can only be purchased once
 ## - cost_per_level: Dictionary or Array of Dictionary[String,float]
 ## - scale_by_formula: bool
 ## - cost_formula: String or Dictionary[String,String] evaluated with variables
@@ -25,16 +26,17 @@ var upgrades: Dictionary = {}  # id -> upgrade data
 var player_levels: Dictionary = {}  # id -> purchased count
 
 const EXPECTED_KEYS := [
-	"id",
-	"name",
-	"description",
-	"effects",
-	"systems",
-	"dependencies",
-	"max_level",
-	"cost_per_level",
-	"scale_by_formula",
-	"cost_formula"
+        "id",
+        "name",
+        "description",
+        "effects",
+        "systems",
+        "dependencies",
+        "max_level",
+        "repeatable",
+        "cost_per_level",
+        "scale_by_formula",
+        "cost_formula"
 ]
 
 func _ready() -> void:
@@ -90,10 +92,10 @@ func _validate_upgrade(data: Dictionary, file_path: String) -> bool:
 	for key in data.keys():
 		if key not in EXPECTED_KEYS:
 			push_warning("UpgradeManager: unknown field '%s' in %s" % [key, id])
-	if not data.has("cost_per_level"):
-		push_warning("UpgradeManager: upgrade '%s' missing cost_per_level" % id)
-		data["cost_per_level"] = {}
-	var cpl = data["cost_per_level"]
+        if not data.has("cost_per_level"):
+                push_warning("UpgradeManager: upgrade '%s' missing cost_per_level" % id)
+                data["cost_per_level"] = {}
+        var cpl = data["cost_per_level"]
 	if typeof(cpl) == TYPE_ARRAY:
 		for i in range(cpl.size()):
 			if typeof(cpl[i]) != TYPE_DICTIONARY:
@@ -106,9 +108,11 @@ func _validate_upgrade(data: Dictionary, file_path: String) -> bool:
 		data["cost_per_level"] = {}
 	if data.get("scale_by_formula", false):
 		var formula = data.get("cost_formula")
-		if typeof(formula) != TYPE_STRING and typeof(formula) != TYPE_DICTIONARY:
-			push_error("UpgradeManager: cost_formula for %s must be String or Dictionary" % id)
-	return true
+                if typeof(formula) != TYPE_STRING and typeof(formula) != TYPE_DICTIONARY:
+                        push_error("UpgradeManager: cost_formula for %s must be String or Dictionary" % id)
+        if not data.has("repeatable"):
+                data["repeatable"] = true
+        return true
 
 ## --- Query helpers -------------------------------------------------
 
@@ -176,11 +180,24 @@ func get_upgrade_layers(list: Array) -> Array:
 ## --- Costing -------------------------------------------------------
 
 func max_level(id: String) -> int:
-	var upgrade := get_upgrade(id)
-	var m = upgrade.get("max_level")
-	if m == null or m == "":
-		return -1
-	return int(m)
+        var upgrade := get_upgrade(id)
+        if upgrade == null:
+                return -1
+        if not is_repeatable(id):
+                return 1
+        var m = upgrade.get("max_level")
+        if m == null or m == "":
+                return -1
+        return int(m)
+
+func is_repeatable(id: String) -> bool:
+        var upgrade := get_upgrade(id)
+        if upgrade == null:
+                return false
+        return upgrade.get("repeatable", true)
+
+func is_one_time(id: String) -> bool:
+        return not is_repeatable(id)
 
 func get_cost_for_next_level(id: String) -> Dictionary:
 	var upgrade := get_upgrade(id)
@@ -280,11 +297,11 @@ func _deduct_currency(currency: String, amount: float) -> bool:
 
 
 func can_purchase(id: String) -> bool:
-	if is_locked(id):
-		return false
-	var max := max_level(id)
-	if max != -1 and get_level(id) >= max:
-		return false
+        if is_locked(id):
+                return false
+        var max := max_level(id)
+        if max != -1 and get_level(id) >= max:
+                return false
 	var cost := get_cost_for_next_level(id)
 	for currency in cost.keys():
 		var amount: float = cost[currency]
@@ -302,9 +319,11 @@ func can_purchase(id: String) -> bool:
 	return true
 
 func purchase(id: String) -> bool:
-	var upgrade := get_upgrade(id)
-	if upgrade == null:
-		return false
+        if not can_purchase(id):
+                return false
+        var upgrade := get_upgrade(id)
+        if upgrade == null:
+                return false
 	var cost := get_cost_for_next_level(id)
 	for currency in cost.keys():
 		if not _deduct_currency(currency, cost[currency]):

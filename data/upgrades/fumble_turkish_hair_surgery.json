@@ -14,8 +14,9 @@
   ],
   "dependencies": [],
   "cost_per_level": {
-	"cash": 25000
+        "cash": 25000
   },
   "max_level": 1,
+  "repeatable": false,
   "scale_by_formula": false
 }
