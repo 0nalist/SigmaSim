@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://1191fc403866"]
+[gd_scene load_steps=3 format=3 uid="uid://12a1fc403866"]
 
 [ext_resource type="Script" uid="uid://8ac725c14d5a" path="res://components/ui/profile_creation/gender_selection_screen.gd" id="1_a7i1o"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_t2cd2"]

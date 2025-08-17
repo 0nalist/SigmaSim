@@ -11,11 +11,11 @@ signal new_profile_abandoned
 
 
 var step_scenes = [
-        preload("res://components/ui/profile_creation/name_entry_screen.tscn"),
-       preload("res://components/ui/profile_creation/gender_selection_screen.tscn"),
-       preload("res://components/ui/profile_creation/sexuality_entry_screen.tscn"),
-       preload("res://components/ui/profile_creation/background_selection_screen.tscn"),
-       preload("res://components/ui/profile_creation/prof_pic_selection_screen.tscn"),
+		preload("res://components/ui/profile_creation/name_entry_screen.tscn"),
+	   preload("res://components/ui/profile_creation/gender_selection_screen.tscn"),
+	   preload("res://components/ui/profile_creation/sexuality_entry_screen.tscn"),
+	   preload("res://components/ui/profile_creation/background_selection_screen.tscn"),
+	   preload("res://components/ui/profile_creation/prof_pic_selection_screen.tscn"),
 ]
 
 var user_data: Dictionary = {}
