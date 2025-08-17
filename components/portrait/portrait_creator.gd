@@ -60,6 +60,7 @@ func _setup_layers() -> void:
 			var sync_chk := CheckBox.new()
 			sync_chk.name = "Sync"
 			sync_chk.text = "Sync"
+			sync_chk.add_theme_font_size_override("font_size", 14)
 			sync_chk.button_pressed = hair_color_sync
 			sync_chk.toggled.connect(_on_hair_sync_toggled.bind(layer))
 			col.add_child(sync_chk)
