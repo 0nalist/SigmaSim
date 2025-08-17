@@ -155,8 +155,8 @@ func load_from_data(data: Dictionary) -> void:
 		temporary_overrides.clear()
 		_load_base_stats()
 		if typeof(data) == TYPE_DICTIONARY:
-				for key in data.keys():
-						base_stats[key] = float(data[key])
+			for key in data.keys():
+				base_stats[key] = float(data[key])
 		_build_upgrade_cache()
 		_build_dependents_map()
 		recalculate_all_stats_once()
@@ -212,11 +212,11 @@ func _on_levels_changed() -> void:
 
 
 func recalculate_all_stats_once() -> void:
-				computed_stats.clear()
-				for stat_name in base_stats.keys():
-								_recalculate_stat(stat_name, false)
-				for stat_name in derived_stats.keys():
-								_recalculate_derived_stat(stat_name, false)
+	computed_stats.clear()
+	for stat_name in base_stats.keys():
+		_recalculate_stat(stat_name, false)
+	for stat_name in derived_stats.keys():
+		_recalculate_derived_stat(stat_name, false)
 
 
 func _recalculate_stat_and_dependents(stat_name: String) -> void:
@@ -291,16 +291,16 @@ func _propagate_stat_changes(stat: String, visited := {}) -> void:
 
 
 func _build_upgrade_cache() -> void:
-				stat_to_upgrades.clear()
-				for upgrade_id in UpgradeManager.upgrades.keys():
-								var upgrade_data = UpgradeManager.get_upgrade(upgrade_id)
-								for effect in upgrade_data.get("effects", []):
-												var target = effect.get("target", "")
-												if target == "":
-																continue
-												if !stat_to_upgrades.has(target):
-																stat_to_upgrades[target] = []
-												stat_to_upgrades[target].append({"id": upgrade_id, "effect": effect})
+	stat_to_upgrades.clear()
+	for upgrade_id in UpgradeManager.upgrades.keys():
+		var upgrade_data = UpgradeManager.get_upgrade(upgrade_id)
+		for effect in upgrade_data.get("effects", []):
+						var target = effect.get("target", "")
+						if target == "":
+										continue
+						if !stat_to_upgrades.has(target):
+										stat_to_upgrades[target] = []
+						stat_to_upgrades[target].append({"id": upgrade_id, "effect": effect})
 
 
 func _build_dependents_map() -> void:
