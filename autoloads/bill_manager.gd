@@ -2,9 +2,10 @@ extends Node
 # Autoload: BillManager
 
 signal lifestyle_updated
+signal autopay_changed(enabled: bool)
 
-var autopay_enabled: bool = false
-var active_bills: Dictionary = {} 
+var autopay_enabled: bool = false setget set_autopay_enabled
+var active_bills: Dictionary = {}
 
 var lifestyle_categories := {}  # category_name: Dictionary
 
@@ -20,9 +21,15 @@ var weekly_bill_cycle := [
 var static_bill_amounts := {}
 
 
+func set_autopay_enabled(value: bool) -> void:
+        if autopay_enabled == value:
+                return
+        autopay_enabled = value
+        autopay_changed.emit(value)
+
 func _ready() -> void:
-	TimeManager.day_passed.connect(_on_day_passed)
-	#TimeManager.hour_passed.connect(_on_hour_passed)
+        TimeManager.day_passed.connect(_on_day_passed)
+        #TimeManager.hour_passed.connect(_on_hour_passed)
 	PortfolioManager.credit_updated.connect(_on_credit_updated)
 	if lifestyle_categories.is_empty():
 		for category in lifestyle_options.keys():
@@ -257,10 +264,10 @@ func get_save_data() -> Dictionary:
 	}
 
 func load_from_data(data: Dictionary) -> void:
-	autopay_enabled = data.get("autopay_enabled", false)
-	lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
-	lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
-	active_bills.clear()
+       set_autopay_enabled(data.get("autopay_enabled", false))
+       lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
+       lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
+       active_bills.clear()
 	emit_signal("lifestyle_updated")
 
 	if data.has("pane_data"):
