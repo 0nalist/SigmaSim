@@ -21,6 +21,7 @@ func _ready() -> void:
 	_setup_layers()
 	_sync_ui_with_config()
 	name_edit.text_changed.connect(_on_name_changed)
+	name_edit.text_submitted.connect(_on_name_submitted)
 	generate_button.pressed.connect(_on_generate_pressed)
 	randomize_button.pressed.connect(_on_randomize_pressed)
 	apply_button.pressed.connect(_on_apply_pressed)
@@ -100,6 +101,10 @@ func _on_hair_sync_toggled(pressed: bool) -> void:
 
 func _on_name_changed(new_text: String) -> void:
 	config.name = new_text
+
+
+func _on_name_submitted(_text: String) -> void:
+	_on_generate_pressed()
 
 
 func _on_randomize_pressed() -> void:
