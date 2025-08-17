@@ -23,32 +23,38 @@ func hide_tooltip():
 	buy_button.disabled = true
 	close_button.disabled = true
 
-func _update_display():
-		if current_upgrade.is_empty():
-				return
-		var id = current_upgrade.get("id", "")
-		name_label.text = current_upgrade.get("name", id)
-		cost_label.text = format_cost(current_upgrade)
-		desc_label.text = current_upgrade.get("description", "")
+func _update_display() -> void:
+	if current_upgrade.is_empty():
+		return
+	
+	var id = current_upgrade.get("id", "")
+	name_label.text = current_upgrade.get("name", id)
+	cost_label.text = format_cost(current_upgrade)
+	desc_label.text = current_upgrade.get("description", "")
 
-		for child in effect_list.get_children():
-				child.queue_free()
-		for effect in current_upgrade.get("effects", []):
-				var effect_label = Label.new()
-				effect_label.text = describe_effect(effect)
-				effect_list.add_child(effect_label)
+	# Clear existing effect labels
+	for child in effect_list.get_children():
+		child.queue_free()
+	
+	# Add new effect labels
+	for effect in current_upgrade.get("effects", []):
+		var effect_label = Label.new()
+		effect_label.text = describe_effect(effect)
+		effect_list.add_child(effect_label)
+	
+	# Evaluate upgrade state
+	var can_purchase = UpgradeManager.can_purchase(id)
+	var maxed = UpgradeManager.max_level(id) != -1 and StatManager.get_upgrade_level(id) >= UpgradeManager.max_level(id)
 
-				var can_purchase = UpgradeManager.can_purchase(id)
-				var maxed = UpgradeManager.max_level(id) != -1 and StatManager.get_upgrade_level(id) >= UpgradeManager.max_level(id)
+	buy_button.disabled = not can_purchase or maxed
+	buy_button.text = "Maxed Out" if maxed else "Buy"
 
-		buy_button.disabled = not can_purchase or maxed
-		buy_button.text = "Maxed Out" if maxed else "Buy"
+	var status = get_status_text(current_upgrade)
+	status_label.text = status
+	status_label.visible = status != ""
 
-		var status = get_status_text(current_upgrade)
-		status_label.text = status
-		status_label.visible = status != ""
+	close_button.disabled = false
 
-		close_button.disabled = false
 
 func _on_buy_button_pressed():
 		var id = current_upgrade.get("id", "")
@@ -82,20 +88,25 @@ func describe_effect(effect: Dictionary) -> String:
 						return "%s %s %s" % [op, str(value), target]
 
 func get_status_text(upgrade: Dictionary) -> String:
-		var id = upgrade.get("id", "")
-		if id == "":
-				return ""
-				if UpgradeManager.max_level(id) != -1 and StatManager.get_upgrade_level(id) >= UpgradeManager.max_level(id):
-				return "Maxed Out"
-		if UpgradeManager.is_locked(id):
-				return "Locked"
-		var cost = UpgradeManager.get_cost_for_next_level(id)
-		for currency in cost.keys():
-				if currency == "cash" and PortfolioManager.cash < cost[currency]:
-						return "Not enough funds"
-				if currency != "cash" and PortfolioManager.get_crypto_amount(currency) < cost[currency]:
-						return "Not enough funds"
+	var id = upgrade.get("id", "")
+	if id == "":
 		return ""
+	
+	if UpgradeManager.max_level(id) != -1 and StatManager.get_upgrade_level(id) >= UpgradeManager.max_level(id):
+		return "Maxed Out"
+	
+	if UpgradeManager.is_locked(id):
+		return "Locked"
+	
+	var cost = UpgradeManager.get_cost_for_next_level(id)
+	for currency in cost.keys():
+		if currency == "cash" and PortfolioManager.cash < cost[currency]:
+			return "Not enough funds"
+		if currency != "cash" and PortfolioManager.get_crypto_amount(currency) < cost[currency]:
+			return "Not enough funds"
+	
+	return ""
+
 
 func _on_close_button_pressed() -> void:
 	hide_tooltip()

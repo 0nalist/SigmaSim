@@ -1,6 +1,6 @@
 ## Autoload PlayerManager
 extends Node
- 	
+
 
 var default_user_data: Dictionary = {
 	# Identity
@@ -113,7 +113,7 @@ var background_effects := {
 func _apply_grandma() -> void:
 	PortfolioManager.add_cash(20.00)
 	var center = get_viewport().get_visible_rect().size / 2
-	StatpopManager.spawn("+$20.00", center)
+	StatpopManager.spawn("+$20.00", center, "click", Color.GREEN)
 
 func _apply_pretty_privilege() -> void:
 		var new_attractiveness := StatManager.get_stat("attractiveness") + 10.0

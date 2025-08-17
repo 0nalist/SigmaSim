@@ -92,7 +92,7 @@ func get_base_stat(stat_name: String, default := 0.0) -> float:
 
 
 func set_base_stat(stat_name: String, value: float) -> void:
-		# If the stat exists in PlayerManager.user_data but not in base_stats,
+	# If the stat exists in PlayerManager.user_data but not in base_stats,
 	# update the player data directly instead of creating a new base stat.
 	if !base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
 		var previous = PlayerManager.user_data.get(stat_name, NAN)
