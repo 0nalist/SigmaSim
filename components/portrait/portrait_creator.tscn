@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://portrait_creator"]
+
+[ext_resource type="Script" path="res://components/portrait/portrait_creator.gd" id="1"]
+[ext_resource type="PackedScene" path="res://components/portrait/portrait_view.tscn" id="2"]
+
+[node name="PortraitCreator" type="Control"]
+layout_mode = 2
+script = ExtResource("1")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NameEdit" type="LineEdit" parent="VBox"]
+
+[node name="Preview" parent="VBox" instance=ExtResource("2")]
+
+[node name="Layers" type="VBoxContainer" parent="VBox"]
+
+[node name="Buttons" type="HBoxContainer" parent="VBox"]
+
+[node name="Randomize" type="Button" parent="Buttons"]
+text = "Randomize"
+
+[node name="Apply" type="Button" parent="Buttons"]
+text = "Apply"
