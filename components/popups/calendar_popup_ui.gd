@@ -8,13 +8,13 @@ extends Pane
 @onready var month_year_label: Label = %MonthYearLabel
 
 func _ready():
-        hide()
-        autopay_checkbox.set_pressed_no_signal(BillManager.autopay_enabled)
-        BillManager.autopay_changed.connect(_on_autopay_changed)
-        TimeManager.day_passed.connect(_on_day_passed)
-        populate_calendar(TimeManager.current_month, TimeManager.current_year)
-        month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
-        call_deferred("move_to_front")
+		hide()
+		autopay_checkbox.set_pressed_no_signal(BillManager.autopay_enabled)
+		BillManager.autopay_changed.connect(_on_autopay_changed)
+		TimeManager.day_passed.connect(_on_day_passed)
+		populate_calendar(TimeManager.current_month, TimeManager.current_year)
+		month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
+		call_deferred("move_to_front")
 
 func add_click_catcher() -> void:
 	click_catcher = preload("res://components/ui/click_catcher.tscn").instantiate()
@@ -89,10 +89,10 @@ func populate_calendar(month: int, year: int) -> void:
 	month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
-        BillManager.autopay_enabled = toggled_on
+		BillManager.autopay_enabled = toggled_on
 
 func _on_autopay_changed(enabled: bool) -> void:
-        autopay_checkbox.set_pressed_no_signal(enabled)
+		autopay_checkbox.set_pressed_no_signal(enabled)
 
 func _on_life_stylist_button_pressed() -> void:
 	WindowManager.launch_app_by_name("LifeStylist")

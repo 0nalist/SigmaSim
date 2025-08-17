@@ -13,14 +13,14 @@ var popup_type := "BillPopupUI"
 @onready var autopay_checkbox: CheckBox = %AutopayCheckBox
 
 func _ready() -> void:
-        user_movable = true
-        window_title = "Bill: " + str(bill_name)
-        #window_can_close = false
-        #window_can_minimize = false
-        # If the popup was restored after data load, manually refresh UI
-        _update_display()
-        autopay_checkbox.set_pressed_no_signal(BillManager.autopay_enabled)
-        BillManager.autopay_changed.connect(_on_autopay_changed)
+		user_movable = true
+		window_title = "Bill: " + str(bill_name)
+		#window_can_close = false
+		#window_can_minimize = false
+		# If the popup was restored after data load, manually refresh UI
+		_update_display()
+		autopay_checkbox.set_pressed_no_signal(BillManager.autopay_enabled)
+		BillManager.autopay_changed.connect(_on_autopay_changed)
 
 func init(name: String) -> void:
 	bill_name = name
@@ -59,10 +59,10 @@ func _on_pay_by_credit_button_pressed() -> void:
 	WindowManager.launch_app_by_name("OwerView")
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
-        BillManager.autopay_enabled = toggled_on
+		BillManager.autopay_enabled = toggled_on
 
 func _on_autopay_changed(enabled: bool) -> void:
-        autopay_checkbox.set_pressed_no_signal(enabled)
+		autopay_checkbox.set_pressed_no_signal(enabled)
 
 
 # --- SAVE SUPPORT ---
