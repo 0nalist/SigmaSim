@@ -1,0 +1,100 @@
+[gd_scene load_steps=3 format=3 uid="uid://1191fc403866"]
+
+[ext_resource type="Script" uid="uid://8ac725c14d5a" path="res://components/ui/profile_creation/gender_selection_screen.gd" id="1_a7i1o"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_t2cd2"]
+
+[node name="GenderSelectionScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_a7i1o")
+theme = ExtResource("2_t2cd2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "Choose your gender:"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HeCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(450, 45)
+layout_mode = 2
+size_flags_horizontal = 6
+focus_mode = 0
+text = "He. Man."
+
+[node name="PoliticsCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "enable politics"
+
+[node name="PoliticsOptions" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="SheCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/PoliticsOptions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(450, 45)
+layout_mode = 2
+size_flags_horizontal = 6
+focus_mode = 0
+text = "She. Woman."
+
+[node name="TheyCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/PoliticsOptions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(450, 45)
+layout_mode = 2
+size_flags_horizontal = 6
+focus_mode = 0
+text = "They. Person."
+
+[node name="CustomPronounContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PoliticsOptions"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="CustomPronounLineEdit1" type="LineEdit" parent="MarginContainer/VBoxContainer/PoliticsOptions/CustomPronounContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+placeholder_text = "he/she/they/?"
+
+[node name="CustomPronounLineEdit2" type="LineEdit" parent="MarginContainer/VBoxContainer/PoliticsOptions/CustomPronounContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+placeholder_text = "him/her/them/?"
+
+[node name="CustomPronounLineEdit3" type="LineEdit" parent="MarginContainer/VBoxContainer/PoliticsOptions/CustomPronounContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+placeholder_text = "his/hers/theirs/?"
