@@ -6,5 +6,6 @@
   "gpu_power": 1.0,
   "power_per_click": 1.0,
   "cash_per_score": 0.01,
-  "autopilot_cost": 1.0
+  "autopilot_cost": 1.0,
+  "worm_yield": 1.0
 }
