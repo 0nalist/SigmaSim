@@ -227,44 +227,44 @@ func _recalculate_stat_and_dependents(stat_name: String) -> void:
 
 
 func _recalculate_stat(stat: String, emit := true) -> void:
-				if temporary_overrides.has(stat):
-								return
-				var previous = computed_stats.get(stat)
-				var base_value = base_stats.get(stat, 0.0)
-				var value: float = base_value
-				var applied := false
-				if stat_to_upgrades.has(stat):
-								for effect_data in stat_to_upgrades[stat]:
-												var upgrade_id = effect_data.get("id")
-												var level: int = UpgradeManager.get_level(upgrade_id)
-												if level <= 0:
-																continue
-												var effect: Dictionary = effect_data.get("effect")
-												var eff_value: float = float(effect.get("value", 0.0))
-												if effect.get("scale_with_level", true):
-																eff_value *= level
-												var op = effect.get("operation", "add")
-												match op:
-																"add":
-																				value += eff_value
-																				applied = true
-																"mul":
-																				if not applied:
-																								value = base_stats.get(stat, 1.0)
-																								applied = true
-																				value *= eff_value
-																"set":
-																				value = eff_value
-																				applied = true
-																_:
-																				push_warning("StatManager: unknown operation '%s' for stat '%s'" % [op, stat])
-				if value != previous:
-								computed_stats[stat] = value
-								if emit:
-												stat_changed.emit(stat, value)
-												_emit_stat_callbacks(stat, value)
-				else:
-								computed_stats[stat] = value
+	if temporary_overrides.has(stat):
+		return
+	var previous = computed_stats.get(stat)
+	var base_value = base_stats.get(stat, 0.0)
+	var value: float = base_value
+	var applied := false
+	if stat_to_upgrades.has(stat):
+		for effect_data in stat_to_upgrades[stat]:
+			var upgrade_id = effect_data.get("id")
+			var level: int = UpgradeManager.get_level(upgrade_id)
+			if level <= 0:
+				continue
+			var effect: Dictionary = effect_data.get("effect")
+			var eff_value: float = float(effect.get("value", 0.0))
+			if effect.get("scale_with_level", true):
+				eff_value *= level
+			var op = effect.get("operation", "add")
+			match op:
+				"add":
+					value += eff_value
+					applied = true
+				"mul":
+					if not applied:
+						value = base_stats.get(stat, 1.0)
+						applied = true
+					value *= eff_value
+				"set":
+					value = eff_value
+					applied = true
+				_:
+					push_warning("StatManager: unknown operation '%s' for stat '%s'" % [op, stat])
+	if value != previous:
+		computed_stats[stat] = value
+		if emit:
+			stat_changed.emit(stat, value)
+			_emit_stat_callbacks(stat, value)
+	else:
+		computed_stats[stat] = value
 
 
 func _recalculate_derived_stat(stat: String, emit := true) -> void:
