@@ -1,5 +1,5 @@
 extends Node
-class_name PortraitCache
+#class_name PortraitCache
 
 var manifest: Dictionary = {}
 var _texture_cache: Dictionary = {}
@@ -28,7 +28,7 @@ func layer_info(layer: String) -> Dictionary:
 	return manifest.get(layer, {})
 
 func get_texture(layer: String, index: int) -> Texture2D:
-	var layer_cache := _texture_cache.get(layer, {})
+	var layer_cache = _texture_cache.get(layer, {})
 	if layer_cache.has(index):
 		return layer_cache[index]
 	var info := layer_info(layer)
