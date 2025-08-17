@@ -62,7 +62,7 @@ static func create_npc(npc_index: int) -> NPC:
 	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
 	
 	# Tags/likes must be set BEFORE generating bio
-<<<<<<< Updated upstream
+
 	if "tags" in npc.get_property_list().map(func(x): return x.name):
 		npc.tags.clear()
 		npc.tags.append_array(generate_npc_tags(full_name, TAG_DATA, 3))
@@ -73,7 +73,7 @@ static func create_npc(npc_index: int) -> NPC:
 		npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
 	else:
 		push_error("NPC resource missing 'likes' property!")
-=======
+
 	# The NPC resource always has `tags` and `likes` properties, so we can
 	# assign directly without checking the property list. The previous
 	# implementation attempted to inspect the property list using
@@ -90,7 +90,7 @@ static func create_npc(npc_index: int) -> NPC:
 
 	npc.likes.clear()
 	npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
->>>>>>> Stashed changes
+
 
 	# Now generate fumble_bio (dynamic)
 	npc.fumble_bio = generate_npc_fumble_bio(npc)
