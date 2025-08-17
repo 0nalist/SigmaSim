@@ -93,11 +93,11 @@ func _on_apply_pressed() -> void:
 
 func _sync_ui_with_config() -> void:
 	for layer in PortraitCache.layers_order():
-		var idx := config.indices.get(layer, 0)
+		var idx = config.indices.get(layer, 0)
 		var btns = layer_controls.get(layer, {})
 		if btns.has("index") and btns["index"] is OptionButton:
 			btns["index"].select(idx)
-		var col := config.colors.get(layer, Color.WHITE)
+		var col = config.colors.get(layer, Color.WHITE)
 		if layer == "hair_back":
 			col = config.colors.get("hair_back", config.colors.get("hair", Color.WHITE))
 		if btns.has("color") and btns["color"] is ColorPickerButton:
