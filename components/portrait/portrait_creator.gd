@@ -55,7 +55,7 @@ func _setup_layers() -> void:
 				sync_chk.name = "Sync"
 				sync_chk.text = "Sync"
 				sync_chk.button_pressed = hair_color_sync
-				sync_chk.toggled.connect(_on_hair_sync_toggled)
+				sync_chk.toggled.connect(_on_hair_sync_toggled.bind(layer))
 				row.add_child(sync_chk)
 				layer_controls[layer] = {"index": index_btn, "color": color_btn, "sync": sync_chk}
 		else:
@@ -81,20 +81,23 @@ func _on_color_changed(color: Color, layer: String) -> void:
 		preview.apply_config(config)
 
 
-func _on_hair_sync_toggled(pressed: bool) -> void:
+func _on_hair_sync_toggled(pressed: bool, layer: String) -> void:
 	hair_color_sync = pressed
-	for layer in ["hair", "hair_back"]:
-		var btns = layer_controls.get(layer, {})
+	for l in ["hair", "hair_back"]:
+		var btns = layer_controls.get(l, {})
 		if btns.has("sync") and btns["sync"] is CheckBox:
 			var cbx: CheckBox = btns["sync"]
 			if cbx.button_pressed != pressed:
 				cbx.button_pressed = pressed
 	if pressed:
-		var col = config.colors.get("hair", Color.WHITE)
+		var other := "hair_back" if layer == "hair" else "hair"
+		var col = config.colors.get(other, Color.WHITE)
+		config.colors["hair"] = col
 		config.colors["hair_back"] = col
-		if layer_controls.has("hair_back") and layer_controls["hair_back"].has("color"):
-			var cb: ColorPickerButton = layer_controls["hair_back"]["color"]
-			cb.color = col
+		for l in ["hair", "hair_back"]:
+			if layer_controls.has(l) and layer_controls[l].has("color"):
+				var cb: ColorPickerButton = layer_controls[l]["color"]
+				cb.color = col
 	preview.apply_config(config)
 
 
