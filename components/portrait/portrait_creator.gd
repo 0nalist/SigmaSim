@@ -8,7 +8,7 @@ var layer_controls: Dictionary = {}
 var hair_color_sync := true
 
 @onready var preview: PortraitView = %Preview
-@onready var layers_container: VBoxContainer = %Layers
+@onready var layers_container: HBoxContainer = %Layers
 @onready var name_edit: LineEdit = %NameEdit
 @onready var generate_button: Button = %Generate
 @onready var randomize_button: Button = %Randomize
@@ -29,39 +29,39 @@ func _ready() -> void:
 
 
 func _setup_layers() -> void:
-	for layer in PortraitCache.layers_order():
-		var info := PortraitCache.layer_info(layer)
-		config.indices[layer] = 0
-		config.colors[layer] = Color.WHITE
-		var row := HBoxContainer.new()
-		row.name = layer
-		var label := Label.new()
-		label.text = layer.capitalize()
-		row.add_child(label)
-		var index_btn := OptionButton.new()
-		index_btn.name = "Index"
-		var tex_arr: Array = info.get("textures", [])
-		index_btn.add_item("0", 0)
-		for i in range(tex_arr.size()):
-				index_btn.add_item(str(i + 1), i + 1)
-		index_btn.item_selected.connect(_on_index_changed.bind(layer))
-		row.add_child(index_btn)
-		var color_btn := ColorPickerButton.new()
-		color_btn.name = "Color"
-		color_btn.custom_minimum_size = Vector2(15, 0)
-		color_btn.color_changed.connect(_on_color_changed.bind(layer))
-		row.add_child(color_btn)
-		if layer == "hair" or layer == "hair_back":
-				var sync_chk := CheckBox.new()
-				sync_chk.name = "Sync"
-				sync_chk.text = "Sync"
-				sync_chk.button_pressed = hair_color_sync
-				sync_chk.toggled.connect(_on_hair_sync_toggled.bind(layer))
-				row.add_child(sync_chk)
-				layer_controls[layer] = {"index": index_btn, "color": color_btn, "sync": sync_chk}
-		else:
-				layer_controls[layer] = {"index": index_btn, "color": color_btn}
-		layers_container.add_child(row)
+        for layer in PortraitCache.layers_order():
+                var info := PortraitCache.layer_info(layer)
+                config.indices[layer] = 0
+                config.colors[layer] = Color.WHITE
+                var col := VBoxContainer.new()
+                col.name = layer
+                var label := Label.new()
+                label.text = layer.capitalize()
+                col.add_child(label)
+                var index_btn := OptionButton.new()
+                index_btn.name = "Index"
+                var tex_arr: Array = info.get("textures", [])
+                index_btn.add_item("0", 0)
+                for i in range(tex_arr.size()):
+                                index_btn.add_item(str(i + 1), i + 1)
+                index_btn.item_selected.connect(_on_index_changed.bind(layer))
+                col.add_child(index_btn)
+                var color_btn := ColorPickerButton.new()
+                color_btn.name = "Color"
+                color_btn.custom_minimum_size = Vector2(15, 0)
+                color_btn.color_changed.connect(_on_color_changed.bind(layer))
+                col.add_child(color_btn)
+                if layer == "hair" or layer == "hair_back":
+                                var sync_chk := CheckBox.new()
+                                sync_chk.name = "Sync"
+                                sync_chk.text = "Sync"
+                                sync_chk.button_pressed = hair_color_sync
+                                sync_chk.toggled.connect(_on_hair_sync_toggled.bind(layer))
+                                col.add_child(sync_chk)
+                                layer_controls[layer] = {"index": index_btn, "color": color_btn, "sync": sync_chk}
+                else:
+                                layer_controls[layer] = {"index": index_btn, "color": color_btn}
+                layers_container.add_child(col)
 
 
 func _on_index_changed(idx: int, layer: String) -> void:
