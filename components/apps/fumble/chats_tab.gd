@@ -36,65 +36,65 @@ func _ready():
 
 
 func refresh_ui():
-        refresh_matches()
-        refresh_battles()
+		refresh_matches()
+		refresh_battles()
 
 
 func refresh_matches(time_budget_msec := 8) -> void:
-        for child in matches_container.get_children():
-                child.queue_free()
-        var matches: Array = FumbleManager.get_matches()
-        var battles: Array = FumbleManager.get_active_battles()
-        var battle_npc_indices := battles.map(func(b): return b.npc_idx)
+		for child in matches_container.get_children():
+				child.queue_free()
+		var matches: Array = FumbleManager.get_matches()
+		var battles: Array = FumbleManager.get_active_battles()
+		var battle_npc_indices := battles.map(func(b): return b.npc_idx)
 
-        var total_attractiveness := 0
-        var filtered_count := 0
-        var data := []
+		var total_attractiveness := 0
+		var filtered_count := 0
+		var data := []
 
-        var start_time = Time.get_ticks_msec()
+		var start_time = Time.get_ticks_msec()
 
-        for idx in matches:
-                if battle_npc_indices.has(idx):
-                        continue
-                var npc = NPCManager.get_npc_by_index(idx)
-                total_attractiveness += npc.attractiveness
-                filtered_count += 1
-                data.append({"npc": npc, "idx": idx})
-                if Time.get_ticks_msec() - start_time > time_budget_msec:
-                        await get_tree().process_frame
-                        start_time = Time.get_ticks_msec()
-        match matches_sort.selected:
-                0:
-                        data.sort_custom(func(a, b): return a.npc.attractiveness < b.npc.attractiveness)
-                1:
-                        data.sort_custom(func(a, b): return a.npc.attractiveness > b.npc.attractiveness)
-                2:
-                        data.sort_custom(func(a, b): return a.npc.full_name < b.npc.full_name)
-                3:
-                        data.sort_custom(
-                                func(a, b): return str(a.npc.chat_battle_type) < str(b.npc.chat_battle_type)
-                        )
-        for d in data:
-                var btn = match_button_scene.instantiate()
-                matches_container.add_child(btn)
-                btn.set_profile(d.npc, d.idx)
-                btn.match_pressed.connect(_on_match_button_pressed)
-                if Time.get_ticks_msec() - start_time > time_budget_msec:
-                        await get_tree().process_frame
-                        start_time = Time.get_ticks_msec()
-        for b in battles:
-                var npc = NPCManager.get_npc_by_index(b.npc_idx)
-                total_attractiveness += npc.attractiveness
-                if Time.get_ticks_msec() - start_time > time_budget_msec:
-                        await get_tree().process_frame
-                        start_time = Time.get_ticks_msec()
-        var total_count := filtered_count + battles.size()
-        matches_label.text = "Matches: %d" % total_count
+		for idx in matches:
+				if battle_npc_indices.has(idx):
+						continue
+				var npc = NPCManager.get_npc_by_index(idx)
+				total_attractiveness += npc.attractiveness
+				filtered_count += 1
+				data.append({"npc": npc, "idx": idx})
+				if Time.get_ticks_msec() - start_time > time_budget_msec:
+						await get_tree().process_frame
+						start_time = Time.get_ticks_msec()
+		match matches_sort.selected:
+				0:
+						data.sort_custom(func(a, b): return a.npc.attractiveness < b.npc.attractiveness)
+				1:
+						data.sort_custom(func(a, b): return a.npc.attractiveness > b.npc.attractiveness)
+				2:
+						data.sort_custom(func(a, b): return a.npc.full_name < b.npc.full_name)
+				3:
+						data.sort_custom(
+								func(a, b): return str(a.npc.chat_battle_type) < str(b.npc.chat_battle_type)
+						)
+		for d in data:
+				var btn = match_button_scene.instantiate()
+				matches_container.add_child(btn)
+				btn.set_profile(d.npc, d.idx)
+				btn.match_pressed.connect(_on_match_button_pressed)
+				if Time.get_ticks_msec() - start_time > time_budget_msec:
+						await get_tree().process_frame
+						start_time = Time.get_ticks_msec()
+		for b in battles:
+				var npc = NPCManager.get_npc_by_index(b.npc_idx)
+				total_attractiveness += npc.attractiveness
+				if Time.get_ticks_msec() - start_time > time_budget_msec:
+						await get_tree().process_frame
+						start_time = Time.get_ticks_msec()
+		var total_count := filtered_count + battles.size()
+		matches_label.text = "Matches: %d" % total_count
 
-        var avg_att := 0.0
-        if total_count > 0:
-                avg_att = float(total_attractiveness) / total_count
-        average_match_label.text = "Avg: 🔥 %.1f/10" % (avg_att / 10.0)
+		var avg_att := 0.0
+		if total_count > 0:
+				avg_att = float(total_attractiveness) / total_count
+		average_match_label.text = "Avg: 🔥 %.1f/10" % (avg_att / 10.0)
 
 
 func refresh_battles():

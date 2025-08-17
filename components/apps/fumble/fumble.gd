@@ -84,11 +84,11 @@ func _on_card_swiped_left(npc_idx):
 	# Add further logic if needed
 
 func _on_card_swiped_right(npc_idx):
-        NPCManager.promote_to_persistent(npc_idx)
-        NPCManager.set_relationship_status(npc_idx, "fumble", FumbleManager.FumbleStatus.LIKED)
-        var new_confidence = clamp(StatManager.get_stat("confidence") + 1.0, 0.0, 100.0)
-        StatManager.set_base_stat("confidence", new_confidence)
-        chats_tab.call_deferred("refresh_matches")
+		NPCManager.promote_to_persistent(npc_idx)
+		NPCManager.set_relationship_status(npc_idx, "fumble", FumbleManager.FumbleStatus.LIKED)
+		var new_confidence = clamp(StatManager.get_stat("confidence") + 1.0, 0.0, 100.0)
+		StatManager.set_base_stat("confidence", new_confidence)
+		chats_tab.call_deferred("refresh_matches")
 
 func highlight_active(button: Button):
 	self_button.modulate = Color.WHITE
