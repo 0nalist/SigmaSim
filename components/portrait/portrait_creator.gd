@@ -1,7 +1,9 @@
-extends Control
 class_name PortraitCreator
+extends Control
 
 signal applied(config: PortraitConfig)
+
+const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd")
 
 var config: PortraitConfig = PortraitConfig.new()
 var layer_controls: Dictionary = {}
@@ -13,8 +15,6 @@ var hair_color_sync := true
 @onready var generate_button: Button = %Generate
 @onready var randomize_button: Button = %Randomize
 @onready var apply_button: Button = %Apply
-
-const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd")
 
 
 func _ready() -> void:
@@ -75,7 +75,10 @@ func _setup_layers() -> void:
 
 
 func _on_index_changed(idx: int, layer: String) -> void:
-	config.indices[layer] = idx
+	if layer == "face":
+		config.indices[layer] = idx + 1
+	else:
+		config.indices[layer] = idx
 	preview.apply_config(config)
 
 
@@ -141,17 +144,20 @@ func _on_apply_pressed() -> void:
 func _sync_ui_with_config() -> void:
 	hair_color_sync = config.colors.get("hair") == config.colors.get("hair_back")
 	for layer in PortraitCache.layers_order():
-		var idx = config.indices.get(layer, 0)
 		var btns = layer_controls.get(layer, {})
 		if btns.has("index") and btns["index"] is OptionButton:
 			var ob: OptionButton = btns["index"]
+			var idx: int
 			if layer == "face":
-				if idx < 1 or idx >= ob.item_count:
-					idx = 1
+				idx = config.indices.get(layer, 1) - 1
+				if idx < 0 or idx >= ob.item_count:
+					idx = 0
+					config.indices[layer] = 1
+			else:
+				idx = config.indices.get(layer, 0)
+				if idx < 0 or idx >= ob.item_count:
+					idx = 0
 					config.indices[layer] = idx
-			elif idx < 0 or idx >= ob.item_count:
-				idx = 0
-				config.indices[layer] = idx
 			ob.select(idx)
 		var col = config.colors.get(layer, Color.WHITE)
 		if hair_color_sync and layer == "hair_back":
