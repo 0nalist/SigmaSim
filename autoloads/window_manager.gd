@@ -27,16 +27,16 @@ var app_registry := {
 }
 
 var start_apps := {
-	"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
+	#"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
-	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
+	#"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
 	#"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
-	"WorkForce": preload("res://workforce.tscn"),
+	#"WorkForce": preload("res://workforce.tscn"),
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
-	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
-	"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
-	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
-	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
+	#"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
+	#"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
+	#"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
+	#"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
 	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),

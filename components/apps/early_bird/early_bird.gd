@@ -103,20 +103,20 @@ func _adjust_window_size() -> void:
 	window_frame.size = new_size
 
 func start_game() -> void:
-		_update_cash_per_score()
-		game_active = true
-		player.reset()
-		pipe_manager.reset()
-		round_manager.start_round_cycle()
-		winnings = 0.0
-		hud.reset(cash_per_score)
-		window_frame.size = Vector2(base_width, fixed_height)
-		reset_speed()
-		%Worm.show()
-		_update_autopilot_button_text()
-		disable_flaps_checkbox.button_pressed = false
-		manual_flaps_disabled = false
-		_update_disable_flaps_visibility()
+	_update_cash_per_score()
+	game_active = true
+	player.reset()
+	pipe_manager.reset()
+	round_manager.start_round_cycle()
+	winnings = 0.0
+	hud.reset(cash_per_score)
+	window_frame.size = Vector2(base_width, fixed_height)
+	reset_speed()
+	%Worm.show()
+	_update_autopilot_button_text()
+	#disable_flaps_checkbox.button_pressed = false
+	#manual_flaps_disabled = false
+	_update_disable_flaps_visibility()
 
 func reset_speed():
 	speed_timer = 0.0
