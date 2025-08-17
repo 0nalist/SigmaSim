@@ -4,7 +4,7 @@ extends Node
 ## into other managers.  The manager supports permanent base values, upgrade
 ## effects, and temporary overrides used by buffs or special events.
 
-signal stat_changed(stat: String, value: float)
+signal stat_changed(stat: String, value: Variant)
 
 # -- Stored data --------------------------------------------------------------
 
@@ -64,7 +64,7 @@ func _load_stats_file(path: String) -> void:
 
 # -- Public API --------------------------------------------------------------
 
-func get_stat(stat_name: String, default := 0.0) -> float:
+func get_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 	# Temporary overrides always take precedence
 	if temporary_overrides.has(stat_name):
 		return temporary_overrides[stat_name]
@@ -85,13 +85,13 @@ func get_all_stats() -> Dictionary:
 	return result
 
 
-func get_base_stat(stat_name: String, default := 0.0) -> float:
+func get_base_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 	if base_stats.has(stat_name):
 		return base_stats.get(stat_name, default)
 	return PlayerManager.user_data.get(stat_name, default)
 
 
-func set_base_stat(stat_name: String, value: float) -> void:
+func set_base_stat(stat_name: String, value: Variant) -> void:
 	# If the stat exists in PlayerManager.user_data but not in base_stats,
 	# update the player data directly instead of creating a new base stat.
 	if !base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
@@ -109,7 +109,7 @@ func set_base_stat(stat_name: String, value: float) -> void:
 		_recalculate_stat_and_dependents(stat_name)
 
 
-func set_override(stat_name: String, value: float) -> void:
+func set_override(stat_name: String, value: Variant) -> void:
 			var old_value := get_stat(stat_name)
 			temporary_overrides[stat_name] = value
 			if old_value != value:
@@ -131,7 +131,7 @@ func clear_override(stat_name: String) -> void:
 		_emit_stat_callbacks(stat_name, new_value)
 
 
-func apply_temp_override(stat_name: String, value: float) -> void:
+func apply_temp_override(stat_name: String, value: Variant) -> void:
 	set_override(stat_name, value)
 
 
@@ -180,7 +180,7 @@ func disconnect_from_stat(stat: String, target: Object, method: String) -> void:
 				)
 
 
-func register_stat(name: String, default_value: float) -> void:
+func register_stat(name: String, default_value: Variant) -> void:
 	if base_stats.has(name):
 			return
 	base_stats[name] = default_value
@@ -315,14 +315,17 @@ func _build_dependents_map() -> void:
 
 
 func _emit_stat_callbacks(stat: String, value: Variant) -> void:
-	if value == null:
-		push_warning("StatManager: Tried to emit callback for '%s' with null value" % stat)
-		return
-	var as_float := float(value)
-	if _stat_signal_map.has(stat):
-		var callbacks: Array = _stat_signal_map[stat]
-		for cb in callbacks.duplicate():
-			if not is_instance_valid(cb.get_object()):
-				callbacks.erase(cb)
-				continue
-			cb.call(as_float)
+        if value == null:
+                push_warning("StatManager: Tried to emit callback for '%s' with null value" % stat)
+                return
+        var param := value
+        var t := typeof(value)
+        if t == TYPE_INT or t == TYPE_FLOAT:
+                param = float(value)
+        if _stat_signal_map.has(stat):
+                var callbacks: Array = _stat_signal_map[stat]
+                for cb in callbacks.duplicate():
+                        if not is_instance_valid(cb.get_object()):
+                                callbacks.erase(cb)
+                                continue
+                        cb.call(param)
