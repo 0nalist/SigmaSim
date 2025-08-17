@@ -21,7 +21,7 @@ func set_upgrade(upgrade: Dictionary) -> void:
 	upgrade_data = upgrade
 	name_label.text = upgrade.get("name", upgrade.get("id", "???"))
 	desc_label.text = upgrade.get("description", "")
-	set_level(UpgradeManager.get_level(upgrade["id"]))
+	set_level(StatManager.get_upgrade_level(upgrade["id"]))
 	_refresh_cost()
 	set_locked(UpgradeManager.is_locked(upgrade["id"]))
 
@@ -34,7 +34,12 @@ func set_locked(locked: bool) -> void:
 			self.modulate = Color(1, 1, 1, 1)
 
 func set_level(level: int) -> void:
-	level_label.text = "Level: %d" % level
+		var repeatable = upgrade_data.get("repeatable", true)
+		if repeatable:
+				level_label.text = "Level: %d" % level
+		else:
+				level_label.text = "PURCHASED" if level > 0 else ""
+		buy_button.disabled = is_locked or not UpgradeManager.can_purchase(upgrade_data.get("id", ""))
 
 func _refresh_cost() -> void:
 	var cost = UpgradeManager.get_cost_for_next_level(upgrade_data["id"])

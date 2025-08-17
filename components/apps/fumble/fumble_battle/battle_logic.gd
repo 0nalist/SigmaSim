@@ -155,8 +155,10 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 			var val = raw_effects[stat]
 			var final_val = val * multi * type_mod
 			if stat == "confidence":
-				PlayerManager.adjust_stat("confidence", final_val)
-				result[stat] = final_val
+					var current_conf = StatManager.get_stat("confidence")
+					var new_conf = clamp(current_conf + final_val, 0.0, 100.0)
+					StatManager.set_base_stat("confidence", new_conf)
+					result[stat] = final_val
 			elif stat in stats:
 				stats[stat] = clamp(stats.get(stat, 0) + final_val, 0, 100)
 				result[stat] = final_val
@@ -177,8 +179,10 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 			var val = raw_effects[stat]
 			var final_val = val * multi
 			if stat == "confidence":
-				PlayerManager.adjust_stat("confidence", final_val)
-				result[stat] = final_val
+					var current_fail_conf = StatManager.get_stat("confidence")
+					var new_fail_conf = clamp(current_fail_conf + final_val, 0.0, 100.0)
+					StatManager.set_base_stat("confidence", new_fail_conf)
+					result[stat] = final_val
 			elif stat in stats:
 				stats[stat] = clamp(stats.get(stat, 0) + final_val, 0, 100)
 				result[stat] = final_val
@@ -187,13 +191,10 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 
 
 
-
-
-
-
 func get_attractiveness_delta() -> float: # + if player is more attractive than npc
-	var dime_delta: float = ((PlayerManager.get_stat("attractiveness") - npc.attractiveness)/10.0)
+	var dime_delta: float = ((StatManager.get_stat("attractiveness") - npc.attractiveness)/10.0)
 	#print("dime delta: " + str(dime_delta))
+	print("dime delta: " + str(dime_delta))
 	return dime_delta
 
 

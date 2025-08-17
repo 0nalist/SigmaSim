@@ -1,0 +1,15 @@
+{
+  "id": "earlybird_disable_manual_flaps",
+  "name": "Wing Restraints",
+  "description": "Unlocks a checkbox to disable manual flaps.",
+  "effects": [],
+  "systems": [
+	"earlybird"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+		"cash": 1000
+  },
+  "max_level": 1,
+  "repeatable": false
+}

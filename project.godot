@@ -46,6 +46,7 @@ FumbleManager="*res://autoloads/fumble_manager.gd"
 MarkupParser="*res://autoloads/markup_parser.gd"
 StatManager="*res://autoloads/stat_manager.gd"
 Events="*res://autoloads/events.gd"
+DebugConsoleManager="*res://autoload/debug_console_manager.gd"
 
 [display]
 
@@ -74,5 +75,3 @@ select={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"

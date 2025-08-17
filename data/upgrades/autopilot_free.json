@@ -1,0 +1,15 @@
+{
+  "id": "earlybird_autopilot_free",
+  "name": "Frequent Flyer",
+  "description": "Autopilot is free forever.",
+  "effects": [],
+  "systems": [
+	"earlybird"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+		"cash": 100
+  },
+  "max_level": 1,
+  "repeatable": false
+}

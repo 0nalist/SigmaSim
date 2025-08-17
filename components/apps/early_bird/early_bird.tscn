@@ -289,7 +289,7 @@ material = SubResource("ShaderMaterial_tgvyg")
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("17_5sugq")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 50
 text = "EARLY BIRD"
 
 [node name="GoButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
@@ -299,7 +299,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("17_5sugq")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 36
 text = " Get that worm! "
 
 [node name="QuitButton" type="Button" parent="HUD/MarginContainer/GameMenuContainer"]
@@ -311,20 +311,30 @@ theme_override_fonts/font = ExtResource("17_5sugq")
 text = " Quit "
 vertical_icon_alignment = 0
 
-[node name="AutopilotButton" type="Button" parent="HUD"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -4.0
-offset_top = -4.0
+offset_left = -94.0
+offset_top = -27.0
 grow_horizontal = 0
 grow_vertical = 0
+
+[node name="DisableManualFlaps" type="CheckBox" parent="HUD/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+focus_mode = 0
+text = "No Flap"
+
+[node name="AutopilotButton" type="Button" parent="HUD/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 focus_mode = 0
 toggle_mode = true
-button_pressed = true
 text = "Autopilot"
 
 [node name="Worm" type="Area2D" parent="."]
@@ -354,7 +364,7 @@ autostart = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Worm"]
 
-[connection signal="pressed" from="HUD/AutopilotButton" to="." method="_on_autopilot_button_pressed"]
+[connection signal="pressed" from="HUD/HBoxContainer/AutopilotButton" to="." method="_on_autopilot_button_pressed"]
 [connection signal="input_event" from="Worm" to="Worm" method="_on_input_event"]
 [connection signal="mouse_entered" from="Worm" to="Worm" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Worm" to="Worm" method="_on_mouse_exited"]

@@ -52,7 +52,7 @@ func _build_table_shell() -> void:
 	results_tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	results_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	results_tree.hide_root = true
-	results_tree.columns = 0
+	results_tree.columns = 1
 	results_tree.column_titles_visible = true
 	results_tree.allow_reselect = true
 	results_tree.select_mode = Tree.SELECT_ROW

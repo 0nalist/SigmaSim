@@ -69,8 +69,8 @@ func _ready():
 	z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
 	curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
 
-	confidence_progress_bar.update_value(PlayerManager.get_stat("confidence"))
-	ex_progress_bar.update_value(PlayerManager.get_stat("ex"))
+	confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
+	ex_progress_bar.update_value(StatManager.get_stat("ex"))
 	
 	_on_gender_slider_changed(0)
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
@@ -86,7 +86,8 @@ func _on_card_swiped_left(npc_idx):
 func _on_card_swiped_right(npc_idx):
 	NPCManager.promote_to_persistent(npc_idx)
 	NPCManager.set_relationship_status(npc_idx, "fumble", FumbleManager.FumbleStatus.LIKED)
-	PlayerManager.adjust_stat("confidence", 1)
+	var new_confidence = clamp(StatManager.get_stat("confidence") + 1.0, 0.0, 100.0)
+	StatManager.set_base_stat("confidence", new_confidence)
 	chats_tab.refresh_matches()
 
 func highlight_active(button: Button):

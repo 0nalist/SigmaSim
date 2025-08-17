@@ -1,6 +1,6 @@
 ## Autoload PlayerManager
 extends Node
- 	
+
 
 var default_user_data: Dictionary = {
 	# Identity
@@ -37,11 +37,11 @@ var default_user_data: Dictionary = {
 	"zodiac_sign": "",
 		"mbti": "",
 
-		# Fumble preferences
-		"fumble_pref_x": 0.0,
-		"fumble_pref_y": 0.0,
-		"fumble_pref_z": 0.0,
-		"fumble_curiosity": 50.0,
+	# Fumble preferences
+	"fumble_pref_x": 0.0,
+	"fumble_pref_y": 0.0,
+	"fumble_pref_z": 0.0,
+	"fumble_curiosity": 50.0,
 
 	# Flags and progression
 	"unlocked_perks": [],
@@ -50,24 +50,6 @@ var default_user_data: Dictionary = {
 
 var user_data: Dictionary = default_user_data.duplicate(true)
 
-var suppressed_stat_updates: Dictionary = {}
-var deferred_stat_values: Dictionary = {}
-var _stat_signal_map: Dictionary = {}  # stat_name: Array[Callable]
-
-func connect_to_stat(stat: String, target: Object, method: String) -> void:
-	if !_stat_signal_map.has(stat):
-		_stat_signal_map[stat] = []
-	_stat_signal_map[stat].append(Callable(target, method))
-
-func disconnect_from_stat(stat: String, target: Object, method: String) -> void:
-	if _stat_signal_map.has(stat):
-		_stat_signal_map[stat] = _stat_signal_map[stat].filter(func(cb): return cb.get_object() != target or cb.get_method() != method)
-
-func _emit_stat_changed(stat: String, value: Variant) -> void:
-	if _stat_signal_map.has(stat):
-		for cb in _stat_signal_map[stat]:
-			if is_instance_valid(cb.get_object()):
-				cb.call(value)
 
 
 func get_var(key: String, default_value = null):
@@ -77,27 +59,6 @@ func set_var(key: String, value) -> void:
 	user_data[key] = value
 
 
-## -- Global stat access -- ##
-
-func get_stat(key: String) -> Variant:
-	match key:
-		"cash": return PortfolioManager.cash
-		"credit_used": return PortfolioManager.credit_used
-		"student_loans": return PortfolioManager.student_loans
-		"alpha", "beta", "delta", "gamma", "omega", "sigma":
-			return user_data.get(key, 0.0)
-		_: return user_data.get(key)
-
-func set_stat(key: String, value: Variant) -> void:
-	if key == "confidence":
-		value = clamp(value, 0.0, 100.0)
-	match key:
-		"cash": PortfolioManager.cash = value
-		"student_loans": PortfolioManager.student_loans = value
-		"credit_used": PortfolioManager.credit_used = value
-		"alpha", "beta", "delta", "gamma", "omega", "sigma":
-			user_data[key] = value
-		_: user_data[key] = value
 
 
 func reset():
@@ -111,26 +72,6 @@ func ensure_default_stats() -> void:
 			user_data[key] = default_user_data[key]
 
 
-func suppress_stat(stat_name: String, suppress: bool) -> void:
-	suppressed_stat_updates[stat_name] = suppress
-
-	if !suppress and deferred_stat_values.has(stat_name):
-		_emit_stat_changed(stat_name, deferred_stat_values[stat_name])
-		deferred_stat_values.erase(stat_name)
-
-func is_stat_suppressed(stat_name: String) -> bool:
-	return suppressed_stat_updates.get(stat_name, false)
-
-func adjust_stat(stat: String, delta: float) -> void:
-	if user_data.has(stat):
-		user_data[stat] += delta
-		if stat == "confidence":
-			user_data[stat] = clamp(user_data[stat], 0.0, 100.0)
-
-	if is_stat_suppressed(stat):
-		deferred_stat_values[stat] = user_data[stat]
-	else:
-		_emit_stat_changed(stat, user_data[stat])
 
 
 func has_seen(id: String) -> bool:
@@ -172,19 +113,21 @@ var background_effects := {
 func _apply_grandma() -> void:
 	PortfolioManager.add_cash(20.00)
 	var center = get_viewport().get_visible_rect().size / 2
-	StatpopManager.spawn("+$20.00", center)
+	StatpopManager.spawn("+$20.00", center, "click", Color.GREEN)
 
 func _apply_pretty_privilege() -> void:
-	PlayerManager.adjust_stat("attractiveness", 10)
+	var new_attractiveness = StatManager.get_stat("attractiveness") + 10.0
+	StatManager.set_base_stat("attractiveness", new_attractiveness)
 
 func _apply_dropout() -> void:
-	PortfolioManager.cash = 300.0
-	PortfolioManager.set_student_loans(0.0)
+		PortfolioManager.cash = 300.0
+		StatManager.set_base_stat("cash", PortfolioManager.cash)
+		PortfolioManager.set_student_loans(0.0)
 
 func _apply_burnout() -> void:
-	PortfolioManager.credit_used = 10000.0
-	PortfolioManager.credit_limit = 25000.0
-	PortfolioManager.set_student_loans(0.0)
+		PortfolioManager.credit_used = 10000.0
+		PortfolioManager.credit_limit = 25000.0
+		PortfolioManager.set_student_loans(0.0)
 
 func _apply_gamer() -> void:
 	PortfolioManager.set_student_loans(40000.0)

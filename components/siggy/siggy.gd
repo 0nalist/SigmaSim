@@ -169,7 +169,8 @@ func get_money_tip() -> String:
 func out_of_pocket_wildcard() -> String:
 	
 	var wildcards = []
-	wildcards.append("Would you still love me if I told you in all my years doing this line of work I have never seen anyone use a computer as retardedly as you!")
+	wildcards.append("I'm real and I love you in real life!")
+	
 	wildcards.append("...all I'm saying is, buildings don't just fall down like that!")
 	wildcards.append("And that's the day I learned why they're called sperm whales")
 	#wildcards.append("")

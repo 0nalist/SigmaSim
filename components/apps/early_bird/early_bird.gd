@@ -12,6 +12,8 @@ class_name EarlyBird
 @export var speed_growth_rate: float = 10.0  # Speed increase per second
 @export var max_speed: float = 2400.0  # 1600 tested as safe
 @onready var autopilot: Node = %EarlyBirdAutopilot
+@onready var autopilot_button: Button = %AutopilotButton
+@onready var disable_flaps_checkbox: CheckBox = %DisableManualFlaps
 
 @export var base_width: float = 440.0
 @export var max_width: float = 1920.0
@@ -35,6 +37,8 @@ var game_active: bool = false
 ## Data to Save/Load ##
 var cash_per_score: float = 0.01
 var winnings: float = 0.00
+var autopilot_cost: float = 1.0
+var manual_flaps_disabled: bool = false
 
 func _ready() -> void:
 	window_frame = find_parent_window_frame()
@@ -47,7 +51,13 @@ func _ready() -> void:
 	hud.restart_pressed.connect(_on_restart_pressed)
 	hud.quit_pressed.connect(_on_quit_pressed)
 
+	disable_flaps_checkbox.toggled.connect(_on_disable_flaps_toggled)
+
 	StatManager.connect_to_stat("cash_per_score", self, "_on_cash_per_score_changed")
+	autopilot_cost = StatManager.get_stat("autopilot_cost", 1.0)
+	UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
+	_update_autopilot_button_text()
+	_update_disable_flaps_visibility()
 	start_game()
 
 func find_parent_window_frame() -> WindowFrame:
@@ -103,6 +113,10 @@ func start_game() -> void:
 	window_frame.size = Vector2(base_width, fixed_height)
 	reset_speed()
 	%Worm.show()
+	_update_autopilot_button_text()
+	#disable_flaps_checkbox.button_pressed = false
+	#manual_flaps_disabled = false
+	_update_disable_flaps_visibility()
 
 func reset_speed():
 	speed_timer = 0.0
@@ -110,13 +124,13 @@ func reset_speed():
 	pipe_manager.set_move_speed(current_speed)
 
 func _input(event: InputEvent) -> void:
-	if not game_active:
-		return
-	if (
-		(event is InputEventMouseButton and event.pressed)
-		or (event is InputEventKey and event.pressed and event.keycode == KEY_SPACE)
-	):
-		player.flap()
+		if not game_active:
+				return
+		if (
+				(event is InputEventMouseButton and event.pressed)
+				or (event is InputEventKey and event.pressed and event.keycode == KEY_SPACE)
+		) and not manual_flaps_disabled:
+				player.flap()
 
 func _on_round_started(round_type: String) -> void:
 	if round_type == "pipe":
@@ -130,6 +144,11 @@ func _on_player_died() -> void:
 	round_manager.stop_round_cycle()
 	hud.show_game_over(winnings)
 	%Worm.hide()
+	
+	
+	autopilot.enabled = false
+	autopilot_button.button_pressed = false
+	_update_autopilot_button_text()
 
 func _on_player_scored() -> void:
 	winnings += cash_per_score
@@ -146,12 +165,53 @@ func _on_quit_pressed() -> void:
 		window_frame.queue_free()
 
 func _on_autopilot_button_pressed() -> void:
-	if autopilot:
-		autopilot.enabled = !autopilot.enabled
+		if autopilot == null:
+				return
+		var cost := _get_autopilot_cost()
+		if not autopilot.enabled:
+				if cost > 0.0 and not PortfolioManager.attempt_spend(cost):
+						autopilot_button.button_pressed = false
+						return
+				autopilot.enabled = true
+				if cost > 0.0:
+						autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
+						StatManager.set_base_stat("autopilot_cost", autopilot_cost)
+		else:
+				autopilot.enabled = false
+		_update_autopilot_button_text()
+
+func _get_autopilot_cost() -> float:
+		if UpgradeManager.get_level("earlybird_autopilot_free") > 0:
+				return 0.0
+		return autopilot_cost
+
+func _update_autopilot_button_text() -> void:
+		autopilot_button.button_pressed = autopilot.enabled
+		if not autopilot.enabled:
+				var cost := _get_autopilot_cost()
+				autopilot_button.text = "Autopilot: $" + NumberFormatter.format_commas(cost, 2, true)
+		else:
+				autopilot_button.text = "Autopilot"
+
+func _on_upgrade_purchased(id: String, _level: int) -> void:
+				if id == "earlybird_autopilot_free":
+								_update_autopilot_button_text()
+				elif id == "earlybird_disable_manual_flaps":
+								_update_disable_flaps_visibility()
 
 func _update_cash_per_score() -> void:
 	cash_per_score = StatManager.get_stat("cash_per_score", 0.01)
 
 func _on_cash_per_score_changed(value: float) -> void:
-	cash_per_score = value
-	hud.update_cash_per_score(cash_per_score)
+		cash_per_score = value
+		hud.update_cash_per_score(cash_per_score)
+
+func _on_disable_flaps_toggled(pressed: bool) -> void:
+		manual_flaps_disabled = pressed
+
+func _update_disable_flaps_visibility() -> void:
+		var visible := UpgradeManager.get_level("earlybird_disable_manual_flaps") > 0
+		disable_flaps_checkbox.visible = visible
+		if not visible:
+				disable_flaps_checkbox.button_pressed = false
+				manual_flaps_disabled = false

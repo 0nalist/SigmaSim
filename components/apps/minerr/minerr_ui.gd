@@ -45,10 +45,17 @@ func update_gpu_label() -> void:
 	var total_gpus: int = GPUManager.get_total_gpu_count()
 	var free_gpus: int = GPUManager.get_free_gpu_count()
 	gpus_label.text = "GPUs\nFree/Owned:\n%d / %d" % [free_gpus, total_gpus]
-	
+
+	# Color the label green if there are free GPUs, else white
+	if free_gpus > 0:
+		gpus_label.modulate = Color(0.2, 1.0, 0.2) # soft green
+	else:
+		gpus_label.modulate = Color(1, 1, 1)       # white
+
 	for symbol in crypto_cards.keys():
 		crypto_cards[symbol].update_display()
 	_update_gpu_prices()
+
 
 
 
