@@ -8,7 +8,7 @@
   ],
   "dependencies": [],
   "cost_per_level": {
-        "cash": 100
+		"cash": 100
   },
   "max_level": 1,
   "repeatable": false
