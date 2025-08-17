@@ -5,5 +5,6 @@
   "worker_productivity_per_tick": 1.0,
   "gpu_power": 1.0,
   "power_per_click": 1.0,
-  "cash_per_score": 0.01
+  "cash_per_score": 0.01,
+  "autopilot_cost": 1.0
 }
