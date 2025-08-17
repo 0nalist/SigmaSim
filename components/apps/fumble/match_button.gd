@@ -17,9 +17,9 @@ var npc_idx: int
 func set_profile(npc_ref, idx):
 	npc = npc_ref
 	npc_idx = idx
-        # Set portrait
-        if npc.portrait_config != null:
-                portrait.apply_config(npc.portrait_config)
+	# Set portrait
+	if npc.portrait_config != null:
+			portrait.apply_config(npc.portrait_config)
 	# Set name
 	name_label.text = npc.full_name
 	type_label.text = npc.chat_battle_type

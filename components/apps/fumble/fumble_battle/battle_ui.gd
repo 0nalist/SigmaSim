@@ -211,8 +211,8 @@ func _update_profiles():
 	name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info
-        if npc.portrait_config != null:
-                npc_portrait.apply_config(npc.portrait_config)
+	if npc.portrait_config != null:
+			npc_portrait.apply_config(npc.portrait_config)
 	npc_attractiveness_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
 	npc_name_label.text = npc.full_name
 	npc_type_label.text = npc.chat_battle_type

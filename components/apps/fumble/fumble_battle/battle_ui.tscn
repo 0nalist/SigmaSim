@@ -19,8 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://cq21pla351uw0" path="res://assets/emojis/mirror_twemoji_x72_1fa9e.png" id="10_6oduf"]
 [ext_resource type="Texture2D" uid="uid://dnvlxo5xu0ypo" path="res://assets/emojis/smiling_eyes_blush_twemoji_x72_1f60a.png" id="11_7gtst"]
 [ext_resource type="Texture2D" uid="uid://8icgbuxae2a8" path="res://assets/emojis/grimace_twemoji_x72_1f62c.png" id="12_mq0jq"]
+[ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="13_pv"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="20_7gtst"]
-[ext_resource type="PackedScene" uid="uid://portrait_view" path="res://components/portrait/portrait_view.tscn" id="13_pv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6oduf"]
 border_color = Color(0, 0, 0, 1)

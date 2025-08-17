@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_jare7"]
 [ext_resource type="Script" uid="uid://fq44llbp4oi0" path="res://components/apps/fumble/match_button.gd" id="2_j67un"]
-[ext_resource type="PackedScene" uid="uid://portrait_view" path="res://components/portrait/portrait_view.tscn" id="3_dvkw6"]
+[ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="3_dvkw6"]
 
 [node name="MatchButton" type="Button"]
 custom_minimum_size = Vector2(128, 128)

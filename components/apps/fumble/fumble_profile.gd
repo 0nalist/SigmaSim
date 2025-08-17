@@ -19,8 +19,8 @@ extends PanelContainer
 
 
 func load_npc(npc: NPC) -> void:
-       portrait.apply_config(npc.portrait_config)
-       # Core info
+	portrait.apply_config(npc.portrait_config)
+	# Core info
 	name_label.text = npc.full_name
 	attractiveness_label.text = "%0.1f/10" % (float(npc.attractiveness) / 10.0)
 	type_label.text = str(npc.chat_battle_type)
