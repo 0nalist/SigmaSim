@@ -65,19 +65,19 @@ func save_to_slot(slot_id: int) -> void:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
 
-        var data := {
-                "stats": StatManager.get_save_data(),
-                "portfolio": PortfolioManager.get_save_data(),
-                "time": TimeManager.get_save_data(),
-                "market": MarketManager.get_save_data(),
-                "tasks": TaskManager.get_save_data(),
-                "player": PlayerManager.get_save_data(),
-                "workers": WorkerManager.get_save_data(),
-                "bills": BillManager.get_save_data(),
-                "gpus": GPUManager.get_save_data(),
-                "upgrades": UpgradeManager.get_save_data(),
-                "windows": WindowManager.get_save_data(),
-        }
+	var data := {
+			"stats": StatManager.get_save_data(),
+			"portfolio": PortfolioManager.get_save_data(),
+			"time": TimeManager.get_save_data(),
+			"market": MarketManager.get_save_data(),
+			"tasks": TaskManager.get_save_data(),
+			"player": PlayerManager.get_save_data(),
+			"workers": WorkerManager.get_save_data(),
+			"bills": BillManager.get_save_data(),
+			"gpus": GPUManager.get_save_data(),
+			"upgrades": UpgradeManager.get_save_data(),
+			"windows": WindowManager.get_save_data(),
+	}
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
@@ -119,13 +119,13 @@ func load_from_slot(slot_id: int) -> void:
 
 	var data: Dictionary = result
 
-        if data.has("stats"):
-                StatManager.load_from_data(data["stats"])
-        if data.has("portfolio"):
-                PortfolioManager.load_from_data(data["portfolio"])
-        if data.has("time"):
-                TimeManager.load_from_data(data["time"])
-                TimeManager.start_time()
+	if data.has("stats"):
+			StatManager.load_from_data(data["stats"])
+	if data.has("portfolio"):
+			PortfolioManager.load_from_data(data["portfolio"])
+	if data.has("time"):
+			TimeManager.load_from_data(data["time"])
+			TimeManager.start_time()
 	if data.has("upgrades"):
 		UpgradeManager.load_from_data(data["upgrades"])
 	if data.has("tasks"):
@@ -149,31 +149,31 @@ func load_from_slot(slot_id: int) -> void:
 		WindowManager.load_from_data(data["windows"])
 
 func reset_game_state() -> void:
-        # Reset all relevant managers to blank state
-                StatManager.reset()
-                PortfolioManager.reset()
-                PlayerManager.reset()
-                WindowManager.reset()
-                TimeManager.reset()
-                TaskManager.reset()
-                UpgradeManager.reset()
-                WorkerManager.reset()
-                MarketManager.reset()
-                GPUManager.reset()
-                #BillManager.reset()
-                #UpgradeManager.reset()
+		# Reset all relevant managers to blank state
+				StatManager.reset()
+				PortfolioManager.reset()
+				PlayerManager.reset()
+				WindowManager.reset()
+				TimeManager.reset()
+				TaskManager.reset()
+				UpgradeManager.reset()
+				WorkerManager.reset()
+				MarketManager.reset()
+				GPUManager.reset()
+				#BillManager.reset()
+				#UpgradeManager.reset()
 
 
 
 func reset_managers():
-                StatManager.reset()
-                PortfolioManager.reset()
-                PlayerManager.reset()
-                WindowManager.reset()
-                TimeManager.reset()
-                WorkerManager.reset()
-                TaskManager.reset()
-                GPUManager.reset()
+				StatManager.reset()
+				PortfolioManager.reset()
+				PlayerManager.reset()
+				WindowManager.reset()
+				TimeManager.reset()
+				WorkerManager.reset()
+				TaskManager.reset()
+				GPUManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)
