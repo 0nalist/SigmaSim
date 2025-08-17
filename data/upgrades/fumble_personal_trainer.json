@@ -3,11 +3,11 @@
   "name": "Personal Trainer",
   "description": "Hire a personal trainer. Increases dime status by up to 0.1, scaling down to +0.01 as dime approaches 9.",
   "effects": [
-        {
-          "target": "attractiveness",
-          "operation": "add_formula",
-          "value_formula": "10 * max(0.01, 0.1 - clamp((current_dime_status - 8) * 0.09, 0, 0.09))"
-        }
+		{
+		  "target": "attractiveness",
+		  "operation": "add_formula",
+		  "value_formula": "10 * max(0.01, 0.1 - clamp((current_dime_status - 8) * 0.09, 0, 0.09))"
+		}
   ],
   "systems": [
 	"fumble"

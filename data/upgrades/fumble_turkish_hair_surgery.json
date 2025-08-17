@@ -3,11 +3,11 @@
   "name": "Turkish Hair Surgery",
   "description": "Undergo Turkish hair surgery. Increases dime status by 0.6.",
   "effects": [
-        {
-          "target": "attractiveness",
-          "operation": "add",
-          "value": 6.0
-        }
+		{
+		  "target": "attractiveness",
+		  "operation": "add",
+		  "value": 6.0
+		}
   ],
   "systems": [
 	"fumble"

@@ -229,8 +229,8 @@ func _recalculate_stat_and_dependents(stat_name: String) -> void:
 func _recalculate_stat(stat: String, emit := true) -> void:
 	if temporary_overrides.has(stat):
 		return
-        var previous = computed_stats.get(stat)
-        var base_value = get_base_stat(stat, 0.0)
+	var previous = computed_stats.get(stat)
+	var base_value = get_base_stat(stat, 0.0)
 	var value: float = base_value
 	var applied := false
 	if stat_to_upgrades.has(stat):
@@ -249,9 +249,9 @@ func _recalculate_stat(stat: String, emit := true) -> void:
 					value += eff_value
 					applied = true
 				"mul":
-                                        if not applied:
-                                                value = get_base_stat(stat, 1.0)
-                                                applied = true
+					if not applied:
+							value = get_base_stat(stat, 1.0)
+							applied = true
 					value *= eff_value
 				"set":
 					value = eff_value

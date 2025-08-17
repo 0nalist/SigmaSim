@@ -43,10 +43,10 @@ func _update_display() -> void:
 		effect_list.add_child(effect_label)
 	
 		# Evaluate upgrade state
-				var can_purchase = UpgradeManager.can_purchase(id)
-				var level = StatManager.get_upgrade_level(id)
-				var purchased_once = not UpgradeManager.is_repeatable(id) and level >= 1
-				var maxed = not purchased_once and UpgradeManager.max_level(id) != -1 and level >= UpgradeManager.max_level(id)
+		var can_purchase = UpgradeManager.can_purchase(id)
+		var level = StatManager.get_upgrade_level(id)
+		var purchased_once = not UpgradeManager.is_repeatable(id) and level >= 1
+		var maxed = not purchased_once and UpgradeManager.max_level(id) != -1 and level >= UpgradeManager.max_level(id)
 
 		buy_button.disabled = not can_purchase or purchased_once or maxed
 		if purchased_once:
@@ -97,11 +97,11 @@ func get_status_text(upgrade: Dictionary) -> String:
 	if id == "":
 		return ""
 	
-				var level = StatManager.get_upgrade_level(id)
-				if not UpgradeManager.is_repeatable(id) and level >= 1:
-								return "Purchased"
-				if UpgradeManager.max_level(id) != -1 and level >= UpgradeManager.max_level(id):
-								return "Maxed Out"
+	var level = StatManager.get_upgrade_level(id)
+	if not UpgradeManager.is_repeatable(id) and level >= 1:
+					return "Purchased"
+	if UpgradeManager.max_level(id) != -1 and level >= UpgradeManager.max_level(id):
+					return "Maxed Out"
 	
 	if UpgradeManager.is_locked(id):
 		return "Locked"
