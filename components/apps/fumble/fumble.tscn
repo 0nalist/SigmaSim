@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=16 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="PackedScene" uid="uid://dptnj8nxnr760" path="res://components/apps/fumble/fumble_special_offers.tscn" id="2_hf3uq"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
+[ext_resource type="Shader" uid="uid://cxfw6b7fdyskb" path="res://assets/shaders/green_warp_shader.gdshader" id="3_wfdmb"]
 [ext_resource type="Texture2D" uid="uid://bq0jn8wlfmaae" path="res://assets/Flag_of_Turkey.svg.png" id="4_hf3uq"]
 [ext_resource type="PackedScene" uid="uid://buvfo6k8fhu53" path="res://components/apps/fumble/chats_tab.tscn" id="5_dmsn0"]
 [ext_resource type="Script" uid="uid://bf65ryfqtiq6i" path="res://components/apps/fumble/fumble_search_criteria_ui.gd" id="5_wfdmb"]
@@ -16,6 +17,15 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jh1fk"]
+shader = ExtResource("3_wfdmb")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.02
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5fcgq"]
 texture = ExtResource("4_hf3uq")
@@ -57,6 +67,10 @@ script = ExtResource("1_v4fb6")
 window_title = "Fumble"
 default_window_size = Vector2(420, 560)
 upgrade_pane = ExtResource("2_hf3uq")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_jh1fk")
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -352,6 +366,9 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 text = " BUY NOW 
   $25,000"
+
+[node name="FumbleSpecialOffers" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_hf3uq")]
+layout_mode = 2
 
 [node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
