@@ -19,11 +19,13 @@ signal request_resize_y_to(pixels)
 
 
 func _ready():
+	matches_sort.add_item("Recent")
 	matches_sort.add_item("🔥 Asc")
 	matches_sort.add_item("🔥 Desc")
 	matches_sort.add_item("Name")
 	matches_sort.add_item("Type")
 	matches_sort.item_selected.connect(_on_matches_sort_selected)
+	matches_sort.select(0)
 
 	chat_battles_sort.add_item("🔥 Asc")
 	chat_battles_sort.add_item("🔥 Desc")
@@ -43,7 +45,7 @@ func refresh_ui():
 func refresh_matches(time_budget_msec := 8) -> void:
 		for child in matches_container.get_children():
 				child.queue_free()
-		var matches: Array = FumbleManager.get_matches()
+		var matches_rows: Array = FumbleManager.get_matches_with_times()
 		var battles: Array = FumbleManager.get_active_battles()
 		var battle_npc_indices := battles.map(func(b): return b.npc_idx)
 
@@ -53,24 +55,27 @@ func refresh_matches(time_budget_msec := 8) -> void:
 
 		var start_time = Time.get_ticks_msec()
 
-		for idx in matches:
+		for row in matches_rows:
+				var idx: int = row.npc_id
 				if battle_npc_indices.has(idx):
 						continue
 				var npc = NPCManager.get_npc_by_index(idx)
 				total_attractiveness += npc.attractiveness
 				filtered_count += 1
-				data.append({"npc": npc, "idx": idx})
+				data.append({"npc": npc, "idx": idx, "created_at": row.created_at})
 				if Time.get_ticks_msec() - start_time > time_budget_msec:
 						await get_tree().process_frame
 						start_time = Time.get_ticks_msec()
 		match matches_sort.selected:
 				0:
-						data.sort_custom(func(a, b): return a.npc.attractiveness < b.npc.attractiveness)
+						data.sort_custom(func(a, b): return a.created_at > b.created_at)
 				1:
-						data.sort_custom(func(a, b): return a.npc.attractiveness > b.npc.attractiveness)
+						data.sort_custom(func(a, b): return a.npc.attractiveness < b.npc.attractiveness)
 				2:
-						data.sort_custom(func(a, b): return a.npc.full_name < b.npc.full_name)
+						data.sort_custom(func(a, b): return a.npc.attractiveness > b.npc.attractiveness)
 				3:
+						data.sort_custom(func(a, b): return a.npc.full_name < b.npc.full_name)
+				4:
 						data.sort_custom(
 								func(a, b): return str(a.npc.chat_battle_type) < str(b.npc.chat_battle_type)
 						)
