@@ -23,10 +23,11 @@ signal levels_changed ## Emitted when levels are loaded or reset
 
 var upgrades: Dictionary = {}  # id -> upgrade data
 var player_levels: Dictionary = {}  # id -> purchased count
+var cooldowns: Dictionary = {}  # id -> {"start": int, "base": float}
 
 const EXPECTED_KEYS := [
-	"id", "name", "description", "effects", "systems", "dependencies",
-	"max_level", "repeatable", "cost_per_level", "scale_by_formula", "cost_formula"
+        "id", "name", "description", "effects", "systems", "dependencies",
+        "max_level", "repeatable", "cooldown", "cost_per_level", "scale_by_formula", "cost_formula"
 ]
 
 func _ready() -> void:
@@ -100,8 +101,10 @@ func _validate_upgrade(data: Dictionary, file_path: String) -> bool:
 		if typeof(formula) != TYPE_STRING and typeof(formula) != TYPE_DICTIONARY:
 			push_error("UpgradeManager: cost_formula for %s must be String or Dictionary" % id)
 
-	if not data.has("repeatable"):
-		data["repeatable"] = true
+        if not data.has("repeatable"):
+                data["repeatable"] = true
+        if not data.has("cooldown"):
+                data["cooldown"] = -1
 
 	return true
 
@@ -266,14 +269,16 @@ func _deduct_currency(currency: String, amount: float) -> bool:
 		"click",
 		Color.YELLOW
 	)
-	return true
+        return true
 
 func can_purchase(id: String) -> bool:
-	if is_locked(id):
-		return false
-	var max := max_level(id)
-	if max != -1 and get_level(id) >= max:
-		return false
+        if is_locked(id):
+                return false
+        if get_cooldown_remaining(id) > 0:
+                return false
+        var max := max_level(id)
+        if max != -1 and get_level(id) >= max:
+                return false
 	var cost := get_cost_for_next_level(id)
 	for currency in cost.keys():
 		var amount: float = cost[currency]
@@ -297,24 +302,55 @@ func purchase(id: String) -> bool:
 	if upgrade == null:
 		return false
 	var cost := get_cost_for_next_level(id)
-	for currency in cost.keys():
-		if not _deduct_currency(currency, cost[currency]):
-			return false
-	var level := get_level(id) + 1
-	player_levels[id] = level
-	print("UpgradeManager.purchase: emitting upgrade_purchased for", id, "level", level)
-	upgrade_purchased.emit(id, level)
-	return true
+        for currency in cost.keys():
+                if not _deduct_currency(currency, cost[currency]):
+                        return false
+        var level := get_level(id) + 1
+        player_levels[id] = level
+        var cd = float(upgrade.get("cooldown", -1))
+        if cd > 0:
+                cooldowns[id] = {"start": TimeManager.total_minutes_elapsed, "base": cd}
+        elif cooldowns.has(id):
+                cooldowns.erase(id)
+        print("UpgradeManager.purchase: emitting upgrade_purchased for", id, "level", level)
+        upgrade_purchased.emit(id, level)
+        return true
+
+func get_cooldown_remaining(id: String) -> float:
+        if not cooldowns.has(id):
+                return 0.0
+        var data = cooldowns[id]
+        var base := float(data.get("base", -1))
+        if base <= 0:
+                cooldowns.erase(id)
+                return 0.0
+        var start := int(data.get("start", TimeManager.total_minutes_elapsed))
+        var elapsed := TimeManager.total_minutes_elapsed - start
+        var mult := StatManager.get_stat("upgrade_cooldown_multiplier", 1.0)
+        var remaining := base * mult - elapsed
+        if remaining <= 0:
+                cooldowns.erase(id)
+                return 0.0
+        return remaining
 
 ## --- Save / Load ---------------------------------------------------
 
 func get_save_data() -> Dictionary:
-	return player_levels.duplicate(true)
+        return {
+                "levels": player_levels.duplicate(true),
+                "cooldowns": cooldowns.duplicate(true)
+        }
 
 func load_from_data(data: Dictionary) -> void:
-	player_levels = data.duplicate(true)
-	emit_signal("levels_changed")
+        if data.has("levels"):
+                player_levels = data.get("levels", {}).duplicate(true)
+                cooldowns = data.get("cooldowns", {}).duplicate(true)
+        else:
+                player_levels = data.duplicate(true)
+                cooldowns.clear()
+        emit_signal("levels_changed")
 
 func reset() -> void:
-	player_levels.clear()
-	emit_signal("levels_changed")
+        player_levels.clear()
+        cooldowns.clear()
+        emit_signal("levels_changed")
