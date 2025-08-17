@@ -37,59 +37,58 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Sid \"The Seed\" McNameson"
+placeholder_text = "Enter a name seed"
 
-[node name="Generate" type="Button" parent="MarginContainer/VBox/NameRow"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Generate Portrait"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBox/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBox/NameRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.25
 
-[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Randomize" type="Button" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer2/Buttons"]
+[node name="Generate" type="Button" parent="MarginContainer/VBox/NameRow/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Generate Portrait"
+
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBox/NameRow/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Randomize" type="Button" parent="MarginContainer/VBox/NameRow/VBoxContainer2/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Randomize"
 
-[node name="Apply" type="Button" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer2/Buttons"]
+[node name="Apply" type="Button" parent="MarginContainer/VBox/NameRow/VBoxContainer2/Buttons"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Apply"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 108
 
-[node name="Preview" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer/MarginContainer" instance=ExtResource("2")]
+[node name="Preview" parent="MarginContainer/VBox/HBoxContainer/MarginContainer" instance=ExtResource("2")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 size_flags_vertical = 3
 
 [node name="Layers" type="HBoxContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 3
+size_flags_vertical = 2
 size_flags_stretch_ratio = 0.25
