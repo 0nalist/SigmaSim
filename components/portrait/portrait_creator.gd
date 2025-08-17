@@ -29,26 +29,31 @@ func _ready() -> void:
 
 
 func _setup_layers() -> void:
+	var hair_back_col: VBoxContainer = null
 	for layer in PortraitCache.layers_order():
 		var info := PortraitCache.layer_info(layer)
-		config.indices[layer] = 0
+		if layer == "face":
+			config.indices[layer] = 1
+		else:
+			config.indices[layer] = 0
 		config.colors[layer] = Color.WHITE
 		var col := VBoxContainer.new()
 		col.name = layer
 		var label := Label.new()
-		label.text = layer.capitalize()
+		label.text = "Hair2" if layer == "hair_back" else layer.capitalize()
 		col.add_child(label)
 		var index_btn := OptionButton.new()
 		index_btn.name = "Index"
 		var tex_arr: Array = info.get("textures", [])
-		index_btn.add_item("0", 0)
+		if layer != "face":
+			index_btn.add_item("0", 0)
 		for i in range(tex_arr.size()):
 			index_btn.add_item(str(i + 1), i + 1)
 		index_btn.item_selected.connect(_on_index_changed.bind(layer))
 		col.add_child(index_btn)
 		var color_btn := ColorPickerButton.new()
 		color_btn.name = "Color"
-		color_btn.custom_minimum_size = Vector2(15, 0)
+		color_btn.custom_minimum_size = Vector2(15, 15)
 		color_btn.color_changed.connect(_on_color_changed.bind(layer))
 		col.add_child(color_btn)
 		if layer == "hair" or layer == "hair_back":
@@ -61,12 +66,17 @@ func _setup_layers() -> void:
 			layer_controls[layer] = {"index": index_btn, "color": color_btn, "sync": sync_chk}
 		else:
 			layer_controls[layer] = {"index": index_btn, "color": color_btn}
-		layers_container.add_child(col)
+		if layer == "hair_back":
+			hair_back_col = col
+		else:
+			layers_container.add_child(col)
+	if hair_back_col != null:
+		layers_container.add_child(hair_back_col)
 
 
 func _on_index_changed(idx: int, layer: String) -> void:
-		config.indices[layer] = idx
-		preview.apply_config(config)
+	config.indices[layer] = idx
+	preview.apply_config(config)
 
 
 func _on_color_changed(color: Color, layer: String) -> void:
@@ -135,7 +145,11 @@ func _sync_ui_with_config() -> void:
 		var btns = layer_controls.get(layer, {})
 		if btns.has("index") and btns["index"] is OptionButton:
 			var ob: OptionButton = btns["index"]
-			if idx < 0 or idx >= ob.item_count:
+			if layer == "face":
+				if idx < 1 or idx >= ob.item_count:
+					idx = 1
+					config.indices[layer] = idx
+			elif idx < 0 or idx >= ob.item_count:
 				idx = 0
 				config.indices[layer] = idx
 			ob.select(idx)
@@ -144,5 +158,9 @@ func _sync_ui_with_config() -> void:
 			col = config.colors.get("hair", Color.WHITE)
 		if btns.has("color") and btns["color"] is ColorPickerButton:
 			btns["color"].color = col
-		if (layer == "hair" or layer == "hair_back") and btns.has("sync") and btns["sync"] is CheckBox:
+		if (
+			(layer == "hair" or layer == "hair_back")
+			and btns.has("sync")
+			and btns["sync"] is CheckBox
+		):
 			btns["sync"].button_pressed = hair_color_sync
