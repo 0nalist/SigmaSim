@@ -31,6 +31,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_jpqxb")
 script = ExtResource("1_jpqxb")
+window_title = "Fumble Special Offers"
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_vkkf1")
