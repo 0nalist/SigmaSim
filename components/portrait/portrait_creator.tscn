@@ -37,6 +37,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 placeholder_text = "Enter a name seed"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBox/NameRow"]
@@ -51,10 +52,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Generate Portrait"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -63,21 +60,23 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_right = 108
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = -15
+theme_override_constants/margin_right = 15
+
+[node name="Randomize" type="Button" parent="MarginContainer/VBox/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 14
+text = "Randomize"
 
 [node name="Preview" parent="MarginContainer/VBox/HBoxContainer/MarginContainer" instance=ExtResource("2")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
-
-[node name="Randomize" type="Button" parent="MarginContainer/VBox/HBoxContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 10
-size_flags_vertical = 4
-theme_override_font_sizes/font_size = 14
-text = "Randomize"
 
 [node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBox/HBoxContainer/MarginContainer"]
 layout_mode = 2
@@ -93,6 +92,5 @@ text = "Apply"
 [node name="Layers" type="HBoxContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 2
+size_flags_vertical = 0
 size_flags_stretch_ratio = 0.25

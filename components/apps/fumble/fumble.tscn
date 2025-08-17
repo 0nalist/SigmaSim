@@ -119,18 +119,19 @@ theme_override_constants/margin_bottom = 25
 layout_mode = 2
 theme_override_constants/separation = 16
 
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 12
+text = "You"
+
 [node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]
-custom_minimum_size = Vector2(0, 300)
+custom_minimum_size = Vector2(0, 260)
 layout_mode = 2
 size_flags_vertical = 1
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
-layout_mode = 2
-theme_override_constants/outline_size = 12
-text = "You"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
 layout_mode = 2
@@ -155,6 +156,7 @@ placeholder_text = "Write something!"
 layout_mode = 2
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
