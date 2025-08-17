@@ -39,7 +39,7 @@ func _start_pulsing() -> void:
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		print("worm clicked")
 		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-				var value := StatManager.get_stat("worm_yield", 1.0)
+				var value = StatManager.get_stat("worm_yield", 1.0)
 				PortfolioManager.add_cash(value)
 				if StatpopManager:
 						print("worm statpop")
@@ -62,7 +62,7 @@ func _on_worm_texture_mouse_exited() -> void:
 func _on_worm_texture_gui_input(event: InputEvent) -> void:
 		print("worm clicked")
 		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-				var value := StatManager.get_stat("worm_yield", 1.0)
+				var value = StatManager.get_stat("worm_yield", 1.0)
 				PortfolioManager.add_cash(value)
 				if StatpopManager:
 						print("worm statpop")

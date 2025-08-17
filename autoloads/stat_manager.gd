@@ -110,12 +110,12 @@ func set_base_stat(stat_name: String, value: Variant) -> void:
 
 
 func set_override(stat_name: String, value: Variant) -> void:
-			var old_value := get_stat(stat_name)
-			temporary_overrides[stat_name] = value
-			if old_value != value:
-				stat_changed.emit(stat_name, value)
-				_emit_stat_callbacks(stat_name, value)
-				_propagate_stat_changes(stat_name)
+	var old_value = get_stat(stat_name)
+	temporary_overrides[stat_name] = value
+	if old_value != value:
+		stat_changed.emit(stat_name, value)
+		_emit_stat_callbacks(stat_name, value)
+		_propagate_stat_changes(stat_name)
 
 
 func clear_override(stat_name: String) -> void:
@@ -125,7 +125,7 @@ func clear_override(stat_name: String) -> void:
 	temporary_overrides.erase(stat_name)
 	_recalculate_stat(stat_name, false)
 	_propagate_stat_changes(stat_name)
-	var new_value := get_stat(stat_name)
+	var new_value = get_stat(stat_name)
 	if old_value != new_value:
 		stat_changed.emit(stat_name, new_value)
 		_emit_stat_callbacks(stat_name, new_value)
@@ -315,17 +315,17 @@ func _build_dependents_map() -> void:
 
 
 func _emit_stat_callbacks(stat: String, value: Variant) -> void:
-        if value == null:
-                push_warning("StatManager: Tried to emit callback for '%s' with null value" % stat)
-                return
-        var param := value
-        var t := typeof(value)
-        if t == TYPE_INT or t == TYPE_FLOAT:
-                param = float(value)
-        if _stat_signal_map.has(stat):
-                var callbacks: Array = _stat_signal_map[stat]
-                for cb in callbacks.duplicate():
-                        if not is_instance_valid(cb.get_object()):
-                                callbacks.erase(cb)
-                                continue
-                        cb.call(param)
+	if value == null:
+			push_warning("StatManager: Tried to emit callback for '%s' with null value" % stat)
+			return
+	var param = value
+	var t := typeof(value)
+	if t == TYPE_INT or t == TYPE_FLOAT:
+			param = float(value)
+	if _stat_signal_map.has(stat):
+			var callbacks: Array = _stat_signal_map[stat]
+			for cb in callbacks.duplicate():
+					if not is_instance_valid(cb.get_object()):
+							callbacks.erase(cb)
+							continue
+					cb.call(param)

@@ -12,23 +12,28 @@ class_name DebugConsole
 
 
 var commands := {
-		"add_cash": {
-				"args": "<amount>",
-				"description": "Adds the given amount of cash to your portfolio.",
-		},
-		"help": {
-				"args": "",
-				"description": "Displays a list of available debug commands.",
-		},
-		"set_stat": {
-						"args": "<stat_name> <value>",
-						"description": "Sets the specified player stat to the given value.",
-		},
-		"list_stats": {
-						"args": "",
-						"description": "Lists all current stats and values.",
-		},
+	"add_cash": {
+		"args": "<amount>",
+		"description": "Adds the given amount of cash to your portfolio.",
+	},
+	"help": {
+		"args": "",
+		"description": "Displays or hides the list of available debug commands.",
+	},
+	"set_stat": {
+		"args": "<stat_name> <value>",
+		"description": "Sets the specified player stat to the given value.",
+	},
+	"list_stats": {
+		"args": "",
+		"description": "Lists all current stats and values.",
+	},
+	"clear_log": {
+		"args": "",
+		"description": "Clears the command log window.",
+	},
 }
+
 
 func _ready() -> void:
 	# Fullscreen anchor
@@ -158,67 +163,108 @@ func _populate_command_list() -> void:
 
 
 func process_command(command: String) -> bool:
-		var parts := command.split(" ", false)
-		if parts.size() == 0:
+	var parts := command.split(" ", false)
+	if parts.size() == 0:
+		return false
+
+	var cmd := parts[0].to_lower()
+
+	match cmd:
+		"help":
+			_set_feedback("Toggled command list.", true)
+			# Toggle instead of always showing
+			command_list_parent_container.visible = not command_list_parent_container.visible
+			if command_list_parent_container.visible:
+				_populate_command_list()
+			return true
+
+		"add_cash":
+			if parts.size() < 2:
+				_set_feedback("Usage: add_cash <amount>", false)
 				return false
 
-		var cmd := parts[0].to_lower()
+			var amount_str := parts[1]
+			var amount = _parse_number(amount_str)
+			if amount == null:
+				_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
+				return false
+			if amount < 0:
+				PortfolioManager.spend_cash(-amount)
+			else:
+				PortfolioManager.add_cash(amount)
+			#var current_cash = StatManager.get_stat("cash")
+			#StatManager.set_base_stat("cash", current_cash + amount)
+			return true
 
-		match cmd:
-			"help":
-				_set_feedback("Available commands listed below.", true)
-				_populate_command_list()
-				command_list_parent_container.visible = true
-				return true
+		"set_stat":
+			if parts.size() < 3:
+				_set_feedback("Usage: set_stat <stat_name> <value>", false)
+				return false
 
-			"add_cash":
-				if parts.size() < 2:
-					_set_feedback("Usage: add_cash <amount>", false)
-					return false
+			var stat_name := parts[1]
+			var value_str = command.substr(command.findn(stat_name) + stat_name.length()).strip_edges()
 
-				var amount_str := parts[1]
-				var amount = _parse_number(amount_str)
-				if amount == null:
-					_set_feedback("❌ 'add_cash' requires a numeric value. '%s' is not valid.".format([amount_str]), false)
-					return false
-				if amount < 0:
-					PortfolioManager.spend_cash(-amount)
-				else:
-					PortfolioManager.add_cash(amount)
-				#var current_cash = StatManager.get_stat("cash")
-				#StatManager.set_base_stat("cash", current_cash + amount)
-				return true
+			# --- determine the expected type from current stat ---
+			var current_value = StatManager.get_stat(stat_name)
+			if current_value == null:
+				_set_feedback("❌ Unknown stat '%s'.".format([stat_name]), false)
+				return false
 
-                        "set_stat":
-                                if parts.size() < 3:
-                                        _set_feedback("Usage: set_stat <stat_name> <value>", false)
-                                        return false
+			var expected_type := typeof(current_value)
 
-                                var stat_name := parts[1]
-                                var value_str := parts.slice(2).join(" ")
-                                var value = _parse_number(value_str)
-                                if value == null:
-                                        value = value_str
+			# --- parse attempted new value ---
+			var new_value = null
+			var parsed_number = _parse_number(value_str)
+			if parsed_number != null:
+				new_value = parsed_number
+			else:
+				new_value = value_str
 
-                                StatManager.set_base_stat(stat_name, value)
-                                var label := Label.new()
-                                label.text = "%s's value is now %s" % [stat_name, str(value)]
-                                command_log_container.add_child(label)
+			# --- type check ---
+			var new_type := typeof(new_value)
+			var type_ok := false
 
-                                return true
+			# Allow int/float interchange if stat is numeric
+			if (expected_type == TYPE_FLOAT or expected_type == TYPE_INT) and (new_type == TYPE_FLOAT or new_type == TYPE_INT):
+				type_ok = true
+			elif expected_type == new_type:
+				type_ok = true
 
-			"list_stats":
-				var all_stats := StatManager.get_all_stats()
-				var stat_keys := all_stats.keys()
-				stat_keys.sort()
-				for stat_key in stat_keys:
-					var label := Label.new()
-					label.text = "%s: %s" % [stat_key, str(all_stats[stat_key])]
-					command_log_container.add_child(label)
-				return true
+			if not type_ok:
+				var expected_name := type_string(expected_type)
+				var got_name := type_string(new_type)
+				var msg := "❌ Stat '{0}' expects type {1} but got {2}.".format([stat_name, expected_name, got_name])
+				_set_feedback(msg, false)
+				return false
 
-			_:
-					return false
+
+			# --- apply ---
+			StatManager.set_base_stat(stat_name, new_value)
+			var label := Label.new()
+			label.text = "%s's value is now %s" % [stat_name, str(new_value)]
+			command_log_container.add_child(label)
+			return true
+
+
+
+		"list_stats":
+			var all_stats := StatManager.get_all_stats()
+			var stat_keys := all_stats.keys()
+			stat_keys.sort()
+			for stat_key in stat_keys:
+				var label := Label.new()
+				label.text = "%s: %s" % [stat_key, str(all_stats[stat_key])]
+				command_log_container.add_child(label)
+			return true
+		
+		
+		"clear_log":
+			_clear_command_log()
+			_set_feedback("Command log cleared.", true)
+			return true
+		
+		_:
+				return false
 
 func _parse_number(s: String) -> Variant:
 	s = s.strip_edges()
@@ -227,3 +273,8 @@ func _parse_number(s: String) -> Variant:
 	if not regex.search(s):
 		return null
 	return s.to_float()
+
+
+func _clear_command_log() -> void:
+	for child in command_log_container.get_children():
+		child.queue_free()

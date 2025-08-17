@@ -155,7 +155,7 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 			var val = raw_effects[stat]
 			var final_val = val * multi * type_mod
 			if stat == "confidence":
-					var current_conf := StatManager.get_stat("confidence")
+					var current_conf = StatManager.get_stat("confidence")
 					var new_conf = clamp(current_conf + final_val, 0.0, 100.0)
 					StatManager.set_base_stat("confidence", new_conf)
 					result[stat] = final_val
@@ -179,7 +179,7 @@ func apply_move_effects(move_type: String, success: bool) -> Dictionary:
 			var val = raw_effects[stat]
 			var final_val = val * multi
 			if stat == "confidence":
-					var current_fail_conf := StatManager.get_stat("confidence")
+					var current_fail_conf = StatManager.get_stat("confidence")
 					var new_fail_conf = clamp(current_fail_conf + final_val, 0.0, 100.0)
 					StatManager.set_base_stat("confidence", new_fail_conf)
 					result[stat] = final_val
