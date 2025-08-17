@@ -28,13 +28,16 @@ func layer_info(layer: String) -> Dictionary:
 	return manifest.get(layer, {})
 
 func get_texture(layer: String, index: int) -> Texture2D:
+	if index <= 0:
+		return null
 	var layer_cache = _texture_cache.get(layer, {})
 	if layer_cache.has(index):
 		return layer_cache[index]
 	var info := layer_info(layer)
 	var textures: Array = info.get("textures", [])
-	if index >= 0 and index < textures.size():
-		var path: String = textures[index]
+	var arr_idx := index - 1
+	if arr_idx >= 0 and arr_idx < textures.size():
+		var path: String = textures[arr_idx]
 		var tex: Texture2D = load(path)
 		if tex != null:
 			if not _texture_cache.has(layer):
