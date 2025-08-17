@@ -11,8 +11,8 @@ extends PanelContainer
 var current_upgrade: Dictionary = {}
 
 func _ready() -> void:
-        hide_tooltip()
-        TimeManager.minute_passed.connect(_on_minute_passed)
+		hide_tooltip()
+		TimeManager.minute_passed.connect(_on_minute_passed)
 
 func show_tooltip(upgrade: Dictionary):
 		current_upgrade = upgrade
@@ -55,9 +55,9 @@ func _update_display() -> void:
 		else:
 				buy_button.text = "Maxed Out" if maxed else "Buy"
 
-        var status = get_status_text(current_upgrade)
-        status_label.text = status
-        status_label.visible = status != ""
+		var status = get_status_text(current_upgrade)
+		status_label.text = status
+		status_label.visible = status != ""
 
 	close_button.disabled = false
 
@@ -104,43 +104,43 @@ func get_status_text(upgrade: Dictionary) -> String:
 	if UpgradeManager.max_level(id) != -1 and level >= UpgradeManager.max_level(id):
 					return "Maxed Out"
 	
-        if UpgradeManager.is_locked(id):
-                return "Locked"
+		if UpgradeManager.is_locked(id):
+				return "Locked"
 
-        var remaining = ceil(UpgradeManager.get_cooldown_remaining(id))
-        if remaining > 0:
-                return "Cooldown: %s" % _format_minutes(int(remaining))
+		var remaining = ceil(UpgradeManager.get_cooldown_remaining(id))
+		if remaining > 0:
+				return "Cooldown: %s" % _format_minutes(int(remaining))
 
-        var cost = UpgradeManager.get_cost_for_next_level(id)
-        for currency in cost.keys():
-                if currency == "cash" and PortfolioManager.cash < cost[currency]:
-                        return "Not enough funds"
-                if currency != "cash" and PortfolioManager.get_crypto_amount(currency) < cost[currency]:
-                        return "Not enough funds"
+		var cost = UpgradeManager.get_cost_for_next_level(id)
+		for currency in cost.keys():
+				if currency == "cash" and PortfolioManager.cash < cost[currency]:
+						return "Not enough funds"
+				if currency != "cash" and PortfolioManager.get_crypto_amount(currency) < cost[currency]:
+						return "Not enough funds"
 
-        return ""
+		return ""
 
 func _on_minute_passed(_m: int) -> void:
-        if current_upgrade.is_empty():
-                return
-        _update_display()
+		if current_upgrade.is_empty():
+				return
+		_update_display()
 
 func _format_minutes(minutes: int) -> String:
-        var days = minutes / (24 * 60)
-        var hours = (minutes % (24 * 60)) / 60
-        var mins = minutes % 60
-        var parts: Array[String] = []
-        if days > 0:
-                parts.append("%dd" % days)
-        if hours > 0:
-                parts.append("%dh" % hours)
-        if mins > 0 or parts.is_empty():
-                parts.append("%dm" % mins)
-        return " ".join(parts)
+		var days = minutes / (24 * 60)
+		var hours = (minutes % (24 * 60)) / 60
+		var mins = minutes % 60
+		var parts: Array[String] = []
+		if days > 0:
+				parts.append("%dd" % days)
+		if hours > 0:
+				parts.append("%dh" % hours)
+		if mins > 0 or parts.is_empty():
+				parts.append("%dm" % mins)
+		return " ".join(parts)
 
 func _exit_tree() -> void:
-        if TimeManager.minute_passed.is_connected(_on_minute_passed):
-                TimeManager.minute_passed.disconnect(_on_minute_passed)
+		if TimeManager.minute_passed.is_connected(_on_minute_passed):
+				TimeManager.minute_passed.disconnect(_on_minute_passed)
 
 
 func _on_close_button_pressed() -> void:

@@ -14,7 +14,7 @@
   ],
   "dependencies": [],
   "cost_per_level": {
-                "cash": 1500
+				"cash": 1500
   },
   "max_level": 10,
   "cooldown": 10080,
