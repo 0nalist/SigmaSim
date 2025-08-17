@@ -20,6 +20,8 @@ signal request_resize_y_to(pixels)
 @onready var swipes_tab: Control = %SwipesTab
 @onready var chats_tab: ChatsTab = %ChatsTab
 
+@onready var bio_text_edit: TextEdit = %BioTextEdit
+
 @onready var confidence_progress_bar: StatProgressBar = %ConfidenceProgressBar
 @onready var ex_progress_bar: StatProgressBar = %ExProgressBar
 
@@ -67,20 +69,23 @@ func _ready():
 	curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
 
 	# --- Load saved preferences ---
-	x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
-	y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
-	z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
-	curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
+        x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
+        y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
+        z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
+        curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
+        bio_text_edit.text = PlayerManager.get_var("bio", "")
+        bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
 
-	confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
-	ex_progress_bar.update_value(StatManager.get_stat("ex"))
-	
-	_on_gender_slider_changed(0)
-	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
-	await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+        confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
+        ex_progress_bar.update_value(StatManager.get_stat("ex"))
 
-	#show_swipes_tab()
-	cancel_pride()
+        _on_gender_slider_changed(0)
+        _on_curiosity_h_slider_value_changed(curiosity_slider.value)
+        await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+
+        visibility_changed.connect(_on_visibility_changed)
+        #show_swipes_tab()
+        cancel_pride()
 
 func _on_card_swiped_left(npc_idx):
 	NPCManager.mark_npc_inactive_in_app(npc_idx, "fumble")
@@ -163,6 +168,17 @@ func _on_resize_x_requested(pixels):
 		request_resize_x_to.emit(pixels)
 
 func _on_resize_y_requested(pixels):
-	var window_frame = get_parent().get_parent().get_parent()
-	if window_frame.size.y < 666:
-		request_resize_y_to.emit(pixels)
+        var window_frame = get_parent().get_parent().get_parent()
+        if window_frame.size.y < 666:
+                request_resize_y_to.emit(pixels)
+
+func _on_bio_text_edit_text_changed() -> void:
+        PlayerManager.set_var("bio", bio_text_edit.text)
+
+func _on_visibility_changed() -> void:
+        if not visible:
+                return
+        _on_gender_slider_changed(0)
+        _on_curiosity_h_slider_value_changed(curiosity_slider.value)
+        if card_stack and card_stack.cards.is_empty():
+                await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
