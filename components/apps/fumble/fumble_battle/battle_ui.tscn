@@ -398,7 +398,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
-scale = Vector2(2, 2)
 
 [node name="NPCAttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer/VBoxContainer/NPCProfilePic"]
 unique_name_in_owner = true
