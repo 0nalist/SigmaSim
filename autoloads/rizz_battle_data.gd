@@ -44,9 +44,9 @@ func load_type_mods(path: String):
 			"immune": _split(entry.get("Immune to", ""))
 		}
 	
-	print("Loaded type_mods keys:", type_mods.keys())
-	for k in type_mods.keys():
-		print("Key:", k, "Value:", type_mods[k])
+	#print("Loaded type_mods keys:", type_mods.keys())
+	#for k in type_mods.keys():
+		#print("Key:", k, "Value:", type_mods[k])
 
 
 func _split(val: String) -> Array:
