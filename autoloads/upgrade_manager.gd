@@ -176,13 +176,10 @@ func max_level(id: String) -> int:
 	return int(m)
 
 func is_repeatable(id: String) -> bool:
-	var upgrade := get_upgrade(id)
-	if upgrade == null:
-		return false
-	return upgrade.get("repeatable", true)
-
-func is_one_time(id: String) -> bool:
-	return not is_repeatable(id)
+        var upgrade := get_upgrade(id)
+        if upgrade == null:
+                return false
+        return upgrade.get("repeatable", true)
 
 func get_cost_for_next_level(id: String) -> Dictionary:
 	var upgrade := get_upgrade(id)
