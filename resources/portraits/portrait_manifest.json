@@ -1,0 +1,139 @@
+{
+    "layers": [
+        "shirt",
+        "hair_back",
+        "face",
+        "eyes",
+        "nose",
+        "mouth",
+        "hair"
+    ],
+    "shirt": {
+        "textures": [
+            "res://assets/modular_portrait_pieces/shirt/Shirt1.png",
+            "res://assets/modular_portrait_pieces/shirt/Shirt2.png",
+            "res://assets/modular_portrait_pieces/shirt/Shirt3.png"
+        ],
+        "colors": [
+            "#ffffff",
+            "#000000",
+            "#ff0000",
+            "#0000ff"
+        ]
+    },
+    "hair_back": {
+        "textures": [
+            "res://assets/modular_portrait_pieces/hair_back/HairBack1.png",
+            "res://assets/modular_portrait_pieces/hair_back/HairBack2.png"
+        ],
+        "colors": [
+            "#000000",
+            "#5c3a21",
+            "#d2b48c",
+            "#ffffff",
+            "#ff0000",
+            "#00ff00",
+            "#0000ff"
+        ]
+    },
+    "face": {
+        "textures": [
+            "res://assets/modular_portrait_pieces/face/Face1.png",
+            "res://assets/modular_portrait_pieces/face/Face2.png",
+            "res://assets/modular_portrait_pieces/face/Face3.png"
+        ],
+        "colors": [
+            "#ffe0bd",
+            "#ffcd94",
+            "#eac086",
+            "#d1a373",
+            "#c68642",
+            "#8d5524"
+        ]
+    },
+    "eyes": {
+        "textures": [
+            "res://assets/modular_portrait_pieces/eyes/Eyes1.png",
+            "res://assets/modular_portrait_pieces/eyes/Eyes2.png",
+            "res://assets/modular_portrait_pieces/eyes/Eyes3.png",
+            "res://assets/modular_portrait_pieces/eyes/Eyes4.png",
+            "res://assets/modular_portrait_pieces/eyes/Eyes5.png",
+            "res://assets/modular_portrait_pieces/eyes/Eyes6.png",
+            "res://assets/modular_portrait_pieces/eyes/Eyes7.png"
+        ],
+        "colors": [
+            "#000000",
+            "#1e90ff",
+            "#32cd32",
+            "#a52a2a",
+            "#a020f0"
+        ]
+    },
+    "nose": {
+        "textures": [
+            "res://assets/modular_portrait_pieces/nose/Nose1.png",
+            "res://assets/modular_portrait_pieces/nose/Nose2.png",
+            "res://assets/modular_portrait_pieces/nose/Nose3.png",
+            "res://assets/modular_portrait_pieces/nose/Nose4.png",
+            "res://assets/modular_portrait_pieces/nose/Nose5.png",
+            "res://assets/modular_portrait_pieces/nose/Nose6.png",
+            "res://assets/modular_portrait_pieces/nose/Nose7.png"
+        ],
+        "colors": [
+            "#ffe0bd",
+            "#ffcd94",
+            "#eac086",
+            "#d1a373",
+            "#c68642",
+            "#8d5524"
+        ]
+    },
+    "mouth": {
+        "textures": [
+            "res://assets/modular_portrait_pieces/mouth/Mouth1.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth2.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth3.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth4.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth5.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth6.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth7.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth8.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth9.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth10.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth11.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth12.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth13.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth14.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth15.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth16.png",
+            "res://assets/modular_portrait_pieces/mouth/Mouth17.png"
+        ],
+        "colors": [
+            "#ff0000",
+            "#ffa07a",
+            "#ff69b4",
+            "#8b0000"
+        ]
+    },
+    "hair": {
+        "textures": [
+            "res://assets/modular_portrait_pieces/hair/Hair1.png",
+            "res://assets/modular_portrait_pieces/hair/Hair2.png",
+            "res://assets/modular_portrait_pieces/hair/Hair3.png",
+            "res://assets/modular_portrait_pieces/hair/Hair4.png",
+            "res://assets/modular_portrait_pieces/hair/Hair5.png",
+            "res://assets/modular_portrait_pieces/hair/Hair6.png",
+            "res://assets/modular_portrait_pieces/hair/Hair8.png",
+            "res://assets/modular_portrait_pieces/hair/Hair9.png"
+        ],
+        "colors": [
+            "#000000",
+            "#5c3a21",
+            "#d2b48c",
+            "#ffffff",
+            "#ff0000",
+            "#00ff00",
+            "#0000ff"
+        ]
+    }
+}
