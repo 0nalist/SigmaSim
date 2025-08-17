@@ -1,0 +1,14 @@
+{
+  "modular_portrait_pieces": {
+    "eyes": 7,
+    "face": 3,
+    "hair": 8,
+    "hair_back": 2,
+    "mouth": 17,
+    "nose": 7,
+    "shirt": 3
+  },
+  "art_portraits": {
+    "count": 0
+  }
+}
