@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=29 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://bfrkf7nmil0hd" path="res://assets/early_bird/worm1.png" id="13_8hmpk"]
 [ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="16_hew32"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="17_5sugq"]
+[ext_resource type="Shader" uid="uid://cn4kauxg0sbo4" path="res://components/apps/early_bird/random_displacement_shader.gdshader" id="20_tgvyg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eegpt"]
 shader = ExtResource("12_35jdd")
@@ -62,6 +63,14 @@ shader_parameter/light_offset = 0.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y10ql"]
 radius = 23.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gnrao"]
+shader = ExtResource("20_tgvyg")
+shader_parameter/interval = 1.13
+shader_parameter/timeDelay = 0.08
+shader_parameter/intensityX = 20.0
+shader_parameter/intensityY = 20.0
+shader_parameter/seed = 42.0
 
 [node name="EarlyBird" type="Control"]
 layout_mode = 3
@@ -348,6 +357,7 @@ shape = SubResource("CircleShape2D_y10ql")
 debug_color = Color(0.707938, 0.36898, 0.812766, 0.42)
 
 [node name="WormTexture" type="TextureRect" parent="Worm"]
+material = SubResource("ShaderMaterial_gnrao")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

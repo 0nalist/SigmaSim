@@ -355,7 +355,6 @@ text = " BUY NOW
 
 [node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
@@ -400,6 +399,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "  🤮  "
+icon_alignment = 1
+
+[node name="MoneySwipeButton" type="Button" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(100, 35)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = " 🤑 "
 icon_alignment = 1
 
 [node name="SwipeRightButton" type="Button" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer/MarginContainer/HBoxContainer"]

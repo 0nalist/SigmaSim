@@ -8,6 +8,9 @@ signal request_resize_y_to(pixels)
 @onready var profile_container: Control = %ProfileContainer
 @onready var swipe_left_button: Button = %SwipeLeftButton
 @onready var swipe_right_button: Button = %SwipeRightButton
+@onready var money_swipe_button: Button = %MoneySwipeButton
+
+
 
 @onready var self_button: Button = %SelfButton
 @onready var swipes_button: Button = %SwipesButton
