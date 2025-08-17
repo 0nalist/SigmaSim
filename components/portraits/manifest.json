@@ -1,0 +1,12 @@
+{
+  "order": ["HairBack", "Face", "Eyes", "Nose", "Mouth", "Hair", "Shirt"],
+  "layers": {
+    "HairBack": {"path": "res://art/portraits/HairBack/", "prefix": "HairBack", "count": 4, "palette": "Hair"},
+    "Face": {"path": "res://art/portraits/Face/", "prefix": "face", "count": 4, "palette": "Skin"},
+    "Eyes": {"path": "res://art/portraits/Eyes/", "prefix": "eyes", "count": 4, "palette": "Eyes"},
+    "Nose": {"path": "res://art/portraits/Nose/", "prefix": "Nose", "count": 4, "palette": "Skin"},
+    "Mouth": {"path": "res://art/portraits/Mouth/", "prefix": "Mouth", "count": 4, "palette": "Skin"},
+    "Hair": {"path": "res://art/portraits/Hair/", "prefix": "hair", "count": 4, "palette": "Hair"},
+    "Shirt": {"path": "res://art/portraits/Shirt/", "prefix": "Shirt", "count": 4, "palette": "Shirt"}
+  }
+}
