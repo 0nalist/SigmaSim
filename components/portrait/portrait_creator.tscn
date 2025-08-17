@@ -21,9 +21,17 @@ anchor_right = 1.0
 offset_bottom = 67.0
 grow_horizontal = 2
 
-[node name="NameEdit" type="LineEdit" parent="VBox"]
+[node name="NameRow" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="NameEdit" type="LineEdit" parent="VBox/NameRow"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="Generate" type="Button" parent="VBox/NameRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Generate Portrait"
 
 [node name="Preview" parent="VBox" instance=ExtResource("2")]
 unique_name_in_owner = true
