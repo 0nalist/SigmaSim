@@ -18,8 +18,10 @@ extends PanelContainer
 
 
 
-func load_npc(npc: NPC) -> void:
-	portrait.apply_config(npc.portrait_config)
+func load_npc(npc: NPC, npc_idx: int = -1) -> void:
+        portrait.apply_config(npc.portrait_config)
+        portrait.portrait_creator_enabled = true
+        portrait.subject_npc_idx = npc_idx
 	# Core info
 	name_label.text = npc.full_name
 	attractiveness_label.text = "🔥 " + "%0.1f/10" % (float(npc.attractiveness) / 10.0) + "   "
