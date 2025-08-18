@@ -95,11 +95,12 @@ func _on_minute_passed(_in_game_minutes: int) -> void:
 	_update_refresh_countdown()
 
 func _update_refresh_countdown() -> void:
-	var minutes_today := TimeManager.in_game_minutes
-	var minutes_left := 1440 - minutes_today
-	var hours := minutes_left / 60
-	var minutes := minutes_left % 60
+	var minutes_today: int = TimeManager.in_game_minutes
+	var minutes_left: int = 1440 - minutes_today
+	var hours: int = minutes_left / 60
+	var minutes: int = minutes_left % 60
 	refresh_countdown_label.text = "Next refresh in %02d:%02d" % [hours, minutes]
+
 
 
 func _on_work_force_button_pressed() -> void:
