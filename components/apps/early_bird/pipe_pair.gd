@@ -30,11 +30,10 @@ func randomize_gap_position() -> void:
 	var safe_margin = 50.0
 
 	# Randomize center Y position for the GAP
-var rng = RNGManager.get_rng()
-var gap_center_y = rng.randf_range(
-safe_margin + gap_size / 2,
-viewport_height - safe_margin - gap_size / 2
-)
+	var gap_center_y = randf_range(
+		safe_margin + gap_size / 2,
+		viewport_height - safe_margin - gap_size / 2
+	)
 	position.y = gap_center_y
 
 
