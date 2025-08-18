@@ -10,12 +10,10 @@ var default_user_data: Dictionary = {
 		"attracted_to": "",
 				"portrait_config": {},
 				"background_path": "",
-				"education_level": "",
-				"starting_student_debt": 0.0,
-				"starting_credit_limit": 0.0,
+			   "education_level": "",
+			   "starting_student_debt": 0.0,
+			   "starting_credit_limit": 0.0,
 				"bio": "",
-				"password": "",
-				"global_rng_seed": 0,
 
 	# Core Stats
 	"alpha": 0.0,
@@ -30,14 +28,14 @@ var default_user_data: Dictionary = {
 	"power_per_click": 1.0,
 	"gpu_power": 1.0,
 	"worker_productivity": 100,
-
+	
 	# Chat Battle Stats
 	"attractiveness": 50,
 	"rizz": 1,
 	"confidence": 100.0,
 	"confidence_regen_rate": 1.0,
 	"ex": 0.00,
-
+	
 	# Other Traits
 
 	"zodiac_sign": "",
@@ -56,22 +54,6 @@ var default_user_data: Dictionary = {
 
 var user_data: Dictionary = default_user_data.duplicate(true)
 
-var background_effects := {
-	"The Dropout": _apply_dropout,
-	"The Burnout": _apply_burnout,
-	"The Gamer": _apply_gamer,
-	"The Manager": _apply_manager,
-	"The Postgrad": _apply_postgrad,
-	"The Stoic": _apply_stoic,
-	"Grandma's Favorite": _apply_grandma,
-	"Pretty Privilege": _apply_pretty_privilege,
-}
-
-static func djb2(s: String) -> int:
-	var hash := 5381
-	for i in s.length():
-		hash = ((hash << 5) + hash) + s.unicode_at(i)
-	return hash & 0xFFFFFFFF
 
 
 func get_var(key: String, default_value = null):
@@ -108,19 +90,28 @@ func mark_seen(id: String) -> void:
 ## -- SAVE LOAD
 
 func get_save_data() -> Dictionary:
-        user_data["global_rng_seed"] = RNGManager.seed
-        return user_data.duplicate(true)
+	return user_data.duplicate(true)
 
 func load_from_data(data: Dictionary) -> void:
-        user_data = data.duplicate(true)
-        ensure_default_stats()
-        if user_data.has("confidence"):
-                user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
-        RNGManager.init_seed(int(user_data.get("global_rng_seed", 0)))
+	user_data = data.duplicate(true)
+	ensure_default_stats()
+	if user_data.has("confidence"):
+		user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
 
 
 
 ## -- BACKGROUNDS ## probably make this its own resource late
+
+var background_effects := {
+	"The Dropout": _apply_dropout,
+	"The Burnout": _apply_burnout,
+	"The Gamer": _apply_gamer,
+	"The Manager": _apply_manager,
+	"The Postgrad": _apply_postgrad,
+	"The Stoic": _apply_stoic,
+	"Grandma's Favorite": _apply_grandma,
+	"Pretty Privilege": _apply_pretty_privilege,
+}
 
 
 func _apply_grandma() -> void:
@@ -176,8 +167,3 @@ func apply_background_effects(background_name: String) -> void:
 		background_effects[background_name].call()
 	else:
 		printerr("No background effects found for: " + background_name)
-
-        var hash := 5381
-        for i in s.length():
-                hash = ((hash << 5) + hash) + s.unicode_at(i)
-        return hash & 0xFFFFFFFF
