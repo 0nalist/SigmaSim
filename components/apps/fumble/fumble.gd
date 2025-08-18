@@ -1,4 +1,6 @@
-class_name FumbleUI
+class_name RNG
+
+#class_name FumbleUI
 extends Pane
 
 signal request_resize_x_to(pixels)
