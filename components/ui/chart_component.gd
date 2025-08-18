@@ -153,6 +153,12 @@ func _draw_series(plot: Rect2, t_start: float, min_y: float, max_y: float) -> vo
 		var raw: PackedVector2Array = HistoryManager.get_series_window_line(id, t_start, t_start + window_span, max_points_per_series)
 		if raw.is_empty():
 			continue
+		if raw.size() == 1:
+			var p = raw[0]
+			var x = plot.position.x + (p.x - t_start) / window_span * plot.size.x
+			var y = plot.position.y + (1.0 - (p.y - min_y) / y_span) * plot.size.y
+			draw_circle(Vector2(x, y), 2, s.color)
+			continue
 		var pts: PackedVector2Array
 		pts.resize(raw.size())
 		for i in range(raw.size()):
