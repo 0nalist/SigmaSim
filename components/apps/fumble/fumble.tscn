@@ -134,7 +134,6 @@ text = "You"
 [node name="PortraitView" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2" instance=ExtResource("5_5uoqt")]
 custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
-portrait_creator_enabled = true
 subject_is_player = true
 
 [node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]

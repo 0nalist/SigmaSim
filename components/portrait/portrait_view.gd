@@ -3,7 +3,7 @@ extends Control
 
 const PORTRAIT_SCALE := 2.0
 
-@export var portrait_creator_enabled: bool = false
+@export var portrait_creator_enabled: bool = true
 @export var subject_is_player: bool = false
 @export var subject_npc_idx: int = -1
 
