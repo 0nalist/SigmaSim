@@ -41,10 +41,10 @@ func _on_day_passed(_day: int, month: int, year: int):
 	populate_calendar(month, year)
 
 func populate_calendar(month: int, year: int) -> void:
-	var days_in_month := TimeManager.get_days_in_month(month, year)
+	var days_in_month = TimeManager.get_days_in_month(month, year)
 	var first_weekday: int = int(TimeManager.get_first_weekday_of_month(month, year))  # 0 = Monday
-	var today := TimeManager.get_today()
-	var due_bills := BillManager.get_due_bills_for_month(month, year)  # {day: Array[String]}
+	var today = TimeManager.get_today()
+	var due_bills = BillManager.get_due_bills_for_month(month, year)  # {day: Array[String]}
 
 	# Clear all previous panels
 	for child in grid_container.get_children():

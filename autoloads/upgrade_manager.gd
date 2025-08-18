@@ -342,7 +342,7 @@ func get_cooldown_remaining(id: String) -> float:
 				cooldowns.erase(id)
 				return 0.0
 		var start := int(data.get("start", TimeManager.total_minutes_elapsed))
-		var elapsed := TimeManager.total_minutes_elapsed - start
+		var elapsed = TimeManager.total_minutes_elapsed - start
 		var mult = StatManager.get_stat("upgrade_cooldown_multiplier", 1.0)
 		var remaining = base * mult - elapsed
 		if remaining <= 0:

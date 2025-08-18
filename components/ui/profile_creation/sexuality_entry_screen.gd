@@ -24,7 +24,7 @@ func _check_validity() -> void:
 
 func _simulate_selections() -> void:
 	var fake_cursor := CursorManager.cursor
-	var original_pos := fake_cursor.position
+	#var original_pos := fake_cursor.position
 
 	# Define checkboxes to simulate clicking
 	var checkboxes := [femmes_check_box, mascs_check_box, enby_check_box]
@@ -72,14 +72,23 @@ func _on_enby_check_box_toggled(_toggled_on: bool) -> void:
 	_check_validity()
 
 func save_data() -> void:
-	var user_data = PlayerManager.user_data
+		var user_data = PlayerManager.user_data
 
-	var attractions: Array[String] = []
-	if %FemmesCheckBox.button_pressed:
-		attractions.append("femmes")
-	if %MascsCheckBox.button_pressed:
-		attractions.append("mascs")
-	if %EnbyCheckBox.button_pressed:
-		attractions.append("enbies")
+		var attractions: Array[String] = []
+		var x := 0.0
+		var y := 0.0
+		var z := 0.0
+		if %FemmesCheckBox.button_pressed:
+				attractions.append("femmes")
+				x = 100.0
+		if %MascsCheckBox.button_pressed:
+				attractions.append("mascs")
+				y = 100.0
+		if %EnbyCheckBox.button_pressed:
+				attractions.append("enbies")
+				z = 100.0
 
-	user_data["attracted_to"] = attractions
+		user_data["attracted_to"] = attractions
+		user_data["fumble_pref_x"] = x
+		user_data["fumble_pref_y"] = y
+		user_data["fumble_pref_z"] = z

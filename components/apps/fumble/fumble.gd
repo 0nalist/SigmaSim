@@ -77,10 +77,7 @@ func _setup_over_frames() -> void:
 
 	await get_tree().process_frame
 
-	x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
-	y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
-	z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
-	curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
+	_load_preferences()
 	bio_text_edit.text = PlayerManager.get_var("bio", "")
 	bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
 
@@ -177,10 +174,17 @@ func _on_curiosity_h_slider_value_changed(value: float) -> void:
 
 
 func _on_curiosity_h_slider_drag_ended(_changed) -> void:
-	if card_stack:
-		card_stack.set_curiosity(curiosity)
-		card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
-	PlayerManager.set_var("fumble_curiosity", curiosity_slider.value)
+		if card_stack:
+				card_stack.set_curiosity(curiosity)
+				card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
+		PlayerManager.set_var("fumble_curiosity", curiosity_slider.value)
+
+
+func _load_preferences() -> void:
+		x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
+		y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
+		z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
+		curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
 
 
 func _on_resize_x_requested(pixels):
@@ -196,16 +200,17 @@ func _on_resize_y_requested(pixels):
 
 
 func _on_bio_text_edit_text_changed() -> void:
-		PlayerManager.set_var("bio", bio_text_edit.text)
+				PlayerManager.set_var("bio", bio_text_edit.text)
 
 
 func _on_visibility_changed() -> void:
-	if not visible:
-		return
-	_on_gender_slider_changed(0)
-	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
-	if card_stack and card_stack.cards.is_empty():
-		await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+		if not visible:
+				return
+		_load_preferences()
+		_on_gender_slider_changed(0)
+		_on_curiosity_h_slider_value_changed(curiosity_slider.value)
+		if card_stack and card_stack.cards.is_empty():
+				await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
 
 
 func _on_confidence_changed(value: float) -> void:
@@ -214,8 +219,18 @@ func _on_confidence_changed(value: float) -> void:
 
 
 func _wait_for_reaction_animations() -> void:
-		while card_stack and card_stack.is_animating:
-				await get_tree().process_frame
+	while true:
+		var animating := false
+		if card_stack and card_stack.is_animating:
+			animating = true
+		if not animating and chats_tab:
+			for child in chats_tab.get_children():
+				if child.get("is_animating"):
+					animating = true
+					break
+		if not animating:
+			break
+		await get_tree().process_frame
 
 
 func _exit_tree() -> void:
