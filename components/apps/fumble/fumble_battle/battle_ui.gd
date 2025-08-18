@@ -383,14 +383,17 @@ func do_move(move_type: String) -> void:
 		is_animating = false
 		return
 
-	var chosen_line = options[randi() % options.size()]
-	var prefix := ""
-	if chosen_line["prefixes"].size() > 0:
-		prefix = chosen_line["prefixes"].pick_random()
-	var core = chosen_line["core"]
-	var suffix := ""
-	if chosen_line["suffixes"].size() > 0:
-		suffix = chosen_line["suffixes"].pick_random()
+       var rng = RNGManager.get_rng()
+       var chosen_line = options[rng.randi() % options.size()]
+       var prefix := ""
+       if chosen_line["prefixes"].size() > 0:
+               var pref_arr = chosen_line["prefixes"]
+               prefix = pref_arr[rng.randi() % pref_arr.size()]
+       var core = chosen_line["core"]
+       var suffix := ""
+       if chosen_line["suffixes"].size() > 0:
+               var suf_arr = chosen_line["suffixes"]
+               suffix = suf_arr[rng.randi() % suf_arr.size()]
 	var full_line = prefix + core + suffix
 
 	# --- Animate player line ---
@@ -669,39 +672,42 @@ func _apply_effects(effects: Dictionary):
 
 func process_npc_response(move_type, response_id, success: bool) -> ChatBox:
 
-	var response_text = ""
-	var key = "FALSE"
-	if success:
-		key = "TRUE"
-	var entry = null
-	if response_id and RizzBattleData.npc_responses.has(response_id):
-		var pool = RizzBattleData.npc_responses[response_id][key]
-		if pool.size() > 0:
-			entry = pool.pick_random()
-	elif RizzBattleData.npc_generic_responses.has(move_type):
-		var pool = RizzBattleData.npc_generic_responses[move_type][key]
-		if pool.size() > 0 and typeof(pool[0]) == TYPE_DICTIONARY:
-			entry = pool.pick_random()
-	if entry != null:
-		var prefix = ""
-		var suffix = ""
-		if entry.has("response_prefix") and entry.response_prefix is Array and entry.response_prefix.size() > 0:
-			prefix = entry.response_prefix.pick_random()
-		if entry.has("response_suffix") and entry.response_suffix is Array and entry.response_suffix.size() > 0:
-			suffix = entry.response_suffix.pick_random()
-		response_text = str(prefix) + str(entry.response_line) + str(suffix)
-	else:
-		if RizzBattleData.npc_generic_responses.has(move_type):
-			var pool = RizzBattleData.npc_generic_responses[move_type][key]
-			if pool.size() > 0 and typeof(pool[0]) == TYPE_STRING:
-				response_text = pool.pick_random()
-			else:
-				response_text = "..."
-		else:
-			response_text = "..."
-	
-	var chat = add_chat_line(response_text, false)
-	await animate_chat_text(chat, response_text)
+       var rng = RNGManager.get_rng()
+       var response_text = ""
+       var key = "FALSE"
+       if success:
+               key = "TRUE"
+       var entry = null
+       if response_id and RizzBattleData.npc_responses.has(response_id):
+               var pool = RizzBattleData.npc_responses[response_id][key]
+               if pool.size() > 0:
+                       entry = pool[rng.randi() % pool.size()]
+       elif RizzBattleData.npc_generic_responses.has(move_type):
+               var pool = RizzBattleData.npc_generic_responses[move_type][key]
+               if pool.size() > 0 and typeof(pool[0]) == TYPE_DICTIONARY:
+                       entry = pool[rng.randi() % pool.size()]
+       if entry != null:
+               var prefix = ""
+               var suffix = ""
+               if entry.has("response_prefix") and entry.response_prefix is Array and entry.response_prefix.size() > 0:
+                       var pref_pool = entry.response_prefix
+                       prefix = pref_pool[rng.randi() % pref_pool.size()]
+               if entry.has("response_suffix") and entry.response_suffix is Array and entry.response_suffix.size() > 0:
+                       var suf_pool = entry.response_suffix
+                       suffix = suf_pool[rng.randi() % suf_pool.size()]
+               response_text = str(prefix) + str(entry.response_line) + str(suffix)
+       else:
+               if RizzBattleData.npc_generic_responses.has(move_type):
+                       var pool = RizzBattleData.npc_generic_responses[move_type][key]
+                       if pool.size() > 0 and typeof(pool[0]) == TYPE_STRING:
+                               response_text = pool[rng.randi() % pool.size()]
+                       else:
+                               response_text = "..."
+               else:
+                       response_text = "..."
+
+       var chat = add_chat_line(response_text, false)
+       await animate_chat_text(chat, response_text)
 	update_action_buttons()
 	return chat
 

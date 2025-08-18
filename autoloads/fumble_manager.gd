@@ -62,7 +62,8 @@ func start_battle(npc_idx: int) -> String:
 		return ""
 
 	if not has_active_battle(npc_idx):
-		var battle_id = "%s_%d" % [str(Time.get_unix_time_from_system()), randi() % 1000000]
+               var rng = RNGManager.get_rng()
+               var battle_id = "%s_%d" % [str(Time.get_unix_time_from_system()), rng.randi() % 1000000]
 		print("Creating new fumble battle", battle_id, "slot", SaveManager.current_slot_id)
 		DBManager.save_fumble_battle(
 			battle_id,
