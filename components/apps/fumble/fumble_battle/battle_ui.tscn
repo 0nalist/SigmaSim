@@ -309,6 +309,7 @@ value = 100.0
 show_percentage = false
 script = ExtResource("6_d7cye")
 duration = 0.4
+tooltip_name = "Confidence"
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ConfidenceProgressBar"]
 layout_mode = 1

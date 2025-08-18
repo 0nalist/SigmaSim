@@ -2,6 +2,7 @@ class_name StatProgressBar
 extends ProgressBar
 
 @export var stat_name: String
+@export var tooltip_name: String = ""
 @export var animate: bool = true
 @export var duration: float = 0.3
 @export var easing := Tween.EASE_OUT
@@ -13,10 +14,10 @@ var _tween: Tween = null
 var _actual_value: float = 0.0
 
 func _ready():
-	if stat_name != "":
-		StatManager.connect_to_stat(stat_name, self, "_on_stat_updated")
-	_actual_value = value
-	update_tooltip(value)
+        if stat_name != "":
+                StatManager.connect_to_stat(stat_name, self, "_on_stat_updated")
+        _actual_value = value
+        update_tooltip(value)
 
 func _exit_tree():
 		if stat_name != "":
@@ -59,4 +60,8 @@ func update_tooltip(val: float) -> void:
 		str_val = "%.2f" % val
 	else:
 		str_val = str(int(val))
-	tooltip_text = "%s: %s" % [stat_name, str_val]
+        var label = tooltip_name if tooltip_name != "" else stat_name
+        if label != "":
+                tooltip_text = "%s: %s" % [label, str_val]
+        else:
+                tooltip_text = str_val
