@@ -95,7 +95,7 @@ func save_to_slot(slot_id: int) -> void:
 	var player_data = PlayerManager.get_save_data()
 	metadata[slot_key]["name"] = player_data.get("name", "Unnamed")
 	metadata[slot_key]["username"] = player_data.get("username", "user")
-        metadata[slot_key]["portrait_config"] = player_data.get("portrait_config", {})
+	metadata[slot_key]["portrait_config"] = player_data.get("portrait_config", {})
 	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
 	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
 	metadata[slot_key]["cash"] = PortfolioManager.cash

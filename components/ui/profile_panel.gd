@@ -33,16 +33,16 @@ func _apply_profile_data() -> void:
 	name_label.text = pending_data.get("name", "Unnamed")
 	username_label.text = "@%s" % pending_data.get("username", "user")
 
-        var cfg_dict = pending_data.get("portrait_config", {})
-        if cfg_dict is Dictionary:
-                var cfg = PortraitConfig.from_dict(cfg_dict)
-                profile_pic.apply_config(cfg)
+	var cfg_dict = pending_data.get("portrait_config", {})
+	if cfg_dict is Dictionary:
+		var cfg = PortraitConfig.from_dict(cfg_dict)
+		profile_pic.apply_config(cfg)
 
-                # FORCE 128x128 size
-                profile_pic.custom_minimum_size = Vector2(128, 128)
-                profile_pic.set_size(Vector2(128, 128))
-                profile_pic.size_flags_horizontal = Control.SIZE_FILL
-                profile_pic.size_flags_vertical = Control.SIZE_FILL
+		# FORCE 128x128 size
+		profile_pic.custom_minimum_size = Vector2(128, 128)
+		profile_pic.set_size(Vector2(128, 128))
+		profile_pic.size_flags_horizontal = Control.SIZE_FILL
+		profile_pic.size_flags_vertical = Control.SIZE_FILL
 
 	slot_id = pending_slot_id
 

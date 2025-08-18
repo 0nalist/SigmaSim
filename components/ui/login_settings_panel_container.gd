@@ -38,12 +38,12 @@ func _on_reset_pressed():
 	var slot_id = profile_selector.get_selected_id()
 	var metadata = slot_metadata.get("slot_%d" % slot_id, {})
 	var username = metadata.get("username", "user")
-        SaveManager.initialize_new_profile(slot_id, {
-                "name": metadata.get("name", "Unnamed"),
-                "username": username,
-                "portrait_config": metadata.get("portrait_config", {}),
-                "background": metadata.get("background_path", ""),
-        })
+	SaveManager.initialize_new_profile(slot_id, {
+		"name": metadata.get("name", "Unnamed"),
+		"username": username,
+		"portrait_config": metadata.get("portrait_config", {}),
+		"background": metadata.get("background_path", ""),
+	})
 	slot_metadata = SaveManager.load_slot_metadata()
 	_update_selector()
 	emit_signal("profile_list_updated")

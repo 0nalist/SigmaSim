@@ -200,13 +200,13 @@ func animate_progress_bar(bar: ProgressBar, target_value: float, duration: float
 
 func _update_profiles():
 	# === Player info ===
-        var portrait_dict = PlayerManager.get_var("portrait_config", {})
-        if portrait_dict is Dictionary:
-                var cfg = PortraitConfig.from_dict(portrait_dict)
-                profile_pic.apply_config(cfg)
+	var portrait_dict = PlayerManager.get_var("portrait_config", {})
+	if portrait_dict is Dictionary:
+			var cfg = PortraitConfig.from_dict(portrait_dict)
+			profile_pic.apply_config(cfg)
 
-        _update_player_attractiveness_label()
-        name_label.text = PlayerManager.get_var("name", "You")
+	_update_player_attractiveness_label()
+	name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info
 	if npc.portrait_config != null:

@@ -21,12 +21,12 @@ func _ready() -> void:
 
 
 func load_profile(profile: Profile) -> void:
-        var cfg = profile.get("portrait_config")
-        if cfg != null:
-                profile_pic.apply_config(cfg)
-        elif profile.profile_pic is Texture2D:
-                var face: TextureRect = profile_pic.get_node("face")
-                face.texture = profile.profile_pic
+	var cfg = profile.get("portrait_config")
+	if cfg != null:
+			profile_pic.apply_config(cfg)
+	elif profile.profile_pic is Texture2D:
+			var face: TextureRect = profile_pic.get_node("face")
+			face.texture = profile.profile_pic
 	name_label.text = profile.full_name
 	username_button.text = "@" + profile.username
 	work_label.text = profile.occupation
@@ -49,10 +49,10 @@ func load_profile(profile: Profile) -> void:
 		wall_v_box_container.add_child(label)
 
 func update_prof_pic():
-        var cfg_dict = PlayerManager.user_data.get("portrait_config", {})
-        if cfg_dict is Dictionary and cfg_dict.size() > 0:
-                var cfg = PortraitConfig.from_dict(cfg_dict)
-                profile_pic.apply_config(cfg)
+		var cfg_dict = PlayerManager.user_data.get("portrait_config", {})
+		if cfg_dict is Dictionary and cfg_dict.size() > 0:
+				var cfg = PortraitConfig.from_dict(cfg_dict)
+				profile_pic.apply_config(cfg)
 
 func update_name_label():
 	var pname = PlayerManager.user_data["name"]
