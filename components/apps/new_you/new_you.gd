@@ -16,7 +16,11 @@ func setup_custom(args: Dictionary) -> void:
         portrait_view = args.get("portrait_view")
         target_type = args.get("type", "")
         target_npc_idx = args.get("npc_idx", -1)
-        if target_type == "player":
+        if portrait_view:
+                portrait_creator.config = portrait_view.config.duplicate(true)
+                portrait_creator._sync_ui_with_config()
+                portrait_creator.preview.apply_config(portrait_creator.config)
+        elif target_type == "player":
                 var cfg_dict = PlayerManager.user_data.get("portrait_config", {})
                 if cfg_dict is Dictionary and cfg_dict.size() > 0:
                         portrait_creator.config = PortraitConfig.from_dict(cfg_dict)
