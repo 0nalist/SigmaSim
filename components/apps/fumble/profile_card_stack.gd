@@ -23,6 +23,22 @@ var swipe_pool: Array[int] = []
 var gender_similarity_threshold: float = 0.85
 var preferred_gender: Vector3 = Vector3(0,0,0) # Set from FumbleUI
 
+var _rng := RandomNumberGenerator.new()
+
+func _init() -> void:
+	_init_rng()
+
+func _init_rng() -> void:
+	var seed_string := str(RNGManager.seed) + ":fumble_profile_stack"
+	_rng.seed = hash(seed_string)
+
+func _rng_shuffle(arr: Array) -> void:
+	for i in range(arr.size() - 1, 0, -1):
+		var j = _rng.randi_range(0, i)
+		var temp = arr[i]
+		arr[i] = arr[j]
+		arr[j] = temp
+
 func _ready():
 	await load_initial_cards()
 
@@ -188,7 +204,7 @@ func _refill_swipe_pool_async(time_budget_msec := 8) -> void:
 
 	pool += new_indices
 	pool += recycled_indices
-	RNGManager.shuffle(pool)
+	_rng_shuffle(pool)
 
 	while swipe_pool.size() < swipe_pool_size and not pool.is_empty():
 		swipe_pool.append(pool.pop_front())
