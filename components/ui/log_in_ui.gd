@@ -68,12 +68,13 @@ func _on_profile_login_requested(slot_id: int) -> void:
 
 
 func _on_new_profile_button_pressed() -> void:
-	var profile_creator = profile_creation_scene.instantiate()
-	add_child(profile_creator)
-	profile_creator.connect("profile_created", _on_new_profile_created) #, save_slot)
-	profile_creator.connect("new_profile_abandoned", _on_new_profile_abandoned)
-	%AOLLogoHolder.hide()
-	%ProfilesContainer.hide()
+        PlayerManager.reset()
+        var profile_creator = profile_creation_scene.instantiate()
+        add_child(profile_creator)
+        profile_creator.connect("profile_created", _on_new_profile_created) #, save_slot)
+        profile_creator.connect("new_profile_abandoned", _on_new_profile_abandoned)
+        %AOLLogoHolder.hide()
+        %ProfilesContainer.hide()
 
 func _on_new_profile_created(slot_id):
 	print("new profile created in slot " + str(slot_id))
