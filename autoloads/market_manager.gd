@@ -82,25 +82,26 @@ func refresh_prices():
 	_update_stock_prices()
 
 func _update_stock_prices():
-	for stock in stock_market.values():
-		stock.intrinsic_value += randf_range(0.0001, 0.001)
+       var rng = RNGManager.get_rng()
+       for stock in stock_market.values():
+               stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
 
 		stock.momentum -= 1
-		if stock.momentum <= 0:
-			stock.sentiment = randf_range(-1.0, 1.0)
-			stock.momentum = randi_range(5, 20)
+               if stock.momentum <= 0:
+                       stock.sentiment = rng.randf_range(-1.0, 1.0)
+                       stock.momentum = rng.randi_range(5, 20)
 
 		var deviation = stock.price / stock.intrinsic_value
-		var noise = randf_range(-0.5, 0.5)
+               var noise = rng.randf_range(-0.5, 0.5)
 		var directional_bias = stock.sentiment * 0.25
 		var total_factor = clamp(noise + directional_bias, -1.0, 1.0)
 		var max_percent_change = stock.volatility / 100.0
 		var delta = stock.price * max_percent_change * total_factor
 
-		if deviation > 2.0 and randf() < 0.2:
-			delta -= stock.price * randf_range(0.1, 0.3)
-		elif deviation < 0.5 and randf() < 0.2:
-			delta += stock.price * randf_range(0.1, 0.3)
+               if deviation > 2.0 and rng.randf() < 0.2:
+                       delta -= stock.price * rng.randf_range(0.1, 0.3)
+               elif deviation < 0.5 and rng.randf() < 0.2:
+                       delta += stock.price * rng.randf_range(0.1, 0.3)
 
 		var old_price = stock.price
 		stock.price = max(snapped(stock.price + delta, 0.01), 0.01)

@@ -69,8 +69,8 @@ func get_npcs_by_gender_dot(app_name: String, preferred_gender: Vector3, min_sim
 		var sim = gender_dot_similarity(preferred_gender, npc.gender_vector)
 		if sim >= min_similarity:
 			matches.append(idx)
-	matches.shuffle()
-	return matches.slice(0, count)
+       RNGManager.shuffle(matches)
+       return matches.slice(0, count)
 
 func gender_dot_similarity(a: Vector3, b: Vector3) -> float:
 		if a.length() == 0 or b.length() == 0:
@@ -172,7 +172,7 @@ func get_batch_of_recycled_npc_indices(app_name: String, count: int) -> Array[in
 	for idx in encountered:
 		if not active.has(idx) and not persistent_npcs.has(idx):
 			pool.append(idx)
-	pool.shuffle()
+       RNGManager.shuffle(pool)
 	var result: Array[int] = []
 	for idx in pool.slice(0, count):
 		result.append(idx)

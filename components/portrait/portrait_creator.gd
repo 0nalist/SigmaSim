@@ -126,8 +126,8 @@ func _on_name_submitted(_text: String) -> void:
 
 
 func _on_randomize_pressed() -> void:
-	var rng := RandomNumberGenerator.new()
-	config = PortraitFactory.generate_config_for_name(str(rng.randi()))
+var rng = RNGManager.get_rng()
+config = PortraitFactory.generate_config_for_name(str(rng.randi()))
 	config.name = name_edit.text
 	_sync_ui_with_config()
 	preview.apply_config(config)

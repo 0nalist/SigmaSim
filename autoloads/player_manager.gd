@@ -3,12 +3,13 @@ extends Node
 
 
 var default_user_data: Dictionary = {
-	# Identity
-	"name": "",
-	"username": "",
-		"pronouns": "",
-		"attracted_to": "",
-				"portrait_config": {},
+        # Identity
+        "name": "",
+        "username": "",
+"password": "",
+                "pronouns": "",
+                "attracted_to": "",
+                                "portrait_config": {},
 				"background_path": "",
 			   "education_level": "",
 			   "starting_student_debt": 0.0,
@@ -47,9 +48,10 @@ var default_user_data: Dictionary = {
 	"fumble_pref_z": 0.0,
 	"fumble_curiosity": 50.0,
 
-	# Flags and progression
-	"unlocked_perks": [],
-	"seen_dialogue_ids": []
+        # Flags and progression
+        "unlocked_perks": [],
+       "seen_dialogue_ids": [],
+"global_rng_seed": 0
 }
 
 var user_data: Dictionary = default_user_data.duplicate(true)
@@ -71,15 +73,22 @@ func reset():
 
 
 func ensure_default_stats() -> void:
-	for key in default_user_data.keys():
-		if not user_data.has(key):
-			user_data[key] = default_user_data[key]
+        for key in default_user_data.keys():
+                if not user_data.has(key):
+                        user_data[key] = default_user_data[key]
+
+
+func djb2(s: String) -> int:
+        var hash := 5381
+        for i in s.length():
+                hash = ((hash << 5) + hash) + s.unicode_at(i)
+        return hash & 0xFFFFFFFF
 
 
 
 
 func has_seen(id: String) -> bool:
-	return id in user_data["seen_dialogue_ids"]
+        return id in user_data["seen_dialogue_ids"]
 
 func mark_seen(id: String) -> void:
 	if not has_seen(id):
@@ -90,7 +99,8 @@ func mark_seen(id: String) -> void:
 ## -- SAVE LOAD
 
 func get_save_data() -> Dictionary:
-	return user_data.duplicate(true)
+       user_data["global_rng_seed"] = RNGManager.seed
+       return user_data.duplicate(true)
 
 func load_from_data(data: Dictionary) -> void:
 	user_data = data.duplicate(true)
