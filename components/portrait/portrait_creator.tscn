@@ -87,6 +87,7 @@ size_flags_vertical = 4
 [node name="Apply" type="Button" parent="MarginContainer/VBox/HBoxContainer/MarginContainer/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Apply"
 
 [node name="Layers" type="HBoxContainer" parent="MarginContainer/VBox"]

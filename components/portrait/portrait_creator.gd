@@ -3,7 +3,8 @@ extends Control
 
 signal applied(config: PortraitConfig)
 
-const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd")
+
+const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd") # I dont think i need this since funcs are static
 
 var config: PortraitConfig = PortraitConfig.new()
 var layer_controls: Dictionary = {}
