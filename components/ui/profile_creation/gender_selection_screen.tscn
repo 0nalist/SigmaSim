@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://12a1fc403866"]
+[gd_scene load_steps=4 format=3 uid="uid://12a1fc403866"]
 
-[ext_resource type="Script" uid="uid://8ac725c14d5a" path="res://components/ui/profile_creation/gender_selection_screen.gd" id="1_a7i1o"]
+[ext_resource type="Script" path="res://components/ui/profile_creation/gender_selection_screen.gd" id="1_a7i1o"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_t2cd2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iw0c"]
+bg_color = Color(0.85314, 0.330333, 0.460443, 1)
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
 
 [node name="GenderSelectionScreen" type="Control"]
 layout_mode = 3
@@ -10,8 +16,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_a7i1o")
 theme = ExtResource("2_t2cd2")
+script = ExtResource("1_a7i1o")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -66,6 +72,8 @@ custom_minimum_size = Vector2(450, 45)
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_1iw0c")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1iw0c")
 text = "She. Woman."
 
 [node name="TheyCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/PoliticsOptions"]
@@ -79,22 +87,27 @@ text = "They. Person."
 [node name="CustomPronounContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PoliticsOptions"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
 
 [node name="CustomPronounLineEdit1" type="LineEdit" parent="MarginContainer/VBoxContainer/PoliticsOptions/CustomPronounContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 placeholder_text = "he/she/they/?"
 
 [node name="CustomPronounLineEdit2" type="LineEdit" parent="MarginContainer/VBoxContainer/PoliticsOptions/CustomPronounContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 placeholder_text = "him/her/them/?"
 
 [node name="CustomPronounLineEdit3" type="LineEdit" parent="MarginContainer/VBoxContainer/PoliticsOptions/CustomPronounContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 placeholder_text = "his/hers/theirs/?"
