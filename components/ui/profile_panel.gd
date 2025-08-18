@@ -17,10 +17,9 @@ var slot_id: int = -1
 
 
 func _ready() -> void:
-		size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		password_text_edit.editable = false
-		password_text_edit.focus_mode = Control.FOCUS_NONE
-		log_in_button.hide()
+	size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	password_text_edit.hide()
+	log_in_button.hide()
 	if pending_data:
 		_apply_profile_data()
 
@@ -33,7 +32,6 @@ func set_profile_data(data: Dictionary, id: int) -> void:
 func _apply_profile_data() -> void:
 	name_label.text = pending_data.get("name", "Unnamed")
 	username_label.text = "@%s" % pending_data.get("username", "user")
-		password_text_edit.text = pending_data.get("password", "")
 
 	var cfg_dict = pending_data.get("portrait_config", {})
 	if cfg_dict is Dictionary:
@@ -53,6 +51,7 @@ func _apply_profile_data() -> void:
 
 
 func _on_mouse_entered() -> void:
+	password_text_edit.show()
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	log_in_button.show()
 	#size = Vector2(180,270)
@@ -63,5 +62,6 @@ func _on_log_in_button_pressed() -> void:
 
 
 func _on_mouse_exited() -> void:
-		size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	password_text_edit.hide()
+	size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	log_in_button.hide()
