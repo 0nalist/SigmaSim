@@ -90,6 +90,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
+portrait_creator_enabled = false
 
 [node name="Buttons" type="HBoxContainer" parent="PortraitCreator/MarginContainer/VBox/HBoxContainer/MarginContainer"]
 visible = false
