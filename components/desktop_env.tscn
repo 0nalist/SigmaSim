@@ -163,7 +163,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Control"]
+[node name="BlueWarpShader" type="PanelContainer" parent="Control"]
 material = SubResource("ShaderMaterial_yi8nh")
 layout_mode = 1
 anchors_preset = 15
@@ -172,7 +172,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect2" type="ColorRect" parent="Control"]
+[node name="ComicDotsBlueVert" type="ColorRect" parent="Control"]
 material = SubResource("ShaderMaterial_rbayd")
 layout_mode = 1
 anchors_preset = 15
@@ -186,7 +186,7 @@ grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="ComicDotsBlueHor" type="ColorRect" parent="Control"]
 material = SubResource("ShaderMaterial_5aheu")
 layout_mode = 1
 anchors_preset = 15
