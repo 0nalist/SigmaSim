@@ -31,3 +31,6 @@ func save_data() -> void:
 	user_data["name"] = name_line_edit.text.strip_edges()
 	user_data["username"] = username_line_edit.text.strip_edges()
 	user_data["password"] = password_line_edit.text
+	var seed = NameManager.djb2(password_line_edit.text)
+	user_data["global_seed"] = seed
+	NameManager.global_seed = seed

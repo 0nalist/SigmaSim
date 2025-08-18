@@ -6,6 +6,8 @@ var default_user_data: Dictionary = {
 	# Identity
 	"name": "",
 	"username": "",
+	"password": "",
+	"global_seed": 0,
 		"pronouns": "",
 		"attracted_to": "",
 				"portrait_config": {},
@@ -97,6 +99,12 @@ func load_from_data(data: Dictionary) -> void:
 	ensure_default_stats()
 	if user_data.has("confidence"):
 		user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
+
+	if user_data.get("global_seed", 0) != 0:
+		NameManager.global_seed = int(user_data.get("global_seed", 0))
+	elif user_data.has("password"):
+		NameManager.global_seed = NameManager.djb2(user_data["password"])
+		user_data["global_seed"] = NameManager.global_seed
 
 
 
