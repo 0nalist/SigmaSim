@@ -12,19 +12,21 @@ signal stock_price_updated(symbol: String, stock: Stock)
 signal crypto_price_updated(name: String, crypto: Cryptocurrency)
 
 var STOCK_RESOURCES = {
-	"ALPH_STOCK": preload("res://resources/stocks/alph_stock.tres"),
-	"BRO_STOCK": preload("res://resources/stocks/bro_stock.tres"),
-	"GME_STOCK": preload("res://resources/stocks/gme_stock.tres"),
-	"LOCK_STOCK": preload("res://resources/stocks/lock_stock.tres"),
-	"TSLA_STOCK": preload("res://resources/stocks/tsla_stock.tres"),
-	"USD_STOCK": preload("res://resources/stocks/usd_stock.tres"),
-	"YOLO_STOCK": preload("res://resources/stocks/yolo_stock.tres"),
+	"ALPH_STOCK" : preload("res://resources/stocks/alph_stock.tres"),
+	"BRO_STOCK" : preload("res://resources/stocks/bro_stock.tres"),
+	"GME_STOCK" : preload("res://resources/stocks/gme_stock.tres"),
+	"LOCK_STOCK" : preload("res://resources/stocks/lock_stock.tres"),
+	"TSLA_STOCK" : preload("res://resources/stocks/tsla_stock.tres"),
+	"USD_STOCK" : preload("res://resources/stocks/usd_stock.tres"),
+	"YOLO_STOCK" : preload("res://resources/stocks/yolo_stock.tres"),
+	
 }
 
 var CRYPTO_RESOURCES = {
-	"BITC_CRYPTO": preload("res://resources/crypto/bitc_crypto.tres"),
-	"HAWK_CRYPTO": preload("res://resources/crypto/hawk_crypto.tres"),
-	"WORM_CRYPTO": preload("res://resources/crypto/worm_crypto.tres"),
+	"BITC_CRYPTO" : preload("res://resources/crypto/bitc_crypto.tres"),
+	"HAWK_CRYPTO" : preload("res://resources/crypto/hawk_crypto.tres"),
+	"WORM_CRYPTO" : preload("res://resources/crypto/worm_crypto.tres"),
+	
 }
 
 
@@ -35,7 +37,6 @@ func _ready():
 	if stock_market.is_empty():
 		_init_stock_market()
 
-
 func _on_minute_passed(current_time_minutes: int) -> void:
 	# Alternate stock and crypto ticks every minute
 	if current_time_minutes % 2 == 0:
@@ -45,10 +46,8 @@ func _on_minute_passed(current_time_minutes: int) -> void:
 		_update_crypto_prices()
 		emit_signal("crypto_tick")
 
-
 func register_stock(stock: Stock) -> void:
 	stock_market[stock.symbol] = stock
-
 
 func register_crypto(crypto: Cryptocurrency) -> void:
 	crypto_market[crypto.symbol] = crypto
@@ -79,39 +78,36 @@ func apply_stock_transaction(symbol: String, shares_delta: int) -> void:
 	stock.price = max(snapped(stock.price, 0.01), 0.01)
 	emit_signal("stock_price_updated", symbol, stock)
 
-
 func refresh_prices():
 	_update_stock_prices()
 
-
 func _update_stock_prices():
-	var rng = RNGManager.get_rng()
-	for stock in stock_market.values():
-		stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
+var rng = RNGManager.get_rng()
+for stock in stock_market.values():
+stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
 
 		stock.momentum -= 1
 		if stock.momentum <= 0:
-			stock.sentiment = rng.randf_range(-1.0, 1.0)
-			stock.momentum = rng.randi_range(5, 20)
+stock.sentiment = rng.randf_range(-1.0, 1.0)
+stock.momentum = rng.randi_range(5, 20)
 
 		var deviation = stock.price / stock.intrinsic_value
-		var noise = rng.randf_range(-0.5, 0.5)
+var noise = rng.randf_range(-0.5, 0.5)
 		var directional_bias = stock.sentiment * 0.25
 		var total_factor = clamp(noise + directional_bias, -1.0, 1.0)
 		var max_percent_change = stock.volatility / 100.0
 		var delta = stock.price * max_percent_change * total_factor
 
-		if deviation > 2.0 and rng.randf() < 0.2:
-			delta -= stock.price * rng.randf_range(0.1, 0.3)
-		elif deviation < 0.5 and rng.randf() < 0.2:
-			delta += stock.price * rng.randf_range(0.1, 0.3)
+if deviation > 2.0 and rng.randf() < 0.2:
+delta -= stock.price * rng.randf_range(0.1, 0.3)
+elif deviation < 0.5 and rng.randf() < 0.2:
+delta += stock.price * rng.randf_range(0.1, 0.3)
 
 		var old_price = stock.price
 		stock.price = max(snapped(stock.price + delta, 0.01), 0.01)
 
 		if abs(stock.price - old_price) > 0.001:
 			emit_signal("stock_price_updated", stock.symbol, stock)
-
 
 func _update_crypto_prices():
 	for crypto in crypto_market.values():
@@ -130,14 +126,13 @@ func _init_crypto_market() -> void:
 		register_crypto(crypto)
 	emit_signal("crypto_market_ready")
 
-
 func _init_stock_market() -> void:
 	for symbol in STOCK_RESOURCES.keys():
 		var stock = STOCK_RESOURCES[symbol].duplicate()
 		register_stock(stock)
 
 
-## --- SAVELOAD --- ##
+## --- SAVELOAD
 
 func get_save_data() -> Dictionary:
 	var stock_data := {}
@@ -152,7 +147,6 @@ func get_save_data() -> Dictionary:
 		"stock_market": stock_data,
 		"crypto_market": crypto_data
 	}
-
 
 func load_from_data(data: Dictionary) -> void:
 	stock_market.clear()
@@ -169,5 +163,4 @@ func load_from_data(data: Dictionary) -> void:
 		if data.get("crypto_market", {}).has(symbol):
 			crypto.from_dict(data["crypto_market"][symbol])
 		register_crypto(crypto)
-
 	emit_signal("crypto_market_ready")
