@@ -1,14 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://1jylhdkewo5k"]
+[gd_scene load_steps=12 format=3 uid="uid://1jylhdkewo5k"]
 
 [ext_resource type="Texture2D" uid="uid://bx8di1m28cktr" path="res://assets/money_pixeled.png" id="1_m7phi"]
 [ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
 [ext_resource type="Texture2D" uid="uid://sfksofhgkiwu" path="res://assets/logos/dollar_rage.png" id="3_m7phi"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/buttons/grey_button_pressed.png" id="4_frira"]
-[ext_resource type="Texture2D" uid="uid://dl2jo7p65xvuu" path="res://assets/ui/small mid caps.png" id="4_wfbhr"]
 [ext_resource type="Script" uid="uid://bq3i6eu2isf1d" path="res://components/apps/broke_rage/stock_market.gd" id="5_lgac0"]
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="5_n67s2"]
 [ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="6_m7phi"]
-[ext_resource type="Script" uid="uid://bftbsb6v4fkwu" path="res://components/ui/chart_component.gd" id="7_t3xq1"]
+[ext_resource type="Script" uid="uid://b8wfu5cxh5oyw" path="res://components/ui/chart_component.gd" id="7_t3xq1"]
 [ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_htng3"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcm1f"]
@@ -85,6 +84,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("7_t3xq1")
+grid_line_counts = Vector2i(8, 4)
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
 layout_mode = 2
