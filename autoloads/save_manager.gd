@@ -191,7 +191,7 @@ func reset_game_state() -> void:
 	MarketManager.reset()
 	GPUManager.reset()
 	# BillManager.reset()
-
+	NPCManager.reset()
 
 func reset_managers():
 	StatManager.reset()
@@ -202,7 +202,7 @@ func reset_managers():
 	WorkerManager.reset()
 	TaskManager.reset()
 	GPUManager.reset()
-
+	NPCManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)

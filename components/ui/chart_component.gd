@@ -1,23 +1,25 @@
 extends Control
 class_name ChartComponent
 
+@export_category("Appearance")
 @export var margins: Vector4 = Vector4(40, 20, 20, 40) # left, top, right, bottom
 @export var grid_line_counts: Vector2i = Vector2i(4, 4)
+@export var palette: Array[Color] = [Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA, Color.CYAN]
+
+@export_category("Sampling & Data")
 @export var default_window_minutes: int = 30
 @export var min_window_minutes: int = 5
 @export var max_points_per_series: int = 512
-@export var palette: Array[Color] = [Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA, Color.CYAN]
-
-# Behavior
-@export var autoscroll: bool = true
-@export var autoscroll_hold_timeout_sec: float = 3.0
 @export var extend_last_sample: bool = true
 
-# Axis locks
-@export var lock_y_min: bool = true			# NEW: y_min fixed at 0
-@export var lock_x_min: bool = false		# NEW: when true, x_min fixed at 0
+@export_category("Behavior")
+@export var autoscroll: bool = true
+@export var autoscroll_locked: bool = true	# NEW: hard-lock auto-follow "now"
+@export var autoscroll_hold_timeout_sec: float = 3.0
+@export var lock_y_min: bool = true			# y_min fixed at 0
+@export var lock_x_min: bool = false		# x_min fixed at 0
 
-# Polling controls
+@export_category("Polling")
 @export var poll_hz: int = 20
 @export var always_poll: bool = true
 
@@ -62,14 +64,15 @@ func _process(delta: float) -> void:
 	if _poll_accum >= _poll_interval:
 		_poll_accum -= _poll_interval
 
-		if autoscroll and user_holds_window:
+		# only let user hold override when not locked
+		if autoscroll and not autoscroll_locked and user_holds_window:
 			var now_secs: float = Time.get_ticks_msec() / 1000.0
 			var idle: float = now_secs - _last_user_input_time
 			if idle >= autoscroll_hold_timeout_sec:
 				user_holds_window = false
 
 		var now_min: int = TimeManager.get_now_minutes()
-		if autoscroll and not user_holds_window:
+		if autoscroll and (autoscroll_locked or not user_holds_window):
 			if now_min != _last_now_seen:
 				_follow_now_and_clamp()
 				_needs_redraw = true
@@ -88,8 +91,9 @@ func _has_signals() -> bool:
 		has_time = TimeManager.has_signal("minute_passed")
 	return has_hist or has_time
 
-func set_autoscroll(on: bool) -> void:
+func set_autoscroll(on: bool, locked: bool = false) -> void:
 	autoscroll = on
+	autoscroll_locked = locked
 	if autoscroll:
 		user_holds_window = false
 		_follow_now_and_clamp()
@@ -134,12 +138,12 @@ func _color_from_id(id: StringName) -> Color:
 # ---- Signals ----
 
 func _on_series_sampled(_id: StringName, _t_minute: int) -> void:
-	if autoscroll and not user_holds_window:
+	if autoscroll and (autoscroll_locked or not user_holds_window):
 		_follow_now_and_clamp()
 	_needs_redraw = true
 
 func _on_minute_passed(_total_minutes: int) -> void:
-	if autoscroll and not user_holds_window:
+	if autoscroll and (autoscroll_locked or not user_holds_window):
 		var changed: bool = _follow_now_and_clamp()
 		if changed:
 			_needs_redraw = true
@@ -149,58 +153,83 @@ func _follow_now_and_clamp() -> bool:
 	var now: int = TimeManager.get_now_minutes()
 	var old_start: int = window_start_min
 	var old_end: int = window_end_min
-	var span: int = window_end_min - window_start_min
-	if span < min_window_minutes:
-		span = min_window_minutes
 
 	if lock_x_min:
 		window_start_min = 0
-		window_end_min = min(now, span)	# show [0, span] but never past 'now'
+		window_end_min = now
 	else:
+		var span: int = window_end_min - window_start_min
+		if span < min_window_minutes:
+			span = min_window_minutes
 		window_end_min = now
 		window_start_min = max(0, now - span)
 
 	_clamp_window()
 	return window_start_min != old_start or window_end_min != old_end
 
+
 # ---- Input (zoom & pan) ----
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
-		_mark_user_activity()
+
+		# Mouse wheel: zoom
 		if mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			var plot: Rect2 = _plot_rect()
-			if plot.has_point(mb.position):
-				var focus_t: int = _time_from_x(mb.position.x, plot)
-				var span: int = max(min_window_minutes, window_end_min - window_start_min)
-				if mb.button_index == MOUSE_BUTTON_WHEEL_UP:
-					span = max(min_window_minutes, span - max(1, span / 10))
-				else:
-					var max_span: int = max(1, TimeManager.get_now_minutes())
-					span = min(max_span, span + max(1, span / 10))
+			# Only react if the cursor is over the plot
+			if not plot.has_point(mb.position):
+				return
 
-				if lock_x_min:
-					# left pinned: set [0, min(now, span)]
-					window_start_min = 0
-					window_end_min = min(TimeManager.get_now_minutes(), span)
-					_clamp_window()
-				else:
-					_set_span_centered(span, focus_t)
+			_mark_user_activity()
 
-				user_holds_window = true
+			# When x-min is locked, always show [0, now] and ignore span math
+			if lock_x_min:
+				window_start_min = 0
+				window_end_min = TimeManager.get_now_minutes()
+				_clamp_window()
+				if autoscroll_locked:
+					user_holds_window = false
+					_follow_now_and_clamp()
+				else:
+					user_holds_window = true
 				_needs_redraw = true
 				queue_redraw()
+				return
+
+			# Normal zoom behavior (x not locked)
+			var focus_t: int = _time_from_x(mb.position.x, plot)
+			var span: int = max(min_window_minutes, window_end_min - window_start_min)
+
+			if mb.button_index == MOUSE_BUTTON_WHEEL_UP:
+				span = max(min_window_minutes, span - max(1, span / 10))
+			else:
+				var max_span: int = max(1, TimeManager.get_now_minutes())
+				span = min(max_span, span + max(1, span / 10))
+
+			_set_span_centered(span, focus_t)
+
+			if autoscroll_locked:
+				user_holds_window = false
+				_follow_now_and_clamp()
+			else:
+				user_holds_window = true
+
+			_needs_redraw = true
+			queue_redraw()
+
+		# Mouse left: start/stop drag panning (blocked if autoscroll/x-lock)
 		elif mb.button_index == MOUSE_BUTTON_LEFT:
 			if mb.pressed:
 				var plot2: Rect2 = _plot_rect()
 				if plot2.has_point(mb.position):
-					if not lock_x_min:
+					if not autoscroll_locked and not lock_x_min:
 						_dragging = true
 						_drag_last_mouse = mb.position
 						user_holds_window = true
 			else:
 				_dragging = false
+
 	elif event is InputEventMouseMotion and _dragging:
 		var mm: InputEventMouseMotion = event
 		_mark_user_activity()
@@ -213,6 +242,7 @@ func _gui_input(event: InputEvent) -> void:
 		_drag_last_mouse = mm.position
 		_needs_redraw = true
 		queue_redraw()
+
 
 func _mark_user_activity() -> void:
 	_last_user_input_time = Time.get_ticks_msec() / 1000.0
@@ -237,7 +267,7 @@ func _time_from_x(x: float, plot: Rect2) -> int:
 	return window_start_min + int(round(rel * float(span)))
 
 func _pan_by(delta_min: int) -> void:
-	if lock_x_min:
+	if autoscroll_locked or lock_x_min:
 		return
 	if delta_min == 0:
 		return
@@ -299,7 +329,6 @@ func _clamp_window() -> void:
 # ---- Y-bounds computation (lock_y_min support) ----
 
 func _compute_y_bounds() -> Vector2:
-	# min is 0 if locked; else derive from data
 	var min_y: float = 0.0
 	if not lock_y_min:
 		min_y = INF
@@ -331,17 +360,13 @@ func _compute_y_bounds() -> Vector2:
 				if p.y > max_y:
 					max_y = p.y
 
-	# Fallbacks when no data
 	if max_y == -INF:
 		max_y = 1.0
 	if not lock_y_min and min_y == INF:
 		min_y = 0.0
-
-	# Avoid flat span
 	if max_y <= min_y:
 		max_y = min_y + 1.0
 
-	# Add gentle headroom only to the top
 	var padding: float = (max_y - min_y) * 0.1
 	var out_min: float = min_y
 	var out_max: float = max_y + padding

@@ -4,6 +4,16 @@ extends Node
 signal series_registered(id: StringName)
 signal series_sampled(id: StringName, t_minute: int)
 
+# -------------------- NEW: persistence config --------------------
+@export var persist_to_disk: bool = true
+@export var persist_path: String = "user://history.dat"
+@export var persist_every_minutes: int = 10
+
+const HISTORY_FILE_VERSION := 1
+
+var _minutes_since_persist: int = 0
+# ---------------------------------------------------------------
+
 # All dt/horizon values are in MINUTES.
 const TIER_CONFIG := [
 	{"dt": 1, "horizon": 60, "capacity": 2048},          # 1h @ 1-min
@@ -12,6 +22,29 @@ const TIER_CONFIG := [
 ]
 
 var _series: Dictionary = {} # id -> {"tiers":[{"line":{...},"candles":{...}}, ...]}
+
+func _ready() -> void:
+	# Try loading persistent history first
+	if persist_to_disk:
+		_load_from_disk_safe()
+	# Keep a live minute ticker to auto-save
+	if Engine.has_singleton("TimeManager"):
+		var tm = Engine.get_singleton("TimeManager")
+		if tm and tm.has_signal("minute_passed"):
+			tm.minute_passed.connect(_on_minute_tick)
+
+# --- persistence: autosave driver ---
+func _on_minute_tick(_mins_since_midnight: int) -> void:
+	if not persist_to_disk:
+		return
+	_minutes_since_persist += 1
+	if _minutes_since_persist >= max(1, persist_every_minutes):
+		_minutes_since_persist = 0
+		_save_to_disk_safe()
+
+
+
+# -------------------- PUBLIC API --------------------
 
 func register_series(id: StringName) -> void:
 	if _series.has(id):
@@ -243,3 +276,196 @@ func get_latest_point(id: StringName) -> Vector2:
 		return Vector2(-INF, 0.0)
 	var idx: int = (line.head + line.size - 1) % line.capacity
 	return Vector2(float(line.times[idx]), line.values[idx])
+
+# -------------------- SAVE-SLOT API (for SaveManager) ----------
+func get_save_data() -> Dictionary:
+	var out: Dictionary = {"v": HISTORY_FILE_VERSION, "series": {}}
+	for id in _series.keys():
+		var tiers: Array = _series[id]["tiers"]
+		var tiers_out: Array[Dictionary] = []
+		for i in range(tiers.size()):
+			var line: Dictionary = tiers[i]["line"]
+			var candles: Dictionary = tiers[i]["candles"]
+			var line_export: Dictionary = _export_line(line)
+			var candle_export: Dictionary = _export_candles(candles)
+			tiers_out.append({
+				"line": line_export,
+				"candles": candle_export
+			})
+		out["series"][String(id)] = {"tiers": tiers_out}
+	return out
+
+func load_from_data(data: Dictionary) -> void:
+	if data.is_empty():
+		return
+	var version: int = int(data.get("v", 0))
+	var ser: Dictionary = data.get("series", {})
+	_series.clear()
+	for key in ser.keys():
+		var id: StringName = StringName(key)
+		var tiers_in: Array = ser[key].get("tiers", [])
+		var built_tiers: Array[Dictionary] = []
+		var limit: int = min(tiers_in.size(), TIER_CONFIG.size())
+		for i in range(limit):
+			var cfg: Dictionary = TIER_CONFIG[i]
+			var cap: int = int(cfg["capacity"])
+			var line: Dictionary = _make_empty_line(cap)
+			var candles: Dictionary = _make_empty_candles(cap)
+			_import_line(line, tiers_in[i].get("line", {}), i)
+			_import_candles(candles, tiers_in[i].get("candles", {}), i)
+			built_tiers.append({"line": line, "candles": candles})
+		_series[id] = {"tiers": built_tiers}
+	# Tell listeners that history is present (optional)
+	emit_signal("series_registered", StringName("**reload**"))
+
+# -------------------- DISK API (binary, compact) ----------------
+func save_to_disk(path: String = persist_path) -> void:
+	var dict: Dictionary = get_save_data()
+	var bytes: PackedByteArray = var_to_bytes(dict)
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	if f:
+		f.store_buffer(bytes)
+		f.close()
+
+func load_from_disk(path: String = persist_path) -> void:
+	if not FileAccess.file_exists(path):
+		return
+	var f := FileAccess.open(path, FileAccess.READ)
+	if not f:
+		return
+	var bytes: PackedByteArray = f.get_buffer(f.get_length())
+	f.close()
+	var dict: Variant = bytes_to_var(bytes)
+	if dict is Dictionary:
+		load_from_data(dict)
+
+# Safe wrappers (temp + swap)
+func _save_to_disk_safe() -> void:
+	if not persist_to_disk:
+		return
+	var path: String = persist_path
+	var tmp: String = path + ".tmp"
+	var dict: Dictionary = get_save_data()
+	var bytes: PackedByteArray = var_to_bytes(dict)
+
+	var f_tmp := FileAccess.open(tmp, FileAccess.WRITE)
+	if f_tmp:
+		f_tmp.store_buffer(bytes)
+		f_tmp.close()
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(path)
+		DirAccess.rename_absolute(tmp, path)
+
+func _load_from_disk_safe() -> void:
+	if not persist_to_disk:
+		return
+	if not FileAccess.file_exists(persist_path):
+		return
+	load_from_disk(persist_path)
+
+# -------------- helpers: build/flatten ring buffers ------------
+func _make_empty_line(cap: int) -> Dictionary:
+	var line: Dictionary = {
+		"times": PackedInt32Array(),
+		"values": PackedFloat32Array(),
+		"head": 0, "size": 0, "capacity": cap
+	}
+	(line["times"] as PackedInt32Array).resize(cap)
+	(line["values"] as PackedFloat32Array).resize(cap)
+	return line
+
+func _make_empty_candles(cap: int) -> Dictionary:
+	var c: Dictionary = {
+		"t_open": PackedInt32Array(),
+		"t_close": PackedInt32Array(),
+		"open": PackedFloat32Array(),
+		"high": PackedFloat32Array(),
+		"low": PackedFloat32Array(),
+		"close": PackedFloat32Array(),
+		"head": 0, "size": 0, "capacity": cap
+	}
+	(c["t_open"] as PackedInt32Array).resize(cap)
+	(c["t_close"] as PackedInt32Array).resize(cap)
+	(c["open"] as PackedFloat32Array).resize(cap)
+	(c["high"] as PackedFloat32Array).resize(cap)
+	(c["low"] as PackedFloat32Array).resize(cap)
+	(c["close"] as PackedFloat32Array).resize(cap)
+	return c
+
+func _export_line(line: Dictionary) -> Dictionary:
+	var size_i: int = int(line["size"])
+	var out_times: PackedInt32Array = PackedInt32Array()
+	var out_vals: PackedFloat32Array = PackedFloat32Array()
+	out_times.resize(size_i)
+	out_vals.resize(size_i)
+
+	var head: int = int(line["head"])
+	var cap_i: int = int(line["capacity"])
+	var times: PackedInt32Array = line["times"]
+	var values: PackedFloat32Array = line["values"]
+
+	for i in range(size_i):
+		var idx: int = (head + i) % cap_i
+		out_times[i] = times[idx]
+		out_vals[i] = values[idx]
+	return {"times": out_times, "values": out_vals}
+
+func _import_line(line: Dictionary, src: Dictionary, tier_index: int) -> void:
+	var times: PackedInt32Array = src.get("times", PackedInt32Array())
+	var vals: PackedFloat32Array = src.get("values", PackedFloat32Array())
+	var n: int = min(times.size(), vals.size())
+	line["head"] = 0
+	line["size"] = 0
+	for i in range(n):
+		_line_push(line, tier_index, times[i], vals[i])
+
+func _export_candles(c: Dictionary) -> Dictionary:
+	var n: int = int(c["size"])
+	var t_open: PackedInt32Array = PackedInt32Array()
+	var t_close: PackedInt32Array = PackedInt32Array()
+	var open: PackedFloat32Array = PackedFloat32Array()
+	var high: PackedFloat32Array = PackedFloat32Array()
+	var low: PackedFloat32Array = PackedFloat32Array()
+	var close: PackedFloat32Array = PackedFloat32Array()
+	t_open.resize(n); t_close.resize(n); open.resize(n)
+	high.resize(n); low.resize(n); close.resize(n)
+
+	var head: int = int(c["head"])
+	var cap_i: int = int(c["capacity"])
+	var c_t_open: PackedInt32Array = c["t_open"]
+	var c_t_close: PackedInt32Array = c["t_close"]
+	var c_open: PackedFloat32Array = c["open"]
+	var c_high: PackedFloat32Array = c["high"]
+	var c_low: PackedFloat32Array = c["low"]
+	var c_close: PackedFloat32Array = c["close"]
+
+	for i in range(n):
+		var idx: int = (head + i) % cap_i
+		t_open[i] = c_t_open[idx]
+		t_close[i] = c_t_close[idx]
+		open[i] = c_open[idx]
+		high[i] = c_high[idx]
+		low[i] = c_low[idx]
+		close[i] = c_close[idx]
+	return {
+		"t_open": t_open, "t_close": t_close,
+		"open": open, "high": high, "low": low, "close": close
+	}
+
+func _import_candles(c: Dictionary, src: Dictionary, tier_index: int) -> void:
+	var t_open: PackedInt32Array = src.get("t_open", PackedInt32Array())
+	var t_close: PackedInt32Array = src.get("t_close", PackedInt32Array())
+	var open: PackedFloat32Array = src.get("open", PackedFloat32Array())
+	var high: PackedFloat32Array = src.get("high", PackedFloat32Array())
+	var low: PackedFloat32Array = src.get("low", PackedFloat32Array())
+	var close: PackedFloat32Array = src.get("close", PackedFloat32Array())
+
+	var n: int = min(
+		min(t_open.size(), t_close.size()),
+		min(open.size(), high.size(), low.size(), close.size())
+	)
+
+	c["head"] = 0
+	c["size"] = 0
+	for i in range(n):
+		_candle_push(c, tier_index, t_open[i], t_close[i], open[i], high[i], low[i], close[i])
