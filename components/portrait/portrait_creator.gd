@@ -125,17 +125,19 @@ func _on_name_submitted(_text: String) -> void:
 
 
 func _on_randomize_pressed() -> void:
-	var rng := RandomNumberGenerator.new()
-	config = PortraitFactory.generate_config_for_name(str(rng.randi()))
-	config.name = name_edit.text
-	_sync_ui_with_config()
-	preview.apply_config(config)
+        var rng := RandomNumberGenerator.new()
+        config = PortraitFactory.generate_config_for_name(str(rng.randi()))
+        config.name = name_edit.text
+        _sync_ui_with_config()
+        preview.apply_config(config)
+        emit_signal("applied", config)
 
 
 func _on_generate_pressed() -> void:
-	config = PortraitFactory.generate_config_for_name(name_edit.text)
-	_sync_ui_with_config()
-	preview.apply_config(config)
+        config = PortraitFactory.generate_config_for_name(name_edit.text)
+        _sync_ui_with_config()
+        preview.apply_config(config)
+        emit_signal("applied", config)
 
 
 func _on_apply_pressed() -> void:
