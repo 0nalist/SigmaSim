@@ -224,4 +224,3 @@ func _candle_prune(candles: Dictionary, tier_index: int, current_t: float) -> vo
 			candles.size -= 1
 		else:
 			break
-
