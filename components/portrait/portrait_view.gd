@@ -3,9 +3,19 @@ extends Control
 
 const PORTRAIT_SCALE := 2.0
 
+
 func _ready() -> void:
 	await get_tree().process_frame
 	pivot_offset = size / 2
+	resized.connect(_center_layers)
+	_center_layers()
+
+
+func _center_layers() -> void:
+	for child in get_children():
+		if child is TextureRect:
+			child.position = (size - child.size) / 2
+
 
 func apply_config(cfg: PortraitConfig) -> void:
 	for layer in PortraitCache.layers_order():
@@ -39,3 +49,6 @@ func apply_config(cfg: PortraitConfig) -> void:
 			rect.modulate = Color(col_val)
 		else:
 			rect.modulate = col_val
+
+		# Keep each layer centered within the view
+		rect.position = (size - rect.size) / 2
