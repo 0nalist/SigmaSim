@@ -214,8 +214,18 @@ func _on_confidence_changed(value: float) -> void:
 
 
 func _wait_for_reaction_animations() -> void:
-		while card_stack and card_stack.is_animating:
-				await get_tree().process_frame
+        while true:
+                var animating := false
+                if card_stack and card_stack.is_animating:
+                        animating = true
+                if not animating and chats_tab:
+                        for child in chats_tab.get_children():
+                                if child.get("is_animating"):
+                                        animating = true
+                                        break
+                if not animating:
+                        break
+                await get_tree().process_frame
 
 
 func _exit_tree() -> void:
