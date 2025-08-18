@@ -156,6 +156,13 @@ texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
 
+[node name="Control2" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -8.0
+offset_top = -116.0
+offset_right = 32.0
+offset_bottom = -76.0
+
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -197,7 +204,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 566.0
+offset_left = -17.0
+offset_top = -4.0
+offset_right = 1008.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")

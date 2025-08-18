@@ -35,7 +35,9 @@ theme_override_constants/margin_bottom = 25
 
 [node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
+
 tab_position = 2
+
 
 [node name="General" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
 layout_mode = 2
@@ -110,6 +112,10 @@ focus_mode = 0
 text = "Siggy?"
 
 [node name="DesktopBackground" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
+
+
+visible = false
+
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_title = "Desktop Background"

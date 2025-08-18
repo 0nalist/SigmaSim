@@ -9,6 +9,7 @@ extends Pane
 @onready var comic_dots1_button: CheckButton = %ComicDots1Button
 @onready var comic_dots2_button: CheckButton = %ComicDots2Button
 
+
 func _ready() -> void:
     update_checked_mode()
     #app_title = "Settings"
@@ -67,4 +68,6 @@ func _on_comic_dots_1_button_toggled(toggled_on: bool) -> void:
 
 func _on_comic_dots_2_button_toggled(toggled_on: bool) -> void:
     Events.set_desktop_background_visible("ComicDots2", toggled_on)
+
+
 
