@@ -85,6 +85,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("7_t3xq1")
 grid_line_counts = Vector2i(8, 4)
+default_window_minutes = 90
+min_window_minutes = 10
+poll_hz = 17
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
 layout_mode = 2

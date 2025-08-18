@@ -232,3 +232,14 @@ func _candle_prune(candles: Dictionary, tier_index: int, current_t: int) -> void
 			candles.size -= 1
 		else:
 			break
+
+
+func get_latest_point(id: StringName) -> Vector2:
+	# Returns Vector2(t_minute, value) from the finest tier, or Vector2(-INF, 0.0) if none.
+	if not _series.has(id):
+		return Vector2(-INF, 0.0)
+	var line: Dictionary = _series[id].tiers[0].line
+	if line.size == 0:
+		return Vector2(-INF, 0.0)
+	var idx: int = (line.head + line.size - 1) % line.capacity
+	return Vector2(float(line.times[idx]), line.values[idx])
