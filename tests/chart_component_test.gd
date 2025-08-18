@@ -1,0 +1,16 @@
+extends SceneTree
+func _init():
+	var hist = Engine.get_singleton("HistoryManager")
+	hist.register_series(&"cash")
+	hist.add_sample(&"cash", 0, 0.0)
+	hist.add_sample(&"cash", 5, 23.0)
+	hist.add_sample(&"cash", 10, 24.0)
+	var ChartComponent = load("res://components/ui/chart_component.gd")
+	var chart = ChartComponent.new()
+	var series = chart._build_series_with_anchors(&"cash", 0, 10)
+	assert(series.size() == 3)
+	assert(series[0] == Vector2(0.0, 0.0))
+	assert(series[1] == Vector2(5.0, 23.0))
+	assert(series[2] == Vector2(10.0, 24.0))
+	print("chart_component_test passed")
+	quit()
