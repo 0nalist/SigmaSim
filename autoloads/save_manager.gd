@@ -13,7 +13,7 @@ func _ready():
 
 # --- Slot Path ---
 func get_slot_path(slot_id: int) -> String:
-return SAVE_DIR + "save_slot_%d.json" % slot_id
+	return SAVE_DIR + "save_slot_%d.json" % slot_id
 
 # --- Metadata Storage ---
 func save_slot_metadata(metadata: Dictionary) -> void:
@@ -44,26 +44,26 @@ func get_next_available_slot() -> int:
 
 
 func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
-if slot_id <= 0:
-push_error("❌ Invalid slot_id: %d" % slot_id)
-return
-reset_managers()
-current_slot_id = slot_id
+	if slot_id <= 0:
+		push_error("❌ Invalid slot_id: %d" % slot_id)
+		return
+	reset_managers()
+	current_slot_id = slot_id
 
-var password = user_data.get("password", "")
-var seed_value: int
-if password != "":
-seed_value = _hash_string_djb2(password)
-else:
-seed_value = int(Time.get_unix_time_from_system())
-user_data["global_rng_seed"] = seed_value
-RNGManager.init_seed(seed_value)
+	var password = user_data.get("password", "")
+	var seed_value: int
+	if password != "":
+		seed_value = _hash_string_djb2(password)
+	else:
+		seed_value = int(Time.get_unix_time_from_system())
+		user_data["global_rng_seed"] = seed_value
+		RNGManager.init_seed(seed_value)
 
-PlayerManager.user_data = user_data.duplicate(true)
+	PlayerManager.user_data = user_data.duplicate(true)
 
-var background = user_data.get("background", "")
-if background != "":
-PlayerManager.apply_background_effects(background)
+	var background = user_data.get("background", "")
+	if background != "":
+		PlayerManager.apply_background_effects(background)
 
 	var starting_debt = user_data.get("starting_student_debt", 0.0)
 	PortfolioManager.set_student_loans(starting_debt)
@@ -190,27 +190,27 @@ func reset_managers():
 				GPUManager.reset()
 
 func delete_save(slot_id: int) -> void:
-var path := get_slot_path(slot_id)
+	var path := get_slot_path(slot_id)
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
 	if DBManager != null:
 		DBManager.delete_slot_data(slot_id)
 	var metadata = load_slot_metadata()
-metadata.erase("slot_%d" % slot_id)
-save_slot_metadata(metadata)
+	metadata.erase("slot_%d" % slot_id)
+	save_slot_metadata(metadata)
 
 # --- Helper Functions ---
 func vector2_to_dict(v: Vector2) -> Dictionary:
-return { "x": v.x, "y": v.y }
+	return { "x": v.x, "y": v.y }
 
 func dict_to_vector2(d: Dictionary, default := Vector2.ZERO) -> Vector2:
-if typeof(d) != TYPE_DICTIONARY:
-return default
-return Vector2(d.get("x", default.x), d.get("y", default.y))
+	if typeof(d) != TYPE_DICTIONARY:
+		return default
+	return Vector2(d.get("x", default.x), d.get("y", default.y))
 
 func _hash_string_djb2(text: String) -> int:
-var hash := 5381
-for i in text.length():
-hash = ((hash << 5) + hash) + text.unicode_at(i)
-hash &= 0xFFFFFFFF
-return hash
+	var hash := 5381
+	for i in text.length():
+		hash = ((hash << 5) + hash) + text.unicode_at(i)
+		hash &= 0xFFFFFFFF
+	return hash
