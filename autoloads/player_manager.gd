@@ -49,7 +49,8 @@ var default_user_data: Dictionary = {
 
 	# Flags and progression
 	"unlocked_perks": [],
-	"seen_dialogue_ids": []
+	"seen_dialogue_ids": [],
+	"global_rng_seed": 0
 }
 
 var user_data: Dictionary = default_user_data.duplicate(true)
@@ -67,6 +68,8 @@ func set_var(key: String, value) -> void:
 
 func reset():
 	user_data = default_user_data.duplicate(true)
+	user_data["global_rng_seed"] = Time.get_unix_time_from_system()
+	RNGManager.init_seed(user_data["global_rng_seed"])
 	SaveManager.current_slot_id = -1
 
 
@@ -94,9 +97,12 @@ func get_save_data() -> Dictionary:
 
 func load_from_data(data: Dictionary) -> void:
 	user_data = data.duplicate(true)
+	if not user_data.has("global_rng_seed"):
+		user_data["global_rng_seed"] = Time.get_unix_time_from_system()
 	ensure_default_stats()
 	if user_data.has("confidence"):
 		user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
+	RNGManager.init_seed(user_data["global_rng_seed"])
 
 
 
