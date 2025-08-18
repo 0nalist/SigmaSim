@@ -6,20 +6,24 @@ const INDEX_PATH := SAVE_DIR + "save_index.json"
 
 var current_slot_id: int = -1
 
+
 func _ready():
 	var dir := DirAccess.open("user://")
 	if not dir.dir_exists("saves"):
 		dir.make_dir("saves")
 
+
 # --- Slot Path ---
 func get_slot_path(slot_id: int) -> String:
 	return SAVE_DIR + "save_slot_%d.json" % slot_id
+
 
 # --- Metadata Storage ---
 func save_slot_metadata(metadata: Dictionary) -> void:
 	var file := FileAccess.open(INDEX_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify(metadata, "\t"))
 	file.close()
+
 
 func load_slot_metadata() -> Dictionary:
 	if not FileAccess.file_exists(INDEX_PATH):
@@ -30,9 +34,11 @@ func load_slot_metadata() -> Dictionary:
 	var parsed = JSON.parse_string(text)
 	return parsed if parsed != null else {}
 
+
 func get_profile_metadata(slot_id: int) -> Dictionary:
 	var metadata = load_slot_metadata()
 	return metadata.get("slot_%d" % slot_id, {})
+
 
 func get_next_available_slot() -> int:
 	var metadata = load_slot_metadata()
@@ -40,6 +46,7 @@ func get_next_available_slot() -> int:
 	while metadata.has("slot_%d" % i):
 		i += 1
 	return i
+
 
 func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	if slot_id <= 0:
@@ -69,6 +76,7 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	PortfolioManager.set_credit_limit(starting_credit_limit)
 
 	save_to_slot(slot_id)
+
 
 # --- Save/Load Full Game State ---
 func save_to_slot(slot_id: int) -> void:
@@ -102,12 +110,14 @@ func save_to_slot(slot_id: int) -> void:
 	var player_data = PlayerManager.get_save_data()
 	metadata[slot_key]["name"] = player_data.get("name", "Unnamed")
 	metadata[slot_key]["username"] = player_data.get("username", "user")
+	metadata[slot_key]["password"] = player_data.get("password", "")
 	metadata[slot_key]["portrait_config"] = player_data.get("portrait_config", {})
 	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
 	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
 	metadata[slot_key]["cash"] = PortfolioManager.cash
 
 	save_slot_metadata(metadata)
+
 
 func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
@@ -167,6 +177,7 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("windows"):  # Always load windows last
 		WindowManager.load_from_data(data["windows"])
 
+
 func reset_game_state() -> void:
 	# Reset all relevant managers to blank state
 	StatManager.reset()
@@ -181,6 +192,7 @@ func reset_game_state() -> void:
 	GPUManager.reset()
 	# BillManager.reset()
 
+
 func reset_managers():
 	StatManager.reset()
 	PortfolioManager.reset()
@@ -190,6 +202,7 @@ func reset_managers():
 	WorkerManager.reset()
 	TaskManager.reset()
 	GPUManager.reset()
+
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)
@@ -201,9 +214,11 @@ func delete_save(slot_id: int) -> void:
 	metadata.erase("slot_%d" % slot_id)
 	save_slot_metadata(metadata)
 
+
 # --- Helper Functions ---
 func vector2_to_dict(v: Vector2) -> Dictionary:
-	return { "x": v.x, "y": v.y }
+	return {"x": v.x, "y": v.y}
+
 
 func dict_to_vector2(d: Dictionary, default := Vector2.ZERO) -> Vector2:
 	if typeof(d) != TYPE_DICTIONARY:
