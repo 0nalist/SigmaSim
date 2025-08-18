@@ -1,11 +1,13 @@
-[gd_scene load_steps=35 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=42 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
 [ext_resource type="Texture2D" uid="uid://f3id4mqiae6r" path="res://assets/backgrounds/purplefieldgreenskyx480_restrictive.png" id="3_0utxc"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
+[ext_resource type="Shader" uid="uid://bow6hwdhrtw30" path="res://assets/shaders/deep_sky_blue_warp_shader.gdshader" id="4_fjtwy"]
 [ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://components/ticker.gd" id="5_g75lf"]
+[ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="5_yi8nh"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
 [ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="7_c7kal"]
 [ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://components/clock.gd" id="9_dc0b5"]
@@ -21,6 +23,38 @@
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="23_dik0q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yi8nh"]
+shader = ExtResource("4_fjtwy")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
+
+[sub_resource type="Gradient" id="Gradient_iij0d"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_668nl"]
+gradient = SubResource("Gradient_iij0d")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rbayd"]
+shader = ExtResource("5_yi8nh")
+shader_parameter/gradient = SubResource("GradientTexture2D_668nl")
+shader_parameter/circle_color = Color(4.81308e-06, 0.665883, 0.95733, 1)
+shader_parameter/circle_multiplier = 32.0
+shader_parameter/speed = 0.01
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/rotation = Transform2D(1, 1, 1, -1, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5aheu"]
+shader = ExtResource("5_yi8nh")
+shader_parameter/gradient = SubResource("GradientTexture2D_668nl")
+shader_parameter/circle_color = Color(0.453629, 0.756384, 1, 1)
+shader_parameter/circle_multiplier = 32.0
+shader_parameter/speed = 0.1
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
 texture = ExtResource("9_m483i")
@@ -120,6 +154,47 @@ scale = Vector2(0.8673, 0.8673)
 texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+material = SubResource("ShaderMaterial_yi8nh")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect2" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_rbayd")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = 1779.0
+offset_right = 494.0
+offset_bottom = 2733.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_5aheu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 566.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="TopBar" type="Control" parent="."]
 layout_mode = 1

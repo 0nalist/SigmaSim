@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=12 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bgsi3yx2mr1rj" path="res://components/ui/login_settings_panel_container.tscn" id="4_7f2l0"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="4_hcclx"]
 [ext_resource type="FontFile" uid="uid://deimmaj7ejh4l" path="res://assets/fonts/CapitalisTypOasis.ttf" id="5_hcclx"]
+[ext_resource type="Shader" uid="uid://dw5y8ehkp7c1r" path="res://assets/shaders/pink_warp.gdshader" id="5_wmdi4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
 bg_color = Color(0, 0.435981, 0.736537, 1)
@@ -15,6 +16,15 @@ border_width_top = 8
 border_width_right = 8
 border_width_bottom = 8
 border_color = Color(0, 0.616993, 0.765051, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s425x"]
+shader = ExtResource("5_wmdi4")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmwu1"]
 bg_color = Color(0, 0.670588, 0.968627, 1)
@@ -50,6 +60,15 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_nfsrt")
+
+[node name="ColorRect" type="ColorRect" parent="Panel"]
+material = SubResource("ShaderMaterial_s425x")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="LoggingInPanel" type="Panel" parent="Panel"]
 unique_name_in_owner = true
