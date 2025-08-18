@@ -49,8 +49,17 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 		return
 	reset_managers()
 	current_slot_id = slot_id
-	
+
+	var password := user_data.get("password", "")
+	var seed: int
+	if password.strip_edges() != "":
+		seed = PlayerManager.djb2(password)
+	else:
+		seed = Time.get_unix_time_from_system()
+	user_data["global_rng_seed"] = seed
+	RNGManager.init_seed(seed)
 	PlayerManager.user_data = user_data.duplicate(true)
+
 
 	var background = user_data.get("background", "")
 	if background != "":
@@ -106,7 +115,7 @@ func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
-	
+
 
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
@@ -143,7 +152,7 @@ func load_from_slot(slot_id: int) -> void:
 		#PlayerManager.set_slot_id(slot_id)
 	if data.has("workers"):
 		WorkerManager.load_from_data(data["workers"])
-	
+
 	if data.has("gpus"):
 		GPUManager.load_from_data(data["gpus"])
 	if data.has("bills"):
