@@ -7,6 +7,7 @@ class_name BrokeRage
 @onready var invested_label: Label = %InvestedLabel
 @onready var debt_label: Label = %DebtLabel
 
+@onready var cash_chart: ChartComponent = %CashChart
 
 @onready var passive_income_label: Label = %PassiveIncomeLabel
 
@@ -18,28 +19,32 @@ func _ready() -> void:
 	#app_icon = preload("res://assets/AlphaOnline.png")
 	#emit_signal("title_updated", app_title)
 
-	# Connect signals from PortfolioManager
-	PortfolioManager.cash_updated.connect(_on_cash_updated)
-	PortfolioManager.resource_changed.connect(_on_resource_changed)
-	PortfolioManager.investments_updated.connect(_on_investments_updated)
-	
-	await get_tree().process_frame
-	# Initial UI update
-	_on_cash_updated(PortfolioManager.cash)
-	_on_passive_income_updated(PortfolioManager.get_passive_income())
-	_on_investments_updated(PortfolioManager.get_total_investments())
-	_on_debt_updated()
-	MarketManager.refresh_prices()
+        # Connect signals from PortfolioManager
+        PortfolioManager.cash_updated.connect(_on_cash_updated)
+        PortfolioManager.resource_changed.connect(_on_resource_changed)
+        PortfolioManager.investments_updated.connect(_on_investments_updated)
+
+        cash_chart.add_series("cash", "Cash")
+
+        await get_tree().process_frame
+        # Initial UI update
+        _on_cash_updated(PortfolioManager.cash)
+        _on_passive_income_updated(PortfolioManager.get_passive_income())
+        _on_investments_updated(PortfolioManager.get_total_investments())
+        _on_debt_updated()
+        MarketManager.refresh_prices()
 
 func _on_cash_updated(_cash: float) -> void:
 	var cash = PortfolioManager.cash
 	var balance = PortfolioManager.get_balance()
 
-	cash_label.text = "Cash: $" + NumberFormatter.format_number(PortfolioManager.cash)
-	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
+        cash_label.text = "Cash: $" + NumberFormatter.format_number(cash)
+        balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(balance))
 
-	await get_tree().process_frame
-	#emit_signal("title_updated", "BrokeRage - $%.2f" % cash) # Not currently working
+        HistoryManager.add_sample("cash", Time.get_ticks_msec() / 1000.0, cash)
+
+        await get_tree().process_frame
+        #emit_signal("title_updated", "BrokeRage - $%.2f" % cash) # Not currently working
 
 
 
