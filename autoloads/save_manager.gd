@@ -52,12 +52,6 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	
 	PlayerManager.user_data = user_data.duplicate(true)
 
-	var seed = PlayerManager.user_data.get("global_seed", 0)
-	if seed == 0 and PlayerManager.user_data.has("password"):
-		seed = NameManager.djb2(PlayerManager.user_data["password"])
-		PlayerManager.user_data["global_seed"] = seed
-	NameManager.global_seed = seed
-
 	var background = user_data.get("background", "")
 	if background != "":
 		PlayerManager.apply_background_effects(background)
@@ -101,7 +95,6 @@ func save_to_slot(slot_id: int) -> void:
 	var player_data = PlayerManager.get_save_data()
 	metadata[slot_key]["name"] = player_data.get("name", "Unnamed")
 	metadata[slot_key]["username"] = player_data.get("username", "user")
-		metadata[slot_key]["password"] = player_data.get("password", "")
 	metadata[slot_key]["portrait_config"] = player_data.get("portrait_config", {})
 	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
 	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
