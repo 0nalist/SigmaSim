@@ -24,7 +24,7 @@ func _check_validity() -> void:
 
 func _simulate_selections() -> void:
 	var fake_cursor := CursorManager.cursor
-	var original_pos := fake_cursor.position
+	#var original_pos := fake_cursor.position
 
 	# Define checkboxes to simulate clicking
 	var checkboxes := [femmes_check_box, mascs_check_box, enby_check_box]
