@@ -532,12 +532,16 @@ func block_player() -> void:
 func _on_victory_number_clicked() -> void:
 	show_victory_screen()
 
+@onready var victory_name_label: Label = %VictoryNameLabel
+
+
 @onready var victory_ex_label: Label = %VictoryExLabel
 var ex_award: float
 
 func show_victory_screen():
 	ex_award = npc.attractiveness / 10.0 # TEMP
 	victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+	victory_name_label.text = npc.first_name + " has been added to"
 	end_battle_screen_container.show()
 	end_battle(victorious, npc)
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "victory")
@@ -744,3 +748,7 @@ func _on_close_chat_button_pressed() -> void:
 	persist_battle_stats_to_npc()
 	chat_closed.emit()
 	queue_free()
+
+
+func _on_daterbase_button_pressed() -> void:
+	WindowManager.launch_app_by_name("Daterbase")

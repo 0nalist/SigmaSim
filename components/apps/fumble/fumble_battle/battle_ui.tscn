@@ -704,7 +704,6 @@ script = ExtResource("8_4kvrx")
 
 [node name="EndBattleScreenContainer" type="CenterContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="EndBattleScreenContainer"]
@@ -739,6 +738,18 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "You earned X Ex"
 horizontal_alignment = 1
 
+[node name="VictoryNameLabel" type="Label" parent="EndBattleScreenContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "[NAME] has been added to"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DaterbaseButton" type="Button" parent="EndBattleScreenContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Daterbase"
+
 [node name="CloseChatButton" type="Button" parent="EndBattleScreenContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -759,4 +770,5 @@ theme_override_fonts/font = ExtResource("20_7gtst")
 theme_override_font_sizes/font_size = 64
 text = "BLOCKED!"
 
+[connection signal="pressed" from="EndBattleScreenContainer/PanelContainer/MarginContainer/VBoxContainer/DaterbaseButton" to="." method="_on_daterbase_button_pressed"]
 [connection signal="pressed" from="EndBattleScreenContainer/PanelContainer/MarginContainer/VBoxContainer/CloseChatButton" to="." method="_on_close_chat_button_pressed"]
