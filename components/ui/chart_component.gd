@@ -17,10 +17,10 @@ var _drag_last_mouse: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	window_span = default_window_seconds
-	window_end_time = Engine.get_time_since_startup()
+	window_end_time = Time.get_ticks_msec() / 1000.0
 	if HistoryManager and HistoryManager.has_signal("series_sampled"):
 		HistoryManager.series_sampled.connect(_on_series_sampled)
-	update()
+	queue_redraw()
 
 func add_series(id: StringName, label: String = "", color: Color = Color.TRANSPARENT) -> void:
 	if color == Color.TRANSPARENT:
@@ -30,20 +30,20 @@ func add_series(id: StringName, label: String = "", color: Color = Color.TRANSPA
 		"color": color,
 		"visible": true,
 	}
-	update()
+	queue_redraw()
 
 func remove_series(id: StringName) -> void:
 	_series.erase(id)
-	update()
+	queue_redraw()
 
 func set_series_visible(id: StringName, visible: bool) -> void:
 	if _series.has(id):
 		_series[id].visible = visible
-		update()
+		queue_redraw()
 
 func clear_series() -> void:
 	_series.clear()
-	update()
+	queue_redraw()
 
 func _color_from_id(id: StringName) -> Color:
 	if palette.is_empty():
@@ -56,7 +56,7 @@ func _color_from_id(id: StringName) -> Color:
 func _on_series_sampled(_id: StringName, t: float) -> void:
 	if not user_holds_window:
 		window_end_time = t
-		update()
+		queue_redraw()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -70,7 +70,7 @@ func _gui_input(event: InputEvent) -> void:
 				var rel = (mouse_t - start_t) / window_span
 				window_end_time = mouse_t + (1.0 - rel) * window_span
 				user_holds_window = true
-				update()
+				queue_redraw()
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				var plot = _plot_rect()
@@ -86,7 +86,7 @@ func _gui_input(event: InputEvent) -> void:
 		var seconds_per_pixel = window_span / max(plot.size.x, 1.0)
 		window_end_time -= dx * seconds_per_pixel
 		_drag_last_mouse = event.position
-		update()
+		queue_redraw()
 
 func _plot_rect() -> Rect2:
 	return Rect2(margins.x, margins.y, max(1.0, size.x - margins.x - margins.z), max(1.0, size.y - margins.y - margins.w))
