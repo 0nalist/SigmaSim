@@ -188,7 +188,7 @@ func _refill_swipe_pool_async(time_budget_msec := 8) -> void:
 
 	pool += new_indices
 	pool += recycled_indices
-       RNGManager.shuffle(pool)
+	RNGManager.shuffle(pool)
 
 	while swipe_pool.size() < swipe_pool_size and not pool.is_empty():
 		swipe_pool.append(pool.pop_front())

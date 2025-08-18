@@ -83,7 +83,7 @@ func get_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 
 
 func get_all_stats() -> Dictionary:
-	var result := PlayerManager.user_data.duplicate(true)
+	var result = PlayerManager.user_data.duplicate(true)
 	for key in computed_stats.keys():
 		result[key] = computed_stats[key]
 	for key in temporary_overrides.keys():

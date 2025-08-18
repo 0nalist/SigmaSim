@@ -7,18 +7,14 @@ signal gpu_burned_out(index: int)
 signal crypto_mined(crypto)
 signal block_attempted(symbol: String)
 
-#var mining_cooldowns := {}  # symbol -> float (remaining cooldown in minutes)
+# var mining_cooldowns := {}  # symbol -> float (remaining cooldown in minutes)
 
 var next_block_time := {}  # symbol -> float (absolute in-game minute when next roll occurs)
-
-
-
 
 # GPU Pricing
 var gpu_base_price: float = 100.0
 var current_gpu_price: float = gpu_base_price
 var gpu_price_growth: float = 1.2  # price multiplier each purchase
-
 
 @export var base_power: int = 10
 @export var overclock_power_multiplier: float = 1.5
@@ -27,7 +23,7 @@ var gpu_price_growth: float = 1.2  # price multiplier each purchase
 var total_power := 0  # Cached sum for all active GPUs
 
 # GPU data arrays — indexed by `gpu_id`
-var gpu_cryptos: PackedStringArray = []   # Which crypto this GPU is mining
+var gpu_cryptos: PackedStringArray = []  # Which crypto this GPU is mining
 var is_overclocked: PackedByteArray = []  # 1 = true, 0 = false
 var burnout_chances: PackedFloat32Array = []
 
@@ -39,11 +35,9 @@ func _ready() -> void:
 	MarketManager.crypto_market_ready.connect(setup_crypto_cooldowns)
 
 func _on_minute_tick(_unused: int) -> void:
-       var rng = RNGManager.get_rng()
-       var current_time = TimeManager.total_minutes_elapsed
-	
-	#var now = 
-	
+	var rng = RNGManager.get_rng()
+	var current_time = TimeManager.total_minutes_elapsed
+
 	for symbol in next_block_time.keys():
 		var next_time: float = next_block_time[symbol]
 		var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
@@ -59,7 +53,7 @@ func _on_minute_tick(_unused: int) -> void:
 
 		while current_time >= next_time:
 			emit_signal("block_attempted", symbol)
-                       var random_difficulty = rng.randi_range(0, crypto.power_required)
+			var random_difficulty = rng.randi_range(0, crypto.power_required)
 			if power >= random_difficulty:
 				PortfolioManager.add_crypto(symbol, crypto.block_size)
 				emit_signal("crypto_mined", crypto)
@@ -69,18 +63,15 @@ func _on_minute_tick(_unused: int) -> void:
 	emit_signal("gpus_changed")  # Notify Minerr UI to refresh
 
 func setup_crypto_cooldowns() -> void:
-		next_block_time.clear()
-		for crypto in MarketManager.crypto_market.values():
-			next_block_time[crypto.symbol] = TimeManager.total_minutes_elapsed + crypto.block_time
+	next_block_time.clear()
+	for crypto in MarketManager.crypto_market.values():
+		next_block_time[crypto.symbol] = TimeManager.total_minutes_elapsed + crypto.block_time
 
 func get_time_until_next_block(symbol: String) -> int:
 	if not next_block_time.has(symbol):
-			return -1
+		return -1
 	# Use total_minutes_elapsed to handle day rollovers correctly
 	return int(ceil(next_block_time[symbol] - TimeManager.total_minutes_elapsed))
-
-
-
 
 func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 	gpu_cryptos.append(crypto_symbol)
@@ -108,7 +99,6 @@ func buy_gpu() -> bool:
 		print("Insufficient funds to buy GPU.")
 		return false
 
-# Adjust get_free_gpu_count logic:
 func get_free_gpu_count() -> int:
 	var free := 0
 	for crypto in gpu_cryptos:
@@ -116,7 +106,6 @@ func get_free_gpu_count() -> int:
 			free += 1
 	return free
 
-# Modified assign_gpu function (to assign a free GPU to a crypto)
 func assign_free_gpu(symbol: String) -> bool:
 	for i in range(gpu_cryptos.size()):
 		if gpu_cryptos[i] == "":
@@ -124,8 +113,6 @@ func assign_free_gpu(symbol: String) -> bool:
 			emit_signal("gpus_changed")
 			return true
 	return false  # No free GPU available
-
-
 
 func set_overclocked(index: int, overclocked: bool) -> void:
 	if index >= gpu_cryptos.size():
@@ -145,14 +132,13 @@ func set_overclocked(index: int, overclocked: bool) -> void:
 		else:
 			is_overclocked[index] = 0
 
-
 func process_gpu_tick() -> void:
-       var rng = RNGManager.get_rng()
-       total_power = 0  # Recalculate total power
+	var rng = RNGManager.get_rng()
+	total_power = 0  # Recalculate total power
 
 	for i in range(gpu_cryptos.size()):
-		var symbol : String = gpu_cryptos[i]
-		var crypto : Cryptocurrency = MarketManager.crypto_market.get(symbol)
+		var symbol: String = gpu_cryptos[i]
+		var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
 		if not crypto:
 			continue
 
@@ -161,7 +147,7 @@ func process_gpu_tick() -> void:
 			power *= overclock_power_multiplier
 			burnout_chances[i] += burnout_rate_per_tick
 
-                       if rng.randi_range(0, 1000) < burnout_chances[i]:
+			if rng.randi_range(0, 1000) < burnout_chances[i]:
 				to_remove.append(i)
 				emit_signal("gpu_burned_out", i)
 				continue
@@ -169,7 +155,7 @@ func process_gpu_tick() -> void:
 			burnout_chances[i] = 0.0  # Reset burnout if not overclocked
 
 		# Mining logic
-               if rng.randi_range(0, crypto.power_required) < power:
+		if rng.randi_range(0, crypto.power_required) < power:
 			PortfolioManager.add_crypto(symbol, crypto.reward_per_mine)
 
 		total_power += int(power)
@@ -181,7 +167,6 @@ func _cleanup_burned_gpus() -> void:
 	if to_remove.is_empty():
 		return
 
-	# Remove in reverse to preserve indices
 	to_remove.sort()
 	for i in range(to_remove.size() - 1, -1, -1):
 		var index := to_remove[i]
@@ -197,19 +182,17 @@ func remove_gpu_from(symbol: String, count: int = 1) -> void:
 	var i := gpu_cryptos.size() - 1
 	while i >= 0 and removed < count:
 		if gpu_cryptos[i] == symbol:
-			gpu_cryptos[i] = ""  # ← Assign GPU as free (unassigned), don't delete it!
-			is_overclocked[i] = 0  # Optionally reset overclock status
-			burnout_chances[i] = 0.0  # Optionally reset burnout chances
+			gpu_cryptos[i] = ""  # Assign GPU as free (unassigned), don't delete it!
+			is_overclocked[i] = 0
+			burnout_chances[i] = 0.0
 			removed += 1
 		i -= 1
-	
+
 	if removed > 0:
 		emit_signal("gpus_changed")
 
-
 func get_total_gpu_count() -> int:
 	return gpu_cryptos.size()
-
 
 func get_gpu_count_for(symbol: String) -> int:
 	var count := 0
@@ -232,8 +215,7 @@ func get_new_gpu_price() -> float:
 	return current_gpu_price
 
 func get_used_gpu_price() -> float:
-	# Assuming used GPUs are a fixed discount (e.g. 50% of new)
-	return current_gpu_price * 0.5
+	return current_gpu_price * 0.5  # Fixed discount
 
 ## SAVE/LOAD/RESET
 
@@ -244,9 +226,7 @@ func reset() -> void:
 	to_remove.clear()
 	total_power = 0
 	current_gpu_price = gpu_base_price
-
 	next_block_time.clear()
-
 
 func get_save_data() -> Dictionary:
 	var next_times: Dictionary = {}
@@ -260,7 +240,6 @@ func get_save_data() -> Dictionary:
 		"burnout_chances": burnout_chances,
 		"next_block_time": next_times
 	}
-
 
 func load_from_data(data: Dictionary) -> void:
 	reset()
@@ -282,7 +261,6 @@ func load_from_data(data: Dictionary) -> void:
 		arr_burnout = []
 	burnout_chances = array_to_packed_float32_array(arr_burnout)
 
-	# -- Force array lengths to match
 	var gpu_count = gpu_cryptos.size()
 	while is_overclocked.size() < gpu_count:
 		is_overclocked.append(0)
@@ -301,12 +279,10 @@ func load_from_data(data: Dictionary) -> void:
 
 	emit_signal("gpus_changed")
 
-
-
 func array_to_packed_byte_array(arr: Array) -> PackedByteArray:
 	var pba := PackedByteArray()
 	for v in arr:
-		pba.append(int(v))  # Make sure to cast to int (0/1)
+		pba.append(int(v))
 	return pba
 
 func array_to_packed_float32_array(arr: Array) -> PackedFloat32Array:

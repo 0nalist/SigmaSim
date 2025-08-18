@@ -12,23 +12,20 @@ signal stock_price_updated(symbol: String, stock: Stock)
 signal crypto_price_updated(name: String, crypto: Cryptocurrency)
 
 var STOCK_RESOURCES = {
-	"ALPH_STOCK" : preload("res://resources/stocks/alph_stock.tres"),
-	"BRO_STOCK" : preload("res://resources/stocks/bro_stock.tres"),
-	"GME_STOCK" : preload("res://resources/stocks/gme_stock.tres"),
-	"LOCK_STOCK" : preload("res://resources/stocks/lock_stock.tres"),
-	"TSLA_STOCK" : preload("res://resources/stocks/tsla_stock.tres"),
-	"USD_STOCK" : preload("res://resources/stocks/usd_stock.tres"),
-	"YOLO_STOCK" : preload("res://resources/stocks/yolo_stock.tres"),
-	
+	"ALPH_STOCK": preload("res://resources/stocks/alph_stock.tres"),
+	"BRO_STOCK": preload("res://resources/stocks/bro_stock.tres"),
+	"GME_STOCK": preload("res://resources/stocks/gme_stock.tres"),
+	"LOCK_STOCK": preload("res://resources/stocks/lock_stock.tres"),
+	"TSLA_STOCK": preload("res://resources/stocks/tsla_stock.tres"),
+	"USD_STOCK": preload("res://resources/stocks/usd_stock.tres"),
+	"YOLO_STOCK": preload("res://resources/stocks/yolo_stock.tres"),
 }
 
 var CRYPTO_RESOURCES = {
-	"BITC_CRYPTO" : preload("res://resources/crypto/bitc_crypto.tres"),
-	"HAWK_CRYPTO" : preload("res://resources/crypto/hawk_crypto.tres"),
-	"WORM_CRYPTO" : preload("res://resources/crypto/worm_crypto.tres"),
-	
+	"BITC_CRYPTO": preload("res://resources/crypto/bitc_crypto.tres"),
+	"HAWK_CRYPTO": preload("res://resources/crypto/hawk_crypto.tres"),
+	"WORM_CRYPTO": preload("res://resources/crypto/worm_crypto.tres"),
 }
-
 
 func _ready():
 	TimeManager.minute_passed.connect(_on_minute_passed)
@@ -53,10 +50,8 @@ func register_crypto(crypto: Cryptocurrency) -> void:
 	crypto_market[crypto.symbol] = crypto
 	emit_signal("crypto_price_updated", crypto.symbol, crypto)
 
-
 func get_stock(symbol: String) -> Stock:
 	return stock_market.get(symbol)
-
 
 func apply_stock_transaction(symbol: String, shares_delta: int) -> void:
 	var stock = stock_market.get(symbol)
@@ -82,26 +77,26 @@ func refresh_prices():
 	_update_stock_prices()
 
 func _update_stock_prices():
-       var rng = RNGManager.get_rng()
-       for stock in stock_market.values():
-               stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
+	var rng = RNGManager.get_rng()
+	for stock in stock_market.values():
+		stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
 
 		stock.momentum -= 1
-               if stock.momentum <= 0:
-                       stock.sentiment = rng.randf_range(-1.0, 1.0)
-                       stock.momentum = rng.randi_range(5, 20)
+		if stock.momentum <= 0:
+			stock.sentiment = rng.randf_range(-1.0, 1.0)
+			stock.momentum = rng.randi_range(5, 20)
 
 		var deviation = stock.price / stock.intrinsic_value
-               var noise = rng.randf_range(-0.5, 0.5)
+		var noise = rng.randf_range(-0.5, 0.5)
 		var directional_bias = stock.sentiment * 0.25
 		var total_factor = clamp(noise + directional_bias, -1.0, 1.0)
 		var max_percent_change = stock.volatility / 100.0
 		var delta = stock.price * max_percent_change * total_factor
 
-               if deviation > 2.0 and rng.randf() < 0.2:
-                       delta -= stock.price * rng.randf_range(0.1, 0.3)
-               elif deviation < 0.5 and rng.randf() < 0.2:
-                       delta += stock.price * rng.randf_range(0.1, 0.3)
+		if deviation > 2.0 and rng.randf() < 0.2:
+			delta -= stock.price * rng.randf_range(0.1, 0.3)
+		elif deviation < 0.5 and rng.randf() < 0.2:
+			delta += stock.price * rng.randf_range(0.1, 0.3)
 
 		var old_price = stock.price
 		stock.price = max(snapped(stock.price + delta, 0.01), 0.01)
@@ -117,7 +112,6 @@ func _update_crypto_prices():
 		if abs(crypto.price - old_price) > 0.001:
 			emit_signal("crypto_price_updated", crypto.symbol, crypto)
 
-
 ## --- Initialization --- ##
 
 func _init_crypto_market() -> void:
@@ -131,8 +125,7 @@ func _init_stock_market() -> void:
 		var stock = STOCK_RESOURCES[symbol].duplicate()
 		register_stock(stock)
 
-
-## --- SAVELOAD
+## --- SAVELOAD --- ##
 
 func get_save_data() -> Dictionary:
 	var stock_data := {}
@@ -163,4 +156,5 @@ func load_from_data(data: Dictionary) -> void:
 		if data.get("crypto_market", {}).has(symbol):
 			crypto.from_dict(data["crypto_market"][symbol])
 		register_crypto(crypto)
+
 	emit_signal("crypto_market_ready")

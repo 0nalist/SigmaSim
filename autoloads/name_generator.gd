@@ -31,21 +31,21 @@ func _ready():
 
 # --- Public API ---
 func get_random_name(fem: float = 0.0, masc: float = 0.0, enby: float = 0.0, top_n: int = 1) -> String:
-       var rng = RNGManager.get_rng()
-       if name_pool.is_empty():
-               printerr("⚠️ Name pool is empty!")
-               return "Unnamed"
+	var rng = RNGManager.get_rng()
+	if name_pool.is_empty():
+		printerr("⚠️ Name pool is empty!")
+		return "Unnamed"
 
-       if fem + masc + enby == 0.0:
-               # Choose random name when called without arguments
-               var available := name_pool.map(func(e): return e.name)
-               RNGManager.shuffle(available)
-               var new_name = available[0]
-               _add_to_recent(new_name)
-               return new_name
+	if fem + masc + enby == 0.0:
+		# Choose random name when called without arguments
+		var available := name_pool.map(func(e): return e.name)
+		RNGManager.shuffle(available)
+		var new_name = available[0]
+		_add_to_recent(new_name)
+		return new_name
 
-       var target_vector := Vector3(fem, masc, enby).normalized()
-       var scored_names: Array = []
+	var target_vector := Vector3(fem, masc, enby).normalized()
+	var scored_names: Array = []
 
 	# Score all names
 	for entry in name_pool:
@@ -60,7 +60,7 @@ func get_random_name(fem: float = 0.0, masc: float = 0.0, enby: float = 0.0, top
 	if top_n > 0:
 		scored_names.sort_custom(func(a, b): return b["score"] < a["score"])
 		var top_candidates := scored_names.slice(0, min(top_n, scored_names.size()))
-               RNGManager.shuffle(top_candidates)
+		RNGManager.shuffle(top_candidates)
 		var name = top_candidates[0]["name"]
 		_add_to_recent(name)
 		return name
@@ -84,7 +84,7 @@ func get_random_name(fem: float = 0.0, masc: float = 0.0, enby: float = 0.0, top
 		printerr("❌ All fallback methods failed.")
 		return "Unnamed"
 
-       var name := weighted_pool[rng.randi() % weighted_pool.size()]
+	var name := weighted_pool[rng.randi() % weighted_pool.size()]
 	_add_to_recent(name)
 	return name
 

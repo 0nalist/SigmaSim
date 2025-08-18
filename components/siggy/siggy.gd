@@ -1,6 +1,5 @@
 extends Control
 
-
 var slide_duration := 1
 var bounce_height := 9
 var bounce_speed := 0.08  # Time per bounce
@@ -8,7 +7,6 @@ var bounce_speed := 0.08  # Time per bounce
 @onready var siggy_sprite := %SiggySprite
 @onready var speech_label: Label = %SpeechLabel
 @onready var speech_bubble: NinePatchRect = %SpeechBubble
-
 
 func _ready():
 	hide()
@@ -18,18 +16,13 @@ func _ready():
 
 func slide_out_from_behind(window: WindowFrame): ## TODO
 	show()
-	z_index = window.z_index -1
+	z_index = window.z_index - 1
 	position = window.position
 	## decide which end to slide out from based on where the screen is (move towards most free space)
 	## find position that is siggy's size plus margin to the direction determined above
 	## tween there
-	
-
-
-
 
 func slide_in_from_bottom_right():
-	
 	var screen_size = get_viewport_rect().size
 	var siggy_size = size
 
@@ -45,7 +38,6 @@ func slide_in_from_bottom_right():
 	show()
 	create_tween().tween_property(self, "position", target_pos, slide_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-
 func slide_in_from_right():
 	show()
 	var screen_size = get_viewport_rect().size
@@ -58,7 +50,7 @@ func slide_in_from_right():
 
 	# Target position: halfway down screen, 75% across (right quarter)
 	var target_pos = Vector2(
-		screen_size.x * 0.92, #- siggy_size.x / 4,
+		screen_size.x * 0.92,
 		screen_size.y * 0.5 - siggy_size.y / 2
 	)
 
@@ -71,11 +63,8 @@ func slide_in_from_right():
 	var tween = create_tween()
 	tween.tween_property(self, "position", target_pos, slide_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-
-
-
 func talk(text: String, time_per_char := 0.05) -> void:
-        speech_label.text = text
+	speech_label.text = text
 	
 	await get_tree().process_frame
 	speech_label.visible_ratio = 1.0  # ensure full size for height calculation
@@ -86,7 +75,7 @@ func talk(text: String, time_per_char := 0.05) -> void:
 	# Optional: clamp height to a max value if needed
 	label_height = clamp(label_height, 60, 300)
 
-	# Add padding/margin if desired
+	# Add padding/margin
 	var padding = 20
 	speech_bubble.custom_minimum_size.y = label_height + padding
 	
@@ -98,24 +87,22 @@ func talk(text: String, time_per_char := 0.05) -> void:
 	# Fade in speech bubble
 	var tween = create_tween()
 	tween.tween_property(speech_bubble, "modulate:a", 1.0, 0.3)
-
 	await tween.finished
 
 	var total_chars := text.length()
-	var type_duration = clamp(total_chars * time_per_char, 0.5, 10.0)
 	var delay_per_step := time_per_char
 	var bounce_every_n_chars := 2
 
-       var original_pos = siggy_sprite.position
-       var original_rotation = siggy_sprite.rotation_degrees
-       var rng = RNGManager.get_rng()
+	var original_pos = siggy_sprite.position
+	var original_rotation = siggy_sprite.rotation_degrees
+	var rng = RNGManager.get_rng()
 
-       for i in range(total_chars):
-                speech_label.visible_ratio = float(i + 1) / total_chars
+	for i in range(total_chars):
+		speech_label.visible_ratio = float(i + 1) / total_chars
 
-               if i % bounce_every_n_chars == 0:
-                       var bounce_tween = create_tween()
-                       var up = original_pos - Vector2(0, bounce_height + rng.randi_range(-2, 2))
+		if i % bounce_every_n_chars == 0:
+			var bounce_tween = create_tween()
+			var up = original_pos - Vector2(0, bounce_height + rng.randi_range(-2, 2))
 			var angle = 2.0 if i % 4 == 0 else -2.0
 
 			bounce_tween.tween_property(siggy_sprite, "position", up, bounce_speed).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -128,8 +115,6 @@ func talk(text: String, time_per_char := 0.05) -> void:
 	# Ensure Siggy resets cleanly
 	siggy_sprite.rotation_degrees = 0.0
 	siggy_sprite.position = original_pos
-
-
 
 func slide_down_away():
 	var screen_size = get_viewport_rect().size
@@ -151,43 +136,32 @@ func activate(reason: String, data: Dictionary = {}):
 			slide_in_from_right()
 			talk(msg)
 
-
 func get_money_tip() -> String:
-        var tips = []
-
-	#if AppManager.has_app("BrokeRage"):
+	var tips = []
 	tips.append("Check your stocks in BrokeRage.")
-	#if AppManager.has_app("Grinderr"):
 	tips.append("You could pick up a gig on Grinderr.")
-	#if AppManager.has_app("Minerr"):
 	tips.append("Try mining crypto in Minerr.")
 
-       if tips.is_empty():
-               return "Try cutting back on spending for now."
-       var rng = RNGManager.get_rng()
-       return tips[rng.randi() % tips.size()]
+	if tips.is_empty():
+		return "Try cutting back on spending for now."
 
+	var rng = RNGManager.get_rng()
+	return tips[rng.randi() % tips.size()]
 
 func out_of_pocket_wildcard() -> String:
-	
 	var wildcards = []
 	wildcards.append("I'm real and I love you in real life!")
-	
 	wildcards.append("...all I'm saying is, buildings don't just fall down like that!")
 	wildcards.append("And that's the day I learned why they're called sperm whales")
-	#wildcards.append("")
-       var rng = RNGManager.get_rng()
-       return str(wildcards[rng.randi_range(0, wildcards.size()-1)])
-	
 
+	var rng = RNGManager.get_rng()
+	return str(wildcards[rng.randi_range(0, wildcards.size() - 1)])
 
 func _on_talk_button_pressed() -> void:
 	talk(out_of_pocket_wildcard())
 
-
 func _on_check_button_pressed() -> void:
 	slide_down_away()
 
-
 func _on_button_pressed() -> void:
-	pass # Replace with function body.
+	pass  # Replace with function body.
