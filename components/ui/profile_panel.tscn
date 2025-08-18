@@ -48,6 +48,7 @@ custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+portrait_creator_enabled = false
 
 [node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -68,11 +69,11 @@ horizontal_alignment = 1
 
 [node name="PasswordTextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 mouse_filter = 1
-placeholder_text = "password"
+placeholder_text = "seed (optional)"
+editable = false
 
 [node name="LogInButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

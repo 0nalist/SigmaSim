@@ -69,7 +69,7 @@ func get_npcs_by_gender_dot(app_name: String, preferred_gender: Vector3, min_sim
 		var sim = gender_dot_similarity(preferred_gender, npc.gender_vector)
 		if sim >= min_similarity:
 			matches.append(idx)
-	matches.shuffle()
+	RNGManager.shuffle(matches)
 	return matches.slice(0, count)
 
 func gender_dot_similarity(a: Vector3, b: Vector3) -> float:
@@ -172,7 +172,7 @@ func get_batch_of_recycled_npc_indices(app_name: String, count: int) -> Array[in
 	for idx in encountered:
 		if not active.has(idx) and not persistent_npcs.has(idx):
 			pool.append(idx)
-	pool.shuffle()
+	RNGManager.shuffle(pool)
 	var result: Array[int] = []
 	for idx in pool.slice(0, count):
 		result.append(idx)
@@ -192,7 +192,7 @@ func mark_npc_inactive_in_app(idx: int, app_name: String) -> void:
 
 func set_relationship_status(idx: int, app_name: String, status: FumbleManager.FumbleStatus) -> void:
 	if not relationship_status.has(idx):
-			relationship_status[idx] = {}
+		relationship_status[idx] = {}
 	relationship_status[idx][app_name] = status
 
 	if app_name == "fumble":
@@ -201,26 +201,26 @@ func set_relationship_status(idx: int, app_name: String, status: FumbleManager.F
 
 # Returns all NPC indices the player has "liked" in Fumble
 func get_fumble_matches() -> Array:
-		var matches = []
-		var rels = DBManager.get_all_fumble_relationships()
-		for idx in rels.keys():
-				var status_enum: FumbleManager.FumbleStatus = rels[idx]
-				# Show only if currently "liked" or "matched"
-				if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
-						matches.append(int(idx))
-		return matches
+	var matches = []
+	var rels = DBManager.get_all_fumble_relationships()
+	for idx in rels.keys():
+			var status_enum: FumbleManager.FumbleStatus = rels[idx]
+			# Show only if currently "liked" or "matched"
+			if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+				matches.append(int(idx))
+	return matches
 
 func get_fumble_matches_with_times() -> Array:
 		var out: Array = []
 		var rows = DBManager.get_all_fumble_relationship_rows()
 		for r in rows:
-				var status_enum: FumbleManager.FumbleStatus = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
-				if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
-						out.append({
-								"npc_id": int(r.npc_id),
-								"created_at": int(r.created_at),
-								"updated_at": int(r.updated_at)
-						})
+			var status_enum: FumbleManager.FumbleStatus = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
+			if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+					out.append({
+							"npc_id": int(r.npc_id),
+							"created_at": int(r.created_at),
+							"updated_at": int(r.updated_at)
+					})
 		return out
 
 

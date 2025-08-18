@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://drm1apbdsjj5g"]
+[gd_scene load_steps=3 format=3 uid="uid://drm1apbdsjj5g"]
 
 [ext_resource type="Script" uid="uid://d3b6881g21thc" path="res://components/portrait/portrait_view.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cq21pla351uw0" path="res://assets/emojis/mirror_twemoji_x72_1fa9e.png" id="2_kkgc5"]
 
 [node name="PortraitView" type="Control"]
 layout_mode = 3
@@ -51,4 +52,6 @@ anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -24.0
 offset_bottom = 24.0
-text = "🪞"
+grow_horizontal = 0
+focus_mode = 0
+icon = ExtResource("2_kkgc5")

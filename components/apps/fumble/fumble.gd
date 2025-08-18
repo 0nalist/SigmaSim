@@ -59,6 +59,8 @@ func _setup_over_frames() -> void:
 	card_stack.card_swiped_left.connect(_on_card_swiped_left)
 	card_stack.card_swiped_right.connect(_on_card_swiped_right)
 
+	StatManager.connect_to_stat("confidence", self, "_on_confidence_changed")
+
 	self_button.pressed.connect(show_self_tab)
 	swipes_button.pressed.connect(show_swipes_tab)
 	chats_button.pressed.connect(show_chat_tab)
@@ -194,7 +196,7 @@ func _on_resize_y_requested(pixels):
 
 
 func _on_bio_text_edit_text_changed() -> void:
-	PlayerManager.set_var("bio", bio_text_edit.text)
+		PlayerManager.set_var("bio", bio_text_edit.text)
 
 
 func _on_visibility_changed() -> void:
@@ -204,3 +206,17 @@ func _on_visibility_changed() -> void:
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
 	if card_stack and card_stack.cards.is_empty():
 		await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+
+
+func _on_confidence_changed(value: float) -> void:
+		await _wait_for_reaction_animations()
+		confidence_progress_bar.update_value(value)
+
+
+func _wait_for_reaction_animations() -> void:
+		while card_stack and card_stack.is_animating:
+				await get_tree().process_frame
+
+
+func _exit_tree() -> void:
+		StatManager.disconnect_from_stat("confidence", self, "_on_confidence_changed")

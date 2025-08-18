@@ -6,20 +6,24 @@ const INDEX_PATH := SAVE_DIR + "save_index.json"
 
 var current_slot_id: int = -1
 
+
 func _ready():
 	var dir := DirAccess.open("user://")
 	if not dir.dir_exists("saves"):
 		dir.make_dir("saves")
 
+
 # --- Slot Path ---
 func get_slot_path(slot_id: int) -> String:
 	return SAVE_DIR + "save_slot_%d.json" % slot_id
+
 
 # --- Metadata Storage ---
 func save_slot_metadata(metadata: Dictionary) -> void:
 	var file := FileAccess.open(INDEX_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify(metadata, "\t"))
 	file.close()
+
 
 func load_slot_metadata() -> Dictionary:
 	if not FileAccess.file_exists(INDEX_PATH):
@@ -30,9 +34,11 @@ func load_slot_metadata() -> Dictionary:
 	var parsed = JSON.parse_string(text)
 	return parsed if parsed != null else {}
 
+
 func get_profile_metadata(slot_id: int) -> Dictionary:
 	var metadata = load_slot_metadata()
 	return metadata.get("slot_%d" % slot_id, {})
+
 
 func get_next_available_slot() -> int:
 	var metadata = load_slot_metadata()
@@ -42,14 +48,21 @@ func get_next_available_slot() -> int:
 	return i
 
 
-
 func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
 	reset_managers()
 	current_slot_id = slot_id
-	
+	if not user_data.has("global_rng_seed"):
+		var password = user_data.get("password", "")
+		var seed_val: int
+		if password != "":
+			seed_val = PlayerManager.djb2(password)
+		else:
+			seed_val = int(Time.get_unix_time_from_system())
+		user_data["global_rng_seed"] = seed_val
+	RNGManager.init_seed(int(user_data["global_rng_seed"]))
 	PlayerManager.user_data = user_data.duplicate(true)
 
 	var background = user_data.get("background", "")
@@ -58,6 +71,7 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 
 	var starting_debt = user_data.get("starting_student_debt", 0.0)
 	PortfolioManager.set_student_loans(starting_debt)
+
 	var starting_credit_limit = user_data.get("starting_credit_limit", 0.0)
 	PortfolioManager.set_credit_limit(starting_credit_limit)
 
@@ -71,17 +85,17 @@ func save_to_slot(slot_id: int) -> void:
 		return
 
 	var data := {
-			"stats": StatManager.get_save_data(),
-			"portfolio": PortfolioManager.get_save_data(),
-			"time": TimeManager.get_save_data(),
-			"market": MarketManager.get_save_data(),
-			"tasks": TaskManager.get_save_data(),
-			"player": PlayerManager.get_save_data(),
-			"workers": WorkerManager.get_save_data(),
-			"bills": BillManager.get_save_data(),
-			"gpus": GPUManager.get_save_data(),
-			"upgrades": UpgradeManager.get_save_data(),
-			"windows": WindowManager.get_save_data(),
+		"stats": StatManager.get_save_data(),
+		"portfolio": PortfolioManager.get_save_data(),
+		"time": TimeManager.get_save_data(),
+		"market": MarketManager.get_save_data(),
+		"tasks": TaskManager.get_save_data(),
+		"player": PlayerManager.get_save_data(),
+		"workers": WorkerManager.get_save_data(),
+		"bills": BillManager.get_save_data(),
+		"gpus": GPUManager.get_save_data(),
+		"upgrades": UpgradeManager.get_save_data(),
+		"windows": WindowManager.get_save_data(),
 	}
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
@@ -92,9 +106,11 @@ func save_to_slot(slot_id: int) -> void:
 	var slot_key = "slot_%d" % slot_id
 	if not metadata.has(slot_key):
 		metadata[slot_key] = {}
+
 	var player_data = PlayerManager.get_save_data()
 	metadata[slot_key]["name"] = player_data.get("name", "Unnamed")
 	metadata[slot_key]["username"] = player_data.get("username", "user")
+	metadata[slot_key]["password"] = player_data.get("password", "")
 	metadata[slot_key]["portrait_config"] = player_data.get("portrait_config", {})
 	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
 	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
@@ -102,17 +118,19 @@ func save_to_slot(slot_id: int) -> void:
 
 	save_slot_metadata(metadata)
 
+
 func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
-	
 
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
+
 	reset_managers()
 	current_slot_id = slot_id
+
 	var file := FileAccess.open(path, FileAccess.READ)
 	var text := file.get_as_text()
 	file.close()
@@ -125,60 +143,66 @@ func load_from_slot(slot_id: int) -> void:
 	var data: Dictionary = result
 
 	if data.has("stats"):
-			StatManager.load_from_data(data["stats"])
+		StatManager.load_from_data(data["stats"])
 	if data.has("portfolio"):
-			PortfolioManager.load_from_data(data["portfolio"])
+		PortfolioManager.load_from_data(data["portfolio"])
 	if data.has("time"):
-			TimeManager.load_from_data(data["time"])
-			TimeManager.start_time()
+		TimeManager.load_from_data(data["time"])
+		TimeManager.start_time()
 	if data.has("upgrades"):
 		UpgradeManager.load_from_data(data["upgrades"])
 	if data.has("tasks"):
 		TaskManager.load_from_data(data["tasks"])
 	if data.has("market"):
 		MarketManager.load_from_data(data["market"])
-		#GPUManager.refresh_timers_after_market_loaded()
+
 	if data.has("player"):
 		PlayerManager.load_from_data(data["player"])
-		#PlayerManager.set_slot_id(slot_id)
+		if not PlayerManager.user_data.has("global_rng_seed"):
+			var password = PlayerManager.user_data.get("password", "")
+			var seed_val: int
+			if password != "":
+				seed_val = PlayerManager.djb2(password)
+			else:
+				seed_val = int(Time.get_unix_time_from_system())
+			PlayerManager.user_data["global_rng_seed"] = seed_val
+		RNGManager.init_seed(PlayerManager.user_data["global_rng_seed"])
+
 	if data.has("workers"):
 		WorkerManager.load_from_data(data["workers"])
-	
 	if data.has("gpus"):
 		GPUManager.load_from_data(data["gpus"])
 	if data.has("bills"):
 		BillManager.load_from_data(data["bills"])
-
-
-	if data.has("windows"): ##Always load windows last (I think)
+	if data.has("windows"):  # Always load windows last
 		WindowManager.load_from_data(data["windows"])
 
-func reset_game_state() -> void:
-		# Reset all relevant managers to blank state
-				StatManager.reset()
-				PortfolioManager.reset()
-				PlayerManager.reset()
-				WindowManager.reset()
-				TimeManager.reset()
-				TaskManager.reset()
-				UpgradeManager.reset()
-				WorkerManager.reset()
-				MarketManager.reset()
-				GPUManager.reset()
-				#BillManager.reset()
-				#UpgradeManager.reset()
 
+func reset_game_state() -> void:
+	# Reset all relevant managers to blank state
+	StatManager.reset()
+	PortfolioManager.reset()
+	PlayerManager.reset()
+	WindowManager.reset()
+	TimeManager.reset()
+	TaskManager.reset()
+	UpgradeManager.reset()
+	WorkerManager.reset()
+	MarketManager.reset()
+	GPUManager.reset()
+	# BillManager.reset()
 
 
 func reset_managers():
-				StatManager.reset()
-				PortfolioManager.reset()
-				PlayerManager.reset()
-				WindowManager.reset()
-				TimeManager.reset()
-				WorkerManager.reset()
-				TaskManager.reset()
-				GPUManager.reset()
+	StatManager.reset()
+	PortfolioManager.reset()
+	PlayerManager.reset()
+	WindowManager.reset()
+	TimeManager.reset()
+	WorkerManager.reset()
+	TaskManager.reset()
+	GPUManager.reset()
+
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)
@@ -190,9 +214,11 @@ func delete_save(slot_id: int) -> void:
 	metadata.erase("slot_%d" % slot_id)
 	save_slot_metadata(metadata)
 
+
 # --- Helper Functions ---
 func vector2_to_dict(v: Vector2) -> Dictionary:
-	return { "x": v.x, "y": v.y }
+	return {"x": v.x, "y": v.y}
+
 
 func dict_to_vector2(d: Dictionary, default := Vector2.ZERO) -> Vector2:
 	if typeof(d) != TYPE_DICTIONARY:

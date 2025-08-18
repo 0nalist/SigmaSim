@@ -45,6 +45,7 @@ var block_warning_active: bool = false
 @onready var fumble_profile: FumbleProfileUI = %FumbleProfile
 @onready var close_fumble_profile_button: Button = %CloseFumbleProfileButton
 
+@onready var no_confidence_container: PanelContainer = %NoConfidenceContainer
 
 
 
@@ -107,7 +108,10 @@ func _ready():
 	blocked_container.hide()
 
 	StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
+	StatManager.connect_to_stat("confidence", self, "_on_confidence_changed")
 	_update_player_attractiveness_label()
+	
+	no_confidence_container.hide()
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
@@ -173,6 +177,7 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 		_disable_all_action_buttons()
 		ghost_button.disabled = false
 		ghost_button.text = "bye forever!"
+		_on_confidence_changed(StatManager.get_stat("confidence"))
 
 
 func scroll_to_newest_chat():
@@ -186,7 +191,7 @@ func update_progress_bars():
 		animate_progress_bar(chemistry_progress_bar,  battle_stats.get("chemistry", 0))
 		animate_progress_bar(self_esteem_progress_bar,battle_stats.get("self_esteem", 0))
 		animate_progress_bar(apprehension_progress_bar,  battle_stats.get("apprehension", 0))
-		animate_progress_bar(confidence_progress_bar, StatManager.get_stat("confidence"))
+		confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
 
 func clamp100(val: float) -> float:
 	return clamp(val, 0, 100)
@@ -217,7 +222,17 @@ func _update_profiles():
 
 
 func _on_dime_status_changed(_value: float) -> void:
-	_update_player_attractiveness_label()
+		_update_player_attractiveness_label()
+
+func _on_confidence_changed(value: float) -> void:
+	if blocked or victorious:
+			return
+	var disable := value <= 0.0
+	for btn in action_buttons:
+			btn.disabled = disable
+	catch_button.disabled = disable
+	inventory_button.disabled = disable
+	no_confidence_container.visible = disable
 
 
 func _update_player_attractiveness_label() -> void:
@@ -349,10 +364,8 @@ func add_chat_line(text: String, is_player: bool, is_victory_number := false, re
 			chat.chatlog_index = -1
 	return chat
 
-
 func do_move(move_type: String) -> void:
 	is_animating = true
-	# No need to suppress stat signals with centralized StatManager
 
 	move_type = move_type.to_lower()
 	if move_usage_counts.has(move_type):
@@ -369,14 +382,17 @@ func do_move(move_type: String) -> void:
 		is_animating = false
 		return
 
-	var chosen_line = options[randi() % options.size()]
+	var rng = RNGManager.get_rng()
+	var chosen_line = options[rng.randi() % options.size()]
 	var prefix := ""
 	if chosen_line["prefixes"].size() > 0:
-		prefix = chosen_line["prefixes"].pick_random()
+		var pref_arr = chosen_line["prefixes"]
+		prefix = pref_arr[rng.randi() % pref_arr.size()]
 	var core = chosen_line["core"]
 	var suffix := ""
 	if chosen_line["suffixes"].size() > 0:
-		suffix = chosen_line["suffixes"].pick_random()
+		var suf_arr = chosen_line["suffixes"]
+		suffix = suf_arr[rng.randi() % suf_arr.size()]
 	var full_line = prefix + core + suffix
 
 	# --- Animate player line ---
@@ -387,7 +403,6 @@ func do_move(move_type: String) -> void:
 
 	# Edge case response if number already given
 	if victorious:
-		var npc_chat: ChatBox = null
 		var response_text = "You already have my number, text me!"
 		var chat = add_chat_line(response_text, false)
 		await animate_chat_text(chat, response_text)
@@ -515,6 +530,7 @@ func do_move(move_type: String) -> void:
 
 	is_animating = false
 
+
 func add_victory_number_chat_line(text: String) -> VictoryNumberChatBox:
 	return add_chat_line(text, false, true, true) as VictoryNumberChatBox
 
@@ -532,12 +548,16 @@ func block_player() -> void:
 func _on_victory_number_clicked() -> void:
 	show_victory_screen()
 
+@onready var victory_name_label: Label = %VictoryNameLabel
+
+
 @onready var victory_ex_label: Label = %VictoryExLabel
 var ex_award: float
 
 func show_victory_screen():
 	ex_award = npc.attractiveness / 10.0 # TEMP
 	victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+	victory_name_label.text = npc.first_name + " has been added to"
 	end_battle_screen_container.show()
 	end_battle(victorious, npc)
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "victory")
@@ -651,37 +671,40 @@ func _apply_effects(effects: Dictionary):
 
 func process_npc_response(move_type, response_id, success: bool) -> ChatBox:
 
+	var rng = RNGManager.get_rng()
 	var response_text = ""
 	var key = "FALSE"
 	if success:
-		key = "TRUE"
+			key = "TRUE"
 	var entry = null
 	if response_id and RizzBattleData.npc_responses.has(response_id):
-		var pool = RizzBattleData.npc_responses[response_id][key]
-		if pool.size() > 0:
-			entry = pool.pick_random()
+			var pool = RizzBattleData.npc_responses[response_id][key]
+			if pool.size() > 0:
+					entry = pool[rng.randi() % pool.size()]
 	elif RizzBattleData.npc_generic_responses.has(move_type):
-		var pool = RizzBattleData.npc_generic_responses[move_type][key]
-		if pool.size() > 0 and typeof(pool[0]) == TYPE_DICTIONARY:
-			entry = pool.pick_random()
-	if entry != null:
-		var prefix = ""
-		var suffix = ""
-		if entry.has("response_prefix") and entry.response_prefix is Array and entry.response_prefix.size() > 0:
-			prefix = entry.response_prefix.pick_random()
-		if entry.has("response_suffix") and entry.response_suffix is Array and entry.response_suffix.size() > 0:
-			suffix = entry.response_suffix.pick_random()
-		response_text = str(prefix) + str(entry.response_line) + str(suffix)
-	else:
-		if RizzBattleData.npc_generic_responses.has(move_type):
 			var pool = RizzBattleData.npc_generic_responses[move_type][key]
-			if pool.size() > 0 and typeof(pool[0]) == TYPE_STRING:
-				response_text = pool.pick_random()
+			if pool.size() > 0 and typeof(pool[0]) == TYPE_DICTIONARY:
+					entry = pool[rng.randi() % pool.size()]
+	if entry != null:
+			var prefix = ""
+			var suffix = ""
+			if entry.has("response_prefix") and entry.response_prefix is Array and entry.response_prefix.size() > 0:
+					var pref_pool = entry.response_prefix
+					prefix = pref_pool[rng.randi() % pref_pool.size()]
+			if entry.has("response_suffix") and entry.response_suffix is Array and entry.response_suffix.size() > 0:
+					var suf_pool = entry.response_suffix
+					suffix = suf_pool[rng.randi() % suf_pool.size()]
+			response_text = str(prefix) + str(entry.response_line) + str(suffix)
+	else:
+			if RizzBattleData.npc_generic_responses.has(move_type):
+					var pool = RizzBattleData.npc_generic_responses[move_type][key]
+					if pool.size() > 0 and typeof(pool[0]) == TYPE_STRING:
+							response_text = pool[rng.randi() % pool.size()]
+					else:
+							response_text = "..."
 			else:
-				response_text = "..."
-		else:
-			response_text = "..."
-	
+					response_text = "..."
+
 	var chat = add_chat_line(response_text, false)
 	await animate_chat_text(chat, response_text)
 	update_action_buttons()
@@ -744,3 +767,7 @@ func _on_close_chat_button_pressed() -> void:
 	persist_battle_stats_to_npc()
 	chat_closed.emit()
 	queue_free()
+
+
+func _on_daterbase_button_pressed() -> void:
+	WindowManager.launch_app_by_name("Daterbase")

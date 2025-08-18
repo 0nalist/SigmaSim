@@ -3,7 +3,8 @@ extends Control
 
 signal applied(config: PortraitConfig)
 
-const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd")
+
+const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd") # I dont think i need this since funcs are static
 
 var config: PortraitConfig = PortraitConfig.new()
 var layer_controls: Dictionary = {}
@@ -125,19 +126,19 @@ func _on_name_submitted(_text: String) -> void:
 
 
 func _on_randomize_pressed() -> void:
-		var rng := RandomNumberGenerator.new()
-		config = PortraitFactory.generate_config_for_name(str(rng.randi()))
-		config.name = name_edit.text
-		_sync_ui_with_config()
-		preview.apply_config(config)
-		emit_signal("applied", config)
+	var rng = RNGManager.get_rng()
+	config = PortraitFactory.generate_config_for_name(str(rng.randi()))
+	config.name = name_edit.text
+	_sync_ui_with_config()
+	preview.apply_config(config)
+	#emit_signal("applied", config)
 
 
 func _on_generate_pressed() -> void:
-		config = PortraitFactory.generate_config_for_name(name_edit.text)
-		_sync_ui_with_config()
-		preview.apply_config(config)
-		emit_signal("applied", config)
+	config = PortraitFactory.generate_config_for_name(name_edit.text)
+	_sync_ui_with_config()
+	preview.apply_config(config)
+	#emit_signal("applied", config)
 
 
 func _on_apply_pressed() -> void:

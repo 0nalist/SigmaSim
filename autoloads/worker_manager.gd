@@ -147,7 +147,8 @@ func generate_available_workers() -> void:
 
 func _generate_random_worker(is_contractor: bool) -> Worker:
 	var worker = Worker.new()
-	
+	var rng = RNGManager.get_rng()
+
 	''' Gender generator
 	var fem = randi_range(0, 1)
 	var masc = randi_range(0, 1)
@@ -158,13 +159,13 @@ func _generate_random_worker(is_contractor: bool) -> Worker:
 	worker.name = NameGenerator.get_random_name()
 	worker.id = "worker_" + str(worker.name)
 	worker.is_contractor = is_contractor
-	worker.hours_per_day = randi_range(4, 10)
-	worker.productivity_per_tick = randf_range(0.2, 1.0)
-	worker.day_rate = randi_range(30, 120)
+	worker.hours_per_day = rng.randi_range(4, 10)
+	worker.productivity_per_tick = rng.randf_range(0.2, 1.0)
+	worker.day_rate = rng.randi_range(30, 120)
 	if is_contractor:
-		worker.sign_on_bonus = randi_range(0, 20)
+			worker.sign_on_bonus = rng.randi_range(0, 20)
 	else:
-		worker.sign_on_bonus = randi_range(50, 200)
+			worker.sign_on_bonus = rng.randi_range(50, 200)
 	return worker
 
 func get_worker_by_id(id: String) -> Worker:

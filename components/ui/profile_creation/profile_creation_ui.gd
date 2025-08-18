@@ -46,10 +46,18 @@ func _on_step_valid(valid: bool) -> void:
 	next_button.disabled = not valid
 
 func _finish_profile_creation():
-	var slot_id = SaveManager.get_next_available_slot()
-	SaveManager.initialize_new_profile(slot_id, user_data)
-	emit_signal("profile_created", slot_id)
-	queue_free()
+		var password = user_data.get("password", "")
+		var seed_val: int
+		if password != "":
+				seed_val = PlayerManager.djb2(password)
+		else:
+				seed_val = int(Time.get_unix_time_from_system())
+		user_data["global_rng_seed"] = seed_val
+		RNGManager.init_seed(seed_val)
+		var slot_id = SaveManager.get_next_available_slot()
+		SaveManager.initialize_new_profile(slot_id, user_data)
+		emit_signal("profile_created", slot_id)
+		queue_free()
 
 
 

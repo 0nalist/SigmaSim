@@ -3,9 +3,11 @@ extends Control
 
 const PORTRAIT_SCALE := 2.0
 
-@export var portrait_creator_enabled: bool = false
+@export var portrait_creator_enabled: bool = true
 @export var subject_is_player: bool = false
 @export var subject_npc_idx: int = -1
+
+var config: PortraitConfig = PortraitConfig.new()
 
 @onready var new_you_button: Button = %NewYouButton
 
@@ -32,6 +34,7 @@ func _center_layers() -> void:
 
 
 func apply_config(cfg: PortraitConfig) -> void:
+	config = cfg.duplicate(true)
 	for layer in PortraitCache.layers_order():
 		var rect: TextureRect = get_node_or_null(layer)
 		if rect == null:

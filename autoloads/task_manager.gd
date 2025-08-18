@@ -57,7 +57,7 @@ func unregister_task(category: String, task: WorkerTask) -> void:
 
 func generate_random_tasks(category: String, count: int) -> Array[WorkerTask]:
 	var filtered := base_tasks.filter(func(t): return t.show_in_grinderr and category == "grinderr")
-	filtered.shuffle()
+	RNGManager.shuffle(filtered)
 
 	var selected: Array[WorkerTask] = []
 	for i in min(count, filtered.size()):
