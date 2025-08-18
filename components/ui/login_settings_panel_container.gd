@@ -41,7 +41,7 @@ func _on_reset_pressed():
 	SaveManager.initialize_new_profile(slot_id, {
 		"name": metadata.get("name", "Unnamed"),
 		"username": username,
-		"profile_picture_path": metadata.get("profile_picture_path", ""),
+		"portrait_config": metadata.get("portrait_config", {}),
 		"background": metadata.get("background_path", ""),
 	})
 	slot_metadata = SaveManager.load_slot_metadata()

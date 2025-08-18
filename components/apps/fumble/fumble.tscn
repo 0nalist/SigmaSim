@@ -66,7 +66,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye860")
 script = ExtResource("1_v4fb6")
 window_title = "Fumble"
-default_window_size = Vector2(420, 560)
+default_window_size = Vector2(660, 720)
 upgrade_pane = ExtResource("2_hf3uq")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -119,13 +119,19 @@ theme_override_constants/margin_bottom = 25
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
-layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/outline_size = 12
 text = "You"
+
+[node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+size_flags_vertical = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+layout_mode = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
 layout_mode = 2
@@ -139,7 +145,8 @@ layout_mode = 2
 size_flags_vertical = 0
 text = "Bio:"
 
-[node name="TextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+[node name="BioTextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -150,6 +157,7 @@ placeholder_text = "Write something!"
 layout_mode = 2
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -158,7 +166,7 @@ layout_mode = 2
 text = "Your Gender:"
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
-custom_minimum_size = Vector2(16, 16)
+custom_minimum_size = Vector2(15, 16)
 layout_mode = 2
 focus_mode = 0
 
@@ -267,9 +275,6 @@ size_flags_horizontal = 3
 
 [node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
 custom_minimum_size = Vector2(25, 0)
-layout_mode = 2
-
-[node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]
 layout_mode = 2
 
 [node name="10px7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]

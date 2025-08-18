@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bvd5242ybqyuc"]
 
 [ext_resource type="Script" uid="uid://cehj7u7slfiqb" path="res://components/ui/profile_panel.gd" id="1_k4nqg"]
-[ext_resource type="Texture2D" uid="uid://c8wi7d4203jib" path="res://assets/prof_pics/gigachad.png" id="1_yq36l"]
+[ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="2_pv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fwkw"]
 bg_color = Color(0, 0.669403, 0.96699, 1)
@@ -41,16 +41,13 @@ size_flags_vertical = 4
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 
-[node name="ProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/CenterContainer"]
+[node name="ProfilePic" parent="MarginContainer/VBoxContainer/MarginContainer/CenterContainer" instance=ExtResource("2_pv")]
 unique_name_in_owner = true
 clip_contents = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("1_yq36l")
-expand_mode = 3
-stretch_mode = 5
 
 [node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

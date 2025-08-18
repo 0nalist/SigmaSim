@@ -6,10 +6,14 @@ var default_user_data: Dictionary = {
 	# Identity
 	"name": "",
 	"username": "",
-	"pronouns": "",
-	"attracted_to": "",
-	"profile_picture_path": "",
-	"background_path": "",
+		"pronouns": "",
+		"attracted_to": "",
+				"portrait_config": {},
+				"background_path": "",
+			   "education_level": "",
+			   "starting_student_debt": 0.0,
+			   "starting_credit_limit": 0.0,
+				"bio": "",
 
 	# Core Stats
 	"alpha": 0.0,

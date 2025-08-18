@@ -4,7 +4,7 @@ class_name ProfilePanel
 signal login_requested(slot_id: int)
 
 #@onready var profile_panel: Panel = %ProfilePanel
-@onready var profile_pic: TextureRect = %ProfilePic
+@onready var profile_pic: PortraitView = %ProfilePic
 @onready var name_label: Label = %NameLabel
 @onready var username_label: Label = %UsernameLabel
 @onready var password_text_edit: TextEdit = %PasswordTextEdit
@@ -33,17 +33,14 @@ func _apply_profile_data() -> void:
 	name_label.text = pending_data.get("name", "Unnamed")
 	username_label.text = "@%s" % pending_data.get("username", "user")
 
-	var path = pending_data.get("profile_picture_path", "res://assets/profiles/default.png")
-	if ResourceLoader.exists(path):
-		var tex = load(path)
-		profile_pic.texture = tex
+	var cfg_dict = pending_data.get("portrait_config", {})
+	if cfg_dict is Dictionary:
+		var cfg = PortraitConfig.from_dict(cfg_dict)
+		profile_pic.apply_config(cfg)
 
 		# FORCE 128x128 size
 		profile_pic.custom_minimum_size = Vector2(128, 128)
-		profile_pic.set_size(Vector2(128, 128))  # Forces layout if not yet resized
-
-		# Ensure it scales inside the box without distortion
-		profile_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		profile_pic.set_size(Vector2(128, 128))
 		profile_pic.size_flags_horizontal = Control.SIZE_FILL
 		profile_pic.size_flags_vertical = Control.SIZE_FILL
 

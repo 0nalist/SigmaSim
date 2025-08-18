@@ -1,7 +1,7 @@
 # profile_ui.gd
 extends PanelContainer
 
-@onready var profile_pic: TextureRect = %ProfilePic
+@onready var profile_pic: PortraitView = %ProfilePic
 @onready var name_label: Label = %NameLabel
 @onready var username_button: Button = %UsernameButton
 @onready var affinity_progress_bar: ProgressBar = %AffinityProgressBar
@@ -21,7 +21,12 @@ func _ready() -> void:
 
 
 func load_profile(profile: Profile) -> void:
-	profile_pic.texture = profile.profile_pic
+	var cfg = profile.get("portrait_config")
+	if cfg != null:
+			profile_pic.apply_config(cfg)
+	elif profile.profile_pic is Texture2D:
+			var face: TextureRect = profile_pic.get_node("face")
+			face.texture = profile.profile_pic
 	name_label.text = profile.full_name
 	username_button.text = "@" + profile.username
 	work_label.text = profile.occupation
@@ -44,9 +49,10 @@ func load_profile(profile: Profile) -> void:
 		wall_v_box_container.add_child(label)
 
 func update_prof_pic():
-	pass
-	#profile_pic.texture = PlayerManager.user_data["profile_picture_path"]
-	## Invalid assignment of property or key 'texture' with value of type 'String' on a base object of type 'TextureRect'.
+		var cfg_dict = PlayerManager.user_data.get("portrait_config", {})
+		if cfg_dict is Dictionary and cfg_dict.size() > 0:
+				var cfg = PortraitConfig.from_dict(cfg_dict)
+				profile_pic.apply_config(cfg)
 
 func update_name_label():
 	var pname = PlayerManager.user_data["name"]

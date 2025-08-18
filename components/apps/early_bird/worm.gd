@@ -10,11 +10,8 @@ var pulsing: bool = false
 var pulse_tween: Tween
 
 
-
-
 func _ready() -> void:
 	pass
-
 
 
 func _on_mouse_entered() -> void:
@@ -37,14 +34,14 @@ func _start_pulsing() -> void:
 	pulse_tween.tween_property(sprite, "scale", Vector2(1.0, 1.0), pulse_animation_interval / 2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-		print("worm clicked")
-		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-				var value = StatManager.get_stat("worm_yield", 1.0)
-				PortfolioManager.add_cash(value)
-				if StatpopManager:
-						print("worm statpop")
-						var amount := NumberFormatter.format_commas(value, 2, true)
-						StatpopManager.spawn("+$" + amount, global_position, "click", Color.GREEN)
+	#print("worm clicked")
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var value = StatManager.get_stat("worm_yield", 1.0)
+		PortfolioManager.add_cash(value)
+		if StatpopManager:
+			print("worm statpop")
+			var amount := NumberFormatter.format_commas(value, 2, true)
+			StatpopManager.spawn("+$" + amount, global_position, "click", Color.GREEN)
 
 
 func _on_worm_texture_mouse_entered() -> void:
@@ -60,17 +57,14 @@ func _on_worm_texture_mouse_exited() -> void:
 
 
 func _on_worm_texture_gui_input(event: InputEvent) -> void:
-		print("worm clicked")
-		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-				var value = StatManager.get_stat("worm_yield", 1.0)
-				PortfolioManager.add_cash(value)
-				if StatpopManager:
-						print("worm statpop")
-						var amount := NumberFormatter.format_commas(value, 2, true)
-						StatpopManager.spawn("+$" + amount, global_position, "click")
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var value = StatManager.get_stat("worm_yield", 1.0)
+		PortfolioManager.add_cash(value)
+		if StatpopManager:
+			var amount := NumberFormatter.format_commas(value, 2, true)
+			StatpopManager.spawn("+$" + amount, global_position, "click", Color.GREEN)
 
 
 func _on_timer_timeout() -> void:
 	var angle_deg = randf_range(30.0, 70.0)
 	worm_texture.rotation += deg_to_rad(angle_deg)
-#	print("rotating worm")

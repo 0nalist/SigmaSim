@@ -16,7 +16,7 @@ var blocked: bool = false
 var block_warning_active: bool = false
 
 
-@onready var profile_pic: TextureRect = %ProfilePic
+@onready var profile_pic: PortraitView = %ProfilePic
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
 
@@ -105,6 +105,9 @@ func _ready():
 
 	end_battle_screen_container.hide()
 	blocked_container.hide()
+
+	StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
+	_update_player_attractiveness_label()
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
@@ -197,17 +200,12 @@ func animate_progress_bar(bar: ProgressBar, target_value: float, duration: float
 
 func _update_profiles():
 	# === Player info ===
-	var pic_path = PlayerManager.get_var("profile_picture_path", "")
-	if pic_path != "":
-		var img = load(pic_path)
-		if img is Texture2D:
-			profile_pic.texture = img
-		else:
-			profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
-	else:
-		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
+	var portrait_dict = PlayerManager.get_var("portrait_config", {})
+	if portrait_dict is Dictionary:
+			var cfg = PortraitConfig.from_dict(portrait_dict)
+			profile_pic.apply_config(cfg)
 
-	attractiveness_label.text = "🔥 %.1f/10" % (float(StatManager.get_stat("attractiveness")) / 10.0)
+	_update_player_attractiveness_label()
 	name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info
@@ -217,6 +215,13 @@ func _update_profiles():
 	npc_name_label.text = npc.full_name
 	npc_type_label.text = npc.chat_battle_type
 
+
+func _on_dime_status_changed(_value: float) -> void:
+	_update_player_attractiveness_label()
+
+
+func _update_player_attractiveness_label() -> void:
+		attractiveness_label.text = "🔥 %.1f/10" % float(StatManager.get_stat("dime_status"))
 
 
 func update_action_buttons():

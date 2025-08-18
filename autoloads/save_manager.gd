@@ -56,6 +56,11 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	if background != "":
 		PlayerManager.apply_background_effects(background)
 
+	var starting_debt = user_data.get("starting_student_debt", 0.0)
+	PortfolioManager.set_student_loans(starting_debt)
+	var starting_credit_limit = user_data.get("starting_credit_limit", 0.0)
+	PortfolioManager.set_credit_limit(starting_credit_limit)
+
 	save_to_slot(slot_id)
 
 
@@ -90,7 +95,7 @@ func save_to_slot(slot_id: int) -> void:
 	var player_data = PlayerManager.get_save_data()
 	metadata[slot_key]["name"] = player_data.get("name", "Unnamed")
 	metadata[slot_key]["username"] = player_data.get("username", "user")
-	metadata[slot_key]["profile_picture_path"] = player_data.get("profile_picture_path", "res://assets/profiles/default.png")
+	metadata[slot_key]["portrait_config"] = player_data.get("portrait_config", {})
 	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
 	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
 	metadata[slot_key]["cash"] = PortfolioManager.cash
