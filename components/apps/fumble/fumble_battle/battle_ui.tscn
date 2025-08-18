@@ -243,6 +243,7 @@ size_flags_vertical = 3
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_nhbld")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer"]
@@ -260,6 +261,9 @@ size_flags_vertical = 4
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+mouse_filter = 0
+portrait_creator_enabled = true
+subject_is_player = true
 
 [node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
