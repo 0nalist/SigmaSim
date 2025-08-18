@@ -106,8 +106,9 @@ func _ready():
 	end_battle_screen_container.hide()
 	blocked_container.hide()
 
-	StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
-	_update_player_attractiveness_label()
+        StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
+        StatManager.connect_to_stat("confidence", self, "_on_confidence_changed")
+        _update_player_attractiveness_label()
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
@@ -173,6 +174,7 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 		_disable_all_action_buttons()
 		ghost_button.disabled = false
 		ghost_button.text = "bye forever!"
+        _on_confidence_changed(StatManager.get_stat("confidence"))
 
 
 func scroll_to_newest_chat():
@@ -217,7 +219,16 @@ func _update_profiles():
 
 
 func _on_dime_status_changed(_value: float) -> void:
-	_update_player_attractiveness_label()
+        _update_player_attractiveness_label()
+
+func _on_confidence_changed(value: float) -> void:
+        if blocked or victorious:
+                return
+        var disable := value <= 0.0
+        for btn in action_buttons:
+                btn.disabled = disable
+        catch_button.disabled = disable
+        inventory_button.disabled = disable
 
 
 func _update_player_attractiveness_label() -> void:
