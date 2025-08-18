@@ -1,7 +1,6 @@
-[gd_scene load_steps=38 format=3 uid="uid://cel7rmg2pea12"]
+[gd_scene load_steps=37 format=3 uid="uid://cel7rmg2pea12"]
 
 [ext_resource type="Script" uid="uid://b4cmpyad34a6u" path="res://components/apps/fumble/fumble_battle/battle_ui.gd" id="1_ctqjn"]
-[ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="1_vooct"]
 [ext_resource type="Texture2D" uid="uid://dqig7emb4n7md" path="res://assets/80scarpet.png" id="2_7gtst"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_ctqjn"]
 [ext_resource type="PackedScene" uid="uid://5esyyyvfivml" path="res://components/apps/fumble/fumble_battle/victory_number_chat_box.tscn" id="3_an8fo"]
@@ -257,12 +256,10 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="ProfilePic" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="ProfilePic" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("13_pv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-texture = ExtResource("1_vooct")
-stretch_mode = 3
 
 [node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
