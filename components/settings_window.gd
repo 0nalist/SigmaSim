@@ -4,17 +4,26 @@ extends Pane
 @onready var fullscreen_check_box: CheckBox = %FullscreenCheckBox
 @onready var windowed_check_box: CheckBox = %WindowedCheckBox
 @onready var autosave_check_box: CheckBox = %AutosaveCheckBox
+@onready var blue_warp_button: CheckButton = %BlueWarpButton
+@onready var comic_dots_1_button: CheckButton = %ComicDots1Button
+@onready var comic_dots_2_button: CheckButton = %ComicDots2Button
+@onready var blue_warp: CanvasItem = %BlueWarp
+@onready var comic_dots_1: CanvasItem = %ComicDots1
+@onready var comic_dots_2: CanvasItem = %ComicDots2
 
 
 func _ready() -> void:
-	update_checked_mode()
-	#app_title = "Settings"
-	#emit_signal("title_updated", app_title)
-	# Disable fullscreen if running in embedded mode
-	if OS.has_feature("editor") or DisplayServer.get_name() == "headless":
-		fullscreen_check_box.disabled = true
-	#%SiggyButton.toggled_on = Siggy.toggled_on
-	autosave_check_box.button_pressed = TimeManager.autosave_enabled
+        update_checked_mode()
+        #app_title = "Settings"
+        #emit_signal("title_updated", app_title)
+        # Disable fullscreen if running in embedded mode
+        if OS.has_feature("editor") or DisplayServer.get_name() == "headless":
+                fullscreen_check_box.disabled = true
+        #%SiggyButton.toggled_on = Siggy.toggled_on
+        autosave_check_box.button_pressed = TimeManager.autosave_enabled
+        blue_warp_button.button_pressed = blue_warp.visible
+        comic_dots_1_button.button_pressed = comic_dots_1.visible
+        comic_dots_2_button.button_pressed = comic_dots_2.visible
 
 
 func update_checked_mode() -> void:
@@ -58,4 +67,16 @@ func _on_siggy_button_toggled(toggled_on: bool) -> void:
 	
 
 func _on_autosave_check_box_toggled(toggled_on: bool) -> void:
-	TimeManager.autosave_enabled = toggled_on
+        TimeManager.autosave_enabled = toggled_on
+
+
+func _on_blue_warp_button_toggled(toggled_on: bool) -> void:
+        blue_warp.visible = toggled_on
+
+
+func _on_comic_dots_1_button_toggled(toggled_on: bool) -> void:
+        comic_dots_1.visible = toggled_on
+
+
+func _on_comic_dots_2_button_toggled(toggled_on: bool) -> void:
+        comic_dots_2.visible = toggled_on
