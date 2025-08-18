@@ -57,6 +57,8 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_gnfo0")
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -64,9 +66,12 @@ theme_override_constants/margin_bottom = 10
 
 [node name="Summary" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
@@ -74,12 +79,13 @@ theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
 [node name="Summary" type="HBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer"]
-custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="CashChart" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(350, 0)
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -92,8 +98,7 @@ poll_hz = 17
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
 layout_mode = 2
-size_flags_horizontal = 2
-size_flags_stretch_ratio = 3.61
+size_flags_horizontal = 1
 
 [node name="BalanceLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
@@ -153,8 +158,8 @@ vertical_icon_alignment = 0
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.65
+size_flags_horizontal = 3
+size_flags_vertical = 1
 
 [node name="StockMarket" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/ScrollContainer"]
 unique_name_in_owner = true
