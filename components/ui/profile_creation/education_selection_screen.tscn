@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://eduscene1234"]
 
-[ext_resource type="Script" uid="uid://edu6y7z8x9w" path="res://components/ui/profile_creation/education_selection_screen.gd" id="1_edusc"]
+[ext_resource type="Script" path="res://components/ui/profile_creation/education_selection_screen.gd" id="1_edusc"]
 
 [node name="EducationSelectionScreen" type="Control"]
 layout_mode = 3
@@ -25,46 +25,79 @@ theme_override_constants/margin_bottom = 25
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Please select the highest level of education you have paid for"
+theme_override_font_sizes/font_size = 18
+text = "Please select the highest level of education you have afforded"
 horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
 
 [node name="NoneButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "None\n$0 student debt\n$0 credit limit"
+tooltip_text = "$0 student debt
+$0 credit limit"
+focus_mode = 0
+text = "None"
 
 [node name="HighSchoolButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "High School / GED\n$0 student debt\n$500 credit limit"
+tooltip_text = "$0 student debt
+$500 credit limit"
+focus_mode = 0
+text = "High School / GED"
 
 [node name="SomeCollegeButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Some College\n$15,000 student debt\n$2,000 credit limit"
+tooltip_text = "$15,000 student debt
+$2,000 credit limit"
+focus_mode = 0
+text = "Some College
+"
 
 [node name="BachelorsButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Bachelor's Degree\n$80,000 student debt\n$10,000 credit limit"
+tooltip_text = "$80,000 student debt
+$10,000 credit limit"
+focus_mode = 0
+text = "Bachelor's Degree"
 
 [node name="MastersButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Master's Degree\n$250,000 student debt\n$25,000 credit limit"
+tooltip_text = "$250,000 student debt
+$25,000 credit limit"
+focus_mode = 0
+text = "Master's Degree"
 
 [node name="DoctorateButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Doctorate\n$1,200,000 student debt\n$100,000 credit limit"
+tooltip_text = "$1,200,000 student debt
+$100,000 credit limit"
+focus_mode = 0
+text = "Doctorate"
