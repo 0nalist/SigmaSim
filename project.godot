@@ -21,7 +21,6 @@ config/icon="uid://xm8tdrmlmymx"
 boot_splash/minimum_display_time=240
 
 [autoload]
-RNGManager="*res://autoloads/rng_manager.gd"
 
 WindowManager="*res://autoloads/window_manager.gd"
 PortfolioManager="*res://autoloads/portfolio_manager.gd"
