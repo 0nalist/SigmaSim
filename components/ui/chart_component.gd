@@ -10,8 +10,12 @@ class_name ChartComponent
 
 # Behavior
 @export var autoscroll: bool = true
-@export var autoscroll_hold_timeout_sec: float = 3.0   # after user input, resume autoscroll after this idle time
-@export var extend_last_sample: bool = true            # draw a flat extension to 'now' if no fresh sample yet
+@export var autoscroll_hold_timeout_sec: float = 3.0
+@export var extend_last_sample: bool = true
+
+# Axis locks
+@export var lock_y_min: bool = true			# NEW: y_min fixed at 0
+@export var lock_x_min: bool = false		# NEW: when true, x_min fixed at 0
 
 # Polling controls
 @export var poll_hz: int = 20
@@ -35,7 +39,10 @@ var _last_now_seen: int = -1
 func _ready() -> void:
 	var now: int = TimeManager.get_now_minutes()
 	window_end_min = now
-	window_start_min = max(0, now - default_window_minutes)
+	if lock_x_min:
+		window_start_min = 0
+	else:
+		window_start_min = max(0, now - default_window_minutes)
 	_last_now_seen = now
 
 	_poll_interval = 1.0 / float(max(1, poll_hz))
@@ -55,14 +62,12 @@ func _process(delta: float) -> void:
 	if _poll_accum >= _poll_interval:
 		_poll_accum -= _poll_interval
 
-		# 1) Resume autoscroll after inactivity
 		if autoscroll and user_holds_window:
 			var now_secs: float = Time.get_ticks_msec() / 1000.0
 			var idle: float = now_secs - _last_user_input_time
 			if idle >= autoscroll_hold_timeout_sec:
 				user_holds_window = false
 
-		# 2) Follow 'now' and mark dirty when time advances
 		var now_min: int = TimeManager.get_now_minutes()
 		if autoscroll and not user_holds_window:
 			if now_min != _last_now_seen:
@@ -147,8 +152,14 @@ func _follow_now_and_clamp() -> bool:
 	var span: int = window_end_min - window_start_min
 	if span < min_window_minutes:
 		span = min_window_minutes
-	window_end_min = now
-	window_start_min = max(0, now - span)
+
+	if lock_x_min:
+		window_start_min = 0
+		window_end_min = min(now, span)	# show [0, span] but never past 'now'
+	else:
+		window_end_min = now
+		window_start_min = max(0, now - span)
+
 	_clamp_window()
 	return window_start_min != old_start or window_end_min != old_end
 
@@ -168,7 +179,15 @@ func _gui_input(event: InputEvent) -> void:
 				else:
 					var max_span: int = max(1, TimeManager.get_now_minutes())
 					span = min(max_span, span + max(1, span / 10))
-				_set_span_centered(span, focus_t)
+
+				if lock_x_min:
+					# left pinned: set [0, min(now, span)]
+					window_start_min = 0
+					window_end_min = min(TimeManager.get_now_minutes(), span)
+					_clamp_window()
+				else:
+					_set_span_centered(span, focus_t)
+
 				user_holds_window = true
 				_needs_redraw = true
 				queue_redraw()
@@ -176,9 +195,10 @@ func _gui_input(event: InputEvent) -> void:
 			if mb.pressed:
 				var plot2: Rect2 = _plot_rect()
 				if plot2.has_point(mb.position):
-					_dragging = true
-					_drag_last_mouse = mb.position
-					user_holds_window = true
+					if not lock_x_min:
+						_dragging = true
+						_drag_last_mouse = mb.position
+						user_holds_window = true
 			else:
 				_dragging = false
 	elif event is InputEventMouseMotion and _dragging:
@@ -217,6 +237,8 @@ func _time_from_x(x: float, plot: Rect2) -> int:
 	return window_start_min + int(round(rel * float(span)))
 
 func _pan_by(delta_min: int) -> void:
+	if lock_x_min:
+		return
 	if delta_min == 0:
 		return
 	window_start_min += delta_min
@@ -243,6 +265,10 @@ func _set_span_centered(new_span: int, focus_time: int) -> void:
 
 func _clamp_window() -> void:
 	var now: int = TimeManager.get_now_minutes()
+
+	if lock_x_min:
+		window_start_min = 0
+
 	# Keep inside [0, now]
 	if window_start_min < 0:
 		var shift: int = -window_start_min
@@ -252,24 +278,32 @@ func _clamp_window() -> void:
 		var shift2: int = window_end_min - now
 		window_start_min -= shift2
 		window_end_min -= shift2
+
 	# Enforce minimum span
 	if window_end_min < window_start_min + min_window_minutes:
 		window_end_min = window_start_min + min_window_minutes
-	# Re-apply right bound
+
+	# If right bound still beyond now, reapply with left guard
 	if window_end_min > now:
 		window_end_min = now
-		window_start_min = max(0, window_end_min - min_window_minutes)
+		if lock_x_min:
+			window_start_min = 0
+		else:
+			window_start_min = max(0, window_end_min - min_window_minutes)
+
 	# Left bound final guard
 	if window_start_min < 0:
 		window_start_min = 0
 		window_end_min = max(window_start_min + min_window_minutes, window_end_min)
 
-# ---- Rendering ----
+# ---- Y-bounds computation (lock_y_min support) ----
 
-func _draw() -> void:
-	var plot: Rect2 = _plot_rect()
-	var span: int = max(1, window_end_min - window_start_min)
-	var min_y: float = INF
+func _compute_y_bounds() -> Vector2:
+	# min is 0 if locked; else derive from data
+	var min_y: float = 0.0
+	if not lock_y_min:
+		min_y = INF
+
 	var max_y: float = -INF
 
 	for id in _series.keys():
@@ -277,25 +311,55 @@ func _draw() -> void:
 		var vis: bool = bool(s.get("visible", true))
 		if not vis:
 			continue
-		var data: PackedVector2Array = HistoryManager.get_series_window_line(id, window_start_min, window_end_min, max_points_per_series)
-		for p in data:
-			if p.y < min_y:
-				min_y = p.y
-			if p.y > max_y:
-				max_y = p.y
 
-	if min_y == INF:
-		min_y = 0.0
+		var raw: PackedVector2Array = HistoryManager.get_series_window_line(id, window_start_min, window_end_min, max_points_per_series)
+
+		if extend_last_sample:
+			var lp: Vector2 = HistoryManager.get_latest_point(id)
+			var last_t: int = int(lp.x)
+			if last_t != -2147483648 and last_t < window_end_min:
+				if raw.is_empty() or int(raw[raw.size() - 1].x) <= last_t:
+					raw.push_back(Vector2(float(window_end_min), lp.y))
+
+		for p in raw:
+			if lock_y_min:
+				if p.y > max_y:
+					max_y = p.y
+			else:
+				if p.y < min_y:
+					min_y = p.y
+				if p.y > max_y:
+					max_y = p.y
+
+	# Fallbacks when no data
+	if max_y == -INF:
 		max_y = 1.0
-	if min_y == max_y:
+	if not lock_y_min and min_y == INF:
+		min_y = 0.0
+
+	# Avoid flat span
+	if max_y <= min_y:
 		max_y = min_y + 1.0
 
+	# Add gentle headroom only to the top
 	var padding: float = (max_y - min_y) * 0.1
-	min_y -= padding
-	max_y += padding
+	var out_min: float = min_y
+	var out_max: float = max_y + padding
+	return Vector2(out_min, out_max)
+
+# ---- Rendering ----
+
+func _draw() -> void:
+	var plot: Rect2 = _plot_rect()
+	var span: int = max(1, window_end_min - window_start_min)
+
+	var bounds: Vector2 = _compute_y_bounds()
+	var min_y: float = bounds.x
+	var max_y: float = bounds.y
+	var y_span: float = max_y - min_y
 
 	_draw_grid(plot, min_y, max_y, span)
-	_draw_series(plot, min_y, max_y)
+	_draw_series(plot, min_y, max_y, y_span, span)
 	_draw_legend(plot)
 
 func _draw_grid(plot: Rect2, min_y: float, max_y: float, span: int) -> void:
@@ -318,9 +382,7 @@ func _draw_grid(plot: Rect2, min_y: float, max_y: float, span: int) -> void:
 		var ts: Vector2 = ThemeDB.fallback_font.get_string_size(text)
 		draw_string(ThemeDB.fallback_font, Vector2(plot.position.x - ts.x - 4.0, y + ts.y / 2.0), text)
 
-func _draw_series(plot: Rect2, min_y: float, max_y: float) -> void:
-	var y_span: float = max_y - min_y
-	var span: int = max(1, window_end_min - window_start_min)
+func _draw_series(plot: Rect2, min_y: float, max_y: float, y_span: float, span: int) -> void:
 	for id in _series.keys():
 		var s: Dictionary = _series[id]
 		var vis: bool = bool(s.get("visible", true))
@@ -329,7 +391,6 @@ func _draw_series(plot: Rect2, min_y: float, max_y: float) -> void:
 
 		var raw: PackedVector2Array = HistoryManager.get_series_window_line(id, window_start_min, window_end_min, max_points_per_series)
 
-		# Optional flat extension to 'now' for continuity
 		if extend_last_sample:
 			var lp: Vector2 = HistoryManager.get_latest_point(id)
 			var last_t: int = int(lp.x)
