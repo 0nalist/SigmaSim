@@ -109,20 +109,24 @@ func add_sample(id: StringName, t_minute: int, value: float) -> void:
 			_candle_update(next_candles, i, last_prev_time, last_prev_value)
 	emit_signal("series_sampled", id, t_minute)
 
+
 func get_series_window_line(id: StringName, t_start_min: int, t_end_min: int, max_points: int = 1024) -> PackedVector2Array:
 	if not _series.has(id):
 		return PackedVector2Array()
 	if t_end_min <= t_start_min:
 		return PackedVector2Array()
-        var window_len: int = t_end_min - t_start_min
-        var tier_index: int = 0
-        for i in range(TIER_CONFIG.size()):
-                var approx: int = window_len / int(TIER_CONFIG[i].dt)
-                if approx <= max_points or i == TIER_CONFIG.size() - 1:
-                        tier_index = i
-                        break
-        var line: Dictionary = _series[id].tiers[tier_index].line
-        var out: PackedVector2Array = PackedVector2Array()
+
+	var window_len: int = t_end_min - t_start_min
+	var tier_index: int = 0
+	for i in range(TIER_CONFIG.size()):
+		var approx: int = window_len / int(TIER_CONFIG[i].dt)
+		if approx <= max_points or i == TIER_CONFIG.size() - 1:
+			tier_index = i
+			break
+
+	var line: Dictionary = _series[id].tiers[tier_index].line
+	var out: PackedVector2Array = PackedVector2Array()
+
 	for i in range(line.size):
 		var idx: int = (line.head + i) % line.capacity
 		var t: int = line.times[idx]
@@ -131,23 +135,28 @@ func get_series_window_line(id: StringName, t_start_min: int, t_end_min: int, ma
 		if t > t_end_min:
 			break
 		out.append(Vector2(float(t), line.values[idx]))
-        if out.size() > max_points:
-                var stride: int = int(ceil(float(out.size()) / float(max_points)))
-                var thinned: PackedVector2Array = PackedVector2Array()
-                for j in range(0, out.size(), stride):
-                        thinned.append(out[j])
-                if thinned.is_empty() or thinned[thinned.size() - 1].x != out[out.size() - 1].x:
-                        thinned.append(out[out.size() - 1])
-                out = thinned
-        if DEBUG_HISTORY:
-                var first_two: Array = []
-                var last_two: Array = []
-                for k in range(min(2, out.size())):
-                        first_two.append(out[k].x)
-                for k in range(max(0, out.size() - 2), out.size()):
-                        last_two.append(out[k].x)
-                print("get_series_window_line %s tier=%d window=[%d,%d] len=%d first=%s last=%s" % [id, tier_index, t_start_min, t_end_min, window_len, first_two, last_two])
-        return out
+
+		if out.size() > max_points:
+			var stride: int = int(ceil(float(out.size()) / float(max_points)))
+			var thinned: PackedVector2Array = PackedVector2Array()
+			for j in range(0, out.size(), stride):
+				thinned.append(out[j])
+			if thinned.is_empty() or thinned[thinned.size() - 1].x != out[out.size() - 1].x:
+				thinned.append(out[out.size() - 1])
+			out = thinned
+
+	if DEBUG_HISTORY:
+		var first_two: Array = []
+		var last_two: Array = []
+		for k in range(min(2, out.size())):
+			first_two.append(out[k].x)
+		for k in range(max(0, out.size() - 2), out.size()):
+			last_two.append(out[k].x)
+		print("get_series_window_line %s tier=%d window=[%d,%d] len=%d first=%s last=%s"
+			% [id, tier_index, t_start_min, t_end_min, window_len, first_two, last_two])
+
+	return out
+
 
 func get_series_window_candles(id: StringName, t_start_min: int, t_end_min: int, max_candles: int = 512) -> Array[Dictionary]:
 	if not _series.has(id):
@@ -305,16 +314,16 @@ func get_value_at_or_before(id: StringName, t_minute: int) -> Dictionary:
 	var values: PackedFloat32Array = line["values"]
 
 	# Walk from newest backwards until <= t_minute (capacity is small; O(n) is fine)
-        for i in range(size_i - 1, -1, -1):
-                var idx: int = (head + i) % cap_i
-                var t_i: int = times[idx]
-                if t_i <= t_minute:
-                        res["found"] = true
-                        res["t"] = t_i
-                        res["v"] = values[idx]
-                        if DEBUG_HISTORY:
-                                print("get_value_at_or_before %s t=%d -> idx=%d t_i=%d v=%f" % [id, t_minute, idx, t_i, values[idx]])
-                        return res
+	for i in range(size_i - 1, -1, -1):
+		var idx: int = (head + i) % cap_i
+		var t_i: int = times[idx]
+		if t_i <= t_minute:
+			res["found"] = true
+			res["t"] = t_i
+			res["v"] = values[idx]
+			if DEBUG_HISTORY:
+				print("get_value_at_or_before %s t=%d -> idx=%d t_i=%d v=%f" % [id, t_minute, idx, t_i, values[idx]])
+			return res
 	return res
 
 func get_first_value_in_or_after(id: StringName, t_minute: int) -> Dictionary:
@@ -329,16 +338,16 @@ func get_first_value_in_or_after(id: StringName, t_minute: int) -> Dictionary:
 	var cap_i: int = int(line["capacity"])
 	var times: PackedInt32Array = line["times"]
 	var values: PackedFloat32Array = line["values"]
-        for i in range(size_i):
-                var idx: int = (head + i) % cap_i
-                var t_i: int = times[idx]
-                if t_i >= t_minute:
-                        res["found"] = true
-                        res["t"] = t_i
-                        res["v"] = values[idx]
-                        if DEBUG_HISTORY:
-                                print("get_first_value_in_or_after %s t=%d -> idx=%d t_i=%d v=%f" % [id, t_minute, idx, t_i, values[idx]])
-                        return res
+	for i in range(size_i):
+		var idx: int = (head + i) % cap_i
+		var t_i: int = times[idx]
+		if t_i >= t_minute:
+			res["found"] = true
+			res["t"] = t_i
+			res["v"] = values[idx]
+			if DEBUG_HISTORY:
+					print("get_first_value_in_or_after %s t=%d -> idx=%d t_i=%d v=%f" % [id, t_minute, idx, t_i, values[idx]])
+			return res
 	return res
 
 

@@ -331,65 +331,71 @@ func _clamp_window() -> void:
 # ---- Anchored series builder ----
 
 func _left_anchor_at(id: StringName, start_min: int) -> Dictionary:
-        var before: Dictionary = HistoryManager.get_value_at_or_before(id, start_min)
-        var after: Dictionary = HistoryManager.get_first_value_in_or_after(id, start_min)
-        var before_found: bool = bool(before.get("found", false))
-        var after_found: bool = bool(after.get("found", false))
-        var res: Dictionary = {"found": false, "v": 0.0}
-        if before_found and after_found:
-                var t_b: int = int(before.get("t", 0))
-                var t_a: int = int(after.get("t", 0))
-                if t_b == start_min:
-                        res = {"found": true, "v": float(before.get("v", 0.0))}
-                elif t_a == start_min:
-                        res = {"found": true, "v": float(after.get("v", 0.0))}
-                elif t_b != t_a:
-                        var alpha: float = float(start_min - t_b) / float(t_a - t_b)
-                        var v_b: float = float(before.get("v", 0.0))
-                        var v_a: float = float(after.get("v", 0.0))
-                        var interp: float = v_b + (v_a - v_b) * alpha
-                        res = {"found": true, "v": interp}
-                else:
-                        res = {"found": true, "v": float(before.get("v", 0.0))}
-        elif before_found:
-                res = {"found": true, "v": float(before.get("v", 0.0))}
-        elif after_found:
-                res = {"found": true, "v": float(after.get("v", 0.0))}
-        return res
+		var before: Dictionary = HistoryManager.get_value_at_or_before(id, start_min)
+		var after: Dictionary = HistoryManager.get_first_value_in_or_after(id, start_min)
+		var before_found: bool = bool(before.get("found", false))
+		var after_found: bool = bool(after.get("found", false))
+		var res: Dictionary = {"found": false, "v": 0.0}
+		if before_found and after_found:
+				var t_b: int = int(before.get("t", 0))
+				var t_a: int = int(after.get("t", 0))
+				if t_b == start_min:
+						res = {"found": true, "v": float(before.get("v", 0.0))}
+				elif t_a == start_min:
+						res = {"found": true, "v": float(after.get("v", 0.0))}
+				elif t_b != t_a:
+						var alpha: float = float(start_min - t_b) / float(t_a - t_b)
+						var v_b: float = float(before.get("v", 0.0))
+						var v_a: float = float(after.get("v", 0.0))
+						var interp: float = v_b + (v_a - v_b) * alpha
+						res = {"found": true, "v": interp}
+				else:
+						res = {"found": true, "v": float(before.get("v", 0.0))}
+		elif before_found:
+				res = {"found": true, "v": float(before.get("v", 0.0))}
+		elif after_found:
+				res = {"found": true, "v": float(after.get("v", 0.0))}
+		return res
 
 func _build_series_with_anchors(id: StringName, start_min: int, end_min: int) -> PackedVector2Array:
-        var raw: PackedVector2Array = HistoryManager.get_series_window_line(id, start_min, end_min, max_points_per_series)
-        var prev_dbg: Dictionary = DEBUG_HISTORY ? HistoryManager.get_value_at_or_before(id, start_min) : {}
-        if DEBUG_HISTORY:
-                var preview_raw: Array = []
-                for i in range(min(5, raw.size())):
-                        preview_raw.append(raw[i])
-                print("_build_series_with_anchors id=%s start=%d end=%d prev=%s raw_first=%s" % [id, start_min, end_min, prev_dbg, preview_raw])
-        var left: Dictionary = _left_anchor_at(id, start_min)
-        var out: PackedVector2Array = raw
-        if bool(left.get("found", false)):
-                if out.size() == 0 or int(out[0].x) > start_min:
-                        var tmp: PackedVector2Array = PackedVector2Array()
-                        tmp.resize(out.size() + 1)
-                        tmp[0] = Vector2(float(start_min), float(left.get("v", 0.0)))
-                        for i in range(out.size()):
-                                tmp[i + 1] = out[i]
-                        out = tmp
-        elif out.size() == 0:
-                return PackedVector2Array()
+		var raw: PackedVector2Array = HistoryManager.get_series_window_line(id, start_min, end_min, max_points_per_series)
+		var prev_dbg: Dictionary = {}
+		if DEBUG_HISTORY:
+			prev_dbg = HistoryManager.get_value_at_or_before(id, start_min)
 
-        if extend_last_sample:
-                var right_val: float = bool(left.get("found", false)) ? float(left.get("v", 0.0)) : 0.0
-                if out.size() > 0:
-                        right_val = out[out.size() - 1].y
-                if out.size() == 0 or int(out[out.size() - 1].x) < end_min:
-                        out.push_back(Vector2(float(end_min), right_val))
-        if DEBUG_HISTORY:
-                var preview_out: Array = []
-                for i in range(min(5, out.size())):
-                        preview_out.append(out[i])
-                print("_build_series_with_anchors anchored_first=%s" % [preview_out])
-        return out
+		if DEBUG_HISTORY:
+				var preview_raw: Array = []
+				for i in range(min(5, raw.size())):
+						preview_raw.append(raw[i])
+				print("_build_series_with_anchors id=%s start=%d end=%d prev=%s raw_first=%s" % [id, start_min, end_min, prev_dbg, preview_raw])
+		var left: Dictionary = _left_anchor_at(id, start_min)
+		var out: PackedVector2Array = raw
+		if bool(left.get("found", false)):
+				if out.size() == 0 or int(out[0].x) > start_min:
+						var tmp: PackedVector2Array = PackedVector2Array()
+						tmp.resize(out.size() + 1)
+						tmp[0] = Vector2(float(start_min), float(left.get("v", 0.0)))
+						for i in range(out.size()):
+								tmp[i + 1] = out[i]
+						out = tmp
+		elif out.size() == 0:
+				return PackedVector2Array()
+
+		if extend_last_sample:
+			var right_val: float = 0.0
+			if bool(left.get("found", false)):
+				right_val = float(left.get("v", 0.0))
+			if out.size() > 0:
+				right_val = out[out.size() - 1].y
+			if out.size() == 0 or int(out[out.size() - 1].x) < end_min:
+				out.push_back(Vector2(float(end_min), right_val))
+
+		if DEBUG_HISTORY:
+				var preview_out: Array = []
+				for i in range(min(5, out.size())):
+						preview_out.append(out[i])
+				print("_build_series_with_anchors anchored_first=%s" % [preview_out])
+		return out
 
 # ---- Y-bounds computation (uses anchored series) ----
 
