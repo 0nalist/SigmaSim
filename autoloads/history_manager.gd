@@ -277,6 +277,56 @@ func get_latest_point(id: StringName) -> Vector2:
 	var idx: int = (line.head + line.size - 1) % line.capacity
 	return Vector2(float(line.times[idx]), line.values[idx])
 
+# Returns { "found": bool, "t": int, "v": float } for the finest tier (tier 0).
+func get_value_at_or_before(id: StringName, t_minute: int) -> Dictionary:
+	var res: Dictionary = {"found": false, "t": -2147483648, "v": 0.0}
+	if not _series.has(id):
+		return res
+	var line: Dictionary = _series[id]["tiers"][0]["line"]
+	var size_i: int = int(line["size"])
+	if size_i == 0:
+		return res
+
+	var head: int = int(line["head"])
+	var cap_i: int = int(line["capacity"])
+	var times: PackedInt32Array = line["times"]
+	var values: PackedFloat32Array = line["values"]
+
+	# Walk from newest backwards until <= t_minute (capacity is small; O(n) is fine)
+	for i in range(size_i - 1, -1, -1):
+		var idx: int = (head + i) % cap_i
+		var t_i: int = times[idx]
+		if t_i <= t_minute:
+			res["found"] = true
+			res["t"] = t_i
+			res["v"] = values[idx]
+			return res
+	return res
+
+func get_first_value_in_or_after(id: StringName, t_minute: int) -> Dictionary:
+	var res: Dictionary = {"found": false, "t": -2147483648, "v": 0.0}
+	if not _series.has(id):
+		return res
+	var line: Dictionary = _series[id]["tiers"][0]["line"]
+	var size_i: int = int(line["size"])
+	if size_i == 0:
+		return res
+	var head: int = int(line["head"])
+	var cap_i: int = int(line["capacity"])
+	var times: PackedInt32Array = line["times"]
+	var values: PackedFloat32Array = line["values"]
+	for i in range(size_i):
+		var idx: int = (head + i) % cap_i
+		var t_i: int = times[idx]
+		if t_i >= t_minute:
+			res["found"] = true
+			res["t"] = t_i
+			res["v"] = values[idx]
+			return res
+	return res
+
+
+
 # -------------------- SAVE-SLOT API (for SaveManager) ----------
 func get_save_data() -> Dictionary:
 	var out: Dictionary = {"v": HISTORY_FILE_VERSION, "series": {}}

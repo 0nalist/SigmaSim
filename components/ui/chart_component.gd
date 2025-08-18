@@ -14,10 +14,10 @@ class_name ChartComponent
 
 @export_category("Behavior")
 @export var autoscroll: bool = true
-@export var autoscroll_locked: bool = true	# NEW: hard-lock auto-follow "now"
+@export var autoscroll_locked: bool = true
 @export var autoscroll_hold_timeout_sec: float = 3.0
-@export var lock_y_min: bool = true			# y_min fixed at 0
-@export var lock_x_min: bool = false		# x_min fixed at 0
+@export var lock_y_min: bool = true
+@export var lock_x_min: bool = false
 
 @export_category("Polling")
 @export var poll_hz: int = 20
@@ -326,13 +326,55 @@ func _clamp_window() -> void:
 		window_start_min = 0
 		window_end_min = max(window_start_min + min_window_minutes, window_end_min)
 
-# ---- Y-bounds computation (lock_y_min support) ----
+# ---- Anchored series builder ----
+
+func _build_series_with_anchors(id: StringName, start_min: int, end_min: int) -> PackedVector2Array:
+	# Base window samples
+	var raw: PackedVector2Array = HistoryManager.get_series_window_line(id, start_min, end_min, max_points_per_series)
+
+	# LEFT anchor: value at/before start_min, else first in-window
+	var left_found: bool = false
+	var left_val: float = 0.0
+	var prev: Dictionary = HistoryManager.get_value_at_or_before(id, start_min)
+	if bool(prev.get("found", false)):
+		left_found = true
+		left_val = float(prev.get("v", 0.0))
+	elif raw.size() > 0:
+		left_found = true
+		left_val = raw[0].y
+
+	# No data at all?
+	if not left_found and raw.size() == 0:
+		return PackedVector2Array()
+
+	# Start with working copy
+	var out: PackedVector2Array = raw
+
+	# Prepend left anchor at window start
+	if left_found:
+		if out.size() == 0 or int(out[0].x) > start_min:
+			var left_pt: Vector2 = Vector2(float(start_min), left_val)
+			var tmp: PackedVector2Array = PackedVector2Array()
+			tmp.resize(out.size() + 1)
+			tmp[0] = left_pt
+			for i in range(out.size()):
+				tmp[i + 1] = out[i]
+			out = tmp
+
+	# RIGHT anchor: extend last value to end_min when desired
+	if extend_last_sample:
+		var right_val: float = left_val if out.size() == 0 else out[out.size() - 1].y
+		if out.size() == 0 or int(out[out.size() - 1].x) < end_min:
+			out.push_back(Vector2(float(end_min), right_val))
+
+	return out
+
+# ---- Y-bounds computation (uses anchored series) ----
 
 func _compute_y_bounds() -> Vector2:
 	var min_y: float = 0.0
 	if not lock_y_min:
 		min_y = INF
-
 	var max_y: float = -INF
 
 	for id in _series.keys():
@@ -341,16 +383,8 @@ func _compute_y_bounds() -> Vector2:
 		if not vis:
 			continue
 
-		var raw: PackedVector2Array = HistoryManager.get_series_window_line(id, window_start_min, window_end_min, max_points_per_series)
-
-		if extend_last_sample:
-			var lp: Vector2 = HistoryManager.get_latest_point(id)
-			var last_t: int = int(lp.x)
-			if last_t != -2147483648 and last_t < window_end_min:
-				if raw.is_empty() or int(raw[raw.size() - 1].x) <= last_t:
-					raw.push_back(Vector2(float(window_end_min), lp.y))
-
-		for p in raw:
+		var with_anchors: PackedVector2Array = _build_series_with_anchors(id, window_start_min, window_end_min)
+		for p in with_anchors:
 			if lock_y_min:
 				if p.y > max_y:
 					max_y = p.y
@@ -368,9 +402,7 @@ func _compute_y_bounds() -> Vector2:
 		max_y = min_y + 1.0
 
 	var padding: float = (max_y - min_y) * 0.1
-	var out_min: float = min_y
-	var out_max: float = max_y + padding
-	return Vector2(out_min, out_max)
+	return Vector2(min_y, max_y + padding)
 
 # ---- Rendering ----
 
@@ -414,15 +446,7 @@ func _draw_series(plot: Rect2, min_y: float, max_y: float, y_span: float, span: 
 		if not vis:
 			continue
 
-		var raw: PackedVector2Array = HistoryManager.get_series_window_line(id, window_start_min, window_end_min, max_points_per_series)
-
-		if extend_last_sample:
-			var lp: Vector2 = HistoryManager.get_latest_point(id)
-			var last_t: int = int(lp.x)
-			if last_t != -2147483648 and last_t < window_end_min:
-				if raw.is_empty() or int(raw[raw.size() - 1].x) <= last_t:
-					raw.push_back(Vector2(float(window_end_min), lp.y))
-
+		var raw: PackedVector2Array = _build_series_with_anchors(id, window_start_min, window_end_min)
 		if raw.is_empty():
 			continue
 
@@ -434,9 +458,7 @@ func _draw_series(plot: Rect2, min_y: float, max_y: float, y_span: float, span: 
 			var y: float = plot.position.y + (1.0 - (p.y - min_y) / y_span) * plot.size.y
 			pts[i] = Vector2(x, y)
 
-		var color: Color = Color.WHITE
-		if s.has("color"):
-			color = s["color"]
+		var color: Color = s.get("color", Color.WHITE)
 		if pts.size() == 1:
 			draw_circle(pts[0], 2.0, color)
 		else:
