@@ -40,6 +40,8 @@ size_flags_stretch_ratio = 0.0
 [node name="ProfilePic" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_pv")]
 unique_name_in_owner = true
 layout_mode = 2
+portrait_creator_enabled = true
+subject_is_player = true
 
 [node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true

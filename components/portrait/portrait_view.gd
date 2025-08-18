@@ -3,12 +3,21 @@ extends Control
 
 const PORTRAIT_SCALE := 2.0
 
+@export var portrait_creator_enabled: bool = false
+@export var subject_is_player: bool = false
+@export var subject_npc_idx: int = -1
+
+@onready var new_you_button: Button = %NewYouButton
+
 
 func _ready() -> void:
-	await get_tree().process_frame
-	pivot_offset = size / 2
-	resized.connect(_center_layers)
-	_center_layers()
+        await get_tree().process_frame
+        pivot_offset = size / 2
+        resized.connect(_center_layers)
+        _center_layers()
+        mouse_entered.connect(_on_mouse_entered)
+        mouse_exited.connect(_on_mouse_exited)
+        new_you_button.pressed.connect(_on_new_you_pressed)
 
 
 func _center_layers() -> void:
@@ -51,4 +60,25 @@ func apply_config(cfg: PortraitConfig) -> void:
 			rect.modulate = col_val
 
 		# Keep each layer centered within the view
-		rect.position = (size - rect.size) / 2
+                rect.position = (size - rect.size) / 2
+
+
+func _on_mouse_entered() -> void:
+        if portrait_creator_enabled:
+                new_you_button.visible = true
+
+
+func _on_mouse_exited() -> void:
+        new_you_button.visible = false
+
+
+func _on_new_you_pressed() -> void:
+        var scene = preload("res://components/apps/new_you/new_you.tscn")
+        var pane = scene.instantiate()
+        var args: Dictionary = {"portrait_view": self}
+        if subject_is_player:
+                args["type"] = "player"
+        elif subject_npc_idx != -1:
+                args["type"] = "npc"
+                args["npc_idx"] = subject_npc_idx
+        WindowManager.launch_pane_instance(pane, args)

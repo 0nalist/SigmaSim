@@ -12,9 +12,9 @@ var npc_idx
 
 
 func set_profile(profile_npc, profile_idx):
-	npc = profile_npc
-	npc_idx = profile_idx
-	fumble_profile.load_npc(npc)
+        npc = profile_npc
+        npc_idx = profile_idx
+        fumble_profile.load_npc(npc, npc_idx)
 	
 	var already_in_battle = FumbleManager.has_active_battle(npc_idx)
 	chat_button.visible = not already_in_battle
