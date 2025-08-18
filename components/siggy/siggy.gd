@@ -112,10 +112,9 @@ func talk(text: String, time_per_char := 0.05) -> void:
 	for i in range(total_chars):
 		speech_label.visible_ratio = float(i + 1) / total_chars
 
-if i % bounce_every_n_chars == 0:
-var bounce_tween = create_tween()
-var rng = RNGManager.get_rng()
-var up = original_pos - Vector2(0, bounce_height + rng.randi_range(-2, 2))
+		if i % bounce_every_n_chars == 0:
+			var bounce_tween = create_tween()
+			var up = original_pos - Vector2(0, bounce_height + randi_range(-2, 2))
 			var angle = 2.0 if i % 4 == 0 else -2.0
 
 			bounce_tween.tween_property(siggy_sprite, "position", up, bounce_speed).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -153,19 +152,18 @@ func activate(reason: String, data: Dictionary = {}):
 
 
 func get_money_tip() -> String:
-var tips = []
+	var tips = []
 
-#if AppManager.has_app("BrokeRage"):
-tips.append("Check your stocks in BrokeRage.")
-#if AppManager.has_app("Grinderr"):
-tips.append("You could pick up a gig on Grinderr.")
-#if AppManager.has_app("Minerr"):
-tips.append("Try mining crypto in Minerr.")
+	#if AppManager.has_app("BrokeRage"):
+	tips.append("Check your stocks in BrokeRage.")
+	#if AppManager.has_app("Grinderr"):
+	tips.append("You could pick up a gig on Grinderr.")
+	#if AppManager.has_app("Minerr"):
+	tips.append("Try mining crypto in Minerr.")
 
-if tips.is_empty():
-return "Try cutting back on spending for now."
-var rng = RNGManager.get_rng()
-return tips[rng.randi_range(0, tips.size() - 1)]
+	if tips.is_empty():
+		return "Try cutting back on spending for now."
+	return tips.pick_random()
 
 
 func out_of_pocket_wildcard() -> String:
@@ -176,8 +174,7 @@ func out_of_pocket_wildcard() -> String:
 	wildcards.append("...all I'm saying is, buildings don't just fall down like that!")
 	wildcards.append("And that's the day I learned why they're called sperm whales")
 	#wildcards.append("")
-var rng = RNGManager.get_rng()
-return str(wildcards[rng.randi_range(0, wildcards.size()-1)])
+	return str(wildcards[randi_range(0, wildcards.size()-1)])
 	
 
 

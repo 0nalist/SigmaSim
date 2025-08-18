@@ -10,9 +10,8 @@ func setup(npc_ref, stats_dict = {}):
 	stats = stats_dict.duplicate()
 
 func resolve_move(move_type: String) -> Dictionary:
-var chance = get_success_chance(move_type)
-var rng = RNGManager.get_rng()
-var success = rng.randf() < chance
+	var chance = get_success_chance(move_type)
+	var success = randf() < chance
 	var mod = get_move_type_modifier(npc.chat_battle_type, move_type)
 	var reaction = ""
 	if mod == 2.0:

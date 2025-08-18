@@ -39,8 +39,7 @@ func _ready() -> void:
 	MarketManager.crypto_market_ready.connect(setup_crypto_cooldowns)
 
 func _on_minute_tick(_unused: int) -> void:
-var current_time = TimeManager.total_minutes_elapsed
-var rng = RNGManager.get_rng()
+	var current_time = TimeManager.total_minutes_elapsed
 	
 	#var now = 
 	
@@ -57,10 +56,10 @@ var rng = RNGManager.get_rng()
 			next_block_time[symbol] = next_time
 			continue
 
-while current_time >= next_time:
-emit_signal("block_attempted", symbol)
-var random_difficulty = rng.randi_range(0, crypto.power_required)
-if power >= random_difficulty:
+		while current_time >= next_time:
+			emit_signal("block_attempted", symbol)
+			var random_difficulty = randi_range(0, crypto.power_required)
+			if power >= random_difficulty:
 				PortfolioManager.add_crypto(symbol, crypto.block_size)
 				emit_signal("crypto_mined", crypto)
 			next_time += crypto.block_time
@@ -147,8 +146,7 @@ func set_overclocked(index: int, overclocked: bool) -> void:
 
 
 func process_gpu_tick() -> void:
-var rng = RNGManager.get_rng()
-total_power = 0  # Recalculate total power
+	total_power = 0  # Recalculate total power
 
 	for i in range(gpu_cryptos.size()):
 		var symbol : String = gpu_cryptos[i]
@@ -161,7 +159,7 @@ total_power = 0  # Recalculate total power
 			power *= overclock_power_multiplier
 			burnout_chances[i] += burnout_rate_per_tick
 
-if rng.randi_range(0, 1000) < burnout_chances[i]:
+			if randi_range(0, 1000) < burnout_chances[i]:
 				to_remove.append(i)
 				emit_signal("gpu_burned_out", i)
 				continue
@@ -169,7 +167,7 @@ if rng.randi_range(0, 1000) < burnout_chances[i]:
 			burnout_chances[i] = 0.0  # Reset burnout if not overclocked
 
 		# Mining logic
-if rng.randi_range(0, crypto.power_required) < power:
+		if randi_range(0, crypto.power_required) < power:
 			PortfolioManager.add_crypto(symbol, crypto.reward_per_mine)
 
 		total_power += int(power)

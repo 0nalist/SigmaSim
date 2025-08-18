@@ -25,8 +25,7 @@ func update_price(delta: float) -> void:
 	all_time_high = max(all_time_high, price)
 
 func update_from_market(volatility_scale := 1.0) -> void:
-var rng = RNGManager.get_rng()
-var noise = rng.randf_range(-0.5, 0.5)
+	var noise = randf_range(-0.5, 0.5)
 	var max_percent_change = volatility / 100.0 * volatility_scale
 	var delta = price * max_percent_change * noise
 	update_price(delta)
@@ -38,7 +37,7 @@ func update_power_required(previous_price: float) -> void:
 		return
 
 	var value_ratio = price / previous_price
-var noise = rng.randf_range(0.95, 1.05)
+	var noise = randf_range(0.95, 1.05)
 	var new_required = power_required * value_ratio * noise
 
 	# Set updated value
