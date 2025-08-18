@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://eduscene1234"]
+
+[ext_resource type="Script" uid="uid://edu6y7z8x9w" path="res://components/ui/profile_creation/education_selection_screen.gd" id="1_edusc"]
+
+[node name="EducationSelectionScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_edusc")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Please select the highest level of education you have paid for"
+horizontal_alignment = 1
+
+[node name="NoneButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "None\n$0 student debt\n$0 credit limit"
+
+[node name="HighSchoolButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "High School / GED\n$0 student debt\n$500 credit limit"
+
+[node name="SomeCollegeButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Some College\n$15,000 student debt\n$2,000 credit limit"
+
+[node name="BachelorsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Bachelor's Degree\n$80,000 student debt\n$10,000 credit limit"
+
+[node name="MastersButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Master's Degree\n$250,000 student debt\n$25,000 credit limit"
+
+[node name="DoctorateButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Doctorate\n$1,200,000 student debt\n$100,000 credit limit"
