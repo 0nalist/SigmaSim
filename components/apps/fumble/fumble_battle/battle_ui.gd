@@ -16,7 +16,7 @@ var blocked: bool = false
 var block_warning_active: bool = false
 
 
-@onready var profile_pic: TextureRect = %ProfilePic
+@onready var profile_pic: PortraitView = %ProfilePic
 @onready var attractiveness_label: Label = %AttractivenessLabel
 @onready var name_label: Label = %NameLabel
 
@@ -200,18 +200,13 @@ func animate_progress_bar(bar: ProgressBar, target_value: float, duration: float
 
 func _update_profiles():
 	# === Player info ===
-	var pic_path = PlayerManager.get_var("profile_picture_path", "")
-	if pic_path != "":
-		var img = load(pic_path)
-		if img is Texture2D:
-			profile_pic.texture = img
-		else:
-			profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
-	else:
-		profile_pic.texture = preload("res://assets/prof_pics/silhouette.png")
+        var portrait_dict = PlayerManager.get_var("portrait_config", {})
+        if portrait_dict is Dictionary:
+                var cfg = PortraitConfig.from_dict(portrait_dict)
+                profile_pic.apply_config(cfg)
 
-		_update_player_attractiveness_label()
-		name_label.text = PlayerManager.get_var("name", "You")
+        _update_player_attractiveness_label()
+        name_label.text = PlayerManager.get_var("name", "You")
 	
 	# NPC info
 	if npc.portrait_config != null:
