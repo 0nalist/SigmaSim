@@ -135,10 +135,10 @@ func _on_randomize_pressed() -> void:
 
 
 func _on_generate_pressed() -> void:
-		config = PortraitFactory.generate_config_for_name(name_edit.text)
-		_sync_ui_with_config()
-		preview.apply_config(config)
-		emit_signal("applied", config)
+	config = PortraitFactory.generate_config_for_name(name_edit.text)
+	_sync_ui_with_config()
+	preview.apply_config(config)
+	#emit_signal("applied", config)
 
 
 func _on_apply_pressed() -> void:

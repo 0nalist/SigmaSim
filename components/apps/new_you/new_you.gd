@@ -38,6 +38,9 @@ func setup_custom(args: Dictionary) -> void:
 			portrait_creator.config = gen_cfg
 	elif npc != null:
 		portrait_creator.config = npc.portrait_config
+	if name_text != "":
+		portrait_creator.config.name = name_text
+		portrait_creator.config.seed = PortraitFactory.djb2(name_text)
 	portrait_creator._sync_ui_with_config()
 	portrait_creator.preview.apply_config(portrait_creator.config)
 
