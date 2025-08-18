@@ -221,7 +221,8 @@ func _on_dime_status_changed(_value: float) -> void:
 
 
 func _update_player_attractiveness_label() -> void:
-		attractiveness_label.text = "🔥 %.1f/10" % float(StatManager.get_stat("dime_status"))
+	await get_tree().process_frame
+	attractiveness_label.text = "🔥 %.1f/10" % float(StatManager.get_stat("dime_status"))
 
 
 func update_action_buttons():

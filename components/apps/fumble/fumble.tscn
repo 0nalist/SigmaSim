@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=18 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="PackedScene" uid="uid://dptnj8nxnr760" path="res://components/apps/fumble/fumble_special_offers.tscn" id="2_hf3uq"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
 [ext_resource type="Shader" uid="uid://cxfw6b7fdyskb" path="res://assets/shaders/green_warp_shader.gdshader" id="3_wfdmb"]
 [ext_resource type="Texture2D" uid="uid://bq0jn8wlfmaae" path="res://assets/Flag_of_Turkey.svg.png" id="4_hf3uq"]
+[ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="5_5uoqt"]
 [ext_resource type="PackedScene" uid="uid://buvfo6k8fhu53" path="res://components/apps/fumble/chats_tab.tscn" id="5_dmsn0"]
 [ext_resource type="PackedScene" uid="uid://bfyjk22acyf56" path="res://components/portrait/portrait_creator.tscn" id="5_jh1fk"]
 [ext_resource type="Script" uid="uid://bf65ryfqtiq6i" path="res://components/apps/fumble/fumble_search_criteria_ui.gd" id="5_wfdmb"]
@@ -115,37 +116,49 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer"]
 layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/outline_size = 12
 text = "You"
 
-[node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]
+[node name="PortraitView" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2" instance=ExtResource("5_5uoqt")]
+custom_minimum_size = Vector2(0, 132)
+layout_mode = 2
+portrait_creator_enabled = true
+subject_is_player = true
+
+[node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]
+visible = false
 custom_minimum_size = Vector2(0, 260)
 layout_mode = 2
 size_flags_vertical = 1
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Bio:"
 
-[node name="BioTextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
+[node name="BioTextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
@@ -153,231 +166,231 @@ size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 10
 placeholder_text = "Write something!"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 text = "Your Gender:"
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/HBoxContainer5"]
 custom_minimum_size = Vector2(15, 16)
 layout_mode = 2
 focus_mode = 0
 
-[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer"]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="FumbleSearchCriteriaContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer"]
+[node name="FumbleSearchCriteriaContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 script = ExtResource("5_wfdmb")
 
-[node name="HBoxContainer99" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+[node name="HBoxContainer99" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
 layout_mode = 2
 
-[node name="GenderLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/HBoxContainer99"]
+[node name="GenderLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/HBoxContainer99"]
 layout_mode = 2
 theme_override_constants/outline_size = 12
 text = "I'm interested in:"
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/HBoxContainer99"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/HBoxContainer99"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 6
 text = "X"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/HBoxContainer99"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/HBoxContainer99"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="XHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+[node name="XHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/XHContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/XHContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/XHContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/XHContainer"]
 layout_mode = 2
 text = "X"
 
-[node name="XHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/XHContainer"]
+[node name="XHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/XHContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/XHContainer"]
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/XHContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="YHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+[node name="YHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
 layout_mode = 2
 
-[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/YHContainer"]
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/YHContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/YHContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/YHContainer"]
 layout_mode = 2
 text = "Y"
 
-[node name="YHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/YHContainer"]
+[node name="YHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/YHContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/YHContainer"]
+[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/YHContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="ZHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+[node name="ZHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
 layout_mode = 2
 
-[node name="Control5" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/ZHContainer"]
+[node name="Control5" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/ZHContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/ZHContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/ZHContainer"]
 layout_mode = 2
 text = "Z"
 
-[node name="ZHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/ZHContainer"]
+[node name="ZHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/ZHContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control6" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/ZHContainer"]
+[node name="Control6" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/ZHContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="CuriosityHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+[node name="CuriosityHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
 layout_mode = 2
 text = "Curiosity"
 
-[node name="CuriosityHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
+[node name="CuriosityHSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
+[node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
-[node name="10px7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+[node name="10px7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="PremiumFeaturesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+[node name="PremiumFeaturesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2"]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 12
 text = "Premium Features"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer"]
 layout_mode = 2
 text = "Archetype: Beta"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer2"]
 layout_mode = 2
 text = "See your elo"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
 layout_mode = 2
 text = "Autoswipe on all above a"
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
 layout_mode = 2
 max_length = 1
 virtual_keyboard_type = 3
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/PremiumFeaturesContainer/HBoxContainer3"]
 layout_mode = 2
 
-[node name="FumbleShopContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2"]
+[node name="FumbleShopContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TurkishHairSurgery" type="PanelContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="TurkishHairSurgery" type="PanelContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_5fcgq")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery"]
 layout_mode = 2
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Pull Hotter People INSTANTLY With This One INSANE Trick."
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "TURKISH HAIR SURGERY"
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "+ 1.0 🔥to your dime status. "
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 text = " BUY NOW 
   $25,000"
 
-[node name="FumbleSpecialOffers" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_hf3uq")]
+[node name="FumbleSpecialOffers" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_hf3uq")]
 layout_mode = 2
 
 [node name="SwipesTab" type="Control" parent="MarginContainer/VBoxContainer"]

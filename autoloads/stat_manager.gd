@@ -218,7 +218,12 @@ func _on_levels_changed() -> void:
 
 func recalculate_all_stats_once() -> void:
 	computed_stats.clear()
-	for stat_name in base_stats.keys():
+	var stats_to_recalc := base_stats.keys()
+	for deps in stat_dependencies.values():
+		for dep in deps:
+			if dep not in stats_to_recalc:
+				stats_to_recalc.append(dep)
+	for stat_name in stats_to_recalc:
 		_recalculate_stat(stat_name, false)
 	for stat_name in derived_stats.keys():
 		_recalculate_derived_stat(stat_name, false)

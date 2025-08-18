@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://newyouapp"]
 
-[ext_resource type="Script" path="res://components/apps/new_you/new_you.gd" id="1"]
-[ext_resource type="PackedScene" path="res://components/portrait/portrait_creator.tscn" id="2"]
+[ext_resource type="Script" uid="uid://bndr8o5tre4hx" path="res://components/apps/new_you/new_you.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bfyjk22acyf56" path="res://components/portrait/portrait_creator.tscn" id="2"]
 
 [node name="NewYou" type="PanelContainer"]
 anchors_preset = 15

@@ -18,7 +18,12 @@ func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	new_you_button.pressed.connect(_on_new_you_pressed)
-
+	new_you_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	if subject_is_player:
+		var cfg_dict = PlayerManager.get_var("portrait_config", {})
+		if cfg_dict is Dictionary:
+			var cfg = PortraitConfig.from_dict(cfg_dict)
+			apply_config(cfg)
 
 func _center_layers() -> void:
 	for child in get_children():
