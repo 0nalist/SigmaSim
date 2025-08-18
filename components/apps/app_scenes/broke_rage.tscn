@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://1jylhdkewo5k"]
+[gd_scene load_steps=13 format=3 uid="uid://1jylhdkewo5k"]
 
 [ext_resource type="Texture2D" uid="uid://bx8di1m28cktr" path="res://assets/money_pixeled.png" id="1_m7phi"]
 [ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bq3i6eu2isf1d" path="res://components/apps/broke_rage/stock_market.gd" id="5_lgac0"]
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="5_n67s2"]
 [ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="6_m7phi"]
+[ext_resource type="Script" uid="uid://bftbsb6v4fkwu" path="res://components/ui/chart_component.gd" id="7_t3xq1"]
 [ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_htng3"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcm1f"]
@@ -77,12 +78,13 @@ theme_override_constants/margin_bottom = 5
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
+[node name="CashChart" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-texture = ExtResource("4_wfbhr")
-expand_mode = 2
-stretch_mode = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("7_t3xq1")
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
 layout_mode = 2
