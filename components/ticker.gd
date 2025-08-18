@@ -103,8 +103,9 @@ func get_next_ticker_template() -> String:
 			candidates.append(entry)
 	if candidates.is_empty():
 		return "No news is good news."
-	var selected = candidates.pick_random()
-	return selected.text
+var rng = RNGManager.get_rng()
+var selected = candidates[rng.randi_range(0, candidates.size() - 1)]
+return selected.text
 
 func format_ticker_text(text: String) -> String:
 	for key in ticker_variables.keys():

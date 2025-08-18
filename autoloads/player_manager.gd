@@ -49,7 +49,8 @@ var default_user_data: Dictionary = {
 
 	# Flags and progression
 	"unlocked_perks": [],
-	"seen_dialogue_ids": []
+	"seen_dialogue_ids": [],
+	"global_rng_seed": 0,
 }
 
 var user_data: Dictionary = default_user_data.duplicate(true)
@@ -90,6 +91,7 @@ func mark_seen(id: String) -> void:
 ## -- SAVE LOAD
 
 func get_save_data() -> Dictionary:
+	user_data["global_rng_seed"] = RNGManager.seed
 	return user_data.duplicate(true)
 
 func load_from_data(data: Dictionary) -> void:
@@ -97,6 +99,10 @@ func load_from_data(data: Dictionary) -> void:
 	ensure_default_stats()
 	if user_data.has("confidence"):
 		user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
+		if user_data.has("global_rng_seed"):
+			RNGManager.init_seed(int(user_data["global_rng_seed"]))
+		else:
+			RNGManager.init_seed(0)
 
 
 
