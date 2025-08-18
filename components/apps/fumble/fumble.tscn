@@ -395,10 +395,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 65
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 65
+theme_override_constants/margin_bottom = 25
 
 [node name="ProfileContainer" type="Control" parent="MarginContainer/VBoxContainer/SwipesTab/MarginContainer"]
 unique_name_in_owner = true
