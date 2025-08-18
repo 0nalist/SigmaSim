@@ -261,6 +261,7 @@ size_flags_vertical = 4
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+size_flags_vertical = 3
 subject_is_player = true
 
 [node name="AttractivenessLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
@@ -676,6 +677,18 @@ size_flags_vertical = 3
 focus_mode = 0
 text = "INVENTORY"
 
+[node name="NoConfidenceContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="NoConfidenceLabel" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/NoConfidenceContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("20_7gtst")
+theme_override_font_sizes/font_size = 32
+text = "No Confidence"
+horizontal_alignment = 1
+
 [node name="ProfileCenterContainer" type="CenterContainer" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -704,6 +717,7 @@ script = ExtResource("8_4kvrx")
 
 [node name="EndBattleScreenContainer" type="CenterContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="EndBattleScreenContainer"]
