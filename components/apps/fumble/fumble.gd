@@ -41,7 +41,7 @@ func _ready():
 
 
 func _setup_over_frames() -> void:
-	await get_tree().process_frame
+        await get_tree().process_frame
 
 	for child in profile_container.get_children():
 		if child is ProfileCardStack:
@@ -56,12 +56,14 @@ func _setup_over_frames() -> void:
 	swipe_left_button.pressed.connect(card_stack.swipe_left)
 	swipe_right_button.pressed.connect(card_stack.swipe_right)
 
-	card_stack.card_swiped_left.connect(_on_card_swiped_left)
-	card_stack.card_swiped_right.connect(_on_card_swiped_right)
+        card_stack.card_swiped_left.connect(_on_card_swiped_left)
+        card_stack.card_swiped_right.connect(_on_card_swiped_right)
 
-	self_button.pressed.connect(show_self_tab)
-	swipes_button.pressed.connect(show_swipes_tab)
-	chats_button.pressed.connect(show_chat_tab)
+       StatManager.connect_to_stat("confidence", self, "_on_confidence_changed")
+
+        self_button.pressed.connect(show_self_tab)
+        swipes_button.pressed.connect(show_swipes_tab)
+        chats_button.pressed.connect(show_chat_tab)
 
 	x_slider.value_changed.connect(_on_gender_slider_changed)
 	y_slider.value_changed.connect(_on_gender_slider_changed)
@@ -82,8 +84,8 @@ func _setup_over_frames() -> void:
 	bio_text_edit.text = PlayerManager.get_var("bio", "")
 	bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
 
-	confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
-	ex_progress_bar.update_value(StatManager.get_stat("ex"))
+        confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
+        ex_progress_bar.update_value(StatManager.get_stat("ex"))
 
 	_on_gender_slider_changed(0)
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
@@ -194,7 +196,7 @@ func _on_resize_y_requested(pixels):
 
 
 func _on_bio_text_edit_text_changed() -> void:
-	PlayerManager.set_var("bio", bio_text_edit.text)
+        PlayerManager.set_var("bio", bio_text_edit.text)
 
 
 func _on_visibility_changed() -> void:
@@ -203,4 +205,18 @@ func _on_visibility_changed() -> void:
 	_on_gender_slider_changed(0)
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)
 	if card_stack and card_stack.cards.is_empty():
-		await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+               await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+
+
+func _on_confidence_changed(value: float) -> void:
+        await _wait_for_reaction_animations()
+        confidence_progress_bar.update_value(value)
+
+
+func _wait_for_reaction_animations() -> void:
+        while card_stack and card_stack.is_animating:
+                await get_tree().process_frame
+
+
+func _exit_tree() -> void:
+        StatManager.disconnect_from_stat("confidence", self, "_on_confidence_changed")
