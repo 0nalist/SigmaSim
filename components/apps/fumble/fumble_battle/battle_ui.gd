@@ -191,7 +191,7 @@ func update_progress_bars():
 		animate_progress_bar(chemistry_progress_bar,  battle_stats.get("chemistry", 0))
 		animate_progress_bar(self_esteem_progress_bar,battle_stats.get("self_esteem", 0))
 		animate_progress_bar(apprehension_progress_bar,  battle_stats.get("apprehension", 0))
-                confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
+		confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
 
 func clamp100(val: float) -> float:
 	return clamp(val, 0, 100)
