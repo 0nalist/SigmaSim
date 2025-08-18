@@ -23,6 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="23_dik0q"]
+[ext_resource type="Script" uid="uid://cf1v6l1xc5n1i" path="res://components/desktop_background.gd" id="24_jkb4t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yi8nh"]
 shader = ExtResource("4_fjtwy")
@@ -178,6 +179,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("24_jkb4t")
+background_name = "BlueWarp"
 
 [node name="ComicDotsBlueVert" type="ColorRect" parent="Control"]
 material = SubResource("ShaderMaterial_rbayd")
@@ -192,6 +195,8 @@ offset_bottom = 2733.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
+script = ExtResource("24_jkb4t")
+background_name = "ComicDots1"
 
 [node name="ComicDotsBlueHor" type="ColorRect" parent="Control"]
 material = SubResource("ShaderMaterial_5aheu")
@@ -205,6 +210,8 @@ offset_right = 1008.0
 offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("24_jkb4t")
+background_name = "ComicDots2"
 
 [node name="TopBar" type="Control" parent="."]
 layout_mode = 1
