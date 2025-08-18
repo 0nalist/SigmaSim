@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://newyouapp"]
+
+[ext_resource type="Script" uid="uid://bndr8o5tre4hx" path="res://components/apps/new_you/new_you.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bfyjk22acyf56" path="res://components/portrait/portrait_creator.tscn" id="2"]
+
+[node name="NewYou" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1")
+window_title = "NewYou"
+show_in_taskbar = false
+
+[node name="PortraitCreator" parent="." instance=ExtResource("2")]
+unique_name_in_owner = true
+layout_mode = 2
