@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://eduscene1234"]
 
-[ext_resource type="Script" path="res://components/ui/profile_creation/education_selection_screen.gd" id="1_edusc"]
+[ext_resource type="Script" uid="uid://edu6y708yaw" path="res://components/ui/profile_creation/education_selection_screen.gd" id="1_edusc"]
 
 [node name="EducationSelectionScreen" type="Control"]
 layout_mode = 3
