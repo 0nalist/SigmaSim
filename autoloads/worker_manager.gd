@@ -146,26 +146,28 @@ func generate_available_workers() -> void:
 	emit_signal("available_workers_updated")
 
 func _generate_random_worker(is_contractor: bool) -> Worker:
-	var worker = Worker.new()
-	
-	''' Gender generator
-	var fem = randi_range(0, 1)
-	var masc = randi_range(0, 1)
-	var andro = randi_range(0, 1) if randi_range(0, 1) == 1 else 0
+var worker = Worker.new()
 
-	worker.name = NameGenerator.get_random_name(fem, masc, andro)
-	'''
-	worker.name = NameGenerator.get_random_name()
-	worker.id = "worker_" + str(worker.name)
-	worker.is_contractor = is_contractor
-	worker.hours_per_day = randi_range(4, 10)
-	worker.productivity_per_tick = randf_range(0.2, 1.0)
-	worker.day_rate = randi_range(30, 120)
-	if is_contractor:
-		worker.sign_on_bonus = randi_range(0, 20)
-	else:
-		worker.sign_on_bonus = randi_range(50, 200)
-	return worker
+var rng = RNGManager.get_rng()
+
+''' Gender generator
+var fem = rng.randi_range(0, 1)
+var masc = rng.randi_range(0, 1)
+var andro = rng.randi_range(0, 1) if rng.randi_range(0, 1) == 1 else 0
+
+worker.name = NameGenerator.get_random_name(fem, masc, andro)
+'''
+worker.name = NameGenerator.get_random_name()
+worker.id = "worker_" + str(worker.name)
+worker.is_contractor = is_contractor
+worker.hours_per_day = rng.randi_range(4, 10)
+worker.productivity_per_tick = rng.randf_range(0.2, 1.0)
+worker.day_rate = rng.randi_range(30, 120)
+if is_contractor:
+worker.sign_on_bonus = rng.randi_range(0, 20)
+else:
+worker.sign_on_bonus = rng.randi_range(50, 200)
+return worker
 
 func get_worker_by_id(id: String) -> Worker:
 	for w in workers:

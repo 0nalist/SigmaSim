@@ -72,12 +72,13 @@ static func get_type_mod_chance_adjust(npc_type: String, move_type: String) -> f
 	return 0.0
 
 func get_random_block_warning() -> String:
-	if npc_block_warnings is Array and npc_block_warnings.size() > 0:
-		var entry = npc_block_warnings.pick_random()
-		var core = str(entry.get("core", ""))
-		var suffixes = entry.get("suffixes", [])
-		var suffix = ""
-		if suffixes is Array and suffixes.size() > 0:
-			suffix = str(suffixes.pick_random())
-		return core + suffix
+if npc_block_warnings is Array and npc_block_warnings.size() > 0:
+var rng = RNGManager.get_rng()
+var entry = npc_block_warnings[rng.randi_range(0, npc_block_warnings.size() - 1)]
+var core = str(entry.get("core", ""))
+var suffixes = entry.get("suffixes", [])
+var suffix = ""
+if suffixes is Array and suffixes.size() > 0:
+suffix = str(suffixes[rng.randi_range(0, suffixes.size() - 1)])
+return core + suffix
 	return ""
