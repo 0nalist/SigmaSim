@@ -1,13 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://12a1fc403866"]
+[gd_scene load_steps=5 format=3 uid="uid://12a1fc403866"]
 
 [ext_resource type="Script" uid="uid://8ac725c14d5a" path="res://components/ui/profile_creation/gender_selection_screen.gd" id="1_a7i1o"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_t2cd2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iw0c"]
-bg_color = Color(0.85314, 0.330333, 0.460443, 1)
+bg_color = Color(0.784795, 0.324115, 0.742834, 1)
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b3dix"]
+bg_color = Color(0.0430392, 0.0430392, 0.0430391, 1)
 
 [node name="GenderSelectionScreen" type="Control"]
 layout_mode = 3
@@ -73,6 +76,8 @@ layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
 theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_1iw0c")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_1iw0c")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1iw0c")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_1iw0c")
 text = "She. Woman."
 
@@ -82,6 +87,9 @@ custom_minimum_size = Vector2(450, 45)
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_b3dix")
+theme_override_styles/hover = SubResource("StyleBoxFlat_b3dix")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_b3dix")
 text = "They. Person."
 
 [node name="CustomPronounContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PoliticsOptions"]

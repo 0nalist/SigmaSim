@@ -38,7 +38,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 25)
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="NoneButton" type="Button" parent="MarginContainer/VBoxContainer"]

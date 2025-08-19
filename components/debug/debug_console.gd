@@ -12,6 +12,10 @@ class_name DebugConsole
 
 
 var commands := {
+	"gimme": {
+		"args": "",
+		"description": "Adds a buncha stuff",
+	},
 	"add_cash": {
 		"args": "<amount>",
 		"description": "Adds the given amount of cash to your portfolio.",
@@ -194,6 +198,10 @@ func process_command(command: String) -> bool:
 				PortfolioManager.add_cash(amount)
 			#var current_cash = StatManager.get_stat("cash")
 			#StatManager.set_base_stat("cash", current_cash + amount)
+			return true
+
+		"gimme":
+			PortfolioManager.add_cash(100000000)
 			return true
 
 		"set_stat":

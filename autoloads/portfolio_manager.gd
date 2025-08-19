@@ -408,43 +408,41 @@ func _on_stock_price_updated(symbol: String, stock: Stock) -> void:
 
 
 
-
-
 ## -- Save/Load
 
 func get_save_data() -> Dictionary:
-		return {
-				"stocks_owned": stocks_owned.duplicate(),
-				"crypto_owned": crypto_owned.duplicate(),
-		}
+	return {
+			"stocks_owned": stocks_owned.duplicate(),
+			"crypto_owned": crypto_owned.duplicate(),
+	}
 
 
 func load_from_data(data: Dictionary) -> void:
-		stocks_owned = data.get("stocks_owned", {})
-		crypto_owned = data.get("crypto_owned", {})
-		emit_investment_update()
-		_on_cash_changed(get_cash())
-		_on_credit_changed(get_credit_used())
-		_on_student_loans_changed(get_student_loans())
+	stocks_owned = data.get("stocks_owned", {})
+	crypto_owned = data.get("crypto_owned", {})
+	emit_investment_update()
+	_on_cash_changed(get_cash())
+	_on_credit_changed(get_credit_used())
+	_on_student_loans_changed(get_student_loans())
 
 
 func reset():
-		set_cash(0.0)
-		set_rent(0.0)
-		set_interest(0.0)
-		set_credit_limit(2000.0)
-		set_credit_used(0.0)
-		set_credit_interest_rate(0.3)
-		set_student_loans(0.0)
-		set_employee_income(0.0)
-		set_passive_income(0.0)
-		credit_score = 700
-		student_loan_min_payment = 0.0
+	set_cash(0.0)
+	set_rent(0.0)
+	set_interest(0.0)
+	set_credit_limit(2000.0)
+	set_credit_used(0.0)
+	set_credit_interest_rate(0.3)
+	set_student_loans(0.0)
+	set_employee_income(0.0)
+	set_passive_income(0.0)
+	credit_score = 700
+	student_loan_min_payment = 0.0
 
-		stocks_owned.clear()
-		crypto_owned.clear()
-		stock_data.clear()
-		miners.clear()
-		businesses.clear()
+	stocks_owned.clear()
+	crypto_owned.clear()
+	stock_data.clear()
+	miners.clear()
+	businesses.clear()
 
-		emit_investment_update()
+	emit_investment_update()

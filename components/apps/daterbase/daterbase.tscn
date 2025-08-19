@@ -1,8 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvks07f4r776q"]
+[gd_scene load_steps=6 format=3 uid="uid://bvks07f4r776q"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://dw5hnnc0fsan4" path="res://components/apps/daterbase/daterbase.gd" id="2"]
+[ext_resource type="Shader" uid="uid://dw5y8ehkp7c1r" path="res://assets/shaders/pink_warp.gdshader" id="3_du6fw"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="3_kc04p"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j8wav"]
+shader = ExtResource("3_du6fw")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
 
 [node name="Daterbase" type="PanelContainer"]
 anchors_preset = 15
@@ -17,6 +27,10 @@ theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Daterbase"
 default_window_size = Vector2(670, 480)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_j8wav")
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
