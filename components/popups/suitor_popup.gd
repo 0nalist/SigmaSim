@@ -29,7 +29,7 @@ func setup(target: NPC) -> void:
 	npc = target
 	name_label.text = npc.full_name
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
-		portrait_view.portrait_creator_enabled = true
+		portrait_view.portrait_creator_enabled = false
 		portrait_view.apply_config(npc.portrait_config)
 		gift_cost = 25.0
 		date_cost = 200.0
@@ -45,6 +45,7 @@ func _ready() -> void:
 	next_stage_button.pressed.connect(_on_next_stage_pressed)
 	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
 	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
+	Events.fumble_talk_therapy_purchased.connect(_on_talk_therapy_purchased)
 
 func _process(delta: float) -> void:
 	if npc == null or progress_paused or npc.relationship_stage >= NPC.RelationshipStage.DIVORCED:
@@ -185,3 +186,9 @@ func _on_apologize_pressed() -> void:
 		date_button.disabled = false
 		breakup_button.disabled = false
 		_update_all()
+
+func _on_talk_therapy_purchased(level: int) -> void:
+	if npc == null:
+		return
+	if npc.relationship_stage in [NPC.RelationshipStage.DIVORCED, NPC.RelationshipStage.EX]:
+		apologize_button.visible = true
