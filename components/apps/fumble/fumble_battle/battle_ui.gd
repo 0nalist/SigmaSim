@@ -552,11 +552,14 @@ func _on_victory_number_clicked() -> void:
 
 
 @onready var victory_ex_label: Label = %VictoryExLabel
+@onready var victory_confidence_label: Label = %VictoryConfidenceLabel
 var ex_award: float
+var confidence_award: float = 25.0
 
 func show_victory_screen():
 	ex_award = npc.attractiveness / 10.0 # TEMP
 	victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+	victory_confidence_label.text = "Confidence +" + str(confidence_award)
 	victory_name_label.text = npc.first_name + " has been added to"
 	end_battle_screen_container.show()
 	end_battle(victorious, npc)
@@ -569,8 +572,10 @@ func end_battle(success: bool, npc: NPC) -> void:
 	_disable_all_action_buttons()
 
 	if success:
-			StatManager.set_base_stat("ex", StatManager.get_stat("ex") + ex_award)
-			#StatManager.set_base_stat("ex", StatManager.get_stat("ex") + 0.002)
+		StatManager.set_base_stat("ex", StatManager.get_stat("ex") + ex_award)
+		var new_conf = clamp(StatManager.get_stat("confidence") + confidence_award, 0.0, 100.0)
+		StatManager.set_base_stat("confidence", new_conf)
+		#StatManager.set_base_stat("ex", StatManager.get_stat("ex") + 0.002)
 	else:
 		# Optionally handle loss logic here
 		pass
