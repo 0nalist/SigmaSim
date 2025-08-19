@@ -30,7 +30,8 @@ func _init() -> void:
 
 func _init_rng() -> void:
 	var seed_string := str(RNGManager.seed) + ":fumble_profile_stack"
-	_rng.seed = hash(seed_string)
+	_rng.seed = PlayerManager.djb2(seed_string)
+	_rng.state = 0
 
 func _rng_shuffle(arr: Array) -> void:
 	for i in range(arr.size() - 1, 0, -1):
