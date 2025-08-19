@@ -23,6 +23,7 @@ var progress_paused: bool = false
 var gift_cost: float = 25.0
 var date_cost: float = 200.0
 var breakup_reward: float = 0.0
+var apologize_cost: int = 10
 
 func setup(target: NPC) -> void:
 	npc = target
@@ -30,10 +31,11 @@ func setup(target: NPC) -> void:
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
 		portrait_view.portrait_creator_enabled = false
 		portrait_view.apply_config(npc.portrait_config)
-	gift_cost = 25.0
-	date_cost = 200.0
-	breakup_reward = 0.0
-	_update_all()
+        gift_cost = 25.0
+        date_cost = 200.0
+        breakup_reward = 0.0
+        apologize_cost = 10
+        _update_all()
 
 func _ready() -> void:
         gift_button.pressed.connect(_on_gift_pressed)
@@ -96,8 +98,9 @@ func _update_breakup_button_text() -> void:
 	breakup_button.text = "Breakup for %.2f Ex" % reward
 
 func _update_action_buttons_text() -> void:
-	gift_button.text = "Gift ($%s)" % NumberFormatter.format_commas(gift_cost)
-	date_button.text = "Date ($%s)" % NumberFormatter.format_commas(date_cost)
+        gift_button.text = "Gift ($%s)" % NumberFormatter.format_commas(gift_cost)
+        date_button.text = "Date ($%s)" % NumberFormatter.format_commas(date_cost)
+        apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_commas(apologize_cost, 0)
 
 func _on_next_stage_pressed() -> void:
 	next_stage_button.visible = false
@@ -165,6 +168,10 @@ func _on_breakup_confirm_no_pressed() -> void:
 func _on_apologize_pressed() -> void:
         if npc == null:
                 return
+        var current_ex = PlayerManager.get_var("ex", 0.0)
+        if current_ex < apologize_cost:
+                return
+        PlayerManager.set_var("ex", current_ex - apologize_cost)
         npc.relationship_stage = NPC.RelationshipStage.TALKING
         npc.relationship_progress = 0.0
         npc.affinity = 1.0
@@ -172,6 +179,7 @@ func _on_apologize_pressed() -> void:
         gift_cost = 25.0
         date_cost = 200.0
         breakup_reward = 0.0
+        apologize_cost = int(ceil(apologize_cost * 1.5))
         next_stage_button.visible = false
         gift_button.disabled = false
         date_button.disabled = false
