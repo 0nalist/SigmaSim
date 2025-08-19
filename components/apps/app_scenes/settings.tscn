@@ -111,7 +111,6 @@ text = "Autosave"
 [node name="AutosaveTimerLabel" type="Label" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/AutosaveRow"]
 unique_name_in_owner = true
 layout_mode = 2
-text = ""
 
 [node name="Control" type="Control" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer"]
 custom_minimum_size = Vector2(50, 0)
@@ -159,7 +158,6 @@ layout_mode = 2
 focus_mode = 0
 text = "Comic Dots 2"
 
-[connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/AutosaveCheckBox" to="." method="_on_autosave_check_box_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/BlueWarpButton" to="." method="_on_blue_warp_button_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/ComicDots1Button" to="." method="_on_comic_dots_1_button_toggled"]
