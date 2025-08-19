@@ -146,7 +146,8 @@ func _render_table(header_names: Array[String], row_dictionaries: Array) -> void
 	sort_ascending = true
 
 	results_tree.clear()
-	results_tree.columns = header_names.size()
+	var column_count: int = max(header_names.size(), 1)
+	results_tree.columns = column_count
 	results_tree.column_titles_visible = header_names.size() > 0
 
 	# init user min widths

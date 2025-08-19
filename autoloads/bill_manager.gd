@@ -317,22 +317,22 @@ func load_from_data(data: Dictionary) -> void:
 
 func show_due_popups() -> void:
 	for date_key in pending_bill_data.keys():
-			for bill_dict in pending_bill_data[date_key]:
-					var pane = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
-					pane.init(bill_dict.get("bill_name", ""))
-					pane.amount = bill_dict.get("amount", 0.0)
+		for bill_dict in pending_bill_data[date_key]:
+			var pane = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
+			pane.init(bill_dict.get("bill_name", ""))
+			pane.amount = bill_dict.get("amount", 0.0)
 
-					var win = WindowFrame.instantiate_for_pane(pane)
-					win.window_can_close = false
-					win.window_can_minimize = false
-					win.default_size = Vector2(550, 290)
+			var win = WindowFrame.instantiate_for_pane(pane)
+			win.window_can_close = false
+			win.window_can_minimize = false
+			win.default_size = Vector2(360, 550)
 
-					WindowManager.register_window(win, false)
-					call_deferred("center_bill_window", win)
+			WindowManager.register_window(win, false)
+			call_deferred("center_bill_window", win)
 
-					if not active_bills.has(date_key):
-							active_bills[date_key] = []
-					active_bills[date_key].append(pane)
+			if not active_bills.has(date_key):
+					active_bills[date_key] = []
+			active_bills[date_key].append(pane)
 
 	pending_bill_data.clear()
 
