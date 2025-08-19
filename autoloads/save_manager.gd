@@ -143,44 +143,44 @@ func load_from_slot(slot_id: int) -> void:
 		push_error("Save file was malformed or corrupted.")
 		return
 
-        var data: Dictionary = result
+	var data: Dictionary = result
 
-        if data.has("player"):
-                PlayerManager.load_from_data(data["player"])
-                if not PlayerManager.user_data.has("global_rng_seed"):
-                        var password = PlayerManager.user_data.get("password", "")
-                        var seed_val: int
-                        if password != "":
-                                seed_val = PlayerManager.djb2(password)
-                        else:
-                                seed_val = int(Time.get_unix_time_from_system())
-                        PlayerManager.user_data["global_rng_seed"] = seed_val
-                RNGManager.init_seed(PlayerManager.user_data["global_rng_seed"])
+	if data.has("player"):
+			PlayerManager.load_from_data(data["player"])
+			if not PlayerManager.user_data.has("global_rng_seed"):
+					var password = PlayerManager.user_data.get("password", "")
+					var seed_val: int
+					if password != "":
+							seed_val = PlayerManager.djb2(password)
+					else:
+							seed_val = int(Time.get_unix_time_from_system())
+					PlayerManager.user_data["global_rng_seed"] = seed_val
+			RNGManager.init_seed(PlayerManager.user_data["global_rng_seed"])
 
-        if data.has("stats"):
-                StatManager.load_from_data(data["stats"])
-        if data.has("portfolio"):
-                PortfolioManager.load_from_data(data["portfolio"])
-        if data.has("time"):
-                TimeManager.load_from_data(data["time"])
-                TimeManager.start_time()
-        if data.has("upgrades"):
-                UpgradeManager.load_from_data(data["upgrades"])
-        if data.has("tasks"):
-                TaskManager.load_from_data(data["tasks"])
-        if data.has("market"):
-                MarketManager.load_from_data(data["market"])
+	if data.has("stats"):
+			StatManager.load_from_data(data["stats"])
+	if data.has("portfolio"):
+			PortfolioManager.load_from_data(data["portfolio"])
+	if data.has("time"):
+			TimeManager.load_from_data(data["time"])
+			TimeManager.start_time()
+	if data.has("upgrades"):
+			UpgradeManager.load_from_data(data["upgrades"])
+	if data.has("tasks"):
+			TaskManager.load_from_data(data["tasks"])
+	if data.has("market"):
+			MarketManager.load_from_data(data["market"])
 
-        if data.has("workers"):
-                WorkerManager.load_from_data(data["workers"])
-        if data.has("gpus"):
-                GPUManager.load_from_data(data["gpus"])
-        if data.has("bills"):
-                BillManager.load_from_data(data["bills"])
-        if data.has("windows"):  # Always load windows last
-                WindowManager.load_from_data(data["windows"])
-        BillManager.is_loading = false
-        BillManager.show_due_popups()
+	if data.has("workers"):
+			WorkerManager.load_from_data(data["workers"])
+	if data.has("gpus"):
+			GPUManager.load_from_data(data["gpus"])
+	if data.has("bills"):
+			BillManager.load_from_data(data["bills"])
+	if data.has("windows"):  # Always load windows last
+			WindowManager.load_from_data(data["windows"])
+	BillManager.is_loading = false
+	BillManager.show_due_popups()
 
 
 func reset_game_state() -> void:

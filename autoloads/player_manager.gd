@@ -130,8 +130,8 @@ func _apply_grandma() -> void:
 	StatpopManager.spawn("+$20.00", center, "click", Color.GREEN)
 
 func _apply_pretty_privilege() -> void:
-        var new_attractiveness = StatManager.get_base_stat("attractiveness", 0.0) + 10.0
-        StatManager.set_base_stat("attractiveness", new_attractiveness)
+		var new_attractiveness = StatManager.get_base_stat("attractiveness", 0.0) + 10.0
+		StatManager.set_base_stat("attractiveness", new_attractiveness)
 
 func _apply_dropout() -> void:
 		PortfolioManager.cash = 300.0
