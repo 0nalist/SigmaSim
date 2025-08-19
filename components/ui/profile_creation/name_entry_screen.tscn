@@ -70,7 +70,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-placeholder_text = "pa$$word"
+placeholder_text = "seed (optional)"
 
 [node name="Control3" type="Control" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)

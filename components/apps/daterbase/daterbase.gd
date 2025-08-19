@@ -41,16 +41,16 @@ var _ran_initial_show_all: bool = false
 
 
 func _ready() -> void:
-        run_query_button.pressed.connect(_on_run_query_pressed)
-        show_all_button.pressed.connect(_on_show_all_pressed)
-        daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
-        sql_tab_button.pressed.connect(_on_sql_tab_pressed)
+		run_query_button.pressed.connect(_on_run_query_pressed)
+		show_all_button.pressed.connect(_on_show_all_pressed)
+		daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
+		sql_tab_button.pressed.connect(_on_sql_tab_pressed)
 
-        numeric_regex = RegEx.new()
-        numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
+		numeric_regex = RegEx.new()
+		numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
 
-        _build_table_shell()
-        _activate_tab(&"Daterbase")
+		_build_table_shell()
+		_activate_tab(&"Daterbase")
 
 # =========================================
 # Shell
@@ -70,47 +70,47 @@ func _build_table_shell() -> void:
 	results_tree.item_activated.connect(_on_item_activated)
 	results_tree.gui_input.connect(_on_tree_gui_input)
 
-        results_container_daterbase.add_child(results_tree)
+	results_container_daterbase.add_child(results_tree)
 
 func _on_item_activated() -> void:
-        pass
+		pass
 
 # =========================================
 # Tabs
 # =========================================
 func _activate_tab(tab_name: StringName) -> void:
-        if tab_name != &"Daterbase" and tab_name != &"SQL":
-                push_error("Invalid tab: %s" % str(tab_name))
-                return
-        _active_tab = tab_name
-        if tab_name == &"Daterbase":
-                daterbase_tab_button.set_pressed(true)
-                sql_tab_button.set_pressed(false)
-                daterbase_view.visible = true
-                sql_view.visible = false
-                error_label.text = ""
-                _ensure_results_tree_parent(results_container_daterbase)
-                if not _ran_initial_show_all:
-                        _on_show_all_pressed()
-                        _ran_initial_show_all = true
-        else:
-                daterbase_tab_button.set_pressed(false)
-                sql_tab_button.set_pressed(true)
-                daterbase_view.visible = false
-                sql_view.visible = true
-                error_label.text = ""
-                _ensure_results_tree_parent(results_container_sql)
-                query_edit.grab_focus()
+		if tab_name != &"Daterbase" and tab_name != &"SQL":
+				push_error("Invalid tab: %s" % str(tab_name))
+				return
+		_active_tab = tab_name
+		if tab_name == &"Daterbase":
+				daterbase_tab_button.set_pressed(true)
+				sql_tab_button.set_pressed(false)
+				daterbase_view.visible = true
+				sql_view.visible = false
+				error_label.text = ""
+				_ensure_results_tree_parent(results_container_daterbase)
+				if not _ran_initial_show_all:
+						_on_show_all_pressed()
+						_ran_initial_show_all = true
+		else:
+				daterbase_tab_button.set_pressed(false)
+				sql_tab_button.set_pressed(true)
+				daterbase_view.visible = false
+				sql_view.visible = true
+				error_label.text = ""
+				_ensure_results_tree_parent(results_container_sql)
+				query_edit.grab_focus()
 
 func _ensure_results_tree_parent(target_container: VBoxContainer) -> void:
-        if results_tree.get_parent() != target_container:
-                target_container.add_child(results_tree)
+		if results_tree.get_parent() != target_container:
+				target_container.add_child(results_tree)
 
 func _on_daterbase_tab_pressed() -> void:
-        _activate_tab(&"Daterbase")
+		_activate_tab(&"Daterbase")
 
 func _on_sql_tab_pressed() -> void:
-        _activate_tab(&"SQL")
+		_activate_tab(&"SQL")
 
 # =========================================
 # Buttons
@@ -333,8 +333,8 @@ func _get_header_text_min_width(column_index: int) -> int:
 # Drag-resize + header click handling (no get_header_height)
 # =========================================
 func _on_tree_gui_input(input_event: InputEvent) -> void:
-    var mouse_button_event: InputEventMouseButton = input_event as InputEventMouseButton
-    var mouse_motion_event: InputEventMouseMotion = input_event as InputEventMouseMotion
+	var mouse_button_event: InputEventMouseButton = input_event as InputEventMouseButton
+	var mouse_motion_event: InputEventMouseMotion = input_event as InputEventMouseMotion
 
 	if mouse_motion_event != null:
 		_on_mouse_motion(mouse_motion_event)
@@ -456,10 +456,10 @@ func _header_y_threshold() -> float:
 # Utilities
 # =========================================
 func _clear_results() -> void:
-        for child_node in results_container_daterbase.get_children():
-                child_node.queue_free()
-        for child_node in results_container_sql.get_children():
-                child_node.queue_free()
+		for child_node in results_container_daterbase.get_children():
+				child_node.queue_free()
+		for child_node in results_container_sql.get_children():
+				child_node.queue_free()
 
 func _variant_to_string(input_value: Variant) -> String:
 	if input_value == null:

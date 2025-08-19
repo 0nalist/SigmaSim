@@ -63,7 +63,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
-pressed = true
 text = "Daterbase"
 
 [node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/TabBar"]
