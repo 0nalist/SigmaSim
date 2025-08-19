@@ -166,49 +166,99 @@ func _load_default_entries() -> void:
 	for child in results_container_daterbase.get_children():
 		child.queue_free()
 	
-	var header := HBoxContainer.new()
-	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	header.add_child(_create_header_label("Portrait"))
-	header.add_child(_create_header_label("Full Name"))
-	header.add_child(_create_header_label("Dime Status"))
-	header.add_child(_create_header_label("Relationship Status"))
-	header.add_child(_create_header_label("Affinity"))
-	results_container_daterbase.add_child(header)
-	
-	var daterbase_entries: Array = DBManager.get_daterbase_entries()
-	for entry_dictionary in daterbase_entries:
-		var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
-		if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
-			NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
-			npc_object.relationship_stage = NPC.RelationshipStage.TALKING
-		var row := HBoxContainer.new()
-		row.mouse_filter = Control.MOUSE_FILTER_STOP
-		row.gui_input.connect(_on_row_gui_input.bind(npc_object))
-		var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
-		portrait.portrait_creator_enabled = false
-		portrait.custom_minimum_size = Vector2(64, 64)
-		portrait.size = Vector2(64, 64)
-		portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		if npc_object.portrait_config != null:
-			portrait.apply_config(npc_object.portrait_config)
-		row.add_child(portrait)
-		var name_label := Label.new()
-		name_label.text = npc_object.full_name
-		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(name_label)
-		var dime_label := Label.new()
-		dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
-		dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(dime_label)
-		var rel_label := Label.new()
-		rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
-		rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(rel_label)
-		var affinity_label := Label.new()
-		affinity_label.text = "%.1f" % npc_object.affinity
-		affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(affinity_label)
-		results_container_daterbase.add_child(row)
+        var daterbase_entries: Array = DBManager.get_daterbase_entries()
+
+        var temp_label := Label.new()
+        var max_name_width := 0.0
+        var max_dime_width := 0.0
+        var max_rel_width := 0.0
+        var max_affinity_width := 0.0
+        var npc_list: Array[NPC] = []
+
+        for entry_dictionary in daterbase_entries:
+                var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
+                if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
+                        NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
+                        npc_object.relationship_stage = NPC.RelationshipStage.TALKING
+                npc_list.append(npc_object)
+                temp_label.text = npc_object.full_name
+                max_name_width = max(max_name_width, temp_label.get_minimum_size().x)
+                temp_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
+                max_dime_width = max(max_dime_width, temp_label.get_minimum_size().x)
+                temp_label.text = STAGE_NAMES[npc_object.relationship_stage]
+                max_rel_width = max(max_rel_width, temp_label.get_minimum_size().x)
+                temp_label.text = "%.1f" % npc_object.affinity
+                max_affinity_width = max(max_affinity_width, temp_label.get_minimum_size().x)
+
+        temp_label.text = "Full Name"
+        max_name_width = max(max_name_width, temp_label.get_minimum_size().x)
+        temp_label.text = "Dime Status"
+        max_dime_width = max(max_dime_width, temp_label.get_minimum_size().x)
+        temp_label.text = "Relationship Status"
+        max_rel_width = max(max_rel_width, temp_label.get_minimum_size().x)
+        temp_label.text = "Affinity"
+        max_affinity_width = max(max_affinity_width, temp_label.get_minimum_size().x)
+
+        var header := HBoxContainer.new()
+        header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+        var portrait_header := _create_header_label("Portrait")
+        portrait_header.custom_minimum_size = Vector2(132, 0)
+        header.add_child(portrait_header)
+        var name_header := _create_header_label("Full Name")
+        name_header.custom_minimum_size = Vector2(max_name_width, 0)
+        name_header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        header.add_child(name_header)
+        var dime_header := _create_header_label("Dime Status")
+        dime_header.custom_minimum_size = Vector2(max_dime_width, 0)
+        dime_header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        header.add_child(dime_header)
+        var rel_header := _create_header_label("Relationship Status")
+        rel_header.custom_minimum_size = Vector2(max_rel_width, 0)
+        rel_header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        header.add_child(rel_header)
+        var affinity_header := _create_header_label("Affinity")
+        affinity_header.custom_minimum_size = Vector2(max_affinity_width, 0)
+        affinity_header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        header.add_child(affinity_header)
+        results_container_daterbase.add_child(header)
+
+        for npc_object in npc_list:
+                var row := HBoxContainer.new()
+                row.mouse_filter = Control.MOUSE_FILTER_STOP
+                row.gui_input.connect(_on_row_gui_input.bind(npc_object))
+                var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
+                portrait.portrait_creator_enabled = false
+                portrait.custom_minimum_size = Vector2(132, 132)
+                portrait.size = Vector2(132, 132)
+                portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                if npc_object.portrait_config != null:
+                        portrait.apply_config(npc_object.portrait_config)
+                row.add_child(portrait)
+                var name_label := Label.new()
+                name_label.text = npc_object.full_name
+                name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                name_label.custom_minimum_size = Vector2(max_name_width, 0)
+                name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                row.add_child(name_label)
+                var dime_label := Label.new()
+                dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
+                dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                dime_label.custom_minimum_size = Vector2(max_dime_width, 0)
+                dime_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                row.add_child(dime_label)
+                var rel_label := Label.new()
+                rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
+                rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                rel_label.custom_minimum_size = Vector2(max_rel_width, 0)
+                rel_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                row.add_child(rel_label)
+                var affinity_label := Label.new()
+                affinity_label.text = "%.1f" % npc_object.affinity
+                affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                affinity_label.custom_minimum_size = Vector2(max_affinity_width, 0)
+                affinity_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                row.add_child(affinity_label)
+                results_container_daterbase.add_child(row)
 
 func _create_header_label(text: String) -> Label:
 	var lbl := Label.new()
