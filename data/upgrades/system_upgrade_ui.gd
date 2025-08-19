@@ -68,8 +68,8 @@ func _sort_by_price_asc(a, b):
 	var b_has_cash := cost_b.has("cash")
 	if a_has_cash != b_has_cash:
 		return a_has_cash
-	var a_cash := cost_a.get("cash", 0)
-	var b_cash := cost_b.get("cash", 0)
+	var a_cash = cost_a.get("cash", 0)
+	var b_cash = cost_b.get("cash", 0)
 	if a_cash == b_cash:
 		return a["id"] < b["id"]
 	return a_cash < b_cash
@@ -85,8 +85,8 @@ func _sort_by_price_desc(a, b):
 	var b_has_cash := cost_b.has("cash")
 	if a_has_cash != b_has_cash:
 		return a_has_cash
-	var a_cash := cost_a.get("cash", 0)
-	var b_cash := cost_b.get("cash", 0)
+	var a_cash = cost_a.get("cash", 0)
+	var b_cash = cost_b.get("cash", 0)
 	if a_cash == b_cash:
 		return a["id"] < b["id"]
 	return a_cash > b_cash

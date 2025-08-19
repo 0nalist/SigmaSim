@@ -146,8 +146,8 @@ func _on_breakup_pressed() -> void:
 
 func _on_breakup_confirm_yes_pressed() -> void:
 	breakup_confirm.visible = false
-	var current_ex = PlayerManager.get_var("ex", 0.0)
-	PlayerManager.set_var("ex", current_ex + breakup_reward)
+	var current_ex = StatManager.get_stat("ex", 0.0)
+	StatManager.set_base_stat("ex", current_ex + breakup_reward)
 	if npc.relationship_stage == NPC.RelationshipStage.MARRIED:
 		npc.relationship_stage = NPC.RelationshipStage.DIVORCED
 		PortfolioManager.halve_assets()
@@ -168,10 +168,10 @@ func _on_breakup_confirm_no_pressed() -> void:
 func _on_apologize_pressed() -> void:
 		if npc == null:
 				return
-		var current_ex = PlayerManager.get_var("ex", 0.0)
+		var current_ex = StatManager.get_stat("ex", 0.0)
 		if current_ex < apologize_cost:
 			return
-		PlayerManager.set_var("ex", current_ex - apologize_cost)
+		StatManager.set_base_stat("ex", current_ex - apologize_cost)
 		npc.relationship_stage = NPC.RelationshipStage.TALKING
 		npc.relationship_progress = 0.0
 		npc.affinity = 1.0
