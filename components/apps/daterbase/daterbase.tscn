@@ -56,29 +56,29 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBox"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_kc04p")
-theme_override_font_sizes/font_size = 36
-text = "DATERBASE"
-horizontal_alignment = 1
-
 [node name="MainHBox" type="HBoxContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/MainHBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/MarginContainer"]
 layout_mode = 2
 
-[node name="DaterbaseTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/TabBar"]
+[node name="DaterbaseTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "Daterbase"
 
-[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/TabBar"]
+[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -90,11 +90,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Label" type="Label" parent="MarginContainer/VBox/MainHBox/ContentArea"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_kc04p")
+theme_override_font_sizes/font_size = 36
+text = "DATERBASE"
+horizontal_alignment = 1
+
 [node name="DaterbaseView" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="ShowAllButton" type="Button" parent="MarginContainer/VBox/MainHBox/ContentArea/DaterbaseView"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = " Refresh Daterbase "
 
 [node name="ScrollDaterbase" type="ScrollContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/DaterbaseView"]
 layout_mode = 2
@@ -109,15 +122,10 @@ size_flags_vertical = 3
 
 [node name="SQLView" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="ShowAllButton" type="Button" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = " Show All Datable Ppl "
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView"]
 layout_mode = 2

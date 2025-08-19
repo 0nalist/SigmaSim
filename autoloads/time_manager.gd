@@ -241,7 +241,7 @@ func load_from_data(data: Dictionary) -> void:
 	autosave_hour_counter = 0
 	# Emit signals to let listeners refresh
 	emit_signal("minute_passed", in_game_minutes)
-	emit_signal("hour_passed", current_hour)
+	emit_signal("hour_passed", current_hour, _total_minutes_elapsed)
 	emit_signal("day_passed", current_day, current_month, current_year)
 
 func reset() -> void:
@@ -269,7 +269,7 @@ func _advance_time(minutes_to_add: int) -> void:
 
 		# Hour crossed when minute hits 0
 		if current_minute == 0:
-			emit_signal("hour_passed", current_hour)
+			emit_signal("hour_passed", current_hour, _total_minutes_elapsed)
 			autosave_hour_counter += 1
 			if autosave_enabled and autosave_hour_counter >= autosave_interval:
 				autosave_hour_counter = 0

@@ -3,4 +3,6 @@
 [ext_resource type="Script" uid="uid://bpxx9rqgw7u6b" path="res://components/main.gd" id="1_lgkms"]
 
 [node name="Main" type="Node"]
+
 script = ExtResource("1_lgkms")
+
