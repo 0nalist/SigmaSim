@@ -62,22 +62,34 @@ func _sort_by_price_asc(a, b):
 	var b_locked = UpgradeManager.is_locked(b["id"])
 	if a_locked != b_locked:
 		return a_locked < b_locked
-	var cost_a = UpgradeManager.get_cost_for_next_level(a["id"]).get("cash", 0)
-	var cost_b = UpgradeManager.get_cost_for_next_level(b["id"]).get("cash", 0)
-	if cost_a == cost_b:
+	var cost_a := UpgradeManager.get_cost_for_next_level(a["id"])
+	var cost_b := UpgradeManager.get_cost_for_next_level(b["id"])
+	var a_has_cash := cost_a.has("cash")
+	var b_has_cash := cost_b.has("cash")
+	if a_has_cash != b_has_cash:
+		return a_has_cash
+	var a_cash := cost_a.get("cash", 0)
+	var b_cash := cost_b.get("cash", 0)
+	if a_cash == b_cash:
 		return a["id"] < b["id"]
-	return cost_a < cost_b
+	return a_cash < b_cash
 
 func _sort_by_price_desc(a, b):
 	var a_locked = UpgradeManager.is_locked(a["id"])
 	var b_locked = UpgradeManager.is_locked(b["id"])
 	if a_locked != b_locked:
 		return a_locked < b_locked
-	var cost_a = UpgradeManager.get_cost_for_next_level(a["id"]).get("cash", 0)
-	var cost_b = UpgradeManager.get_cost_for_next_level(b["id"]).get("cash", 0)
-	if cost_a == cost_b:
+	var cost_a := UpgradeManager.get_cost_for_next_level(a["id"])
+	var cost_b := UpgradeManager.get_cost_for_next_level(b["id"])
+	var a_has_cash := cost_a.has("cash")
+	var b_has_cash := cost_b.has("cash")
+	if a_has_cash != b_has_cash:
+		return a_has_cash
+	var a_cash := cost_a.get("cash", 0)
+	var b_cash := cost_b.get("cash", 0)
+	if a_cash == b_cash:
 		return a["id"] < b["id"]
-	return cost_a > cost_b
+	return a_cash > b_cash
 
 func _on_sort_option_selected(index: int) -> void:
 	sort_mode = index
