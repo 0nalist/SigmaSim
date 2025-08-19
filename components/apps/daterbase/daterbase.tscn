@@ -27,6 +27,18 @@ theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Daterbase"
 default_window_size = Vector2(670, 480)
+default_position = null
+request_windowless_mode = null
+show_in_taskbar = null
+allow_multiple = null
+unique_popup_key = null
+is_popup = null
+window_can_close = null
+window_can_minimize = null
+window_can_maximize = null
+user_movable = null
+user_resizable = null
+stay_on_top = null
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_j8wav")

@@ -65,8 +65,8 @@ var passive_income: float:
 		set_passive_income(value)
 
 ## --- Stocks and owned counts
-var stock_data: Dictionary = {}     # symbol: Stock
-var stocks_owned: Dictionary = {}   # symbol: int
+var stock_data: Dictionary = {}  # symbol: Stock
+var stocks_owned: Dictionary = {}# symbol: int
 
 ## --- Crypto and owned counts
 var crypto_owned: Dictionary = {}  # symbol: float
@@ -301,19 +301,19 @@ func get_balance() -> float:
 		return snapped(get_cash() + get_total_investments() - get_total_debt(), 0.01)
 
 func get_passive_income() -> float:
-        return snapped(get_rent() + get_employee_income() + get_interest() / 365.0 / 24.0 / 60.0 / 60.0, 0.01)
+		return snapped(get_rent() + get_employee_income() + get_interest() / 365.0 / 24.0 / 60.0 / 60.0, 0.01)
 
 func halve_assets() -> void:
-       set_cash(get_cash() / 2.0)
-       for symbol in stocks_owned.keys():
-               var owned: int = stocks_owned[symbol]
-               stocks_owned[symbol] = int(floor(owned / 2.0))
-               emit_signal("stock_updated", symbol, stock_data.get(symbol))
-       for symbol in crypto_owned.keys():
-               crypto_owned[symbol] = crypto_owned[symbol] / 2.0
-               emit_signal("resource_changed", symbol, crypto_owned[symbol])
-       GPUManager.halve_gpus()
-       emit_investment_update()
+	set_cash(get_cash() / 2.0)
+	for symbol in stocks_owned.keys():
+			var owned: int = stocks_owned[symbol]
+			stocks_owned[symbol] = int(floor(owned / 2.0))
+			emit_signal("stock_updated", symbol, stock_data.get(symbol))
+	for symbol in crypto_owned.keys():
+			crypto_owned[symbol] = crypto_owned[symbol] / 2.0
+			emit_signal("resource_changed", symbol, crypto_owned[symbol])
+	GPUManager.halve_gpus()
+	emit_investment_update()
 
 ## --- Stock Methods
 func buy_stock(symbol: String, amount: int = 1) -> bool:

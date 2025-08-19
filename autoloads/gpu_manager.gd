@@ -188,18 +188,18 @@ func remove_gpu_from(symbol: String, count: int = 1) -> void:
 			removed += 1
 		i -= 1
 
-        if removed > 0:
-                emit_signal("gpus_changed")
+		if removed > 0:
+				emit_signal("gpus_changed")
 
 func halve_gpus() -> void:
-       var target := int(floor(gpu_cryptos.size() / 2.0))
-       while gpu_cryptos.size() > target:
-               var index := gpu_cryptos.size() - 1
-               gpu_cryptos.remove_at(index)
-               is_overclocked.remove_at(index)
-               burnout_chances.remove_at(index)
-       total_power = 0
-       emit_signal("gpus_changed")
+	var target := int(floor(gpu_cryptos.size() / 2.0))
+	while gpu_cryptos.size() > target:
+			var index := gpu_cryptos.size() - 1
+			gpu_cryptos.remove_at(index)
+			is_overclocked.remove_at(index)
+			burnout_chances.remove_at(index)
+	total_power = 0
+	emit_signal("gpus_changed")
 
 func get_total_gpu_count() -> int:
 	return gpu_cryptos.size()
