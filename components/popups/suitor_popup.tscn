@@ -13,6 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Suitor"
@@ -40,6 +41,7 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="RelationshipStageLabel" type="Label" parent="MarginContainer/VBox"]
@@ -76,6 +78,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Take this relationship to the next stage"
+autowrap_mode = 3
 
 [node name="AffinityBar" type="ProgressBar" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
