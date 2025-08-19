@@ -121,11 +121,11 @@ func to_dict() -> Dictionary:
 		"last_name": last_name,
 		"gender_vector": { "x": gender_vector.x, "y": gender_vector.y, "z": gender_vector.z },
 		"username": username,
-                "occupation": occupation,
-                "relationship_status": relationship_status,
-                "relationship_stage": relationship_stage,
-                "relationship_progress": relationship_progress,
-                "affinity": affinity,
+				"occupation": occupation,
+				"relationship_status": relationship_status,
+				"relationship_stage": relationship_stage,
+				"relationship_progress": relationship_progress,
+				"affinity": affinity,
 		"rizz": rizz,
 		"attractiveness": attractiveness,
 		"income": income,
@@ -172,10 +172,10 @@ static func from_dict(data: Dictionary) -> NPC:
 
 	npc.username          = _safe_string(data.get("username"))
 	npc.occupation        = _safe_string(data.get("occupation"), "Funemployed")
-       npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
-       npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
-       npc.relationship_progress = _safe_float(data.get("relationship_progress"))
-       npc.affinity          = _safe_float(data.get("affinity"), 0.0)
+	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
+	npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
+	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
+	npc.affinity          = _safe_float(data.get("affinity"), 0.0)
 	npc.rizz              = _safe_int(data.get("rizz"), 0)
 	npc.attractiveness    = _safe_int(data.get("attractiveness"), 0)
 	npc.income            = _safe_int(data.get("income"), 0)
