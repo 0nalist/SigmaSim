@@ -159,18 +159,18 @@ func open_battle(battle_id, npc, idx):
 	var battle_data = FumbleManager.load_battle_state(battle_id)
 	var scene = battle_scene.instantiate()
 	add_child(scene)
-        (
-                scene
-                . load_battle(
-                        battle_id,
-                        npc,
-                        battle_data.chatlog,
-                        battle_data.stats,
-                        battle_data.get("move_usage_counts", {}),
-                        idx,
-                        battle_data.get("outcome", "active"),
-                )
-        )
+	(
+		scene
+		. load_battle(
+				battle_id,
+				npc,
+				battle_data.chatlog,
+				battle_data.stats,
+				battle_data.get("move_usage_counts", {}),
+				idx,
+				battle_data.get("outcome", "active"),
+		)
+	)
 	scene.chat_closed.connect(_on_chat_closed)
 	request_resize_x_to.emit(941)
 	request_resize_y_to.emit(666)

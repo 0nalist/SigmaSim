@@ -204,10 +204,10 @@ func get_fumble_matches() -> Array:
 	var matches = []
 	var rels = DBManager.get_all_fumble_relationships()
 	for idx in rels.keys():
-			var status_enum: FumbleManager.FumbleStatus = rels[idx]
-			# Show only if currently "liked" or "matched"
-			if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
-				matches.append(int(idx))
+		var status_enum: FumbleManager.FumbleStatus = rels[idx]
+		# Show only if currently "liked" or "matched"
+		if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+			matches.append(int(idx))
 	return matches
 
 func get_fumble_matches_with_times() -> Array:
