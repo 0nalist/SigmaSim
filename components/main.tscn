@@ -1,26 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://uminah6hxj5y"]
 
-[ext_resource type="PackedScene" uid="uid://c4tt0mgxvgw5g" path="res://components/ui/log_in_ui.tscn" id="1_6txqy"]
+[ext_resource type="Script" uid="uid://bpxx9rqgw7u6b" path="res://components/main.gd" id="1_lgkms"]
 
 [node name="Main" type="Node"]
 
-[node name="LogInUI" parent="." instance=ExtResource("1_6txqy")]
+script = ExtResource("1_lgkms")
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-
-[node name="VersionLabel" type="Label" parent="Control"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -75.0
-offset_bottom = 15.0
-grow_horizontal = 0
-text = "OMEGA Prototype 1.0"
