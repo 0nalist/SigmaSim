@@ -171,7 +171,7 @@ func open_battle(battle_id, npc, idx):
 		)
 	)
 	scene.chat_closed.connect(_on_chat_closed)
-	request_resize_x_to.emit(911)
+	request_resize_x_to.emit(941)
 	request_resize_y_to.emit(666)
 
 

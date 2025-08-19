@@ -29,6 +29,8 @@ var weekly_bill_cycle := [
 
 var static_bill_amounts := {}
 
+var is_loading := false
+
 
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
@@ -42,6 +44,9 @@ func _ready() -> void:
 
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
+	if is_loading:
+			return
+
 	var yesterday = _get_yesterday()
 	auto_resolve_bills_for_date(_format_date_key(yesterday))
 
@@ -252,24 +257,33 @@ func get_daily_lifestyle_cost() -> int:
 func get_popup_save_data() -> Array:
 	var popup_data := []
 	for date_key in active_bills.keys():
-			for popup in active_bills[date_key]:
-					if is_instance_valid(popup):
-							popup_data.append({
-									"type": "BillPopupUI",
-									"bill_name": popup.bill_name,
-									"amount": popup.amount,
-									"date_key": date_key
-							})
+		for popup in active_bills[date_key]:
+			if is_instance_valid(popup):
+				popup_data.append({
+					"type": "BillPopupUI",
+					"bill_name": popup.bill_name,
+					"amount": popup.amount,
+					"date_key": date_key
+				})
 
 	for date_key in pending_bill_data.keys():
-			for bill_dict in pending_bill_data[date_key]:
-					popup_data.append({
-							"type": "BillPopupUI",
-							"bill_name": bill_dict.get("bill_name", ""),
-							"amount": bill_dict.get("amount", 0.0),
-							"date_key": date_key
-					})
+		for bill_dict in pending_bill_data[date_key]:
+			popup_data.append({
+				"type": "BillPopupUI",
+				"bill_name": bill_dict.get("bill_name", ""),
+				"amount": bill_dict.get("amount", 0.0),
+				"date_key": date_key
+			})
 	return popup_data
+
+
+func reset() -> void:
+	autopay_enabled = false
+	active_bills.clear()
+	pending_bill_data.clear()
+	lifestyle_categories.clear()
+	lifestyle_indices.clear()
+	emit_signal("lifestyle_updated")
 
 
 func get_save_data() -> Dictionary:
@@ -317,22 +331,22 @@ func load_from_data(data: Dictionary) -> void:
 
 func show_due_popups() -> void:
 	for date_key in pending_bill_data.keys():
-			for bill_dict in pending_bill_data[date_key]:
-					var pane = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
-					pane.init(bill_dict.get("bill_name", ""))
-					pane.amount = bill_dict.get("amount", 0.0)
+		for bill_dict in pending_bill_data[date_key]:
+			var pane = preload("res://components/popups/bill_popup_ui.tscn").instantiate()
+			pane.init(bill_dict.get("bill_name", ""))
+			pane.amount = bill_dict.get("amount", 0.0)
 
-					var win = WindowFrame.instantiate_for_pane(pane)
-					win.window_can_close = false
-					win.window_can_minimize = false
-					win.default_size = Vector2(550, 290)
+			var win = WindowFrame.instantiate_for_pane(pane)
+			win.window_can_close = false
+			win.window_can_minimize = false
+			win.default_size = Vector2(360, 550)
 
-					WindowManager.register_window(win, false)
-					call_deferred("center_bill_window", win)
+			WindowManager.register_window(win, false)
+			call_deferred("center_bill_window", win)
 
-					if not active_bills.has(date_key):
-							active_bills[date_key] = []
-					active_bills[date_key].append(pane)
+			if not active_bills.has(date_key):
+					active_bills[date_key] = []
+			active_bills[date_key].append(pane)
 
 	pending_bill_data.clear()
 

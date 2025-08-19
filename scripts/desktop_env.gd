@@ -22,7 +22,8 @@ func _ready() -> void:
 	print("Active slot_id:", SaveManager.current_slot_id)
 
 func launch_startup_apps() -> void:
-	WindowManager.launch_app_by_name("BrokeRage")
+	#WindowManager.launch_app_by_name("BrokeRage")
+	pass
 
 
 func _deferred_load_save():

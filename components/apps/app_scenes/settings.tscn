@@ -111,6 +111,7 @@ text = "Autosave"
 [node name="AutosaveTimerLabel" type="Label" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/AutosaveRow"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 6
 
 [node name="Control" type="Control" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer"]
 custom_minimum_size = Vector2(50, 0)
