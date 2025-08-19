@@ -162,7 +162,20 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	for move in equipped_moves:
 		move_usage_counts[move.to_lower()] = 0
 	move_usage_counts["catch"] = 0
-	
+	if chatlog.size() == 0:
+		var reveal_levels = UpgradeManager.get_level("fumble_speaking_from_experience")
+		var rng = RNGManager.get_rng()
+		for i in range(reveal_levels):
+			var options := []
+			for m in equipped_moves:
+				var key = m.to_lower()
+				if move_usage_counts[key] < 3:
+					options.append(key)
+			if options.is_empty():
+				break
+			var chosen_key = options[rng.randi_range(0, options.size() - 1)]
+			move_usage_counts[chosen_key] += 1
+
 	update_action_buttons()
 	scroll_to_newest_chat()
 	update_progress_bars()
