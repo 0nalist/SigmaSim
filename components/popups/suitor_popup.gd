@@ -12,6 +12,7 @@ const STAGE_NAMES := ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MA
 @onready var gift_button: Button = %GiftButton
 @onready var date_button: Button = %DateButton
 @onready var breakup_button: Button = %BreakupButton
+@onready var apologize_button: Button = %ApologizeButton
 @onready var breakup_confirm: CenterContainer = %BreakupConfirm
 @onready var breakup_confirm_label: Label = %BreakupConfirmLabel
 @onready var breakup_confirm_yes_button: Button = %BreakupConfirmYesButton
@@ -35,12 +36,13 @@ func setup(target: NPC) -> void:
 	_update_all()
 
 func _ready() -> void:
-	gift_button.pressed.connect(_on_gift_pressed)
-	date_button.pressed.connect(_on_date_pressed)
-	breakup_button.pressed.connect(_on_breakup_pressed)
-	next_stage_button.pressed.connect(_on_next_stage_pressed)
-	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
-	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
+        gift_button.pressed.connect(_on_gift_pressed)
+        date_button.pressed.connect(_on_date_pressed)
+        breakup_button.pressed.connect(_on_breakup_pressed)
+        apologize_button.pressed.connect(_on_apologize_pressed)
+        next_stage_button.pressed.connect(_on_next_stage_pressed)
+        breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
+        breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
 
 func _process(delta: float) -> void:
 	if npc == null or progress_paused or npc.relationship_stage >= NPC.RelationshipStage.DIVORCED:
@@ -56,13 +58,14 @@ func _process(delta: float) -> void:
 	_update_breakup_button_text()
 
 func _update_all() -> void:
-	_update_relationship_bar()
-	_update_affinity_bar()
-	_update_breakup_button_text()
-	_update_action_buttons_text()
-	var blocked = npc.relationship_stage >= NPC.RelationshipStage.DIVORCED
-	gift_button.disabled = blocked
-	date_button.disabled = blocked
+        _update_relationship_bar()
+        _update_affinity_bar()
+        _update_breakup_button_text()
+        _update_action_buttons_text()
+        var blocked = npc.relationship_stage >= NPC.RelationshipStage.DIVORCED
+        gift_button.disabled = blocked
+        date_button.disabled = blocked
+        apologize_button.visible = UpgradeManager.get_level("fumble_talk_therapy") > 0 and npc.relationship_stage in [NPC.RelationshipStage.DIVORCED, NPC.RelationshipStage.EX]
 
 func _update_relationship_bar() -> void:
 	var current_stage: int = npc.relationship_stage
@@ -157,4 +160,20 @@ func _on_breakup_confirm_yes_pressed() -> void:
 	_update_all()
 
 func _on_breakup_confirm_no_pressed() -> void:
-	breakup_confirm.visible = false
+        breakup_confirm.visible = false
+
+func _on_apologize_pressed() -> void:
+        if npc == null:
+                return
+        npc.relationship_stage = NPC.RelationshipStage.TALKING
+        npc.relationship_progress = 0.0
+        npc.affinity = 1.0
+        progress_paused = false
+        gift_cost = 25.0
+        date_cost = 200.0
+        breakup_reward = 0.0
+        next_stage_button.visible = false
+        gift_button.disabled = false
+        date_button.disabled = false
+        breakup_button.disabled = false
+        _update_all()
