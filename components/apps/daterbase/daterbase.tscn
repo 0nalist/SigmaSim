@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvks07f4r776q"]
+[gd_scene load_steps=7 format=3 uid="uid://bvks07f4r776q"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://dw5hnnc0fsan4" path="res://components/apps/daterbase/daterbase.gd" id="2"]
@@ -13,6 +13,17 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.03
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du6fw"]
+bg_color = Color(0.385493, 0.385493, 0.385492, 0.109804)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="Daterbase" type="PanelContainer"]
 anchors_preset = 15
@@ -49,29 +60,42 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/MainHBox"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/MainHBox"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_du6fw")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/MainHBox/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/MarginContainer"]
+[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="DaterbaseTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/MarginContainer/TabBar"]
+[node name="Control" type="Control" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer/TabBar"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="DaterbaseTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "Daterbase"
 
-[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/MarginContainer/TabBar"]
+[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "SQL"
+
+[node name="Control2" type="Control" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer/TabBar"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
 
 [node name="ContentArea" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox"]
 layout_mode = 2
@@ -85,6 +109,10 @@ theme_override_font_sizes/font_size = 36
 text = "DATERBASE"
 horizontal_alignment = 1
 
+[node name="Control" type="Control" parent="MarginContainer/VBox/MainHBox/ContentArea"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="DaterbaseView" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -97,7 +125,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 theme_override_font_sizes/font_size = 14
-text = "SELECT key details FROM people who want to date me"
+text = "refresh"
 
 [node name="ScrollDaterbase" type="ScrollContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/DaterbaseView"]
 layout_mode = 2
