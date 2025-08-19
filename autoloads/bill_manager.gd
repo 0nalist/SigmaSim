@@ -258,38 +258,38 @@ func get_popup_save_data() -> Array:
 	var popup_data := []
 	for date_key in active_bills.keys():
 		for popup in active_bills[date_key]:
-				if is_instance_valid(popup):
-						popup_data.append({
-								"type": "BillPopupUI",
-								"bill_name": popup.bill_name,
-								"amount": popup.amount,
-								"date_key": date_key
-						})
+			if is_instance_valid(popup):
+				popup_data.append({
+					"type": "BillPopupUI",
+					"bill_name": popup.bill_name,
+					"amount": popup.amount,
+					"date_key": date_key
+				})
 
 	for date_key in pending_bill_data.keys():
-					for bill_dict in pending_bill_data[date_key]:
-									popup_data.append({
-													"type": "BillPopupUI",
-													"bill_name": bill_dict.get("bill_name", ""),
-													"amount": bill_dict.get("amount", 0.0),
-													"date_key": date_key
-									})
+		for bill_dict in pending_bill_data[date_key]:
+			popup_data.append({
+				"type": "BillPopupUI",
+				"bill_name": bill_dict.get("bill_name", ""),
+				"amount": bill_dict.get("amount", 0.0),
+				"date_key": date_key
+			})
 	return popup_data
 
 
 func reset() -> void:
-		autopay_enabled = false
-		active_bills.clear()
-		pending_bill_data.clear()
-		lifestyle_categories.clear()
-		lifestyle_indices.clear()
-		emit_signal("lifestyle_updated")
+	autopay_enabled = false
+	active_bills.clear()
+	pending_bill_data.clear()
+	lifestyle_categories.clear()
+	lifestyle_indices.clear()
+	emit_signal("lifestyle_updated")
 
 
 func get_save_data() -> Dictionary:
-		return {
-				"autopay_enabled": autopay_enabled,
-				"lifestyle_categories": lifestyle_categories.duplicate(),
+	return {
+		"autopay_enabled": autopay_enabled,
+		"lifestyle_categories": lifestyle_categories.duplicate(),
 		"lifestyle_indices": lifestyle_indices.duplicate(),
 		"pane_data": get_pane_save_data()
 	}
