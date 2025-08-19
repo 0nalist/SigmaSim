@@ -66,10 +66,15 @@ func _update_all() -> void:
 
 func _update_relationship_bar() -> void:
 	var current_stage: int = npc.relationship_stage
-	var next_stage: int = current_stage
-	if current_stage < NPC.RelationshipStage.MARRIED:
+	var label_text: String
+	if current_stage in [NPC.RelationshipStage.MARRIED, NPC.RelationshipStage.DIVORCED, NPC.RelationshipStage.EX]:
+		label_text = STAGE_NAMES[current_stage]
+	else:
+		var next_stage: int = current_stage
+		if current_stage < NPC.RelationshipStage.MARRIED:
 			next_stage = current_stage + 1
-	relationship_stage_label.text = "%s -> %s" % [STAGE_NAMES[current_stage], STAGE_NAMES[next_stage]]
+		label_text = "%s -> %s" % [STAGE_NAMES[current_stage], STAGE_NAMES[next_stage]]
+	relationship_stage_label.text = label_text
 	relationship_bar.max_value = 100
 	relationship_bar.update_value(npc.relationship_progress)
 
@@ -88,8 +93,8 @@ func _update_breakup_button_text() -> void:
 	breakup_button.text = "Breakup for %.2f Ex" % reward
 
 func _update_action_buttons_text() -> void:
-	gift_button.text = "Gift ($%.2f)" % gift_cost
-	date_button.text = "Date ($%.2f)" % date_cost
+	gift_button.text = "Gift ($%s)" % NumberFormatter.format_commas(gift_cost)
+	date_button.text = "Date ($%s)" % NumberFormatter.format_commas(date_cost)
 
 func _on_next_stage_pressed() -> void:
 	next_stage_button.visible = false
