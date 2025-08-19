@@ -1,10 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://s5d0e4c7s6cc"]
+[gd_scene load_steps=7 format=3 uid="uid://s5d0e4c7s6cc"]
 
 [ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://components/settings_window.gd" id="1_wlela"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="2_wlela"]
+[ext_resource type="Shader" uid="uid://dugjfbyh5i7br" path="res://assets/shaders/black_warp_shader.gdshader" id="3_wxdtm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlela"]
 bg_color = Color(0.156141, 0.265577, 0.156147, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a82ne"]
+shader = ExtResource("3_wxdtm")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_jjwhp"]
 
@@ -26,6 +36,10 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_wlela")
 
+[node name="ColorRect" type="ColorRect" parent="Panel"]
+material = SubResource("ShaderMaterial_a82ne")
+layout_mode = 2
+
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 2
 theme_override_constants/margin_left = 25
@@ -35,14 +49,16 @@ theme_override_constants/margin_bottom = 25
 
 [node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
-
-tab_position = 2
-
+current_tab = 0
 
 [node name="General" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_title = "General"
+
+[node name="Control2" type="Control" parent="Panel/MarginContainer/TabContainer/General"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
 
 [node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/General"]
 layout_mode = 2
@@ -112,10 +128,7 @@ focus_mode = 0
 text = "Siggy?"
 
 [node name="DesktopBackground" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
-
-
 visible = false
-
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_title = "Desktop Background"

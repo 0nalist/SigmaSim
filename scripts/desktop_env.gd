@@ -5,6 +5,8 @@ extends Control
 @onready var trash_window: Pane = %TrashWindow
 @onready var background: TextureRect = %Background
 
+
+
 @export var background_texture: Texture = preload("res://assets/backgrounds/Bliss_(Windows_XP) (2).png")
 
 func _ready() -> void:

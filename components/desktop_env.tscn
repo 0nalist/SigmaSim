@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=43 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -23,7 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="23_dik0q"]
-[ext_resource type="Script" uid="uid://cf1v6l1xc5n1i" path="res://components/desktop_background.gd" id="24_jkb4t"]
+[ext_resource type="Script" uid="uid://c7t01yq8wloqf" path="res://components/desktop_background.gd" id="24_jkb4t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yi8nh"]
 shader = ExtResource("4_fjtwy")
