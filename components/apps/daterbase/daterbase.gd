@@ -39,18 +39,22 @@ var column_user_min_widths: Array[int] = []  # per-column min widths from user d
 var _active_tab: StringName = &"Daterbase"
 var _ran_initial_show_all: bool = false
 
+const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
+const SUITOR_POPUP_SCENE: PackedScene = preload("res://components/popups/suitor_popup.tscn")
+const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
+
 
 func _ready() -> void:
-		run_query_button.pressed.connect(_on_run_query_pressed)
-		show_all_button.pressed.connect(_on_show_all_pressed)
-		daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
-		sql_tab_button.pressed.connect(_on_sql_tab_pressed)
+	run_query_button.pressed.connect(_on_run_query_pressed)
+	show_all_button.pressed.connect(_on_show_all_pressed)
+	daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
+	sql_tab_button.pressed.connect(_on_sql_tab_pressed)
 
-		numeric_regex = RegEx.new()
-		numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
+	numeric_regex = RegEx.new()
+	numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
 
-		_build_table_shell()
-		_activate_tab(&"Daterbase")
+	_build_table_shell()
+	_activate_tab(&"Daterbase")
 
 # =========================================
 # Shell
@@ -79,28 +83,27 @@ func _on_item_activated() -> void:
 # Tabs
 # =========================================
 func _activate_tab(tab_name: StringName) -> void:
-		if tab_name != &"Daterbase" and tab_name != &"SQL":
-				push_error("Invalid tab: %s" % str(tab_name))
-				return
-		_active_tab = tab_name
-		if tab_name == &"Daterbase":
-				daterbase_tab_button.set_pressed(true)
-				sql_tab_button.set_pressed(false)
-				daterbase_view.visible = true
-				sql_view.visible = false
-				error_label.text = ""
-				_ensure_results_tree_parent(results_container_daterbase)
-				if not _ran_initial_show_all:
-						_on_show_all_pressed()
-						_ran_initial_show_all = true
-		else:
-				daterbase_tab_button.set_pressed(false)
-				sql_tab_button.set_pressed(true)
-				daterbase_view.visible = false
-				sql_view.visible = true
-				error_label.text = ""
-				_ensure_results_tree_parent(results_container_sql)
-				query_edit.grab_focus()
+	if tab_name != &"Daterbase" and tab_name != &"SQL":
+		push_error("Invalid tab: %s" % str(tab_name))
+		return
+	_active_tab = tab_name
+	if tab_name == &"Daterbase":
+		daterbase_tab_button.set_pressed(true)
+		sql_tab_button.set_pressed(false)
+		daterbase_view.visible = true
+		sql_view.visible = false
+		error_label.text = ""
+		if not _ran_initial_show_all:
+			_on_show_all_pressed()
+			_ran_initial_show_all = true
+	else:
+		daterbase_tab_button.set_pressed(false)
+		sql_tab_button.set_pressed(true)
+		daterbase_view.visible = false
+		sql_view.visible = true
+		error_label.text = ""
+		_ensure_results_tree_parent(results_container_sql)
+		query_edit.grab_focus()
 
 
 
@@ -121,7 +124,10 @@ func _on_sql_tab_pressed() -> void:
 func _on_show_all_pressed() -> void:
 	query_edit.text = ""
 	error_label.text = ""
+	_ran_initial_show_all = true
 	_load_default_entries()
+	if _active_tab == &"SQL":
+		_activate_tab(&"Daterbase")
 
 func _on_run_query_pressed() -> void:
 	var sql_text: String = query_edit.text.strip_edges()
@@ -157,21 +163,65 @@ func _is_safe_select(query_text: String) -> bool:
 # Data loading
 # =========================================
 func _load_default_entries() -> void:
+	for child in results_container_daterbase.get_children():
+		child.queue_free()
+	
+	var header := HBoxContainer.new()
+	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	header.add_child(_create_header_label("Portrait"))
+	header.add_child(_create_header_label("Full Name"))
+	header.add_child(_create_header_label("Dime Status"))
+	header.add_child(_create_header_label("Relationship Status"))
+	header.add_child(_create_header_label("Affinity"))
+	results_container_daterbase.add_child(header)
+	
 	var daterbase_entries: Array = DBManager.get_daterbase_entries()
-	var table_rows: Array = []
 	for entry_dictionary in daterbase_entries:
 		var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
-		var table_row: Dictionary = {
-			"Full Name": npc_object.full_name,
-			"Type": str(npc_object.chat_battle_type),
-			"Attractiveness": int(npc_object.attractiveness),
-			"Affinity": float(npc_object.affinity),
-			"Obtained": Time.get_datetime_string_from_unix_time(int(entry_dictionary.timestamp))
-		}
-		table_rows.append(table_row)
+		var row := HBoxContainer.new()
+		row.mouse_filter = Control.MOUSE_FILTER_STOP
+		row.gui_input.connect(_on_row_gui_input.bind(npc_object))
+		var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
+		portrait.portrait_creator_enabled = false
+		portrait.custom_minimum_size = Vector2(64, 64)
+		portrait.size = Vector2(64, 64)
+		portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if npc_object.portrait_config != null:
+			portrait.apply_config(npc_object.portrait_config)
+		row.add_child(portrait)
+		var name_label := Label.new()
+		name_label.text = npc_object.full_name
+		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(name_label)
+		var dime_label := Label.new()
+		dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
+		dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(dime_label)
+		var rel_label := Label.new()
+		rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
+		rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(rel_label)
+		var affinity_label := Label.new()
+		affinity_label.text = "%.1f" % npc_object.affinity
+		affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(affinity_label)
+		results_container_daterbase.add_child(row)
 
-	var header_names: Array[String] = ["Full Name", "Type", "Attractiveness", "Affinity", "Obtained"]
-	_render_table(header_names, table_rows)
+func _create_header_label(text: String) -> Label:
+	var lbl := Label.new()
+	lbl.text = text
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return lbl
+	
+func _on_row_gui_input(event: InputEvent, npc: NPC) -> void:
+	var mouse_event: InputEventMouseButton = event as InputEventMouseButton
+	if mouse_event != null and mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
+		_open_suitor_popup(npc)
+	
+func _open_suitor_popup(npc: NPC) -> void:
+	var popup: SuitorPopup = SUITOR_POPUP_SCENE.instantiate()
+	WindowManager.launch_pane_instance(popup)
+	popup.call_deferred("setup", npc)
 
 func _display_generic_rows(result_rows: Array) -> void:
 	if result_rows.size() == 0:
