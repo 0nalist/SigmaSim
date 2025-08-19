@@ -88,8 +88,8 @@ func _update_breakup_button_text() -> void:
 	breakup_button.text = "Breakup for %.2f Ex" % reward
 
 func _update_action_buttons_text() -> void:
-	gift_button.text = "Gift (%.2f Ex)" % gift_cost
-	date_button.text = "Date (%.2f Ex)" % date_cost
+	gift_button.text = "Gift ($%.2f)" % gift_cost
+	date_button.text = "Date ($%.2f)" % date_cost
 
 func _on_next_stage_pressed() -> void:
 	next_stage_button.visible = false
@@ -129,7 +129,7 @@ func _on_breakup_pressed() -> void:
 	breakup_reward = (0.1 + (npc.relationship_progress / 100.0) * 0.9) * base
 	var text = "Are you sure you want to break up with %s and gain %.2f EX?" % [npc.first_name, breakup_reward]
 	if npc.relationship_stage == NPC.RelationshipStage.MARRIED:
-		text += "\n%s will get half of all of your assets" % npc.first_name
+		text += "\n\n%s will get half of all of your assets" % npc.first_name
 	breakup_confirm_label.text = text
 	breakup_confirm.visible = true
 

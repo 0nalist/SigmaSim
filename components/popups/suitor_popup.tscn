@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://dim0nwjmfwi3g"]
+[gd_scene load_steps=6 format=3 uid="uid://dim0nwjmfwi3g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/suitor_popup.gd" id="2"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edh50"]
+bg_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 
 [node name="SuitorPopup" type="PanelContainer"]
 anchors_preset = 15
@@ -130,33 +137,48 @@ text = "Breakup"
 [node name="BreakupConfirm" type="CenterContainer" parent="."]
 unique_name_in_owner = true
 visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="BreakupConfirm"]
+custom_minimum_size = Vector2(196, 132)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_edh50")
 
-[node name="VBox" type="VBoxContainer" parent="BreakupConfirm/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="BreakupConfirm/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="BreakupConfirm/Panel/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="BreakupConfirmLabel" type="Label" parent="BreakupConfirm/Panel/VBox"]
+[node name="BreakupConfirmLabel" type="Label" parent="BreakupConfirm/Panel/MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
+horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Buttons" type="HBoxContainer" parent="BreakupConfirm/Panel/VBox"]
+[node name="Control" type="Control" parent="BreakupConfirm/Panel/MarginContainer/VBox"]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="BreakupConfirm/Panel/MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 8
 theme_override_constants/separation = 8
 
-[node name="BreakupConfirmYesButton" type="Button" parent="BreakupConfirm/Panel/VBox/Buttons"]
+[node name="BreakupConfirmYesButton" type="Button" parent="BreakupConfirm/Panel/MarginContainer/VBox/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Yes"
 
-[node name="BreakupConfirmNoButton" type="Button" parent="BreakupConfirm/Panel/VBox/Buttons"]
+[node name="BreakupConfirmNoButton" type="Button" parent="BreakupConfirm/Panel/MarginContainer/VBox/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "No"
+size_flags_horizontal = 3
+text = " No "
