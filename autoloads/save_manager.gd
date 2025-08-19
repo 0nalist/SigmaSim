@@ -52,9 +52,9 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
-        reset_managers()
-        BillManager.is_loading = true
-        current_slot_id = slot_id
+		reset_managers()
+		BillManager.is_loading = true
+		current_slot_id = slot_id
 	if not user_data.has("global_rng_seed"):
 		var password = user_data.get("password", "")
 		var seed_val: int
@@ -129,9 +129,9 @@ func load_from_slot(slot_id: int) -> void:
 	if not FileAccess.file_exists(path):
 		return
 
-        reset_managers()
-        BillManager.is_loading = true
-        current_slot_id = slot_id
+		reset_managers()
+		BillManager.is_loading = true
+		current_slot_id = slot_id
 
 	var file := FileAccess.open(path, FileAccess.READ)
 	var text := file.get_as_text()
@@ -148,9 +148,9 @@ func load_from_slot(slot_id: int) -> void:
 		StatManager.load_from_data(data["stats"])
 	if data.has("portfolio"):
 		PortfolioManager.load_from_data(data["portfolio"])
-        if data.has("time"):
-                TimeManager.load_from_data(data["time"])
-                TimeManager.start_time()
+		if data.has("time"):
+				TimeManager.load_from_data(data["time"])
+				TimeManager.start_time()
 	if data.has("upgrades"):
 		UpgradeManager.load_from_data(data["upgrades"])
 	if data.has("tasks"):
@@ -172,14 +172,14 @@ func load_from_slot(slot_id: int) -> void:
 
 	if data.has("workers"):
 		WorkerManager.load_from_data(data["workers"])
-        if data.has("gpus"):
-                GPUManager.load_from_data(data["gpus"])
-        if data.has("bills"):
-                BillManager.load_from_data(data["bills"])
-        if data.has("windows"):  # Always load windows last
-                WindowManager.load_from_data(data["windows"])
-        BillManager.is_loading = false
-        BillManager.show_due_popups()
+		if data.has("gpus"):
+				GPUManager.load_from_data(data["gpus"])
+		if data.has("bills"):
+				BillManager.load_from_data(data["bills"])
+		if data.has("windows"):  # Always load windows last
+				WindowManager.load_from_data(data["windows"])
+		BillManager.is_loading = false
+		BillManager.show_due_popups()
 
 
 func reset_game_state() -> void:
@@ -191,11 +191,11 @@ func reset_game_state() -> void:
 	TimeManager.reset()
 	TaskManager.reset()
 	UpgradeManager.reset()
-        WorkerManager.reset()
-        MarketManager.reset()
-        GPUManager.reset()
-        BillManager.reset()
-        NPCManager.reset()
+	WorkerManager.reset()
+	MarketManager.reset()
+	GPUManager.reset()
+	BillManager.reset()
+	NPCManager.reset()
 
 func reset_managers():
 	StatManager.reset()
@@ -203,11 +203,11 @@ func reset_managers():
 	PlayerManager.reset()
 	WindowManager.reset()
 	TimeManager.reset()
-        WorkerManager.reset()
-        TaskManager.reset()
-        GPUManager.reset()
-        BillManager.reset()
-        NPCManager.reset()
+	WorkerManager.reset()
+	TaskManager.reset()
+	GPUManager.reset()
+	BillManager.reset()
+	NPCManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)
