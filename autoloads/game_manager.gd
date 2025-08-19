@@ -154,9 +154,11 @@ func _close_pause_screen():
 func load_login_screen():
 	in_game = false
 	TimeManager.set_time_paused(true)
+	# Ensure all app and popup windows are closed when returning to the login screen
+	WindowManager.close_all_windows()
 	var main = get_tree().current_scene
 	if main and main.has_method("show_login_ui"):
-		main.show_login_ui()
+			main.show_login_ui()
 
 
 func load_desktop_env(slot_id: int = SaveManager.current_slot_id):
