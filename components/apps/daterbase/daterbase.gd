@@ -177,8 +177,11 @@ func _load_default_entries() -> void:
 	
 	var daterbase_entries: Array = DBManager.get_daterbase_entries()
 	for entry_dictionary in daterbase_entries:
-		var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
-		var row := HBoxContainer.new()
+       var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
+       if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
+               NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
+               npc_object.relationship_stage = NPC.RelationshipStage.TALKING
+       var row := HBoxContainer.new()
 		row.mouse_filter = Control.MOUSE_FILTER_STOP
 		row.gui_input.connect(_on_row_gui_input.bind(npc_object))
 		var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
