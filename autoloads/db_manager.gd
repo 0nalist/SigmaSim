@@ -13,7 +13,6 @@ const SCHEMA := {
 		"last_name": {"data_type": "text"},
 		"gender_vector": {"data_type": "text"},
 		"username": {"data_type": "text"},
-		# NOTE: profile_pic_path needs refactor before persistence
 		"occupation": {"data_type": "text"},
 		"relationship_status": {"data_type": "text"},
 		"affinity": {"data_type": "real"},
