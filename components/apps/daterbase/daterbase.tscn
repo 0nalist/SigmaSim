@@ -62,12 +62,14 @@ layout_mode = 2
 [node name="DaterbaseTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 toggle_mode = true
 text = "Daterbase"
 
 [node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 toggle_mode = true
 text = "SQL"
 
