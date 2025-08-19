@@ -12,9 +12,16 @@ const STAGE_NAMES := ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MA
 @onready var gift_button: Button = %GiftButton
 @onready var date_button: Button = %DateButton
 @onready var breakup_button: Button = %BreakupButton
+@onready var breakup_confirm: CenterContainer = %BreakupConfirm
+@onready var breakup_confirm_label: Label = %BreakupConfirmLabel
+@onready var breakup_confirm_yes_button: Button = %BreakupConfirmYesButton
+@onready var breakup_confirm_no_button: Button = %BreakupConfirmNoButton
 
 var npc: NPC
 var progress_paused: bool = false
+var gift_cost: float = 25.0
+var date_cost: float = 200.0
+var breakup_reward: float = 0.0
 
 func setup(target: NPC) -> void:
 	npc = target
@@ -22,6 +29,9 @@ func setup(target: NPC) -> void:
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
 		portrait_view.portrait_creator_enabled = false
 		portrait_view.apply_config(npc.portrait_config)
+	gift_cost = 25.0
+	date_cost = 200.0
+	breakup_reward = 0.0
 	_update_all()
 
 func _ready() -> void:
@@ -29,6 +39,8 @@ func _ready() -> void:
 	date_button.pressed.connect(_on_date_pressed)
 	breakup_button.pressed.connect(_on_breakup_pressed)
 	next_stage_button.pressed.connect(_on_next_stage_pressed)
+	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
+	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
 
 func _process(delta: float) -> void:
 	if npc == null or progress_paused or npc.relationship_stage >= NPC.RelationshipStage.DIVORCED:
@@ -47,6 +59,7 @@ func _update_all() -> void:
 	_update_relationship_bar()
 	_update_affinity_bar()
 	_update_breakup_button_text()
+	_update_action_buttons_text()
 	var blocked = npc.relationship_stage >= NPC.RelationshipStage.DIVORCED
 	gift_button.disabled = blocked
 	date_button.disabled = blocked
@@ -74,6 +87,10 @@ func _update_breakup_button_text() -> void:
 	var reward := (0.1 + (npc.relationship_progress / 100.0) * 0.9) * base
 	breakup_button.text = "Breakup for %.2f Ex" % reward
 
+func _update_action_buttons_text() -> void:
+	gift_button.text = "Gift (%.2f Ex)" % gift_cost
+	date_button.text = "Date (%.2f Ex)" % date_cost
+
 func _on_next_stage_pressed() -> void:
 	next_stage_button.visible = false
 	progress_paused = false
@@ -83,12 +100,14 @@ func _on_next_stage_pressed() -> void:
 	_update_all()
 
 func _on_gift_pressed() -> void:
-	if PortfolioManager.attempt_spend(25.0):
+	if PortfolioManager.attempt_spend(gift_cost):
 		npc.affinity = min(npc.affinity + 5.0, 100.0)
+		gift_cost *= 2.0
 		_update_affinity_bar()
+		_update_action_buttons_text()
 
 func _on_date_pressed() -> void:
-	if not PortfolioManager.attempt_spend(200.0):
+	if not PortfolioManager.attempt_spend(date_cost):
 		return
 	if npc.relationship_stage == NPC.RelationshipStage.TALKING and npc.relationship_progress < 99.0:
 		npc.relationship_progress = 99.0
@@ -101,18 +120,28 @@ func _on_date_pressed() -> void:
 			next_stage_button.visible = true
 	_update_relationship_bar()
 	_update_breakup_button_text()
+	date_cost *= 2.0
+	_update_action_buttons_text()
 
 func _on_breakup_pressed() -> void:
 	var stage_idx = max(1, npc.relationship_stage)
 	var base := pow(10, stage_idx - 1)
-	var reward := (0.1 + (npc.relationship_progress / 100.0) * 0.9) * base
-	var current_ex = PlayerManager.get_var("ex", 0.0)
-	PlayerManager.set_var("ex", current_ex + reward)
+	breakup_reward = (0.1 + (npc.relationship_progress / 100.0) * 0.9) * base
+	var text = "Are you sure you want to break up with %s and gain %.2f EX?" % [npc.first_name, breakup_reward]
 	if npc.relationship_stage == NPC.RelationshipStage.MARRIED:
-			npc.relationship_stage = NPC.RelationshipStage.DIVORCED
-			PortfolioManager.halve_assets()
+		text += "\n%s will get half of all of your assets" % npc.first_name
+	breakup_confirm_label.text = text
+	breakup_confirm.visible = true
+
+func _on_breakup_confirm_yes_pressed() -> void:
+	breakup_confirm.visible = false
+	var current_ex = PlayerManager.get_var("ex", 0.0)
+	PlayerManager.set_var("ex", current_ex + breakup_reward)
+	if npc.relationship_stage == NPC.RelationshipStage.MARRIED:
+		npc.relationship_stage = NPC.RelationshipStage.DIVORCED
+		PortfolioManager.halve_assets()
 	else:
-			npc.relationship_stage = NPC.RelationshipStage.EX
+		npc.relationship_stage = NPC.RelationshipStage.EX
 	npc.relationship_progress = 0.0
 	npc.affinity *= 0.2
 	progress_paused = true
@@ -121,3 +150,6 @@ func _on_breakup_pressed() -> void:
 	date_button.disabled = true
 	breakup_button.disabled = true
 	_update_all()
+
+func _on_breakup_confirm_no_pressed() -> void:
+	breakup_confirm.visible = false
