@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=45 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -10,6 +10,7 @@
 [ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="5_yi8nh"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
 [ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="7_c7kal"]
+[ext_resource type="Shader" uid="uid://bnamg60bf362u" path="res://assets/shaders/pixel_planet_shader.gdshader" id="7_ptlp0"]
 [ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://components/clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="9_m483i"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="10_0utxc"]
@@ -56,6 +57,62 @@ shader_parameter/circle_multiplier = 32.0
 shader_parameter/speed = 0.1
 shader_parameter/direction = Vector2(1, 1)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ptlp0"]
+shader = ExtResource("7_ptlp0")
+shader_parameter/pixel_scale = 360.0
+shader_parameter/surface_radius = 0.3
+shader_parameter/background_colour = Color(0, 0, 0, 1)
+shader_parameter/surface_base_rotation = 0.0
+shader_parameter/surface_rotation_speed = 0.0
+shader_parameter/surface_primary_cell_amount = 10
+shader_parameter/surface_primary_strength = 1.0
+shader_parameter/surface_primary_period = Vector3(9.5, 9.5, 9.5)
+shader_parameter/surface_secondary_enabled = true
+shader_parameter/surface_secondary_cell_amount = 20
+shader_parameter/surface_secondary_strength = 0.3
+shader_parameter/surface_secondary_period = Vector3(9.5, 9.5, 9.5)
+shader_parameter/surface_secondary_rotation = 0.0
+shader_parameter/surface_secondary_rotation_speed = 0.0
+shader_parameter/surface_tertiary_enabled = false
+shader_parameter/surface_tertiary_cell_amount = 30
+shader_parameter/surface_tertiary_strength = 0.3
+shader_parameter/surface_tertiary_period = Vector3(9.5, 9.5, 9.5)
+shader_parameter/surface_tertiary_rotation = 0.0
+shader_parameter/surface_tertiary_rotation_speed = 0.0
+shader_parameter/surface_bump_strength = 0.3
+shader_parameter/display_cloud_shadows = true
+shader_parameter/cloud_shadow_darkness = 0.25
+shader_parameter/cloud_1_cover = 0.3
+shader_parameter/cloud_1_radius = 0.32
+shader_parameter/cloud_1_cell_amount = 10
+shader_parameter/cloud_1_rotation_speed = 0.03
+shader_parameter/cloud_1_fluctuation_speed = 0.03
+shader_parameter/cloud_1_period = Vector3(9.5, 9.5, 9.5)
+shader_parameter/cloud_1_secondary_period = Vector3(9.5, 9.5, 9.5)
+shader_parameter/cloud_1_secondary_cell_amount = 10
+shader_parameter/cloud_1_secondary_strength = 0.3
+shader_parameter/cloud_2_cover = 0.0
+shader_parameter/cloud_2_radius = 0.32
+shader_parameter/cloud_2_cell_amount = 10
+shader_parameter/cloud_2_rotation_speed = 0.03
+shader_parameter/cloud_2_fluctuation_speed = 0.03
+shader_parameter/cloud_2_period = Vector3(9.5, 9.5, 9.5)
+shader_parameter/cloud_2_secondary_period = Vector3(9.5, 9.5, 9.5)
+shader_parameter/cloud_2_secondary_cell_amount = 10
+shader_parameter/cloud_2_secondary_strength = 0.3
+shader_parameter/atmosphere_radius = 0.34
+shader_parameter/posterise = false
+shader_parameter/shading_mode = 2
+shader_parameter/maximum_brightness = 1.0
+shader_parameter/sun_strength = 2.0
+shader_parameter/shade_transition = 10.0
+shader_parameter/shade_step = 8.0
+shader_parameter/sun_direction = Vector3(1, 0.2, -0.3)
+shader_parameter/dither_levels = 0
+shader_parameter/shading_noise_cell_amount = 40
+shader_parameter/shading_noise_strength = 0.3
+shader_parameter/shading_noise_period = Vector3(9.5, 9.5, 9.5)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
 texture = ExtResource("9_m483i")
@@ -208,6 +265,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")
 background_name = "ComicDots2"
+
+[node name="PixelPlanet" type="PanelContainer" parent="ShaderBackgroundsContainer"]
+visible = false
+material = SubResource("ShaderMaterial_ptlp0")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="TopBar" type="Control" parent="."]
 layout_mode = 1

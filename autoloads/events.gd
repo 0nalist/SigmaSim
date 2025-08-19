@@ -3,7 +3,7 @@ extends Node
 signal desktop_background_toggled(name: String, visible: bool)
 
 var desktop_backgrounds := {
-	"BlueWarp": false,
+	"BlueWarp": true,
 	"ComicDots1": false,
 	"ComicDots2": false,
 }
