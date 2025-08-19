@@ -29,7 +29,7 @@ func setup(target: NPC) -> void:
 	npc = target
 	name_label.text = npc.full_name
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
-		portrait_view.portrait_creator_enabled = false
+		portrait_view.portrait_creator_enabled = true
 		portrait_view.apply_config(npc.portrait_config)
 		gift_cost = 25.0
 		date_cost = 200.0

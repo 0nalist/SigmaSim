@@ -1,9 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://dim0nwjmfwi3g"]
+[gd_scene load_steps=8 format=3 uid="uid://dim0nwjmfwi3g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/suitor_popup.gd" id="2"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
+[ext_resource type="Shader" uid="uid://bfgsgplah4us" path="res://assets/shaders/white_warp_shader.gdshader" id="3_vl6ok"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_78wgo"]
+shader = ExtResource("3_vl6ok")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edh50"]
 bg_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
@@ -26,6 +36,10 @@ script = ExtResource("2")
 window_title = "Suitor"
 default_window_size = Vector2(400, 500)
 is_popup = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_78wgo")
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
