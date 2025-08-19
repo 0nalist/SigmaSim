@@ -3,9 +3,9 @@ extends Node
 signal desktop_background_toggled(name: String, visible: bool)
 
 var desktop_backgrounds := {
-	"BlueWarp": true,
-	"ComicDots1": true,
-	"ComicDots2": true,
+	"BlueWarp": false,
+	"ComicDots1": false,
+	"ComicDots2": false,
 }
 
 func set_desktop_background_visible(name: String, visible: bool) -> void:
