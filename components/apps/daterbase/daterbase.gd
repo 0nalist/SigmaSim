@@ -70,7 +70,7 @@ func _build_table_shell() -> void:
 	results_tree.item_activated.connect(_on_item_activated)
 	results_tree.gui_input.connect(_on_tree_gui_input)
 
-	results_container_daterbase.add_child(results_tree)
+	results_container_sql.add_child(results_tree)
 
 func _on_item_activated() -> void:
 		pass
