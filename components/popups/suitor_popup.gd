@@ -59,7 +59,7 @@ func _update_affinity_bar() -> void:
 	affinity_bar.update_value(npc.affinity)
 
 func _update_breakup_button_text() -> void:
-	var stage_idx := max(1, npc.relationship_stage)
+	var stage_idx = max(1, npc.relationship_stage)
 	var base := pow(10, stage_idx - 1)
 	var reward := (0.1 + (npc.relationship_progress / 100.0) * 0.9) * base
 	breakup_button.text = "Breakup for %.2f Ex" % reward
@@ -93,10 +93,10 @@ func _on_date_pressed() -> void:
 	_update_breakup_button_text()
 
 func _on_breakup_pressed() -> void:
-	var stage_idx := max(1, npc.relationship_stage)
+	var stage_idx = max(1, npc.relationship_stage)
 	var base := pow(10, stage_idx - 1)
 	var reward := (0.1 + (npc.relationship_progress / 100.0) * 0.9) * base
-	var current_ex := PlayerManager.get_var("ex", 0.0)
+	var current_ex = PlayerManager.get_var("ex", 0.0)
 	PlayerManager.set_var("ex", current_ex + reward)
 	npc.relationship_stage = NPC.RelationshipStage.EX
 	npc.relationship_progress = 0.0
@@ -106,4 +106,3 @@ func _on_breakup_pressed() -> void:
 	gift_button.disabled = true
 	date_button.disabled = true
 	_update_all()
-

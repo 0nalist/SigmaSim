@@ -102,9 +102,12 @@ func _activate_tab(tab_name: StringName) -> void:
 				_ensure_results_tree_parent(results_container_sql)
 				query_edit.grab_focus()
 
+
+
 func _ensure_results_tree_parent(target_container: VBoxContainer) -> void:
-		if results_tree.get_parent() != target_container:
-				target_container.add_child(results_tree)
+	if results_tree.get_parent() != target_container:
+		results_tree.reparent(target_container)
+
 
 func _on_daterbase_tab_pressed() -> void:
 		_activate_tab(&"Daterbase")
