@@ -149,40 +149,40 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	logic.setup(npc, battle_stats_to_use)
 	battle_stats = logic.get_stats()
 
-        _update_profiles()
-        for child in chat_container.get_children():
-                child.queue_free()
-        for msg in chatlog:
-                var chat = add_chat_line(msg.text, msg.is_player, msg.get("is_victory_number", false), false)
-                var reaction_tex: Texture2D = null
-                if msg.get("reaction_name", "") != "" and REACTION_EMOJI.has(msg.reaction_name):
-                        reaction_tex = REACTION_EMOJI[msg.reaction_name]
-                chat.apply_saved_state(msg, reaction_tex)
+	_update_profiles()
+	for child in chat_container.get_children():
+			child.queue_free()
+	for msg in chatlog:
+			var chat = add_chat_line(msg.text, msg.is_player, msg.get("is_victory_number", false), false)
+			var reaction_tex: Texture2D = null
+			if msg.get("reaction_name", "") != "" and REACTION_EMOJI.has(msg.reaction_name):
+					reaction_tex = REACTION_EMOJI[msg.reaction_name]
+			chat.apply_saved_state(msg, reaction_tex)
 
-        move_usage_counts.clear()
-        var move_counts_to_use: Dictionary = {}
-        if move_usage_counts_in.size() > 0:
-                move_counts_to_use = move_usage_counts_in.duplicate()
-        for move in equipped_moves:
-                move_usage_counts[move.to_lower()] = move_counts_to_use.get(move.to_lower(), 0)
-        move_usage_counts["catch"] = move_counts_to_use.get("catch", 0)
-        if chatlog.size() == 0 and move_counts_to_use.size() == 0:
-                var reveal_levels = UpgradeManager.get_level("fumble_speaking_from_experience")
-                var rng = RNGManager.get_rng()
-                for i in range(reveal_levels):
-                        var options := []
-                        for m in equipped_moves:
-                                var key = m.to_lower()
-                                if move_usage_counts[key] < 3:
-                                        options.append(key)
-                        if options.is_empty():
-                                break
-                        var chosen_key = options[rng.randi_range(0, options.size() - 1)]
-                        move_usage_counts[chosen_key] += 1
+	move_usage_counts.clear()
+	var move_counts_to_use: Dictionary = {}
+	if move_usage_counts_in.size() > 0:
+			move_counts_to_use = move_usage_counts_in.duplicate()
+	for move in equipped_moves:
+			move_usage_counts[move.to_lower()] = move_counts_to_use.get(move.to_lower(), 0)
+	move_usage_counts["catch"] = move_counts_to_use.get("catch", 0)
+	if chatlog.size() == 0 and move_counts_to_use.size() == 0:
+			var reveal_levels = UpgradeManager.get_level("fumble_speaking_from_experience")
+			var rng = RNGManager.get_rng()
+			for i in range(reveal_levels):
+					var options := []
+					for m in equipped_moves:
+							var key = m.to_lower()
+							if move_usage_counts[key] < 3:
+									options.append(key)
+					if options.is_empty():
+							break
+					var chosen_key = options[rng.randi_range(0, options.size() - 1)]
+					move_usage_counts[chosen_key] += 1
 
-        update_action_buttons()
-        scroll_to_newest_chat()
-        update_progress_bars()
+	update_action_buttons()
+	scroll_to_newest_chat()
+	update_progress_bars()
 
 	if victorious:
 		ex_award = npc.attractiveness / 10.0
