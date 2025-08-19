@@ -272,11 +272,24 @@ func _get_base_cost(upgrade: Dictionary, level: int) -> Dictionary:
 func _get_currency_amount(currency: String) -> float:
 	if currency == "cash":
 		return PortfolioManager.cash
+	if currency == "ex":
+		return StatManager.get_stat("ex")
 	return PortfolioManager.get_crypto_amount(currency)
 
 func _deduct_currency(currency: String, amount: float) -> bool:
 	if currency == "cash":
 		return PortfolioManager.attempt_spend(amount)
+	if currency == "ex":
+		if StatManager.get_stat("ex") < amount:
+			return false
+		StatManager.set_base_stat("ex", StatManager.get_stat("ex") - amount)
+		StatpopManager.spawn(
+			"-%s Ex" % NumberFormatter.format_number(amount),
+			get_viewport().get_mouse_position(),
+			"click",
+			Color.YELLOW
+		)
+		return true
 	if PortfolioManager.get_crypto_amount(currency) < amount:
 		return false
 	PortfolioManager.add_crypto(currency, -amount)
@@ -306,6 +319,9 @@ func can_purchase(id: String) -> bool:
 			if remainder <= 0:
 				continue
 			if not PortfolioManager.can_pay_with_credit(remainder):
+				return false
+		elif currency == "ex":
+			if StatManager.get_stat("ex") < amount:
 				return false
 		else:
 			if PortfolioManager.get_crypto_amount(currency) < amount:
