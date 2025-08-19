@@ -167,79 +167,79 @@ func _load_default_entries() -> void:
 		child.queue_free()
 	
 	var header := HBoxContainer.new()
-        header.mouse_filter = Control.MOUSE_FILTER_IGNORE
-        var header_labels: Array[Label] = []
-        header_labels.append(_create_header_label("Portrait"))
-        header_labels.append(_create_header_label("Full Name"))
-        header_labels.append(_create_header_label("Dime Status"))
-        header_labels.append(_create_header_label("Relationship Status"))
-        header_labels.append(_create_header_label("Affinity"))
-        for lbl in header_labels:
-                header.add_child(lbl)
-        results_container_daterbase.add_child(header)
+	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var header_labels: Array[Label] = []
+	header_labels.append(_create_header_label("Portrait"))
+	header_labels.append(_create_header_label("Full Name"))
+	header_labels.append(_create_header_label("Dime Status"))
+	header_labels.append(_create_header_label("Relationship Status"))
+	header_labels.append(_create_header_label("Affinity"))
+	for lbl in header_labels:
+			header.add_child(lbl)
+	results_container_daterbase.add_child(header)
 
-        var default_font: Font = get_theme_default_font()
-        var default_font_size: int = get_theme_default_font_size()
-        var column_widths: Array[int] = [132, 0, 0, 0, 0]
-        for header_index in range(1, header_labels.size()):
-                var header_size: Vector2 = default_font.get_string_size(header_labels[header_index].text, default_font_size)
-                column_widths[header_index] = int(ceil(header_size.x)) + EXTRA_HEADER_PADDING
+	var default_font: Font = get_theme_default_font()
+	var default_font_size: int = get_theme_default_font_size()
+	var column_widths: Array[int] = [132, 0, 0, 0, 0]
+	for header_index in range(1, header_labels.size()):
+			var header_size: Vector2 = default_font.get_string_size(header_labels[header_index].text, default_font_size)
+			column_widths[header_index] = int(ceil(header_size.x)) + EXTRA_HEADER_PADDING
 
-        var rows: Array[HBoxContainer] = []
-        var daterbase_entries: Array = DBManager.get_daterbase_entries()
-        for entry_dictionary in daterbase_entries:
-                var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
-                if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
-                        NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
-                        npc_object.relationship_stage = NPC.RelationshipStage.TALKING
-                var row := HBoxContainer.new()
-                row.mouse_filter = Control.MOUSE_FILTER_STOP
-                row.gui_input.connect(_on_row_gui_input.bind(npc_object))
-                var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
-                portrait.portrait_creator_enabled = false
-                portrait.custom_minimum_size = Vector2(132, 132)
-                portrait.size = Vector2(132, 132)
-                portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-                if npc_object.portrait_config != null:
-                        portrait.apply_config(npc_object.portrait_config)
-                row.add_child(portrait)
-                var name_label := Label.new()
-                name_label.text = npc_object.full_name
-                name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-                row.add_child(name_label)
-                var dime_label := Label.new()
-                dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
-                dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-                row.add_child(dime_label)
-                var rel_label := Label.new()
-                rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
-                rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-                row.add_child(rel_label)
-                var affinity_label := Label.new()
-                affinity_label.text = "%.1f" % npc_object.affinity
-                affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-                row.add_child(affinity_label)
+	var rows: Array[HBoxContainer] = []
+	var daterbase_entries: Array = DBManager.get_daterbase_entries()
+	for entry_dictionary in daterbase_entries:
+			var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
+			if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
+					NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
+					npc_object.relationship_stage = NPC.RelationshipStage.TALKING
+			var row := HBoxContainer.new()
+			row.mouse_filter = Control.MOUSE_FILTER_STOP
+			row.gui_input.connect(_on_row_gui_input.bind(npc_object))
+			var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
+			portrait.portrait_creator_enabled = false
+			portrait.custom_minimum_size = Vector2(132, 132)
+			portrait.size = Vector2(132, 132)
+			portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			if npc_object.portrait_config != null:
+					portrait.apply_config(npc_object.portrait_config)
+			row.add_child(portrait)
+			var name_label := Label.new()
+			name_label.text = npc_object.full_name
+			name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			row.add_child(name_label)
+			var dime_label := Label.new()
+			dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
+			dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			row.add_child(dime_label)
+			var rel_label := Label.new()
+			rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
+			rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			row.add_child(rel_label)
+			var affinity_label := Label.new()
+			affinity_label.text = "%.1f" % npc_object.affinity
+			affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			row.add_child(affinity_label)
 
-                var text_values: Array = [name_label.text, dime_label.text, rel_label.text, affinity_label.text]
-                for idx in range(text_values.size()):
-                        var measured: Vector2 = default_font.get_string_size(text_values[idx], default_font_size)
-                        column_widths[idx + 1] = max(column_widths[idx + 1], int(ceil(measured.x)) + EXTRA_HEADER_PADDING)
+			var text_values: Array = [name_label.text, dime_label.text, rel_label.text, affinity_label.text]
+			for idx in range(text_values.size()):
+					var measured: Vector2 = default_font.get_string_size(text_values[idx], default_font_size)
+					column_widths[idx + 1] = max(column_widths[idx + 1], int(ceil(measured.x)) + EXTRA_HEADER_PADDING)
 
-                results_container_daterbase.add_child(row)
-                rows.append(row)
+			results_container_daterbase.add_child(row)
+			rows.append(row)
 
-        for header_index in range(header_labels.size()):
-                header_labels[header_index].custom_minimum_size.x = column_widths[header_index]
-                if header_index != 0:
-                        header_labels[header_index].size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	for header_index in range(header_labels.size()):
+			header_labels[header_index].custom_minimum_size.x = column_widths[header_index]
+			if header_index != 0:
+					header_labels[header_index].size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-        for row in rows:
-                row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-                for child_index in range(row.get_child_count()):
-                        var ctrl: Control = row.get_child(child_index)
-                        ctrl.custom_minimum_size.x = column_widths[child_index]
-                        if child_index != 0:
-                                ctrl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	for row in rows:
+			row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			for child_index in range(row.get_child_count()):
+					var ctrl: Control = row.get_child(child_index)
+					ctrl.custom_minimum_size.x = column_widths[child_index]
+					if child_index != 0:
+							ctrl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 func _create_header_label(text: String) -> Label:
 	var lbl := Label.new()
