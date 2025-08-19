@@ -51,27 +51,77 @@ theme_override_font_sizes/font_size = 36
 text = "DATERBASE"
 horizontal_alignment = 1
 
-[node name="ShowAllButton" type="Button" parent="MarginContainer/VBox"]
+[node name="MainHBox" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox"]
+layout_mode = 2
+
+[node name="DaterbaseTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/TabBar"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+pressed = true
+text = "Daterbase"
+
+[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/TabBar"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+text = "SQL"
+
+[node name="ContentArea" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DaterbaseView" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollDaterbase" type="ScrollContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/DaterbaseView"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ResultsContainer_Daterbase" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/DaterbaseView/ScrollDaterbase"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SQLView" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ShowAllButton" type="Button" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = " Show All Datable Ppl "
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView/PanelContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView/PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "TABLES: npc, fumble_relationships, fumble_battles"
 
-[node name="QueryHBox" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="QueryHBox" type="HBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="QueryEdit" type="TextEdit" parent="MarginContainer/VBox/QueryHBox"]
+[node name="QueryEdit" type="TextEdit" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView/QueryHBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 60)
 layout_mode = 2
@@ -79,21 +129,21 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "Enter a SELECT query, like \"SELECT * FROM npc\""
 
-[node name="RunQueryButton" type="Button" parent="MarginContainer/VBox/QueryHBox"]
+[node name="RunQueryButton" type="Button" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView/QueryHBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = " Run "
 
-[node name="ErrorLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="ErrorLabel" type="Label" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="Scroll" type="ScrollContainer" parent="MarginContainer/VBox"]
+[node name="ScrollSQL" type="ScrollContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ResultsContainer" type="VBoxContainer" parent="MarginContainer/VBox/Scroll"]
+[node name="ResultsContainer_SQL" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView/ScrollSQL"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
