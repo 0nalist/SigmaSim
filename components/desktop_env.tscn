@@ -156,14 +156,7 @@ texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="Control2" type="Control" parent="."]
-anchors_preset = 0
-offset_left = -8.0
-offset_top = -116.0
-offset_right = 32.0
-offset_bottom = -76.0
-
-[node name="Control" type="Control" parent="."]
+[node name="ShaderBackgroundsContainer" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -171,7 +164,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BlueWarpShader" type="PanelContainer" parent="Control"]
+[node name="BlueWarpShader" type="PanelContainer" parent="ShaderBackgroundsContainer"]
+visible = false
 material = SubResource("ShaderMaterial_yi8nh")
 layout_mode = 1
 anchors_preset = 15
@@ -182,7 +176,8 @@ grow_vertical = 2
 script = ExtResource("24_jkb4t")
 background_name = "BlueWarp"
 
-[node name="ComicDotsBlueVert" type="ColorRect" parent="Control"]
+[node name="ComicDotsBlueVert" type="ColorRect" parent="ShaderBackgroundsContainer"]
+visible = false
 material = SubResource("ShaderMaterial_rbayd")
 layout_mode = 1
 anchors_preset = 15
@@ -198,7 +193,8 @@ rotation = -1.5708
 script = ExtResource("24_jkb4t")
 background_name = "ComicDots1"
 
-[node name="ComicDotsBlueHor" type="ColorRect" parent="Control"]
+[node name="ComicDotsBlueHor" type="ColorRect" parent="ShaderBackgroundsContainer"]
+visible = false
 material = SubResource("ShaderMaterial_5aheu")
 layout_mode = 1
 anchors_preset = 15
