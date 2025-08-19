@@ -16,6 +16,25 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1")
 
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.9999
+offset_top = -112.0
+offset_right = 165.0
+offset_bottom = 144.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.65, 0.65)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_611x4")
+stretch_mode = 3
+
 [node name="PortraitCreator" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
@@ -76,11 +95,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_top = -15
 theme_override_constants/margin_right = 15
-
-[node name="TextureRect2" type="TextureRect" parent="PortraitCreator/MarginContainer/VBox/HBoxContainer/MarginContainer"]
-layout_mode = 2
-texture = ExtResource("3_611x4")
-stretch_mode = 3
 
 [node name="Randomize" type="Button" parent="PortraitCreator/MarginContainer/VBox/HBoxContainer/MarginContainer"]
 unique_name_in_owner = true
