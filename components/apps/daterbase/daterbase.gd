@@ -14,6 +14,8 @@ class_name Daterbase
 
 # --- Grid control ---
 var results_tree: Tree
+var _tab_trees: Dictionary = {}
+var _tab_states: Dictionary = {}
 
 # --- Table state ---
 var current_headers: Array[String] = []
@@ -49,28 +51,51 @@ func _ready() -> void:
 		numeric_regex = RegEx.new()
 		numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
 
-		_build_table_shell()
-		_activate_tab(&"Daterbase")
+                _build_table_shell()
+                _activate_tab(&"Daterbase")
 
 # =========================================
 # Shell
 # =========================================
 func _build_table_shell() -> void:
-	_clear_results()
+        _clear_results()
 
-	results_tree = Tree.new()
-	results_tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	results_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	results_tree.hide_root = true
-	results_tree.columns = 1
-	results_tree.column_titles_visible = true
-	results_tree.allow_reselect = true
-	results_tree.select_mode = Tree.SELECT_ROW
+        var tree_daterbase: Tree = _create_results_tree()
+        results_container_daterbase.add_child(tree_daterbase)
+        _tab_trees[&"Daterbase"] = tree_daterbase
+        _tab_states[&"Daterbase"] = {
+                "current_headers": [],
+                "current_rows": [],
+                "sort_column_index": -1,
+                "sort_ascending": true,
+                "column_user_min_widths": [],
+        }
 
-	results_tree.item_activated.connect(_on_item_activated)
-	results_tree.gui_input.connect(_on_tree_gui_input)
+        var tree_sql: Tree = _create_results_tree()
+        results_container_sql.add_child(tree_sql)
+        _tab_trees[&"SQL"] = tree_sql
+        _tab_states[&"SQL"] = {
+                "current_headers": [],
+                "current_rows": [],
+                "sort_column_index": -1,
+                "sort_ascending": true,
+                "column_user_min_widths": [],
+        }
 
-	results_container_daterbase.add_child(results_tree)
+        results_tree = tree_daterbase
+
+func _create_results_tree() -> Tree:
+        var tree := Tree.new()
+        tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
+        tree.hide_root = true
+        tree.columns = 1
+        tree.column_titles_visible = true
+        tree.allow_reselect = true
+        tree.select_mode = Tree.SELECT_ROW
+        tree.item_activated.connect(_on_item_activated)
+        tree.gui_input.connect(_on_tree_gui_input)
+        return tree
 
 func _on_item_activated() -> void:
 		pass
@@ -79,32 +104,39 @@ func _on_item_activated() -> void:
 # Tabs
 # =========================================
 func _activate_tab(tab_name: StringName) -> void:
-		if tab_name != &"Daterbase" and tab_name != &"SQL":
-				push_error("Invalid tab: %s" % str(tab_name))
-				return
-		_active_tab = tab_name
-		if tab_name == &"Daterbase":
-				daterbase_tab_button.set_pressed(true)
-				sql_tab_button.set_pressed(false)
-				daterbase_view.visible = true
-				sql_view.visible = false
-				error_label.text = ""
-				_ensure_results_tree_parent(results_container_daterbase)
-				if not _ran_initial_show_all:
-						_on_show_all_pressed()
-						_ran_initial_show_all = true
-		else:
-				daterbase_tab_button.set_pressed(false)
-				sql_tab_button.set_pressed(true)
-				daterbase_view.visible = false
-				sql_view.visible = true
-				error_label.text = ""
-				_ensure_results_tree_parent(results_container_sql)
-				query_edit.grab_focus()
+                if tab_name != &"Daterbase" and tab_name != &"SQL":
+                                push_error("Invalid tab: %s" % str(tab_name))
+                                return
 
-func _ensure_results_tree_parent(target_container: VBoxContainer) -> void:
-		if results_tree.get_parent() != target_container:
-				target_container.add_child(results_tree)
+                _store_state()
+                _active_tab = tab_name
+                results_tree = _tab_trees[_active_tab]
+
+                var state: Dictionary = _tab_states[_active_tab]
+                current_headers = state["current_headers"]
+                current_rows = state["current_rows"]
+                sort_column_index = state["sort_column_index"]
+                sort_ascending = state["sort_ascending"]
+                column_user_min_widths = state["column_user_min_widths"]
+
+                if tab_name == &"Daterbase":
+                                daterbase_tab_button.set_pressed(true)
+                                sql_tab_button.set_pressed(false)
+                                daterbase_view.visible = true
+                                sql_view.visible = false
+                                error_label.text = ""
+                                if not _ran_initial_show_all:
+                                                _on_show_all_pressed()
+                                                _ran_initial_show_all = true
+                else:
+                                daterbase_tab_button.set_pressed(false)
+                                sql_tab_button.set_pressed(true)
+                                daterbase_view.visible = false
+                                sql_view.visible = true
+                                error_label.text = ""
+                                query_edit.grab_focus()
+
+                _update_header_arrows()
 
 func _on_daterbase_tab_pressed() -> void:
 		_activate_tab(&"Daterbase")
@@ -187,29 +219,31 @@ func _display_generic_rows(result_rows: Array) -> void:
 # Rendering with Tree
 # =========================================
 func _render_table(header_names: Array[String], row_dictionaries: Array) -> void:
-	current_headers = header_names.duplicate()
-	current_rows = row_dictionaries.duplicate()
-	sort_column_index = -1
-	sort_ascending = true
+        current_headers = header_names.duplicate()
+        current_rows = row_dictionaries.duplicate()
+        sort_column_index = -1
+        sort_ascending = true
 
-	results_tree.clear()
-	var column_count: int = max(header_names.size(), 1)
-	results_tree.columns = column_count
-	results_tree.column_titles_visible = header_names.size() > 0
+        results_tree.clear()
+        var column_count: int = max(header_names.size(), 1)
+        results_tree.columns = column_count
+        results_tree.column_titles_visible = header_names.size() > 0
 
-	# init user min widths
-	column_user_min_widths.resize(current_headers.size())
-	for init_index in range(column_user_min_widths.size()):
-		column_user_min_widths[init_index] = 0
+        # init user min widths
+        column_user_min_widths = []
+        column_user_min_widths.resize(current_headers.size())
+        for init_index in range(column_user_min_widths.size()):
+                column_user_min_widths[init_index] = 0
 
 	for column_index in range(header_names.size()):
 		results_tree.set_column_title(column_index, header_names[column_index])
 		results_tree.set_column_expand(column_index, true)
 		results_tree.set_column_clip_content(column_index, true)
 
-	_apply_header_min_widths()
-	_rebuild_tree_items()
-	_update_header_arrows()
+        _apply_header_min_widths()
+        _rebuild_tree_items()
+        _update_header_arrows()
+        _store_state()
 
 
 func _rebuild_tree_items() -> void:
@@ -383,15 +417,16 @@ func _on_mouse_left_pressed(local_pos: Vector2) -> void:
 			return
 
 		var clicked_column: int = _get_column_from_x(local_pos.x)
-		if clicked_column >= 0:
-			if sort_column_index == clicked_column:
-				sort_ascending = not sort_ascending
-			else:
-				sort_column_index = clicked_column
-				sort_ascending = true
-			_sort_rows(clicked_column, sort_ascending)
-			_rebuild_tree_items()
-			_update_header_arrows()
+                if clicked_column >= 0:
+                        if sort_column_index == clicked_column:
+                                sort_ascending = not sort_ascending
+                        else:
+                                sort_column_index = clicked_column
+                                sort_ascending = true
+                        _sort_rows(clicked_column, sort_ascending)
+                        _rebuild_tree_items()
+                        _update_header_arrows()
+                        _store_state()
 
 
 
@@ -449,17 +484,26 @@ func _header_y_threshold() -> float:
 	if header_font == null:
 		header_font = get_theme_default_font()
 	var header_font_size: int = results_tree.get_theme_font_size("font_size", "Tree")
-	var font_height: float = header_font.get_height(header_font_size)
-	return max(20.0, font_height + 6.0)
+        var font_height: float = header_font.get_height(header_font_size)
+        return max(20.0, font_height + 6.0)
 
 # =========================================
 # Utilities
 # =========================================
+func _store_state() -> void:
+        _tab_states[_active_tab] = {
+                "current_headers": current_headers,
+                "current_rows": current_rows,
+                "sort_column_index": sort_column_index,
+                "sort_ascending": sort_ascending,
+                "column_user_min_widths": column_user_min_widths,
+        }
+
 func _clear_results() -> void:
-		for child_node in results_container_daterbase.get_children():
-				child_node.queue_free()
-		for child_node in results_container_sql.get_children():
-				child_node.queue_free()
+                for child_node in results_container_daterbase.get_children():
+                                child_node.queue_free()
+                for child_node in results_container_sql.get_children():
+                                child_node.queue_free()
 
 func _variant_to_string(input_value: Variant) -> String:
 	if input_value == null:
