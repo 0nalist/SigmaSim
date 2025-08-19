@@ -5,7 +5,12 @@
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
 
-[node name="SuitorPopup" type="Panel"]
+[node name="SuitorPopup" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Suitor"
@@ -13,11 +18,7 @@ default_window_size = Vector2(400, 500)
 is_popup = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
@@ -41,8 +42,26 @@ layout_mode = 2
 
 [node name="RelationshipBar" type="ProgressBar" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
+show_percentage = false
 script = ExtResource("3")
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/RelationshipBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Relationship Progress"
+horizontal_alignment = 1
 
 [node name="NextStageButton" type="Button" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
@@ -52,14 +71,34 @@ text = "Take this relationship to the next stage"
 
 [node name="AffinityBar" type="ProgressBar" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 17)
 layout_mode = 2
+show_percentage = false
 script = ExtResource("3")
+tooltip_name = "Affinity"
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/AffinityBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -7.5
+offset_right = 25.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Affinity"
+horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
 
 [node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBox/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/separation = 8
 
 [node name="GiftButton" type="Button" parent="MarginContainer/VBox/VBoxContainer/Buttons"]

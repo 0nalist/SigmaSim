@@ -202,6 +202,7 @@ func process_command(command: String) -> bool:
 
 		"gimme":
 			PortfolioManager.add_cash(100000000)
+			PlayerManager.set_var("ex", 100)
 			return true
 
 		"set_stat":
