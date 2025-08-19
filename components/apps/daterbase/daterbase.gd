@@ -13,13 +13,11 @@ class_name Daterbase
 @onready var results_container_sql: VBoxContainer = %ResultsContainer_SQL
 
 # --- Grid control ---
-var results_tree: Tree
+var results_tree_daterbase: Tree
+var results_tree_sql: Tree
 
 # --- Table state ---
-var current_headers: Array[String] = []
-var current_rows: Array = []        # Array[Dictionary]
-var sort_column_index: int = -1
-var sort_ascending: bool = true
+var table_states: Dictionary = {}   # Tree -> state dictionary
 
 # --- Parsing helpers ---
 var numeric_regex: RegEx
@@ -33,8 +31,6 @@ var is_resizing_column: bool = false
 var resizing_column_index: int = -1
 var resize_start_mouse_x: float = 0.0
 var resize_start_column_width: int = 0
-
-var column_user_min_widths: Array[int] = []  # per-column min widths from user drag, 0 = not set yet
 
 var _active_tab: StringName = &"Daterbase"
 var _ran_initial_show_all: bool = false
@@ -56,24 +52,37 @@ func _ready() -> void:
 # Shell
 # =========================================
 func _build_table_shell() -> void:
-	_clear_results()
+        _clear_results()
 
-	results_tree = Tree.new()
-	results_tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	results_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	results_tree.hide_root = true
-	results_tree.columns = 1
-	results_tree.column_titles_visible = true
-	results_tree.allow_reselect = true
-	results_tree.select_mode = Tree.SELECT_ROW
+        results_tree_daterbase = Tree.new()
+        _setup_results_tree(results_tree_daterbase, results_container_daterbase)
 
-	results_tree.item_activated.connect(_on_item_activated)
-	results_tree.gui_input.connect(_on_tree_gui_input)
+        results_tree_sql = Tree.new()
+        _setup_results_tree(results_tree_sql, results_container_sql)
 
-	results_container_daterbase.add_child(results_tree)
+func _setup_results_tree(tree: Tree, parent: VBoxContainer) -> void:
+        tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
+        tree.hide_root = true
+        tree.columns = 1
+        tree.column_titles_visible = true
+        tree.allow_reselect = true
+        tree.select_mode = Tree.SELECT_ROW
 
-func _on_item_activated() -> void:
-		pass
+        tree.item_activated.connect(_on_item_activated.bind(tree))
+        tree.gui_input.connect(_on_tree_gui_input.bind(tree))
+
+        parent.add_child(tree)
+        table_states[tree] = {
+                "current_headers": [],
+                "current_rows": [],
+                "sort_column_index": -1,
+                "sort_ascending": true,
+                "column_user_min_widths": []
+        }
+
+func _on_item_activated(_tree: Tree) -> void:
+                pass
 
 # =========================================
 # Tabs
@@ -82,29 +91,23 @@ func _activate_tab(tab_name: StringName) -> void:
 		if tab_name != &"Daterbase" and tab_name != &"SQL":
 				push_error("Invalid tab: %s" % str(tab_name))
 				return
-		_active_tab = tab_name
-		if tab_name == &"Daterbase":
-				daterbase_tab_button.set_pressed(true)
-				sql_tab_button.set_pressed(false)
-				daterbase_view.visible = true
-				sql_view.visible = false
-				error_label.text = ""
-				_ensure_results_tree_parent(results_container_daterbase)
-				if not _ran_initial_show_all:
-						_on_show_all_pressed()
-						_ran_initial_show_all = true
-		else:
-				daterbase_tab_button.set_pressed(false)
-				sql_tab_button.set_pressed(true)
-				daterbase_view.visible = false
-				sql_view.visible = true
-				error_label.text = ""
-				_ensure_results_tree_parent(results_container_sql)
-				query_edit.grab_focus()
-
-func _ensure_results_tree_parent(target_container: VBoxContainer) -> void:
-		if results_tree.get_parent() != target_container:
-				target_container.add_child(results_tree)
+                _active_tab = tab_name
+                if tab_name == &"Daterbase":
+                                daterbase_tab_button.set_pressed(true)
+                                sql_tab_button.set_pressed(false)
+                                daterbase_view.visible = true
+                                sql_view.visible = false
+                                error_label.text = ""
+                                if not _ran_initial_show_all:
+                                                _on_show_all_pressed()
+                                                _ran_initial_show_all = true
+                else:
+                                daterbase_tab_button.set_pressed(false)
+                                sql_tab_button.set_pressed(true)
+                                daterbase_view.visible = false
+                                sql_view.visible = true
+                                error_label.text = ""
+                                query_edit.grab_focus()
 
 func _on_daterbase_tab_pressed() -> void:
 		_activate_tab(&"Daterbase")
@@ -116,9 +119,9 @@ func _on_sql_tab_pressed() -> void:
 # Buttons
 # =========================================
 func _on_show_all_pressed() -> void:
-	query_edit.text = ""
-	error_label.text = ""
-	_load_default_entries()
+        query_edit.text = ""
+        error_label.text = ""
+        _load_default_entries()
 
 func _on_run_query_pressed() -> void:
 	var sql_text: String = query_edit.text.strip_edges()
@@ -129,14 +132,14 @@ func _on_run_query_pressed() -> void:
 		error_label.text = "Only SELECT queries are allowed."
 		return
 
-	var result_rows: Array = DBManager.execute_select(sql_text)
-	if result_rows.size() == 0:
-		error_label.text = "No results or invalid query."
-		_render_table([], [])
-		return
+        var result_rows: Array = DBManager.execute_select(sql_text)
+        if result_rows.size() == 0:
+                error_label.text = "No results or invalid query."
+                _render_table(results_tree_sql, [], [])
+                return
 
-	error_label.text = ""
-	_display_generic_rows(result_rows)
+        error_label.text = ""
+        _display_generic_rows(results_tree_sql, result_rows)
 
 # =========================================
 # Safety
@@ -167,78 +170,80 @@ func _load_default_entries() -> void:
 		}
 		table_rows.append(table_row)
 
-	var header_names: Array[String] = ["Full Name", "Type", "Attractiveness", "Affinity", "Obtained"]
-	_render_table(header_names, table_rows)
+        var header_names: Array[String] = ["Full Name", "Type", "Attractiveness", "Affinity", "Obtained"]
+        _render_table(results_tree_daterbase, header_names, table_rows)
+func _display_generic_rows(tree: Tree, result_rows: Array) -> void:
+        if result_rows.size() == 0:
+                _render_table(tree, [], [])
+                return
 
-func _display_generic_rows(result_rows: Array) -> void:
-	if result_rows.size() == 0:
-		_render_table([], [])
-		return
+        var first_row_dictionary: Dictionary = result_rows[0]
+        var header_names: Array[String] = []
+        for key_name in first_row_dictionary.keys():
+                header_names.append(str(key_name))
+        header_names.sort()
 
-	var first_row_dictionary: Dictionary = result_rows[0]
-	var header_names: Array[String] = []
-	for key_name in first_row_dictionary.keys():
-		header_names.append(str(key_name))
-	header_names.sort()
+        _render_table(tree, header_names, result_rows)
 
-	_render_table(header_names, result_rows)
-
-# =========================================
+#################################################################
 # Rendering with Tree
-# =========================================
-func _render_table(header_names: Array[String], row_dictionaries: Array) -> void:
-	current_headers = header_names.duplicate()
-	current_rows = row_dictionaries.duplicate()
-	sort_column_index = -1
-	sort_ascending = true
+#################################################################
+func _render_table(tree: Tree, header_names: Array[String], row_dictionaries: Array) -> void:
+        var state: Dictionary = table_states[tree]
+        state.current_headers = header_names.duplicate()
+        state.current_rows = row_dictionaries.duplicate()
+        state.sort_column_index = -1
+        state.sort_ascending = true
 
-	results_tree.clear()
-	var column_count: int = max(header_names.size(), 1)
-	results_tree.columns = column_count
-	results_tree.column_titles_visible = header_names.size() > 0
+        tree.clear()
+        var column_count: int = max(header_names.size(), 1)
+        tree.columns = column_count
+        tree.column_titles_visible = header_names.size() > 0
 
-	# init user min widths
-	column_user_min_widths.resize(current_headers.size())
-	for init_index in range(column_user_min_widths.size()):
-		column_user_min_widths[init_index] = 0
+        # init user min widths
+        state.column_user_min_widths.resize(state.current_headers.size())
+        for init_index in range(state.column_user_min_widths.size()):
+                state.column_user_min_widths[init_index] = 0
 
-	for column_index in range(header_names.size()):
-		results_tree.set_column_title(column_index, header_names[column_index])
-		results_tree.set_column_expand(column_index, true)
-		results_tree.set_column_clip_content(column_index, true)
+        for column_index in range(header_names.size()):
+                tree.set_column_title(column_index, header_names[column_index])
+                tree.set_column_expand(column_index, true)
+                tree.set_column_clip_content(column_index, true)
 
-	_apply_header_min_widths()
-	_rebuild_tree_items()
-	_update_header_arrows()
+        _apply_header_min_widths(tree)
+        _rebuild_tree_items(tree)
+        _update_header_arrows(tree)
 
 
-func _rebuild_tree_items() -> void:
-	var root_item: TreeItem = results_tree.get_root()
-	if root_item == null:
-		root_item = results_tree.create_item()
-	else:
-		_clear_tree_rows()
+func _rebuild_tree_items(tree: Tree) -> void:
+        var state: Dictionary = table_states[tree]
+        var root_item: TreeItem = tree.get_root()
+        if root_item == null:
+                root_item = tree.create_item()
+        else:
+                _clear_tree_rows(tree)
 
-	for row_dictionary in current_rows:
-		var row_item: TreeItem = results_tree.create_item(root_item)
-		for column_index in range(current_headers.size()):
-			var column_key_name: String = current_headers[column_index]
-			var cell_value: Variant = row_dictionary.get(column_key_name, "")
-			row_item.set_text(column_index, _variant_to_string(cell_value))
+        for row_dictionary in state.current_rows:
+                var row_item: TreeItem = tree.create_item(root_item)
+                for column_index in range(state.current_headers.size()):
+                        var column_key_name: String = state.current_headers[column_index]
+                        var cell_value: Variant = row_dictionary.get(column_key_name, "")
+                        row_item.set_text(column_index, _variant_to_string(cell_value))
 
 
 # =========================================
 # Sorting (header click only)
 # =========================================
-func _sort_rows(column_index: int, ascending_sort: bool) -> void:
-	if current_headers.size() == 0:
-		return
-	var column_key_name: String = current_headers[column_index]
-	current_rows.sort_custom(func(left_row: Dictionary, right_row: Dictionary) -> bool:
-		var left_value: Variant = left_row.get(column_key_name)
-		var right_value: Variant = right_row.get(column_key_name)
-		return _compare_any(left_value, right_value, ascending_sort)
-	)
+func _sort_rows(tree: Tree, column_index: int, ascending_sort: bool) -> void:
+        var state: Dictionary = table_states[tree]
+        if state.current_headers.size() == 0:
+                return
+        var column_key_name: String = state.current_headers[column_index]
+        state.current_rows.sort_custom(func(left_row: Dictionary, right_row: Dictionary) -> bool:
+                var left_value: Variant = left_row.get(column_key_name)
+                var right_value: Variant = right_row.get(column_key_name)
+                return _compare_any(left_value, right_value, ascending_sort)
+        )
 
 func _compare_any(left_value: Variant, right_value: Variant, ascending_sort: bool) -> bool:
 	var left_is_empty: bool = left_value == null or str(left_value) == ""
@@ -282,175 +287,177 @@ func _to_number_or_nan(value_to_parse: Variant) -> float:
 		return NAN
 	return string_value.to_float()
 
-func _update_header_arrows() -> void:
-	for column_index in range(current_headers.size()):
-		var base_title: String = current_headers[column_index]
-		if sort_column_index == column_index:
-			if sort_ascending:
-				results_tree.set_column_title(column_index, "%s ↑" % base_title)
-			else:
-				results_tree.set_column_title(column_index, "%s ↓" % base_title)
-		else:
-			results_tree.set_column_title(column_index, base_title)
-	# This may increase a column if the arrow makes the title wider;
-	# it will not decrease below the user's chosen width.
-	_apply_header_min_widths()
+func _update_header_arrows(tree: Tree) -> void:
+        var state: Dictionary = table_states[tree]
+        for column_index in range(state.current_headers.size()):
+                var base_title: String = state.current_headers[column_index]
+                if state.sort_column_index == column_index:
+                        if state.sort_ascending:
+                                tree.set_column_title(column_index, "%s ↑" % base_title)
+                        else:
+                                tree.set_column_title(column_index, "%s ↓" % base_title)
+                else:
+                        tree.set_column_title(column_index, base_title)
+        # This may increase a column if the arrow makes the title wider;
+        # it will not decrease below the user's chosen width.
+        _apply_header_min_widths(tree)
 
 
 # =========================================
 # Column widths (min = header text width + 10px)
 # =========================================
-func _apply_header_min_widths() -> void:
-	var header_font: Font = results_tree.get_theme_font("font", "Tree")
-	if header_font == null:
-		header_font = get_theme_default_font()
-	var header_font_size: int = results_tree.get_theme_font_size("font_size", "Tree")
+func _apply_header_min_widths(tree: Tree) -> void:
+        var header_font: Font = tree.get_theme_font("font", "Tree")
+        if header_font == null:
+                header_font = get_theme_default_font()
+        var header_font_size: int = tree.get_theme_font_size("font_size", "Tree")
+        var state: Dictionary = table_states[tree]
 
-	for column_index in range(current_headers.size()):
-		var title_text: String = results_tree.get_column_title(column_index)
-		var measured_size: Vector2 = header_font.get_string_size(title_text, header_font_size)
-		var base_min_width: int = int(ceil(measured_size.x)) + EXTRA_HEADER_PADDING
+        for column_index in range(state.current_headers.size()):
+                var title_text: String = tree.get_column_title(column_index)
+                var measured_size: Vector2 = header_font.get_string_size(title_text, header_font_size)
+                var base_min_width: int = int(ceil(measured_size.x)) + EXTRA_HEADER_PADDING
 
-		var user_min_width: int = 0
-		if column_index < column_user_min_widths.size():
-			user_min_width = column_user_min_widths[column_index]
+                var user_min_width: int = 0
+                if column_index < state.column_user_min_widths.size():
+                        user_min_width = state.column_user_min_widths[column_index]
 
-		var final_min_width: int = max(base_min_width, user_min_width)
-		results_tree.set_column_custom_minimum_width(column_index, final_min_width)
-		results_tree.set_column_expand(column_index, true)
+                var final_min_width: int = max(base_min_width, user_min_width)
+                tree.set_column_custom_minimum_width(column_index, final_min_width)
+                tree.set_column_expand(column_index, true)
 
 
-func _get_header_text_min_width(column_index: int) -> int:
-	var header_font: Font = results_tree.get_theme_font("font", "Tree")
-	if header_font == null:
-		header_font = get_theme_default_font()
-	var header_font_size: int = results_tree.get_theme_font_size("font_size", "Tree")
-	var title_text: String = results_tree.get_column_title(column_index)
-	var measured_size: Vector2 = header_font.get_string_size(title_text, header_font_size)
-	return int(ceil(measured_size.x)) + EXTRA_HEADER_PADDING
+func _get_header_text_min_width(tree: Tree, column_index: int) -> int:
+        var header_font: Font = tree.get_theme_font("font", "Tree")
+        if header_font == null:
+                header_font = get_theme_default_font()
+        var header_font_size: int = tree.get_theme_font_size("font_size", "Tree")
+        var title_text: String = tree.get_column_title(column_index)
+        var measured_size: Vector2 = header_font.get_string_size(title_text, header_font_size)
+        return int(ceil(measured_size.x)) + EXTRA_HEADER_PADDING
 
 # =========================================
 # Drag-resize + header click handling (no get_header_height)
 # =========================================
-func _on_tree_gui_input(input_event: InputEvent) -> void:
-	var mouse_button_event: InputEventMouseButton = input_event as InputEventMouseButton
-	var mouse_motion_event: InputEventMouseMotion = input_event as InputEventMouseMotion
+func _on_tree_gui_input(tree: Tree, input_event: InputEvent) -> void:
+        var mouse_button_event: InputEventMouseButton = input_event as InputEventMouseButton
+        var mouse_motion_event: InputEventMouseMotion = input_event as InputEventMouseMotion
 
-	if mouse_motion_event != null:
-		_on_mouse_motion(mouse_motion_event)
-		return
+        if mouse_motion_event != null:
+                _on_mouse_motion(tree, mouse_motion_event)
+                return
 
-	if mouse_button_event == null:
-		return
+        if mouse_button_event == null:
+                return
 
-	if mouse_button_event.button_index == MOUSE_BUTTON_LEFT and mouse_button_event.pressed:
-		_on_mouse_left_pressed(mouse_button_event.position)
-	elif mouse_button_event.button_index == MOUSE_BUTTON_LEFT and not mouse_button_event.pressed:
-		_on_mouse_left_released()
+        if mouse_button_event.button_index == MOUSE_BUTTON_LEFT and mouse_button_event.pressed:
+                _on_mouse_left_pressed(tree, mouse_button_event.position)
+        elif mouse_button_event.button_index == MOUSE_BUTTON_LEFT and not mouse_button_event.pressed:
+                _on_mouse_left_released(tree)
 
-func _on_mouse_motion(event: InputEventMouseMotion) -> void:
-	var pointer_position: Vector2 = event.position
-	var header_threshold_y: float = _header_y_threshold()
+func _on_mouse_motion(tree: Tree, event: InputEventMouseMotion) -> void:
+        var state: Dictionary = table_states[tree]
+        var pointer_position: Vector2 = event.position
+        var header_threshold_y: float = _header_y_threshold(tree)
 
-	if is_resizing_column:
-		var delta_x: float = pointer_position.x - resize_start_mouse_x
-		var new_width: int = max(int(resize_start_column_width + delta_x), _get_header_text_min_width(resizing_column_index))
-		# remember the user’s choice so header arrow updates won’t shrink it
-		if resizing_column_index >= 0 and resizing_column_index < column_user_min_widths.size():
-			column_user_min_widths[resizing_column_index] = new_width
-		results_tree.set_column_custom_minimum_width(resizing_column_index, new_width)
-		return
+        if is_resizing_column:
+                var delta_x: float = pointer_position.x - resize_start_mouse_x
+                var new_width: int = max(int(resize_start_column_width + delta_x), _get_header_text_min_width(tree, resizing_column_index))
+                if resizing_column_index >= 0 and resizing_column_index < state.column_user_min_widths.size():
+                        state.column_user_min_widths[resizing_column_index] = new_width
+                tree.set_column_custom_minimum_width(resizing_column_index, new_width)
+                return
 
-	# Only show resize cursor above header line and near a divider
-	if pointer_position.y <= header_threshold_y:
-		var divider_index: int = _get_nearby_divider_index(pointer_position.x)
-		if divider_index != -1:
-			results_tree.mouse_default_cursor_shape = Control.CURSOR_HSIZE
-			return
+        if pointer_position.y <= header_threshold_y:
+                var divider_index: int = _get_nearby_divider_index(tree, pointer_position.x)
+                if divider_index != -1:
+                        tree.mouse_default_cursor_shape = Control.CURSOR_HSIZE
+                        return
 
-	results_tree.mouse_default_cursor_shape = Control.CURSOR_ARROW
+        tree.mouse_default_cursor_shape = Control.CURSOR_ARROW
 
-func _on_mouse_left_pressed(local_pos: Vector2) -> void:
-	var header_threshold_y: float = _header_y_threshold()
+func _on_mouse_left_pressed(tree: Tree, local_pos: Vector2) -> void:
+        var state: Dictionary = table_states[tree]
+        var header_threshold_y: float = _header_y_threshold(tree)
 
-	if local_pos.y <= header_threshold_y:
-		var divider_index: int = _get_nearby_divider_index(local_pos.x)
-		if divider_index != -1:
-			is_resizing_column = true
-			resizing_column_index = divider_index
-			resize_start_mouse_x = local_pos.x
-			resize_start_column_width = results_tree.get_column_width(resizing_column_index)
-			return
+        if local_pos.y <= header_threshold_y:
+                var divider_index: int = _get_nearby_divider_index(tree, local_pos.x)
+                if divider_index != -1:
+                        is_resizing_column = true
+                        resizing_column_index = divider_index
+                        resize_start_mouse_x = local_pos.x
+                        resize_start_column_width = tree.get_column_width(resizing_column_index)
+                        return
 
-		var clicked_column: int = _get_column_from_x(local_pos.x)
-		if clicked_column >= 0:
-			if sort_column_index == clicked_column:
-				sort_ascending = not sort_ascending
-			else:
-				sort_column_index = clicked_column
-				sort_ascending = true
-			_sort_rows(clicked_column, sort_ascending)
-			_rebuild_tree_items()
-			_update_header_arrows()
-
-
-
-
-func _clear_tree_rows() -> void:
-	var root_item: TreeItem = results_tree.get_root()
-	if root_item == null:
-		return
-	var child_item: TreeItem = root_item.get_first_child()
-	while child_item != null:
-		var next_item: TreeItem = child_item.get_next()
-		child_item.free()  # TreeItem is not a Node; free() removes it from the Tree
-		child_item = next_item
+                var clicked_column: int = _get_column_from_x(tree, local_pos.x)
+                if clicked_column >= 0:
+                        if state.sort_column_index == clicked_column:
+                                state.sort_ascending = not state.sort_ascending
+                        else:
+                                state.sort_column_index = clicked_column
+                                state.sort_ascending = true
+                        _sort_rows(tree, clicked_column, state.sort_ascending)
+                        _rebuild_tree_items(tree)
+                        _update_header_arrows(tree)
 
 
 
 
+func _clear_tree_rows(tree: Tree) -> void:
+        var root_item: TreeItem = tree.get_root()
+        if root_item == null:
+                return
+        var child_item: TreeItem = root_item.get_first_child()
+        while child_item != null:
+                var next_item: TreeItem = child_item.get_next()
+                child_item.free()
+                child_item = next_item
 
 
-func _on_mouse_left_released() -> void:
-	if is_resizing_column:
-		is_resizing_column = false
-		resizing_column_index = -1
+
+
+
+
+func _on_mouse_left_released(_tree: Tree) -> void:
+        if is_resizing_column:
+                is_resizing_column = false
+                resizing_column_index = -1
 
 # Map an x-position to a column by summing widths
-func _get_column_from_x(xpos: float) -> int:
-	var running_sum: float = 0.0
-	for column_index in range(current_headers.size()):
-		running_sum += float(results_tree.get_column_width(column_index))
-		if xpos < running_sum:
-			return column_index
-	return -1
+func _get_column_from_x(tree: Tree, xpos: float) -> int:
+        var state: Dictionary = table_states[tree]
+        var running_sum: float = 0.0
+        for column_index in range(state.current_headers.size()):
+                running_sum += float(tree.get_column_width(column_index))
+                if xpos < running_sum:
+                        return column_index
+        return -1
 
 # Find divider near x (returns left column index), only between columns
-func _get_nearby_divider_index(xpos: float) -> int:
-	var running_sum: float = 0.0
-	for column_index in range(current_headers.size() - 1):
-		running_sum += float(results_tree.get_column_width(column_index))
-		if abs(xpos - running_sum) <= float(RESIZE_MARGIN):
-			return column_index
-	return -1
+func _get_nearby_divider_index(tree: Tree, xpos: float) -> int:
+        var state: Dictionary = table_states[tree]
+        var running_sum: float = 0.0
+        for column_index in range(state.current_headers.size() - 1):
+                running_sum += float(tree.get_column_width(column_index))
+                if abs(xpos - running_sum) <= float(RESIZE_MARGIN):
+                        return column_index
+        return -1
 
 # Compute the header/beginning-of-rows Y threshold without get_header_height()
-func _header_y_threshold() -> float:
-	# If there is a visible first row, use its top as the divider
-	var root_item: TreeItem = results_tree.get_root()
-	if root_item != null:
-		var first_child: TreeItem = root_item.get_first_child()
-		if first_child != null:
-			var first_row_rect: Rect2 = results_tree.get_item_area_rect(first_child, -1, -1)
-			return first_row_rect.position.y
+func _header_y_threshold(tree: Tree) -> float:
+        var root_item: TreeItem = tree.get_root()
+        if root_item != null:
+                var first_child: TreeItem = root_item.get_first_child()
+                if first_child != null:
+                        var first_row_rect: Rect2 = tree.get_item_area_rect(first_child, -1, -1)
+                        return first_row_rect.position.y
 
-	# Fallback: font height + a little padding
-	var header_font: Font = results_tree.get_theme_font("font", "Tree")
-	if header_font == null:
-		header_font = get_theme_default_font()
-	var header_font_size: int = results_tree.get_theme_font_size("font_size", "Tree")
-	var font_height: float = header_font.get_height(header_font_size)
-	return max(20.0, font_height + 6.0)
+        var header_font: Font = tree.get_theme_font("font", "Tree")
+        if header_font == null:
+                header_font = get_theme_default_font()
+        var header_font_size: int = tree.get_theme_font_size("font_size", "Tree")
+        var font_height: float = header_font.get_height(header_font_size)
+        return max(20.0, font_height + 6.0)
 
 # =========================================
 # Utilities
