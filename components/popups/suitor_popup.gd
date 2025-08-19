@@ -45,6 +45,8 @@ func _ready() -> void:
 	next_stage_button.pressed.connect(_on_next_stage_pressed)
 	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
 	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
+	
+	await get_tree().process_frame
 	Events.fumble_talk_therapy_purchased.connect(_on_talk_therapy_purchased)
 
 func _process(delta: float) -> void:
