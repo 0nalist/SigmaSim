@@ -1,6 +1,10 @@
 extends Node
 
 func _ready():
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
 	var dir := DirAccess.open("res://tests")
 	if dir == null:
 		push_error("Failed to open tests directory")

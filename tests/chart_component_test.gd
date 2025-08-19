@@ -1,5 +1,5 @@
 extends SceneTree
-func _init():
+func _ready():
 	var hist = Engine.get_singleton("HistoryManager")
 	hist.register_series(&"cash")
 	hist.add_sample(&"cash", 0, 0.0)

@@ -1,6 +1,6 @@
 extends SceneTree
 
-func _init():
+func _ready():
 	var bm = Engine.get_singleton("BillManager")
 	var tm = Engine.get_singleton("TimeManager")
 	var date_key = "%d/%d/%d" % [tm.current_day, tm.current_month, tm.current_year]
