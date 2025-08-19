@@ -98,16 +98,16 @@ func get_base_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 
 
 func set_base_stat(stat_name: String, value: Variant) -> void:
-        # If the stat exists in PlayerManager.user_data but not in base_stats,
-        # update the player data directly instead of creating a new base stat,
-        # but still ensure the computed stat is recalculated so listeners see
-        # the updated value immediately.
-        if !base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
-                var previous = PlayerManager.user_data.get(stat_name, NAN)
-                PlayerManager.user_data[stat_name] = value
-                if previous != value:
-                        _recalculate_stat_and_dependents(stat_name)
-                return
+	# If the stat exists in PlayerManager.user_data but not in base_stats,
+	# update the player data directly instead of creating a new base stat,
+	# but still ensure the computed stat is recalculated so listeners see
+	# the updated value immediately.
+	if !base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
+			var previous = PlayerManager.user_data.get(stat_name, NAN)
+			PlayerManager.user_data[stat_name] = value
+			if previous != value:
+					_recalculate_stat_and_dependents(stat_name)
+			return
 
 	var previous = base_stats.get(stat_name, NAN)
 	base_stats[stat_name] = value
