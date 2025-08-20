@@ -14,23 +14,22 @@ var current_page: int = 0
 var emails_per_page: int = 12
 
 func _ready() -> void:
-	_generate_dummy_emails()
-	limit_option.add_item("12", 12)
-	limit_option.add_item("24", 24)
-	limit_option.add_item("48", 48)
-	limit_option.select(0)
-	search_bar.text_changed.connect(_on_search_changed)
-	limit_option.item_selected.connect(_on_limit_selected)
-	prev_button.pressed.connect(_on_prev_page)
-	next_button.pressed.connect(_on_next_page)
-	_apply_filter()
+		_generate_dummy_emails()
+		limit_option.add_item("12", 12)
+		limit_option.add_item("24", 24)
+		limit_option.add_item("48", 48)
+		limit_option.select(0)
+		search_bar.text_changed.connect(_on_search_changed)
+		limit_option.item_selected.connect(_on_limit_selected)
+		prev_button.pressed.connect(_on_prev_page)
+		next_button.pressed.connect(_on_next_page)
+		_apply_filter()
 
 func _generate_dummy_emails() -> void:
 	emails.clear()
-	#var dummy: EmailResource = load("res://resources/emails/dummy_email.tres")
-	var dummy = load("res://resources/emails/dummy_email.tres")
-	if dummy:
-			emails.append(dummy)
+	var dummy: EmailResource = ResourceLoader.load("res://resources/emails/dummy_email.tres") as EmailResource
+	if dummy != null:
+		emails.append(dummy)
 	for i in range(1, 50):
 			var e := EmailResource.new()
 			e.from = "user%d@example.com" % i
@@ -57,13 +56,13 @@ func _on_next_page() -> void:
 				_render_emails()
 
 func _apply_filter() -> void:
-	var query = search_bar.text.to_lower()
-	filtered_emails.clear()
-	for email: EmailResource in emails:
-			if query == "" or email.from.to_lower().find(query) != -1 or email.subject.to_lower().find(query) != -1:
-					filtered_emails.append(email)
-	current_page = 0
-	_render_emails()
+		var query = search_bar.text.to_lower()
+		filtered_emails.clear()
+		for email: EmailResource in emails:
+				if query == "" or email.from.to_lower().find(query) != -1 or email.subject.to_lower().find(query) != -1:
+						filtered_emails.append(email)
+		current_page = 0
+		_render_emails()
 
 func _render_emails() -> void:
 		for child in inbox.get_children():

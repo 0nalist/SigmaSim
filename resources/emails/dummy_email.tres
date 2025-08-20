@@ -1,21 +1,3 @@
-[gd_resource type="Resource" script_class="EmailResource" load_steps=2 format=3]
-[ext_resource type="Script" path="res://resources/emails/email_resource.gd" id="1"]
+[gd_resource type="Resource" format=3 uid="uid://c34ro8lj36jup"]
 
 [resource]
-from = "admin@sigma"
-subject = "Welcome to Σ-Mail"
-body = "This message demonstrates email actions."
-buttons = [
-    {
-        "text": "Gain 5 Ex",
-        "stat_changes": {"ex": 5}
-    },
-    {
-        "text": "Apply Hidden Upgrade",
-        "upgrade_ids": ["email_hidden_upgrade"]
-    },
-    {
-        "text": "Open Grinderr",
-        "app_name": "Grinderr"
-    }
-]
