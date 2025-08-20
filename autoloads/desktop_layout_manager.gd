@@ -1,5 +1,5 @@
 extends Node
-class_name DesktopLayoutManager
+#Autoload DesktopLayoutManager
 
 signal items_loaded()
 signal item_created(item_id: int, data: Dictionary)
@@ -70,11 +70,11 @@ func get_item(id: int) -> Dictionary:
 
 
 func get_children_of(parent_id: int) -> Array:
-       var results: Array = []
-       for entry in items.values():
-               if int(entry.get("parent_id", 0)) == parent_id:
-                       results.append(entry)
-       return results
+	var results: Array = []
+	for entry in items.values():
+			if int(entry.get("parent_id", 0)) == parent_id:
+					results.append(entry)
+	return results
 
 
 func get_save_data() -> Dictionary:

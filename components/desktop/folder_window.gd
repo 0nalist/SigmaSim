@@ -5,11 +5,18 @@ class_name FolderWindow
 
 @onready var grid: GridContainer = %Grid
 
-func setup(id: int) -> void:
+
+func setup_custom(id: int) -> void:
 	folder_id = id
 	var info: Dictionary = DesktopLayoutManager.get_item(id)
 	window_title = info.get("title", "Folder")
+	if not is_node_ready():
+		await ready
 	_populate()
+
+
+func setup(id: int) -> void:
+	setup_custom(id)
 
 func _populate() -> void:
 	for child in grid.get_children():
