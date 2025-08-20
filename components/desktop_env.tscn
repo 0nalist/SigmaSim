@@ -296,7 +296,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")
-
 background_name = "Waves"
 
 [node name="TopBar" type="Control" parent="."]
