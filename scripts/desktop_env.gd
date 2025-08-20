@@ -3,16 +3,18 @@ extends Control
 @onready var start_panel: StartPanelWindow = %StartPanel
 @onready var taskbar: Control = %Taskbar
 @onready var trash_window: Pane = %TrashWindow
-@onready var background: TextureRect = %Background
+
 @onready var icons_layer: Control = self
 const APP_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/app_shortcut.tscn")
 const FOLDER_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/folder_shortcut.tscn")
 
-@onready var blue_warp_shader_material: ShaderMaterial = $ShaderBackgroundsContainer/BlueWarpShader.material
-@onready var comic_dots1_shader_material: ShaderMaterial = $ShaderBackgroundsContainer/ComicDotsBlueVert.material
-@onready var comic_dots2_shader_material: ShaderMaterial = $ShaderBackgroundsContainer/ComicDotsBlueHor.material
-@onready var waves_shader_material: ShaderMaterial = $ShaderBackgroundsContainer/WavesShader.material
-@onready var electric_shader_material: ShaderMaterial = $ShaderBackgroundsContainer/ElectricShader.material
+@onready var background: TextureRect = %Background
+
+@onready var blue_warp_shader_material: ShaderMaterial = %BlueWarpShader.material
+@onready var comic_dots1_shader_material: ShaderMaterial = %ComicDotsBlueVert.material
+@onready var comic_dots2_shader_material: ShaderMaterial = %ComicDotsBlueHor.material
+@onready var waves_shader_material: ShaderMaterial = %WavesShader.material
+@onready var electric_shader_material: ShaderMaterial = %ElectricShader.material
 
 
 
@@ -136,21 +138,21 @@ func _on_load_button_pressed() -> void:
 	SaveManager.load_from_slot(SaveManager.current_slot_id)
 
 func _on_items_loaded() -> void:
-        for child in icons_layer.get_children():
-                if child is AppShortcut or child is FolderShortcut:
-                        child.queue_free()
+	for child in icons_layer.get_children():
+		if child is AppShortcut or child is FolderShortcut:
+			child.queue_free()
 
-        var items: Array = DesktopLayoutManager.get_children_of(0)
+	var items: Array = DesktopLayoutManager.get_children_of(0)
 
-        for entry in items:
-                _spawn_item(entry)
-        if create_or_update_apps_folder:
-                _create_or_update_apps_folder()
+	for entry in items:
+		_spawn_item(entry)
+	if create_or_update_apps_folder:
+		_create_or_update_apps_folder()
 
 func _on_item_created(item_id: int, data: Dictionary) -> void:
-        if int(data.get("parent_id", 0)) != 0:
-                return
-        _spawn_item(data)
+	if int(data.get("parent_id", 0)) != 0:
+		return
+	_spawn_item(data)
 
 func _on_item_deleted(item_id: int) -> void:
 	for child in icons_layer.get_children():
@@ -174,38 +176,40 @@ func _spawn_item(data: Dictionary) -> void:
 		var tex: Texture2D = load(icon_path)
 		node.icon = tex
 	icons_layer.add_child(node)
-        var pos: Vector2 = data.get("desktop_position", Vector2.ZERO)
-        node.global_position = pos
+	var pos: Vector2 = data.get("desktop_position", Vector2.ZERO)
+	node.global_position = pos
 
 func _create_or_update_apps_folder() -> void:
-        var folder_id: int = 0
-        var root_items: Array = DesktopLayoutManager.get_children_of(0)
-        for entry in root_items:
-                if entry.get("type", "") == "folder" and entry.get("title", "") == "Apps":
-                        folder_id = int(entry.get("id", 0))
-                        DesktopLayoutManager.move_item(folder_id, Vector2.ZERO)
-                        break
-        if folder_id == 0:
-                folder_id = DesktopLayoutManager.create_folder("Apps", "res://assets/logos/folder.png", Vector2.ZERO)
-        var existing: Dictionary = {}
-        for entry in DesktopLayoutManager.get_children_of(folder_id):
-                if entry.get("type", "") == "app":
-                        existing[entry.get("app_name", "")] = true
-        for app_name in WindowManager.app_registry.keys():
-                if existing.has(app_name):
-                        continue
-                var meta: Dictionary = _get_app_meta(app_name)
-                DesktopLayoutManager.create_app_shortcut(app_name, meta.get("title", app_name), meta.get("icon_path", ""), Vector2.ZERO, folder_id)
+	var folder_id: int = 0
+	var root_items: Array = DesktopLayoutManager.get_children_of(0)
+	for entry in root_items:
+		if entry.get("type", "") == "folder" and entry.get("title", "") == "Apps":
+			folder_id = int(entry.get("id", 0))
+			DesktopLayoutManager.move_item(folder_id, Vector2.ZERO)
+			break
+	if folder_id == 0:
+		folder_id = DesktopLayoutManager.create_folder("Apps", "res://assets/logos/folder.png", Vector2.ZERO)
+	var existing: Dictionary = {}
+	for entry in DesktopLayoutManager.get_children_of(folder_id):
+		if entry.get("type", "") == "app":
+			existing[entry.get("app_name", "")] = true
+	for app_name in WindowManager.app_registry.keys():
+		if existing.has(app_name):
+			continue
+		var meta: Dictionary = _get_app_meta(app_name)
+		DesktopLayoutManager.create_app_shortcut(app_name, meta.get("title", app_name), meta.get("icon_path", ""), Vector2.ZERO, folder_id)
+
+
 
 func _get_app_meta(app_name: String) -> Dictionary:
-        var scene: PackedScene = WindowManager.app_registry.get(app_name)
-        var title: String = app_name
-        var icon_path: String = ""
-        if scene:
-                var preview = scene.instantiate()
-                if preview is Pane:
-                        title = preview.window_title
-                        if preview.window_icon:
-                                icon_path = preview.window_icon.resource_path
-                preview.queue_free()
-        return {"title": title, "icon_path": icon_path}
+	var scene: PackedScene = WindowManager.app_registry.get(app_name)
+	var title: String = app_name
+	var icon_path: String = ""
+	if scene:
+		var preview = scene.instantiate()
+		if preview is Pane:
+			title = preview.window_title
+			if preview.window_icon:
+				icon_path = preview.window_icon.resource_path
+		preview.queue_free()
+	return {"title": title, "icon_path": icon_path}
