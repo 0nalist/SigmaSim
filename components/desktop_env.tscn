@@ -234,6 +234,8 @@ scale = Vector2(0.8673, 0.8673)
 texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
+script = ExtResource("24_jkb4t")
+background_name = "Default"
 
 [node name="ShaderBackgroundsContainer" type="Control" parent="."]
 layout_mode = 1
@@ -242,6 +244,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("24_jkb4t")
 
 [node name="BlueWarpShader" type="PanelContainer" parent="ShaderBackgroundsContainer"]
 visible = false
@@ -252,8 +255,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("24_jkb4t")
-background_name = "BlueWarp"
+mouse_filter = 2
 
 [node name="PixelPlanet" type="PanelContainer" parent="ShaderBackgroundsContainer"]
 visible = false
@@ -264,6 +266,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="WavesShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
 visible = false
@@ -274,8 +277,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("24_jkb4t")
-background_name = "Waves"
+mouse_filter = 2
 
 [node name="ElectricShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
 visible = false
@@ -286,8 +288,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("24_jkb4t")
-background_name = "Electric"
+mouse_filter = 2
 
 [node name="ComicDotsBlueVert" type="ColorRect" parent="ShaderBackgroundsContainer"]
 visible = false
@@ -303,8 +304,7 @@ offset_bottom = 2733.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
-script = ExtResource("24_jkb4t")
-background_name = "ComicDots1"
+mouse_filter = 2
 
 [node name="ComicDotsBlueHor" type="ColorRect" parent="ShaderBackgroundsContainer"]
 visible = false
@@ -319,8 +319,7 @@ offset_right = 1008.0
 offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("24_jkb4t")
-background_name = "ComicDots2"
+mouse_filter = 2
 
 [node name="TopBar" type="Control" parent="."]
 layout_mode = 1
