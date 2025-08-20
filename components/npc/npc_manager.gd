@@ -132,9 +132,11 @@ func _merge_npc_data(npc: NPC, data: Dictionary) -> void:
 										npc.set(key, override_val.duplicate())
 						TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING:
 								npc.set(key, override_val)
+						TYPE_OBJECT:
+								npc.set(key, override_val)
 						_:
 								if existing_val == null:
-										npc.set(key, override_val)
+									npc.set(key, override_val)
 
 
 
