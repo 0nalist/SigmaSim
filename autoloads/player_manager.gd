@@ -1,6 +1,37 @@
 ## Autoload PlayerManager
 extends Node
 
+const DEFAULT_BACKGROUND_SHADERS := {
+"BlueWarp": {
+"stretch": 0.8,
+"thing1": 0.6,
+"thing2": 0.6,
+"thing3": 0.8,
+"speed": 0.03,
+},
+"ComicDots": {
+"circle_color": {"r": 0.00000481308, "g": 0.665883, "b": 0.95733, "a": 1.0},
+"circle_multiplier": 32.0,
+"speed": 0.01,
+},
+"Waves": {
+"bottom_color": {"r": 0.0, "g": 0.0, "b": 0.0, "a": 1.0},
+"top_color": {"r": 0.868811, "g": 0.0, "b": 0.459911, "a": 1.0},
+"wave_amp": 0.082,
+"wave_size": 2.253,
+"wave_time_mul": 0.01,
+"total_phases": 6.0,
+},
+"Electric": {
+"background_color": {"r": 0.0, "g": 0.0, "b": 0.0, "a": 1.0},
+"line_color": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0},
+"line_freq": 5.085,
+"height": 0.6,
+"speed": 2.555,
+"scale_x": 3.25,
+"scale_y": 15.43,
+},
+}
 
 var default_user_data: Dictionary = {
 		# Identity
@@ -49,9 +80,11 @@ var default_user_data: Dictionary = {
 	"fumble_curiosity": 50.0,
 
 		# Flags and progression
-		"unlocked_perks": [],
-	   "seen_dialogue_ids": [],
-"global_rng_seed": 0
+"unlocked_perks": [],
+   "seen_dialogue_ids": [],
+"global_rng_seed": 0,
+# Background shader settings
+"background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
 }
 
 var user_data: Dictionary = default_user_data.duplicate(true)
@@ -62,7 +95,56 @@ func get_var(key: String, default_value = null):
 	return user_data.get(key, default_value)
 
 func set_var(key: String, value) -> void:
-	user_data[key] = value
+        user_data[key] = value
+
+func color_to_dict(color: Color) -> Dictionary:
+        return {
+                "r": color.r,
+                "g": color.g,
+                "b": color.b,
+                "a": color.a,
+        }
+
+func dict_to_color(data: Dictionary) -> Color:
+        return Color(
+                data.get("r", 0.0),
+                data.get("g", 0.0),
+                data.get("b", 0.0),
+                data.get("a", 1.0),
+        )
+
+func set_shader_param(shader: String, param: String, value) -> void:
+        if not user_data.has("background_shaders"):
+                user_data["background_shaders"] = {}
+        if not user_data["background_shaders"].has(shader):
+                user_data["background_shaders"][shader] = {}
+        if value is Color:
+                user_data["background_shaders"][shader][param] = color_to_dict(value)
+        elif value is Vector2:
+                user_data["background_shaders"][shader][param] = [value.x, value.y]
+        else:
+                user_data["background_shaders"][shader][param] = value
+
+func get_shader_param(shader: String, param: String, default_value):
+        var shaders = user_data.get("background_shaders", {})
+        var shader_dict = shaders.get(shader, {})
+        var val = shader_dict.get(param, default_value)
+        if default_value is Color:
+                if val is Dictionary:
+                        return dict_to_color(val)
+                return default_value
+        elif default_value is Vector2:
+                if val is Array and val.size() >= 2:
+                        return Vector2(val[0], val[1])
+                return default_value
+        return val
+
+func reset_shader(shader: String) -> void:
+        if not DEFAULT_BACKGROUND_SHADERS.has(shader):
+                return
+        if not user_data.has("background_shaders"):
+                user_data["background_shaders"] = {}
+        user_data["background_shaders"][shader] = DEFAULT_BACKGROUND_SHADERS[shader].duplicate(true)
 
 
 
@@ -73,9 +155,17 @@ func reset():
 
 
 func ensure_default_stats() -> void:
-		for key in default_user_data.keys():
-				if not user_data.has(key):
-						user_data[key] = default_user_data[key]
+        for key in default_user_data.keys():
+                if not user_data.has(key):
+                        user_data[key] = default_user_data[key]
+                elif key == "background_shaders":
+                        for shader in default_user_data["background_shaders"].keys():
+                                if not user_data[key].has(shader):
+                                        user_data[key][shader] = default_user_data["background_shaders"][shader].duplicate(true)
+                                else:
+                                        for param in default_user_data["background_shaders"][shader].keys():
+                                                if not user_data[key][shader].has(param):
+                                                        user_data[key][shader][param] = default_user_data["background_shaders"][shader][param]
 
 
 func djb2(s: String) -> int:
