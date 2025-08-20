@@ -73,6 +73,8 @@ func _ctx_rename() -> void:
 
 func _on_rename_confirmed(line_edit: LineEdit, dialog: AcceptDialog) -> void:
 	var new_title: String = line_edit.text
+	title_label.text = new_title
+	title = new_title
 	DesktopLayoutManager.rename_item(item_id, new_title)
 	dialog.queue_free()
 

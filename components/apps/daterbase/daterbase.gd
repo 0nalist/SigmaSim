@@ -258,7 +258,7 @@ func _load_default_entries() -> void:
 					npc_object.relationship_stage = NPC.RelationshipStage.TALKING
 			var row := HBoxContainer.new()
 			row.mouse_filter = Control.MOUSE_FILTER_STOP
-			row.gui_input.connect(_on_row_gui_input.bind(npc_object))
+			row.gui_input.connect(_on_row_gui_input.bind(entry_dictionary.npc_id, npc_object))
 			var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
 			portrait.portrait_creator_enabled = false
 			portrait.custom_minimum_size = Vector2(132, 132)
@@ -312,14 +312,14 @@ func _create_header_label(text: String) -> Label:
 	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return lbl
 	
-func _on_row_gui_input(event: InputEvent, npc: NPC) -> void:
+func _on_row_gui_input(event: InputEvent, idx: int, npc: NPC) -> void:
 	var mouse_event: InputEventMouseButton = event as InputEventMouseButton
 	if mouse_event != null and mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
-		_open_suitor_popup(npc)
-	
-func _open_suitor_popup(npc: NPC) -> void:
+		_open_suitor_popup(idx, npc)
+
+func _open_suitor_popup(idx: int, npc: NPC) -> void:
 	var key: String = "suitor_%d" % npc.get_instance_id()
-	WindowManager.launch_popup(SUITOR_POPUP_SCENE, key, npc)
+	WindowManager.launch_popup(SUITOR_POPUP_SCENE, key, {"npc": npc, "npc_idx": idx})
 
 func _on_npc_portrait_changed(idx: int, cfg: PortraitConfig) -> void:
 	if _portrait_views_by_npc.has(idx):
