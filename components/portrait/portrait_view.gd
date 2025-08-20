@@ -83,6 +83,10 @@ func _on_mouse_exited() -> void:
 func _on_new_you_pressed() -> void:
 	var scene = preload("res://components/apps/new_you/new_you.tscn")
 	var pane = scene.instantiate()
+	if subject_is_player:
+		pane.unique_popup_key = "new_you_player"
+	elif subject_npc_idx != -1:
+		pane.unique_popup_key = "new_you_npc_%s" % subject_npc_idx
 	var args: Dictionary = {"portrait_view": self}
 	if subject_is_player:
 			args["type"] = "player"
