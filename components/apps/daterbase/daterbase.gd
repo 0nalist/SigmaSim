@@ -7,10 +7,16 @@ class_name Daterbase
 @onready var error_label: Label = %ErrorLabel
 @onready var daterbase_tab_button: Button = %DaterbaseTabButton
 @onready var sql_tab_button: Button = %SQLTabButton
+@onready var headhunters_tab_button: Button = %HeadhuntersTabButton
 @onready var daterbase_view: VBoxContainer = %DaterbaseView
 @onready var sql_view: VBoxContainer = %SQLView
+@onready var headhunters_view: VBoxContainer = %HeadhuntersView
 @onready var results_container_daterbase: VBoxContainer = %ResultsContainer_Daterbase
 @onready var results_container_sql: VBoxContainer = %ResultsContainer_SQL
+@onready var hh_name_edit: LineEdit = %HHNameEdit
+@onready var hh_create_button: Button = %HHCreateButton
+@onready var hh_portrait_holder: VBoxContainer = %HHPortraitHolder
+@onready var hh_stats_container: VBoxContainer = %HHStatsContainer
 
 # --- Grid control ---
 var results_tree: Tree
@@ -47,10 +53,13 @@ const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", 
 
 
 func _ready() -> void:
-	run_query_button.pressed.connect(_on_run_query_pressed)
-	show_all_button.pressed.connect(_on_show_all_pressed)
-	daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
-	sql_tab_button.pressed.connect(_on_sql_tab_pressed)
+        run_query_button.pressed.connect(_on_run_query_pressed)
+        show_all_button.pressed.connect(_on_show_all_pressed)
+        daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
+        sql_tab_button.pressed.connect(_on_sql_tab_pressed)
+        headhunters_tab_button.pressed.connect(_on_headhunters_tab_pressed)
+        hh_create_button.pressed.connect(_on_hh_create_pressed)
+        hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
 
 	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
 
@@ -87,27 +96,40 @@ func _on_item_activated() -> void:
 # Tabs
 # =========================================
 func _activate_tab(tab_name: StringName) -> void:
-	if tab_name != &"Daterbase" and tab_name != &"SQL":
-		push_error("Invalid tab: %s" % str(tab_name))
-		return
-	_active_tab = tab_name
-	if tab_name == &"Daterbase":
-		daterbase_tab_button.set_pressed(true)
-		sql_tab_button.set_pressed(false)
-		daterbase_view.visible = true
-		sql_view.visible = false
-		error_label.text = ""
-		if not _ran_initial_show_all:
-			_on_show_all_pressed()
-			_ran_initial_show_all = true
-	else:
-		daterbase_tab_button.set_pressed(false)
-		sql_tab_button.set_pressed(true)
-		daterbase_view.visible = false
-		sql_view.visible = true
-		error_label.text = ""
-		_ensure_results_tree_parent(results_container_sql)
-		query_edit.grab_focus()
+       if tab_name != &"Daterbase" and tab_name != &"SQL" and tab_name != &"Headhunters":
+               push_error("Invalid tab: %s" % str(tab_name))
+               return
+       _active_tab = tab_name
+       if tab_name == &"Daterbase":
+               daterbase_tab_button.set_pressed(true)
+               sql_tab_button.set_pressed(false)
+               headhunters_tab_button.set_pressed(false)
+               daterbase_view.visible = true
+               sql_view.visible = false
+               headhunters_view.visible = false
+               error_label.text = ""
+               if not _ran_initial_show_all:
+                       _on_show_all_pressed()
+                       _ran_initial_show_all = true
+       elif tab_name == &"SQL":
+               daterbase_tab_button.set_pressed(false)
+               sql_tab_button.set_pressed(true)
+               headhunters_tab_button.set_pressed(false)
+               daterbase_view.visible = false
+               sql_view.visible = true
+               headhunters_view.visible = false
+               error_label.text = ""
+               _ensure_results_tree_parent(results_container_sql)
+               query_edit.grab_focus()
+       else:
+               daterbase_tab_button.set_pressed(false)
+               sql_tab_button.set_pressed(false)
+               headhunters_tab_button.set_pressed(true)
+               daterbase_view.visible = false
+               sql_view.visible = false
+               headhunters_view.visible = true
+               error_label.text = ""
+               hh_name_edit.grab_focus()
 
 
 
@@ -120,7 +142,10 @@ func _on_daterbase_tab_pressed() -> void:
 		_activate_tab(&"Daterbase")
 
 func _on_sql_tab_pressed() -> void:
-		_activate_tab(&"SQL")
+                _activate_tab(&"SQL")
+
+func _on_headhunters_tab_pressed() -> void:
+               _activate_tab(&"Headhunters")
 
 # =========================================
 # Buttons
@@ -134,10 +159,10 @@ func _on_show_all_pressed() -> void:
 		_activate_tab(&"Daterbase")
 
 func _on_run_query_pressed() -> void:
-	var sql_text: String = query_edit.text.strip_edges()
-	if sql_text == "":
-		error_label.text = "Enter a SELECT query."
-		return
+        var sql_text: String = query_edit.text.strip_edges()
+        if sql_text == "":
+                error_label.text = "Enter a SELECT query."
+                return
 	if not _is_safe_select(sql_text):
 		error_label.text = "Only SELECT queries are allowed."
 		return
@@ -149,7 +174,41 @@ func _on_run_query_pressed() -> void:
 		return
 
 	error_label.text = ""
-	_display_generic_rows(result_rows)
+        _display_generic_rows(result_rows)
+
+func _on_hh_create_pressed() -> void:
+        var name: String = hh_name_edit.text.strip_edges()
+        if name == "":
+                return
+        _display_headhunter_npc(name)
+
+func _on_hh_name_submitted(_text: String) -> void:
+        _on_hh_create_pressed()
+
+func _display_headhunter_npc(full_name: String) -> void:
+        for child in hh_portrait_holder.get_children():
+                child.queue_free()
+        for child in hh_stats_container.get_children():
+                child.queue_free()
+        var npc: NPC = NPCFactory.create_npc_from_name(full_name)
+        var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
+        portrait.portrait_creator_enabled = false
+        portrait.custom_minimum_size = Vector2(132, 132)
+        portrait.size = Vector2(132, 132)
+        portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+        portrait.apply_config(npc.portrait_config)
+        hh_portrait_holder.add_child(portrait)
+        var stats: Dictionary = npc.to_dict()
+        var keys := stats.keys()
+        keys.sort()
+        for key in keys:
+                var val = stats[key]
+                var lbl := Label.new()
+                if typeof(val) in [TYPE_DICTIONARY, TYPE_ARRAY]:
+                        lbl.text = "%s: %s" % [key, JSON.stringify(val)]
+                else:
+                        lbl.text = "%s: %s" % [key, str(val)]
+                hh_stats_container.add_child(lbl)
 
 # =========================================
 # Safety
