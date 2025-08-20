@@ -253,9 +253,8 @@ func _on_row_gui_input(event: InputEvent, npc: NPC) -> void:
 		_open_suitor_popup(npc)
 	
 func _open_suitor_popup(npc: NPC) -> void:
-	var popup: SuitorPopup = SUITOR_POPUP_SCENE.instantiate()
-	WindowManager.launch_pane_instance(popup)
-	popup.call_deferred("setup", npc)
+	var key: String = "suitor_%d" % npc.get_instance_id()
+	WindowManager.launch_popup(SUITOR_POPUP_SCENE, key, npc)
 
 func _display_generic_rows(result_rows: Array) -> void:
 	if result_rows.size() == 0:
