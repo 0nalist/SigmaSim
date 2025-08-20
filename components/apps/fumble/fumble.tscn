@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=17 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
 [ext_resource type="PackedScene" uid="uid://dptnj8nxnr760" path="res://components/apps/fumble/fumble_special_offers.tscn" id="2_hf3uq"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://bq0jn8wlfmaae" path="res://assets/Flag_of_Turkey.svg.png" id="4_hf3uq"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="5_5uoqt"]
 [ext_resource type="PackedScene" uid="uid://buvfo6k8fhu53" path="res://components/apps/fumble/chats_tab.tscn" id="5_dmsn0"]
-[ext_resource type="PackedScene" uid="uid://bfyjk22acyf56" path="res://components/portrait/portrait_creator.tscn" id="5_jh1fk"]
 [ext_resource type="Script" uid="uid://bf65ryfqtiq6i" path="res://components/apps/fumble/fumble_search_criteria_ui.gd" id="5_wfdmb"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="10_jh1fk"]
 
@@ -132,15 +131,10 @@ theme_override_constants/outline_size = 12
 text = "You"
 
 [node name="PortraitView" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2" instance=ExtResource("5_5uoqt")]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(128, 132)
 layout_mode = 2
+size_flags_horizontal = 4
 subject_is_player = true
-
-[node name="PortraitCreator" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2" instance=ExtResource("5_jh1fk")]
-visible = false
-custom_minimum_size = Vector2(0, 260)
-layout_mode = 2
-size_flags_vertical = 1
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2"]
 layout_mode = 2

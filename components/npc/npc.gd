@@ -15,8 +15,13 @@ extends Resource
 @export var occupation: String = "Funemployed"
 @export var relationship_status: String = "Single"
 
+enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, DIVORCED, EX }
+@export var relationship_stage: RelationshipStage = RelationshipStage.STRANGER
+@export_range(0, 100, 0.1) var relationship_progress: float = 0.0
+
 # Relationship with Player
 @export_range(-100, 100, 0.1) var affinity: float = 0.0 # 0–100
+@export_range(-100, 100, 0.1) var affinity_equilibrium: float = 50.0
 @export_range(0, 100, 0.1) var rizz: int
 @export_range(0, 100, 1) var attractiveness: int
 
@@ -117,10 +122,13 @@ func to_dict() -> Dictionary:
 		"last_name": last_name,
 		"gender_vector": { "x": gender_vector.x, "y": gender_vector.y, "z": gender_vector.z },
 		"username": username,
-		"occupation": occupation,
-		"relationship_status": relationship_status,
-		"affinity": affinity,
-		"rizz": rizz,
+				"occupation": occupation,
+				"relationship_status": relationship_status,
+				"relationship_stage": relationship_stage,
+			"relationship_progress": relationship_progress,
+			"affinity": affinity,
+			"affinity_equilibrium": affinity_equilibrium,
+			"rizz": rizz,
 		"attractiveness": attractiveness,
 		"income": income,
 		"wealth": wealth,
@@ -153,10 +161,10 @@ func to_dict() -> Dictionary:
 
 static func from_dict(data: Dictionary) -> NPC:
 	var npc = NPC.new()
-	npc.full_name      = _safe_string(data.get("full_name"))
-	npc.first_name        = _safe_string(data.get("first_name"))
-	npc.middle_initial    = _safe_string(data.get("middle_initial"))
-	npc.last_name         = _safe_string(data.get("last_name"))
+	npc.full_name= _safe_string(data.get("full_name"))
+	npc.first_name  = _safe_string(data.get("first_name"))
+	npc.middle_initial = _safe_string(data.get("middle_initial"))
+	npc.last_name= _safe_string(data.get("last_name"))
 
 	var gv = data.get("gender_vector", {"x":0,"y":0,"z":1})
 	if typeof(gv) == TYPE_DICTIONARY and gv.has("x") and gv.has("y") and gv.has("z"):
@@ -164,38 +172,41 @@ static func from_dict(data: Dictionary) -> NPC:
 	else:
 		npc.gender_vector = Vector3(0,0,1)
 
-	npc.username          = _safe_string(data.get("username"))
-	npc.occupation        = _safe_string(data.get("occupation"), "Funemployed")
+	npc.username = _safe_string(data.get("username"))
+	npc.occupation  = _safe_string(data.get("occupation"), "Funemployed")
 	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
-	npc.affinity          = _safe_float(data.get("affinity"), 0.0)
-	npc.rizz              = _safe_int(data.get("rizz"), 0)
-	npc.attractiveness    = _safe_int(data.get("attractiveness"), 0)
-	npc.income            = _safe_int(data.get("income"), 0)
-	npc.wealth            = _safe_int(data.get("wealth"), 0)
+	npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
+	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
+	npc.affinity = _safe_float(data.get("affinity"), 0.0)
+	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 50.0)
+	npc.rizz  = _safe_int(data.get("rizz"), 0)
+	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
+	npc.income= _safe_int(data.get("income"), 0)
+	npc.wealth= _safe_int(data.get("wealth"), 0)
 
 	_assign_string_array(npc.preferred_pet_names, data.get("preferred_pet_names"))
 	_assign_string_array(npc.player_pet_names, data.get("player_pet_names"))
-	npc.alpha             = _safe_float(data.get("alpha"))
-	npc.beta              = _safe_float(data.get("beta"))
-	npc.gamma             = _safe_float(data.get("gamma"))
-	npc.delta             = _safe_float(data.get("delta"))
-	npc.omega             = _safe_float(data.get("omega"))
-	npc.sigma             = _safe_float(data.get("sigma"))
+	npc.alpha = _safe_float(data.get("alpha"))
+	npc.beta  = _safe_float(data.get("beta"))
+	npc.gamma = _safe_float(data.get("gamma"))
+	npc.delta = _safe_float(data.get("delta"))
+	npc.omega = _safe_float(data.get("omega"))
+	npc.sigma = _safe_float(data.get("sigma"))
 	_assign_string_array(npc.tags, data.get("tags"), ["alive"])
 	_assign_string_array(npc.likes, data.get("likes"))
-	npc.fumble_bio        = _safe_string(data.get("fumble_bio"))
-	npc.self_esteem       = _safe_int(data.get("self_esteem"), 70)
-	npc.apprehension      = _safe_int(data.get("apprehension"), 50)
-	npc.chemistry         = _safe_int(data.get("chemistry"), 0)
+	npc.fumble_bio  = _safe_string(data.get("fumble_bio"))
+	npc.self_esteem = _safe_int(data.get("self_esteem"), 70)
+	npc.apprehension= _safe_int(data.get("apprehension"), 50)
+	npc.chemistry= _safe_int(data.get("chemistry"), 0)
 	npc.chat_battle_type  = _safe_string(data.get("chat_battle_type"))
-	npc.ocean             = _safe_dict(data.get("ocean"))
-	npc.openness          = _safe_float(data.get("openness"))
+	npc.ocean = _safe_dict(data.get("ocean"))
+	npc.openness = _safe_float(data.get("openness"))
 	npc.conscientiousness = _safe_float(data.get("conscientiousness"))
-	npc.extraversion      = _safe_float(data.get("extraversion"))
-	npc.agreeableness     = _safe_float(data.get("agreeableness"))
-	npc.neuroticism       = _safe_float(data.get("neuroticism"))
-	npc.mbti              = _safe_string(data.get("mbti"))
-	npc.zodiac            = _safe_string(data.get("zodiac"))
+	npc.extraversion= _safe_float(data.get("extraversion"))
+	npc.agreeableness  = _safe_float(data.get("agreeableness"))
+	npc.neuroticism = _safe_float(data.get("neuroticism"))
+	npc.mbti  = _safe_string(data.get("mbti"))
+	npc.zodiac= _safe_string(data.get("zodiac"))
 	var pc_src = data.get("portrait_config")
 	if typeof(pc_src) == TYPE_DICTIONARY and pc_src.size() > 0:
 		npc.portrait_config = PortraitConfig.from_dict(pc_src)

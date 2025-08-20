@@ -10,8 +10,6 @@ var in_game: bool = false
 
 
 var pause_screen_instance: PauseScreen = null
-var desktop_scene := preload("res://components/desktop_env.tscn")
-var login_scene := preload("res://components/ui/log_in_ui.tscn")
 
 #Deprecated
 const _ForceRegisterWorker := preload("res://resources/workers/worker.gd")
@@ -156,12 +154,20 @@ func _close_pause_screen():
 func load_login_screen():
 	in_game = false
 	TimeManager.set_time_paused(true)
-	get_tree().change_scene_to_packed(login_scene)
+	# Ensure all app and popup windows are closed when returning to the login screen
+	WindowManager.close_all_windows()
+	var main = get_tree().current_scene
+	if main and main.has_method("show_login_ui"):
+			main.show_login_ui()
+
 
 func load_desktop_env(slot_id: int = SaveManager.current_slot_id):
 	in_game = true
 	SaveManager.current_slot_id = slot_id
-	get_tree().change_scene_to_packed(desktop_scene)
+	var main = get_tree().current_scene
+	if main and main.has_method("show_desktop_env"):
+		main.show_desktop_env(slot_id)
+
 
 # Save and load functionality (optional, depends on how you handle it)
 func save_game():

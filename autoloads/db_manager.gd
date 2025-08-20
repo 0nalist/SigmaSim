@@ -13,9 +13,11 @@ const SCHEMA := {
 		"last_name": {"data_type": "text"},
 		"gender_vector": {"data_type": "text"},
 		"username": {"data_type": "text"},
-		# NOTE: profile_pic_path needs refactor before persistence
 		"occupation": {"data_type": "text"},
 		"relationship_status": {"data_type": "text"},
+		"relationship_stage": {"data_type": "int"},
+		"relationship_progress": {"data_type": "real"},
+		"affinity_equilibrium": {"data_type": "real"},
 		"affinity": {"data_type": "real"},
 		"rizz": {"data_type": "int"},
 		"attractiveness": {"data_type": "int"},
@@ -54,14 +56,15 @@ const SCHEMA := {
 		"created_at": {"data_type": "int"},
 		"updated_at": {"data_type": "int"}
 	},
-	"fumble_battles": {
-		"battle_id": {"data_type": "text", "primary_key": true},
-		"slot_id": {"data_type": "int", "primary_key": true},
-		"npc_id": {"data_type": "int"},
-		"chatlog": {"data_type": "text"},
-		"stats": {"data_type": "text"},
-		"outcome": {"data_type": "text"}
-	   }
+		"fumble_battles": {
+				"battle_id": {"data_type": "text", "primary_key": true},
+				"slot_id": {"data_type": "int", "primary_key": true},
+				"npc_id": {"data_type": "int"},
+				"chatlog": {"data_type": "text"},
+				"stats": {"data_type": "text"},
+				"move_usage_counts": {"data_type": "text"},
+				"outcome": {"data_type": "text"}
+		   }
 }
 
 func _ready():
@@ -264,24 +267,26 @@ func get_all_fumble_relationship_rows(slot_id: int = SaveManager.current_slot_id
 # -- Battles --
 
 func save_fumble_battle(
-		battle_id: String,
-		npc_id: int,
-		chatlog: Array,
-		stats: Dictionary,
-		outcome: String,
-		slot_id: int = SaveManager.current_slot_id
-	) -> void:
+				battle_id: String,
+				npc_id: int,
+				chatlog: Array,
+				stats: Dictionary,
+				move_usage_counts: Dictionary,
+				outcome: String,
+				slot_id: int = SaveManager.current_slot_id
+		) -> void:
 	if outcome.strip_edges() == "" or not FumbleManager.VALID_OUTCOMES.has(outcome):
 		push_warning("save_fumble_battle received invalid outcome '%s'" % outcome)
 
 	print("DB save_fumble_battle: id=", battle_id, "slot=", slot_id, "outcome=", outcome)
 	var data = {
-		"battle_id": battle_id,
-		"slot_id": slot_id,
-		"npc_id": npc_id,
-		"chatlog": to_json(chatlog),
-		"stats": to_json(stats),
-		"outcome": outcome
+			"battle_id": battle_id,
+			"slot_id": slot_id,
+			"npc_id": npc_id,
+			"chatlog": to_json(chatlog),
+			"stats": to_json(stats),
+			"move_usage_counts": to_json(move_usage_counts),
+			"outcome": outcome
 	}
 	var update_data = data.duplicate()
 	update_data.erase("battle_id")
@@ -310,19 +315,23 @@ func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Ar
 	# so that the UI can show results such as victories or blocks.
 	print("DB get_fumble_battles slot=", slot_id)
 	var rows = db.select_rows(
-		"fumble_battles",
-		"slot_id = %d" % slot_id,
-		["battle_id", "npc_id", "chatlog", "stats", "outcome"]
+			"fumble_battles",
+			"slot_id = %d" % slot_id,
+			["battle_id", "npc_id", "chatlog", "stats", "move_usage_counts", "outcome"]
 	)
 	var out := []
 	for r in rows:
 		print(" -> battle", r.battle_id, "outcome", r.outcome)
+		var muc = from_json(r.move_usage_counts)
+		if muc == null:
+				muc = {}
 		out.append({
-			"battle_id": r.battle_id,
-			"npc_idx": int(r.npc_id),
-			"chatlog": from_json(r.chatlog),
-			"stats": from_json(r.stats),
-			"outcome": r.outcome,
+				"battle_id": r.battle_id,
+				"npc_idx": int(r.npc_id),
+				"chatlog": from_json(r.chatlog),
+				"stats": from_json(r.stats),
+				"move_usage_counts": muc,
+				"outcome": r.outcome,
 		})
 	return out
 

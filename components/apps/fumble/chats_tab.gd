@@ -162,12 +162,13 @@ func open_battle(battle_id, npc, idx):
 	(
 		scene
 		. load_battle(
-			battle_id,
-			npc,
-			battle_data.chatlog,
-			battle_data.stats,
-			idx,
-			battle_data.get("outcome", "active"),
+				battle_id,
+				npc,
+				battle_data.chatlog,
+				battle_data.stats,
+				battle_data.get("move_usage_counts", {}),
+				idx,
+				battle_data.get("outcome", "active"),
 		)
 	)
 	scene.chat_closed.connect(_on_chat_closed)

@@ -60,11 +60,12 @@ func start_battle(npc_idx: int) -> String:
 		var battle_id = "%s_%d" % [str(Time.get_unix_time_from_system()), rng.randi() % 1000000]
 		print("Creating new fumble battle", battle_id, "slot", SaveManager.current_slot_id)
 		DBManager.save_fumble_battle(
-			battle_id,
-			npc_idx,
-			[],
-			{},
-			"active"
+				battle_id,
+				npc_idx,
+				[],
+				{},
+				{},
+				"active"
 		)
 		NPCManager.promote_to_persistent(npc_idx)
 		DBManager.save_fumble_relationship(npc_idx, FumbleStatus.ACTIVE_CHAT)
@@ -78,7 +79,7 @@ func start_battle(npc_idx: int) -> String:
 
 	return ""
 
-func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, outcome: String) -> void:
+func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, move_usage_counts: Dictionary, outcome: String) -> void:
 	if SaveManager.current_slot_id <= 0:
 		push_warning("save_battle_state called with invalid slot_id %d" % SaveManager.current_slot_id)
 		return
@@ -92,20 +93,25 @@ func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, out
 	if npc_idx != -1:
 		print("Saving battle", battle_id, "slot", SaveManager.current_slot_id, "outcome", outcome)
 		DBManager.save_fumble_battle(
-			battle_id,
-			npc_idx,
-			chatlog,
-			stats,
-			outcome
+				battle_id,
+				npc_idx,
+				chatlog,
+				stats,
+				move_usage_counts,
+				outcome
 		)
 
 func load_battle_state(battle_id: String) -> Dictionary:
 	var data = DBManager.load_fumble_battle(battle_id, SaveManager.current_slot_id)
 	if data.size() == 0:
 		return {}
+	var move_counts = DBManager.from_json(data.move_usage_counts)
+	if move_counts == null:
+			move_counts = {}
 	return {
-		"npc_idx": int(data.npc_id),
-		"chatlog": DBManager.from_json(data.chatlog),
-		"stats": DBManager.from_json(data.stats),
-		"outcome": data.outcome,
+			"npc_idx": int(data.npc_id),
+			"chatlog": DBManager.from_json(data.chatlog),
+			"stats": DBManager.from_json(data.stats),
+			"move_usage_counts": move_counts,
+			"outcome": data.outcome,
 	}

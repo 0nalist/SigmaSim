@@ -39,6 +39,7 @@ func load_all_upgrades() -> void:
 	upgrades.clear()
 	_load_dir("res://data/upgrades", false)
 	_load_dir("user://mods/upgrades", true)
+	Events.register_upgrade_signals(upgrades.keys())
 	emit_signal("levels_changed")
 
 func reload_upgrades() -> void:
@@ -272,11 +273,24 @@ func _get_base_cost(upgrade: Dictionary, level: int) -> Dictionary:
 func _get_currency_amount(currency: String) -> float:
 	if currency == "cash":
 		return PortfolioManager.cash
+	if currency == "ex":
+		return StatManager.get_stat("ex")
 	return PortfolioManager.get_crypto_amount(currency)
 
 func _deduct_currency(currency: String, amount: float) -> bool:
 	if currency == "cash":
 		return PortfolioManager.attempt_spend(amount)
+	if currency == "ex":
+		if StatManager.get_stat("ex") < amount:
+			return false
+		StatManager.set_base_stat("ex", StatManager.get_stat("ex") - amount)
+		StatpopManager.spawn(
+			"-%s Ex" % NumberFormatter.format_number(amount),
+			get_viewport().get_mouse_position(),
+			"click",
+			Color.YELLOW
+		)
+		return true
 	if PortfolioManager.get_crypto_amount(currency) < amount:
 		return false
 	PortfolioManager.add_crypto(currency, -amount)
@@ -307,6 +321,9 @@ func can_purchase(id: String) -> bool:
 				continue
 			if not PortfolioManager.can_pay_with_credit(remainder):
 				return false
+		elif currency == "ex":
+			if StatManager.get_stat("ex") < amount:
+				return false
 		else:
 			if PortfolioManager.get_crypto_amount(currency) < amount:
 				return false
@@ -318,11 +335,11 @@ func purchase(id: String) -> bool:
 	var upgrade := get_upgrade(id)
 	if upgrade == null:
 		return false
-	var cost := get_cost_for_next_level(id)
+	var cost: Dictionary = get_cost_for_next_level(id)
 	for currency in cost.keys():
 			if not _deduct_currency(currency, cost[currency]):
 					return false
-	var level := get_level(id) + 1
+	var level: int = get_level(id) + 1
 	player_levels[id] = level
 	var cd = float(upgrade.get("cooldown", -1))
 	if cd > 0:
@@ -331,6 +348,7 @@ func purchase(id: String) -> bool:
 			cooldowns.erase(id)
 	print("UpgradeManager.purchase: emitting upgrade_purchased for", id, "level", level)
 	upgrade_purchased.emit(id, level)
+	Events.emit_upgrade_purchased(id, level)
 	return true
 
 func get_cooldown_remaining(id: String) -> float:

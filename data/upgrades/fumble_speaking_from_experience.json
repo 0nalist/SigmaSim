@@ -1,0 +1,18 @@
+{
+	"id": "fumble_speaking_from_experience",
+	"name": "Speaking from EXperience",
+	"description": "Start each chat battle with fewer mysteries. Each level removes a question mark from a random action button.",
+	"effects": [],
+	"systems": [
+		"fumble"
+	],
+	"dependencies": [],
+	"cost_per_level": {
+		"ex": 1
+	},
+	"scale_by_formula": true,
+	"cost_formula": {
+		"ex": "base_cost[\"ex\"] * pow(2, level-1)"
+	},
+	"max_level": 12
+}

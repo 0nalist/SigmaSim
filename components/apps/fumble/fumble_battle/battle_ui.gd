@@ -114,7 +114,7 @@ func _ready():
 	no_confidence_container.hide()
 	
 
-func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
+func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, move_usage_counts_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
 	battle_id = new_battle_id
 	npc = new_npc
 	npc_idx = new_npc_idx
@@ -122,23 +122,24 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 		victorious = true
 	elif outcome == "blocked":
 		blocked = true
-	if chatlog_in.size() == 0 and stats_in.size() == 0:
+	if chatlog_in.size() == 0 and stats_in.size() == 0 and move_usage_counts_in.size() == 0:
 			var data = FumbleManager.load_battle_state(battle_id)
 			if data.size() > 0:
 					chatlog = data.chatlog
 					stats_in = data.stats
+					move_usage_counts_in = data.get("move_usage_counts", {})
 	chatlog = chatlog_in.duplicate() if chatlog_in.size() > 0 else chatlog
 
 	# If stats_in is empty, pull stats from npc resource
 	var battle_stats_to_use: Dictionary = {}
 	if stats_in.size() > 0:
-		battle_stats_to_use = stats_in.duplicate()
+			battle_stats_to_use = stats_in.duplicate()
 	else:
-		battle_stats_to_use = {
-			"self_esteem": npc.self_esteem,
-			"chemistry": npc.chemistry,
-			"apprehension": npc.apprehension
-		}
+			battle_stats_to_use = {
+					"self_esteem": npc.self_esteem,
+					"chemistry": npc.chemistry,
+					"apprehension": npc.apprehension
+			}
 	
 	# Set up logic
 	if battle_logic_resource:
@@ -150,19 +151,35 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 
 	_update_profiles()
 	for child in chat_container.get_children():
-		child.queue_free()
+			child.queue_free()
 	for msg in chatlog:
-		var chat = add_chat_line(msg.text, msg.is_player, msg.get("is_victory_number", false), false)
-		var reaction_tex: Texture2D = null
-		if msg.get("reaction_name", "") != "" and REACTION_EMOJI.has(msg.reaction_name):
-			reaction_tex = REACTION_EMOJI[msg.reaction_name]
-		chat.apply_saved_state(msg, reaction_tex)
-	
+			var chat = add_chat_line(msg.text, msg.is_player, msg.get("is_victory_number", false), false)
+			var reaction_tex: Texture2D = null
+			if msg.get("reaction_name", "") != "" and REACTION_EMOJI.has(msg.reaction_name):
+					reaction_tex = REACTION_EMOJI[msg.reaction_name]
+			chat.apply_saved_state(msg, reaction_tex)
+
 	move_usage_counts.clear()
+	var move_counts_to_use: Dictionary = {}
+	if move_usage_counts_in.size() > 0:
+			move_counts_to_use = move_usage_counts_in.duplicate()
 	for move in equipped_moves:
-		move_usage_counts[move.to_lower()] = 0
-	move_usage_counts["catch"] = 0
-	
+			move_usage_counts[move.to_lower()] = move_counts_to_use.get(move.to_lower(), 0)
+	move_usage_counts["catch"] = move_counts_to_use.get("catch", 0)
+	if chatlog.size() == 0 and move_counts_to_use.size() == 0:
+			var reveal_levels = UpgradeManager.get_level("fumble_speaking_from_experience")
+			var rng = RNGManager.get_rng()
+			for i in range(reveal_levels):
+					var options := []
+					for m in equipped_moves:
+							var key = m.to_lower()
+							if move_usage_counts[key] < 3:
+									options.append(key)
+					if options.is_empty():
+							break
+					var chosen_key = options[rng.randi_range(0, options.size() - 1)]
+					move_usage_counts[chosen_key] += 1
+
 	update_action_buttons()
 	scroll_to_newest_chat()
 	update_progress_bars()
@@ -299,7 +316,7 @@ func _on_ghost_button_pressed():
 	if is_animating:
 		return
 	if blocked:
-		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "blocked")
+		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "blocked")
 		DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
 		persist_battle_stats_to_npc()
 		queue_free()
@@ -307,7 +324,7 @@ func _on_ghost_button_pressed():
 	var chat = add_chat_line("*ghosts*", true)
 	await animate_chat_text(chat, "*ghosts*")
 	await get_tree().create_timer(0.69).timeout
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "ghosted")
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "ghosted")
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
 	persist_battle_stats_to_npc()
 	chat_closed.emit()
@@ -359,7 +376,7 @@ func add_chat_line(text: String, is_player: bool, is_victory_number := false, re
 		}
 		chatlog.append(entry)
 		chat.chatlog_index = chatlog.size() - 1
-		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 	else:
 			chat.chatlog_index = -1
 	return chat
@@ -427,14 +444,14 @@ func do_move(move_type: String) -> void:
 			var entry = chatlog[player_chat.chatlog_index]
 			entry.reaction_name = "cry_laugh"
 			entry.reaction_tooltip = get_reaction_tooltip("cry_laugh")
-			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 		filtered_effects.erase("confidence")
 		await get_tree().create_timer(0.25).timeout
 		await player_chat.set_stat_effects(filtered_effects)
 		await player_chat.reveal_result_color("success")
 		battle_stats = logic.get_stats().duplicate()
 		await update_progress_bars()
-		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 		is_animating = false
 		return
 
@@ -450,7 +467,7 @@ func do_move(move_type: String) -> void:
 			var entry = chatlog[player_chat.chatlog_index]
 			entry.reaction_name = "heart"
 			entry.reaction_tooltip = get_reaction_tooltip("heart")
-			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 	elif not result.success and use_count >= 3 and reaction == "thumbs_down":
 		player_chat.set_reaction(
 			REACTION_EMOJI["thumbs_down"],
@@ -462,13 +479,13 @@ func do_move(move_type: String) -> void:
 			var entry2 = chatlog[player_chat.chatlog_index]
 			entry2.reaction_name = "thumbs_down"
 			entry2.reaction_tooltip = get_reaction_tooltip("thumbs_down")
-			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 	else:
 		player_chat.clear_reaction()
 		if player_chat.chatlog_index >= 0 and player_chat.chatlog_index < chatlog.size():
 			chatlog[player_chat.chatlog_index].reaction_name = ""
 			chatlog[player_chat.chatlog_index].reaction_tooltip = ""
-			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+			FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 
 	await get_tree().create_timer(0.25).timeout
 
@@ -495,7 +512,7 @@ func do_move(move_type: String) -> void:
 	# Update UI bars
 	battle_stats = logic.get_stats().duplicate()
 	await update_progress_bars()
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 
 	# Special logic for catch
 	if move_type == "catch":
@@ -538,7 +555,7 @@ func block_player() -> void:
 	blocked = true
 	blocked_container.show()
 	end_battle(false, npc)
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "blocked")
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "blocked")
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
 	persist_battle_stats_to_npc()
 	await get_tree().create_timer(0.69).timeout
@@ -563,7 +580,7 @@ func show_victory_screen():
 	victory_name_label.text = npc.first_name + " has been added to"
 	end_battle_screen_container.show()
 	end_battle(victorious, npc)
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "victory")
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "victory")
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
 	persist_battle_stats_to_npc()
 
@@ -614,7 +631,7 @@ func _reveal_chat_effects_and_results(player_chat: ChatBox, player_result: Strin
 		var idxn = npc_chat.chatlog_index
 		if idxn >= 0 and idxn < chatlog.size():
 				chatlog[idxn].result = npc_result
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, "active")
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 
 
 func animate_success_or_fail(success: bool):
@@ -760,14 +777,14 @@ func animate_chat_text(chat_box: Control, text: String) -> void:
 
 func _on_close_chat_button_pressed() -> void:
 	var outcome := "active"
-	var rel_status := FumbleManager.FumbleStatus.ACTIVE_CHAT
+	var rel_status = FumbleManager.FumbleStatus.ACTIVE_CHAT
 	if victorious:
 		outcome = "victory"
 		rel_status = FumbleManager.FumbleStatus.LIKED
 	elif blocked:
 		outcome = "blocked"
 		rel_status = FumbleManager.FumbleStatus.BLOCKED_PLAYER
-	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, outcome)
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, outcome)
 	DBManager.save_fumble_relationship(npc_idx, rel_status)
 	persist_battle_stats_to_npc()
 	chat_closed.emit()

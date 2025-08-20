@@ -1,0 +1,209 @@
+[gd_scene load_steps=8 format=3 uid="uid://dim0nwjmfwi3g"]
+
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
+[ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/suitor_popup.gd" id="2"]
+[ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
+[ext_resource type="Shader" uid="uid://bfgsgplah4us" path="res://assets/shaders/white_warp_shader.gdshader" id="3_vl6ok"]
+[ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_78wgo"]
+shader = ExtResource("3_vl6ok")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edh50"]
+bg_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[node name="SuitorPopup" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme = ExtResource("1")
+script = ExtResource("2")
+window_title = "Suitor"
+default_window_size = Vector2(400, 500)
+is_popup = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_78wgo")
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 1
+horizontal_alignment = 1
+
+[node name="Portrait" parent="MarginContainer/VBox" instance=ExtResource("4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 132)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="RelationshipStageLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_alignment = 1
+
+[node name="RelationshipBar" type="ProgressBar" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+show_percentage = false
+script = ExtResource("3")
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/RelationshipBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Relationship Progress"
+horizontal_alignment = 1
+
+[node name="NextStageButton" type="Button" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Take this relationship to the next stage"
+autowrap_mode = 3
+
+[node name="AffinityBar" type="ProgressBar" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 17)
+layout_mode = 2
+show_percentage = false
+script = ExtResource("3")
+tooltip_name = "Affinity"
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/AffinityBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -7.5
+offset_right = 25.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Affinity"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBox/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+
+[node name="GiftButton" type="Button" parent="MarginContainer/VBox/VBoxContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Gift"
+
+[node name="DateButton" type="Button" parent="MarginContainer/VBox/VBoxContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Date"
+
+[node name="BreakupButton" type="Button" parent="MarginContainer/VBox/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Breakup"
+
+[node name="ApologizeButton" type="Button" parent="MarginContainer/VBox/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+focus_mode = 0
+text = "Apologize"
+
+[node name="BreakupConfirm" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="BreakupConfirm"]
+custom_minimum_size = Vector2(196, 132)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_edh50")
+
+[node name="MarginContainer" type="MarginContainer" parent="BreakupConfirm/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="BreakupConfirm/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BreakupConfirmLabel" type="Label" parent="BreakupConfirm/Panel/MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control" type="Control" parent="BreakupConfirm/Panel/MarginContainer/VBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="BreakupConfirm/Panel/MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 8
+
+[node name="BreakupConfirmYesButton" type="Button" parent="BreakupConfirm/Panel/MarginContainer/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Yes"
+
+[node name="BreakupConfirmNoButton" type="Button" parent="BreakupConfirm/Panel/MarginContainer/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = " No "

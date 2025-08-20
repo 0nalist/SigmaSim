@@ -1,6 +1,6 @@
 extends SceneTree
 
-func _init():
+func _ready():
 	var stat_mgr = Engine.get_singleton("StatManager")
 	var player_mgr = Engine.get_singleton("PlayerManager")
 	stat_mgr.reset()
