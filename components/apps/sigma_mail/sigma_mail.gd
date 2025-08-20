@@ -69,25 +69,25 @@ func _render_emails() -> void:
 				child.queue_free()
 		var start = current_page * emails_per_page
 		var end = min(start + emails_per_page, filtered_emails.size())
-		for i in range(start, end):
-				var email: EmailResource = filtered_emails[i]
-				var box := VBoxContainer.new()
-				inbox.add_child(box)
+                for i in range(start, end):
+                                var email: EmailResource = filtered_emails[i]
+                                var box := VBoxContainer.new()
+                                inbox.add_child(box)
 
-				var label := Label.new()
-				label.text = "From: %s  Subject: %s\n%s" % [email.from, email.subject, email.body]
-				box.add_child(label)
-
-				for action in email.buttons:
-						var btn := Button.new()
-						btn.text = action.get("text", "Action")
-						btn.pressed.connect(func(): _on_email_action(action))
-						box.add_child(btn)
+                                var btn := Button.new()
+                                btn.text = "From: %s  Subject: %s" % [email.from, email.subject]
+                                btn.pressed.connect(func(): _open_email(email))
+                                box.add_child(btn)
 
 		var total_pages = max(1, int(ceil(filtered_emails.size() / float(emails_per_page))))
 		page_label.text = "Page %d/%d" % [current_page + 1, total_pages]
 		prev_button.disabled = current_page == 0
-		next_button.disabled = current_page >= total_pages - 1
+                next_button.disabled = current_page >= total_pages - 1
+
+func _open_email(email: EmailResource) -> void:
+                var popup_scene = preload("res://components/apps/sigma_mail/email_view.tscn")
+                var key = "email_%s" % email.get_instance_id()
+                WindowManager.launch_popup(popup_scene, key, email)
 
 func _on_email_action(action: Dictionary) -> void:
 		for stat in action.get("stat_changes", {}).keys():
