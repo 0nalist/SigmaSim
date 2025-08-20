@@ -287,6 +287,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="WavesShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
+visible = false
 material = SubResource("ShaderMaterial_668nl")
 layout_mode = 1
 anchors_preset = 15
@@ -295,6 +296,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")
+
+background_name = "Waves"
 
 [node name="TopBar" type="Control" parent="."]
 layout_mode = 1
