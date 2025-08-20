@@ -16,6 +16,9 @@ var gpu_base_price: float = 100.0
 var current_gpu_price: float = gpu_base_price
 var gpu_price_growth: float = 1.2  # price multiplier each purchase
 
+var gpu_credit_requirement: float = 700
+
+
 @export var base_power: int = 10
 @export var overclock_power_multiplier: float = 1.5
 @export var burnout_rate_per_tick: float = 5.0  # Burnout chance increase per tick of overclocking (out of 1000)
@@ -89,7 +92,7 @@ func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 	emit_signal("gpus_changed")
 
 func buy_gpu() -> bool:
-	if PortfolioManager.attempt_spend(current_gpu_price):
+	if PortfolioManager.attempt_spend(current_gpu_price, gpu_credit_requirement):
 		add_gpu("")  # Add a free GPU (unassigned)
 		current_gpu_price *= gpu_price_growth
 		emit_signal("gpus_changed")
