@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/desktop/folder_shortcut.gd" id=1]
+
+[node name="FolderShortcut" type="Control"]
+script = ExtResource(1)
+size = Vector2(64,64)
+
+[node name="Icon" type="TextureRect" parent="."]
+position = Vector2(0,0)
+size = Vector2(64,64)
+
+[node name="Title" type="Label" parent="."]
+position = Vector2(0,64)
+horizontal_alignment = 1
+size = Vector2(64,16)

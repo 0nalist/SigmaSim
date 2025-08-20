@@ -4,6 +4,9 @@ extends Control
 @onready var taskbar: Control = %Taskbar
 @onready var trash_window: Pane = %TrashWindow
 @onready var background: TextureRect = %Background
+@onready var icons_layer: Control = self
+const APP_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/app_shortcut.tscn")
+const FOLDER_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/folder_shortcut.tscn")
 
 @onready var blue_warp_shader_material: ShaderMaterial = $ShaderBackgroundsContainer/BlueWarpShader.material
 @onready var comic_dots1_shader_material: ShaderMaterial = $ShaderBackgroundsContainer/ComicDotsBlueVert.material
@@ -22,6 +25,9 @@ func _ready() -> void:
 	#hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
 	WindowManager.start_panel = start_panel
+	DesktopLayoutManager.items_loaded.connect(_on_items_loaded)
+	DesktopLayoutManager.item_created.connect(_on_item_created)
+	DesktopLayoutManager.item_deleted.connect(_on_item_deleted)
 	
 	call_deferred("_deferred_load_save")
 	launch_startup_apps()
@@ -127,3 +133,39 @@ func _on_save_button_pressed() -> void:
 
 func _on_load_button_pressed() -> void:
 	SaveManager.load_from_slot(SaveManager.current_slot_id)
+
+func _on_items_loaded() -> void:
+	for child in icons_layer.get_children():
+		if child is AppShortcut or child is FolderShortcut:
+			child.queue_free()
+	var items: Array = DesktopLayoutManager.get_children(0)
+	for entry in items:
+		_spawn_item(entry)
+
+func _on_item_created(item_id: int, data: Dictionary) -> void:
+	_spawn_item(data)
+
+func _on_item_deleted(item_id: int) -> void:
+	for child in icons_layer.get_children():
+		if child.has_variable("item_id") and child.item_id == item_id:
+			child.queue_free()
+			break
+
+func _spawn_item(data: Dictionary) -> void:
+	var scene: PackedScene
+	if data.get("type", "") == "app":
+		scene = APP_SHORTCUT_SCENE
+	else:
+		scene = FOLDER_SHORTCUT_SCENE
+	var node: Control = scene.instantiate()
+	node.item_id = data.get("id", 0)
+	node.title = data.get("title", "")
+	if node.has_variable("app_name") and data.has("app_name"):
+		node.app_name = data.get("app_name", "")
+	var icon_path: String = data.get("icon_path", "")
+	if icon_path != "":
+		var tex: Texture2D = load(icon_path)
+		node.icon = tex
+	icons_layer.add_child(node)
+	var pos: Vector2 = data.get("desktop_position", Vector2.ZERO)
+	node.global_position = pos

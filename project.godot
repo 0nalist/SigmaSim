@@ -50,6 +50,7 @@ PortraitCache="*res://autoloads/portrait_cache.gd"
 StatManager="*res://autoloads/stat_manager.gd"
 Events="*res://autoloads/events.gd"
 DebugConsoleManager="*res://autoload/debug_console_manager.gd"
+DesktopLayoutManager="*res://autoloads/desktop_layout_manager.gd"
 
 [display]
 
