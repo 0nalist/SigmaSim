@@ -1,5 +1,5 @@
 extends Node
-class_name ContextMenuManager
+#Autoload ContextMenuManager
 
 var _popup_menu: PopupMenu
 var _owner: Node
@@ -7,7 +7,7 @@ var _actions: Dictionary = {}
 
 func _ready() -> void:
 	_popup_menu = PopupMenu.new()
-	get_tree().root.add_child(_popup_menu)
+	get_tree().root.add_child.call_deferred(_popup_menu)
 	_popup_menu.hide()
 	_popup_menu.id_pressed.connect(_on_id_pressed)
 
