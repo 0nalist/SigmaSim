@@ -14,9 +14,10 @@ vec3 light_blue_colormap(float x) {
     float t = clamp(x, 0.0, 1.0);
 
     // Gradient from very pale blue → sky blue → cool cyan
-    vec3 pale     = vec3(0.90, 0.95, 1.00); // pastel ice
-    vec3 mid      = vec3(0.65, 0.85, 1.00); // soft sky blue
-    vec3 deeper   = vec3(0.50, 0.75, 1.00); // subtle cyan
+    vec3 pale     = vec3(0.60, 0.65, 1.00); // cooler, less white
+	vec3 mid      = vec3(0.30, 0.55, 1.00); // clear sky blue
+	vec3 deeper   = vec3(0.20, 0.25, 0.90); // deep blue
+
 
     if (t < 0.5) {
         return mix(pale, mid, t * 2.0);
