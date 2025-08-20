@@ -857,7 +857,6 @@ pivot_offset = Vector2(36, 36)
 day_panel_scene = ExtResource("20_vxmwr")
 
 [node name="FolderShortcut" parent="." instance=ExtResource("28_rbayd")]
-anchors_preset = 0
 offset_left = 548.0
 offset_top = 386.0
 offset_right = 612.0
