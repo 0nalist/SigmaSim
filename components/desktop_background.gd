@@ -5,7 +5,6 @@ extends Control
 func _ready() -> void:
 	visible = Events.is_desktop_background_visible(background_name)
 	Events.connect("desktop_background_toggled", Callable(self, "_on_desktop_background_toggled"))
-	mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
