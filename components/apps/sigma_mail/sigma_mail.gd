@@ -26,16 +26,17 @@ func _ready() -> void:
 	_apply_filter()
 
 func _generate_dummy_emails() -> void:
-		emails.clear()
-		var dummy: EmailResource = load("res://resources/emails/dummy_email.tres")
-		if dummy:
-				emails.append(dummy)
-		for i in range(1, 50):
-				var e := EmailResource.new()
-				e.from = "user%d@example.com" % i
-				e.subject = "Subject %d" % i
-				e.body = "Body %d" % i
-				emails.append(e)
+	emails.clear()
+	#var dummy: EmailResource = load("res://resources/emails/dummy_email.tres")
+	var dummy = load("res://resources/emails/dummy_email.tres")
+	if dummy:
+			emails.append(dummy)
+	for i in range(1, 50):
+			var e := EmailResource.new()
+			e.from = "user%d@example.com" % i
+			e.subject = "Subject %d" % i
+			e.body = "Body %d" % i
+			emails.append(e)
 
 func _on_search_changed(_new_text: String) -> void:
 		_apply_filter()
