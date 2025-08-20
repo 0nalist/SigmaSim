@@ -14,7 +14,9 @@ func setup(id: int) -> void:
 func _populate() -> void:
 	for child in grid.get_children():
 		child.queue_free()
-	var items: Array = DesktopLayoutManager.get_children(folder_id)
+
+	var items: Array = DesktopLayoutManager.get_children_of(folder_id)
+
 	for entry in items:
 		var scene_path: String
 		if entry.get("type", "") == "app":

@@ -138,7 +138,9 @@ func _on_items_loaded() -> void:
 	for child in icons_layer.get_children():
 		if child is AppShortcut or child is FolderShortcut:
 			child.queue_free()
-	var items: Array = DesktopLayoutManager.get_children(0)
+
+	var items: Array = DesktopLayoutManager.get_children_of(0)
+
 	for entry in items:
 		_spawn_item(entry)
 
