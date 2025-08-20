@@ -41,4 +41,4 @@ func randomize_gap_position() -> void:
 
 
 func get_gap_center_y() -> float:
-        return position.y
+	return global_position.y
