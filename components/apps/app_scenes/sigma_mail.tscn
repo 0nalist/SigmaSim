@@ -51,6 +51,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
+
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Panel"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -59,53 +60,48 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Panel/MarginContainer"]
-layout_mode = 2
-
-[node name="Inbox" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer"]
+[node name="VBox" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 2
-size_flags_stretch_ratio = 4.0
-alignment = 2
+size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+[node name="Controls" type="HBoxContainer" parent="HBoxContainer/Panel/MarginContainer/VBox"]
 layout_mode = 2
-size_flags_vertical = 8
-text = " from: jamie95@horizon.net Subject: "
-alignment = 0
+size_flags_horizontal = 3
 
-[node name="Button2" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+[node name="SearchBar" type="LineEdit" parent="HBoxContainer/Panel/MarginContainer/VBox/Controls"]
 layout_mode = 2
-text = " from: jamie95@horizon.net Subject: "
-alignment = 0
+size_flags_horizontal = 3
+placeholder_text = "Search"
 
-[node name="Button3" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+[node name="LimitSpin" type="SpinBox" parent="HBoxContainer/Panel/MarginContainer/VBox/Controls"]
 layout_mode = 2
-text = " from: jamie95@horizon.net Subject: "
-alignment = 0
+min_value = 1.0
+max_value = 100.0
+step = 1.0
+value = 10.0
 
-[node name="Button4" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Panel/MarginContainer/VBox"]
 layout_mode = 2
-text = " from: jamie95@horizon.net Subject: "
-alignment = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Button5" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+[node name="Inbox" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer/VBox/ScrollContainer"]
 layout_mode = 2
-text = " from: jamie95@horizon.net Subject: "
-alignment = 0
+size_flags_horizontal = 3
 
-[node name="Button6" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+[node name="Pagination" type="HBoxContainer" parent="HBoxContainer/Panel/MarginContainer/VBox"]
 layout_mode = 2
-text = " from: jamie95@horizon.net Subject: "
-alignment = 0
+size_flags_horizontal = 3
 
-[node name="Button7" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+[node name="PrevButton" type="Button" parent="HBoxContainer/Panel/MarginContainer/VBox/Pagination"]
 layout_mode = 2
-text = " from: jamie95@horizon.net Subject: "
-alignment = 0
+text = "Prev"
 
-[node name="Button8" type="Button" parent="HBoxContainer/Panel/MarginContainer/ScrollContainer/Inbox"]
+[node name="PageLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/VBox/Pagination"]
 layout_mode = 2
-text = " from: jamie95@horizon.net Subject: "
-alignment = 0
+text = "Page 1/1"
+
+[node name="NextButton" type="Button" parent="HBoxContainer/Panel/MarginContainer/VBox/Pagination"]
+layout_mode = 2
+text = "Next"
