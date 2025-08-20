@@ -95,56 +95,56 @@ func get_var(key: String, default_value = null):
 	return user_data.get(key, default_value)
 
 func set_var(key: String, value) -> void:
-        user_data[key] = value
+		user_data[key] = value
 
 func color_to_dict(color: Color) -> Dictionary:
-        return {
-                "r": color.r,
-                "g": color.g,
-                "b": color.b,
-                "a": color.a,
-        }
+		return {
+				"r": color.r,
+				"g": color.g,
+				"b": color.b,
+				"a": color.a,
+		}
 
 func dict_to_color(data: Dictionary) -> Color:
-        return Color(
-                data.get("r", 0.0),
-                data.get("g", 0.0),
-                data.get("b", 0.0),
-                data.get("a", 1.0),
-        )
+		return Color(
+				data.get("r", 0.0),
+				data.get("g", 0.0),
+				data.get("b", 0.0),
+				data.get("a", 1.0),
+		)
 
 func set_shader_param(shader: String, param: String, value) -> void:
-        if not user_data.has("background_shaders"):
-                user_data["background_shaders"] = {}
-        if not user_data["background_shaders"].has(shader):
-                user_data["background_shaders"][shader] = {}
-        if value is Color:
-                user_data["background_shaders"][shader][param] = color_to_dict(value)
-        elif value is Vector2:
-                user_data["background_shaders"][shader][param] = [value.x, value.y]
-        else:
-                user_data["background_shaders"][shader][param] = value
+		if not user_data.has("background_shaders"):
+				user_data["background_shaders"] = {}
+		if not user_data["background_shaders"].has(shader):
+				user_data["background_shaders"][shader] = {}
+		if value is Color:
+				user_data["background_shaders"][shader][param] = color_to_dict(value)
+		elif value is Vector2:
+				user_data["background_shaders"][shader][param] = [value.x, value.y]
+		else:
+				user_data["background_shaders"][shader][param] = value
 
 func get_shader_param(shader: String, param: String, default_value):
-        var shaders = user_data.get("background_shaders", {})
-        var shader_dict = shaders.get(shader, {})
-        var val = shader_dict.get(param, default_value)
-        if default_value is Color:
-                if val is Dictionary:
-                        return dict_to_color(val)
-                return default_value
-        elif default_value is Vector2:
-                if val is Array and val.size() >= 2:
-                        return Vector2(val[0], val[1])
-                return default_value
-        return val
+		var shaders = user_data.get("background_shaders", {})
+		var shader_dict = shaders.get(shader, {})
+		var val = shader_dict.get(param, default_value)
+		if default_value is Color:
+				if val is Dictionary:
+						return dict_to_color(val)
+				return default_value
+		elif default_value is Vector2:
+				if val is Array and val.size() >= 2:
+						return Vector2(val[0], val[1])
+				return default_value
+		return val
 
 func reset_shader(shader: String) -> void:
-        if not DEFAULT_BACKGROUND_SHADERS.has(shader):
-                return
-        if not user_data.has("background_shaders"):
-                user_data["background_shaders"] = {}
-        user_data["background_shaders"][shader] = DEFAULT_BACKGROUND_SHADERS[shader].duplicate(true)
+		if not DEFAULT_BACKGROUND_SHADERS.has(shader):
+				return
+		if not user_data.has("background_shaders"):
+				user_data["background_shaders"] = {}
+		user_data["background_shaders"][shader] = DEFAULT_BACKGROUND_SHADERS[shader].duplicate(true)
 
 
 
@@ -155,17 +155,17 @@ func reset():
 
 
 func ensure_default_stats() -> void:
-        for key in default_user_data.keys():
-                if not user_data.has(key):
-                        user_data[key] = default_user_data[key]
-                elif key == "background_shaders":
-                        for shader in default_user_data["background_shaders"].keys():
-                                if not user_data[key].has(shader):
-                                        user_data[key][shader] = default_user_data["background_shaders"][shader].duplicate(true)
-                                else:
-                                        for param in default_user_data["background_shaders"][shader].keys():
-                                                if not user_data[key][shader].has(param):
-                                                        user_data[key][shader][param] = default_user_data["background_shaders"][shader][param]
+	for key in default_user_data.keys():
+		if not user_data.has(key):
+			user_data[key] = default_user_data[key]
+		elif key == "background_shaders":
+			for shader in default_user_data["background_shaders"].keys():
+				if not user_data[key].has(shader):
+					user_data[key][shader] = default_user_data["background_shaders"][shader].duplicate(true)
+				else:
+					for param in default_user_data["background_shaders"][shader].keys():
+						if not user_data[key][shader].has(param):
+							user_data[key][shader][param] = default_user_data["background_shaders"][shader][param]
 
 
 func djb2(s: String) -> int:

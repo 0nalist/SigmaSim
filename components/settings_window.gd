@@ -129,163 +129,163 @@ func _on_waves_button_toggled(toggled_on: bool) -> void:
 	Events.set_desktop_background_visible("Waves", toggled_on)
 
 func _on_bottom_color_picker_color_changed(color: Color) -> void:
-        waves_shader_material.set_shader_parameter("bottom_color", color)
-        PlayerManager.set_shader_param("Waves", "bottom_color", color)
+		waves_shader_material.set_shader_parameter("bottom_color", color)
+		PlayerManager.set_shader_param("Waves", "bottom_color", color)
 
 func _on_top_color_picker_color_changed(color: Color) -> void:
-        waves_shader_material.set_shader_parameter("top_color", color)
-        PlayerManager.set_shader_param("Waves", "top_color", color)
+		waves_shader_material.set_shader_parameter("top_color", color)
+		PlayerManager.set_shader_param("Waves", "top_color", color)
 
 func _on_wave_amp_slider_value_changed(value: float) -> void:
-                waves_shader_material.set_shader_parameter("wave_amp", value)
-                PlayerManager.set_shader_param("Waves", "wave_amp", value)
+				waves_shader_material.set_shader_parameter("wave_amp", value)
+				PlayerManager.set_shader_param("Waves", "wave_amp", value)
 
 func _on_wave_size_slider_value_changed(value: float) -> void:
-                waves_shader_material.set_shader_parameter("wave_size", value)
-                PlayerManager.set_shader_param("Waves", "wave_size", value)
+				waves_shader_material.set_shader_parameter("wave_size", value)
+				PlayerManager.set_shader_param("Waves", "wave_size", value)
 
 func _on_wave_time_mul_slider_value_changed(value: float) -> void:
-                waves_shader_material.set_shader_parameter("wave_time_mul", value)
-                PlayerManager.set_shader_param("Waves", "wave_time_mul", value)
+				waves_shader_material.set_shader_parameter("wave_time_mul", value)
+				PlayerManager.set_shader_param("Waves", "wave_time_mul", value)
 
 func _on_total_phases_slider_value_changed(value: float) -> void:
-                waves_shader_material.set_shader_parameter("total_phases", value)
-                PlayerManager.set_shader_param("Waves", "total_phases", value)
+				waves_shader_material.set_shader_parameter("total_phases", value)
+				PlayerManager.set_shader_param("Waves", "total_phases", value)
 
 func _on_blue_warp_stretch_slider_value_changed(value: float) -> void:
-                blue_warp_shader_material.set_shader_parameter("stretch", value)
-                PlayerManager.set_shader_param("BlueWarp", "stretch", value)
+				blue_warp_shader_material.set_shader_parameter("stretch", value)
+				PlayerManager.set_shader_param("BlueWarp", "stretch", value)
 
 func _on_blue_warp_thing1_slider_value_changed(value: float) -> void:
-                blue_warp_shader_material.set_shader_parameter("thing1", value)
-                PlayerManager.set_shader_param("BlueWarp", "thing1", value)
+				blue_warp_shader_material.set_shader_parameter("thing1", value)
+				PlayerManager.set_shader_param("BlueWarp", "thing1", value)
 
 func _on_blue_warp_thing2_slider_value_changed(value: float) -> void:
-                blue_warp_shader_material.set_shader_parameter("thing2", value)
-                PlayerManager.set_shader_param("BlueWarp", "thing2", value)
+				blue_warp_shader_material.set_shader_parameter("thing2", value)
+				PlayerManager.set_shader_param("BlueWarp", "thing2", value)
 
 func _on_blue_warp_thing3_slider_value_changed(value: float) -> void:
-                blue_warp_shader_material.set_shader_parameter("thing3", value)
-                PlayerManager.set_shader_param("BlueWarp", "thing3", value)
+				blue_warp_shader_material.set_shader_parameter("thing3", value)
+				PlayerManager.set_shader_param("BlueWarp", "thing3", value)
 
 func _on_blue_warp_speed_slider_value_changed(value: float) -> void:
-                blue_warp_shader_material.set_shader_parameter("speed", value)
-                PlayerManager.set_shader_param("BlueWarp", "speed", value)
+				blue_warp_shader_material.set_shader_parameter("speed", value)
+				PlayerManager.set_shader_param("BlueWarp", "speed", value)
 
 func _on_comic_dots_color_picker_color_changed(color: Color) -> void:
-                comic_dots1_shader_material.set_shader_parameter("circle_color", color)
-                comic_dots2_shader_material.set_shader_parameter("circle_color", color)
-                PlayerManager.set_shader_param("ComicDots", "circle_color", color)
+				comic_dots1_shader_material.set_shader_parameter("circle_color", color)
+				comic_dots2_shader_material.set_shader_parameter("circle_color", color)
+				PlayerManager.set_shader_param("ComicDots", "circle_color", color)
 
 func _on_comic_dots_multiplier_slider_value_changed(value: float) -> void:
-                comic_dots1_shader_material.set_shader_parameter("circle_multiplier", value)
-                comic_dots2_shader_material.set_shader_parameter("circle_multiplier", value)
-                PlayerManager.set_shader_param("ComicDots", "circle_multiplier", value)
+				comic_dots1_shader_material.set_shader_parameter("circle_multiplier", value)
+				comic_dots2_shader_material.set_shader_parameter("circle_multiplier", value)
+				PlayerManager.set_shader_param("ComicDots", "circle_multiplier", value)
 
 func _on_comic_dots_speed_slider_value_changed(value: float) -> void:
-                comic_dots1_shader_material.set_shader_parameter("speed", value)
-                comic_dots2_shader_material.set_shader_parameter("speed", value)
-                PlayerManager.set_shader_param("ComicDots", "speed", value)
+				comic_dots1_shader_material.set_shader_parameter("speed", value)
+				comic_dots2_shader_material.set_shader_parameter("speed", value)
+				PlayerManager.set_shader_param("ComicDots", "speed", value)
 
 func _on_electric_button_toggled(toggled_on: bool) -> void:
 		Events.set_desktop_background_visible("Electric", toggled_on)
 
 func _on_electric_bg_color_picker_color_changed(color: Color) -> void:
-                electric_shader_material.set_shader_parameter("background_color", color)
-                PlayerManager.set_shader_param("Electric", "background_color", color)
+				electric_shader_material.set_shader_parameter("background_color", color)
+				PlayerManager.set_shader_param("Electric", "background_color", color)
 
 func _on_electric_line_color_picker_color_changed(color: Color) -> void:
-                electric_shader_material.set_shader_parameter("line_color", color)
-                PlayerManager.set_shader_param("Electric", "line_color", color)
+				electric_shader_material.set_shader_parameter("line_color", color)
+				PlayerManager.set_shader_param("Electric", "line_color", color)
 
 func _on_electric_freq_slider_value_changed(value: float) -> void:
-                electric_shader_material.set_shader_parameter("line_freq", value)
-                PlayerManager.set_shader_param("Electric", "line_freq", value)
+				electric_shader_material.set_shader_parameter("line_freq", value)
+				PlayerManager.set_shader_param("Electric", "line_freq", value)
 
 func _on_electric_height_slider_value_changed(value: float) -> void:
-                electric_shader_material.set_shader_parameter("height", value)
-                PlayerManager.set_shader_param("Electric", "height", value)
+				electric_shader_material.set_shader_parameter("height", value)
+				PlayerManager.set_shader_param("Electric", "height", value)
 
 func _on_electric_speed_slider_value_changed(value: float) -> void:
-                electric_shader_material.set_shader_parameter("speed", value)
-                PlayerManager.set_shader_param("Electric", "speed", value)
+				electric_shader_material.set_shader_parameter("speed", value)
+				PlayerManager.set_shader_param("Electric", "speed", value)
 
 func _on_electric_scale_x_slider_value_changed(value: float) -> void:
-                var scale: Vector2 = electric_shader_material.get_shader_parameter("scale")
-                scale.x = value
-                electric_shader_material.set_shader_parameter("scale", scale)
-                PlayerManager.set_shader_param("Electric", "scale_x", value)
+				var scale: Vector2 = electric_shader_material.get_shader_parameter("scale")
+				scale.x = value
+				electric_shader_material.set_shader_parameter("scale", scale)
+				PlayerManager.set_shader_param("Electric", "scale_x", value)
 
 func _on_electric_scale_y_slider_value_changed(value: float) -> void:
-                var scale: Vector2 = electric_shader_material.get_shader_parameter("scale")
-                scale.y = value
-                electric_shader_material.set_shader_parameter("scale", scale)
-                PlayerManager.set_shader_param("Electric", "scale_y", value)
+				var scale: Vector2 = electric_shader_material.get_shader_parameter("scale")
+				scale.y = value
+				electric_shader_material.set_shader_parameter("scale", scale)
+				PlayerManager.set_shader_param("Electric", "scale_y", value)
 
 func _on_waves_reset_button_pressed() -> void:
-        PlayerManager.reset_shader("Waves")
-        var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Waves"]
-        var bottom = PlayerManager.dict_to_color(d["bottom_color"])
-        var top = PlayerManager.dict_to_color(d["top_color"])
-        waves_shader_material.set_shader_parameter("bottom_color", bottom)
-        waves_shader_material.set_shader_parameter("top_color", top)
-        waves_shader_material.set_shader_parameter("wave_amp", d["wave_amp"])
-        waves_shader_material.set_shader_parameter("wave_size", d["wave_size"])
-        waves_shader_material.set_shader_parameter("wave_time_mul", d["wave_time_mul"])
-        waves_shader_material.set_shader_parameter("total_phases", d["total_phases"])
-        bottom_color_picker.color = bottom
-        top_color_picker.color = top
-        wave_amp_slider.value = d["wave_amp"]
-        wave_size_slider.value = d["wave_size"]
-        wave_time_mul_slider.value = d["wave_time_mul"]
-        total_phases_slider.value = d["total_phases"]
+		PlayerManager.reset_shader("Waves")
+		var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Waves"]
+		var bottom = PlayerManager.dict_to_color(d["bottom_color"])
+		var top = PlayerManager.dict_to_color(d["top_color"])
+		waves_shader_material.set_shader_parameter("bottom_color", bottom)
+		waves_shader_material.set_shader_parameter("top_color", top)
+		waves_shader_material.set_shader_parameter("wave_amp", d["wave_amp"])
+		waves_shader_material.set_shader_parameter("wave_size", d["wave_size"])
+		waves_shader_material.set_shader_parameter("wave_time_mul", d["wave_time_mul"])
+		waves_shader_material.set_shader_parameter("total_phases", d["total_phases"])
+		bottom_color_picker.color = bottom
+		top_color_picker.color = top
+		wave_amp_slider.value = d["wave_amp"]
+		wave_size_slider.value = d["wave_size"]
+		wave_time_mul_slider.value = d["wave_time_mul"]
+		total_phases_slider.value = d["total_phases"]
 
 func _on_blue_warp_reset_button_pressed() -> void:
-        PlayerManager.reset_shader("BlueWarp")
-        var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["BlueWarp"]
-        blue_warp_shader_material.set_shader_parameter("stretch", d["stretch"])
-        blue_warp_shader_material.set_shader_parameter("thing1", d["thing1"])
-        blue_warp_shader_material.set_shader_parameter("thing2", d["thing2"])
-        blue_warp_shader_material.set_shader_parameter("thing3", d["thing3"])
-        blue_warp_shader_material.set_shader_parameter("speed", d["speed"])
-        blue_warp_stretch_slider.value = d["stretch"]
-        blue_warp_thing1_slider.value = d["thing1"]
-        blue_warp_thing2_slider.value = d["thing2"]
-        blue_warp_thing3_slider.value = d["thing3"]
-        blue_warp_speed_slider.value = d["speed"]
+		PlayerManager.reset_shader("BlueWarp")
+		var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["BlueWarp"]
+		blue_warp_shader_material.set_shader_parameter("stretch", d["stretch"])
+		blue_warp_shader_material.set_shader_parameter("thing1", d["thing1"])
+		blue_warp_shader_material.set_shader_parameter("thing2", d["thing2"])
+		blue_warp_shader_material.set_shader_parameter("thing3", d["thing3"])
+		blue_warp_shader_material.set_shader_parameter("speed", d["speed"])
+		blue_warp_stretch_slider.value = d["stretch"]
+		blue_warp_thing1_slider.value = d["thing1"]
+		blue_warp_thing2_slider.value = d["thing2"]
+		blue_warp_thing3_slider.value = d["thing3"]
+		blue_warp_speed_slider.value = d["speed"]
 
 func _on_comic_dots_reset_button_pressed() -> void:
-        PlayerManager.reset_shader("ComicDots")
-        var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["ComicDots"]
-        var color = PlayerManager.dict_to_color(d["circle_color"])
-        comic_dots1_shader_material.set_shader_parameter("circle_color", color)
-        comic_dots2_shader_material.set_shader_parameter("circle_color", color)
-        comic_dots1_shader_material.set_shader_parameter("circle_multiplier", d["circle_multiplier"])
-        comic_dots2_shader_material.set_shader_parameter("circle_multiplier", d["circle_multiplier"])
-        comic_dots1_shader_material.set_shader_parameter("speed", d["speed"])
-        comic_dots2_shader_material.set_shader_parameter("speed", d["speed"])
-        comic_dots_color_picker.color = color
-        comic_dots_multiplier_slider.value = d["circle_multiplier"]
-        comic_dots_speed_slider.value = d["speed"]
+		PlayerManager.reset_shader("ComicDots")
+		var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["ComicDots"]
+		var color = PlayerManager.dict_to_color(d["circle_color"])
+		comic_dots1_shader_material.set_shader_parameter("circle_color", color)
+		comic_dots2_shader_material.set_shader_parameter("circle_color", color)
+		comic_dots1_shader_material.set_shader_parameter("circle_multiplier", d["circle_multiplier"])
+		comic_dots2_shader_material.set_shader_parameter("circle_multiplier", d["circle_multiplier"])
+		comic_dots1_shader_material.set_shader_parameter("speed", d["speed"])
+		comic_dots2_shader_material.set_shader_parameter("speed", d["speed"])
+		comic_dots_color_picker.color = color
+		comic_dots_multiplier_slider.value = d["circle_multiplier"]
+		comic_dots_speed_slider.value = d["speed"]
 
 func _on_electric_reset_button_pressed() -> void:
-        PlayerManager.reset_shader("Electric")
-        var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Electric"]
-        var bg = PlayerManager.dict_to_color(d["background_color"])
-        var line = PlayerManager.dict_to_color(d["line_color"])
-        electric_shader_material.set_shader_parameter("background_color", bg)
-        electric_shader_material.set_shader_parameter("line_color", line)
-        electric_shader_material.set_shader_parameter("line_freq", d["line_freq"])
-        electric_shader_material.set_shader_parameter("height", d["height"])
-        electric_shader_material.set_shader_parameter("speed", d["speed"])
-        electric_shader_material.set_shader_parameter("scale", Vector2(d["scale_x"], d["scale_y"]))
-        electric_bg_color_picker.color = bg
-        electric_line_color_picker.color = line
-        electric_freq_slider.value = d["line_freq"]
-        electric_height_slider.value = d["height"]
-        electric_speed_slider.value = d["speed"]
-        electric_scale_x_slider.value = d["scale_x"]
-        electric_scale_y_slider.value = d["scale_y"]
+		PlayerManager.reset_shader("Electric")
+		var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Electric"]
+		var bg = PlayerManager.dict_to_color(d["background_color"])
+		var line = PlayerManager.dict_to_color(d["line_color"])
+		electric_shader_material.set_shader_parameter("background_color", bg)
+		electric_shader_material.set_shader_parameter("line_color", line)
+		electric_shader_material.set_shader_parameter("line_freq", d["line_freq"])
+		electric_shader_material.set_shader_parameter("height", d["height"])
+		electric_shader_material.set_shader_parameter("speed", d["speed"])
+		electric_shader_material.set_shader_parameter("scale", Vector2(d["scale_x"], d["scale_y"]))
+		electric_bg_color_picker.color = bg
+		electric_line_color_picker.color = line
+		electric_freq_slider.value = d["line_freq"]
+		electric_height_slider.value = d["height"]
+		electric_speed_slider.value = d["speed"]
+		electric_scale_x_slider.value = d["scale_x"]
+		electric_scale_y_slider.value = d["scale_y"]
 
 func _on_minute_passed(_total_minutes: int) -> void:
 		_update_autosave_timer_label()

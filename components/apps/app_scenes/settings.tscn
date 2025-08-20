@@ -497,10 +497,9 @@ text = "Freq"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = 0.0
 max_value = 20.0
 step = 0.01
-value = 5.085
+value = 5.09
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -513,7 +512,6 @@ text = "Height"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = 0.0
 max_value = 1.0
 step = 0.01
 value = 0.6
@@ -529,10 +527,9 @@ text = "Speed"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = 0.0
 max_value = 10.0
 step = 0.01
-value = 2.555
+value = 2.56
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -577,11 +574,13 @@ text = "Reset"
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer3/BlueWarpThing2Slider" to="." method="_on_blue_warp_thing2_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer4/BlueWarpThing3Slider" to="." method="_on_blue_warp_thing3_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer5/BlueWarpSpeedSlider" to="." method="_on_blue_warp_speed_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/BlueWarpResetButton" to="." method="_on_blue_warp_reset_button_pressed"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsContainer/MarginContainer/VBoxContainer/ComicDots1Button" to="." method="_on_comic_dots_1_button_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsContainer/MarginContainer/VBoxContainer/ComicDots2Button" to="." method="_on_comic_dots_2_button_toggled"]
 [connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsColorPicker" to="." method="_on_comic_dots_color_picker_color_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsMultiplierSlider" to="." method="_on_comic_dots_multiplier_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer3/ComicDotsSpeedSlider" to="." method="_on_comic_dots_speed_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsContainer/MarginContainer/VBoxContainer/ComicDotsResetButton" to="." method="_on_comic_dots_reset_button_pressed"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/WavesButton" to="." method="_on_waves_button_toggled"]
 [connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer/BottomColorPicker" to="." method="_on_bottom_color_picker_color_changed"]
 [connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer/TopColorPicker" to="." method="_on_top_color_picker_color_changed"]
@@ -589,6 +588,7 @@ text = "Reset"
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer3/WaveSizeSlider" to="." method="_on_wave_size_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer4/WaveTimeMulSlider" to="." method="_on_wave_time_mul_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer5/TotalPhasesSlider" to="." method="_on_total_phases_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/WavesResetButton" to="." method="_on_waves_reset_button_pressed"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/ElectricButton" to="." method="_on_electric_button_toggled"]
 [connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer/ElectricBGColorPicker" to="." method="_on_electric_bg_color_picker_color_changed"]
 [connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer/ElectricLineColorPicker" to="." method="_on_electric_line_color_picker_color_changed"]
@@ -597,7 +597,4 @@ text = "Reset"
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer4/ElectricSpeedSlider" to="." method="_on_electric_speed_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer5/ElectricScaleXSlider" to="." method="_on_electric_scale_x_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer6/ElectricScaleYSlider" to="." method="_on_electric_scale_y_slider_value_changed"]
-[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/BlueWarpResetButton" to="." method="_on_blue_warp_reset_button_pressed"]
-[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsContainer/MarginContainer/VBoxContainer/ComicDotsResetButton" to="." method="_on_comic_dots_reset_button_pressed"]
-[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/WavesResetButton" to="." method="_on_waves_reset_button_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/ElectricResetButton" to="." method="_on_electric_reset_button_pressed"]
