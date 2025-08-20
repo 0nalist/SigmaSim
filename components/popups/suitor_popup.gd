@@ -29,13 +29,14 @@ func setup(target: NPC) -> void:
 	npc = target
 	name_label.text = npc.full_name
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
-		portrait_view.portrait_creator_enabled = false
+		portrait_view.portrait_creator_enabled = true
 		portrait_view.apply_config(npc.portrait_config)
 		gift_cost = 25.0
 		date_cost = 200.0
 		breakup_reward = 0.0
 		apologize_cost = 10
 		_update_all()
+
 
 func _ready() -> void:
 	gift_button.pressed.connect(_on_gift_pressed)
@@ -47,7 +48,9 @@ func _ready() -> void:
 	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
 	
 	await get_tree().process_frame
-	Events.fumble_talk_therapy_purchased.connect(_on_talk_therapy_purchased)
+	if Events.has_signal("fumble_talk_therapy_purchased"):
+		Events.connect("fumble_talk_therapy_purchased", _on_talk_therapy_purchased)
+
 
 func _process(delta: float) -> void:
 	if npc == null or progress_paused or npc.relationship_stage >= NPC.RelationshipStage.DIVORCED:

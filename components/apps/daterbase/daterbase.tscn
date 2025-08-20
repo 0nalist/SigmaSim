@@ -20,6 +20,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.435294)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -37,7 +38,7 @@ mouse_filter = 1
 theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Daterbase"
-default_window_size = Vector2(670, 480)
+default_window_size = Vector2(800, 480)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_j8wav")
@@ -59,42 +60,46 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 12
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/MainHBox"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBox/MainHBox/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/MainHBox/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_du6fw")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/MainHBox/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer"]
+[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer/TabBar"]
-custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
-
-[node name="DaterbaseTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer/TabBar"]
+[node name="DaterbaseTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "Daterbase"
 
-[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer/TabBar"]
+[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "SQL"
 
-[node name="Control2" type="Control" parent="MarginContainer/VBox/MainHBox/PanelContainer/MarginContainer/TabBar"]
-custom_minimum_size = Vector2(0, 12)
+[node name="Control2" type="Control" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
+custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 
 [node name="ContentArea" type="VBoxContainer" parent="MarginContainer/VBox/MainHBox"]
