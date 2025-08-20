@@ -17,7 +17,7 @@ var results_tree: Tree
 
 # --- Table state ---
 var current_headers: Array[String] = []
-var current_rows: Array = []        # Array[Dictionary]
+var current_rows: Array = []	    # Array[Dictionary]
 var sort_column_index: int = -1
 var sort_ascending: bool = true
 
@@ -39,6 +39,8 @@ var column_user_min_widths: Array[int] = []  # per-column min widths from user d
 var _active_tab: StringName = &"Daterbase"
 var _ran_initial_show_all: bool = false
 
+var _portrait_views_by_npc: Dictionary = {}
+
 const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
 const SUITOR_POPUP_SCENE: PackedScene = preload("res://components/popups/suitor_popup.tscn")
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
@@ -49,6 +51,8 @@ func _ready() -> void:
 	show_all_button.pressed.connect(_on_show_all_pressed)
 	daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
 	sql_tab_button.pressed.connect(_on_sql_tab_pressed)
+
+	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
 
 	numeric_regex = RegEx.new()
 	numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
@@ -165,6 +169,7 @@ func _is_safe_select(query_text: String) -> bool:
 func _load_default_entries() -> void:
 	for child in results_container_daterbase.get_children():
 		child.queue_free()
+	_portrait_views_by_npc.clear()
 	
 	var header := HBoxContainer.new()
 	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -202,6 +207,7 @@ func _load_default_entries() -> void:
 			portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			if npc_object.portrait_config != null:
 					portrait.apply_config(npc_object.portrait_config)
+			_portrait_views_by_npc[entry_dictionary.npc_id] = portrait
 			row.add_child(portrait)
 			var name_label := Label.new()
 			name_label.text = npc_object.full_name
@@ -255,6 +261,11 @@ func _on_row_gui_input(event: InputEvent, npc: NPC) -> void:
 func _open_suitor_popup(npc: NPC) -> void:
 	var key: String = "suitor_%d" % npc.get_instance_id()
 	WindowManager.launch_popup(SUITOR_POPUP_SCENE, key, npc)
+
+func _on_npc_portrait_changed(idx: int, cfg: PortraitConfig) -> void:
+	if _portrait_views_by_npc.has(idx):
+		var portrait: PortraitView = _portrait_views_by_npc[idx]
+		portrait.apply_config(cfg)
 
 func _display_generic_rows(result_rows: Array) -> void:
 	if result_rows.size() == 0:
