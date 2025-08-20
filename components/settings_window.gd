@@ -45,20 +45,20 @@ func _ready() -> void:
 		comic_dots1_button.button_pressed = Events.is_desktop_background_visible("ComicDots1")
 		comic_dots2_button.button_pressed = Events.is_desktop_background_visible("ComicDots2")
 		waves_button.button_pressed = Events.is_desktop_background_visible("Waves")
-                bottom_color_picker.color = waves_shader_material.get_shader_parameter("bottom_color")
-                top_color_picker.color = waves_shader_material.get_shader_parameter("top_color")
-                wave_amp_slider.value = waves_shader_material.get_shader_parameter("wave_amp")
-                wave_size_slider.value = waves_shader_material.get_shader_parameter("wave_size")
-                wave_time_mul_slider.value = waves_shader_material.get_shader_parameter("wave_time_mul")
-                total_phases_slider.value = waves_shader_material.get_shader_parameter("total_phases")
-                blue_warp_stretch_slider.value = blue_warp_shader_material.get_shader_parameter("stretch")
-                blue_warp_thing1_slider.value = blue_warp_shader_material.get_shader_parameter("thing1")
-                blue_warp_thing2_slider.value = blue_warp_shader_material.get_shader_parameter("thing2")
-                blue_warp_thing3_slider.value = blue_warp_shader_material.get_shader_parameter("thing3")
-                blue_warp_speed_slider.value = blue_warp_shader_material.get_shader_parameter("speed")
-                comic_dots_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
-                comic_dots_multiplier_slider.value = comic_dots1_shader_material.get_shader_parameter("circle_multiplier")
-                comic_dots_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
+		bottom_color_picker.color = waves_shader_material.get_shader_parameter("bottom_color")
+		top_color_picker.color = waves_shader_material.get_shader_parameter("top_color")
+		wave_amp_slider.value = waves_shader_material.get_shader_parameter("wave_amp")
+		wave_size_slider.value = waves_shader_material.get_shader_parameter("wave_size")
+		wave_time_mul_slider.value = waves_shader_material.get_shader_parameter("wave_time_mul")
+		total_phases_slider.value = waves_shader_material.get_shader_parameter("total_phases")
+		blue_warp_stretch_slider.value = blue_warp_shader_material.get_shader_parameter("stretch")
+		blue_warp_thing1_slider.value = blue_warp_shader_material.get_shader_parameter("thing1")
+		blue_warp_thing2_slider.value = blue_warp_shader_material.get_shader_parameter("thing2")
+		blue_warp_thing3_slider.value = blue_warp_shader_material.get_shader_parameter("thing3")
+		blue_warp_speed_slider.value = blue_warp_shader_material.get_shader_parameter("speed")
+		comic_dots_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
+		comic_dots_multiplier_slider.value = comic_dots1_shader_material.get_shader_parameter("circle_multiplier")
+		comic_dots_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
 
 func update_checked_mode() -> void:
 	var mode = DisplayServer.window_get_mode()
@@ -114,46 +114,46 @@ func _on_bottom_color_picker_color_changed(color: Color) -> void:
 	waves_shader_material.set_shader_parameter("bottom_color", color)
 
 func _on_top_color_picker_color_changed(color: Color) -> void:
-        waves_shader_material.set_shader_parameter("top_color", color)
+		waves_shader_material.set_shader_parameter("top_color", color)
 
 func _on_wave_amp_slider_value_changed(value: float) -> void:
-        waves_shader_material.set_shader_parameter("wave_amp", value)
+		waves_shader_material.set_shader_parameter("wave_amp", value)
 
 func _on_wave_size_slider_value_changed(value: float) -> void:
-        waves_shader_material.set_shader_parameter("wave_size", value)
+		waves_shader_material.set_shader_parameter("wave_size", value)
 
 func _on_wave_time_mul_slider_value_changed(value: float) -> void:
-        waves_shader_material.set_shader_parameter("wave_time_mul", value)
+		waves_shader_material.set_shader_parameter("wave_time_mul", value)
 
 func _on_total_phases_slider_value_changed(value: float) -> void:
-        waves_shader_material.set_shader_parameter("total_phases", value)
+		waves_shader_material.set_shader_parameter("total_phases", value)
 
 func _on_blue_warp_stretch_slider_value_changed(value: float) -> void:
-        blue_warp_shader_material.set_shader_parameter("stretch", value)
+		blue_warp_shader_material.set_shader_parameter("stretch", value)
 
 func _on_blue_warp_thing1_slider_value_changed(value: float) -> void:
-        blue_warp_shader_material.set_shader_parameter("thing1", value)
+		blue_warp_shader_material.set_shader_parameter("thing1", value)
 
 func _on_blue_warp_thing2_slider_value_changed(value: float) -> void:
-        blue_warp_shader_material.set_shader_parameter("thing2", value)
+		blue_warp_shader_material.set_shader_parameter("thing2", value)
 
 func _on_blue_warp_thing3_slider_value_changed(value: float) -> void:
-        blue_warp_shader_material.set_shader_parameter("thing3", value)
+		blue_warp_shader_material.set_shader_parameter("thing3", value)
 
 func _on_blue_warp_speed_slider_value_changed(value: float) -> void:
-        blue_warp_shader_material.set_shader_parameter("speed", value)
+		blue_warp_shader_material.set_shader_parameter("speed", value)
 
 func _on_comic_dots_color_picker_color_changed(color: Color) -> void:
-        comic_dots1_shader_material.set_shader_parameter("circle_color", color)
-        comic_dots2_shader_material.set_shader_parameter("circle_color", color)
+		comic_dots1_shader_material.set_shader_parameter("circle_color", color)
+		comic_dots2_shader_material.set_shader_parameter("circle_color", color)
 
 func _on_comic_dots_multiplier_slider_value_changed(value: float) -> void:
-        comic_dots1_shader_material.set_shader_parameter("circle_multiplier", value)
-        comic_dots2_shader_material.set_shader_parameter("circle_multiplier", value)
+		comic_dots1_shader_material.set_shader_parameter("circle_multiplier", value)
+		comic_dots2_shader_material.set_shader_parameter("circle_multiplier", value)
 
 func _on_comic_dots_speed_slider_value_changed(value: float) -> void:
-        comic_dots1_shader_material.set_shader_parameter("speed", value)
-        comic_dots2_shader_material.set_shader_parameter("speed", value)
+		comic_dots1_shader_material.set_shader_parameter("speed", value)
+		comic_dots2_shader_material.set_shader_parameter("speed", value)
 
 func _on_minute_passed(_total_minutes: int) -> void:
 		_update_autosave_timer_label()
