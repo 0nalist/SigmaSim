@@ -164,7 +164,62 @@ layout_mode = 2
 focus_mode = 0
 text = "Comic Dots 2"
 
+[node name="WavesButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Waves"
+
+[node name="BottomColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TopColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+color = Color(0.868811, 5.77569e-07, 0.459911, 1)
+
+[node name="WaveAmpSpinBox" type="SpinBox" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.0
+max_value = 0.5
+step = 0.01
+value = 0.082
+
+[node name="WaveSizeSpinBox" type="SpinBox" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+step = 0.01
+value = 2.253
+
+[node name="WaveTimeMulSpinBox" type="SpinBox" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.01
+max_value = 2.0
+step = 0.01
+value = 0.01
+
+[node name="TotalPhasesSpinBox" type="SpinBox" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 2.0
+max_value = 600.0
+step = 1.0
+value = 6.0
+
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/BlueWarpButton" to="." method="_on_blue_warp_button_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/ComicDots1Button" to="." method="_on_comic_dots_1_button_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/ComicDots2Button" to="." method="_on_comic_dots_2_button_toggled"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/WavesButton" to="." method="_on_waves_button_toggled"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/DesktopBackground/BottomColorPicker" to="." method="_on_bottom_color_picker_color_changed"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/DesktopBackground/TopColorPicker" to="." method="_on_top_color_picker_color_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/DesktopBackground/WaveAmpSpinBox" to="." method="_on_wave_amp_spin_box_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/DesktopBackground/WaveSizeSpinBox" to="." method="_on_wave_size_spin_box_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/DesktopBackground/WaveTimeMulSpinBox" to="." method="_on_wave_time_mul_spin_box_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/DesktopBackground/TotalPhasesSpinBox" to="." method="_on_total_phases_spin_box_value_changed"]
