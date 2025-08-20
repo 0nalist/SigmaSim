@@ -1,0 +1,11 @@
+{
+  "id": "email_hidden_upgrade",
+  "name": "Hidden Inbox Upgrade",
+  "description": "Applied secretly via email.",
+  "effects": [],
+  "systems": ["email"],
+  "dependencies": [],
+  "cost_per_level": {},
+  "max_level": 1,
+  "repeatable": false
+}

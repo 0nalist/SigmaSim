@@ -74,12 +74,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Search"
 
-[node name="LimitSpin" type="SpinBox" parent="HBoxContainer/Panel/MarginContainer/VBox/Controls"]
+[node name="LimitOption" type="OptionButton" parent="HBoxContainer/Panel/MarginContainer/VBox/Controls"]
 layout_mode = 2
-min_value = 1.0
-max_value = 100.0
-step = 1.0
-value = 10.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Panel/MarginContainer/VBox"]
 layout_mode = 2
