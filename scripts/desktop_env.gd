@@ -69,16 +69,21 @@ func _apply_shader_settings() -> void:
 		blue_warp_shader_material.set_shader_parameter("thing3", PlayerManager.get_shader_param("BlueWarp", "thing3", bw_def["thing3"]))
 		blue_warp_shader_material.set_shader_parameter("speed", PlayerManager.get_shader_param("BlueWarp", "speed", bw_def["speed"]))
 
-		var cd_def = defaults["ComicDots"]
-		var cd_color = PlayerManager.get_shader_param("ComicDots", "circle_color", PlayerManager.dict_to_color(cd_def["circle_color"]))
-		var cd_mult = PlayerManager.get_shader_param("ComicDots", "circle_multiplier", cd_def["circle_multiplier"])
-		var cd_speed = PlayerManager.get_shader_param("ComicDots", "speed", cd_def["speed"])
-		comic_dots1_shader_material.set_shader_parameter("circle_color", cd_color)
-		comic_dots2_shader_material.set_shader_parameter("circle_color", cd_color)
-		comic_dots1_shader_material.set_shader_parameter("circle_multiplier", cd_mult)
-		comic_dots2_shader_material.set_shader_parameter("circle_multiplier", cd_mult)
-		comic_dots1_shader_material.set_shader_parameter("speed", cd_speed)
-		comic_dots2_shader_material.set_shader_parameter("speed", cd_speed)
+                var cd1_def = defaults["ComicDots1"]
+                var cd1_color = PlayerManager.get_shader_param("ComicDots1", "circle_color", PlayerManager.dict_to_color(cd1_def["circle_color"]))
+                var cd1_mult = PlayerManager.get_shader_param("ComicDots1", "circle_multiplier", cd1_def["circle_multiplier"])
+                var cd1_speed = PlayerManager.get_shader_param("ComicDots1", "speed", cd1_def["speed"])
+                comic_dots1_shader_material.set_shader_parameter("circle_color", cd1_color)
+                comic_dots1_shader_material.set_shader_parameter("circle_multiplier", cd1_mult)
+                comic_dots1_shader_material.set_shader_parameter("speed", cd1_speed)
+
+                var cd2_def = defaults["ComicDots2"]
+                var cd2_color = PlayerManager.get_shader_param("ComicDots2", "circle_color", PlayerManager.dict_to_color(cd2_def["circle_color"]))
+                var cd2_mult = PlayerManager.get_shader_param("ComicDots2", "circle_multiplier", cd2_def["circle_multiplier"])
+                var cd2_speed = PlayerManager.get_shader_param("ComicDots2", "speed", cd2_def["speed"])
+                comic_dots2_shader_material.set_shader_parameter("circle_color", cd2_color)
+                comic_dots2_shader_material.set_shader_parameter("circle_multiplier", cd2_mult)
+                comic_dots2_shader_material.set_shader_parameter("speed", cd2_speed)
 
 		var e_def = defaults["Electric"]
 		var bg_color = PlayerManager.get_shader_param("Electric", "background_color", PlayerManager.dict_to_color(e_def["background_color"]))

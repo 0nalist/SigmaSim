@@ -9,7 +9,12 @@ const DEFAULT_BACKGROUND_SHADERS := {
 "thing3": 0.8,
 "speed": 0.03,
 },
-"ComicDots": {
+"ComicDots1": {
+"circle_color": {"r": 0.00000481308, "g": 0.665883, "b": 0.95733, "a": 1.0},
+"circle_multiplier": 32.0,
+"speed": 0.01,
+},
+"ComicDots2": {
 "circle_color": {"r": 0.00000481308, "g": 0.665883, "b": 0.95733, "a": 1.0},
 "circle_multiplier": 32.0,
 "speed": 0.01,
