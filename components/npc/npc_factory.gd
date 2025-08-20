@@ -105,7 +105,64 @@ static func create_npc(npc_index: int) -> NPC:
 	# Wall posts, etc, if needed...
 	# npc.wall_posts = []
 
-	return npc
+        return npc
+
+static func create_npc_from_name(full_name: String) -> NPC:
+        var parts := full_name.strip_edges().split(" ")
+        var first := parts.size() > 0 ? parts[0] : ""
+        var middle := parts.size() > 2 ? parts[1].left(1).to_upper() : ""
+        var last := parts.size() > 1 ? parts[parts.size() - 1] : ""
+
+        var npc := NPC.new()
+        npc.full_name = full_name
+        npc.first_name = first
+        npc.middle_initial = middle
+        npc.last_name = last
+        npc.gender_vector = _gender_vector_from_first(first)
+        npc.username = _generate_username(npc)
+        npc.occupation = "Unemployed"
+        npc.relationship_status = "Single"
+
+        var ocean := PersonalityEngine.generate_ocean(full_name)
+        npc.ocean = ocean
+        npc.openness = ocean.openness
+        npc.conscientiousness = ocean.conscientiousness
+        npc.extraversion = ocean.extraversion
+        npc.agreeableness = ocean.agreeableness
+        npc.neuroticism = ocean.neuroticism
+
+        npc.attractiveness = attractiveness_from_name(full_name)
+
+        var greek := PersonalityEngine.get_greek(ocean)
+        for stat in greek.keys():
+                npc.set(stat, greek[stat])
+
+        npc.mbti = PersonalityEngine.get_mbti(ocean)
+        npc.zodiac = PersonalityEngine.get_zodiac(full_name)
+        npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
+
+        npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
+
+        npc.tags.clear()
+        npc.tags.append_array(generate_npc_tags(full_name, TAG_DATA, 3))
+
+        npc.likes.clear()
+        npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
+
+        npc.fumble_bio = generate_npc_fumble_bio(npc)
+
+        npc.preferred_pet_names = _generate_pet_names(full_name, "preferred")
+        npc.player_pet_names = _generate_pet_names(full_name, "player")
+
+        npc.portrait_config = PortraitFactory.generate_config_for_name(full_name)
+
+        return npc
+
+static func _gender_vector_from_first(first: String) -> Vector3:
+        for entry in NameManager.first_names:
+                if entry.name.to_lower() == first.to_lower():
+                        return entry.gender_vector
+        return Vector3(0, 0, 1)
 
 
 
