@@ -41,6 +41,4 @@ func _on_gui_input(event: InputEvent) -> void:
 func _open_folder() -> void:
 	var scene: PackedScene = preload("res://components/desktop/folder_window.tscn")
 	var pane: Pane = scene.instantiate()
-	if pane.has_method("setup"):
-		pane.call_deferred("setup", item_id)
-	WindowManager.launch_pane_instance(pane)
+	WindowManager.launch_pane_instance(pane, item_id)
