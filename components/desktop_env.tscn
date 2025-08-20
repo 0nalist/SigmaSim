@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=47 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -11,6 +11,7 @@
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
 [ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="7_c7kal"]
 [ext_resource type="Shader" uid="uid://bnamg60bf362u" path="res://assets/shaders/pixel_planet_shader.gdshader" id="7_ptlp0"]
+[ext_resource type="Shader" uid="uid://t13ojurwyi0y" path="res://assets/shaders/discrete_ocean_waves_shader.gdshader" id="8_iij0d"]
 [ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://components/clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="9_m483i"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="10_0utxc"]
@@ -113,6 +114,15 @@ shader_parameter/dither_levels = 0
 shader_parameter/shading_noise_cell_amount = 40
 shader_parameter/shading_noise_strength = 0.3
 shader_parameter/shading_noise_period = Vector3(9.5, 9.5, 9.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_668nl"]
+shader = ExtResource("8_iij0d")
+shader_parameter/bottom_color = Color(0, 0, 0, 1)
+shader_parameter/top_color = Color(0.868811, 5.77569e-07, 0.459911, 1)
+shader_parameter/wave_amp = 0.082
+shader_parameter/wave_size = 2.253
+shader_parameter/wave_time_mul = 0.01
+shader_parameter/total_phases = 6
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
 texture = ExtResource("9_m483i")
@@ -269,6 +279,15 @@ background_name = "ComicDots2"
 [node name="PixelPlanet" type="PanelContainer" parent="ShaderBackgroundsContainer"]
 visible = false
 material = SubResource("ShaderMaterial_ptlp0")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="ShaderBackgroundsContainer"]
+material = SubResource("ShaderMaterial_668nl")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

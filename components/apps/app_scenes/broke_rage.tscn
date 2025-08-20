@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://1jylhdkewo5k"]
+[gd_scene load_steps=14 format=3 uid="uid://1jylhdkewo5k"]
 
 [ext_resource type="Texture2D" uid="uid://bx8di1m28cktr" path="res://assets/money_pixeled.png" id="1_m7phi"]
 [ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
 [ext_resource type="Texture2D" uid="uid://sfksofhgkiwu" path="res://assets/logos/dollar_rage.png" id="3_m7phi"]
 [ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/buttons/grey_button_pressed.png" id="4_frira"]
+[ext_resource type="Shader" uid="uid://dugjfbyh5i7br" path="res://assets/shaders/black_warp_shader.gdshader" id="4_gnfo0"]
 [ext_resource type="Script" uid="uid://bq3i6eu2isf1d" path="res://components/apps/broke_rage/stock_market.gd" id="5_lgac0"]
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="5_n67s2"]
 [ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="6_m7phi"]
@@ -15,13 +16,22 @@ texture = ExtResource("1_m7phi")
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yqo"]
+shader = ExtResource("4_gnfo0")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gnfo0"]
 texture = ExtResource("4_frira")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
-modulate_color = Color(0.00784314, 0.00784314, 0.00784314, 0.878431)
+modulate_color = Color(0.00784314, 0.00784314, 0.00784314, 0.270588)
 
 [node name="BrokeRage" type="PanelContainer"]
 anchors_preset = 15
@@ -37,6 +47,10 @@ script = ExtResource("2_o2yqo")
 window_title = "BrokeRage"
 window_icon = ExtResource("3_m7phi")
 default_window_size = Vector2(680, 480)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_o2yqo")
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
