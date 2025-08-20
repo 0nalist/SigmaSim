@@ -7,7 +7,7 @@ uniform float wave_amp: hint_range(0.0, 0.5);
 uniform float wave_size: hint_range(1.0, 10.0);
 uniform float wave_time_mul: hint_range(0.01, 2.0);
 
-uniform int total_phases: hint_range(2, 600, 1);
+uniform int total_phases: hint_range(2, 200, 1);
 
 
 float rand(float n){return fract(sin(n) * 43758.5453123);}
