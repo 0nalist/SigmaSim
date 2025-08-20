@@ -31,11 +31,11 @@ func _generate_dummy_emails() -> void:
 	if dummy != null:
 		emails.append(dummy)
 	for i in range(1, 50):
-			var e := EmailResource.new()
-			e.from = "user%d@example.com" % i
-			e.subject = "Subject %d" % i
-			e.body = "Body %d" % i
-			emails.append(e)
+		var e := EmailResource.new()
+		e.from = "user%d@example.com" % i
+		e.subject = "Subject %d" % i
+		e.body = "Body %d" % i
+		emails.append(e)
 
 func _on_search_changed(_new_text: String) -> void:
 		_apply_filter()
@@ -65,36 +65,39 @@ func _apply_filter() -> void:
 		_render_emails()
 
 func _render_emails() -> void:
-		for child in inbox.get_children():
-				child.queue_free()
-		var start = current_page * emails_per_page
-		var end = min(start + emails_per_page, filtered_emails.size())
-                for i in range(start, end):
-                                var email: EmailResource = filtered_emails[i]
-                                var box := VBoxContainer.new()
-                                inbox.add_child(box)
+	for child in inbox.get_children():
+			child.queue_free()
+	var start = current_page * emails_per_page
+	var end = min(start + emails_per_page, filtered_emails.size())
+	for i in range(start, end):
+		var email: EmailResource = filtered_emails[i]
+		var box := VBoxContainer.new()
+		inbox.add_child(box)
 
-                                var btn := Button.new()
-                                btn.text = "From: %s  Subject: %s" % [email.from, email.subject]
-                                btn.pressed.connect(func(): _open_email(email))
-                                box.add_child(btn)
+		var btn := Button.new()
+		btn.flat = true
+		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		btn.add_theme_font_size_override("14", 14)
+		btn.text = "From: %s  Subject: %s" % [email.from, email.subject]
+		btn.pressed.connect(func(): _open_email(email))
+		box.add_child(btn)
 
-		var total_pages = max(1, int(ceil(filtered_emails.size() / float(emails_per_page))))
-		page_label.text = "Page %d/%d" % [current_page + 1, total_pages]
-		prev_button.disabled = current_page == 0
-                next_button.disabled = current_page >= total_pages - 1
+	var total_pages = max(1, int(ceil(filtered_emails.size() / float(emails_per_page))))
+	page_label.text = "Page %d/%d" % [current_page + 1, total_pages]
+	prev_button.disabled = current_page == 0
+	next_button.disabled = current_page >= total_pages - 1
 
 func _open_email(email: EmailResource) -> void:
-                var popup_scene = preload("res://components/apps/sigma_mail/email_view.tscn")
-                var key = "email_%s" % email.get_instance_id()
-                WindowManager.launch_popup(popup_scene, key, email)
+	var popup_scene = preload("res://components/apps/sigma_mail/email_view.tscn")
+	var key = "email_%s" % email.get_instance_id()
+	WindowManager.launch_popup(popup_scene, key, email)
 
 func _on_email_action(action: Dictionary) -> void:
-		for stat in action.get("stat_changes", {}).keys():
-				var amt = action["stat_changes"][stat]
-				StatManager.set_base_stat(stat, StatManager.get_stat(stat) + amt)
-		for upgrade_id in action.get("upgrade_ids", []):
-				UpgradeManager.purchase(upgrade_id)
-		var app_name: String = action.get("app_name", "")
-		if app_name != "":
-				WindowManager.launch_app_by_name(app_name)
+	for stat in action.get("stat_changes", {}).keys():
+		var amt = action["stat_changes"][stat]
+		StatManager.set_base_stat(stat, StatManager.get_stat(stat) + amt)
+	for upgrade_id in action.get("upgrade_ids", []):
+		UpgradeManager.purchase(upgrade_id)
+	var app_name: String = action.get("app_name", "")
+	if app_name != "":
+		WindowManager.launch_app_by_name(app_name)

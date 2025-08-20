@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://e9v1emailview"]
+[gd_scene load_steps=3 format=3 uid="uid://bfh5skc81omm5"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_n0rnv"]
-[ext_resource type="Script" uid="uid://9800a0ca567a" path="res://components/apps/sigma_mail/email_view.gd" id="2_n0rnv"]
+[ext_resource type="Script" uid="uid://ba800a0ca567a" path="res://components/apps/sigma_mail/email_view.gd" id="2_n0rnv"]
 
 [node name="EmailView" type="PanelContainer"]
 anchors_preset = 15
@@ -9,6 +9,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("1_n0rnv")
 script = ExtResource("2_n0rnv")
 window_title = "Email"
@@ -44,4 +46,3 @@ fit_content = true
 [node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-
