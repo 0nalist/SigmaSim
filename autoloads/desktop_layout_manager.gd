@@ -68,12 +68,14 @@ func delete_item(id: int) -> void:
 func get_item(id: int) -> Dictionary:
 	return items.get(id, {})
 
+
 func get_children_of(parent_id: int) -> Array:
        var results: Array = []
        for entry in items.values():
                if int(entry.get("parent_id", 0)) == parent_id:
                        results.append(entry)
        return results
+
 
 func get_save_data() -> Dictionary:
 	return {

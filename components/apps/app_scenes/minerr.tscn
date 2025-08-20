@@ -1,17 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cci5lph7o8fg5"]
+[gd_scene load_steps=9 format=3 uid="uid://cci5lph7o8fg5"]
 
-[ext_resource type="Texture2D" uid="uid://d5uirljm8cmi" path="res://assets/20250409_2347_Pixel-Cave-Adventure_simple_compose_01jrewzg05f0qaa0e6weqx47fw.png" id="1_wupxk"]
 [ext_resource type="Script" uid="uid://c2u2e7rvja8k" path="res://components/apps/minerr/minerr_ui.gd" id="2_0t4uf"]
 [ext_resource type="PackedScene" uid="uid://cd6b75613o34u" path="res://components/apps/minerr/crypto_card.tscn" id="3_ykms3"]
 [ext_resource type="Texture2D" uid="uid://brs7oc40iion5" path="res://assets/cursors/pickaxe.png" id="4_23boj"]
 [ext_resource type="Shader" uid="uid://cn7uadn4j8e8u" path="res://assets/shaders/brown_warp_shader.gdshader" id="5_23boj"]
 [ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="8_x88rl"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="9_0t4uf"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rcqoh"]
-texture = ExtResource("1_wupxk")
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wupxk"]
 shader = ExtResource("5_23boj")
@@ -34,7 +28,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxTexture_rcqoh")
 script = ExtResource("2_0t4uf")
 crypto_card_scene = ExtResource("3_ykms3")
 window_title = "Minerr"
