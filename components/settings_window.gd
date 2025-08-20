@@ -43,10 +43,10 @@ extends Pane
 @onready var electric_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ElectricShader").material
 
 func setup_custom(tab_name: String) -> void:
-        if tab_name == "Backgrounds":
-                var tab = tab_container.get_node_or_null("Backgrounds")
-                if tab:
-                        tab_container.current_tab = tab.get_index()
+		if tab_name == "Backgrounds":
+				var tab = tab_container.get_node_or_null("Backgrounds")
+				if tab:
+						tab_container.current_tab = tab.get_index()
 
 
 func _ready() -> void:

@@ -216,7 +216,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_0utxc")
 script = ExtResource("1_lpqk7")
-background_texture = null
 
 [node name="Background" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -234,19 +233,8 @@ scale = Vector2(0.8673, 0.8673)
 texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
-script = ExtResource("24_jkb4t")
-background_name = "Default"
 
-[node name="ShaderBackgroundsContainer" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("24_jkb4t")
-
-[node name="BlueWarpShader" type="PanelContainer" parent="ShaderBackgroundsContainer"]
+[node name="BlueWarpShader" type="PanelContainer" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_yi8nh")
 layout_mode = 1
@@ -255,9 +243,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+script = ExtResource("24_jkb4t")
+background_name = "BlueWarp"
 
-[node name="PixelPlanet" type="PanelContainer" parent="ShaderBackgroundsContainer"]
+[node name="PixelPlanet" type="PanelContainer" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_ptlp0")
 layout_mode = 1
@@ -266,9 +255,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 
-[node name="WavesShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
+[node name="WavesShader" type="ColorRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_668nl")
 layout_mode = 1
@@ -277,9 +265,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+script = ExtResource("24_jkb4t")
+background_name = "Waves"
 
-[node name="ElectricShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
+[node name="ElectricShader" type="ColorRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_8lg5h")
 layout_mode = 1
@@ -288,9 +277,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+script = ExtResource("24_jkb4t")
+background_name = "Electric"
 
-[node name="ComicDotsBlueVert" type="ColorRect" parent="ShaderBackgroundsContainer"]
+[node name="ComicDotsBlueVert" type="ColorRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_rbayd")
 layout_mode = 1
@@ -304,9 +294,10 @@ offset_bottom = 2733.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
-mouse_filter = 2
+script = ExtResource("24_jkb4t")
+background_name = "ComicDots1"
 
-[node name="ComicDotsBlueHor" type="ColorRect" parent="ShaderBackgroundsContainer"]
+[node name="ComicDotsBlueHor" type="ColorRect" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_5aheu")
 layout_mode = 1
@@ -317,6 +308,16 @@ offset_left = -17.0
 offset_top = -4.0
 offset_right = 1008.0
 offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("24_jkb4t")
+background_name = "ComicDots2"
+
+[node name="ShaderBackgroundsContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
