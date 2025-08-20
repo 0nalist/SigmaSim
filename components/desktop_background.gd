@@ -5,9 +5,9 @@ extends Control
 func _ready() -> void:
 	visible = Events.is_desktop_background_visible(background_name)
 	Events.connect("desktop_background_toggled", Callable(self, "_on_desktop_background_toggled"))
-	gui_input.connect(_on_gui_input)
+	mouse_filter = Control.MOUSE_FILTER_PASS
 
-func _on_gui_input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		print("clicked but not validated")
 		var mb: InputEventMouseButton = event
