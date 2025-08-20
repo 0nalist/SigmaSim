@@ -24,10 +24,19 @@ extends Pane
 @onready var comic_dots_color_picker: ColorPickerButton = %ComicDotsColorPicker
 @onready var comic_dots_multiplier_slider: HSlider = %ComicDotsMultiplierSlider
 @onready var comic_dots_speed_slider: HSlider = %ComicDotsSpeedSlider
+@onready var electric_button: CheckButton = %ElectricButton
+@onready var electric_bg_color_picker: ColorPickerButton = %ElectricBGColorPicker
+@onready var electric_line_color_picker: ColorPickerButton = %ElectricLineColorPicker
+@onready var electric_freq_slider: HSlider = %ElectricFreqSlider
+@onready var electric_height_slider: HSlider = %ElectricHeightSlider
+@onready var electric_speed_slider: HSlider = %ElectricSpeedSlider
+@onready var electric_scale_x_slider: HSlider = %ElectricScaleXSlider
+@onready var electric_scale_y_slider: HSlider = %ElectricScaleYSlider
 @onready var waves_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/WavesShader").material
 @onready var blue_warp_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/BlueWarpShader").material
 @onready var comic_dots1_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueVert").material
 @onready var comic_dots2_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueHor").material
+@onready var electric_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ElectricShader").material
 
 
 func _ready() -> void:
@@ -59,6 +68,15 @@ func _ready() -> void:
 		comic_dots_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
 		comic_dots_multiplier_slider.value = comic_dots1_shader_material.get_shader_parameter("circle_multiplier")
 		comic_dots_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
+		electric_button.button_pressed = Events.is_desktop_background_visible("Electric")
+		electric_bg_color_picker.color = electric_shader_material.get_shader_parameter("background_color")
+		electric_line_color_picker.color = electric_shader_material.get_shader_parameter("line_color")
+		electric_freq_slider.value = electric_shader_material.get_shader_parameter("line_freq")
+		electric_height_slider.value = electric_shader_material.get_shader_parameter("height")
+		electric_speed_slider.value = electric_shader_material.get_shader_parameter("speed")
+		var electric_scale: Vector2 = electric_shader_material.get_shader_parameter("scale")
+		electric_scale_x_slider.value = electric_scale.x
+		electric_scale_y_slider.value = electric_scale.y
 
 func update_checked_mode() -> void:
 	var mode = DisplayServer.window_get_mode()
@@ -154,6 +172,34 @@ func _on_comic_dots_multiplier_slider_value_changed(value: float) -> void:
 func _on_comic_dots_speed_slider_value_changed(value: float) -> void:
 		comic_dots1_shader_material.set_shader_parameter("speed", value)
 		comic_dots2_shader_material.set_shader_parameter("speed", value)
+
+func _on_electric_button_toggled(toggled_on: bool) -> void:
+		Events.set_desktop_background_visible("Electric", toggled_on)
+
+func _on_electric_bg_color_picker_color_changed(color: Color) -> void:
+		electric_shader_material.set_shader_parameter("background_color", color)
+
+func _on_electric_line_color_picker_color_changed(color: Color) -> void:
+		electric_shader_material.set_shader_parameter("line_color", color)
+
+func _on_electric_freq_slider_value_changed(value: float) -> void:
+		electric_shader_material.set_shader_parameter("line_freq", value)
+
+func _on_electric_height_slider_value_changed(value: float) -> void:
+		electric_shader_material.set_shader_parameter("height", value)
+
+func _on_electric_speed_slider_value_changed(value: float) -> void:
+		electric_shader_material.set_shader_parameter("speed", value)
+
+func _on_electric_scale_x_slider_value_changed(value: float) -> void:
+		var scale: Vector2 = electric_shader_material.get_shader_parameter("scale")
+		scale.x = value
+		electric_shader_material.set_shader_parameter("scale", scale)
+
+func _on_electric_scale_y_slider_value_changed(value: float) -> void:
+		var scale: Vector2 = electric_shader_material.get_shader_parameter("scale")
+		scale.y = value
+		electric_shader_material.set_shader_parameter("scale", scale)
 
 func _on_minute_passed(_total_minutes: int) -> void:
 		_update_autosave_timer_label()
