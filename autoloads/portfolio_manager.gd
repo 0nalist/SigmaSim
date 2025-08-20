@@ -156,7 +156,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 			return true
 
 		var current_cash := get_cash()
-		var remainder := max(amount - current_cash, 0.0)
+		var remainder = max(amount - current_cash, 0.0)
 
 		# Check if cash + credit is enough
 		if not can_pay_with_credit(remainder):
@@ -172,7 +172,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 					StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 
 			if can_pay_with_credit(remainder):
-				var total_with_interest := remainder * (1.0 + get_credit_interest_rate())
+				var total_with_interest = remainder * (1.0 + get_credit_interest_rate())
 				set_credit_used(get_credit_used() + total_with_interest)
 				if not silent:
 					StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
