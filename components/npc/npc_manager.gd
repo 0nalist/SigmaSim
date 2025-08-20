@@ -72,7 +72,10 @@ func set_npc_field(idx: int, field: String, value) -> void:
 		if not npc_overrides.has(idx):
 			npc_overrides[idx] = {}
 		npc_overrides[idx][field] = value
-
+		#if field == "portrait_config":
+		#	DBManager.save_npc(idx, npcs[idx])
+		#	promote_to_persistent(idx)
+	
 	if field == "portrait_config":
 		emit_signal("portrait_changed", idx, value)
 
