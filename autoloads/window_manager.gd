@@ -29,7 +29,7 @@ var app_registry := {
 var start_apps := {
 	#"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
-	#"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
+	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
 	#"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
 	#"WorkForce": preload("res://workforce.tscn"),
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
