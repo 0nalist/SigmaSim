@@ -65,7 +65,8 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 		seed_val = int(Time.get_unix_time_from_system())
 	user_data["global_rng_seed"] = seed_val
 	RNGManager.init_seed(int(user_data["global_rng_seed"]))
-	PlayerManager.user_data = user_data.duplicate(true)
+        PlayerManager.user_data = user_data.duplicate(true)
+        PlayerManager.ensure_default_stats()
 
 	var background = user_data.get("background", "")
 	if background != "":
