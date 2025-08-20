@@ -507,43 +507,39 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="ComicDots1Button" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4"]
+layout_mode = 2
+
+[node name="ComicDots1Button" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
-text = "Comic Dots 1"
+text = "H Dots"
 
-[node name="ComicDots2Button" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-focus_mode = 0
-text = "Comic Dots 2"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
 layout_mode = 2
 
-[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Color"
 
-[node name="ComicDotsColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ComicDotsColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
 layout_mode = 2
 
-[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Size"
 
-[node name="ComicDotsMultiplierSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ComicDotsMultiplierSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -551,14 +547,14 @@ min_value = 1.0
 max_value = 64.0
 value = 32.0
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
 layout_mode = 2
 
-[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = "Speed"
 
-[node name="ComicDotsSpeedSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="ComicDotsSpeedSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -566,7 +562,60 @@ max_value = 0.2
 step = 0.01
 value = 0.1
 
-[node name="ComicDotsResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer"]
+[node name="ComicDotsResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
+layout_mode = 2
+text = "Reset"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4"]
+layout_mode = 2
+
+[node name="ComicDots2Button" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "V Dots"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Color"
+
+[node name="ComicDotsColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+text = "Size"
+
+[node name="ComicDotsMultiplierSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 64.0
+value = 32.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+text = "Speed"
+
+[node name="ComicDotsSpeedSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 0.2
+step = 0.01
+value = 0.1
+
+[node name="ComicDotsResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
 layout_mode = 2
 text = "Reset"
 
@@ -595,9 +644,13 @@ text = "Reset"
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer5/ElectricScaleXSlider" to="." method="_on_electric_scale_x_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer6/ElectricScaleYSlider" to="." method="_on_electric_scale_y_slider_value_changed"]
 [connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/ElectricResetButton" to="." method="_on_electric_reset_button_pressed"]
-[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/ComicDots1Button" to="." method="_on_comic_dots_1_button_toggled"]
-[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/ComicDots2Button" to="." method="_on_comic_dots_2_button_toggled"]
-[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer/ComicDotsColorPicker" to="." method="_on_comic_dots_color_picker_color_changed"]
-[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsMultiplierSlider" to="." method="_on_comic_dots_multiplier_slider_value_changed"]
-[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/HBoxContainer3/ComicDotsSpeedSlider" to="." method="_on_comic_dots_speed_slider_value_changed"]
-[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/VBoxContainer/ComicDotsResetButton" to="." method="_on_comic_dots_reset_button_pressed"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/ComicDots1Button" to="." method="_on_comic_dots_1_button_toggled"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer/ComicDotsColorPicker" to="." method="_on_comic_dots_color_picker_color_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2/ComicDotsMultiplierSlider" to="." method="_on_comic_dots_multiplier_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3/ComicDotsSpeedSlider" to="." method="_on_comic_dots_speed_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/ComicDotsResetButton" to="." method="_on_comic_dots_reset_button_pressed"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/ComicDots2Button" to="." method="_on_comic_dots_2_button_toggled"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer/ComicDotsColorPicker" to="." method="_on_comic_dots_color_picker_color_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer2/ComicDotsMultiplierSlider" to="." method="_on_comic_dots_multiplier_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer3/ComicDotsSpeedSlider" to="." method="_on_comic_dots_speed_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/ComicDotsResetButton" to="." method="_on_comic_dots_reset_button_pressed"]
