@@ -8,6 +8,7 @@ var desktop_backgrounds: Dictionary = {
 	"ComicDots1": false,
 	"ComicDots2": false,
 	"Waves": false,
+	"Electric": false,
 }
 
 func set_desktop_background_visible(name: String, visible: bool) -> void:

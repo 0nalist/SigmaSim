@@ -436,6 +436,124 @@ min_value = 2.0
 max_value = 600.0
 value = 6.0
 
+[node name="ElectricContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ElectricButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_fonts/font = ExtResource("4_a82ne")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_dij2h")
+text = " Electric"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ElectricBGColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="ElectricLineColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+color = Color(0, 1, 1, 1)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Freq"
+
+[node name="ElectricFreqSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 20.0
+step = 0.01
+value = 5.085
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Height"
+
+[node name="ElectricHeightSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 1.0
+step = 0.01
+value = 0.6
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Speed"
+
+[node name="ElectricSpeedSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 10.0
+step = 0.01
+value = 2.555
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Scale X"
+
+[node name="ElectricScaleXSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 10.0
+step = 0.01
+value = 3.25
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+text = "Scale Y"
+
+[node name="ElectricScaleYSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 30.0
+step = 0.01
+value = 15.43
+
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/BlueWarpButton" to="." method="_on_blue_warp_button_toggled"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpStretchSlider" to="." method="_on_blue_warp_stretch_slider_value_changed"]
@@ -455,3 +573,11 @@ value = 6.0
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer3/WaveSizeSlider" to="." method="_on_wave_size_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer4/WaveTimeMulSlider" to="." method="_on_wave_time_mul_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer5/TotalPhasesSlider" to="." method="_on_total_phases_slider_value_changed"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/ElectricButton" to="." method="_on_electric_button_toggled"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer/ElectricBGColorPicker" to="." method="_on_electric_bg_color_picker_color_changed"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer/ElectricLineColorPicker" to="." method="_on_electric_line_color_picker_color_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer2/ElectricFreqSlider" to="." method="_on_electric_freq_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer3/ElectricHeightSlider" to="." method="_on_electric_height_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer4/ElectricSpeedSlider" to="." method="_on_electric_speed_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer5/ElectricScaleXSlider" to="." method="_on_electric_scale_x_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer6/ElectricScaleYSlider" to="." method="_on_electric_scale_y_slider_value_changed"]
