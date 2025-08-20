@@ -479,6 +479,9 @@ show_percentage = false
 script = ExtResource("10_jh1fk")
 tooltip_name = "Confidence"
 duration = 0.4
+stat_name = "confidence"
+auto_update = false
+fractional = false
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ConfidenceProgressBar"]
 layout_mode = 1
@@ -562,6 +565,9 @@ script = ExtResource("10_jh1fk")
 stat_name = "ex"
 duration = 0.4
 reset_on_overflow = true
+show_value_before = true
+fractional = false
+value_decimals = 0
 
 [node name="ExLabel" type="Label" parent="MarginContainer/VBoxContainer/MenuTabContainer/ExProgressBar"]
 unique_name_in_owner = true
