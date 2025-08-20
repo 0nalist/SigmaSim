@@ -15,37 +15,43 @@ func _ready() -> void:
 
 
 func setup_custom(args: Dictionary) -> void:
-	portrait_view = args.get("portrait_view")
-	target_type = args.get("type", "")
-	target_npc_idx = args.get("npc_idx", -1)
+		portrait_view = args.get("portrait_view")
+		target_type = args.get("type", "")
+		target_npc_idx = args.get("npc_idx", -1)
 
-	var name_text := ""
-	var npc: NPC = null
-	if target_type == "player":
-		name_text = PlayerManager.user_data.get("name", "")
-	elif target_type == "npc" and target_npc_idx != -1:
-		npc = NPCManager.get_npc_by_index(target_npc_idx)
-		if npc != null:
-			name_text = npc.full_name
-	if portrait_view:
-		portrait_creator.config = portrait_view.config.duplicate(true)
-	elif target_type == "player":
-		var cfg_dict = PlayerManager.user_data.get("portrait_config", {})
-		if cfg_dict is Dictionary and cfg_dict.size() > 0:
-			portrait_creator.config = PortraitConfig.from_dict(cfg_dict)
-		else:
-			var gen_cfg = PortraitFactory.generate_config_for_name(name_text)
-			portrait_creator.config = gen_cfg
-	elif npc != null:
-		portrait_creator.config = npc.portrait_config
-	if name_text != "":
-		portrait_creator.config.name = name_text
-		portrait_creator.config.seed = PortraitFactory.djb2(name_text)
-	portrait_creator._sync_ui_with_config()
-	portrait_creator.preview.apply_config(portrait_creator.config)
+		var name_text := ""
+		var npc: NPC = null
+		if target_type == "player":
+				name_text = PlayerManager.user_data.get("name", "")
+		elif target_type == "npc" and target_npc_idx != -1:
+				npc = NPCManager.get_npc_by_index(target_npc_idx)
+				if npc != null:
+						name_text = npc.full_name
 
-	if name_text != "":
-		portrait_creator.name_edit.text = name_text
+		var override_cfg_dict = args.get("portrait_config_override", null)
+
+		if portrait_view:
+				portrait_creator.config = portrait_view.config.duplicate(true)
+		elif override_cfg_dict is Dictionary and override_cfg_dict.size() > 0:
+				portrait_creator.config = PortraitConfig.from_dict(override_cfg_dict)
+		elif target_type == "player":
+				var cfg_dict = PlayerManager.user_data.get("portrait_config", {})
+				if cfg_dict is Dictionary and cfg_dict.size() > 0:
+						portrait_creator.config = PortraitConfig.from_dict(cfg_dict)
+				else:
+						portrait_creator.config = PortraitFactory.generate_config_for_name(name_text)
+		elif npc != null and npc.portrait_config != null:
+				portrait_creator.config = npc.portrait_config
+		elif name_text != "":
+				portrait_creator.config = PortraitFactory.generate_config_for_name(name_text)
+
+		if name_text != "":
+				portrait_creator.config.name = name_text
+				portrait_creator.config.seed = PortraitFactory.djb2(name_text)
+				portrait_creator.name_edit.text = name_text
+
+		portrait_creator._sync_ui_with_config()
+		portrait_creator.preview.apply_config(portrait_creator.config)
 
 
 func _on_portrait_applied(cfg: PortraitConfig) -> void:

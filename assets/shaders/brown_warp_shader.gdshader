@@ -17,8 +17,8 @@ vec3 colormap(float x) {
     vec3 near_black = vec3(0.03, 0.02, 0.02);
     vec3 espresso   = vec3(0.07, 0.05, 0.04);
     vec3 dark_umber = vec3(0.12, 0.08, 0.05);
-    vec3 walnut     = vec3(0.20, 0.14, 0.09);
-    vec3 chestnut   = vec3(0.30, 0.22, 0.15);
+    vec3 walnut     = vec3(0.30, 0.34, 0.09);
+    vec3 chestnut   = vec3(0.35, 0.22, 0.15);
 
     // Smooth segmented ramp to avoid banding and keep it subdued
     if (t < 0.25) {

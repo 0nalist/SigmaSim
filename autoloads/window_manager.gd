@@ -29,7 +29,7 @@ var app_registry := {
 var start_apps := {
 	#"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
-	#"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
+	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
 	#"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
 	#"WorkForce": preload("res://workforce.tscn"),
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
@@ -176,14 +176,19 @@ func launch_pane(scene: PackedScene) -> void:
 
 func launch_pane_instance(pane: Pane, setup_args: Variant = null) -> void:
 	print("launch pane instance : " + str(pane))
+	if pane.unique_popup_key != "":
+		var existing_window = find_popup_by_key(pane.unique_popup_key)
+		if existing_window:
+			focus_window(existing_window)
+			pane.queue_free()
+			return
 	var window := WindowFrame.instantiate_for_pane(pane)
 	register_window(window, pane.show_in_taskbar)
-	
+
 	if setup_args != null and pane.has_method("setup_custom"):
 		pane.call_deferred("setup_custom", setup_args)
 
 	call_deferred("autoposition_window", window)
-
 
 func launch_popup(popup_scene: PackedScene, unique_key: String, setup_args: Variant = null) -> void:
 	if popup_scene == null:

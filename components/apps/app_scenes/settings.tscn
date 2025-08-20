@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://s5d0e4c7s6cc"]
+[gd_scene load_steps=10 format=3 uid="uid://s5d0e4c7s6cc"]
 
 [ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://components/settings_window.gd" id="1_wlela"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="2_wlela"]
 [ext_resource type="Shader" uid="uid://dugjfbyh5i7br" path="res://assets/shaders/black_warp_shader.gdshader" id="3_wxdtm"]
+[ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="4_a82ne"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlela"]
 bg_color = Color(0.156141, 0.265577, 0.156147, 1)
@@ -18,6 +19,12 @@ shader_parameter/speed = 0.03
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_jjwhp"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a82ne"]
+bg_color = Color(0.286113, 0.60199, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dij2h"]
+bg_color = Color(0, 0, 0, 1)
+
 [node name="Settings" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +36,7 @@ size_flags_vertical = 3
 script = ExtResource("1_wlela")
 window_title = "Settings"
 window_icon = ExtResource("2_wlela")
-default_window_size = Vector2(800, 300)
+default_window_size = Vector2(600, 400)
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -49,9 +56,10 @@ theme_override_constants/margin_bottom = 25
 
 [node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 
 [node name="General" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_title = "General"
@@ -108,10 +116,15 @@ layout_mode = 2
 focus_mode = 0
 text = "Autosave"
 
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/AutosaveRow"]
+layout_mode = 2
+text = "in"
+
 [node name="AutosaveTimerLabel" type="Label" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/AutosaveRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 16
 
 [node name="Control" type="Control" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer"]
 custom_minimum_size = Vector2(50, 0)
@@ -135,31 +148,518 @@ size_flags_horizontal = 4
 focus_mode = 0
 text = "Siggy?"
 
-[node name="DesktopBackground" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
-visible = false
+[node name="Backgrounds" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_title = "Desktop Background"
 
-[node name="BlueWarpButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BlueWarpContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="BlueWarpButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
 focus_mode = 0
+theme_override_fonts/font = ExtResource("4_a82ne")
+theme_override_styles/normal = SubResource("StyleBoxFlat_a82ne")
 text = "Blue Warp"
 
-[node name="ComicDots1Button" type="CheckButton" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
-unique_name_in_owner = true
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-focus_mode = 0
-text = "Comic Dots 1"
 
-[node name="ComicDots2Button" type="CheckButton" parent="Panel/MarginContainer/TabContainer/DesktopBackground"]
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Stretch"
+
+[node name="BlueWarpStretchSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.8
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "VSwirl"
+
+[node name="BlueWarpThing1Slider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.6
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "HSwirl"
+
+[node name="BlueWarpThing2Slider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.6
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "VSwirl"
+
+[node name="BlueWarpThing3Slider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.8
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Speed"
+
+[node name="BlueWarpSpeedSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 0.1
+step = 0.001
+value = 0.03
+
+[node name="BlueWarpResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reset"
+
+[node name="WavesContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="WavesButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
 focus_mode = 0
-text = "Comic Dots 2"
+theme_override_fonts/font = ExtResource("4_a82ne")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_dij2h")
+text = "  Waves"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BottomColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="TopColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+color = Color(0.868811, 5.77569e-07, 0.459911, 1)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Amplitude"
+
+[node name="WaveAmpSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 0.5
+step = 0.01
+value = 0.08
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Frequency"
+
+[node name="WaveSizeSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 10.0
+step = 0.01
+value = 2.25
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Speed"
+
+[node name="WaveTimeMulSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 2.0
+step = 0.01
+value = 0.01
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Waves"
+
+[node name="TotalPhasesSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 600.0
+value = 6.0
+
+[node name="WavesResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reset"
+
+[node name="ElectricContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ElectricButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_fonts/font = ExtResource("4_a82ne")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_dij2h")
+text = " Electric"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ElectricBGColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="ElectricLineColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+color = Color(0, 1, 1, 1)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Freq"
+
+[node name="ElectricFreqSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 20.0
+step = 0.01
+value = 5.09
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Height"
+
+[node name="ElectricHeightSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.6
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Speed"
+
+[node name="ElectricSpeedSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 10.0
+step = 0.01
+value = 2.56
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Scale X"
+
+[node name="ElectricScaleXSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 10.0
+step = 0.01
+value = 3.25
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+text = "Scale Y"
+
+[node name="ElectricScaleYSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 30.0
+step = 0.01
+value = 15.43
+
+[node name="ElectricResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reset"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ComicDotsContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_filter = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4"]
+layout_mode = 2
+
+[node name="ComicDots1Button" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Verti Dots"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Color"
+
+[node name="ComicDots1ColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Size"
+
+[node name="ComicDots1MultiplierSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 64.0
+value = 32.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Speed"
+
+[node name="ComicDots1SpeedSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 0.2
+step = 0.01
+value = 0.1
+
+[node name="ComicDots1ResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4"]
+layout_mode = 2
+
+[node name="ComicDots2Button" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Horiz Dots"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Color"
+
+[node name="ComicDots2ColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+text = "Size"
+
+[node name="ComicDots2MultiplierSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 64.0
+value = 32.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Amplitude" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+text = "Speed"
+
+[node name="ComicDots2SpeedSlider" type="HSlider" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 0.2
+step = 0.01
+value = 0.1
+
+[node name="ComicDots2ResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset"
 
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
-[connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/BlueWarpButton" to="." method="_on_blue_warp_button_toggled"]
-[connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/ComicDots1Button" to="." method="_on_comic_dots_1_button_toggled"]
-[connection signal="toggled" from="Panel/MarginContainer/TabContainer/DesktopBackground/ComicDots2Button" to="." method="_on_comic_dots_2_button_toggled"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/BlueWarpButton" to="." method="_on_blue_warp_button_toggled"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpStretchSlider" to="." method="_on_blue_warp_stretch_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer2/BlueWarpThing1Slider" to="." method="_on_blue_warp_thing1_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer3/BlueWarpThing2Slider" to="." method="_on_blue_warp_thing2_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer4/BlueWarpThing3Slider" to="." method="_on_blue_warp_thing3_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer5/BlueWarpSpeedSlider" to="." method="_on_blue_warp_speed_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/BlueWarpResetButton" to="." method="_on_blue_warp_reset_button_pressed"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/WavesButton" to="." method="_on_waves_button_toggled"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer/BottomColorPicker" to="." method="_on_bottom_color_picker_color_changed"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer/TopColorPicker" to="." method="_on_top_color_picker_color_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer2/WaveAmpSlider" to="." method="_on_wave_amp_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer3/WaveSizeSlider" to="." method="_on_wave_size_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer4/WaveTimeMulSlider" to="." method="_on_wave_time_mul_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer5/TotalPhasesSlider" to="." method="_on_total_phases_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/WavesResetButton" to="." method="_on_waves_reset_button_pressed"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/ElectricButton" to="." method="_on_electric_button_toggled"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer/ElectricBGColorPicker" to="." method="_on_electric_bg_color_picker_color_changed"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer/ElectricLineColorPicker" to="." method="_on_electric_line_color_picker_color_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer2/ElectricFreqSlider" to="." method="_on_electric_freq_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer3/ElectricHeightSlider" to="." method="_on_electric_height_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer4/ElectricSpeedSlider" to="." method="_on_electric_speed_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer5/ElectricScaleXSlider" to="." method="_on_electric_scale_x_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer6/ElectricScaleYSlider" to="." method="_on_electric_scale_y_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/ElectricResetButton" to="." method="_on_electric_reset_button_pressed"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/ComicDots1Button" to="." method="_on_comic_dots_1_button_toggled"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer/ComicDots1ColorPicker" to="." method="_on_comic_dots_1_color_picker_color_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2/ComicDots1MultiplierSlider" to="." method="_on_comic_dots_1_multiplier_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3/ComicDots1SpeedSlider" to="." method="_on_comic_dots_1_speed_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/ComicDots1ResetButton" to="." method="_on_comic_dots_1_reset_button_pressed"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/ComicDots2Button" to="." method="_on_comic_dots_2_button_toggled"]
+[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer/ComicDots2ColorPicker" to="." method="_on_comic_dots_2_color_picker_color_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer2/ComicDots2MultiplierSlider" to="." method="_on_comic_dots_2_multiplier_slider_value_changed"]
+[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer3/ComicDots2SpeedSlider" to="." method="_on_comic_dots_2_speed_slider_value_changed"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/ComicDots2ResetButton" to="." method="_on_comic_dots_2_reset_button_pressed"]

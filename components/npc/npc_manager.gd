@@ -1,6 +1,9 @@
 extends Node
 # Autoload: NPCManager
 
+signal portrait_changed(idx, cfg)
+
+
 var encounter_count: int = 0
 var encountered_npcs: Array[int] = []
 var encountered_npcs_by_app: Dictionary = {}
@@ -69,6 +72,12 @@ func set_npc_field(idx: int, field: String, value) -> void:
 		if not npc_overrides.has(idx):
 			npc_overrides[idx] = {}
 		npc_overrides[idx][field] = value
+		if field == "portrait_config":
+			DBManager.save_npc(idx, npcs[idx])
+			promote_to_persistent(idx)
+	
+	if field == "portrait_config":
+		emit_signal("portrait_changed", idx, value)
 
 func promote_to_persistent(idx: int) -> void:
 	if not persistent_npcs.has(idx):
@@ -126,9 +135,11 @@ func _merge_npc_data(npc: NPC, data: Dictionary) -> void:
 										npc.set(key, override_val.duplicate())
 						TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING:
 								npc.set(key, override_val)
+						TYPE_OBJECT:
+								npc.set(key, override_val)
 						_:
 								if existing_val == null:
-										npc.set(key, override_val)
+									npc.set(key, override_val)
 
 
 

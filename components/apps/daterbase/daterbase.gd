@@ -7,17 +7,23 @@ class_name Daterbase
 @onready var error_label: Label = %ErrorLabel
 @onready var daterbase_tab_button: Button = %DaterbaseTabButton
 @onready var sql_tab_button: Button = %SQLTabButton
+@onready var headhunters_tab_button: Button = %HeadhuntersTabButton
 @onready var daterbase_view: VBoxContainer = %DaterbaseView
 @onready var sql_view: VBoxContainer = %SQLView
+@onready var headhunters_view: VBoxContainer = %HeadhuntersView
 @onready var results_container_daterbase: VBoxContainer = %ResultsContainer_Daterbase
 @onready var results_container_sql: VBoxContainer = %ResultsContainer_SQL
+@onready var hh_name_edit: LineEdit = %HHNameEdit
+@onready var hh_create_button: Button = %HHCreateButton
+@onready var hh_portrait_holder: VBoxContainer = %HHPortraitHolder
+@onready var hh_stats_container: VBoxContainer = %HHStatsContainer
 
 # --- Grid control ---
 var results_tree: Tree
 
 # --- Table state ---
 var current_headers: Array[String] = []
-var current_rows: Array = []        # Array[Dictionary]
+var current_rows: Array = []	 # Array[Dictionary]
 var sort_column_index: int = -1
 var sort_ascending: bool = true
 
@@ -39,6 +45,8 @@ var column_user_min_widths: Array[int] = []  # per-column min widths from user d
 var _active_tab: StringName = &"Daterbase"
 var _ran_initial_show_all: bool = false
 
+var _portrait_views_by_npc: Dictionary = {}
+
 const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
 const SUITOR_POPUP_SCENE: PackedScene = preload("res://components/popups/suitor_popup.tscn")
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
@@ -49,6 +57,11 @@ func _ready() -> void:
 	show_all_button.pressed.connect(_on_show_all_pressed)
 	daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
 	sql_tab_button.pressed.connect(_on_sql_tab_pressed)
+	headhunters_tab_button.pressed.connect(_on_headhunters_tab_pressed)
+	hh_create_button.pressed.connect(_on_hh_create_pressed)
+	hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
+
+	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
 
 	numeric_regex = RegEx.new()
 	numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
@@ -83,27 +96,40 @@ func _on_item_activated() -> void:
 # Tabs
 # =========================================
 func _activate_tab(tab_name: StringName) -> void:
-	if tab_name != &"Daterbase" and tab_name != &"SQL":
-		push_error("Invalid tab: %s" % str(tab_name))
-		return
+	if tab_name != &"Daterbase" and tab_name != &"SQL" and tab_name != &"Headhunters":
+			push_error("Invalid tab: %s" % str(tab_name))
+			return
 	_active_tab = tab_name
 	if tab_name == &"Daterbase":
-		daterbase_tab_button.set_pressed(true)
-		sql_tab_button.set_pressed(false)
-		daterbase_view.visible = true
-		sql_view.visible = false
-		error_label.text = ""
-		if not _ran_initial_show_all:
-			_on_show_all_pressed()
-			_ran_initial_show_all = true
+			daterbase_tab_button.set_pressed(true)
+			sql_tab_button.set_pressed(false)
+			headhunters_tab_button.set_pressed(false)
+			daterbase_view.visible = true
+			sql_view.visible = false
+			headhunters_view.visible = false
+			error_label.text = ""
+			if not _ran_initial_show_all:
+					_on_show_all_pressed()
+					_ran_initial_show_all = true
+	elif tab_name == &"SQL":
+			daterbase_tab_button.set_pressed(false)
+			sql_tab_button.set_pressed(true)
+			headhunters_tab_button.set_pressed(false)
+			daterbase_view.visible = false
+			sql_view.visible = true
+			headhunters_view.visible = false
+			error_label.text = ""
+			_ensure_results_tree_parent(results_container_sql)
+			query_edit.grab_focus()
 	else:
-		daterbase_tab_button.set_pressed(false)
-		sql_tab_button.set_pressed(true)
-		daterbase_view.visible = false
-		sql_view.visible = true
-		error_label.text = ""
-		_ensure_results_tree_parent(results_container_sql)
-		query_edit.grab_focus()
+			daterbase_tab_button.set_pressed(false)
+			sql_tab_button.set_pressed(false)
+			headhunters_tab_button.set_pressed(true)
+			daterbase_view.visible = false
+			sql_view.visible = false
+			headhunters_view.visible = true
+			error_label.text = ""
+			hh_name_edit.grab_focus()
 
 
 
@@ -116,7 +142,10 @@ func _on_daterbase_tab_pressed() -> void:
 		_activate_tab(&"Daterbase")
 
 func _on_sql_tab_pressed() -> void:
-		_activate_tab(&"SQL")
+				_activate_tab(&"SQL")
+
+func _on_headhunters_tab_pressed() -> void:
+			_activate_tab(&"Headhunters")
 
 # =========================================
 # Buttons
@@ -132,8 +161,8 @@ func _on_show_all_pressed() -> void:
 func _on_run_query_pressed() -> void:
 	var sql_text: String = query_edit.text.strip_edges()
 	if sql_text == "":
-		error_label.text = "Enter a SELECT query."
-		return
+			error_label.text = "Enter a SELECT query."
+			return
 	if not _is_safe_select(sql_text):
 		error_label.text = "Only SELECT queries are allowed."
 		return
@@ -146,6 +175,40 @@ func _on_run_query_pressed() -> void:
 
 	error_label.text = ""
 	_display_generic_rows(result_rows)
+
+func _on_hh_create_pressed() -> void:
+		var name: String = hh_name_edit.text.strip_edges()
+		if name == "":
+				return
+		_display_headhunter_npc(name)
+
+func _on_hh_name_submitted(_text: String) -> void:
+		_on_hh_create_pressed()
+
+func _display_headhunter_npc(full_name: String) -> void:
+		for child in hh_portrait_holder.get_children():
+				child.queue_free()
+		for child in hh_stats_container.get_children():
+				child.queue_free()
+		var npc: NPC = NPCFactory.create_npc_from_name(full_name)
+		var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
+		portrait.portrait_creator_enabled = false
+		portrait.custom_minimum_size = Vector2(132, 132)
+		portrait.size = Vector2(132, 132)
+		portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		portrait.apply_config(npc.portrait_config)
+		hh_portrait_holder.add_child(portrait)
+		var stats: Dictionary = npc.to_dict()
+		var keys := stats.keys()
+		keys.sort()
+		for key in keys:
+				var val = stats[key]
+				var lbl := Label.new()
+				if typeof(val) in [TYPE_DICTIONARY, TYPE_ARRAY]:
+						lbl.text = "%s: %s" % [key, JSON.stringify(val)]
+				else:
+						lbl.text = "%s: %s" % [key, str(val)]
+				hh_stats_container.add_child(lbl)
 
 # =========================================
 # Safety
@@ -165,6 +228,7 @@ func _is_safe_select(query_text: String) -> bool:
 func _load_default_entries() -> void:
 	for child in results_container_daterbase.get_children():
 		child.queue_free()
+	_portrait_views_by_npc.clear()
 	
 	var header := HBoxContainer.new()
 	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -194,7 +258,7 @@ func _load_default_entries() -> void:
 					npc_object.relationship_stage = NPC.RelationshipStage.TALKING
 			var row := HBoxContainer.new()
 			row.mouse_filter = Control.MOUSE_FILTER_STOP
-			row.gui_input.connect(_on_row_gui_input.bind(npc_object))
+			row.gui_input.connect(_on_row_gui_input.bind(entry_dictionary.npc_id, npc_object))
 			var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
 			portrait.portrait_creator_enabled = false
 			portrait.custom_minimum_size = Vector2(132, 132)
@@ -202,6 +266,7 @@ func _load_default_entries() -> void:
 			portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			if npc_object.portrait_config != null:
 					portrait.apply_config(npc_object.portrait_config)
+			_portrait_views_by_npc[entry_dictionary.npc_id] = portrait
 			row.add_child(portrait)
 			var name_label := Label.new()
 			name_label.text = npc_object.full_name
@@ -247,14 +312,19 @@ func _create_header_label(text: String) -> Label:
 	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return lbl
 	
-func _on_row_gui_input(event: InputEvent, npc: NPC) -> void:
+func _on_row_gui_input(event: InputEvent, idx: int, npc: NPC) -> void:
 	var mouse_event: InputEventMouseButton = event as InputEventMouseButton
 	if mouse_event != null and mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
-		_open_suitor_popup(npc)
-	
-func _open_suitor_popup(npc: NPC) -> void:
+		_open_suitor_popup(idx, npc)
+
+func _open_suitor_popup(idx: int, npc: NPC) -> void:
 	var key: String = "suitor_%d" % npc.get_instance_id()
-	WindowManager.launch_popup(SUITOR_POPUP_SCENE, key, npc)
+	WindowManager.launch_popup(SUITOR_POPUP_SCENE, key, {"npc": npc, "npc_idx": idx})
+
+func _on_npc_portrait_changed(idx: int, cfg: PortraitConfig) -> void:
+	if _portrait_views_by_npc.has(idx):
+		var portrait: PortraitView = _portrait_views_by_npc[idx]
+		portrait.apply_config(cfg)
 
 func _display_generic_rows(result_rows: Array) -> void:
 	if result_rows.size() == 0:

@@ -4,7 +4,7 @@ class_name SuitorPopup
 const STAGE_NAMES := ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
 
 @onready var name_label: Label = %NameLabel
-@onready var portrait_view: Control = %Portrait
+@onready var portrait_view: PortraitView = %Portrait
 @onready var relationship_stage_label: Label = %RelationshipStageLabel
 @onready var relationship_bar: StatProgressBar = %RelationshipBar
 @onready var next_stage_button: Button = %NextStageButton
@@ -25,17 +25,20 @@ var date_cost: float = 200.0
 var breakup_reward: float = 0.0
 var apologize_cost: int = 10
 
-func setup(target: NPC) -> void:
-	npc = target
+func setup_custom(data: Dictionary) -> void:
+	npc = data.get("npc")
+	var idx: int = data.get("npc_idx", -1)
 	name_label.text = npc.full_name
+	portrait_view.portrait_creator_enabled = true
+	if idx != -1:
+			portrait_view.subject_npc_idx = idx
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
-		portrait_view.portrait_creator_enabled = true
-		portrait_view.apply_config(npc.portrait_config)
-		gift_cost = 25.0
-		date_cost = 200.0
-		breakup_reward = 0.0
-		apologize_cost = 10
-		_update_all()
+			portrait_view.apply_config(npc.portrait_config)
+	gift_cost = 25.0
+	date_cost = 200.0
+	breakup_reward = 0.0
+	apologize_cost = 10
+	_update_all()
 
 
 func _ready() -> void:

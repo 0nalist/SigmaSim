@@ -150,35 +150,34 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 
 		# Cash first
 		if can_pay_with_cash(amount):
-				spend_cash(amount)
-				if not silent:
-						StatpopManager.spawn("-$" + str(NumberFormatter.format_number(amount)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
-				return true
+			spend_cash(amount)
+			if not silent:
+				StatpopManager.spawn("-$" + str(NumberFormatter.format_number(amount)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
+			return true
 
 		var current_cash := get_cash()
+		var remainder = max(amount - current_cash, 0.0)
 
 		# Check if cash + credit is enough
-		if not can_pay_with_credit(amount + current_cash):
-				if not silent:
-						StatpopManager.spawn("DECLINED", get_viewport().get_mouse_position(), "click", Color.RED)
-				return false
+		if not can_pay_with_credit(remainder):
+			if not silent:
+				StatpopManager.spawn("DECLINED", get_viewport().get_mouse_position(), "click", Color.RED)
+			return false
 
 		# Credit fallback
 		if credit_score >= credit_required_score:
-				var remainder := amount - current_cash
-				if current_cash > 0.0:
-						spend_cash(current_cash)
-						if not silent:
-								StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
+			if current_cash > 0.0:
+				spend_cash(current_cash)
+				if not silent:
+					StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 
-						if can_pay_with_credit(remainder):
-								var total_with_interest := remainder * (1.0 + get_credit_interest_rate())
-								set_credit_used(get_credit_used() + total_with_interest)
-								if not silent:
-										StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
-								WindowManager.launch_app_by_name("OwerView")
-								return true
-
+			if can_pay_with_credit(remainder):
+				var total_with_interest = remainder * (1.0 + get_credit_interest_rate())
+				set_credit_used(get_credit_used() + total_with_interest)
+				if not silent:
+					StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
+				WindowManager.launch_app_by_name("OwerView")
+				return true
 		# Failed to pay
 		if not silent:
 				StatpopManager.spawn("DECLINED", get_viewport().get_mouse_position(), "click", Color.RED)

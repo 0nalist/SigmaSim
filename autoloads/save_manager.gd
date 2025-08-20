@@ -66,6 +66,7 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	user_data["global_rng_seed"] = seed_val
 	RNGManager.init_seed(int(user_data["global_rng_seed"]))
 	PlayerManager.user_data = user_data.duplicate(true)
+	PlayerManager.ensure_default_stats()
 
 	var background = user_data.get("background", "")
 	if background != "":
@@ -98,6 +99,7 @@ func save_to_slot(slot_id: int) -> void:
 		"gpus": GPUManager.get_save_data(),
 		"upgrades": UpgradeManager.get_save_data(),
 		"windows": WindowManager.get_save_data(),
+		"desktop": DesktopLayoutManager.get_save_data(),
 	}
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
@@ -177,6 +179,8 @@ func load_from_slot(slot_id: int) -> void:
 			GPUManager.load_from_data(data["gpus"])
 	if data.has("bills"):
 			BillManager.load_from_data(data["bills"])
+	if data.has("desktop"):
+			DesktopLayoutManager.load_from_data(data["desktop"])
 	if data.has("windows"):  # Always load windows last
 			WindowManager.load_from_data(data["windows"])
 	BillManager.is_loading = false
@@ -197,6 +201,7 @@ func reset_game_state() -> void:
 	GPUManager.reset()
 	BillManager.reset()
 	NPCManager.reset()
+	DesktopLayoutManager.reset()
 
 func reset_managers():
 	StatManager.reset()
@@ -209,6 +214,7 @@ func reset_managers():
 	GPUManager.reset()
 	BillManager.reset()
 	NPCManager.reset()
+	DesktopLayoutManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	var path := get_slot_path(slot_id)
