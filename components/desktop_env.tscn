@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://nc5fi5e4a2r3" path="res://scripts/trauma_example.gd" id="3_5aheu"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
 [ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/backgrounds/Bliss_(Windows_XP) (2).png" id="3_rbayd"]
-[ext_resource type="Shader" uid="uid://bow6hwdhrtw30" path="res://assets/shaders/deep_sky_blue_warp_shader.gdshader" id="4_fjtwy"]
+[ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="4_fjtwy"]
 [ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://components/ticker.gd" id="5_g75lf"]
 [ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="5_yi8nh"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
@@ -31,6 +31,7 @@
 [ext_resource type="Script" uid="uid://c7t01yq8wloqf" path="res://components/desktop_background.gd" id="24_jkb4t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yi8nh"]
+resource_local_to_scene = true
 shader = ExtResource("4_fjtwy")
 shader_parameter/stretch = 0.8
 shader_parameter/thing1 = 0.6
@@ -38,6 +39,9 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.03
+shader_parameter/color_low = Color(0.02, 0.05, 0.1, 1)
+shader_parameter/color_mid = Color(0.1, 0.3, 0.55, 1)
+shader_parameter/color_high = Color(0.3, 0.6, 0.85, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ptlp0"]
 shader = ExtResource("7_ptlp0")
