@@ -146,13 +146,17 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	if is_new_battle and UpgradeManager.get_level("fumble_friend_pic") > 0:
 			battle_stats_to_use["apprehension"] = clamp(battle_stats_to_use.get("apprehension", 0) - 10, 0, 100)
 
-	# Set up logic
-	if battle_logic_resource:
-		logic = battle_logic_resource.duplicate()
-	else:
-		logic = BattleLogic.new()
-	logic.setup(npc, battle_stats_to_use)
-	battle_stats = logic.get_stats()
+        # Set up logic
+        if battle_logic_resource:
+                logic = battle_logic_resource.duplicate()
+        else:
+                logic = BattleLogic.new()
+        var player_move_count := 0
+        for msg in chatlog:
+                if msg.get("is_player", false) and msg.get("text", "") != "*ghosts*":
+                        player_move_count += 1
+        logic.setup(npc, battle_stats_to_use, player_move_count)
+        battle_stats = logic.get_stats()
 
 	_update_profiles()
 	for child in chat_container.get_children():

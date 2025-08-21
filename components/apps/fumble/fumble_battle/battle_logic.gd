@@ -3,31 +3,36 @@ extends Resource
 
 var npc: NPC
 var stats = {}
+var move_count: int = 0
 
 
-func setup(npc_ref, stats_dict = {}):
-	npc = npc_ref
-	stats = stats_dict.duplicate()
+func setup(npc_ref, stats_dict = {}, move_count_in: int = 0):
+        npc = npc_ref
+        stats = stats_dict.duplicate()
+        move_count = move_count_in
 
 func resolve_move(move_type: String) -> Dictionary:
-	var chance = get_success_chance(move_type)
-	var success = RNGManager.get_rng().randf() < chance
-	var mod = get_move_type_modifier(npc.chat_battle_type, move_type)
-	var reaction = ""
-	if mod == 2.0:
-		reaction = "heart"
-	elif mod == 0.5:
-		reaction = "haha"
-	elif mod == 0.0:
-		reaction = "thumbs_down"
-	# Default: no reaction or normal (could add more)
-	var effects = apply_move_effects(move_type, success)
-	return {
-		"success": success,
-		"chance": chance,
-		"effects": effects,
-		"reaction": reaction
-	}
+        var chance = get_success_chance(move_type)
+        if move_count == 0 and move_type != "catch" and UpgradeManager.get_level("fumble_cyberstalk") > 0:
+                chance = clamp(chance + 0.1, 0.0, 1.0)
+        var success = RNGManager.get_rng().randf() < chance
+        var mod = get_move_type_modifier(npc.chat_battle_type, move_type)
+        var reaction = ""
+        if mod == 2.0:
+                reaction = "heart"
+        elif mod == 0.5:
+                reaction = "haha"
+        elif mod == 0.0:
+                reaction = "thumbs_down"
+        # Default: no reaction or normal (could add more)
+        var effects = apply_move_effects(move_type, success)
+        move_count += 1
+        return {
+                "success": success,
+                "chance": chance,
+                "effects": effects,
+                "reaction": reaction
+        }
 
 
 func get_success_chance(move_type: String) -> float:

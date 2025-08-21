@@ -1,0 +1,16 @@
+{
+  "id": "fumble_cyberstalk",
+  "name": "Cyberstalk",
+  "description": "+10% success chance on your first move in a chat battle (excluding CATCH).",
+  "effects": [],
+  "systems": [
+    "fumble"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+    "ex": 10
+  },
+  "max_level": 1,
+  "repeatable": false,
+  "scale_by_formula": false
+}
