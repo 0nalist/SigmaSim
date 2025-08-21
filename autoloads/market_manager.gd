@@ -33,6 +33,7 @@ func _ready():
 		_init_crypto_market()
 	if stock_market.is_empty():
 		_init_stock_market()
+	print("market manager ready, crypto should be initialized")
 
 func _on_minute_passed(current_time_minutes: int) -> void:
 	# Alternate stock and crypto ticks every minute
@@ -115,9 +116,10 @@ func _update_crypto_prices():
 ## --- Initialization --- ##
 
 func _init_crypto_market() -> void:
+	
 	for symbol in CRYPTO_RESOURCES.keys():
-			var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
-			register_crypto(crypto)
+		var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
+		register_crypto(crypto)
 	emit_signal("crypto_market_ready")
 	print("crypto market: " + str(crypto_market))
 
