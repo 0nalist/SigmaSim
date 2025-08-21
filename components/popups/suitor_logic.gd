@@ -6,6 +6,7 @@ var progress_paused: bool = false
 
 const STAGE_THRESHOLDS: Array[float] = [0.0, 0.0, 100.0, 1000.0, 10000.0, 100000.0]
 const LN10: float = 2.302585092994046  # natural log of 10
+const LOVE_AFFINITY_GAIN: float = 5.0
 
 static func get_stage_bounds(stage: int, progress: float) -> Vector2:
 	if stage < NPC.RelationshipStage.MARRIED:
@@ -61,7 +62,9 @@ func on_date_paid() -> void:
 	progress_paused = false
 
 func apply_love() -> bool:
-	npc.affinity = min(npc.affinity + 5.0, 100.0)
+       # Love actions should build affinity rather than reduce it.
+       # Increase affinity by a fixed amount, clamping at the maximum.
+       npc.affinity = min(npc.affinity + LOVE_AFFINITY_GAIN, 100.0)
 	var progress_increase: float = npc.relationship_progress * 0.01
 	var bounds: Vector2 = get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
 	npc.relationship_progress = min(npc.relationship_progress + progress_increase, bounds.y)
