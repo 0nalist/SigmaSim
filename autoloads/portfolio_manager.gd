@@ -283,9 +283,10 @@ func _on_cash_changed(new_value: float) -> void:
 		emit_signal("resource_changed", "cash", new_value)
 
 func _on_credit_changed(_value: float) -> void:
-		emit_signal("credit_updated", get_credit_used(), get_credit_limit())
-		emit_signal("resource_changed", "debt", get_total_debt())
-		_recalculate_credit_score()
+                emit_signal("credit_updated", get_credit_used(), get_credit_limit())
+                emit_signal("resource_changed", "credit", get_credit_used())
+                emit_signal("resource_changed", "debt", get_total_debt())
+                _recalculate_credit_score()
 
 func _on_student_loans_changed(_value: float) -> void:
 		_update_student_loan_min_payment()
