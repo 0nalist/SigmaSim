@@ -167,22 +167,23 @@ func _populate_cards_over_frames(count: int, add_at_top: bool = true) -> void:
 		await get_tree().process_frame  # Spread out the work
 
 func _refill_swipe_pool_async(time_budget_msec := 8) -> void:
-	var start_time = Time.get_ticks_msec()
-	var seen = NPCManager.encounter_count
-	var t = clamp(float(seen) / float(max_recycled_cap_index), 0.0, 1.0)
-	var percent = lerp(min_recycled_percent, max_recycled_percent, t)
-	var num_recycled = int(round(swipe_pool_size * percent))
-	var num_new = swipe_pool_size - num_recycled
-	var pool: Array[int] = []
+        var start_time = Time.get_ticks_msec()
+        var seen = NPCManager.encounter_count
+        var t = clamp(float(seen) / float(max_recycled_cap_index), 0.0, 1.0)
+        var percent = lerp(min_recycled_percent, max_recycled_percent, t)
+        var num_recycled = int(round(swipe_pool_size * percent))
+        var num_new = swipe_pool_size - num_recycled
+        var pool: Array[int] = []
 
-	var exclude = npc_indices + swipe_pool
+        var exclude = npc_indices + swipe_pool
+        var min_att := PlayerManager.get_var("fumble_fugly_filter_threshold", 0) * 10
 
 	var new_indices: Array[int] = []
-	for idx in NPCManager.get_batch_of_new_npc_indices(app_name, num_new * 3):
-		if not exclude.has(idx):
-			var npc = NPCManager.get_npc_by_index(idx)
-			if gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
-				new_indices.append(idx)
+       for idx in NPCManager.get_batch_of_new_npc_indices(app_name, num_new * 3):
+               if not exclude.has(idx):
+                       var npc = NPCManager.get_npc_by_index(idx)
+                       if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
+                               new_indices.append(idx)
 		if new_indices.size() >= num_new:
 			break
 		# ---- Time budget yield ----
@@ -191,11 +192,11 @@ func _refill_swipe_pool_async(time_budget_msec := 8) -> void:
 			start_time = Time.get_ticks_msec()
 
 	var recycled_indices: Array[int] = []
-	for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
-		if not exclude.has(idx):
-			var npc = NPCManager.get_npc_by_index(idx)
-			if gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
-				recycled_indices.append(idx)
+       for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
+               if not exclude.has(idx):
+                       var npc = NPCManager.get_npc_by_index(idx)
+                       if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
+                               recycled_indices.append(idx)
 		if recycled_indices.size() >= num_recycled:
 			break
 		# ---- Time budget yield ----
