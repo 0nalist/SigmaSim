@@ -35,9 +35,8 @@ func process(delta: float) -> void:
 	if npc == null or progress_paused or npc.relationship_stage >= NPC.RelationshipStage.DIVORCED:
 		return
 	var bounds: Vector2 = get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
-	var stage_range: float = bounds.y - bounds.x
 	var rate: float = max(npc.affinity, 0.0) * 0.1
-	npc.relationship_progress += rate * delta * stage_range / 100.0
+	npc.relationship_progress += rate * delta
 	apply_stop_points()
 	if npc.relationship_stage < NPC.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
 		npc.relationship_progress = bounds.y

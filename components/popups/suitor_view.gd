@@ -70,7 +70,7 @@ func _update_all() -> void:
 	_update_affinity_bar()
 	_update_breakup_button_text()
 	_update_action_buttons_text()
-	var blocked = npc.relationship_stage >= NPC.RelationshipStage.DIVORCED
+	var blocked: bool = npc.relationship_stage >= NPC.RelationshipStage.DIVORCED
 	gift_button.disabled = blocked
 	date_button.disabled = blocked
 	apologize_button.visible = UpgradeManager.get_level("fumble_talk_therapy") > 0 and npc.relationship_stage in [NPC.RelationshipStage.DIVORCED, NPC.RelationshipStage.EX]
@@ -134,13 +134,12 @@ func _on_date_pressed() -> void:
 		return
 	logic.on_date_paid()
 	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
-	var stage_range: float = bounds.y - bounds.x
 	if npc.relationship_stage == NPC.RelationshipStage.TALKING and npc.relationship_progress < bounds.y - 1.0:
 		npc.relationship_progress = bounds.y - 1.0
 		logic.progress_paused = true
 		next_stage_button.visible = true
 	else:
-		npc.relationship_progress = min(npc.relationship_progress + stage_range * 0.25, bounds.y)
+		npc.relationship_progress = min(npc.relationship_progress + 25.0, bounds.y)
 	if npc.relationship_stage < NPC.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
 		logic.progress_paused = true
 		next_stage_button.visible = true
@@ -166,7 +165,7 @@ func _on_breakup_pressed() -> void:
 	breakup_confirm.visible = true
 func _on_breakup_confirm_yes_pressed() -> void:
 	breakup_confirm.visible = false
-	var current_ex = StatManager.get_stat("ex", 0.0)
+	var current_ex: float = StatManager.get_stat("ex", 0.0)
 	StatManager.set_base_stat("ex", current_ex + breakup_reward)
 	if npc.relationship_stage == NPC.RelationshipStage.MARRIED:
 		npc.relationship_stage = NPC.RelationshipStage.DIVORCED
@@ -183,28 +182,28 @@ func _on_breakup_confirm_yes_pressed() -> void:
 	_update_all()
 
 func _on_breakup_confirm_no_pressed() -> void:
-		breakup_confirm.visible = false
+	breakup_confirm.visible = false
 
 func _on_apologize_pressed() -> void:
-		if npc == null:
-				return
-		var current_ex = StatManager.get_stat("ex", 0.0)
-		if current_ex < apologize_cost:
-			return
-		StatManager.set_base_stat("ex", current_ex - apologize_cost)
-		npc.relationship_stage = NPC.RelationshipStage.TALKING
-		npc.relationship_progress = 0.0
-		npc.affinity = 1.0
-		logic.progress_paused = false
-		#gift_cost = 25.0
-		#date_cost = 200.0
-		breakup_reward = 0.0
-		apologize_cost = int(ceil(apologize_cost * 1.5))
-		next_stage_button.visible = false
-		gift_button.disabled = false
-		date_button.disabled = false
-		breakup_button.disabled = false
-		_update_all()
+	if npc == null:
+		return
+	var current_ex: float = StatManager.get_stat("ex", 0.0)
+	if current_ex < apologize_cost:
+		return
+	StatManager.set_base_stat("ex", current_ex - apologize_cost)
+	npc.relationship_stage = NPC.RelationshipStage.TALKING
+	npc.relationship_progress = 0.0
+	npc.affinity = 1.0
+	logic.progress_paused = false
+	#gift_cost = 25.0
+	#date_cost = 200.0
+	breakup_reward = 0.0
+	apologize_cost = int(ceil(apologize_cost * 1.5))
+	next_stage_button.visible = false
+	gift_button.disabled = false
+	date_button.disabled = false
+	breakup_button.disabled = false
+	_update_all()
 
 func _on_talk_therapy_purchased(level: int) -> void:
 	if npc == null:
