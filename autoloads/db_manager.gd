@@ -3,7 +3,7 @@ extends Node
 
 var db: SQLite
 
-const SCHEMA := {
+const SCHEMA: Dictionary = {
 	"npc": {
 		"id": {"data_type": "int", "primary_key": true},
 		"slot_id": {"data_type": "int", "primary_key": true},
@@ -20,8 +20,9 @@ const SCHEMA := {
 		"affinity_equilibrium": {"data_type": "real"},
 		"affinity": {"data_type": "real"},
 		"rizz": {"data_type": "int"},
-		"attractiveness": {"data_type": "int"},
-		"income": {"data_type": "int"},
+                "attractiveness": {"data_type": "int"},
+                "dates_paid": {"data_type": "int"},
+                "income": {"data_type": "int"},
 		"wealth": {"data_type": "int"},
 		"preferred_pet_names": {"data_type": "text"},
 		"player_pet_names": {"data_type": "text"},
@@ -88,7 +89,7 @@ func _init_schema():
 			db.query("CREATE INDEX IF NOT EXISTS idx_battle_slot_id ON fumble_battles(slot_id)")
 
 func _migrate_table(table_name: String, fields: Dictionary):
-	var column_defs := {}
+	var column_defs: Dictionary = {}
 	for k in fields.keys():
 		if k == "primary_key":
 			continue
@@ -198,8 +199,8 @@ func has_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> bool:
 # -- Relationships --
 
 func save_fumble_relationship(npc_id: int, status: FumbleManager.FumbleStatus, slot_id: int = SaveManager.current_slot_id) -> void:
-	var status_str = FumbleManager.FUMBLE_STATUS_STRINGS[status]
-	var now := int(Time.get_unix_time_from_system())
+	var status_str: String = FumbleManager.FUMBLE_STATUS_STRINGS[status]
+	var now: int = int(Time.get_unix_time_from_system())
 	print("Saving relationship: npc_id =", npc_id, "status =", status_str, "slot_id =", slot_id)
 	var rows = db.select_rows(
 		"fumble_relationships",
@@ -236,7 +237,7 @@ func get_fumble_relationship(npc_id: int, slot_id: int = SaveManager.current_slo
 func get_all_fumble_relationships(slot_id: int = SaveManager.current_slot_id) -> Dictionary:
 	var rows = db.select_rows("fumble_relationships", "slot_id = %d" % slot_id, ["npc_id", "status"])
 	print("Queried fumble_relationships for slot_id =", slot_id, "| Rows:", rows.size())
-	var out := {}
+	var out: Dictionary = {}
 	for r in rows:
 			out[r.npc_id] = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
 	print("Loaded relationships:", out)
@@ -319,7 +320,7 @@ func get_active_fumble_battles(slot_id: int = SaveManager.current_slot_id) -> Ar
 			"slot_id = %d" % slot_id,
 			["battle_id", "npc_id", "chatlog", "stats", "move_usage_counts", "outcome"]
 	)
-	var out := []
+	var out: Array = []
 	for r in rows:
 		print(" -> battle", r.battle_id, "outcome", r.outcome)
 		var muc = from_json(r.move_usage_counts)
@@ -347,7 +348,7 @@ func delete_slot_data(slot_id: int) -> void:
 # -- Utilities --
 
 func _make_update_string(data: Dictionary) -> String:
-	var out := []
+	var out: Array = []
 	for k in data.keys():
 		if k in ["id", "slot_id"]:
 			continue
@@ -369,8 +370,8 @@ func to_json(value: Variant) -> String:
 
 func from_json(json_str: String) -> Variant:
 	if typeof(json_str) != TYPE_STRING:
-			return null
-	var json := JSON.new()
+	return null
+	var json: JSON = JSON.new()
 	var err = json.parse(json_str)
 	if err == OK:
 		return json.data
@@ -383,7 +384,7 @@ func get_daterbase_entries(slot_id: int = SaveManager.current_slot_id) -> Array:
 	var q = "SELECT npc_id, battle_id FROM fumble_battles WHERE slot_id = %d AND outcome = 'victory'" % slot_id
 	db.query(q)
 	var rows = db.query_result
-	var latest := {}
+	var latest: Dictionary = {}
 	for r in rows:
 		var npc_id = int(r.npc_id)
 		var b_id = str(r.battle_id)
