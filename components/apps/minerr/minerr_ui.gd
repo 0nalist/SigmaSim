@@ -32,14 +32,13 @@ func refresh_cards_from_market() -> void:
 
 	# Spawn new cards for each crypto in the market
 	for crypto: Cryptocurrency in MarketManager.crypto_market.values():
-		print("Minerr: adding card for", crypto.symbol, crypto.display_name)
+		print("Minerr.refresh: crypto symbol=", crypto.symbol, " name=", crypto.display_name, " price=", crypto.price, " id=", str(crypto.get_instance_id()))
 		var card: CryptoCard = crypto_card_scene.instantiate()
 		crypto_container.add_child(card)
+		print("Minerr.refresh: calling setup for id=", str(crypto.get_instance_id()))
 		card.setup(crypto)
 		crypto_cards[crypto.symbol] = card
-
-
-
+	debug_dump_cards()
 func update_gpu_label() -> void:
 	var total_gpus: int = GPUManager.get_total_gpu_count()
 	var free_gpus: int = GPUManager.get_free_gpu_count()
@@ -116,3 +115,13 @@ func _on_buy_new_gpu_button_pressed() -> void:
 		update_gpu_label()
 	else:
 		print("Could not purchase GPU (insufficient funds).")
+
+func debug_dump_cards() -> void:
+	print("-- Minerr cards --")
+	for symbol in crypto_cards.keys():
+		var card: CryptoCard = crypto_cards[symbol]
+		if card.crypto != null:
+			var c: Cryptocurrency = card.crypto
+			print(symbol, ",", c.display_name, ", price=", c.price, ", id=", str(c.get_instance_id()))
+		else:
+			print(symbol, ", card without crypto, id=", str(card.get_instance_id()))
