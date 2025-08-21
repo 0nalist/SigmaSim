@@ -7,7 +7,21 @@ class_name FolderWindow
 @onready var scroll: ScrollContainer = %Scroll
 
 func _ready() -> void:
-		call_deferred("_update_grid_columns")
+	call_deferred("_update_grid_columns")
+	DesktopLayoutManager.item_created.connect(_on_item_created)
+	DesktopLayoutManager.item_deleted.connect(_on_item_deleted)
+	DesktopLayoutManager.item_moved.connect(_on_item_moved)
+
+func _on_item_created(item_id: int, data: Dictionary) -> void:
+	if int(data.get("parent_id", 0)) == folder_id:
+		_populate()
+
+func _on_item_deleted(item_id: int) -> void:
+	_populate()
+
+func _on_item_moved(item_id: int, position: Vector2, parent_id: int, old_parent_id: int) -> void:
+	if parent_id == folder_id or old_parent_id == folder_id:
+		_populate()
 
 func _notification(what: int) -> void:
 		if what == NOTIFICATION_RESIZED:
