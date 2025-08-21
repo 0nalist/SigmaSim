@@ -127,24 +127,24 @@ func _update_action_buttons_text() -> void:
 	apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_commas(apologize_cost, 0)
 
 func _update_love_button() -> void:
-	if npc == null:
-		return
-	if npc.relationship_stage < NPC.RelationshipStage.DATING:
-		love_button.visible = false
-		love_cooldown_label.visible = false
-		return
-	love_button.visible = true
-	var now: int = TimeManager.get_now_minutes()
-	var remaining: int = npc.love_cooldown + LOVE_COOLDOWN_MINUTES - now
-	if remaining > 0:
-		love_button.disabled = true
-		var hours: int = remaining / 60
-		var minutes: int = remaining % 60
-		love_cooldown_label.visible = true
-		love_cooldown_label.text = "Love in %dh %dm" % [hours, minutes]
-	else:
-		love_button.disabled = false
-		love_cooldown_label.visible = false
+        if npc == null:
+                return
+        if npc.relationship_stage < NPC.RelationshipStage.DATING:
+                love_button.visible = false
+                love_cooldown_label.visible = false
+                return
+        love_button.visible = true
+       var now: int = TimeManager.get_now_minutes()
+       var remaining: int = npc.love_cooldown - now
+       if remaining > 0:
+               love_button.disabled = true
+               var hours: int = remaining / 60
+               var minutes: int = remaining % 60
+               love_cooldown_label.visible = true
+               love_cooldown_label.text = "Love in %dh %dm" % [hours, minutes]
+       else:
+               love_button.disabled = false
+               love_cooldown_label.visible = false
 func _on_next_stage_pressed() -> void:
 	next_stage_button.visible = false
 	logic.progress_paused = false
@@ -162,17 +162,17 @@ func _on_gift_pressed() -> void:
 		_update_action_buttons_text()
 
 func _on_love_pressed() -> void:
-	var now: int = TimeManager.get_now_minutes()
-	if now - npc.love_cooldown < LOVE_COOLDOWN_MINUTES:
-		return
-	npc.love_cooldown = now
-	logic.apply_love()
-	if npc_idx != -1:
-			NPCManager.promote_to_persistent(npc_idx)
-			NPCManager.set_npc_field(npc_idx, "love_cooldown", npc.love_cooldown)
-			NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
-	_update_affinity_bar()
-	_update_love_button()
+       var now: int = TimeManager.get_now_minutes()
+       if now < npc.love_cooldown:
+               return
+       npc.love_cooldown = now + LOVE_COOLDOWN_MINUTES
+       logic.apply_love()
+       if npc_idx != -1:
+                       NPCManager.promote_to_persistent(npc_idx)
+                       NPCManager.set_npc_field(npc_idx, "love_cooldown", npc.love_cooldown)
+                       NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
+       _update_affinity_bar()
+       _update_love_button()
 
 func _on_date_pressed() -> void:
 	if not PortfolioManager.attempt_spend(npc.date_cost):
