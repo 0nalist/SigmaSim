@@ -23,6 +23,8 @@ const SCHEMA: Dictionary = {
 		"attractiveness": {"data_type": "int"},
 		"dates_paid": {"data_type": "int"},
 		"love_cooldown": {"data_type": "int"},
+		"gift_cost": {"data_type": "real"},
+		"date_cost": {"data_type": "real"},
 		"income": {"data_type": "int"},
 		"wealth": {"data_type": "int"},
 		"preferred_pet_names": {"data_type": "text"},
