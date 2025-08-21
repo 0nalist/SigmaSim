@@ -33,6 +33,13 @@ signal window_icon_changed(new_icon)
 @export var user_resizable: bool = true
 @export var stay_on_top: bool = false
 
+@export var color1: Color = Color.WHITE
+@export var color2: Color = Color.WHITE
+@export var color3: Color = Color.WHITE
+@export var color4: Color = Color.WHITE
+@export var color5: Color = Color.WHITE
+@export var color6: Color = Color.WHITE
+
 @export var upgrade_pane: PackedScene # upgrade_pane_scene if I am using scenes. But are packed scenes best here?
 
 
