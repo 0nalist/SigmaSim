@@ -10,6 +10,8 @@ const LOVE_COOLDOWN_MINUTES: int = 24 * 60
 @onready var relationship_bar: RelationshipBar = %RelationshipBar
 @onready var next_stage_button: Button = %NextStageButton
 @onready var affinity_bar: StatProgressBar = %AffinityBar
+@onready var relationship_value_label: Label = %RelationshipValueLabel
+@onready var affinity_value_label: Label = %AffinityValueLabel
 @onready var love_button: Button = %LoveButton
 @onready var love_cooldown_label: Label = %LoveCooldownLabel
 @onready var gift_button: Button = %GiftButton
@@ -78,25 +80,30 @@ func _update_all() -> void:
 	date_button.disabled = blocked
 	apologize_button.visible = UpgradeManager.get_level("fumble_talk_therapy") > 0 and npc.relationship_stage in [NPC.RelationshipStage.DIVORCED, NPC.RelationshipStage.EX]
 func _update_relationship_bar() -> void:
-	var current_stage: int = npc.relationship_stage
-	if current_stage == NPC.RelationshipStage.MARRIED:
-		var level: int = npc.get_marriage_level()
-		relationship_stage_label.text = "Level %d Marriage" % level
+        var current_stage: int = npc.relationship_stage
+        if current_stage == NPC.RelationshipStage.MARRIED:
+                var level: int = npc.get_marriage_level()
+                relationship_stage_label.text = "Level %d Marriage" % level
 	elif current_stage in [NPC.RelationshipStage.DIVORCED, NPC.RelationshipStage.EX]:
 		relationship_stage_label.text = STAGE_NAMES[current_stage]
 	else:
 		var next_stage: int = current_stage + 1
 		relationship_stage_label.text = "%s -> %s" % [STAGE_NAMES[current_stage], STAGE_NAMES[next_stage]]
-	var bounds: Vector2 = SuitorLogic.get_stage_bounds(current_stage, npc.relationship_progress)
-	relationship_bar.max_value = bounds.y - bounds.x
-	relationship_bar.update_value(npc.relationship_progress - bounds.x)
-	if current_stage < NPC.RelationshipStage.MARRIED:
-		relationship_bar.set_mark_fractions(logic.get_stop_marks())
-	else:
-		relationship_bar.set_mark_fractions([])
+        var bounds: Vector2 = SuitorLogic.get_stage_bounds(current_stage, npc.relationship_progress)
+        relationship_bar.max_value = bounds.y - bounds.x
+        relationship_bar.update_value(npc.relationship_progress - bounds.x)
+        relationship_value_label.text = "%s / %s" % [
+                NumberFormatter.format_commas(npc.relationship_progress - bounds.x, 2),
+                NumberFormatter.format_commas(bounds.y - bounds.x, 2)
+        ]
+        if current_stage < NPC.RelationshipStage.MARRIED:
+                relationship_bar.set_mark_fractions(logic.get_stop_marks())
+        else:
+                relationship_bar.set_mark_fractions([])
 func _update_affinity_bar() -> void:
-	affinity_bar.max_value = 100
-	affinity_bar.update_value(npc.affinity)
+        affinity_bar.max_value = 100
+        affinity_bar.update_value(npc.affinity)
+        affinity_value_label.text = "%s / 100" % NumberFormatter.format_commas(npc.affinity, 0)
 
 func _update_breakup_button_text() -> void:
 	if npc.relationship_stage >= NPC.RelationshipStage.DIVORCED:
