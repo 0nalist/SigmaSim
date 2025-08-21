@@ -65,28 +65,38 @@ func slide_in_from_right():
 
 func talk(text: String, time_per_char := 0.05) -> void:
 	speech_label.text = text
-	
+
 	await get_tree().process_frame
-	speech_label.visible_ratio = 1.0  # ensure full size for height calculation
+	speech_label.visible_ratio = 1.0  # ensure full size for size calculation
 
-	# Get the minimum height needed for the text
-	var label_height = speech_label.get_combined_minimum_size().y
+	# Determine ideal width without wrapping
+	speech_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	var label_size = speech_label.get_combined_minimum_size()
+	var max_width = 260
+	var target_width = clamp(label_size.x, 80, max_width)
+	speech_label.custom_minimum_size.x = target_width
 
-	# Optional: clamp height to a max value if needed
-	label_height = clamp(label_height, 60, 300)
+	# Re-enable wrapping and calculate height
+	speech_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	await get_tree().process_frame
+	label_size = speech_label.get_combined_minimum_size()
 
 	# Add padding/margin
-	var padding = 20
-	speech_bubble.custom_minimum_size.y = label_height + padding
-	
+	var padding = Vector2(20, 20)
+	var target_size = label_size + padding
+	speech_bubble.custom_minimum_size = target_size
+
 	speech_label.visible_ratio = 0.0
 	speech_bubble.visible = true
 	speech_bubble.modulate.a = 0.0
-	speech_bubble.position = Vector2(-speech_bubble.size.x - 20, -40)
+	speech_bubble.scale = Vector2.ZERO
+	speech_bubble.pivot_offset = target_size
+	speech_bubble.position = Vector2(-target_size.x - 20, -40)
 
-	# Fade in speech bubble
+	# Pop in speech bubble with a juicy tween
 	var tween = create_tween()
-	tween.tween_property(speech_bubble, "modulate:a", 1.0, 0.3)
+	tween.tween_property(speech_bubble, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(speech_bubble, "modulate:a", 1.0, 0.2)
 	await tween.finished
 
 	var total_chars := text.length()

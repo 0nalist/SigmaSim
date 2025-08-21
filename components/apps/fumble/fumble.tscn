@@ -283,6 +283,28 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="FuglyFilterContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
+layout_mode = 2
+text = "Min 🔥"
+
+[node name="FuglyFilterSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+
+[node name="Control8" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
 [node name="10px7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2

@@ -35,11 +35,18 @@ extends Pane
 @onready var electric_speed_slider: HSlider = %ElectricSpeedSlider
 @onready var electric_scale_x_slider: HSlider = %ElectricScaleXSlider
 @onready var electric_scale_y_slider: HSlider = %ElectricScaleYSlider
+@onready var tab_container: TabContainer = %TabContainer
 @onready var waves_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/WavesShader").material
 @onready var blue_warp_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/BlueWarpShader").material
 @onready var comic_dots1_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueVert").material
 @onready var comic_dots2_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueHor").material
 @onready var electric_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ElectricShader").material
+
+func setup_custom(tab_name: String) -> void:
+		if tab_name == "Backgrounds":
+				var tab = tab_container.get_node_or_null("Backgrounds")
+				if tab:
+						tab_container.current_tab = tab.get_index()
 
 
 func _ready() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=49 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -27,7 +27,6 @@
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="23_dik0q"]
 [ext_resource type="Script" uid="uid://c7t01yq8wloqf" path="res://components/desktop_background.gd" id="24_jkb4t"]
-[ext_resource type="PackedScene" uid="uid://c7dmnbgvcwlsa" path="res://components/desktop/folder_shortcut.tscn" id="28_rbayd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yi8nh"]
 shader = ExtResource("4_fjtwy")
@@ -216,7 +215,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_0utxc")
 script = ExtResource("1_lpqk7")
-background_texture = null
 
 [node name="Background" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -242,8 +240,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="BlueWarpShader" type="PanelContainer" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_yi8nh")
 layout_mode = 1
@@ -256,6 +256,7 @@ script = ExtResource("24_jkb4t")
 background_name = "BlueWarp"
 
 [node name="PixelPlanet" type="PanelContainer" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_ptlp0")
 layout_mode = 1
@@ -266,6 +267,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="WavesShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_668nl")
 layout_mode = 1
@@ -278,6 +280,7 @@ script = ExtResource("24_jkb4t")
 background_name = "Waves"
 
 [node name="ElectricShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_8lg5h")
 layout_mode = 1
@@ -290,6 +293,7 @@ script = ExtResource("24_jkb4t")
 background_name = "Electric"
 
 [node name="ComicDotsBlueVert" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_rbayd")
 layout_mode = 1
@@ -307,6 +311,7 @@ script = ExtResource("24_jkb4t")
 background_name = "ComicDots1"
 
 [node name="ComicDotsBlueHor" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_5aheu")
 layout_mode = 1
@@ -830,6 +835,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CalendarContainer" type="Control" parent="TaskbarLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -855,14 +861,6 @@ grow_horizontal = 0
 grow_vertical = 0
 pivot_offset = Vector2(36, 36)
 day_panel_scene = ExtResource("20_vxmwr")
-
-[node name="FolderShortcut" parent="." instance=ExtResource("28_rbayd")]
-offset_left = 548.0
-offset_top = 386.0
-offset_right = 612.0
-offset_bottom = 450.0
-title = "sdafasdf"
-icon = ExtResource("10_4e5iv")
 
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="mouse_exited" from="TaskbarLayer/TaskbarWrapper/StartPanel" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_mouse_exited"]
