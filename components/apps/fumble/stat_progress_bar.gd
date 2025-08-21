@@ -12,6 +12,12 @@ extends ProgressBar
 
 var _tween: Tween = null
 var _actual_value: float = 0.0
+@export var equilibrium_value: float = NAN setget set_equilibrium_value
+@export var equilibrium_tooltip: String = "Affinity will drift towards equilibrium over time"
+
+func set_equilibrium_value(val: float) -> void:
+        equilibrium_value = val
+        queue_redraw()
 
 func _ready():
 		if stat_name != "":
@@ -44,8 +50,9 @@ func update_value(new_value: float) -> void:
 	if animate:
 		set_value_animated(display_value, _actual_value)
 	else:
-		value = clamp(display_value, min_value, max_value)
-		update_tooltip(_actual_value)
+                value = clamp(display_value, min_value, max_value)
+                update_tooltip(_actual_value)
+        queue_redraw()
 
 func set_value_animated(target_value: float, tooltip_value: float) -> void:
 	if _tween:
@@ -62,4 +69,18 @@ func update_tooltip(val: float) -> void:
 		str_val = "%.2f" % val
 	else:
 		str_val = str(int(val))
-		tooltip_text = "%s: %s" % [tooltip_name, str_val]
+                tooltip_text = "%s: %s" % [tooltip_name, str_val]
+
+func _draw() -> void:
+        if not is_nan(equilibrium_value):
+                var frac := (equilibrium_value - min_value) / (max_value - min_value)
+                var x := size.x * frac
+                draw_line(Vector2(x, 0), Vector2(x, size.y), Color.WHITE, 1.0)
+
+func _get_tooltip(at_position: Vector2 = Vector2.ZERO) -> String:
+        if not is_nan(equilibrium_value):
+                var frac := (equilibrium_value - min_value) / (max_value - min_value)
+                var x := size.x * frac
+                if absf(at_position.x - x) <= 2.0:
+                        return equilibrium_tooltip
+        return tooltip_text
