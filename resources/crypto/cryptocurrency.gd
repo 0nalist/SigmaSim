@@ -2,9 +2,9 @@
 extends Resource
 class_name Cryptocurrency
 
-@export var symbol: String
-@export var display_name: String
-@export var icon: Texture
+@export var symbol: String = ""
+@export var display_name: String = ""
+@export var icon: Texture2D
 @export var price: float = 1.0
 @export var volatility: float = 1.0
 @export var power_required: int = 100
@@ -24,11 +24,12 @@ func update_price(delta: float) -> void:
 	price = max(0.01, snapped(price + delta, 0.01))
 	all_time_high = max(all_time_high, price)
 
-func update_from_market(volatility_scale := 1.0) -> void:
-	var rng = RNGManager.get_rng()
-	var noise = rng.randf_range(-0.5, 0.5)
-	var max_percent_change = volatility / 100.0 * volatility_scale
-	var delta = price * max_percent_change * noise
+
+func update_from_market(volatility_scale: float = 1.0) -> void:
+	var rng: RandomNumberGenerator = RNGManager.get_rng()
+	var noise: float = rng.randf_range(-0.5, 0.5)
+	var max_percent_change: float = volatility / 100.0 * volatility_scale
+	var delta: float = price * max_percent_change * noise
 	update_price(delta)
 	#update_power_required(price)
 
