@@ -115,10 +115,11 @@ func _update_crypto_prices():
 ## --- Initialization --- ##
 
 func _init_crypto_market() -> void:
-		for symbol in CRYPTO_RESOURCES.keys():
-				var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
-				register_crypto(crypto)
-		emit_signal("crypto_market_ready")
+	for symbol in CRYPTO_RESOURCES.keys():
+			var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
+			register_crypto(crypto)
+	emit_signal("crypto_market_ready")
+	print("crypto market: " + str(crypto_market))
 
 func _init_stock_market() -> void:
 		for symbol in STOCK_RESOURCES.keys():
