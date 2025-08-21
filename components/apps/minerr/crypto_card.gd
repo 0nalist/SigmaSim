@@ -173,8 +173,8 @@ func _on_sell_pressed() -> void:
 	var success: bool = PortfolioManager.sell_crypto(crypto.symbol, 1.0)
 	if success:
 		StatpopManager.spawn("+$" + NumberFormatter.format_commas(crypto.price, 0), statpop_pos, "click", Color.GREEN)
-	else:
-		StatpopManager.spawn("DECLINED", statpop_pos, "click", Color.RED)
+	#else:
+	#	StatpopManager.spawn("DECLINED", statpop_pos, "click", Color.RED)
 	update_display()
 
 func _on_price_updated(symbol: String, _crypto: Cryptocurrency) -> void:
