@@ -53,6 +53,7 @@ Events="*res://autoloads/events.gd"
 DebugConsoleManager="*res://autoload/debug_console_manager.gd"
 DesktopLayoutManager="*res://autoloads/desktop_layout_manager.gd"
 SoundManager="*res://autoloads/sound_manager.gd"
+TraumaManager="*res://autoloads/TraumaManager.gd"
 
 [display]
 
