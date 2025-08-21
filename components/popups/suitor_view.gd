@@ -62,8 +62,8 @@ func _process(delta: float) -> void:
 	logic.process(delta)
 	if npc.relationship_progress >= 100.0 and npc.relationship_stage < NPC.RelationshipStage.MARRIED:
 		next_stage_button.visible = true
-_update_relationship_bar()
-_update_breakup_button_text()
+	_update_relationship_bar()
+	_update_breakup_button_text()
 
 func _update_all() -> void:
 	_update_relationship_bar()
@@ -84,9 +84,9 @@ func _update_relationship_bar() -> void:
 		if current_stage < NPC.RelationshipStage.MARRIED:
 			next_stage = current_stage + 1
 		label_text = "%s -> %s" % [STAGE_NAMES[current_stage], STAGE_NAMES[next_stage]]
-relationship_stage_label.text = label_text
-relationship_bar.max_value = 100
-relationship_bar.update_value(npc.relationship_progress)
+	relationship_stage_label.text = label_text
+	relationship_bar.max_value = 100
+	relationship_bar.update_value(npc.relationship_progress)
 	relationship_bar.set_mark_fractions(logic.get_stop_marks())
 
 func _update_affinity_bar() -> void:
@@ -125,17 +125,17 @@ func _on_gift_pressed() -> void:
 
 func _on_date_pressed() -> void:
 	if not PortfolioManager.attempt_spend(date_cost):
-	        return
+			return
 	logic.on_date_paid()
 	if npc.relationship_stage == NPC.RelationshipStage.TALKING and npc.relationship_progress < 99.0:
-	        npc.relationship_progress = 99.0
-	        logic.progress_paused = true
-	        next_stage_button.visible = true
+		npc.relationship_progress = 99.0
+		logic.progress_paused = true
+		next_stage_button.visible = true
 	else:
-	        npc.relationship_progress = min(npc.relationship_progress + 25.0, 100.0)
-	        if npc.relationship_progress >= 100.0:
-	                logic.progress_paused = true
-	                next_stage_button.visible = true
+		npc.relationship_progress = min(npc.relationship_progress + 25.0, 100.0)
+	if npc.relationship_progress >= 100.0:
+		logic.progress_paused = true
+		next_stage_button.visible = true
 	_update_relationship_bar()
 	_update_breakup_button_text()
 	date_cost *= 2.0

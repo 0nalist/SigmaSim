@@ -26,9 +26,9 @@ func apply_stop_points() -> void:
 		var fraction: float = stop["fraction"]
 		var required: int = stop["required"]
 		if progress_fraction >= fraction and npc.dates_paid < required:
-		npc.relationship_progress = fraction * 100.0
-		progress_paused = true
-		break
+			npc.relationship_progress = fraction * 100.0
+			progress_paused = true
+			break
 
 func on_date_paid() -> void:
 	npc.dates_paid += 1
@@ -42,7 +42,7 @@ func get_stop_marks() -> Array[float]:
 		var fraction: float = stop["fraction"]
 		var required: int = stop["required"]
 		if npc.dates_paid < required:
-		marks.append(fraction)
+			marks.append(fraction)
 	return marks
 
 static func get_stop_points(stage: int) -> Array:
