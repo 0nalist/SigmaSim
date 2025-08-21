@@ -77,10 +77,26 @@ static func _safe_string(val, fallback := ""):
 	return val if typeof(val) == TYPE_STRING and val != null else fallback
 
 static func _safe_int(val, fallback := 0):
-	return int(val) if typeof(val) in [TYPE_INT, TYPE_FLOAT] and val != null else fallback
+	if val == null:
+		return fallback
+	match typeof(val):
+		TYPE_INT, TYPE_FLOAT:
+			return int(val)
+		TYPE_STRING:
+			return int(val) if String(val).is_valid_int() else fallback
+		_:
+			return fallback
 
 static func _safe_float(val, fallback := 0.0):
-	return float(val) if typeof(val) in [TYPE_FLOAT, TYPE_INT] and val != null else fallback
+	if val == null:
+		return fallback
+	match typeof(val):
+		TYPE_FLOAT, TYPE_INT:
+			return float(val)
+		TYPE_STRING:
+			return float(val) if String(val).is_valid_float() else fallback
+		_:
+			return fallback
 
 static func _safe_dict(val, fallback := {}):
 			return val if typeof(val) == TYPE_DICTIONARY and val != null else fallback

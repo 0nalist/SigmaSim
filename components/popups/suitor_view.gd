@@ -28,11 +28,13 @@ var logic: SuitorLogic = SuitorLogic.new()
 var breakup_reward: float = 0.0
 var apologize_cost: int = 10
 var npc_idx: int = -1
+var last_saved_progress: float = 0.0
 
 func setup_custom(data: Dictionary) -> void:
 	npc = data.get("npc")
 	logic.setup(npc)
 	npc_idx = data.get("npc_idx", -1)
+	last_saved_progress = npc.relationship_progress
 	name_label.text = npc.full_name
 	portrait_view.portrait_creator_enabled = true
 	if npc_idx != -1:
@@ -62,7 +64,12 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if npc == null or npc.relationship_stage >= NPC.RelationshipStage.DIVORCED:
 		return
+	var prev_progress: float = npc.relationship_progress
 	logic.process(delta)
+	if npc_idx != -1 and npc.relationship_progress != prev_progress:
+		NPCManager.promote_to_persistent(npc_idx)
+		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+		last_saved_progress = npc.relationship_progress
 	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
 	if npc.relationship_stage < NPC.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
 		next_stage_button.visible = true
@@ -157,6 +164,7 @@ func _on_gift_pressed() -> void:
 		npc.gift_cost *= 2.0
 		if npc_idx != -1:
 			NPCManager.promote_to_persistent(npc_idx)
+			NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
 			NPCManager.set_npc_field(npc_idx, "gift_cost", npc.gift_cost)
 		_update_affinity_bar()
 		_update_action_buttons_text()
@@ -168,9 +176,9 @@ func _on_love_pressed() -> void:
 	npc.love_cooldown = now + LOVE_COOLDOWN_MINUTES
 	logic.apply_love()
 	if npc_idx != -1:
-					NPCManager.promote_to_persistent(npc_idx)
-					NPCManager.set_npc_field(npc_idx, "love_cooldown", npc.love_cooldown)
-					NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
+			NPCManager.promote_to_persistent(npc_idx)
+			NPCManager.set_npc_field(npc_idx, "love_cooldown", npc.love_cooldown)
+			NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
 	_update_affinity_bar()
 	_update_love_button()
 
@@ -193,6 +201,7 @@ func _on_date_pressed() -> void:
 	npc.date_cost *= 2.0
 	if npc_idx != -1:
 		NPCManager.promote_to_persistent(npc_idx)
+		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
 		NPCManager.set_npc_field(npc_idx, "date_cost", npc.date_cost)
 	_update_action_buttons_text()
 func _on_breakup_pressed() -> void:
@@ -227,6 +236,11 @@ func _on_breakup_confirm_yes_pressed() -> void:
 	gift_button.disabled = true
 	date_button.disabled = true
 	breakup_button.disabled = true
+	if npc_idx != -1:
+		NPCManager.promote_to_persistent(npc_idx)
+		NPCManager.set_npc_field(npc_idx, "relationship_stage", npc.relationship_stage)
+		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+		NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
 	_update_all()
 
 func _on_breakup_confirm_no_pressed() -> void:
@@ -251,6 +265,11 @@ func _on_apologize_pressed() -> void:
 	gift_button.disabled = false
 	date_button.disabled = false
 	breakup_button.disabled = false
+	if npc_idx != -1:
+		NPCManager.promote_to_persistent(npc_idx)
+		NPCManager.set_npc_field(npc_idx, "relationship_stage", npc.relationship_stage)
+		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+		NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
 	_update_all()
 
 func _on_talk_therapy_purchased(level: int) -> void:
