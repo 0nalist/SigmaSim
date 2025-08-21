@@ -273,8 +273,8 @@ func _advance_time(minutes_to_add: int) -> void:
 			autosave_hour_counter += 1
 			if autosave_enabled and autosave_hour_counter >= autosave_interval:
 				autosave_hour_counter = 0
-				if Engine.has_singleton("SaveManager"):
-					SaveManager.save_to_slot(SaveManager.current_slot_id)
+				SaveManager.save_to_slot(SaveManager.current_slot_id)
+				print("Autosaving on slot " + str(SaveManager.current_slot_id))
 
 		# Day rollover detection via date change
 		if current_day != prev_day or current_month != prev_month or current_year != prev_year:

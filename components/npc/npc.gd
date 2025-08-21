@@ -148,15 +148,20 @@ func to_dict() -> Dictionary:
 		"occupation": occupation,
 		"relationship_status": relationship_status,
 		"relationship_stage": relationship_stage,
-"relationship_progress": relationship_progress,
-"affinity": affinity,
-"affinity_equilibrium": affinity_equilibrium,
-"rizz": rizz,
+		"relationship_progress": relationship_progress,
+		"affinity": affinity,
+		"affinity_equilibrium": affinity_equilibrium,
+		"rizz": rizz,
 		"attractiveness": attractiveness,
 		"dates_paid": dates_paid,
-		"love_cooldown": love_cooldown,
+		# Store remaining cooldown time rather than absolute game minutes
+		# to avoid inflated values when reloading before the TimeManager
+		# has restored the canonical clock. This value is re-expanded to
+		# an absolute timestamp in `from_dict`.
+		"love_cooldown": _get_love_cooldown(),
 		"gift_cost": gift_cost,
 		"date_cost": date_cost,
+
 		"income": income,
 		"wealth": wealth,
 		"preferred_pet_names": preferred_pet_names.duplicate(),
@@ -209,7 +214,16 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.rizz = _safe_int(data.get("rizz"), 0)
 	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
 	npc.dates_paid = _safe_int(data.get("dates_paid"), 0)
-	npc.love_cooldown = _safe_int(data.get("love_cooldown"), 0)
+		# Older saves stored the absolute game-minute when the cooldown ended.
+		# Newer saves store only the remaining minutes. Detect which format was
+		# used and reconstruct the proper absolute timestamp.
+	var _saved_cd: int = _safe_int(data.get("love_cooldown"), 0)
+	if _saved_cd > 24 * 60:
+		npc.love_cooldown = _saved_cd
+	else:
+		var _now: int = TimeManager.get_now_minutes()
+		npc.love_cooldown = _now + _saved_cd
+
 	npc.gift_cost = _safe_float(data.get("gift_cost"), 25.0)
 	npc.date_cost = _safe_float(data.get("date_cost"), 200.0)
 	npc.income= _safe_int(data.get("income"), 0)
@@ -249,6 +263,17 @@ static func from_dict(data: Dictionary) -> NPC:
 # === Misc Methods ===
 func get_full_name() -> String:
 	return "%s %s. %s" % [first_name, middle_initial, last_name]
+
+func _get_love_cooldown() -> float:
+	var now_minutes: float = 0.0
+	if Engine.has_singleton("TimeManager"):
+		now_minutes = TimeManager.get_now_minutes()
+	var result: float = love_cooldown - now_minutes
+	if result < 0.0:
+		result = 0.0
+	return result
+
+
 
 func describe_gender() -> String:
 	var components = []
