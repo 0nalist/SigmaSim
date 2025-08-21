@@ -76,7 +76,30 @@ func _on_option_pressed(button: Button) -> void:
 
 
 func save_data() -> void:
-	var user_data = PlayerManager.user_data
-	user_data["education_level"] = selected_level
-	user_data["starting_student_debt"] = selected_student_debt
-	user_data["starting_credit_limit"] = selected_credit_limit
+        var user_data = PlayerManager.user_data
+        user_data["education_level"] = selected_level
+        user_data["starting_student_debt"] = selected_student_debt
+        user_data["starting_credit_limit"] = selected_credit_limit
+
+        # Initialize debt resources so other systems can immediately reflect the
+        # player's financial starting point.
+        BillManager.debt_resources.clear()
+        BillManager.debt_resources_changed.emit()
+
+        BillManager.add_debt_resource({
+                "name": "Credit Card",
+                "balance": 0.0,
+                "has_credit_limit": true,
+                "credit_limit": selected_credit_limit,
+        })
+
+        if selected_student_debt > 0.0:
+                BillManager.add_debt_resource({
+                        "name": "Student Loan",
+                        "balance": selected_student_debt,
+                        "has_credit_limit": false,
+                        "credit_limit": 0.0,
+                })
+
+        PortfolioManager.set_credit_limit(selected_credit_limit)
+        PortfolioManager.set_student_loans(selected_student_debt)
