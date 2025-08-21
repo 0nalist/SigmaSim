@@ -51,6 +51,7 @@ func setup(crypto_data: Cryptocurrency) -> void:
 	if not is_node_ready():
 		await ready
 	crypto = crypto_data
+	print("CryptoCard.setup: received id=", str(crypto_data.get_instance_id()), " symbol=", crypto_data.symbol, " name=", crypto_data.display_name, " price=", crypto_data.price, " block_size=", crypto_data.block_size, " power=", crypto_data.power_required)
 
 	add_gpu_button.pressed.connect(_emit_add_gpu)
 	remove_gpu_button.pressed.connect(_emit_remove_gpu)
@@ -68,7 +69,6 @@ func setup(crypto_data: Cryptocurrency) -> void:
 
 	update_display()
 	set_process(true)
-
 func _emit_add_gpu() -> void:
 	if crypto == null:
 		return
@@ -136,6 +136,7 @@ func get_time_to_block() -> int:
 func update_display() -> void:
 	if crypto == null:
 		return
+	print("CryptoCard.update_display: id=", str(crypto.get_instance_id()), " symbol=", crypto.symbol, " name=", crypto.display_name, " price=", crypto.price, " block_size=", crypto.block_size, " power=", crypto.power_required)
 
 	symbol_label.text = crypto.symbol
 	display_name_label.text = crypto.display_name
@@ -153,13 +154,11 @@ func update_display() -> void:
 	else:
 		animate_stop_mining()
 
-	# Update power bar immediately from current calc
 	var chance_now: float = calculate_block_chance()
 	displayed_chance = chance_now
 	if power_bar != null:
 		power_bar.value = displayed_chance
 	block_chance_label.text = "%d%% chance to mine" % int(round(displayed_chance))
-
 func _on_click_boost() -> void:
 	extra_power += 1.0
 	displayed_chance = calculate_block_chance()

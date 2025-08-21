@@ -41,23 +41,30 @@ func register_crypto(crypto: Cryptocurrency) -> void:
 		push_error("register_crypto: got null resource")
 		return
 
-	# Debug: print everything we can about this resource
+	assert(crypto is Cryptocurrency)
+	assert(not str(crypto.symbol).is_empty())
+	assert(not crypto_market.has(crypto.symbol))
+
 	var script_name: String = ""
 	if crypto.get_script() != null:
 		script_name = str(crypto.get_script())
-	print("register_crypto: type=", crypto.get_class(),
+	var obj_id: int = crypto.get_instance_id()
+	print("register_crypto: id=", str(obj_id),
+		", type=", crypto.get_class(),
 		", script=", script_name,
 		", resource_name=", str(crypto.resource_name),
 		", symbol='", str(crypto.symbol), "'")
 
-	# Guard: avoid inserting under empty key
 	if str(crypto.symbol).is_empty():
 		push_warning("register_crypto: resource had empty 'symbol'; skipping insert")
 		return
 
+	if crypto_market.has(crypto.symbol):
+		push_warning("register_crypto: symbol '" + crypto.symbol + "' already registered; skipping")
+		return
+
 	crypto_market[crypto.symbol] = crypto
 	emit_signal("crypto_price_updated", crypto.symbol, crypto)
-
 func _on_minute_passed(current_time_minutes: int) -> void:
 	# Alternate stock and crypto ticks every minute
 	if current_time_minutes % 2 == 0:
@@ -136,6 +143,7 @@ func _update_crypto_prices():
 
 ## --- Initialization --- ##
 
+# Load crypto resources fresh to preserve exported data.
 func _init_crypto_market() -> void:
 	print("_init_crypto_market: starting; resource keys=", str(CRYPTO_RESOURCES.keys()))
 	var inserted_count: int = 0
@@ -146,18 +154,22 @@ func _init_crypto_market() -> void:
 			push_error("_init_crypto_market: base resource for key '" + str(key_symbol) + "' is null")
 			continue
 
-		var crypto: Resource = base_res.duplicate(true)
-		if crypto == null:
-			push_error("_init_crypto_market: duplicate(true) returned null for key '" + str(key_symbol) + "'")
+		if base_res is Cryptocurrency:
+			var base_c: Cryptocurrency = base_res as Cryptocurrency
+			print("_init_crypto_market: base '" + str(key_symbol) + "' -> symbol='" + str(base_c.symbol) + "', name='" + str(base_c.display_name) + "', price=" + str(base_c.price) + ", id=" + str(base_c.get_instance_id()))
+
+		var crypto_res: Resource = ResourceLoader.load(base_res.resource_path, "", ResourceLoader.CACHE_MODE_IGNORE)
+		if crypto_res == null:
+			push_error("_init_crypto_market: load returned null for key '" + str(key_symbol) + "'")
 			continue
 
-		# Ensure correct type
-		if not (crypto is Cryptocurrency):
-			push_error("_init_crypto_market: resource for key '" + str(key_symbol) + "' is not a Cryptocurrency (got " + crypto.get_class() + ")")
+		if not (crypto_res is Cryptocurrency):
+			push_error("_init_crypto_market: resource for key '" + str(key_symbol) + "' is not a Cryptocurrency (got " + crypto_res.get_class() + ")")
 			continue
 
-		# If symbol missing, set a fallback and log loudly so you can fix the .tres
-		var c: Cryptocurrency = crypto as Cryptocurrency
+		var c: Cryptocurrency = crypto_res as Cryptocurrency
+		print("_init_crypto_market: loaded '" + str(key_symbol) + "' -> symbol='" + str(c.symbol) + "', name='" + str(c.display_name) + "', price=" + str(c.price) + ", id=" + str(c.get_instance_id()))
+
 		if str(c.symbol).is_empty():
 			push_warning("_init_crypto_market: '" + str(key_symbol) + "' had empty symbol; setting symbol to key '" + str(key_symbol) + "'. Fix the .tres to export a non-empty symbol.")
 			c.symbol = str(key_symbol)
@@ -167,11 +179,20 @@ func _init_crypto_market() -> void:
 		if crypto_market.has(c.symbol):
 			inserted_count += 1
 
+	debug_dump_crypto("post_init_loop")
+
+	var expected: Array = CRYPTO_RESOURCES.keys()
+	var actual: Array = crypto_market.keys()
+	expected.sort()
+	actual.sort()
+	if expected != actual:
+		push_warning("_init_crypto_market: expected symbols " + str(expected) + ", got " + str(actual))
+
+	debug_dump_crypto("post_init")
 	emit_signal("crypto_market_ready")
 	print("crypto market initialized; inserted count=", str(inserted_count))
 	print("crypto market keys: " + str(crypto_market.keys()))
 	print("crypto market state: " + JSON.stringify(crypto_market, "  "))
-
 func _init_stock_market() -> void:
 		for symbol in STOCK_RESOURCES.keys():
 				var stock = STOCK_RESOURCES[symbol].duplicate(true)
@@ -213,9 +234,9 @@ func load_from_data(data: Dictionary) -> void:
 			push_error("load_from_data: base crypto for key '" + str(key_symbol) + "' is null")
 			continue
 
-		var crypto_res: Resource = base_res.duplicate(true)
+		var crypto_res: Resource = ResourceLoader.load(base_res.resource_path, "", ResourceLoader.CACHE_MODE_IGNORE)
 		if crypto_res == null:
-			push_error("load_from_data: duplicate(true) returned null for key '" + str(key_symbol) + "'")
+			push_error("load_from_data: load returned null for key '" + str(key_symbol) + "'")
 			continue
 
 		if not (crypto_res is Cryptocurrency):
@@ -224,15 +245,19 @@ func load_from_data(data: Dictionary) -> void:
 
 		var c: Cryptocurrency = crypto_res as Cryptocurrency
 
-		# Apply saved data if present (saved keys should match real symbols)
 		if saved_crypto.has(key_symbol):
 			c.from_dict(saved_crypto[key_symbol])
 
-		# Fallback if .tres lacked a symbol and no saved data set it
 		if str(c.symbol).is_empty():
 			push_warning("load_from_data: '" + str(key_symbol) + "' had empty symbol; setting to key. Fix the .tres.")
 			c.symbol = str(key_symbol)
 
 		register_crypto(c)
-
+	debug_dump_crypto("post_load")
 	emit_signal("crypto_market_ready")
+
+func debug_dump_crypto(context: String) -> void:
+	print("-- crypto dump ", context, " --")
+	for symbol in crypto_market.keys():
+		var c: Cryptocurrency = crypto_market[symbol]
+		print(symbol, ",", c.display_name, ", price=", c.price, ", power=", c.power_required, ", id=", str(c.get_instance_id()))
