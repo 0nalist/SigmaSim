@@ -13,7 +13,9 @@ var crypto_cards: Dictionary = {}
 
 
 func _ready() -> void:
-	refresh_cards_from_market()
+	MarketManager.crypto_market_ready.connect(refresh_cards_from_market)
+	if not MarketManager.crypto_market.is_empty():
+		refresh_cards_from_market()
 
 	MarketManager.crypto_price_updated.connect(_on_crypto_updated)
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
@@ -22,22 +24,22 @@ func _ready() -> void:
 	GPUManager.gpu_prices_changed.connect(_on_gpu_prices_changed)
 	update_gpu_label()
 
-func refresh_cards_from_market():
+func refresh_cards_from_market() -> void:
 	for card in crypto_cards.values():
 		card.queue_free()
 	crypto_cards.clear()
 
 	for symbol in MarketManager.crypto_market.keys():
-		var crypto = MarketManager.crypto_market[symbol]
-		var card = crypto_card_scene.instantiate() as CryptoCard
+		var crypto: Cryptocurrency = MarketManager.crypto_market[symbol]
+		var card: CryptoCard = crypto_card_scene.instantiate()
+		crypto_container.add_child(card)
 		card.setup(crypto)
-		
+
 		card.add_gpu.connect(_on_add_gpu)
 		card.remove_gpu.connect(_on_remove_gpu)
 		card.overclock_toggled.connect(_on_toggle_overclock)
 		card.open_upgrades.connect(_on_open_upgrades)
 
-		crypto_container.add_child(card)
 		crypto_cards[symbol] = card
 
 
