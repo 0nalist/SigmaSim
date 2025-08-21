@@ -33,7 +33,7 @@ func refresh_cards_from_market() -> void:
 		var symbol: String = crypto.symbol
 		var card: CryptoCard = crypto_card_scene.instantiate() as CryptoCard
 		crypto_container.add_child(card)
-		card.call_deferred("setup", crypto)
+		card.setup(crypto)
 
 		card.add_gpu.connect(_on_add_gpu)
 		card.remove_gpu.connect(_on_remove_gpu)
