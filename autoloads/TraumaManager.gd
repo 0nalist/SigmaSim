@@ -1,5 +1,5 @@
 extends Node
-class_name TraumaManager
+##Autoload TraumaManager
 
 signal global_trauma_changed(value: float)
 signal pane_trauma_changed(target: Node, value: float)
