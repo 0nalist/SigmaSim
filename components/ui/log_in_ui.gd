@@ -68,7 +68,7 @@ func _on_profile_login_requested(slot_id: int) -> void:
 
 
 func _on_new_profile_button_pressed() -> void:
-	PlayerManager.reset()
+	SaveManager.reset_managers()
 	var profile_creator = profile_creation_scene.instantiate()
 	add_child(profile_creator)
 	profile_creator.connect("profile_created", _on_new_profile_created) #, save_slot)

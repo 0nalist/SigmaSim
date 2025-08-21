@@ -189,9 +189,9 @@ func load_from_slot(slot_id: int) -> void:
 
 func reset_game_state() -> void:
 	# Reset all relevant managers to blank state
+	PlayerManager.reset()
 	StatManager.reset()
 	PortfolioManager.reset()
-	PlayerManager.reset()
 	WindowManager.reset()
 	TimeManager.reset()
 	TaskManager.reset()
@@ -204,9 +204,9 @@ func reset_game_state() -> void:
 	DesktopLayoutManager.reset()
 
 func reset_managers():
+	PlayerManager.reset()
 	StatManager.reset()
 	PortfolioManager.reset()
-	PlayerManager.reset()
 	WindowManager.reset()
 	TimeManager.reset()
 	WorkerManager.reset()
