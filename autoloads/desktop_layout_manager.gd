@@ -3,7 +3,7 @@ extends Node
 
 signal items_loaded
 signal item_created(item_id: int, data: Dictionary)
-signal item_moved(item_id: int, position: Vector2, parent_id: int, old_parent_id: int)
+signal item_moved(item_id: int, position: Vector2)
 signal item_deleted(item_id: int)
 signal item_renamed(item_id: int, new_title: String)
 
@@ -51,19 +51,11 @@ func create_folder(title: String, icon_path: String, position: Vector2, parent_i
 	item_created.emit(id, entry)
 	return id
 
-func move_item(id: int, position: Vector2, new_parent_id: int = -1) -> void:
+func move_item(id: int, position: Vector2) -> void:
 	if not items.has(id):
 		return
-	var item: Dictionary = items[id]
-	var old_parent: int = int(item.get("parent_id", 0))
-	item["desktop_position"] = position
-	if new_parent_id != -1 and new_parent_id != old_parent:
-		if old_parent != 0 and items.has(old_parent):
-			items[old_parent]["child_ids"].erase(id)
-		item["parent_id"] = new_parent_id
-		if new_parent_id != 0 and items.has(new_parent_id):
-			items[new_parent_id]["child_ids"].append(id)
-	item_moved.emit(id, position, int(item.get("parent_id", 0)), old_parent)
+	items[id]["desktop_position"] = position
+	item_moved.emit(id, position)
 
 func rename_item(id: int, new_title: String) -> void:
 	if not items.has(id):
