@@ -33,7 +33,7 @@ func refresh_cards_from_market() -> void:
 		var symbol: String = crypto.symbol
 		var card: CryptoCard = crypto_card_scene.instantiate() as CryptoCard
 		crypto_container.add_child(card)
-		card.setup(crypto)
+		card.call_deferred("setup", crypto)
 
 		card.add_gpu.connect(_on_add_gpu)
 		card.remove_gpu.connect(_on_remove_gpu)
@@ -88,8 +88,8 @@ func _on_gpu_prices_changed() -> void:
 	_update_gpu_prices()
 
 func _update_gpu_prices() -> void:
-	var new_price = GPUManager.get_new_gpu_price()
-	var used_price = GPUManager.get_used_gpu_price()
+	var new_price: float = GPUManager.get_new_gpu_price()
+	var used_price: float = GPUManager.get_used_gpu_price()
 
 	new_gpu_price_label.text = "New GPU: $" + NumberFormatter.format_commas(new_price)
 	used_gpu_price_label.text = "Used GPU: $" + NumberFormatter.format_commas(used_price)	
