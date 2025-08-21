@@ -277,3 +277,41 @@ func apply_fugly_filter() -> void:
 
                 if not removed:
                         break
+
+func apply_gender_filter(gender_vec: Vector3, threshold: float = -1.0) -> void:
+	preferred_gender = gender_vec
+	if threshold > 0:
+		gender_similarity_threshold = threshold
+
+	for i in range(swipe_pool.size() - 1, -1, -1):
+		var idx = swipe_pool[i]
+		var npc = NPCManager.get_npc_by_index(idx)
+		if gender_dot_similarity(preferred_gender, npc.gender_vector) < gender_similarity_threshold:
+			swipe_pool.remove_at(i)
+
+	while true:
+		var removed := false
+
+		if cards.size() > 0:
+			var top_idx = npc_indices[npc_indices.size() - 1]
+			var top_npc = NPCManager.get_npc_by_index(top_idx)
+			if gender_dot_similarity(preferred_gender, top_npc.gender_vector) < gender_similarity_threshold:
+				await swipe_left()
+				removed = true
+
+		if not removed and cards.size() > 1:
+			var bottom_idx = npc_indices[0]
+			var bottom_npc = NPCManager.get_npc_by_index(bottom_idx)
+			if gender_dot_similarity(preferred_gender, bottom_npc.gender_vector) < gender_similarity_threshold:
+				var card = cards[0]
+				card.queue_free()
+				cards.remove_at(0)
+				npc_indices.remove_at(0)
+				NPCManager.mark_npc_inactive_in_app(bottom_idx, app_name)
+				emit_signal("card_swiped_left", bottom_idx)
+				_update_card_positions()
+				await _after_swipe()
+				removed = true
+
+		if not removed:
+			break
