@@ -250,6 +250,15 @@ texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
 
+[node name="ColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ShaderBackgroundsContainer" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -317,10 +326,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -72.0
-offset_top = 1779.0
-offset_right = 494.0
-offset_bottom = 2733.0
+offset_left = -54.0
+offset_top = 1271.0
+offset_right = 512.0
+offset_bottom = 2225.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
@@ -335,10 +344,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -17.0
-offset_top = -4.0
-offset_right = 1008.0
-offset_bottom = -4.0
+offset_left = -145.0
+offset_top = -8.0
+offset_right = 1550.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")
