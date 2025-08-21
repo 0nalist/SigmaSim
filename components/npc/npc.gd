@@ -20,8 +20,11 @@ enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, D
 @export_range(0, 1000000000, 1) var relationship_progress: float = 0.0
 
 # Relationship with Player
+
 @export_range(-100, 100, 0.1) var affinity: float = 0.0 # 0–100
-@export_range(-100, 100, 0.1) var affinity_equilibrium: float = 0.0
+
+@export_range(0, 100, 0.1) var affinity_equilibrium: float = 0.0
+
 @export_range(0, 100, 0.1) var rizz: int
 @export_range(0, 100, 1) var attractiveness: int
 @export var dates_paid: int = 0
