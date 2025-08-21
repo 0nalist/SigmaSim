@@ -3,6 +3,9 @@ extends Node
 
 signal lifestyle_updated
 signal autopay_changed(enabled: bool)
+signal debt_resources_changed
+
+const DebtResource = preload("res://resources/debt/debt_resource.gd")
 
 var _autopay_enabled: bool = false
 var autopay_enabled: bool:
@@ -17,6 +20,8 @@ var active_bills: Dictionary = {}
 var pending_bill_data: Dictionary = {}  # date_key: Array[Dictionary]
 
 var lifestyle_categories := {}  # category_name: Dictionary
+var debt_resources: Array[DebtResource] = []
+var custom_debt_balances: Dictionary = {}
 
 
 # Ordered list: Week 0 → Rent, Week 1 → Insurance, etc.
@@ -33,14 +38,55 @@ var is_loading := false
 
 
 func _ready() -> void:
-	TimeManager.day_passed.connect(_on_day_passed)
-	#TimeManager.hour_passed.connect(_on_hour_passed)
-	PortfolioManager.credit_updated.connect(_on_credit_updated)
-	if lifestyle_categories.is_empty():
-		for category in lifestyle_options.keys():
-			var option = lifestyle_options[category][0]
-			set_lifestyle_choice(category, option, 0)
-	print("active bills: " + str(active_bills))
+        TimeManager.day_passed.connect(_on_day_passed)
+        #TimeManager.hour_passed.connect(_on_hour_passed)
+        PortfolioManager.credit_updated.connect(_on_credit_updated)
+        if lifestyle_categories.is_empty():
+                for category in lifestyle_options.keys():
+                        var option = lifestyle_options[category][0]
+                        set_lifestyle_choice(category, option, 0)
+        _rebuild_debt_resources()
+        print("active bills: " + str(active_bills))
+
+func _rebuild_debt_resources() -> void:
+        debt_resources.clear()
+        var credit := DebtResource.new()
+        credit.name = "Credit Card"
+        credit.get_balance = func(): return PortfolioManager.credit_used
+        credit.get_limit = func(): return PortfolioManager.credit_limit
+        credit.pay = func(amount):
+                PortfolioManager.pay_down_credit(amount)
+                return true
+        debt_resources.append(credit)
+
+        var student := DebtResource.new()
+        student.name = "Student Loan"
+        student.get_balance = func(): return PortfolioManager.get_student_loans()
+        student.pay = func(amount):
+                if PortfolioManager.pay_with_cash(amount):
+                        PortfolioManager.set_student_loans(max(PortfolioManager.get_student_loans() - amount, 0.0))
+                        return true
+                return false
+        debt_resources.append(student)
+
+        for name in custom_debt_balances.keys():
+                var res := DebtResource.new()
+                res.name = name
+                res.get_balance = func(n := name): return custom_debt_balances[n]
+                res.pay = func(amount, n := name):
+                        if PortfolioManager.pay_with_cash(amount):
+                                custom_debt_balances[n] = max(custom_debt_balances[n] - amount, 0.0)
+                                return true
+                        return false
+                debt_resources.append(res)
+        debt_resources_changed.emit()
+
+func add_custom_debt(name: String, amount: float) -> void:
+        custom_debt_balances[name] = amount
+        _rebuild_debt_resources()
+
+func get_debt_resources() -> Array[DebtResource]:
+        return debt_resources
 
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
@@ -278,29 +324,34 @@ func get_popup_save_data() -> Array:
 
 
 func reset() -> void:
-	autopay_enabled = false
-	active_bills.clear()
-	pending_bill_data.clear()
-	lifestyle_categories.clear()
-	lifestyle_indices.clear()
-	emit_signal("lifestyle_updated")
+        autopay_enabled = false
+        active_bills.clear()
+        pending_bill_data.clear()
+        lifestyle_categories.clear()
+        lifestyle_indices.clear()
+        custom_debt_balances.clear()
+        _rebuild_debt_resources()
+        emit_signal("lifestyle_updated")
 
 
 func get_save_data() -> Dictionary:
-	return {
-		"autopay_enabled": autopay_enabled,
-		"lifestyle_categories": lifestyle_categories.duplicate(),
-		"lifestyle_indices": lifestyle_indices.duplicate(),
-		"pane_data": get_pane_save_data()
-	}
+        return {
+                "autopay_enabled": autopay_enabled,
+                "lifestyle_categories": lifestyle_categories.duplicate(),
+                "lifestyle_indices": lifestyle_indices.duplicate(),
+                "pane_data": get_pane_save_data(),
+                "custom_debts": custom_debt_balances.duplicate()
+        }
 
 func load_from_data(data: Dictionary) -> void:
-	autopay_enabled = data.get("autopay_enabled", false)
-	lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
-	lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
-	active_bills.clear()
-	pending_bill_data.clear()
-	emit_signal("lifestyle_updated")
+        autopay_enabled = data.get("autopay_enabled", false)
+        lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
+        lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
+        custom_debt_balances = data.get("custom_debts", {}).duplicate()
+        active_bills.clear()
+        pending_bill_data.clear()
+        emit_signal("lifestyle_updated")
+        _rebuild_debt_resources()
 
 	if data.has("pane_data"):
 			for pane_dict in data["pane_data"]:
