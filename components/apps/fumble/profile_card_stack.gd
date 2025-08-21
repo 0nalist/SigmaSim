@@ -235,4 +235,45 @@ func gender_dot_similarity(a: Vector3, b: Vector3) -> float:
 
 
 func set_curiosity(threshold: float) -> void:
-	gender_similarity_threshold = threshold
+        gender_similarity_threshold = threshold
+
+
+# Removes NPCs below the fugly filter threshold without refreshing the entire stack.
+func apply_fugly_filter() -> void:
+        var min_att: int = PlayerManager.get_var("fumble_fugly_filter_threshold", 0) * 10
+
+        # Filter out existing entries in the swipe_pool that no longer meet the requirement
+        for i in range(swipe_pool.size() - 1, -1, -1):
+                var idx = swipe_pool[i]
+                var npc = NPCManager.get_npc_by_index(idx)
+                if npc.attractiveness < min_att:
+                        swipe_pool.remove_at(i)
+
+        while true:
+                var removed := false
+
+                # Check the top card first so that it animates properly
+                if cards.size() > 0:
+                        var top_idx = npc_indices[npc_indices.size() - 1]
+                        var top_npc = NPCManager.get_npc_by_index(top_idx)
+                        if top_npc.attractiveness < min_att:
+                                await swipe_left()
+                                removed = true
+
+                # Then check the bottom card
+                if not removed and cards.size() > 1:
+                        var bottom_idx = npc_indices[0]
+                        var bottom_npc = NPCManager.get_npc_by_index(bottom_idx)
+                        if bottom_npc.attractiveness < min_att:
+                                var card = cards[0]
+                                card.queue_free()
+                                cards.remove_at(0)
+                                npc_indices.remove_at(0)
+                                NPCManager.mark_npc_inactive_in_app(bottom_idx, app_name)
+                                emit_signal("card_swiped_left", bottom_idx)
+                                _update_card_positions()
+                                await _after_swipe()
+                                removed = true
+
+                if not removed:
+                        break
