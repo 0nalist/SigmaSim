@@ -37,9 +37,9 @@ func setup_custom(data: Dictionary) -> void:
 		portrait_view.subject_npc_idx = npc_idx
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
 		portrait_view.apply_config(npc.portrait_config)
-        breakup_reward = 0.0
-        apologize_cost = 10
-        _update_all()
+	breakup_reward = 0.0
+	apologize_cost = 10
+	_update_all()
 
 
 func _ready() -> void:
