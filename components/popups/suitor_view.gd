@@ -143,7 +143,7 @@ func _update_love_button() -> void:
 		love_button.disabled = false
 		love_cooldown_label.visible = false
 func _on_next_stage_pressed() -> void:
-		next_stage_button.visible = false
+	next_stage_button.visible = false
 	logic.progress_paused = false
 	if npc.relationship_stage < NPC.RelationshipStage.MARRIED:
 		npc.relationship_stage += 1
@@ -219,7 +219,7 @@ func _on_breakup_confirm_yes_pressed() -> void:
 	npc.relationship_progress = 0.0
 	npc.affinity *= 0.2
 	logic.progress_paused = true
-		next_stage_button.visible = false
+	next_stage_button.visible = false
 	gift_button.disabled = true
 	date_button.disabled = true
 	breakup_button.disabled = true
@@ -243,7 +243,7 @@ func _on_apologize_pressed() -> void:
 	#date_cost = 200.0
 	breakup_reward = 0.0
 	apologize_cost = int(ceil(apologize_cost * 1.5))
-		next_stage_button.visible = false
+	next_stage_button.visible = false
 	gift_button.disabled = false
 	date_button.disabled = false
 	breakup_button.disabled = false
