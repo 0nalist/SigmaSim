@@ -36,6 +36,10 @@ var commands := {
 		"args": "",
 		"description": "Clears the command log window.",
 	},
+	"stress_test": {
+		"args": ""
+		"description": "Opens every app in the app registry at once."
+	},
 }
 
 
@@ -264,6 +268,12 @@ func process_command(command: String) -> bool:
 				var label := Label.new()
 				label.text = "%s: %s" % [stat_key, str(all_stats[stat_key])]
 				command_log_container.add_child(label)
+			return true
+		
+		
+		"stress_test":
+			for app_name in WindowManager.app_registry.keys():
+				WindowManager.launch_app_by_name(app_name)
 			return true
 		
 		
