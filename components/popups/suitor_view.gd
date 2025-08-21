@@ -23,8 +23,6 @@ const LOVE_COOLDOWN_MINUTES: int = 24 * 60
 
 var npc: NPC
 var logic: SuitorLogic = SuitorLogic.new()
-var gift_cost: float = 25.0
-var date_cost: float = 200.0
 var breakup_reward: float = 0.0
 var apologize_cost: int = 10
 var npc_idx: int = -1
@@ -39,11 +37,9 @@ func setup_custom(data: Dictionary) -> void:
 		portrait_view.subject_npc_idx = npc_idx
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
 		portrait_view.apply_config(npc.portrait_config)
-	gift_cost = 25.0
-	date_cost = 200.0
-	breakup_reward = 0.0
-	apologize_cost = 10
-	_update_all()
+        breakup_reward = 0.0
+        apologize_cost = 10
+        _update_all()
 
 
 func _ready() -> void:
@@ -119,8 +115,8 @@ func _update_breakup_button_text() -> void:
 	var reward: float = (0.1 + fraction * 0.9) * base
 	breakup_button.text = "Breakup & gain %.2f Ex" % reward
 func _update_action_buttons_text() -> void:
-	gift_button.text = "Gift ($%s)" % NumberFormatter.format_commas(gift_cost)
-	date_button.text = "Date ($%s)" % NumberFormatter.format_commas(date_cost)
+	gift_button.text = "Gift ($%s)" % NumberFormatter.format_commas(npc.gift_cost)
+	date_button.text = "Date ($%s)" % NumberFormatter.format_commas(npc.date_cost)
 	apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_commas(apologize_cost, 0)
 
 func _update_love_button() -> void:
@@ -149,9 +145,12 @@ func _on_next_stage_pressed() -> void:
 		npc.relationship_stage += 1
 	_update_all()
 func _on_gift_pressed() -> void:
-	if PortfolioManager.attempt_spend(gift_cost):
+	if PortfolioManager.attempt_spend(npc.gift_cost):
 		npc.affinity = min(npc.affinity + 5.0, 100.0)
-		gift_cost *= 2.0
+		npc.gift_cost *= 2.0
+		if npc_idx != -1:
+			NPCManager.promote_to_persistent(npc_idx)
+			NPCManager.set_npc_field(npc_idx, "gift_cost", npc.gift_cost)
 		_update_affinity_bar()
 		_update_action_buttons_text()
 
@@ -178,7 +177,7 @@ func _on_love_pressed() -> void:
 	_update_love_button()
 
 func _on_date_pressed() -> void:
-	if not PortfolioManager.attempt_spend(date_cost):
+	if not PortfolioManager.attempt_spend(npc.date_cost):
 		return
 	logic.on_date_paid()
 	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
@@ -193,7 +192,10 @@ func _on_date_pressed() -> void:
 		next_stage_button.visible = true
 	_update_relationship_bar()
 	_update_breakup_button_text()
-	date_cost *= 2.0
+	npc.date_cost *= 2.0
+	if npc_idx != -1:
+		NPCManager.promote_to_persistent(npc_idx)
+		NPCManager.set_npc_field(npc_idx, "date_cost", npc.date_cost)
 	_update_action_buttons_text()
 func _on_breakup_pressed() -> void:
 	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
@@ -243,8 +245,8 @@ func _on_apologize_pressed() -> void:
 	npc.relationship_progress = 0.0
 	npc.affinity = 1.0
 	logic.progress_paused = false
-	#gift_cost = 25.0
-	#date_cost = 200.0
+	#npc.gift_cost = 25.0
+	#npc.date_cost = 200.0
 	breakup_reward = 0.0
 	apologize_cost = int(ceil(apologize_cost * 1.5))
 	next_stage_button.visible = false
