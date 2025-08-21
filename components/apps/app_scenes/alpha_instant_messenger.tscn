@@ -80,7 +80,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
 theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
 toggle_mode = true
+
 text = "@username"
+
 icon = ExtResource("4_bgumh")
 alignment = 0
 text_overrun_behavior = 3

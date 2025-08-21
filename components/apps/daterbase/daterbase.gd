@@ -268,8 +268,9 @@ func _load_default_entries() -> void:
 	for entry_dictionary in daterbase_entries:
 		var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
 		if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
-				NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
-				npc_object.relationship_stage = NPC.RelationshipStage.TALKING
+			NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
+			npc_object.relationship_stage = NPC.RelationshipStage.TALKING
+			npc_object.affinity += 1
 		var row := HBoxContainer.new()
 		row.mouse_filter = Control.MOUSE_FILTER_STOP
 		row.gui_input.connect(_on_row_gui_input.bind(entry_dictionary.npc_id, npc_object))
@@ -305,8 +306,8 @@ func _load_default_entries() -> void:
 			var measured: Vector2 = default_font.get_string_size(text_values[idx], default_font_size)
 			column_widths[idx + 1] = max(column_widths[idx + 1], int(ceil(measured.x)) + EXTRA_HEADER_PADDING)
 
-			results_container_daterbase.add_child(row)
-			rows.append(row)
+		results_container_daterbase.add_child(row)
+		rows.append(row)
 
 	for header_index in range(header_labels.size()):
 			header_labels[header_index].custom_minimum_size.x = column_widths[header_index]

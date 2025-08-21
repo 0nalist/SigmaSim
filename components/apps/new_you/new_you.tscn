@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://newyouapp"]
+[gd_scene load_steps=6 format=3 uid="uid://newyouapp"]
 
 [ext_resource type="Script" uid="uid://bndr8o5tre4hx" path="res://components/apps/new_you/new_you.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://bfyjk22acyf56" path="res://components/portrait/portrait_creator.tscn" id="2"]
 [ext_resource type="Shader" uid="uid://tggnnsekxdek" path="res://assets/shaders/light_blue_warp_shader.gdshader" id="2_3xhik"]
+[ext_resource type="Texture2D" uid="uid://cq21pla351uw0" path="res://assets/emojis/mirror_twemoji_x72_1fa9e.png" id="2_73mvd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_73mvd"]
 shader = ExtResource("2_3xhik")
@@ -24,6 +25,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1")
 window_title = "NewYou"
+window_icon = ExtResource("2_73mvd")
 default_window_size = Vector2(340, 305)
 show_in_taskbar = false
 
