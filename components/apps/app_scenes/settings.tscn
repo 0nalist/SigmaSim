@@ -149,6 +149,11 @@ size_flags_horizontal = 4
 focus_mode = 0
 text = "Siggy?"
 
+[node name="CreateAppsFolderButton" type="Button" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Create Apps Folder"
+
 [node name="Backgrounds" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 1
@@ -630,6 +635,7 @@ layout_mode = 2
 text = "Reset"
 
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
+[connection signal="pressed" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/CreateAppsFolderButton" to="." method="_on_create_apps_folder_button_pressed"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/BlueWarpButton" to="." method="_on_blue_warp_button_toggled"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpStretchSlider" to="." method="_on_blue_warp_stretch_slider_value_changed"]
 [connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer2/BlueWarpThing1Slider" to="." method="_on_blue_warp_thing1_slider_value_changed"]
