@@ -166,13 +166,13 @@ func _on_love_pressed() -> void:
 	if now - npc.love_cooldown < LOVE_COOLDOWN_MINUTES:
 		return
 	npc.love_cooldown = now
-        logic.apply_love()
-        if npc_idx != -1:
-                NPCManager.promote_to_persistent(npc_idx)
-                NPCManager.set_npc_field(npc_idx, "love_cooldown", npc.love_cooldown)
-                NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
-        _update_affinity_bar()
-        _update_love_button()
+	logic.apply_love()
+	if npc_idx != -1:
+			NPCManager.promote_to_persistent(npc_idx)
+			NPCManager.set_npc_field(npc_idx, "love_cooldown", npc.love_cooldown)
+			NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
+	_update_affinity_bar()
+	_update_love_button()
 
 func _on_date_pressed() -> void:
 	if not PortfolioManager.attempt_spend(npc.date_cost):
