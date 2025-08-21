@@ -305,8 +305,8 @@ func _load_default_entries() -> void:
 			var measured: Vector2 = default_font.get_string_size(text_values[idx], default_font_size)
 			column_widths[idx + 1] = max(column_widths[idx + 1], int(ceil(measured.x)) + EXTRA_HEADER_PADDING)
 
-			results_container_daterbase.add_child(row)
-			rows.append(row)
+		results_container_daterbase.add_child(row)
+		rows.append(row)
 
 	for header_index in range(header_labels.size()):
 			header_labels[header_index].custom_minimum_size.x = column_widths[header_index]
