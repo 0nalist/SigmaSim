@@ -24,6 +24,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1")
 window_title = "NewYou"
+default_window_size = Vector2(340, 305)
 show_in_taskbar = false
 
 [node name="ColorRect" type="ColorRect" parent="."]

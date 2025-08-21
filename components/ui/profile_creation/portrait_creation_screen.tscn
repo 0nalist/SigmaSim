@@ -17,6 +17,7 @@ size_flags_vertical = 3
 script = ExtResource("1")
 
 [node name="TextureRect2" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

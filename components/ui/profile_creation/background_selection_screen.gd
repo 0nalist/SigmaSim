@@ -26,14 +26,16 @@ var selected_background: String = ""
 func _ready():
 	for button in [
 		dropout_button, burnout_button, gamer_button,
-		manager_button, postgrad_button, stoic_button
+		manager_button, postgrad_button, stoic_button,
+		grandmas_button, pretty_button, gamer_2_button
 	]:
 		button.toggle_mode = true
 
 func toggle_exclusive(button_to_keep_on: Button) -> void:
 	for button in [
 		dropout_button, burnout_button, gamer_button,
-		manager_button, postgrad_button, stoic_button
+		manager_button, postgrad_button, stoic_button,
+		grandmas_button, pretty_button, gamer_2_button
 	]:
 		if button != button_to_keep_on:
 			button.set_pressed_no_signal(false)
@@ -130,21 +132,27 @@ func get_path_to_texture_of_panel(tex_rect: TextureRect) -> String:
 
 
 func _on_grandmas_button_pressed() -> void:
-	var panel = grandmas_button.get_parent()
-	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background = ""
 	selected_background_name = "Grandma's Favorite"
+	Events.set_desktop_background_visible("BlueWarp", true)
+	Events.set_desktop_background_visible("Waves", false)
+	Events.set_desktop_background_visible("Electric", false)
 	_on_background_selected(grandmas_button)
 
 
 func _on_pretty_button_pressed() -> void:
-	var panel = pretty_button.get_parent()
-	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background = ""
 	selected_background_name = "Pretty Privilege"
+	Events.set_desktop_background_visible("BlueWarp", false)
+	Events.set_desktop_background_visible("Waves", true)
+	Events.set_desktop_background_visible("Electric", false)
 	_on_background_selected(pretty_button)
 
 
 func _on_gamer_2_button_pressed() -> void:
-	var panel = gamer_2_button.get_parent()
-	selected_background = get_path_to_texture_of_panel(panel)
+	selected_background = ""
 	selected_background_name = "The Gamer"
+	Events.set_desktop_background_visible("BlueWarp", false)
+	Events.set_desktop_background_visible("Waves", false)
+	Events.set_desktop_background_visible("Electric", true)
 	_on_background_selected(gamer_2_button)

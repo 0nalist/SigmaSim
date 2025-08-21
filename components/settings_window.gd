@@ -36,6 +36,7 @@ extends Pane
 @onready var electric_scale_x_slider: HSlider = %ElectricScaleXSlider
 @onready var electric_scale_y_slider: HSlider = %ElectricScaleYSlider
 @onready var tab_container: TabContainer = %TabContainer
+@onready var create_apps_folder_button: Button = %CreateAppsFolderButton
 @onready var waves_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/WavesShader").material
 @onready var blue_warp_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/BlueWarpShader").material
 @onready var comic_dots1_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueVert").material
@@ -126,8 +127,13 @@ func _on_siggy_button_toggled(toggled_on: bool) -> void:
 		%SiggyButton.text = "Siggy. Please come back. I miss you"
 
 func _on_autosave_check_box_toggled(toggled_on: bool) -> void:
-		TimeManager.autosave_enabled = toggled_on
-		_update_autosave_timer_label()
+	TimeManager.autosave_enabled = toggled_on
+	_update_autosave_timer_label()
+
+func _on_create_apps_folder_button_pressed() -> void:
+	var desktop_env = get_tree().root.get_node("Main/DesktopEnv")
+	if desktop_env:
+		desktop_env._create_or_update_apps_folder()
 
 func _on_blue_warp_button_toggled(toggled_on: bool) -> void:
 	Events.set_desktop_background_visible("BlueWarp", toggled_on)

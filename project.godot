@@ -21,8 +21,8 @@ config/icon="uid://xm8tdrmlmymx"
 boot_splash/minimum_display_time=240
 
 [autoload]
-ContextMenuManager="*res://autoloads/context_menu_manager.gd"
 
+ContextMenuManager="*res://autoloads/context_menu_manager.gd"
 WindowManager="*res://autoloads/window_manager.gd"
 PortfolioManager="*res://autoloads/portfolio_manager.gd"
 MarketManager="*res://autoloads/market_manager.gd"
@@ -53,6 +53,7 @@ Events="*res://autoloads/events.gd"
 DebugConsoleManager="*res://autoload/debug_console_manager.gd"
 DesktopLayoutManager="*res://autoloads/desktop_layout_manager.gd"
 SoundManager="*res://autoloads/sound_manager.gd"
+TraumaManager="*res://autoloads/TraumaManager.gd"
 
 [display]
 

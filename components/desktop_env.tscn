@@ -1,10 +1,12 @@
-[gd_scene load_steps=49 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=51 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
 [ext_resource type="Texture2D" uid="uid://f3id4mqiae6r" path="res://assets/backgrounds/purplefieldgreenskyx480_restrictive.png" id="3_0utxc"]
+[ext_resource type="Script" uid="uid://nc5fi5e4a2r3" path="res://scripts/trauma_example.gd" id="3_5aheu"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
+[ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/backgrounds/Bliss_(Windows_XP) (2).png" id="3_rbayd"]
 [ext_resource type="Shader" uid="uid://bow6hwdhrtw30" path="res://assets/shaders/deep_sky_blue_warp_shader.gdshader" id="4_fjtwy"]
 [ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://components/ticker.gd" id="5_g75lf"]
 [ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="5_yi8nh"]
@@ -216,8 +218,27 @@ grow_vertical = 2
 theme = ExtResource("1_0utxc")
 script = ExtResource("1_lpqk7")
 
+[node name="Node" type="Node" parent="."]
+script = ExtResource("3_5aheu")
+
+[node name="Bliss" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -176.0
+offset_right = 592.0
+offset_bottom = 287.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_rbayd")
+stretch_mode = 4
+
 [node name="Background" type="TextureRect" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -232,6 +253,15 @@ scale = Vector2(0.8673, 0.8673)
 texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
+
+[node name="ColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ShaderBackgroundsContainer" type="Control" parent="."]
 layout_mode = 1
@@ -300,10 +330,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -72.0
-offset_top = 1779.0
-offset_right = 494.0
-offset_bottom = 2733.0
+offset_left = -54.0
+offset_top = 1271.0
+offset_right = 512.0
+offset_bottom = 2225.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
@@ -318,10 +348,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -17.0
-offset_top = -4.0
-offset_right = 1008.0
-offset_bottom = -4.0
+offset_left = -145.0
+offset_top = -8.0
+offset_right = 1550.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")
