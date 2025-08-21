@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ce5ge1lmsdy7g" path="res://components/apps/ower_view/ower_view.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="2"]
-[ext_resource type="Script" path="res://components/apps/ower_view/credit_score_bar.gd" id="3"]
+[ext_resource type="Script" uid="uid://bflpybq1kvp4a" path="res://components/apps/ower_view/credit_score_bar.gd" id="3"]
 
 [node name="OwerView" type="PanelContainer"]
 anchors_preset = 15
