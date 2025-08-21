@@ -25,14 +25,24 @@ func _ready() -> void:
 	update_gpu_label()
 
 func refresh_cards_from_market() -> void:
-	for card in crypto_cards.values():
-		card.queue_free()
+	for child: Node in crypto_container.get_children():
+		child.queue_free()
 	crypto_cards.clear()
 
-	for crypto in MarketManager.crypto_market.values():
+	var cryptos: Array[Cryptocurrency] = MarketManager.crypto_market.values()
+	if cryptos.size() < 2:
+		push_warning("MarketManager.crypto_market is empty or has fewer than 2 entries")
+
+	for crypto: Cryptocurrency in cryptos:
 		var symbol: String = crypto.symbol
-		var card: CryptoCard = crypto_card_scene.instantiate() as CryptoCard
+		var card_instance: Node = crypto_card_scene.instantiate()
+		var card: CryptoCard = card_instance as CryptoCard
+		if card == null:
+			push_error("crypto_card_scene did not instantiate a CryptoCard")
+			card_instance.queue_free()
+			continue
 		crypto_container.add_child(card)
+		await card.ready
 		card.setup(crypto)
 
 		card.add_gpu.connect(_on_add_gpu)
@@ -92,7 +102,7 @@ func _update_gpu_prices() -> void:
 	var used_price: float = GPUManager.get_used_gpu_price()
 
 	new_gpu_price_label.text = "New GPU: $" + NumberFormatter.format_commas(new_price)
-	used_gpu_price_label.text = "Used GPU: $" + NumberFormatter.format_commas(used_price)	
+	used_gpu_price_label.text = "Used GPU: $" + NumberFormatter.format_commas(used_price)
 
 
 func _on_resource_changed(resource_name: String, _value: float) -> void:
@@ -105,7 +115,7 @@ func _on_crypto_updated(symbol: String, _crypto: Cryptocurrency) -> void:
 		crypto_cards[symbol].update_display()
 
 
- 
+
 
 func _on_toggle_overclock(symbol: String) -> void:
 	print("Toggle overclock for:", symbol)
