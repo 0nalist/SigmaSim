@@ -142,10 +142,7 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 					"chemistry": npc.chemistry,
 					"apprehension": npc.apprehension
 			}
-
-	if is_new_battle and UpgradeManager.get_level("fumble_friend_pic") > 0:
-			battle_stats_to_use["apprehension"] = clamp(battle_stats_to_use.get("apprehension", 0) - 10, 0, 100)
-
+	
 	# Set up logic
 	if battle_logic_resource:
 		logic = battle_logic_resource.duplicate()
@@ -200,6 +197,11 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 		ghost_button.disabled = false
 		ghost_button.text = "bye forever!"
 		_on_confidence_changed(StatManager.get_stat("confidence"))
+	
+	if is_new_battle and UpgradeManager.get_level("fumble_friend_pic") > 0:
+		await get_tree().create_timer(.6).timeout
+		battle_stats_to_use["apprehension"] = clamp(battle_stats_to_use.get("apprehension", 0) - 10, 0, 100)
+
 
 
 func scroll_to_newest_chat():
@@ -740,17 +742,17 @@ func process_npc_response(move_type, response_id, success: bool) -> ChatBox:
 
 func persist_battle_stats_to_npc():
 	if npc and logic:
-			var current_stats = logic.get_stats()
-			var se = current_stats.get("self_esteem", npc.self_esteem)
-			var chem = current_stats.get("chemistry", npc.chemistry)
-			var app = current_stats.get("apprehension", npc.apprehension)
-			npc.self_esteem = se
-			npc.chemistry = chem
-			npc.apprehension = app
-			if npc_idx != -1:
-					NPCManager.set_npc_field(npc_idx, "self_esteem", se)
-					NPCManager.set_npc_field(npc_idx, "chemistry", chem)
-					NPCManager.set_npc_field(npc_idx, "apprehension", app)
+		var current_stats = logic.get_stats()
+		var se = current_stats.get("self_esteem", npc.self_esteem)
+		var chem = current_stats.get("chemistry", npc.chemistry)
+		var app = current_stats.get("apprehension", npc.apprehension)
+		npc.self_esteem = se
+		npc.chemistry = chem
+		npc.apprehension = app
+		if npc_idx != -1:
+			NPCManager.set_npc_field(npc_idx, "self_esteem", se)
+			NPCManager.set_npc_field(npc_idx, "chemistry", chem)
+			NPCManager.set_npc_field(npc_idx, "apprehension", app)
 
 
 

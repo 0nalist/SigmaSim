@@ -146,19 +146,23 @@ func _on_items_loaded() -> void:
 
 	for entry in items:
 		_spawn_item(entry)
+
 	if create_or_update_apps_folder:
 		_create_or_update_apps_folder()
+
 
 func _on_item_created(item_id: int, data: Dictionary) -> void:
 	if int(data.get("parent_id", 0)) != 0:
 		return
 	_spawn_item(data)
 
+
 func _on_item_deleted(item_id: int) -> void:
 	for child in icons_layer.get_children():
-		if child.has_variable("item_id") and child.item_id == item_id:
+		if (child is AppShortcut or child is FolderShortcut) and child.item_id == item_id:
 			child.queue_free()
 			break
+
 
 func _spawn_item(data: Dictionary) -> void:
 	var scene: PackedScene

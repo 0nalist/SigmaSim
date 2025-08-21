@@ -283,8 +283,12 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
 [node name="FuglyFilterContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
-visible = false
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
@@ -295,9 +299,8 @@ text = "Min 🔥"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = 0.0
 max_value = 1.0
-step = 1.0
+tick_count = 11
 
 [node name="Control8" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
 custom_minimum_size = Vector2(25, 0)

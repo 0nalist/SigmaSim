@@ -73,20 +73,20 @@ func _setup_over_frames() -> void:
 
 	x_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	y_slider.drag_ended.connect(_on_gender_slider_drag_ended)
-        z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
-        curiosity_slider.value_changed.connect(_on_curiosity_h_slider_value_changed)
-        curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
-        fugly_slider.drag_ended.connect(_on_fugly_slider_drag_ended)
-        if Events.has_signal("fumble_fugly_filter_purchased"):
-                Events.connect("fumble_fugly_filter_purchased", _on_fugly_filter_purchased)
+	z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
+	curiosity_slider.value_changed.connect(_on_curiosity_h_slider_value_changed)
+	curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
+	fugly_slider.drag_ended.connect(_on_fugly_slider_drag_ended)
+	if Events.has_signal("fumble_fugly_filter_purchased"):
+			Events.connect("fumble_fugly_filter_purchased", _on_fugly_filter_purchased)
 
 	await get_tree().process_frame
 
-        _load_preferences()
-        bio_text_edit.text = PlayerManager.get_var("bio", "")
-        bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
+	_load_preferences()
+	bio_text_edit.text = PlayerManager.get_var("bio", "")
+	bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
 
-        _update_fugly_filter_ui()
+	_update_fugly_filter_ui()
 
 	confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
 	ex_progress_bar.update_value(StatManager.get_stat("ex"))
@@ -181,40 +181,40 @@ func _on_curiosity_h_slider_value_changed(value: float) -> void:
 
 
 func _on_curiosity_h_slider_drag_ended(_changed) -> void:
-                if card_stack:
-                                card_stack.set_curiosity(curiosity)
-                                card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
-                PlayerManager.set_var("fumble_curiosity", curiosity_slider.value)
+				if card_stack:
+								card_stack.set_curiosity(curiosity)
+								card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
+				PlayerManager.set_var("fumble_curiosity", curiosity_slider.value)
 
 
 func _on_fugly_slider_drag_ended(_changed) -> void:
-                PlayerManager.set_var("fumble_fugly_filter_threshold", fugly_slider.value)
-                if card_stack:
-                                await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
-                chats_tab.refresh_matches()
+				PlayerManager.set_var("fumble_fugly_filter_threshold", fugly_slider.value)
+				if card_stack:
+								await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+				chats_tab.refresh_matches()
 
 
 func _on_fugly_filter_purchased(_level: int) -> void:
-                _update_fugly_filter_ui()
-                if card_stack:
-                                await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
-                chats_tab.refresh_matches()
+				_update_fugly_filter_ui()
+				if card_stack:
+								await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+				chats_tab.refresh_matches()
 
 
 func _update_fugly_filter_ui() -> void:
-                var level := UpgradeManager.get_level("fumble_fugly_filter")
-                fugly_container.visible = level > 0
-                fugly_slider.max_value = level
-                var current = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_slider.value)
-                fugly_slider.value = clamp(current, 0, fugly_slider.max_value)
+	var level := UpgradeManager.get_level("fumble_fugly_filter")
+	fugly_container.visible = level > 0
+	fugly_slider.max_value = level
+	var current = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_slider.value)
+	fugly_slider.value = clamp(current, 0, fugly_slider.max_value)
 
 
 func _load_preferences() -> void:
-                x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
-                y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
-                z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
-                curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
-                fugly_slider.value = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_slider.value)
+				x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
+				y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
+				z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
+				curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
+				fugly_slider.value = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_slider.value)
 
 
 func _on_resize_x_requested(pixels):
@@ -234,14 +234,14 @@ func _on_bio_text_edit_text_changed() -> void:
 
 
 func _on_visibility_changed() -> void:
-                if not visible:
-                                return
-                _load_preferences()
-                _update_fugly_filter_ui()
-                _on_gender_slider_changed(0)
-                _on_curiosity_h_slider_value_changed(curiosity_slider.value)
-                if card_stack and card_stack.cards.is_empty():
-                                await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+				if not visible:
+								return
+				_load_preferences()
+				_update_fugly_filter_ui()
+				_on_gender_slider_changed(0)
+				_on_curiosity_h_slider_value_changed(curiosity_slider.value)
+				if card_stack and card_stack.cards.is_empty():
+								await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
 
 
 func _on_confidence_changed(value: float) -> void:
