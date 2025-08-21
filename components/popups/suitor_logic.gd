@@ -62,9 +62,9 @@ func on_date_paid() -> void:
 	progress_paused = false
 
 func apply_love() -> void:
-       npc.affinity += LOVE_AFFINITY_GAIN
-       if npc.affinity > 100.0:
-               npc.affinity = 100.0
+	npc.affinity += LOVE_AFFINITY_GAIN
+	if npc.affinity > 100.0:
+			npc.affinity = 100.0
 
 
 func get_stop_marks() -> Array[float]:
