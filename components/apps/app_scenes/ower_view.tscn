@@ -1,48 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://by7ye7kt412u3"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" uid="uid://ce5ge1lmsdy7g" path="res://components/apps/ower_view/ower_view.gd" id="1_t43hg"]
-[ext_resource type="Texture2D" uid="uid://chka0bjnrrdmr" path="res://assets/ui/buttons/dark_purple_normal.png" id="3_aemln"]
-[ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="3_svf65"]
-[ext_resource type="Shader" uid="uid://dwdg8fcaxgjbp" path="res://assets/shaders/maroon_warp_shader.gdshader" id="4_6w1kr"]
-[ext_resource type="Texture2D" uid="uid://dpko7w8bh0pq1" path="res://assets/ui/buttons/english_violet_normal.png" id="4_svf65"]
-[ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/buttons/lilac_normal.png" id="5_6w1kr"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aemln"]
-texture = ExtResource("3_aemln")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_11odt"]
-shader = ExtResource("4_6w1kr")
-shader_parameter/stretch = 0.8
-shader_parameter/thing1 = 0.6
-shader_parameter/thing2 = 0.6
-shader_parameter/thing3 = 0.8
-shader_parameter/scale = 1.0
-shader_parameter/speed = 0.03
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_njqv2"]
-texture = ExtResource("4_svf65")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_svf65"]
-texture = ExtResource("4_svf65")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_638yv"]
-texture = ExtResource("5_6w1kr")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
+[ext_resource type="Script" path="res://components/apps/ower_view/ower_view.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/logos/owerview_logo.png" id="2"]
 
 [node name="OwerView" type="PanelContainer"]
 anchors_preset = 15
@@ -53,217 +12,23 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxTexture_aemln")
-script = ExtResource("1_t43hg")
+script = ExtResource("1")
 window_title = "OwerView"
-window_icon = ExtResource("3_svf65")
+window_icon = ExtResource("2")
 default_window_size = Vector2(600, 500)
 default_position = "left"
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_11odt")
-layout_mode = 2
-
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="ShortTerm" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="CreditCardSummary" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 50)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxTexture_njqv2")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Credit Card"
-
-[node name="CreditLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
+[node name="Wallet" type="VBoxContainer" parent="MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
-text = "Credit Card"
-
-[node name="CreditInterestLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Interest %
-"
-
-[node name="CreditProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="CreditSlider" type="HSlider" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="CreditSliderLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.46
-mouse_filter = 1
-text = "$0.00"
-
-[node name="PayCreditButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-focus_mode = 0
-text = " Pay "
-
-[node name="LongTerm" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="StudentLoanSummary" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 50)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxTexture_svf65")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
-layout_mode = 2
-text = "Student Loans"
-
-[node name="StudentLoanLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Credit Card"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
-layout_mode = 2
-
-[node name="LoanSlider" type="HSlider" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="LoanSliderLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.46
-mouse_filter = 1
-text = "$0.00"
-
-[node name="PayStudentLoanButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-focus_mode = 0
-text = " Pay "
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
-layout_mode = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxTexture_638yv")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 25
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="CreditScore" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 12
-text = "Credit Score:"
-
-[node name="CreditScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 17
-text = "Credit Score:"
-
-[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 3
-min_value = 300.0
-max_value = 850.0
-value = 700.0
-fill_mode = 3
-show_percentage = false
-
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/CenterContainer"]
-layout_mode = 2
-texture = ExtResource("3_svf65")
-stretch_mode = 3
-
-[node name="NOTELabel" type="Label" parent="MarginContainer/HBoxContainer/CenterContainer"]
-visible = false
-layout_mode = 2
-text = "+1 credit score per day
-and then mayvbe implement
-using cc -1 credit
-and you can upgrade 
-credit score recovery speed"
-
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ShortTerm/CreditCardSummary/MarginContainer/VBoxContainer/PayCreditButton" to="." method="_on_pay_credit_button_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/LongTerm/StudentLoanSummary/MarginContainer/VBoxContainer2/PayStudentLoanButton" to="." method="_on_pay_student_loan_button_pressed"]
