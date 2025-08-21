@@ -23,7 +23,7 @@ const FOLDER_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/fol
 
 func _ready() -> void:
 	#SaveManager.save_to_slot(PlayerManager.get_slot_id())
-	
+
 	GameManager.in_game = true
 	#hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
@@ -31,7 +31,8 @@ func _ready() -> void:
 	DesktopLayoutManager.items_loaded.connect(_on_items_loaded)
 	DesktopLayoutManager.item_created.connect(_on_item_created)
 	DesktopLayoutManager.item_deleted.connect(_on_item_deleted)
-	
+	DesktopLayoutManager.item_moved.connect(_on_item_moved)
+
 	call_deferred("_deferred_load_save")
 	launch_startup_apps()
 	print("Active slot_id:", SaveManager.current_slot_id)
@@ -163,6 +164,22 @@ func _on_item_deleted(item_id: int) -> void:
 			child.queue_free()
 			break
 
+func _on_item_moved(item_id: int, position: Vector2, parent_id: int, old_parent_id: int) -> void:
+	if parent_id == 0:
+		var found: bool = false
+		for child in icons_layer.get_children():
+			if (child is AppShortcut or child is FolderShortcut) and child.item_id == item_id:
+				child.global_position = position
+				found = true
+				break
+		if not found:
+			var data: Dictionary = DesktopLayoutManager.get_item(item_id)
+			_spawn_item(data)
+	else:
+		for child in icons_layer.get_children():
+			if (child is AppShortcut or child is FolderShortcut) and child.item_id == item_id:
+				child.queue_free()
+				break
 
 func _spawn_item(data: Dictionary) -> void:
 	var scene: PackedScene
