@@ -7,20 +7,20 @@ signal overclock_toggled(symbol: String)
 signal open_upgrades(symbol: String)
 signal selected(symbol: String)
 
-@onready var symbol_label = %SymbolLabel
-@onready var display_name_label = %DisplayNameLabel
-@onready var price_label = %PriceLabel
-@onready var block_chance_label = %BlockChanceLabel
-@onready var block_time_label = %BlockTimeLabel
-@onready var block_size_label = %BlockSizeLabel
+@onready var symbol_label: Label = %SymbolLabel
+@onready var display_name_label: Label = %DisplayNameLabel
+@onready var price_label: Label = %PriceLabel
+@onready var block_chance_label: Label = %BlockChanceLabel
+@onready var block_time_label: Label = %BlockTimeLabel
+@onready var block_size_label: Label = %BlockSizeLabel
 @onready var owned_label: Label = %OwnedLabel
 @onready var sell_button: Button = %SellButton
-@onready var miner_sprite = %MinerSprite
-@onready var gpus_label = %GPUsLabel
-@onready var add_gpu_button = %AddGPUButton
-@onready var remove_gpu_button = %RemoveGPUButton
-@onready var overclock_button = %OverclockButton
-@onready var upgrade_button = %UpgradeButton
+@onready var miner_sprite: TextureRect = %MinerSprite
+@onready var gpus_label: Label = %GPUsLabel
+@onready var add_gpu_button: Button = %AddGPUButton
+@onready var remove_gpu_button: Button = %RemoveGPUButton
+@onready var overclock_button: Button = %OverclockButton
+@onready var upgrade_button: Button = %UpgradeButton
 @onready var power_bar: ProgressBar = %PowerBar
 
 var crypto: Cryptocurrency
@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 		extra_power = max(0.0, extra_power - power_draw_down * delta)
 
 	# Smooth update
-	var target_chance = calculate_block_chance()
+	var target_chance: float = calculate_block_chance()
 	if abs(displayed_chance - target_chance) > 0.1:
 		displayed_chance = lerpf(displayed_chance, target_chance, delta * lerp_speed)
 	else:
@@ -65,15 +65,15 @@ func _process(delta: float) -> void:
 		power_bar.value = displayed_chance
 	
 	if crypto:
-		var time_left := GPUManager.get_time_until_next_block(crypto.symbol)
-		var seconds = floor(time_left)
+		var time_left: float = GPUManager.get_time_until_next_block(crypto.symbol)
+		var seconds: int = int(floor(time_left))
 		block_time_label.text = "Next block: %ds" % seconds
 
 func calculate_block_chance() -> float:
-	var gpu_power = GPUManager.get_power_for(crypto.symbol)
-	var total_power = gpu_power + extra_power
+	var gpu_power: int = GPUManager.get_power_for(crypto.symbol)
+	var total_power: float = float(gpu_power) + extra_power
 	#print("DEBUG: gpu_power=", gpu_power, " extra_power=", extra_power, " power_required=", crypto.power_required)
-	var chance = float(total_power + 1) / float(crypto.power_required + 1)
+	var chance: float = float(total_power + 1.0) / float(crypto.power_required + 1.0)
 	return clampf(chance * 100.0, 0.0, 100.0)
 
 
@@ -91,12 +91,12 @@ func update_display() -> void:
 	#block_time_label.text = "Next block: %ds" % get_time_to_block()
 	block_size_label.text = "Block size: %.1f" % crypto.block_size
 
-	var owned = PortfolioManager.get_crypto_amount(crypto.symbol)
-	var value = owned * crypto.price
+	var owned: float = PortfolioManager.get_crypto_amount(crypto.symbol)
+	var value: float = owned * crypto.price
 	owned_label.text = "%.4f owned" % owned
 	#owned_label.text = "%.4f owned ($%.2f)" % [owned, value]
 	
-	var active_gpus = GPUManager.get_gpu_count_for(crypto.symbol)
+	var active_gpus: int = GPUManager.get_gpu_count_for(crypto.symbol)
 	gpus_label.text = "GPUs: %d" % active_gpus
 	
 	if active_gpus > 0:
@@ -110,7 +110,7 @@ func _on_click_boost() -> void:
 	# Optional: animate miner_sprite or play feedback
 
 func _on_sell_pressed() -> void:
-	var statpop_pos = sell_button.global_position
+	var statpop_pos: Vector2 = sell_button.global_position
 	
 	if PortfolioManager.sell_crypto(crypto.symbol, 1.0):
 		StatpopManager.spawn("+$" + NumberFormatter.format_commas(crypto.price, 0), statpop_pos, "click", Color.GREEN)
@@ -155,8 +155,8 @@ func _on_crypto_mined(mined_crypto: Cryptocurrency) -> void:
 		return
 
 	# Show statpop on top of the BlockSprite
-	var block_global_pos = block_sprite.get_global_position()
-	var stat_text = "+" + str(mined_crypto.block_size) + " " + mined_crypto.symbol
+	var block_global_pos: Vector2 = block_sprite.get_global_position()
+	var stat_text: String = "+" + str(mined_crypto.block_size) + " " + mined_crypto.symbol
 	StatpopManager.spawn(stat_text, block_global_pos, "passive", Color.GREEN)
 
 	# Optional: play block animation again or a flash?
