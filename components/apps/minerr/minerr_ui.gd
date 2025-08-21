@@ -29,9 +29,9 @@ func refresh_cards_from_market() -> void:
 		card.queue_free()
 	crypto_cards.clear()
 
-	for symbol in MarketManager.crypto_market.keys():
-		var crypto: Cryptocurrency = MarketManager.crypto_market[symbol]
-		var card: CryptoCard = crypto_card_scene.instantiate()
+	for crypto in MarketManager.crypto_market.values():
+		var symbol: String = crypto.symbol
+		var card: CryptoCard = crypto_card_scene.instantiate() as CryptoCard
 		crypto_container.add_child(card)
 		card.setup(crypto)
 
