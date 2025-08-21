@@ -72,13 +72,11 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	if background != "":
 		PlayerManager.apply_background_effects(background)
 
-        var starting_debt = user_data.get("starting_student_debt", 0.0)
-        PortfolioManager.set_student_loans(starting_debt)
+	var starting_debt = user_data.get("starting_student_debt", 0.0)
+	PortfolioManager.set_student_loans(starting_debt)
 
-        var starting_credit_limit = user_data.get("starting_credit_limit", 0.0)
-        PortfolioManager.set_credit_limit(starting_credit_limit)
-
-        BillManager._rebuild_debt_resources()
+	var starting_credit_limit = user_data.get("starting_credit_limit", 0.0)
+	PortfolioManager.set_credit_limit(starting_credit_limit)
 
 	save_to_slot(slot_id)
 
