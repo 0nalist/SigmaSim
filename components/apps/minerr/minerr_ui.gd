@@ -25,24 +25,14 @@ func _ready() -> void:
 	update_gpu_label()
 
 func refresh_cards_from_market() -> void:
-	for child: Node in crypto_container.get_children():
-		child.queue_free()
+	for card in crypto_cards.values():
+		card.queue_free()
 	crypto_cards.clear()
 
-	var market_size: int = MarketManager.crypto_market.size()
-	if market_size < 2:
-		push_warning("Crypto market has only %d entries" % market_size)
-
-	for crypto: Cryptocurrency in MarketManager.crypto_market.values():
+	for crypto in MarketManager.crypto_market.values():
 		var symbol: String = crypto.symbol
-		var card_node: Node = crypto_card_scene.instantiate()
-		if card_node is not CryptoCard:
-			push_error("Failed to instantiate CryptoCard for %s" % symbol)
-			card_node.queue_free()
-			continue
-		var card: CryptoCard = card_node
+		var card: CryptoCard = crypto_card_scene.instantiate() as CryptoCard
 		crypto_container.add_child(card)
-		await card.ready
 		card.setup(crypto)
 
 		card.add_gpu.connect(_on_add_gpu)
@@ -51,6 +41,7 @@ func refresh_cards_from_market() -> void:
 		card.open_upgrades.connect(_on_open_upgrades)
 
 		crypto_cards[symbol] = card
+
 
 func update_gpu_label() -> void:
 	var total_gpus: int = GPUManager.get_total_gpu_count()
@@ -63,7 +54,7 @@ func update_gpu_label() -> void:
 	else:
 		gpus_label.modulate = Color(1, 1, 1)       # white
 
-	for symbol: String in crypto_cards.keys():
+	for symbol in crypto_cards.keys():
 		crypto_cards[symbol].update_display()
 	_update_gpu_prices()
 
