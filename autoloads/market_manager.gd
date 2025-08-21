@@ -115,15 +115,15 @@ func _update_crypto_prices():
 ## --- Initialization --- ##
 
 func _init_crypto_market() -> void:
-        for symbol in CRYPTO_RESOURCES.keys():
-                var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
-                register_crypto(crypto)
-        emit_signal("crypto_market_ready")
+		for symbol in CRYPTO_RESOURCES.keys():
+				var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
+				register_crypto(crypto)
+		emit_signal("crypto_market_ready")
 
 func _init_stock_market() -> void:
-        for symbol in STOCK_RESOURCES.keys():
-                var stock = STOCK_RESOURCES[symbol].duplicate(true)
-                register_stock(stock)
+		for symbol in STOCK_RESOURCES.keys():
+				var stock = STOCK_RESOURCES[symbol].duplicate(true)
+				register_stock(stock)
 
 ## --- SAVELOAD --- ##
 
@@ -145,16 +145,16 @@ func load_from_data(data: Dictionary) -> void:
 	stock_market.clear()
 	crypto_market.clear()
 
-        for symbol in STOCK_RESOURCES.keys():
-                var stock = STOCK_RESOURCES[symbol].duplicate(true)
-                if data.get("stock_market", {}).has(symbol):
-                        stock.from_dict(data["stock_market"][symbol])
-                register_stock(stock)
+	for symbol in STOCK_RESOURCES.keys():
+			var stock = STOCK_RESOURCES[symbol].duplicate(true)
+			if data.get("stock_market", {}).has(symbol):
+					stock.from_dict(data["stock_market"][symbol])
+			register_stock(stock)
 
-        for symbol in CRYPTO_RESOURCES.keys():
-                var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
-                if data.get("crypto_market", {}).has(symbol):
-                        crypto.from_dict(data["crypto_market"][symbol])
-                register_crypto(crypto)
+	for symbol in CRYPTO_RESOURCES.keys():
+			var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
+			if data.get("crypto_market", {}).has(symbol):
+					crypto.from_dict(data["crypto_market"][symbol])
+			register_crypto(crypto)
 
 	emit_signal("crypto_market_ready")
