@@ -3,6 +3,7 @@ class_name DebtCardUI
 
 @onready var name_label: Label = %NameLabel
 @onready var amount_label: Label = %AmountLabel
+@onready var limit_label: Label = %LimitLabel
 @onready var limit_bar: ProgressBar = %LimitBar
 @onready var pay_slider: HSlider = %PaySlider
 @onready var slider_label: Label = %SliderLabel
@@ -36,14 +37,18 @@ func update_display() -> void:
 	var balance: float = float(resource_data.get("balance", 0.0))
 	amount_label.text = "$" + NumberFormatter.format_commas(balance)
 
-	var has_limit: bool = bool(resource_data.get("has_credit_limit", false))
-	if has_limit:
-		var limit: float = float(resource_data.get("credit_limit", 0.0))
-		limit_bar.max_value = limit
-		limit_bar.value = balance
-		limit_bar.visible = true
-	else:
-		limit_bar.visible = false
+        var credit_limit := resource_data.get("credit_limit")
+        var has_limit := credit_limit != null and float(credit_limit) > 0.0
+        if has_limit:
+                var limit: float = float(credit_limit)
+                limit_bar.max_value = limit
+                limit_bar.value = balance
+                limit_bar.visible = true
+                limit_label.text = "Limit: $" + NumberFormatter.format_commas(limit)
+                limit_label.visible = true
+        else:
+                limit_bar.visible = false
+                limit_label.visible = false
 
 	update_slider()
 

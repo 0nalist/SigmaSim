@@ -26,6 +26,12 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "$0"
 
+[node name="LimitLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Limit: $0"
+
 [node name="LimitBar" type="ProgressBar" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 visible = false
