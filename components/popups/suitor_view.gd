@@ -157,6 +157,7 @@ func _on_next_stage_pressed() -> void:
 	logic.progress_paused = false
 	if npc.relationship_stage < NPC.RelationshipStage.MARRIED:
 		npc.relationship_stage += 1
+	logic.change_state(npc.relationship_stage)
 	_update_all()
 func _on_gift_pressed() -> void:
 	if PortfolioManager.attempt_spend(npc.gift_cost):
@@ -231,6 +232,7 @@ func _on_breakup_confirm_yes_pressed() -> void:
 		npc.relationship_stage = NPC.RelationshipStage.EX
 	npc.relationship_progress = 0.0
 	npc.affinity *= 0.2
+	logic.change_state(npc.relationship_stage)
 	logic.progress_paused = true
 	next_stage_button.visible = false
 	gift_button.disabled = true
@@ -257,6 +259,7 @@ func _on_apologize_pressed() -> void:
 	npc.relationship_progress = 0.0
 	npc.affinity = 1.0
 	logic.progress_paused = false
+	logic.change_state(npc.relationship_stage)
 	#npc.gift_cost = 25.0
 	#npc.date_cost = 200.0
 	breakup_reward = 0.0
