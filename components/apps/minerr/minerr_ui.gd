@@ -28,16 +28,16 @@ func refresh_cards_from_market():
 	crypto_cards.clear()
 
 	for symbol in MarketManager.crypto_market.keys():
-		var crypto: Cryptocurrency = MarketManager.crypto_market[symbol]
-		var card: CryptoCard = crypto_card_scene.instantiate() as CryptoCard
-		crypto_container.add_child(card)
-		card.call_deferred("setup", crypto)
-
+		var crypto = MarketManager.crypto_market[symbol]
+		var card = crypto_card_scene.instantiate() as CryptoCard
+		card.setup(crypto)
+		
 		card.add_gpu.connect(_on_add_gpu)
 		card.remove_gpu.connect(_on_remove_gpu)
 		card.overclock_toggled.connect(_on_toggle_overclock)
 		card.open_upgrades.connect(_on_open_upgrades)
 
+		crypto_container.add_child(card)
 		crypto_cards[symbol] = card
 
 
