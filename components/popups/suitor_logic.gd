@@ -60,6 +60,17 @@ func on_date_paid() -> void:
 	npc.dates_paid += 1
 	progress_paused = false
 
+func apply_love() -> bool:
+	npc.affinity = min(npc.affinity + 5.0, 100.0)
+	var progress_increase: float = npc.relationship_progress * 0.01
+	var bounds: Vector2 = get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
+	npc.relationship_progress = min(npc.relationship_progress + progress_increase, bounds.y)
+	var reached_next_stage: bool = false
+	if npc.relationship_stage < NPC.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
+		progress_paused = true
+		reached_next_stage = true
+	return reached_next_stage
+
 func get_stop_marks() -> Array[float]:
 	var marks: Array[float] = []
 	var stage: int = npc.relationship_stage

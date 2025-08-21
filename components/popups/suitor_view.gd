@@ -143,7 +143,7 @@ func _update_love_button() -> void:
 		love_button.disabled = false
 		love_cooldown_label.visible = false
 func _on_next_stage_pressed() -> void:
-	next_stage_button.visible = false
+		next_stage_button.visible = false
 	logic.progress_paused = false
 	if npc.relationship_stage < NPC.RelationshipStage.MARRIED:
 		npc.relationship_stage += 1
@@ -160,17 +160,13 @@ func _on_love_pressed() -> void:
 	if now - npc.love_cooldown < LOVE_COOLDOWN_MINUTES:
 		return
 	npc.love_cooldown = now
-	npc.affinity = min(npc.affinity + 5.0, 100.0)
-	var progress_increase: float = npc.relationship_progress * 0.01
-	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
-	npc.relationship_progress = min(npc.relationship_progress + progress_increase, bounds.y)
+	var reached_next_stage: bool = logic.apply_love()
 	if npc_idx != -1:
 		NPCManager.promote_to_persistent(npc_idx)
 		NPCManager.set_npc_field(npc_idx, "love_cooldown", npc.love_cooldown)
 		NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
 		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
-	if npc.relationship_stage < NPC.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
-		logic.progress_paused = true
+	if reached_next_stage:
 		next_stage_button.visible = true
 	_update_affinity_bar()
 	_update_relationship_bar()
@@ -223,7 +219,7 @@ func _on_breakup_confirm_yes_pressed() -> void:
 	npc.relationship_progress = 0.0
 	npc.affinity *= 0.2
 	logic.progress_paused = true
-	next_stage_button.visible = false
+		next_stage_button.visible = false
 	gift_button.disabled = true
 	date_button.disabled = true
 	breakup_button.disabled = true
@@ -247,7 +243,7 @@ func _on_apologize_pressed() -> void:
 	#date_cost = 200.0
 	breakup_reward = 0.0
 	apologize_cost = int(ceil(apologize_cost * 1.5))
-	next_stage_button.visible = false
+		next_stage_button.visible = false
 	gift_button.disabled = false
 	date_button.disabled = false
 	breakup_button.disabled = false
