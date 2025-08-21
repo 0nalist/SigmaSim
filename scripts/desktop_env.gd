@@ -28,9 +28,10 @@ func _ready() -> void:
 	#hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
 	WindowManager.start_panel = start_panel
-	DesktopLayoutManager.items_loaded.connect(_on_items_loaded)
-	DesktopLayoutManager.item_created.connect(_on_item_created)
-	DesktopLayoutManager.item_deleted.connect(_on_item_deleted)
+       DesktopLayoutManager.items_loaded.connect(_on_items_loaded)
+       DesktopLayoutManager.item_created.connect(_on_item_created)
+       DesktopLayoutManager.item_deleted.connect(_on_item_deleted)
+       DesktopLayoutManager.item_parent_changed.connect(_on_item_parent_changed)
 	
 	call_deferred("_deferred_load_save")
 	launch_startup_apps()
@@ -158,10 +159,21 @@ func _on_item_created(item_id: int, data: Dictionary) -> void:
 
 
 func _on_item_deleted(item_id: int) -> void:
-	for child in icons_layer.get_children():
-		if (child is AppShortcut or child is FolderShortcut) and child.item_id == item_id:
-			child.queue_free()
-			break
+        for child in icons_layer.get_children():
+                if (child is AppShortcut or child is FolderShortcut) and child.item_id == item_id:
+                        child.queue_free()
+                        break
+
+func _on_item_parent_changed(item_id: int, old_parent: int, new_parent: int) -> void:
+       if old_parent == 0:
+               for child in icons_layer.get_children():
+                       if (child is AppShortcut or child is FolderShortcut) and child.item_id == item_id:
+                               child.queue_free()
+                               break
+       if new_parent == 0:
+               var data: Dictionary = DesktopLayoutManager.get_item(item_id)
+               if data:
+                       _spawn_item(data)
 
 
 func _spawn_item(data: Dictionary) -> void:
