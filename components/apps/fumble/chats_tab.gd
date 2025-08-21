@@ -49,9 +49,10 @@ func refresh_matches(time_budget_msec := 8) -> void:
 		var battles: Array = FumbleManager.get_active_battles()
 		var battle_npc_indices := battles.map(func(b): return b.npc_idx)
 
-		var total_attractiveness := 0
-		var filtered_count := 0
-		var data := []
+               var total_attractiveness := 0
+               var match_count := 0
+               var data := []
+               var min_att := PlayerManager.get_var("fumble_fugly_filter_threshold", 0) * 10
 
 		var start_time = Time.get_ticks_msec()
 
@@ -59,10 +60,12 @@ func refresh_matches(time_budget_msec := 8) -> void:
 				var idx: int = row.npc_id
 				if battle_npc_indices.has(idx):
 						continue
-				var npc = NPCManager.get_npc_by_index(idx)
-				total_attractiveness += npc.attractiveness
-				filtered_count += 1
-				data.append({"npc": npc, "idx": idx, "created_at": row.created_at})
+                               var npc = NPCManager.get_npc_by_index(idx)
+                               if npc.attractiveness < min_att:
+                                               continue
+                               total_attractiveness += npc.attractiveness
+                               match_count += 1
+                               data.append({"npc": npc, "idx": idx, "created_at": row.created_at})
 				if Time.get_ticks_msec() - start_time > time_budget_msec:
 						await get_tree().process_frame
 						start_time = Time.get_ticks_msec()
@@ -93,7 +96,7 @@ func refresh_matches(time_budget_msec := 8) -> void:
 				if Time.get_ticks_msec() - start_time > time_budget_msec:
 						await get_tree().process_frame
 						start_time = Time.get_ticks_msec()
-		var total_count := filtered_count + battles.size()
+               var total_count := match_count + battles.size()
 		matches_label.text = "Matches: %d" % total_count
 
 		var avg_att := 0.0
