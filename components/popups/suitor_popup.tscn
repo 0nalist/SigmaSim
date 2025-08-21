@@ -3,11 +3,12 @@
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/suitor_view.gd" id="2"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
-[ext_resource type="Shader" uid="uid://bfgsgplah4us" path="res://assets/shaders/white_warp_shader.gdshader" id="3_vl6ok"]
+[ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_vl6ok"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
 [ext_resource type="Script" uid="uid://bvbiboe20qioe" path="res://components/popups/relationship_bar.gd" id="5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_78wgo"]
+resource_local_to_scene = true
 shader = ExtResource("3_vl6ok")
 shader_parameter/stretch = 0.8
 shader_parameter/thing1 = 0.6
@@ -15,6 +16,9 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.03
+shader_parameter/color_low = Color(1, 0.98, 0.94, 1)
+shader_parameter/color_mid = Color(1, 0.99, 0.99, 1)
+shader_parameter/color_high = Color(0.95, 0.95, 0.96, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edh50"]
 bg_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
