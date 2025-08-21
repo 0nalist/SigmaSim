@@ -71,6 +71,7 @@ func setup(crypto_data: Cryptocurrency) -> void:
 	set_process(true)
 func _emit_add_gpu() -> void:
 	if crypto == null:
+		print("crypto = null, cant add gpu")
 		return
 	emit_signal("add_gpu", crypto.symbol)
 
@@ -136,7 +137,7 @@ func get_time_to_block() -> int:
 func update_display() -> void:
 	if crypto == null:
 		return
-	print("CryptoCard.update_display: id=", str(crypto.get_instance_id()), " symbol=", crypto.symbol, " name=", crypto.display_name, " price=", crypto.price, " block_size=", crypto.block_size, " power=", crypto.power_required)
+	#print("CryptoCard.update_display: id=", str(crypto.get_instance_id()), " symbol=", crypto.symbol, " name=", crypto.display_name, " price=", crypto.price, " block_size=", crypto.block_size, " power=", crypto.power_required)
 
 	symbol_label.text = crypto.symbol
 	display_name_label.text = crypto.display_name
