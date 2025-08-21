@@ -18,6 +18,7 @@ extends Resource
 enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, DIVORCED, EX }
 @export var relationship_stage: RelationshipStage = RelationshipStage.STRANGER
 @export_range(0, 100, 0.1) var relationship_progress: float = 0.0
+@export var date_count: int = 0
 
 # Relationship with Player
 @export_range(-100, 100, 0.1) var affinity: float = 0.0 # 0–100
@@ -126,6 +127,7 @@ func to_dict() -> Dictionary:
 				"relationship_status": relationship_status,
 				"relationship_stage": relationship_stage,
 			"relationship_progress": relationship_progress,
+		"date_count": date_count,
 			"affinity": affinity,
 			"affinity_equilibrium": affinity_equilibrium,
 			"rizz": rizz,
@@ -177,6 +179,7 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
 	npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
 	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
+	npc.date_count = _safe_int(data.get("date_count"), 0)
 	npc.affinity = _safe_float(data.get("affinity"), 0.0)
 	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 50.0)
 	npc.rizz  = _safe_int(data.get("rizz"), 0)
