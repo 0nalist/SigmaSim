@@ -37,8 +37,8 @@ var commands := {
 		"description": "Clears the command log window.",
 	},
 	"stress_test": {
-		"args": ""
-		"description": "Opens every app in the app registry at once."
+		"args": "",
+		"description": "Opens every app in the app registry at once.",
 	},
 }
 
