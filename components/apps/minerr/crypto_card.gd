@@ -30,7 +30,6 @@ var displayed_chance: float = 0.0
 var lerp_speed: float = 5.0
 
 func setup(crypto_data: Cryptocurrency) -> void:
-	await self.ready
 	crypto = crypto_data
 
 	add_gpu_button.pressed.connect(func(): emit_signal("add_gpu", crypto.symbol))
