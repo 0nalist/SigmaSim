@@ -3,6 +3,7 @@ extends Node
 
 signal lifestyle_updated
 signal autopay_changed(enabled: bool)
+signal debt_resources_changed
 
 var _autopay_enabled: bool = false
 var autopay_enabled: bool:
@@ -31,11 +32,14 @@ var static_bill_amounts := {}
 
 var is_loading := false
 
+var debt_resources: Array[Dictionary] = []
+
 
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 	#TimeManager.hour_passed.connect(_on_hour_passed)
 	PortfolioManager.credit_updated.connect(_on_credit_updated)
+	PortfolioManager.resource_changed.connect(_on_resource_changed)
 	if lifestyle_categories.is_empty():
 		for category in lifestyle_options.keys():
 			var option = lifestyle_options[category][0]
@@ -99,13 +103,17 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 
 
 
-func _on_credit_updated(used: float, _limit: float) -> void:
-	# Update any open Credit Card bill popups
+func _on_credit_updated(used: float, limit: float) -> void:
+	_set_credit_card_balance(used, limit)
 	for bill_list in active_bills.values():
 		for popup in bill_list:
 			if is_instance_valid(popup) and popup.bill_name == "Credit Card":
 				popup.amount = get_bill_amount("Credit Card")
-				popup.update_amount_display() 
+				popup.update_amount_display()
+
+func _on_resource_changed(name: String, value: float) -> void:
+	if name == "student_loans":
+		_set_student_loan_balance(value)
 
 
 func center_bill_window(win: WindowFrame) -> void:
@@ -276,6 +284,50 @@ func get_popup_save_data() -> Array:
 			})
 	return popup_data
 
+func add_debt_resource(resource: Dictionary) -> void:
+	debt_resources.append(resource)
+	debt_resources_changed.emit()
+
+func get_debt_resources() -> Array[Dictionary]:
+	return debt_resources
+
+func pay_debt(name: String, amount: float) -> void:
+	match name:
+		"Credit Card":
+			PortfolioManager.pay_down_credit(amount)
+			_set_credit_card_balance(PortfolioManager.credit_used, PortfolioManager.credit_limit)
+		"Student Loan":
+			if PortfolioManager.pay_with_cash(amount):
+				PortfolioManager.set_student_loans(max(PortfolioManager.get_student_loans() - amount, 0.0))
+				_set_student_loan_balance(PortfolioManager.get_student_loans())
+		_:
+			if PortfolioManager.pay_with_cash(amount):
+				var res: Dictionary = _get_debt_resource(name)
+				if not res.is_empty():
+					res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
+					debt_resources_changed.emit()
+
+func _get_debt_resource(name: String) -> Dictionary:
+	for res in debt_resources:
+		if res.get("name", "") == name:
+			return res
+	return {}
+
+func _set_credit_card_balance(used: float, limit: float) -> void:
+	for res in debt_resources:
+		if res.get("name", "") == "Credit Card":
+			res["balance"] = used
+			res["credit_limit"] = limit
+			debt_resources_changed.emit()
+			return
+
+func _set_student_loan_balance(amount: float) -> void:
+	for res in debt_resources:
+		if res.get("name", "") == "Student Loan":
+			res["balance"] = amount
+			debt_resources_changed.emit()
+			return
+
 
 func reset() -> void:
 	autopay_enabled = false
@@ -283,6 +335,7 @@ func reset() -> void:
 	pending_bill_data.clear()
 	lifestyle_categories.clear()
 	lifestyle_indices.clear()
+	debt_resources.clear()
 	emit_signal("lifestyle_updated")
 
 
@@ -291,7 +344,8 @@ func get_save_data() -> Dictionary:
 		"autopay_enabled": autopay_enabled,
 		"lifestyle_categories": lifestyle_categories.duplicate(),
 		"lifestyle_indices": lifestyle_indices.duplicate(),
-		"pane_data": get_pane_save_data()
+		"pane_data": get_pane_save_data(),
+		"debt_resources": debt_resources.duplicate(true)
 	}
 
 func load_from_data(data: Dictionary) -> void:
@@ -300,7 +354,9 @@ func load_from_data(data: Dictionary) -> void:
 	lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
 	active_bills.clear()
 	pending_bill_data.clear()
+	debt_resources = data.get("debt_resources", []).duplicate(true)
 	emit_signal("lifestyle_updated")
+	debt_resources_changed.emit()
 
 	if data.has("pane_data"):
 			for pane_dict in data["pane_data"]:
