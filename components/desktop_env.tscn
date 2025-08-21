@@ -218,8 +218,9 @@ grow_vertical = 2
 theme = ExtResource("1_0utxc")
 script = ExtResource("1_lpqk7")
 
-[node name="Node" type="Node" parent="."]
+[node name="Node" type="Node" parent="." node_paths=PackedStringArray("target_control")]
 script = ExtResource("3_5aheu")
+target_control = NodePath("..")
 
 [node name="Bliss" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -256,6 +257,7 @@ stretch_mode = 5
 
 [node name="ColorRect" type="ColorRect" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
