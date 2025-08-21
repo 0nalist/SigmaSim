@@ -44,37 +44,18 @@ func _ready() -> void:
 	block_sprite.mouse_exited.connect(_on_block_sprite_mouse_exited)
 
 func setup(crypto_data: Cryptocurrency) -> void:
-	await ready
+	if not is_node_ready():
+		await ready
 	crypto = crypto_data
 
-	# Connect signals that depend on crypto being non-null
-	add_gpu_button.pressed.connect(func() -> void:
-		if crypto != null:
-			emit_signal("add_gpu", crypto.symbol)
-	)
 
-	remove_gpu_button.pressed.connect(func() -> void:
-		if crypto != null:
-			emit_signal("remove_gpu", crypto.symbol)
-	)
-
-	overclock_button.pressed.connect(func() -> void:
-		if crypto != null:
-			emit_signal("overclock_toggled", crypto.symbol)
-	)
-
-	upgrade_button.pressed.connect(func() -> void:
-		if crypto != null:
-			emit_signal("open_upgrades", crypto.symbol)
-	)
-
-	self.gui_input.connect(func(event: InputEvent) -> void:
-		if event is InputEventMouseButton and event.pressed:
-			if crypto != null:
-				emit_signal("selected", crypto.symbol)
-	)
-
+	add_gpu_button.pressed.connect(_emit_add_gpu)
+	remove_gpu_button.pressed.connect(_emit_remove_gpu)
+	overclock_button.pressed.connect(_emit_overclock_toggled)
+	upgrade_button.pressed.connect(_emit_open_upgrades)
 	sell_button.pressed.connect(_on_sell_pressed)
+	self.gui_input.connect(_on_gui_input)
+
 
 	TimeManager.minute_passed.connect(_on_time_tick)
 	GPUManager.gpus_changed.connect(update_display)
@@ -90,19 +71,18 @@ func _process(delta: float) -> void:
 	if crypto == null:
 		return
 
-	# Decay boost power
 	if extra_power > 0.0:
 		extra_power = max(0.0, extra_power - power_draw_down * delta)
 
-	# Smooth update of displayed chance
 	var target_chance: float = calculate_block_chance()
 	if abs(displayed_chance - target_chance) > 0.1:
 		displayed_chance = lerpf(displayed_chance, target_chance, delta * lerp_speed)
 	else:
 		displayed_chance = target_chance
 
-	block_chance_label.text = "%d%% chance to mine" % int(round(displayed_chance))
-	if power_bar != null:
+
+	block_chance_label.text = "%.f%% chance to mine" % displayed_chance
+	if power_bar:
 		power_bar.value = displayed_chance
 
 	var time_left: float = GPUManager.get_time_until_next_block(crypto.symbol)
@@ -127,14 +107,13 @@ func get_time_to_block() -> int:
 func update_display() -> void:
 	if crypto == null:
 		return
-
 	symbol_label.text = crypto.symbol
 	display_name_label.text = crypto.display_name
 	price_label.text = "$" + NumberFormatter.format_number(crypto.price)
 	block_size_label.text = "Block size: %.1f" % crypto.block_size
-
 	var owned: float = PortfolioManager.get_crypto_amount(crypto.symbol)
 	owned_label.text = "%.4f owned" % owned
+
 
 	var active_gpus: int = GPUManager.get_gpu_count_for(crypto.symbol)
 	gpus_label.text = "GPUs: %d" % active_gpus
@@ -143,6 +122,22 @@ func update_display() -> void:
 		animate_mining()
 	else:
 		animate_stop_mining()
+func _emit_add_gpu() -> void:
+	emit_signal("add_gpu", crypto.symbol)
+
+func _emit_remove_gpu() -> void:
+	emit_signal("remove_gpu", crypto.symbol)
+
+func _emit_overclock_toggled() -> void:
+	emit_signal("overclock_toggled", crypto.symbol)
+
+func _emit_open_upgrades() -> void:
+	emit_signal("open_upgrades", crypto.symbol)
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		emit_signal("selected", crypto.symbol)
+
 
 	# Update power bar immediately from current calc
 	var chance_now: float = calculate_block_chance()
