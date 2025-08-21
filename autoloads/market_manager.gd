@@ -121,6 +121,7 @@ func _init_crypto_market() -> void:
 	for symbol in CRYPTO_RESOURCES.keys():
 		var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
 		register_crypto(crypto)
+		print("registering crypto: " + str(crypto.symbol))
 	emit_signal("crypto_market_ready")
 	print("crypto market initialized")
 	print("crypto market: " + str(crypto_market))
