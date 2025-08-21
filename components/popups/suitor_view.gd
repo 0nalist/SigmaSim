@@ -9,7 +9,7 @@ const LOVE_COOLDOWN_MINUTES: int = 24 * 60
 @onready var relationship_stage_label: Label = %RelationshipStageLabel
 @onready var relationship_bar: RelationshipBar = %RelationshipBar
 @onready var next_stage_button: Button = %NextStageButton
-@onready var affinity_bar: StatProgressBar = %AffinityBar
+@onready var affinity_bar: AffinityBar = %AffinityBar
 @onready var relationship_value_label: Label = %RelationshipValueLabel
 @onready var affinity_value_label: Label = %AffinityValueLabel
 @onready var love_button: Button = %LoveButton
@@ -101,9 +101,10 @@ func _update_relationship_bar() -> void:
 		else:
 				relationship_bar.set_mark_fractions([])
 func _update_affinity_bar() -> void:
-		affinity_bar.max_value = 100
-		affinity_bar.update_value(npc.affinity)
-		affinity_value_label.text = "%s / 100" % NumberFormatter.format_commas(npc.affinity, 0)
+	affinity_bar.max_value = 100
+	affinity_bar.update_value(npc.affinity)
+	affinity_bar.set_equilibrium(npc.affinity_equilibrium)
+	affinity_value_label.text = "%s / 100" % NumberFormatter.format_commas(npc.affinity, 0)
 
 func _update_breakup_button_text() -> void:
 	if npc.relationship_stage >= NPC.RelationshipStage.DIVORCED:
