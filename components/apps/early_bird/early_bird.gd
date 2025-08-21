@@ -152,7 +152,7 @@ func _on_player_died() -> void:
 
 func _on_player_scored() -> void:
 	winnings += cash_per_score
-	if UpgradeManager.get_level("earlybird_instant_winnings") > 0:
+        if UpgradeManager.get_level("earlybird_earlier_bird") > 0:
 		PortfolioManager.add_cash(cash_per_score)
 	hud.update_score(player.score)
 	hud.update_winnings(winnings)
