@@ -44,36 +44,15 @@ func _ready() -> void:
 	block_sprite.mouse_exited.connect(_on_block_sprite_mouse_exited)
 
 func setup(crypto_data: Cryptocurrency) -> void:
-	await ready
+	if not is_node_ready():
+		await ready
 	crypto = crypto_data
 
-	# Connect signals that depend on crypto being non-null
-	add_gpu_button.pressed.connect(func() -> void:
-		if crypto != null:
-			emit_signal("add_gpu", crypto.symbol)
-	)
-
-	remove_gpu_button.pressed.connect(func() -> void:
-		if crypto != null:
-			emit_signal("remove_gpu", crypto.symbol)
-	)
-
-	overclock_button.pressed.connect(func() -> void:
-		if crypto != null:
-			emit_signal("overclock_toggled", crypto.symbol)
-	)
-
-	upgrade_button.pressed.connect(func() -> void:
-		if crypto != null:
-			emit_signal("open_upgrades", crypto.symbol)
-	)
-
-	self.gui_input.connect(func(event: InputEvent) -> void:
-		if event is InputEventMouseButton and event.pressed:
-			if crypto != null:
-				emit_signal("selected", crypto.symbol)
-	)
-
+	add_gpu_button.pressed.connect(_emit_add_gpu)
+	remove_gpu_button.pressed.connect(_emit_remove_gpu)
+	overclock_button.pressed.connect(_emit_overclock_toggled)
+	upgrade_button.pressed.connect(_emit_open_upgrades)
+	gui_input.connect(_on_card_gui_input)
 	sell_button.pressed.connect(_on_sell_pressed)
 
 	TimeManager.minute_passed.connect(_on_time_tick)
@@ -85,6 +64,32 @@ func setup(crypto_data: Cryptocurrency) -> void:
 
 	update_display()
 	set_process(true)
+
+func _emit_add_gpu() -> void:
+	if crypto == null:
+		return
+	emit_signal("add_gpu", crypto.symbol)
+
+func _emit_remove_gpu() -> void:
+	if crypto == null:
+		return
+	emit_signal("remove_gpu", crypto.symbol)
+
+func _emit_overclock_toggled() -> void:
+	if crypto == null:
+		return
+	emit_signal("overclock_toggled", crypto.symbol)
+
+func _emit_open_upgrades() -> void:
+	if crypto == null:
+		return
+	emit_signal("open_upgrades", crypto.symbol)
+
+func _on_card_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if crypto == null:
+			return
+		emit_signal("selected", crypto.symbol)
 
 func _process(delta: float) -> void:
 	if crypto == null:
