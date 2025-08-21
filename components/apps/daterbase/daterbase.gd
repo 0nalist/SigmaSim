@@ -266,44 +266,44 @@ func _load_default_entries() -> void:
 	var rows: Array[HBoxContainer] = []
 	daterbase_entries = DBManager.get_daterbase_entries()
 	for entry_dictionary in daterbase_entries:
-			var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
-			if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
-					NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
-					npc_object.relationship_stage = NPC.RelationshipStage.TALKING
-			var row := HBoxContainer.new()
-			row.mouse_filter = Control.MOUSE_FILTER_STOP
-			row.gui_input.connect(_on_row_gui_input.bind(entry_dictionary.npc_id, npc_object))
-			var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
-			portrait.portrait_creator_enabled = false
-			portrait.custom_minimum_size = Vector2(132, 132)
-			portrait.size = Vector2(132, 132)
-			portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			if npc_object.portrait_config != null:
-					portrait.apply_config(npc_object.portrait_config)
-			_portrait_views_by_npc[entry_dictionary.npc_id] = portrait
-			row.add_child(portrait)
-			var name_label := Label.new()
-			name_label.text = npc_object.full_name
-			name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			row.add_child(name_label)
-			var dime_label := Label.new()
-			dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
-			dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			row.add_child(dime_label)
-			var rel_label := Label.new()
-			rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
-			rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			row.add_child(rel_label)
-			var affinity_label := Label.new()
-			affinity_label.text = "%.1f" % npc_object.affinity
-			affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			row.add_child(affinity_label)
+		var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
+		if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
+				NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
+				npc_object.relationship_stage = NPC.RelationshipStage.TALKING
+		var row := HBoxContainer.new()
+		row.mouse_filter = Control.MOUSE_FILTER_STOP
+		row.gui_input.connect(_on_row_gui_input.bind(entry_dictionary.npc_id, npc_object))
+		var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
+		portrait.portrait_creator_enabled = false
+		portrait.custom_minimum_size = Vector2(132, 132)
+		portrait.size = Vector2(132, 132)
+		portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if npc_object.portrait_config != null:
+				portrait.apply_config(npc_object.portrait_config)
+		_portrait_views_by_npc[entry_dictionary.npc_id] = portrait
+		row.add_child(portrait)
+		var name_label := Label.new()
+		name_label.text = npc_object.full_name
+		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(name_label)
+		var dime_label := Label.new()
+		dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
+		dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(dime_label)
+		var rel_label := Label.new()
+		rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
+		rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(rel_label)
+		var affinity_label := Label.new()
+		affinity_label.text = "%.1f" % npc_object.affinity
+		affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(affinity_label)
 		_affinity_labels_by_npc[entry_dictionary.npc_id] = affinity_label
 
-			var text_values: Array = [name_label.text, dime_label.text, rel_label.text, affinity_label.text]
-			for idx in range(text_values.size()):
-					var measured: Vector2 = default_font.get_string_size(text_values[idx], default_font_size)
-					column_widths[idx + 1] = max(column_widths[idx + 1], int(ceil(measured.x)) + EXTRA_HEADER_PADDING)
+		var text_values: Array = [name_label.text, dime_label.text, rel_label.text, affinity_label.text]
+		for idx in range(text_values.size()):
+			var measured: Vector2 = default_font.get_string_size(text_values[idx], default_font_size)
+			column_widths[idx + 1] = max(column_widths[idx + 1], int(ceil(measured.x)) + EXTRA_HEADER_PADDING)
 
 			results_container_daterbase.add_child(row)
 			rows.append(row)
