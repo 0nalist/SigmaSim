@@ -57,12 +57,15 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="ContactsVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="ContactButtonTemplate" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/ContactsVBox"]
+unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 focus_mode = 0
@@ -77,8 +80,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
 theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
 toggle_mode = true
-text = "Robert Cob
-@skazz"
+
+text = "@username"
+
 icon = ExtResource("4_bgumh")
 alignment = 0
 text_overrun_behavior = 3
