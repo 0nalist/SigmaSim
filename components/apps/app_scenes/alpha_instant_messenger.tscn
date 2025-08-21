@@ -1,9 +1,22 @@
-[gd_scene load_steps=9 format=3 uid="uid://cj4esi0q3mf2"]
+[gd_scene load_steps=11 format=3 uid="uid://cj4esi0q3mf2"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_8iipa"]
 [ext_resource type="Script" uid="uid://cvvi4t7jawoa5" path="res://components/apps/alpha_instant_messenger/alpha_instant_messenger.gd" id="1_44ejv"]
 [ext_resource type="Texture2D" uid="uid://dhk1m8h1q7exf" path="res://assets/logos/AIMLogoMaster.png" id="3_8iipa"]
 [ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/buttons/redbuttonpressed.png" id="4_bgumh"]
+[ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="4_eppfh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w0u3w"]
+shader = ExtResource("4_eppfh")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
+shader_parameter/color_low = Color(1, 1, 1, 1)
+shader_parameter/color_mid = Color(1, 1, 1, 1)
+shader_parameter/color_high = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w0u3w"]
 bg_color = Color(0.470588, 0.580392, 0.92549, 0.572549)
@@ -33,6 +46,10 @@ window_icon = ExtResource("3_8iipa")
 default_window_size = Vector2(190, 480)
 default_position = "left"
 
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_w0u3w")
+layout_mode = 2
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 10
@@ -47,7 +64,10 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Scrollodex"
+text = "ALPHA
+INSTANT
+MESSENGER"
+horizontal_alignment = 1
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
@@ -60,7 +80,7 @@ size_flags_vertical = 3
 [node name="ContactsVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ContactButtonTemplate" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/ContactsVBox"]
@@ -79,10 +99,7 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_w0u3w")
 theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
 theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
-toggle_mode = true
-
 text = "@username"
-
 icon = ExtResource("4_bgumh")
 alignment = 0
 text_overrun_behavior = 3
