@@ -2,6 +2,7 @@ extends Node
 # Autoload: NPCManager
 
 signal portrait_changed(idx, cfg)
+signal affinity_changed(idx, value)
 
 
 var encounter_count: int = 0
@@ -16,6 +17,10 @@ var npcs: Dictionary = {}
 
 var persistent_by_gender: Dictionary = {}
 var persistent_by_wealth: Dictionary = {}
+
+func _ready() -> void:
+	TimeManager.hour_passed.connect(_on_hour_passed)
+
 
 
 # === MAIN API ===
@@ -47,6 +52,10 @@ func set_npc_field(idx: int, field: String, value) -> void:
 		push_error("Tried to set a field on a non-existent NPC!")
 		return
 	npcs[idx].set(field, value)
+	if field == "relationship_stage":
+		npcs[idx].affinity_equilibrium = float(value) * 10.0
+		if persistent_npcs.has(idx):
+			persistent_npcs[idx]["affinity_equilibrium"] = npcs[idx].affinity_equilibrium
 	if persistent_npcs.has(idx):
 		persistent_npcs[idx][field] = value
 		DBManager.save_npc(idx, npcs[idx])
@@ -57,10 +66,11 @@ func set_npc_field(idx: int, field: String, value) -> void:
 		if field == "portrait_config":
 			DBManager.save_npc(idx, npcs[idx])
 			promote_to_persistent(idx)
-	
+
 	if field == "portrait_config":
 		emit_signal("portrait_changed", idx, value)
-
+	if field == "affinity":
+		emit_signal("affinity_changed", idx, value)
 func promote_to_persistent(idx: int) -> void:
 	if not persistent_npcs.has(idx):
 		var npc = get_npc_by_index(idx)
@@ -154,6 +164,18 @@ func _load_npc_from_db(idx: int) -> NPC:
 		push_error("Tried to load NPC index %d but not found in DB!" % idx)
 		return NPCFactory.create_npc(idx)
 	return npc
+
+func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
+	var entries: Array = DBManager.get_daterbase_entries()
+	for entry in entries:
+		var npc_idx: int = int(entry.npc_id)
+		var npc: NPC = get_npc_by_index(npc_idx)
+		var target: float = npc.affinity_equilibrium
+		var current: float = npc.affinity
+		if current < target:
+			set_npc_field(npc_idx, "affinity", min(current + 1.0, target))
+		elif current > target:
+			set_npc_field(npc_idx, "affinity", max(current - 1.0, target))
 
 # === BATCH HELPERS ===
 

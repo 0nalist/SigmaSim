@@ -23,6 +23,8 @@ enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, D
 
 @export_range(-100, 100, 0.1) var affinity: float = 0.0 # 0–100
 
+@export_range(0, 100, 0.1) var affinity_equilibrium: float = 0.0
+
 @export_range(0, 100, 0.1) var rizz: int
 @export_range(0, 100, 1) var attractiveness: int
 @export var dates_paid: int = 0
@@ -130,9 +132,10 @@ func to_dict() -> Dictionary:
 		"occupation": occupation,
 		"relationship_status": relationship_status,
 		"relationship_stage": relationship_stage,
-		"relationship_progress": relationship_progress,
-		"affinity": affinity,
-		"rizz": rizz,
+"relationship_progress": relationship_progress,
+"affinity": affinity,
+"affinity_equilibrium": affinity_equilibrium,
+"rizz": rizz,
 		"attractiveness": attractiveness,
 		"dates_paid": dates_paid,
 		"love_cooldown": love_cooldown,
@@ -186,7 +189,8 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
 	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
 	npc.affinity = _safe_float(data.get("affinity"), 0.0)
-	npc.rizz  = _safe_int(data.get("rizz"), 0)
+	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), float(npc.relationship_stage) * 10.0)
+	npc.rizz = _safe_int(data.get("rizz"), 0)
 	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
 	npc.dates_paid = _safe_int(data.get("dates_paid"), 0)
 	npc.love_cooldown = _safe_int(data.get("love_cooldown"), 0)
