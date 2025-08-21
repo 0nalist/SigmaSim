@@ -4,15 +4,15 @@
   "description": "Adds a minimum attractiveness filter to Fumble matches. Each level raises the maximum threshold by 1.",
   "effects": [],
   "systems": [
-    "fumble"
+	"fumble"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "ex": 1
+	"ex": 1
   },
   "scale_by_formula": true,
   "cost_formula": {
-    "ex": "base_cost[\\\"ex\\\"] * pow(1.1, level-1)"
+	"ex": "base_cost[\"ex\"] * pow(1.1, level-1)"
   },
   "max_level": 10
 }
