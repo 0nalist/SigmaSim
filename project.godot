@@ -24,11 +24,11 @@ boot_splash/minimum_display_time=240
 
 ContextMenuManager="*res://autoloads/context_menu_manager.gd"
 WindowManager="*res://autoloads/window_manager.gd"
-PortfolioManager="*res://autoloads/portfolio_manager.gd"
+TimeManager="*res://autoloads/time_manager.gd"
 MarketManager="*res://autoloads/market_manager.gd"
+PortfolioManager="*res://autoloads/portfolio_manager.gd"
 GPUManager="*res://autoloads/gpu_manager.gd"
 HistoryManager="*res://autoloads/history_manager.gd"
-TimeManager="*res://autoloads/time_manager.gd"
 BillManager="*res://autoloads/bill_manager.gd"
 SaveManager="*res://autoloads/save_manager.gd"
 PlayerManager="*res://autoloads/player_manager.gd"
