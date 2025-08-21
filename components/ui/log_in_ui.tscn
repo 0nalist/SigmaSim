@@ -140,6 +140,13 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = " New Profile "
 
+[node name="QuickNewButton" type="Button" parent="Panel/ProfilesContainer/ProfileRow"]
+custom_minimum_size = Vector2(70, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = " Quick New "
+
 [node name="ProfileCreationUI" parent="Panel" instance=ExtResource("3_6fwkw")]
 visible = false
 layout_mode = 1
@@ -225,5 +232,6 @@ layout_mode = 2
 text = "Credits"
 
 [connection signal="pressed" from="Panel/ProfilesContainer/ProfileRow/NewProfileButton" to="." method="_on_new_profile_button_pressed"]
+[connection signal="pressed" from="Panel/ProfilesContainer/ProfileRow/QuickNewButton" to="." method="_on_quick_new_button_pressed"]
 [connection signal="pressed" from="AOLLogoHolder/MarginContainer/HBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="AOLLogoHolder/MarginContainer/HBoxContainer/PowerButton" to="." method="_on_power_button_pressed"]
