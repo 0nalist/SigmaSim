@@ -233,7 +233,12 @@ func describe_gender() -> String:
 	return ", ".join(components) if components.size() > 0 else "ambiguous"
 
 func get_marriage_level() -> int:
-	if relationship_progress < 100000.0:
+	var n: int = int(floor(relationship_progress))
+	if n < 100000:
 		return 0
-	var level: int = int(floor(log10(relationship_progress)) - 4.0)
-	return level
+	var digits: int = 0
+	var tmp: int = n
+	while tmp > 0:
+		tmp = tmp / 10
+		digits += 1
+	return digits - 5

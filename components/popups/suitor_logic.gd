@@ -5,13 +5,14 @@ var npc: NPC
 var progress_paused: bool = false
 
 const STAGE_THRESHOLDS: Array[float] = [0.0, 0.0, 100.0, 1000.0, 10000.0, 100000.0]
+const LN10: float = 2.302585092994046  # natural log of 10
 
 static func get_stage_bounds(stage: int, progress: float) -> Vector2:
 	if stage < NPC.RelationshipStage.MARRIED:
 		var lower: float = STAGE_THRESHOLDS[stage]
 		var upper: float = STAGE_THRESHOLDS[stage + 1]
 		return Vector2(lower, upper)
-	var level: int = int(floor(log10(progress)) - 4.0)
+	var level: int = int(floor(log(progress) / LN10 - 4.0))
 	if level < 1:
 		level = 1
 	var lower: float = pow(10.0, float(level + 4))
@@ -21,7 +22,9 @@ static func get_stage_bounds(stage: int, progress: float) -> Vector2:
 static func get_marriage_level(progress: float) -> int:
 	if progress < 100000.0:
 		return 1
-	var level: int = int(floor(log10(progress)) - 4.0)
+	var level: int = int(floor(log(progress) / LN10 - 4.0))
+	if level < 1:
+		level = 1
 	return level
 
 func setup(npc_instance: NPC) -> void:
