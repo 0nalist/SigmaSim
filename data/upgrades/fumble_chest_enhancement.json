@@ -1,0 +1,22 @@
+{
+  "id": "fumble_chest_enhancement",
+  "name": "Chest Enhancement",
+  "description": "Get a chest enhancement. Increases dime status by 1.0.",
+  "effects": [
+                {
+                  "target": "attractiveness",
+                  "operation": "add",
+                  "value": 10.0
+                }
+  ],
+  "systems": [
+        "fumble"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+                "cash": 100000
+  },
+  "max_level": 1,
+  "repeatable": false,
+  "scale_by_formula": false
+}
