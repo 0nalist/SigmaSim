@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_l88or")
-symbol = "$BTC"
+symbol = "BTC"
 display_name = "BtchCoin"
 icon = ExtResource("1_cweql")
 price = 100000.0
