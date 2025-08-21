@@ -20,9 +20,9 @@ const SCHEMA: Dictionary = {
 		"affinity_equilibrium": {"data_type": "real"},
 		"affinity": {"data_type": "real"},
 		"rizz": {"data_type": "int"},
-                "attractiveness": {"data_type": "int"},
-                "dates_paid": {"data_type": "int"},
-                "income": {"data_type": "int"},
+				"attractiveness": {"data_type": "int"},
+				"dates_paid": {"data_type": "int"},
+				"income": {"data_type": "int"},
 		"wealth": {"data_type": "int"},
 		"preferred_pet_names": {"data_type": "text"},
 		"player_pet_names": {"data_type": "text"},
@@ -370,7 +370,7 @@ func to_json(value: Variant) -> String:
 
 func from_json(json_str: String) -> Variant:
 	if typeof(json_str) != TYPE_STRING:
-	return null
+		return null
 	var json: JSON = JSON.new()
 	var err = json.parse(json_str)
 	if err == OK:
