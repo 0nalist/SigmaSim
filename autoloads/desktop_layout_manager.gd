@@ -1,7 +1,7 @@
 extends Node
 #Autoload DesktopLayoutManager
 
-signal items_loaded()
+signal items_loaded
 signal item_created(item_id: int, data: Dictionary)
 signal item_moved(item_id: int, position: Vector2)
 signal item_deleted(item_id: int)

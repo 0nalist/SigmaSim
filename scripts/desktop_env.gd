@@ -19,7 +19,7 @@ const FOLDER_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/fol
 
 
 @export var background_texture: Texture = preload("res://assets/backgrounds/Bliss_(Windows_XP) (2).png")
-@export var create_or_update_apps_folder: bool = false
+@export var create_or_update_apps_folder: bool = true
 
 func _ready() -> void:
 	#SaveManager.save_to_slot(PlayerManager.get_slot_id())
@@ -166,29 +166,44 @@ func _spawn_item(data: Dictionary) -> void:
 		scene = APP_SHORTCUT_SCENE
 	else:
 		scene = FOLDER_SHORTCUT_SCENE
+
 	var node: Control = scene.instantiate()
 	node.item_id = data.get("id", 0)
 	node.title = data.get("title", "")
-	if node.has_variable("app_name") and data.has("app_name"):
-		node.app_name = data.get("app_name", "")
+
+	if data.get("type", "") == "app" and data.has("app_name"):
+		(node as AppShortcut).app_name = data.get("app_name", "")
+
 	var icon_path: String = data.get("icon_path", "")
 	if icon_path != "":
-		var tex: Texture2D = load(icon_path)
-		node.icon = tex
+		var tex: Resource = load(icon_path)
+		if tex is Texture2D:
+			node.icon = tex
+
 	icons_layer.add_child(node)
+
 	var pos: Vector2 = data.get("desktop_position", Vector2.ZERO)
 	node.global_position = pos
 
+
+
 func _create_or_update_apps_folder() -> void:
+	print("creating desktop apps folder")
+	var center: Vector2 = get_viewport_rect().size / 2
 	var folder_id: int = 0
 	var root_items: Array = DesktopLayoutManager.get_children_of(0)
 	for entry in root_items:
-		if entry.get("type", "") == "folder" and entry.get("title", "") == "Apps":
-			folder_id = int(entry.get("id", 0))
-			DesktopLayoutManager.move_item(folder_id, Vector2.ZERO)
-			break
+			if entry.get("type", "") == "folder" and entry.get("title", "") == "Apps":
+					folder_id = int(entry.get("id", 0))
+					DesktopLayoutManager.move_item(folder_id, center)
+					# Update visible icon position if it was already spawned
+					for node in icons_layer.get_children():
+							if node is FolderShortcut and node.item_id == folder_id:
+									node.global_position = center
+									break
+					break
 	if folder_id == 0:
-		folder_id = DesktopLayoutManager.create_folder("Apps", "res://assets/logos/folder.png", Vector2.ZERO)
+			folder_id = DesktopLayoutManager.create_folder("Apps", "res://assets/logos/folder.png", center)
 	var existing: Dictionary = {}
 	for entry in DesktopLayoutManager.get_children_of(folder_id):
 		if entry.get("type", "") == "app":
@@ -198,8 +213,6 @@ func _create_or_update_apps_folder() -> void:
 			continue
 		var meta: Dictionary = _get_app_meta(app_name)
 		DesktopLayoutManager.create_app_shortcut(app_name, meta.get("title", app_name), meta.get("icon_path", ""), Vector2.ZERO, folder_id)
-
-
 
 func _get_app_meta(app_name: String) -> Dictionary:
 	var scene: PackedScene = WindowManager.app_registry.get(app_name)

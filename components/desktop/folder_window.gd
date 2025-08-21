@@ -25,19 +25,25 @@ func _populate() -> void:
 	var items: Array = DesktopLayoutManager.get_children_of(folder_id)
 
 	for entry in items:
-		var scene_path: String
 		if entry.get("type", "") == "app":
-			scene_path = "res://components/desktop/app_shortcut.tscn"
-		else:
-			scene_path = "res://components/desktop/folder_shortcut.tscn"
-		var ps: PackedScene = load(scene_path)
-		var node: Control = ps.instantiate()
-		node.item_id = entry.get("id", 0)
-		node.title = entry.get("title", "")
-		if node.has_variable("app_name"):
+			var ps: PackedScene = load("res://components/desktop/app_shortcut.tscn")
+			var node: AppShortcut = ps.instantiate()
+			node.item_id = entry.get("id", 0)
+			node.title = entry.get("title", "")
 			node.app_name = entry.get("app_name", "")
-		var icon_path: String = entry.get("icon_path", "")
-		if icon_path != "":
-			var tex: Texture2D = load(icon_path)
+			_set_icon(node, entry)
+			grid.add_child(node)
+		else:
+			var ps: PackedScene = load("res://components/desktop/folder_shortcut.tscn")
+			var node: FolderShortcut = ps.instantiate()
+			node.item_id = entry.get("id", 0)
+			node.title = entry.get("title", "")
+			_set_icon(node, entry)
+			grid.add_child(node)
+
+func _set_icon(node: Control, entry: Dictionary) -> void:
+	var icon_path: String = entry.get("icon_path", "")
+	if icon_path != "":
+		var tex: Texture2D = load(icon_path)
+		if tex != null:
 			node.icon = tex
-		grid.add_child(node)

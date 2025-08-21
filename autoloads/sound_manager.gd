@@ -30,10 +30,10 @@ func _ready() -> void:
 func play_sfx(sfx_name: SFX) -> void:
 	var path: String = _SFX_PATHS.get(sfx_name, "")
 	if path == "":
-	    return
+		return
 	var stream: AudioStream = load(path)
 	if stream == null:
-	    return
+		return
 	var player := AudioStreamPlayer.new()
 	add_child(player)
 	player.stream = stream
@@ -43,13 +43,13 @@ func play_sfx(sfx_name: SFX) -> void:
 func play_music(track: Music) -> void:
 	var path: String = _MUSIC_PATHS.get(track, "")
 	if path == "":
-	    return
+		return
 	var stream: AudioStream = load(path)
 	if stream == null:
-	    return
+		return
 	_music_player.stream = stream
 	_music_player.play()
 
 func stop_music() -> void:
 	if _music_player.playing:
-	    _music_player.stop()
+		_music_player.stop()

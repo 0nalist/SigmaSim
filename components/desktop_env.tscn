@@ -216,7 +216,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_0utxc")
 script = ExtResource("1_lpqk7")
-create_or_update_apps_folder = true
 
 [node name="Background" type="TextureRect" parent="."]
 unique_name_in_owner = true
