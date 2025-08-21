@@ -1,0 +1,15 @@
+{
+  "id": "earlybird_earlier_bird",
+  "name": "Earlier Bird",
+  "description": "Earn cash immediately with each point scored, in addition to the normal payout at game over.",
+  "effects": [],
+  "systems": [
+    "earlybird"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+    "cash": 25
+  },
+  "max_level": 1,
+  "repeatable": false
+}
