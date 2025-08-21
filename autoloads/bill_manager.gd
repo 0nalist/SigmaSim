@@ -3,7 +3,6 @@ extends Node
 
 signal lifestyle_updated
 signal autopay_changed(enabled: bool)
-signal debt_resource_changed(name: String, amount: float)
 
 var _autopay_enabled: bool = false
 var autopay_enabled: bool:
@@ -18,7 +17,6 @@ var active_bills: Dictionary = {}
 var pending_bill_data: Dictionary = {}  # date_key: Array[Dictionary]
 
 var lifestyle_categories := {}  # category_name: Dictionary
-var debt_resources: Dictionary = {}
 
 
 # Ordered list: Week 0 → Rent, Week 1 → Insurance, etc.
@@ -43,11 +41,6 @@ func _ready() -> void:
 			var option = lifestyle_options[category][0]
 			set_lifestyle_choice(category, option, 0)
 	print("active bills: " + str(active_bills))
-	if debt_resources.is_empty():
-		add_debt_resource("Credit Card", 0.0)
-		add_debt_resource("Student Loan", 0.0)
-		add_debt_resource("Business Loan", 0.0)
-		add_debt_resource("Marriage Loan", 0.0)
 
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
@@ -217,26 +210,8 @@ func get_bill_amount(bill_name: String) -> float:
 			return PortfolioManager.get_min_student_loan_payment()
 		"Lifestyle Spending":
 			return get_daily_lifestyle_cost()
-_:
+		_:
 			return static_bill_amounts.get(bill_name, 0.0)
-
-
-func add_debt_resource(name: String, amount: float) -> void:
-	debt_resources[name] = amount
-	debt_resource_changed.emit(name, amount)
-
-
-func set_debt_amount(name: String, amount: float) -> void:
-	debt_resources[name] = amount
-	debt_resource_changed.emit(name, amount)
-
-
-func get_debt_amount(name: String) -> float:
-	return debt_resources.get(name, 0.0)
-
-
-func get_debt_resources() -> Dictionary:
-	return debt_resources.duplicate()
 
 
 
@@ -316,15 +291,13 @@ func get_save_data() -> Dictionary:
 		"autopay_enabled": autopay_enabled,
 		"lifestyle_categories": lifestyle_categories.duplicate(),
 		"lifestyle_indices": lifestyle_indices.duplicate(),
-		"pane_data": get_pane_save_data(),
-		"debt_resources": debt_resources.duplicate()
+		"pane_data": get_pane_save_data()
 	}
 
 func load_from_data(data: Dictionary) -> void:
 	autopay_enabled = data.get("autopay_enabled", false)
 	lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
 	lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
-	debt_resources = data.get("debt_resources", {}).duplicate()
 	active_bills.clear()
 	pending_bill_data.clear()
 	emit_signal("lifestyle_updated")
