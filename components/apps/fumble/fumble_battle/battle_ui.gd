@@ -130,6 +130,8 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 					move_usage_counts_in = data.get("move_usage_counts", {})
 	chatlog = chatlog_in.duplicate() if chatlog_in.size() > 0 else chatlog
 
+	var is_new_battle := chatlog.size() == 0 and stats_in.size() == 0 and move_usage_counts_in.size() == 0
+
 	# If stats_in is empty, pull stats from npc resource
 	var battle_stats_to_use: Dictionary = {}
 	if stats_in.size() > 0:
@@ -140,7 +142,10 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 					"chemistry": npc.chemistry,
 					"apprehension": npc.apprehension
 			}
-	
+
+	if is_new_battle and UpgradeManager.get_level("fumble_friend_pic") > 0:
+			battle_stats_to_use["apprehension"] = clamp(battle_stats_to_use.get("apprehension", 0) - 10, 0, 100)
+
 	# Set up logic
 	if battle_logic_resource:
 		logic = battle_logic_resource.duplicate()

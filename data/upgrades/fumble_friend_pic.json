@@ -1,0 +1,16 @@
+{
+  "id": "fumble_friend_pic",
+  "name": "Friend Pic",
+  "description": "Start each chat battle by lowering the NPC's apprehension by 10.",
+  "effects": [],
+  "systems": [
+    "fumble"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+    "ex": 5
+  },
+  "max_level": 1,
+  "repeatable": false,
+  "scale_by_formula": false
+}
