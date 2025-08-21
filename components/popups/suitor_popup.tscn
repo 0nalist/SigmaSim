@@ -107,6 +107,7 @@ autowrap_mode = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 17)
 layout_mode = 2
+tooltip_text = " Increases the rate of Relationship Progress "
 show_percentage = false
 script = ExtResource("3")
 tooltip_name = "Affinity"
@@ -137,14 +138,17 @@ theme_override_constants/separation = 8
 
 [node name="LoveButton" type="Button" parent="MarginContainer/VBox/VBoxContainer/LoveBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 0
 text = "Love"
 
 [node name="LoveCooldownLabel" type="Label" parent="MarginContainer/VBox/VBoxContainer/LoveBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 2
 
 [node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBox/VBoxContainer"]
 layout_mode = 2

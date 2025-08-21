@@ -152,8 +152,8 @@ func _on_gift_pressed() -> void:
 	if PortfolioManager.attempt_spend(gift_cost):
 		npc.affinity = min(npc.affinity + 5.0, 100.0)
 		gift_cost *= 2.0
-		 _update_affinity_bar()
-		 _update_action_buttons_text()
+		_update_affinity_bar()
+		_update_action_buttons_text()
 
 func _on_love_pressed() -> void:
 	var now: int = TimeManager.get_now_minutes()
