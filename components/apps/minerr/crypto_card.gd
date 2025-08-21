@@ -30,6 +30,7 @@ var displayed_chance: float = 0.0
 var lerp_speed: float = 5.0
 
 func setup(crypto_data: Cryptocurrency) -> void:
+	await ready
 	crypto = crypto_data
 
 	add_gpu_button.pressed.connect(func(): emit_signal("add_gpu", crypto.symbol))
@@ -65,9 +66,8 @@ func _process(delta: float) -> void:
 		power_bar.value = displayed_chance
 	
 	if crypto:
-		var time_left := GPUManager.get_time_until_next_block(crypto.symbol)
-		var seconds = floor(time_left)
-		block_time_label.text = "Next block: %ds" % seconds
+		var time_left: int = GPUManager.get_time_until_next_block(crypto.symbol)
+		block_time_label.text = "Next block: %ds" % time_left
 
 func calculate_block_chance() -> float:
 	var gpu_power = GPUManager.get_power_for(crypto.symbol)
@@ -79,7 +79,7 @@ func calculate_block_chance() -> float:
 
 
 func get_time_to_block() -> int:
-	return max(0, floor(GPUManager.get_time_until_next_block(crypto.symbol)))
+	return max(0, GPUManager.get_time_until_next_block(crypto.symbol))
 
 func update_display() -> void:
 	if not crypto:
