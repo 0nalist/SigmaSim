@@ -2,6 +2,7 @@ extends Pane
 class_name SuitorView
 
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
+const LOVE_COOLDOWN_MINUTES: int = 24 * 60
 
 @onready var name_label: Label = %NameLabel
 @onready var portrait_view: PortraitView = %Portrait
@@ -9,6 +10,8 @@ const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", 
 @onready var relationship_bar: RelationshipBar = %RelationshipBar
 @onready var next_stage_button: Button = %NextStageButton
 @onready var affinity_bar: StatProgressBar = %AffinityBar
+@onready var love_button: Button = %LoveButton
+@onready var love_cooldown_label: Label = %LoveCooldownLabel
 @onready var gift_button: Button = %GiftButton
 @onready var date_button: Button = %DateButton
 @onready var breakup_button: Button = %BreakupButton
@@ -24,15 +27,16 @@ var gift_cost: float = 25.0
 var date_cost: float = 200.0
 var breakup_reward: float = 0.0
 var apologize_cost: int = 10
+var npc_idx: int = -1
 
 func setup_custom(data: Dictionary) -> void:
 	npc = data.get("npc")
 	logic.setup(npc)
-	var idx: int = data.get("npc_idx", -1)
+	npc_idx = data.get("npc_idx", -1)
 	name_label.text = npc.full_name
 	portrait_view.portrait_creator_enabled = true
-	if idx != -1:
-		portrait_view.subject_npc_idx = idx
+	if npc_idx != -1:
+		portrait_view.subject_npc_idx = npc_idx
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
 		portrait_view.apply_config(npc.portrait_config)
 	gift_cost = 25.0
@@ -50,6 +54,7 @@ func _ready() -> void:
 	next_stage_button.pressed.connect(_on_next_stage_pressed)
 	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
 	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
+	love_button.pressed.connect(_on_love_pressed)
 	
 	await get_tree().process_frame
 	if Events.has_signal("fumble_talk_therapy_purchased"):
@@ -65,11 +70,13 @@ func _process(delta: float) -> void:
 		next_stage_button.visible = true
 	_update_relationship_bar()
 	_update_breakup_button_text()
+	_update_love_button()
 func _update_all() -> void:
 	_update_relationship_bar()
 	_update_affinity_bar()
 	_update_breakup_button_text()
 	_update_action_buttons_text()
+	_update_love_button()
 	var blocked: bool = npc.relationship_stage >= NPC.RelationshipStage.DIVORCED
 	gift_button.disabled = blocked
 	date_button.disabled = blocked
@@ -116,6 +123,25 @@ func _update_action_buttons_text() -> void:
 	date_button.text = "Date ($%s)" % NumberFormatter.format_commas(date_cost)
 	apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_commas(apologize_cost, 0)
 
+func _update_love_button() -> void:
+	if npc == null:
+		return
+	if npc.relationship_stage < NPC.RelationshipStage.DATING:
+		love_button.visible = false
+		love_cooldown_label.visible = false
+		return
+	love_button.visible = true
+	var now: int = TimeManager.get_now_minutes()
+	var remaining: int = npc.love_cooldown + LOVE_COOLDOWN_MINUTES - now
+	if remaining > 0:
+		love_button.disabled = true
+		var hours: int = remaining / 60
+		var minutes: int = remaining % 60
+		love_cooldown_label.visible = true
+		love_cooldown_label.text = "Love in %dh %dm" % [hours, minutes]
+	else:
+		love_button.disabled = false
+		love_cooldown_label.visible = false
 func _on_next_stage_pressed() -> void:
 	next_stage_button.visible = false
 	logic.progress_paused = false
@@ -126,8 +152,30 @@ func _on_gift_pressed() -> void:
 	if PortfolioManager.attempt_spend(gift_cost):
 		npc.affinity = min(npc.affinity + 5.0, 100.0)
 		gift_cost *= 2.0
-		_update_affinity_bar()
-		_update_action_buttons_text()
+		 _update_affinity_bar()
+		 _update_action_buttons_text()
+
+func _on_love_pressed() -> void:
+	var now: int = TimeManager.get_now_minutes()
+	if now - npc.love_cooldown < LOVE_COOLDOWN_MINUTES:
+		return
+	npc.love_cooldown = now
+	npc.affinity = min(npc.affinity + 5.0, 100.0)
+	var progress_increase: float = npc.relationship_progress * 0.01
+	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
+	npc.relationship_progress = min(npc.relationship_progress + progress_increase, bounds.y)
+	if npc_idx != -1:
+		NPCManager.promote_to_persistent(npc_idx)
+		NPCManager.set_npc_field(npc_idx, "love_cooldown", npc.love_cooldown)
+		NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
+		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+	if npc.relationship_stage < NPC.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
+		logic.progress_paused = true
+		next_stage_button.visible = true
+	_update_affinity_bar()
+	_update_relationship_bar()
+	_update_breakup_button_text()
+	_update_love_button()
 
 func _on_date_pressed() -> void:
 	if not PortfolioManager.attempt_spend(date_cost):
