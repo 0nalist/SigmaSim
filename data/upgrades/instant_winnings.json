@@ -1,0 +1,15 @@
+{
+  "id": "earlybird_instant_winnings",
+  "name": "Instant Gratification",
+  "description": "Earn cash immediately with each point scored, on top of the normal payout at game over.",
+  "effects": [],
+  "systems": [
+    "earlybird"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+    "cash": 25
+  },
+  "max_level": 1,
+  "repeatable": false
+}
