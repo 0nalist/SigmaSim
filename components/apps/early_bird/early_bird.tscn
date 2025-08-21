@@ -178,10 +178,11 @@ texture = ExtResource("4_tm5dr")
 unique_name_in_owner = true
 script = ExtResource("3_4pdpe")
 
-[node name="EarlyBirdPlayer" type="Area2D" parent="."]
+[node name="EarlyBirdPlayer" type="Area2D" parent="." node_paths=PackedStringArray("trauma_target")]
 unique_name_in_owner = true
 position = Vector2(813, 166)
 script = ExtResource("2_yrrt2")
+trauma_target = NodePath("..")
 
 [node name="EarlyBirdPlayerSprite" type="Sprite2D" parent="EarlyBirdPlayer"]
 unique_name_in_owner = true

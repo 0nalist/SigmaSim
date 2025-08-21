@@ -8,5 +8,5 @@ func _unhandled_input(event: InputEvent) -> void:
 		var ev: InputEventKey = event as InputEventKey
 		if ev.keycode == KEY_SPACE:
 			TraumaManager.hit_global(0.6)
-		if ev.keycode == KEY_S and target_control != null:
+		if ev.keycode == KEY_T and target_control != null:
 			TraumaManager.hit_pane(target_control, 0.6)

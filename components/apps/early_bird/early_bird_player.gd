@@ -44,10 +44,13 @@ func _on_area_entered(area: Area2D) -> void:
 		_on_death()
 
 
+@export var trauma_target: Node
+
 func _on_death() -> void:
 	print("bird died")
 	if is_alive:
 		is_alive = false
+		TraumaManager.hit_pane(trauma_target, 0.8)
 		emit_signal("died")
 
 
