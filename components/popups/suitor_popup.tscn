@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://dim0nwjmfwi3g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
-[ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/suitor_view.gd" id="2"]
-[ext_resource type="Script" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
-[ext_resource type="Script" path="res://components/popups/relationship_bar.gd" id="5"]
+[ext_resource type="Script" path="res://components/popups/suitor_popup.gd" id="2"]
+[ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
 [ext_resource type="Shader" uid="uid://bfgsgplah4us" path="res://assets/shaders/white_warp_shader.gdshader" id="3_vl6ok"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
+[ext_resource type="Script" uid="uid://bvbiboe20qioe" path="res://components/popups/relationship_bar.gd" id="5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_78wgo"]
 shader = ExtResource("3_vl6ok")
