@@ -230,6 +230,17 @@ func _load_default_entries() -> void:
 		child.queue_free()
 	_portrait_views_by_npc.clear()
 	
+	var daterbase_entries: Array = DBManager.get_daterbase_entries()
+	if daterbase_entries.is_empty():
+		var empty_label := Label.new()
+		empty_label.text = "no one wants you yet"
+		empty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		empty_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		results_container_daterbase.add_child(empty_label)
+		return
+	
+	
 	var header := HBoxContainer.new()
 	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var header_labels: Array[Label] = []
@@ -250,7 +261,7 @@ func _load_default_entries() -> void:
 			column_widths[header_index] = int(ceil(header_size.x)) + EXTRA_HEADER_PADDING
 
 	var rows: Array[HBoxContainer] = []
-	var daterbase_entries: Array = DBManager.get_daterbase_entries()
+	daterbase_entries = DBManager.get_daterbase_entries()
 	for entry_dictionary in daterbase_entries:
 			var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
 			if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
