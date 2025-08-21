@@ -25,32 +25,19 @@ func _ready() -> void:
 	update_gpu_label()
 
 func refresh_cards_from_market() -> void:
+	# Clear out any old cards
 	for child: Node in crypto_container.get_children():
 		child.queue_free()
 	crypto_cards.clear()
 
-	var cryptos: Array = MarketManager.crypto_market.values()
-	if cryptos.size() < 2:
-		push_warning("MarketManager.crypto_market is empty or has fewer than 2 entries")
-
-	for crypto: Cryptocurrency in cryptos:
-		var symbol: String = crypto.symbol
-		var card_instance: Node = crypto_card_scene.instantiate()
-		var card: CryptoCard = card_instance as CryptoCard
-		if card == null:
-			push_error("crypto_card_scene did not instantiate a CryptoCard")
-			card_instance.queue_free()
-			continue
+	# Spawn new cards for each crypto in the market
+	for crypto: Cryptocurrency in MarketManager.crypto_market.values():
+		print("Minerr: adding card for", crypto.symbol, crypto.display_name)
+		var card: CryptoCard = crypto_card_scene.instantiate()
 		crypto_container.add_child(card)
-		await card.ready
 		card.setup(crypto)
+		crypto_cards[crypto.symbol] = card
 
-		card.add_gpu.connect(_on_add_gpu)
-		card.remove_gpu.connect(_on_remove_gpu)
-		card.overclock_toggled.connect(_on_toggle_overclock)
-		card.open_upgrades.connect(_on_open_upgrades)
-
-		crypto_cards[symbol] = card
 
 
 func update_gpu_label() -> void:
