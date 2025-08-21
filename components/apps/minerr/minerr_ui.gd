@@ -29,7 +29,7 @@ func refresh_cards_from_market() -> void:
 		child.queue_free()
 	crypto_cards.clear()
 
-	var cryptos: Array[Cryptocurrency] = MarketManager.crypto_market.values()
+	var cryptos: Array = MarketManager.crypto_market.values()
 	if cryptos.size() < 2:
 		push_warning("MarketManager.crypto_market is empty or has fewer than 2 entries")
 
