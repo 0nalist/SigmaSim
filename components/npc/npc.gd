@@ -17,7 +17,7 @@ extends Resource
 
 enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, DIVORCED, EX }
 @export var relationship_stage: RelationshipStage = RelationshipStage.STRANGER
-@export_range(0, 100, 0.1) var relationship_progress: float = 0.0
+@export_range(0, 1000000000, 1) var relationship_progress: float = 0.0
 
 # Relationship with Player
 @export_range(-100, 100, 0.1) var affinity: float = 0.0 # 0–100
@@ -231,3 +231,9 @@ func describe_gender() -> String:
 	if gender_vector.z > 0.5:
 		components.append("enby")
 	return ", ".join(components) if components.size() > 0 else "ambiguous"
+
+func get_marriage_level() -> int:
+	if relationship_progress < 100000.0:
+		return 0
+	var level: int = int(floor(log10(relationship_progress)) - 4.0)
+	return level
