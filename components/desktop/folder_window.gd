@@ -7,7 +7,8 @@ class_name FolderWindow
 @onready var scroll: ScrollContainer = %Scroll
 
 func _ready() -> void:
-		call_deferred("_update_grid_columns")
+                call_deferred("_update_grid_columns")
+                DesktopLayoutManager.item_parent_changed.connect(_on_item_parent_changed)
 
 func _notification(what: int) -> void:
 		if what == NOTIFICATION_RESIZED:
@@ -48,7 +49,11 @@ func _populate() -> void:
 					node.title = entry.get("title", "")
 					_set_icon(node, entry)
 					grid.add_child(node)
-	_update_grid_columns()
+        _update_grid_columns()
+
+func _on_item_parent_changed(item_id: int, old_parent: int, new_parent: int) -> void:
+        if old_parent == folder_id or new_parent == folder_id:
+                _populate()
 
 func _set_icon(node: Control, entry: Dictionary) -> void:
 	var icon_path: String = entry.get("icon_path", "")
