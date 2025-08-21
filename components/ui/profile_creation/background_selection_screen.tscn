@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://gwvrvwdai56x"]
+[gd_scene load_steps=14 format=3 uid="uid://gwvrvwdai56x"]
 
 [ext_resource type="Script" uid="uid://dutaij8ubg1fd" path="res://components/ui/profile_creation/background_selection_screen.gd" id="1_fdynr"]
 [ext_resource type="Texture2D" uid="uid://dngnxdr4uo7uw" path="res://assets/backgrounds/brownfieldblueskyx480.png" id="2_lnamk"]
@@ -7,6 +7,35 @@
 [ext_resource type="Texture2D" uid="uid://v4keep3vdsqt" path="res://assets/backgrounds/greenfieldpinkskyx480.png" id="5_eudh7"]
 [ext_resource type="Texture2D" uid="uid://f3id4mqiae6r" path="res://assets/backgrounds/purplefieldgreenskyx480_restrictive.png" id="6_tl8c1"]
 [ext_resource type="Texture2D" uid="uid://dnlhdvhhmjukf" path="res://assets/backgrounds/chairpaula-schmidtx480_adaptive.png" id="7_xt10x"]
+[ext_resource type="Shader" path="res://assets/shaders/deep_sky_blue_warp_shader.gdshader" id="8_bluewarp"]
+[ext_resource type="Shader" path="res://assets/shaders/discrete_ocean_waves_shader.gdshader" id="9_waves"]
+[ext_resource type="Shader" path="res://assets/shaders/electric_wiring_shader.gdshader" id="10_electric"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_BlueWarp"]
+shader = ExtResource("8_bluewarp")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/speed = 0.03
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_Waves"]
+shader = ExtResource("9_waves")
+shader_parameter/bottom_color = Color(0, 0, 0, 1)
+shader_parameter/top_color = Color(0.868811, 0.0, 0.459911, 1)
+shader_parameter/wave_amp = 0.082
+shader_parameter/wave_size = 2.253
+shader_parameter/wave_time_mul = 0.01
+shader_parameter/total_phases = 6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_Electric"]
+shader = ExtResource("10_electric")
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/line_color = Color(0, 1, 1, 1)
+shader_parameter/line_freq = 5.085
+shader_parameter/height = 0.6
+shader_parameter/speed = 2.555
+shader_parameter/scale = Vector2(3.25, 15.43)
 
 [node name="BackgroundSelectionScreen" type="Control"]
 layout_mode = 3
@@ -143,12 +172,12 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 5
 
-[node name="Panel" type="TextureRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
+[node name="Panel" type="ColorRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
 custom_minimum_size = Vector2(192, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Start with a crisp $20 bill"
-texture = ExtResource("2_lnamk")
+material = SubResource("ShaderMaterial_BlueWarp")
 
 [node name="GrandmasButton" type="Button" parent="MarginContainer/VBoxContainer/DemoBackgrounds/Panel"]
 unique_name_in_owner = true
@@ -172,12 +201,12 @@ theme_override_font_sizes/font_size = 20
 text = "Grandma's Favorite
 "
 
-[node name="Panel2" type="TextureRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
+[node name="Panel2" type="ColorRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
 custom_minimum_size = Vector2(192, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Start as a 6/10 instead of a 5/10"
-texture = ExtResource("3_umkxt")
+material = SubResource("ShaderMaterial_Waves")
 
 [node name="PrettyButton" type="Button" parent="MarginContainer/VBoxContainer/DemoBackgrounds/Panel2"]
 unique_name_in_owner = true
@@ -201,12 +230,12 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "Pretty Privilege"
 
-[node name="Panel3" type="TextureRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
+[node name="Panel3" type="ColorRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
 custom_minimum_size = Vector2(192, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Start with 1 GPU"
-texture = ExtResource("4_rlyer")
+material = SubResource("ShaderMaterial_Electric")
 
 [node name="Gamer2Button" type="Button" parent="MarginContainer/VBoxContainer/DemoBackgrounds/Panel3"]
 unique_name_in_owner = true
