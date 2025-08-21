@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_dncrq")
-symbol = "WORM"
+symbol = "$WORM"
 display_name = "WormCoin"
 icon = ExtResource("1_ufhts")
 price = 1.0
