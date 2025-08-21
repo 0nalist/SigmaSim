@@ -17,24 +17,6 @@ var npcs: Dictionary = {}
 var persistent_by_gender: Dictionary = {}
 var persistent_by_wealth: Dictionary = {}
 
-var _hours_since_affinity_drift: int = 0
-
-func _ready() -> void:
-	TimeManager.hour_passed.connect(_on_hour_passed)
-
-func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
-	_hours_since_affinity_drift += 1
-	if _hours_since_affinity_drift >= 4:
-			_hours_since_affinity_drift = 0
-			_drift_affinity_toward_equilibrium()
-
-func _drift_affinity_toward_equilibrium() -> void:
-	for idx in npcs.keys():
-		var npc: NPC = npcs[idx]
-		if npc.affinity < npc.affinity_equilibrium:
-			set_npc_field(idx, "affinity", min(npc.affinity + 1.0, npc.affinity_equilibrium))
-		elif npc.affinity > npc.affinity_equilibrium:
-			set_npc_field(idx, "affinity", max(npc.affinity - 1.0, npc.affinity_equilibrium))
 
 # === MAIN API ===
 

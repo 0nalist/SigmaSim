@@ -63,7 +63,6 @@ func on_date_paid() -> void:
 
 func apply_love() -> void:
 	npc.affinity = min(npc.affinity + LOVE_AFFINITY_GAIN, 100.0)
-	#npc.affinity_equilibrium = npc.affinity
 
 
 func get_stop_marks() -> Array[float]:
