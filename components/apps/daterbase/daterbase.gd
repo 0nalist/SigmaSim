@@ -46,6 +46,7 @@ var _active_tab: StringName = &"Daterbase"
 var _ran_initial_show_all: bool = false
 
 var _portrait_views_by_npc: Dictionary = {}
+var _affinity_labels_by_npc: Dictionary = {}
 
 const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
 const SUITOR_POPUP_SCENE: PackedScene = preload("res://components/popups/suitor_popup.tscn")
@@ -62,6 +63,7 @@ func _ready() -> void:
 	hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
 
 	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
+	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
 
 	numeric_regex = RegEx.new()
 	numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
@@ -229,6 +231,7 @@ func _load_default_entries() -> void:
 	for child in results_container_daterbase.get_children():
 		child.queue_free()
 	_portrait_views_by_npc.clear()
+	_affinity_labels_by_npc.clear()
 	
 	var daterbase_entries: Array = DBManager.get_daterbase_entries()
 	if daterbase_entries.is_empty():
@@ -295,6 +298,7 @@ func _load_default_entries() -> void:
 			affinity_label.text = "%.1f" % npc_object.affinity
 			affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			row.add_child(affinity_label)
+		_affinity_labels_by_npc[entry_dictionary.npc_id] = affinity_label
 
 			var text_values: Array = [name_label.text, dime_label.text, rel_label.text, affinity_label.text]
 			for idx in range(text_values.size()):
@@ -336,6 +340,12 @@ func _on_npc_portrait_changed(idx: int, cfg: PortraitConfig) -> void:
 	if _portrait_views_by_npc.has(idx):
 		var portrait: PortraitView = _portrait_views_by_npc[idx]
 		portrait.apply_config(cfg)
+
+
+func _on_npc_affinity_changed(idx: int, value: float) -> void:
+	if _affinity_labels_by_npc.has(idx):
+		var lbl: Label = _affinity_labels_by_npc[idx]
+		lbl.text = "%.1f" % value
 
 func _display_generic_rows(result_rows: Array) -> void:
 	if result_rows.size() == 0:
