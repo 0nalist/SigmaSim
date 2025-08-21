@@ -1,7 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://bkop7kx52hmpp"]
 
-[ext_resource type="Script" path="res://components/apps/ower_view/ower_view.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/logos/owerview_logo.png" id="2"]
+[ext_resource type="Script" uid="uid://ce5ge1lmsdy7g" path="res://components/apps/ower_view/ower_view.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="2"]
 
 [node name="OwerView" type="PanelContainer"]
 anchors_preset = 15
@@ -19,11 +19,7 @@ default_window_size = Vector2(600, 500)
 default_position = "left"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15

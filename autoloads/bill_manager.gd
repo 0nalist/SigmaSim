@@ -354,7 +354,12 @@ func load_from_data(data: Dictionary) -> void:
 	lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
 	active_bills.clear()
 	pending_bill_data.clear()
-	debt_resources = data.get("debt_resources", []).duplicate(true)
+	var temp: Array = data.get("debt_resources", []).duplicate(true)
+	debt_resources.clear()
+	for entry in temp:
+		if typeof(entry) == TYPE_DICTIONARY:
+			debt_resources.append(entry as Dictionary)
+
 	emit_signal("lifestyle_updated")
 	debt_resources_changed.emit()
 
