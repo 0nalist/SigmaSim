@@ -10,6 +10,7 @@ class_name FolderShortcut
 
 var is_dragging: bool = false
 var drag_offset: Vector2
+var original_parent: Node
 
 func _ready() -> void:
 	icon_rect.texture = icon
@@ -27,13 +28,24 @@ func _on_gui_input(event: InputEvent) -> void:
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			if mb.double_click and mb.pressed:
 				_open_folder()
-			elif mb.pressed:
-				is_dragging = true
-				drag_offset = mb.position
-			else:
-				if is_dragging:
-					is_dragging = false
-					DesktopLayoutManager.move_item(item_id, global_position)
+                       elif mb.pressed:
+                               is_dragging = true
+                               drag_offset = mb.position
+                               original_parent = get_parent()
+                               var global_pos: Vector2 = global_position
+                               get_tree().root.add_child(self)
+                               global_position = global_pos
+                       else:
+                               if is_dragging:
+                                       is_dragging = false
+                                       var new_parent_id: int = _get_drop_parent_id()
+                                       var old_parent_id: int = int(DesktopLayoutManager.get_item(item_id).get("parent_id", 0))
+                                       DesktopLayoutManager.move_item(item_id, global_position, new_parent_id)
+                                       if new_parent_id == old_parent_id:
+                                               original_parent.add_child(self)
+                                               global_position = get_global_mouse_position() - drag_offset
+                                       else:
+                                               queue_free()
 		elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
 			var actions: Array = []
 			var action_open: ContextAction = ContextAction.new()
@@ -52,9 +64,17 @@ func _on_gui_input(event: InputEvent) -> void:
 			action_delete.method = "_ctx_delete"
 			actions.append(action_delete)
 			ContextMenuManager.open_for(self, mb.global_position, actions)
-	elif event is InputEventMouseMotion:
-		if is_dragging:
-			global_position = get_global_mouse_position() - drag_offset
+       elif event is InputEventMouseMotion:
+               if is_dragging:
+                       global_position = get_global_mouse_position() - drag_offset
+
+func _get_drop_parent_id() -> int:
+       var node: Node = get_viewport().gui_pick(get_global_mouse_position())
+       while node and not (node is FolderWindow):
+               node = node.get_parent()
+       if node and node is FolderWindow:
+               return (node as FolderWindow).folder_id
+       return 0
 
 func _open_folder() -> void:
 	var scene: PackedScene = preload("res://components/desktop/folder_window.tscn")
