@@ -37,6 +37,11 @@ func refresh_cards_from_market() -> void:
 		crypto_container.add_child(card)
 		print("Minerr.refresh: calling setup for id=", str(crypto.get_instance_id()))
 		card.setup(crypto)
+		# Connect card signals to Minerr handlers so buttons work.
+		card.add_gpu.connect(_on_add_gpu)
+		card.remove_gpu.connect(_on_remove_gpu)
+		card.overclock_toggled.connect(_on_toggle_overclock)
+		card.open_upgrades.connect(_on_open_upgrades)
 		crypto_cards[crypto.symbol] = card
 	debug_dump_cards()
 func update_gpu_label() -> void:
