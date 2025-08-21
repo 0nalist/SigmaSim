@@ -30,6 +30,7 @@ var CRYPTO_RESOURCES = {
 func _ready():
 	TimeManager.minute_passed.connect(_on_minute_passed)
 	if crypto_market.is_empty():
+		print("crypto market was empty")
 		_init_crypto_market()
 	if stock_market.is_empty():
 		_init_stock_market()
@@ -121,6 +122,7 @@ func _init_crypto_market() -> void:
 		var crypto = CRYPTO_RESOURCES[symbol].duplicate(true)
 		register_crypto(crypto)
 	emit_signal("crypto_market_ready")
+	print("crypto market initialized")
 	print("crypto market: " + str(crypto_market))
 
 func _init_stock_market() -> void:
