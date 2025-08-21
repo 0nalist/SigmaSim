@@ -873,7 +873,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CalendarContainer" type="Control" parent="TaskbarLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
