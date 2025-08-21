@@ -25,6 +25,8 @@ enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, D
 @export_range(0, 100, 0.1) var rizz: int
 @export_range(0, 100, 1) var attractiveness: int
 @export var dates_paid: int = 0
+@export var gift_cost: float = 25.0
+@export var date_cost: float = 200.0
 
 # === Economics ===
 var income: int
@@ -132,9 +134,11 @@ func to_dict() -> Dictionary:
 "rizz": rizz,
 "attractiveness": attractiveness,
 "dates_paid": dates_paid,
+"gift_cost": gift_cost,
+"date_cost": date_cost,
 "income": income,
-		"wealth": wealth,
-		"preferred_pet_names": preferred_pet_names.duplicate(),
+"wealth": wealth,
+"preferred_pet_names": preferred_pet_names.duplicate(),
 		"player_pet_names": player_pet_names.duplicate(),
 		"alpha": alpha,
 		"beta": beta,
@@ -181,11 +185,13 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
 	npc.affinity = _safe_float(data.get("affinity"), 0.0)
 	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 50.0)
-	npc.rizz  = _safe_int(data.get("rizz"), 0)
-	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
-	npc.dates_paid = _safe_int(data.get("dates_paid"), 0)
-	npc.income= _safe_int(data.get("income"), 0)
-	npc.wealth= _safe_int(data.get("wealth"), 0)
+npc.rizz  = _safe_int(data.get("rizz"), 0)
+npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
+npc.dates_paid = _safe_int(data.get("dates_paid"), 0)
+npc.gift_cost = _safe_float(data.get("gift_cost"), 25.0)
+npc.date_cost = _safe_float(data.get("date_cost"), 200.0)
+npc.income= _safe_int(data.get("income"), 0)
+npc.wealth= _safe_int(data.get("wealth"), 0)
 
 	_assign_string_array(npc.preferred_pet_names, data.get("preferred_pet_names"))
 	_assign_string_array(npc.player_pet_names, data.get("player_pet_names"))

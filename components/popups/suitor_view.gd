@@ -35,11 +35,11 @@ func setup_custom(data: Dictionary) -> void:
 		portrait_view.subject_npc_idx = idx
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
 		portrait_view.apply_config(npc.portrait_config)
-	gift_cost = 25.0
-	date_cost = 200.0
-	breakup_reward = 0.0
-	apologize_cost = 10
-	_update_all()
+gift_cost = npc.gift_cost
+date_cost = npc.date_cost
+breakup_reward = 0.0
+apologize_cost = 10
+_update_all()
 
 
 func _ready() -> void:
@@ -126,6 +126,7 @@ func _on_gift_pressed() -> void:
 	if PortfolioManager.attempt_spend(gift_cost):
 		npc.affinity = min(npc.affinity + 5.0, 100.0)
 		gift_cost *= 2.0
+		npc.gift_cost = gift_cost
 		_update_affinity_bar()
 		_update_action_buttons_text()
 
@@ -146,6 +147,7 @@ func _on_date_pressed() -> void:
 	_update_relationship_bar()
 	_update_breakup_button_text()
 	date_cost *= 2.0
+	npc.date_cost = date_cost
 	_update_action_buttons_text()
 func _on_breakup_pressed() -> void:
 	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
