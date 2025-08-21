@@ -17,7 +17,6 @@ const SCHEMA: Dictionary = {
 		"relationship_status": {"data_type": "text"},
 		"relationship_stage": {"data_type": "int"},
 		"relationship_progress": {"data_type": "real"},
-		"affinity_equilibrium": {"data_type": "real"},
 		"affinity": {"data_type": "real"},
 		"rizz": {"data_type": "int"},
 		"attractiveness": {"data_type": "int"},
