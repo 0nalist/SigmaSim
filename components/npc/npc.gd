@@ -24,6 +24,7 @@ enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, D
 @export_range(-100, 100, 0.1) var affinity_equilibrium: float = 50.0
 @export_range(0, 100, 0.1) var rizz: int
 @export_range(0, 100, 1) var attractiveness: int
+@export var dates_paid: int = 0
 
 # === Economics ===
 var income: int
@@ -125,12 +126,13 @@ func to_dict() -> Dictionary:
 				"occupation": occupation,
 				"relationship_status": relationship_status,
 				"relationship_stage": relationship_stage,
-			"relationship_progress": relationship_progress,
-			"affinity": affinity,
-			"affinity_equilibrium": affinity_equilibrium,
-			"rizz": rizz,
-		"attractiveness": attractiveness,
-		"income": income,
+"relationship_progress": relationship_progress,
+"affinity": affinity,
+"affinity_equilibrium": affinity_equilibrium,
+"rizz": rizz,
+"attractiveness": attractiveness,
+"dates_paid": dates_paid,
+"income": income,
 		"wealth": wealth,
 		"preferred_pet_names": preferred_pet_names.duplicate(),
 		"player_pet_names": player_pet_names.duplicate(),
@@ -175,14 +177,15 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.username = _safe_string(data.get("username"))
 	npc.occupation  = _safe_string(data.get("occupation"), "Funemployed")
 	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
-	npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
-	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
-	npc.affinity = _safe_float(data.get("affinity"), 0.0)
-	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 50.0)
-	npc.rizz  = _safe_int(data.get("rizz"), 0)
-	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
-	npc.income= _safe_int(data.get("income"), 0)
-	npc.wealth= _safe_int(data.get("wealth"), 0)
+npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
+npc.relationship_progress = _safe_float(data.get("relationship_progress"))
+npc.affinity = _safe_float(data.get("affinity"), 0.0)
+npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 50.0)
+npc.rizz  = _safe_int(data.get("rizz"), 0)
+npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
+npc.dates_paid = _safe_int(data.get("dates_paid"), 0)
+npc.income= _safe_int(data.get("income"), 0)
+npc.wealth= _safe_int(data.get("wealth"), 0)
 
 	_assign_string_array(npc.preferred_pet_names, data.get("preferred_pet_names"))
 	_assign_string_array(npc.player_pet_names, data.get("player_pet_names"))
