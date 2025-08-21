@@ -159,7 +159,7 @@ func _on_gender_slider_changed(value):
 
 func _on_gender_slider_drag_ended(_changed):
 	if card_stack:
-		card_stack.refresh_pool_under_top_with_gender(preferred_gender)
+		await card_stack.apply_gender_filter(preferred_gender)
 	PlayerManager.set_var("fumble_pref_x", x_slider.value)
 	PlayerManager.set_var("fumble_pref_y", y_slider.value)
 	PlayerManager.set_var("fumble_pref_z", z_slider.value)
@@ -181,10 +181,9 @@ func _on_curiosity_h_slider_value_changed(value: float) -> void:
 
 
 func _on_curiosity_h_slider_drag_ended(_changed) -> void:
-				if card_stack:
-								card_stack.set_curiosity(curiosity)
-								card_stack.refresh_pool_under_top_with_gender(preferred_gender, curiosity)
-				PlayerManager.set_var("fumble_curiosity", curiosity_slider.value)
+	if card_stack:
+		await card_stack.apply_gender_filter(preferred_gender, curiosity)
+	PlayerManager.set_var("fumble_curiosity", curiosity_slider.value)
 
 
 func _on_fugly_slider_drag_ended(_changed) -> void:
