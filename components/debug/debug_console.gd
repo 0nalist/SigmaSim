@@ -36,14 +36,14 @@ var commands := {
 		"args": "",
 		"description": "Clears the command log window.",
 	},
-        "stress_test": {
-                "args": "",
-                "description": "Opens every app in the app registry at once.",
-        },
-       "upgrademax": {
-               "args": "",
-               "description": "Purchases all upgrades ignoring costs.",
-       },
+	"stress_test": {
+			"args": "",
+			"description": "Opens every app in the app registry at once.",
+	},
+	"upgrademax": {
+			"args": "",
+			"description": "Purchases all upgrades ignoring costs.",
+	 },
 }
 
 

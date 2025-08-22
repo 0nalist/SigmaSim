@@ -3,19 +3,19 @@
   "name": "Performance Enhancers",
   "description": "Each level increases affinity gained from Love by 1.",
   "effects": [
-    {
-      "target": "love_affinity_gain",
-      "operation": "add",
-      "value": 1.0
-    }
+	{
+	  "target": "love_affinity_gain",
+	  "operation": "add",
+	  "value": 1.0
+	}
   ],
   "systems": [
-    "e[sup]x[/sup] Factor"
+	"e[sup]x[/sup] Factor"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "ex": 100
+	"ex": 100
   },
   "max_level": 20,
-  "repeatable": false
+  "repeatable": true
 }
