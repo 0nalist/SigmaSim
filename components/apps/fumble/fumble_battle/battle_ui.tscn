@@ -259,7 +259,7 @@ size_flags_vertical = 4
 
 [node name="ProfilePic" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("13_pv")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(64, 128)
 layout_mode = 2
 size_flags_vertical = 3
 subject_is_player = true
@@ -286,6 +286,7 @@ theme = ExtResource("2_ctqjn")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Name McNamerson"
 horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -330,7 +331,7 @@ text = "CONFIDENCE"
 modulate = Color(0.890196, 1, 0, 1)
 layout_mode = 2
 texture = ExtResource("8_an8fo")
-expand_mode = 2
+expand_mode = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -717,6 +718,7 @@ script = ExtResource("8_4kvrx")
 
 [node name="EndBattleScreenContainer" type="CenterContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
