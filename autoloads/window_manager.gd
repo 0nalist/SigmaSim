@@ -22,10 +22,10 @@ var app_registry := {
 	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
-        "Fumble": preload("res://components/apps/fumble/fumble.tscn"),
-        "Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
-        "NewYou": preload("res://components/apps/new_you/new_you.tscn"),
-        "Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
+		"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
+		"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
+		"NewYou": preload("res://components/apps/new_you/new_you.tscn"),
+		"Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
 
 }
 
@@ -150,24 +150,24 @@ func close_window(window: WindowFrame) -> void:
 # --- Launchers --- #
 
 func launch_app_by_name(app_name: String, setup_args: Variant = null) -> void:
-        var scene: PackedScene = app_registry.get(app_name)
-        if scene:
-                if setup_args != null:
-                        var pane := scene.instantiate() as Pane
-                        if not pane:
-                                push_error("Scene does not extend Pane!")
-                                return
-                        if not pane.allow_multiple:
-                                var existing = find_window_by_app(pane.window_title)
-                                if existing:
-                                        focus_window(existing)
-                                        pane.queue_free()
-                                        return
-                        launch_pane_instance(pane, setup_args)
-                else:
-                        launch_pane(scene)
-        else:
-                push_error("App not found: %s" % app_name)
+		var scene: PackedScene = app_registry.get(app_name)
+		if scene:
+				if setup_args != null:
+						var pane := scene.instantiate() as Pane
+						if not pane:
+								push_error("Scene does not extend Pane!")
+								return
+						if not pane.allow_multiple:
+								var existing = find_window_by_app(pane.window_title)
+								if existing:
+										focus_window(existing)
+										pane.queue_free()
+										return
+						launch_pane_instance(pane, setup_args)
+				else:
+						launch_pane(scene)
+		else:
+				push_error("App not found: %s" % app_name)
 
 func launch_pane(scene: PackedScene) -> void:
 	print("launch pane scene: " + str(scene))

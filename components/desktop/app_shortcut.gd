@@ -21,8 +21,8 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
 		if mb.button_index == MOUSE_BUTTON_LEFT:
-                        if mb.double_click and mb.pressed:
-                                WindowManager.launch_app_by_name(app_name, item_id)
+			if mb.double_click and mb.pressed:
+				WindowManager.launch_app_by_name(app_name, item_id)
 			elif mb.pressed:
 				is_dragging = true
 				drag_offset = mb.position

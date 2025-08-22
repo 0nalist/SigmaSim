@@ -97,13 +97,13 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 		"has_credit_limit": true,
 		"credit_limit": starting_credit_limit
 	})
-        if starting_debt > 0.0:
-                BillManager.add_debt_resource({
-                        "name": "Student Loan",
-                        "balance": starting_debt,
-                        "has_credit_limit": false,
-                        "credit_limit": 0.0
-                })
+	if starting_debt > 0.0:
+			BillManager.add_debt_resource({
+					"name": "Student Loan",
+					"balance": starting_debt,
+					"has_credit_limit": false,
+					"credit_limit": 0.0
+			})
 
 	MarketManager.init_new_save_events()
 	save_to_slot(slot_id)

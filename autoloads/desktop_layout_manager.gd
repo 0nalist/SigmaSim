@@ -15,24 +15,24 @@ func reset() -> void:
 	next_id = 1
 
 func create_app_shortcut(app_name: String, title: String, icon_path: String, position: Vector2, parent_id: int = 0, data: Dictionary = {}) -> int:
-        var id: int = next_id
-        next_id += 1
-        var entry: Dictionary = {
-                "id": id,
-                "type": "app",
-                "app_name": app_name,
-                "title": title,
-                "icon_path": icon_path,
-                "desktop_position": position,
-                "parent_id": parent_id,
-                "child_ids": [],
-                "data": data
-        }
-        items[id] = entry
-        if parent_id != 0 and items.has(parent_id):
-                items[parent_id]["child_ids"].append(id)
-        item_created.emit(id, entry)
-        return id
+		var id: int = next_id
+		next_id += 1
+		var entry: Dictionary = {
+				"id": id,
+				"type": "app",
+				"app_name": app_name,
+				"title": title,
+				"icon_path": icon_path,
+				"desktop_position": position,
+				"parent_id": parent_id,
+				"child_ids": [],
+				"data": data
+		}
+		items[id] = entry
+		if parent_id != 0 and items.has(parent_id):
+				items[parent_id]["child_ids"].append(id)
+		item_created.emit(id, entry)
+		return id
 
 func create_folder(title: String, icon_path: String, position: Vector2, parent_id: int = 0) -> int:
 	var id: int = next_id
@@ -59,15 +59,15 @@ func move_item(id: int, position: Vector2) -> void:
 	item_moved.emit(id, position)
 
 func rename_item(id: int, new_title: String) -> void:
-        if not items.has(id):
-                return
-        items[id]["title"] = new_title
-        item_renamed.emit(id, new_title)
+		if not items.has(id):
+				return
+		items[id]["title"] = new_title
+		item_renamed.emit(id, new_title)
 
 func set_item_data(id: int, data: Dictionary) -> void:
-        if not items.has(id):
-                return
-        items[id]["data"] = data
+		if not items.has(id):
+				return
+		items[id]["data"] = data
 
 func delete_item(id: int) -> void:
 	if not items.has(id):
