@@ -24,7 +24,7 @@ shader_parameter/color_high = Color(0.25, 0.25, 0.25, 1)
 [sub_resource type="ButtonGroup" id="ButtonGroup_jjwhp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a82ne"]
-bg_color = Color(0.286113, 0.60199, 1, 1)
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dij2h"]
 bg_color = Color(0, 0, 0, 1)
@@ -191,17 +191,17 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer"]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 
 [node name="BlueWarpButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
 focus_mode = 0
 theme_override_fonts/font = ExtResource("4_a82ne")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_a82ne")
-text = "Warp"
+text = "   Warp"
 
 [node name="ColorRowLow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -331,17 +331,17 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer"]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 
 [node name="WavesButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
 focus_mode = 0
 theme_override_fonts/font = ExtResource("4_a82ne")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_dij2h")
-text = "  Waves"
+text = "   Waves"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -436,17 +436,17 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer"]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 
 [node name="ElectricButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
 focus_mode = 0
 theme_override_fonts/font = ExtResource("4_a82ne")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_dij2h")
-text = " Electric"
+text = "   Electric"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
