@@ -167,7 +167,7 @@ func _on_next_stage_pressed() -> void:
 	logic.change_state(npc.relationship_stage)
 	_update_all()
 func _on_gift_pressed() -> void:
-    if PortfolioManager.attempt_spend(npc.gift_cost, PortfolioManager.CREDIT_REQUIREMENTS["gift"]):
+	if PortfolioManager.attempt_spend(npc.gift_cost, PortfolioManager.CREDIT_REQUIREMENTS["gift"]):
 		npc.affinity = min(npc.affinity + 5.0, 100.0)
 		npc.gift_cost *= 2.0
 		if npc_idx != -1:
@@ -191,8 +191,8 @@ func _on_love_pressed() -> void:
 	_update_love_button()
 
 func _on_date_pressed() -> void:
-    if not PortfolioManager.attempt_spend(npc.date_cost, PortfolioManager.CREDIT_REQUIREMENTS["date"]):
-                return
+	if not PortfolioManager.attempt_spend(npc.date_cost, PortfolioManager.CREDIT_REQUIREMENTS["date"]):
+				return
 	logic.on_date_paid()
 	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
 	if npc.relationship_stage == NPC.RelationshipStage.TALKING and npc.relationship_progress < bounds.y - 1.0:

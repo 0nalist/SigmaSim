@@ -167,20 +167,20 @@ func _on_quit_pressed() -> void:
 		window_frame.queue_free()
 
 func _on_autopilot_button_pressed() -> void:
-                if autopilot == null:
-                                return
-                var cost := _get_autopilot_cost()
-                if not autopilot.enabled:
-                                if cost > 0.0 and not PortfolioManager.attempt_spend(cost, PortfolioManager.CREDIT_REQUIREMENTS["EarlyBird"]):
-                                                autopilot_button.button_pressed = false
-                                                return
-                                autopilot.enabled = true
-                                if cost > 0.0:
-                                                autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
-						StatManager.set_base_stat("autopilot_cost", autopilot_cost)
-		else:
-				autopilot.enabled = false
-		_update_autopilot_button_text()
+	if autopilot == null:
+		return
+	var cost := _get_autopilot_cost()
+	if not autopilot.enabled:
+		if cost > 0.0 and not PortfolioManager.attempt_spend(cost, PortfolioManager.CREDIT_REQUIREMENTS["EarlyBird"]):
+			autopilot_button.button_pressed = false
+			return
+		autopilot.enabled = true
+		if cost > 0.0:
+			autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
+		StatManager.set_base_stat("autopilot_cost", autopilot_cost)
+	else:
+		autopilot.enabled = false
+	_update_autopilot_button_text()
 
 func _get_autopilot_cost() -> float:
 		if UpgradeManager.get_level("earlybird_autopilot_free") > 0:
