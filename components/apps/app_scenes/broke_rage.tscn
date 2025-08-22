@@ -50,7 +50,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_tcm1f")
 script = ExtResource("2_o2yqo")
 window_title = "BrokeRage"
 window_icon = ExtResource("3_m7phi")
-default_window_size = Vector2(710, 500)
+default_window_size = Vector2(735, 500)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_o2yqo")

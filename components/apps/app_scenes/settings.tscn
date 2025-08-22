@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://s5d0e4c7s6cc"]
+[gd_scene load_steps=11 format=3 uid="uid://s5d0e4c7s6cc"]
 
 [ext_resource type="Script" uid="uid://byvybh3t7nbk" path="res://components/settings_window.gd" id="1_wlela"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="2_wlela"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_wxdtm"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="4_a82ne"]
-[ext_resource type="Script" path="res://components/shader_controller_module.gd" id="5_p2fk4"]
+[ext_resource type="Script" uid="uid://ddrulsbntjetc" path="res://components/shader_controller_module.gd" id="5_p2fk4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlela"]
 bg_color = Color(0.156141, 0.265577, 0.156147, 1)
@@ -185,13 +185,13 @@ size_flags_horizontal = 6
 mouse_filter = 1
 script = ExtResource("5_p2fk4")
 shader_name = "BlueWarp"
-collect_warp_shaders = true
+slider_nodes = Array[NodePath]([NodePath("MarginContainer/VBoxContainer/HBoxContainer/BlueWarpStretchSlider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer2/BlueWarpThing1Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer3/BlueWarpThing2Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer4/BlueWarpThing3Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer5/BlueWarpSpeedSlider")])
+slider_params = Array[StringName]([&"stretch", &"thing1", &"thing2", &"thing3", &"speed"])
+color_picker_nodes = Array[NodePath]([NodePath("MarginContainer/VBoxContainer/ColorRowLow/BlueWarpColorLowPicker"), NodePath("MarginContainer/VBoxContainer/ColorRowMid/BlueWarpColorMidPicker"), NodePath("MarginContainer/VBoxContainer/ColorRowHigh/BlueWarpColorHighPicker")])
+color_picker_params = Array[StringName]([&"color_low", &"color_mid", &"color_high"])
 toggle_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpButton")
 reset_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpResetButton")
-slider_nodes = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/BlueWarpStretchSlider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer2/BlueWarpThing1Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer3/BlueWarpThing2Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer4/BlueWarpThing3Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer5/BlueWarpSpeedSlider")]
-slider_params = ["stretch", "thing1", "thing2", "thing3", "speed"]
-color_picker_nodes = [NodePath("MarginContainer/VBoxContainer/ColorRowLow/BlueWarpColorLowPicker"), NodePath("MarginContainer/VBoxContainer/ColorRowMid/BlueWarpColorMidPicker"), NodePath("MarginContainer/VBoxContainer/ColorRowHigh/BlueWarpColorHighPicker")]
-color_picker_params = ["color_low", "color_mid", "color_high"]
+collect_warp_shaders = true
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer"]
 layout_mode = 2

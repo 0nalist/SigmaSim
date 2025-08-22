@@ -30,6 +30,15 @@
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="23_dik0q"]
 [ext_resource type="Script" uid="uid://c7t01yq8wloqf" path="res://components/desktop_background.gd" id="24_jkb4t"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_668nl"]
+shader = ExtResource("8_iij0d")
+shader_parameter/bottom_color = Color(0, 0, 0, 1)
+shader_parameter/top_color = Color(0.868811, 5.77569e-07, 0.459911, 1)
+shader_parameter/wave_amp = 0.082
+shader_parameter/wave_size = 2.253
+shader_parameter/wave_time_mul = 0.01
+shader_parameter/total_phases = 6
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yi8nh"]
 resource_local_to_scene = true
 shader = ExtResource("4_fjtwy")
@@ -98,15 +107,6 @@ shader_parameter/dither_levels = 0
 shader_parameter/shading_noise_cell_amount = 40
 shader_parameter/shading_noise_strength = 0.3
 shader_parameter/shading_noise_period = Vector3(9.5, 9.5, 9.5)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_668nl"]
-shader = ExtResource("8_iij0d")
-shader_parameter/bottom_color = Color(0, 0, 0, 1)
-shader_parameter/top_color = Color(0.868811, 5.77569e-07, 0.459911, 1)
-shader_parameter/wave_amp = 0.082
-shader_parameter/wave_size = 2.253
-shader_parameter/wave_time_mul = 0.01
-shader_parameter/total_phases = 6
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8lg5h"]
 shader = ExtResource("9_668nl")
@@ -262,7 +262,6 @@ stretch_mode = 5
 
 [node name="ColorRect" type="ColorRect" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -283,6 +282,19 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.05687, 1.05687)
 mouse_filter = 2
+
+[node name="WavesShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_668nl")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("24_jkb4t")
+background_name = "Waves"
 
 [node name="BlueWarpShader" type="PanelContainer" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true
@@ -307,19 +319,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="WavesShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
-unique_name_in_owner = true
-visible = false
-material = SubResource("ShaderMaterial_668nl")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("24_jkb4t")
-background_name = "Waves"
 
 [node name="ElectricShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true

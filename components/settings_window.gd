@@ -54,18 +54,18 @@ func _ready() -> void:
 	autosave_check_box.button_pressed = TimeManager.autosave_enabled
 	_update_autosave_timer_label()
 	TimeManager.minute_passed.connect(_on_minute_passed)
-        comic_dots1_button.button_pressed = Events.is_desktop_background_visible("ComicDots1")
-        comic_dots2_button.button_pressed = Events.is_desktop_background_visible("ComicDots2")
-        waves_button.button_pressed = Events.is_desktop_background_visible("Waves")
+	comic_dots1_button.button_pressed = Events.is_desktop_background_visible("ComicDots1")
+	comic_dots2_button.button_pressed = Events.is_desktop_background_visible("ComicDots2")
+	waves_button.button_pressed = Events.is_desktop_background_visible("Waves")
 	bottom_color_picker.color = waves_shader_material.get_shader_parameter("bottom_color")
 	top_color_picker.color = waves_shader_material.get_shader_parameter("top_color")
 	wave_amp_slider.value = waves_shader_material.get_shader_parameter("wave_amp")
 	wave_size_slider.value = waves_shader_material.get_shader_parameter("wave_size")
 	wave_time_mul_slider.value = waves_shader_material.get_shader_parameter("wave_time_mul")
 	total_phases_slider.value = waves_shader_material.get_shader_parameter("total_phases")
-        comic_dots1_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
-        comic_dots1_multiplier_slider.value = comic_dots1_shader_material.get_shader_parameter("circle_multiplier")
-        comic_dots1_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
+	comic_dots1_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
+	comic_dots1_multiplier_slider.value = comic_dots1_shader_material.get_shader_parameter("circle_multiplier")
+	comic_dots1_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
 	comic_dots2_color_picker.color = comic_dots2_shader_material.get_shader_parameter("circle_color")
 	comic_dots2_multiplier_slider.value = comic_dots2_shader_material.get_shader_parameter("circle_multiplier")
 	comic_dots2_speed_slider.value = comic_dots2_shader_material.get_shader_parameter("speed")
@@ -125,7 +125,7 @@ func _on_create_apps_folder_button_pressed() -> void:
 		desktop_env._create_or_update_apps_folder()
 
 func _on_comic_dots_1_button_toggled(toggled_on: bool) -> void:
-        Events.set_desktop_background_visible("ComicDots1", toggled_on)
+		Events.set_desktop_background_visible("ComicDots1", toggled_on)
 
 func _on_comic_dots_2_button_toggled(toggled_on: bool) -> void:
 	Events.set_desktop_background_visible("ComicDots2", toggled_on)
@@ -218,22 +218,22 @@ func _on_electric_scale_y_slider_value_changed(value: float) -> void:
 				PlayerManager.set_shader_param("Electric", "scale_y", value)
 
 func _on_waves_reset_button_pressed() -> void:
-                PlayerManager.reset_shader("Waves")
-                var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Waves"]
-		var bottom = PlayerManager.dict_to_color(d["bottom_color"])
-		var top = PlayerManager.dict_to_color(d["top_color"])
-		waves_shader_material.set_shader_parameter("bottom_color", bottom)
-		waves_shader_material.set_shader_parameter("top_color", top)
-		waves_shader_material.set_shader_parameter("wave_amp", d["wave_amp"])
-		waves_shader_material.set_shader_parameter("wave_size", d["wave_size"])
-		waves_shader_material.set_shader_parameter("wave_time_mul", d["wave_time_mul"])
-		waves_shader_material.set_shader_parameter("total_phases", d["total_phases"])
-		bottom_color_picker.color = bottom
-		top_color_picker.color = top
-		wave_amp_slider.value = d["wave_amp"]
-		wave_size_slider.value = d["wave_size"]
-                wave_time_mul_slider.value = d["wave_time_mul"]
-                total_phases_slider.value = d["total_phases"]
+	PlayerManager.reset_shader("Waves")
+	var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Waves"]
+	var bottom = PlayerManager.dict_to_color(d["bottom_color"])
+	var top = PlayerManager.dict_to_color(d["top_color"])
+	waves_shader_material.set_shader_parameter("bottom_color", bottom)
+	waves_shader_material.set_shader_parameter("top_color", top)
+	waves_shader_material.set_shader_parameter("wave_amp", d["wave_amp"])
+	waves_shader_material.set_shader_parameter("wave_size", d["wave_size"])
+	waves_shader_material.set_shader_parameter("wave_time_mul", d["wave_time_mul"])
+	waves_shader_material.set_shader_parameter("total_phases", d["total_phases"])
+	bottom_color_picker.color = bottom
+	top_color_picker.color = top
+	wave_amp_slider.value = d["wave_amp"]
+	wave_size_slider.value = d["wave_size"]
+	wave_time_mul_slider.value = d["wave_time_mul"]
+	total_phases_slider.value = d["total_phases"]
 
 func _on_comic_dots_1_reset_button_pressed() -> void:
 				PlayerManager.reset_shader("ComicDots1")
