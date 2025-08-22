@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://nc5fi5e4a2r3" path="res://scripts/trauma_example.gd" id="3_5aheu"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
 [ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/backgrounds/Bliss_(Windows_XP) (2).png" id="3_rbayd"]
-[ext_resource type="Texture2D" uid="uid://c88l4sfbsyhbr" path="res://assets/0nalist_bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_1f48f6f3-2b0b-4da7-a461-17d252f99557_upscayl_4x_realesrgan-x4plus.png" id="4_adib1"]
+[ext_resource type="Texture2D" uid="uid://c88l4sfbsyhbr" path="res://assets/wide_bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_1f48f6f3-2b0b-4da7-a461-17d252f99557_upscayl_4x_realesrgan-x4plus.png" id="4_adib1"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="4_fjtwy"]
 [ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://components/ticker.gd" id="5_g75lf"]
 [ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="5_yi8nh"]

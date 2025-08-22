@@ -195,12 +195,14 @@ func _on_date_pressed() -> void:
 				return
 	logic.on_date_paid()
 	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
-	if npc.relationship_stage == NPC.RelationshipStage.TALKING and npc.relationship_progress < bounds.y - 1.0:
-		npc.relationship_progress = bounds.y - 1.0
-		logic.progress_paused = true
-		next_stage_button.visible = true
-	else:
-		npc.relationship_progress = min(npc.relationship_progress + 25.0, bounds.y)
+	#if npc.relationship_stage == NPC.RelationshipStage.TALKING and npc.relationship_progress < bounds.y - 1.0:
+	#	npc.relationship_progress = bounds.y - 1.0
+	#	logic.progress_paused = true
+	#	next_stage_button.visible = true
+	#else:
+	var date_progress_boost = npc.date_cost/10
+	npc.relationship_progress = min(npc.relationship_progress + date_progress_boost, bounds.y)
+	
 	if npc.relationship_stage < NPC.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
 		logic.progress_paused = true
 		next_stage_button.visible = true
