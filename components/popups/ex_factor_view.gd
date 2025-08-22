@@ -84,8 +84,8 @@ func _ready() -> void:
 
 	
 	await get_tree().process_frame
-	if Events.has_signal("fumble_talk_therapy_purchased"):
-		Events.connect("fumble_talk_therapy_purchased", _on_talk_therapy_purchased)
+        if Events.has_signal("ex_factor_talk_therapy_purchased"):
+                Events.connect("ex_factor_talk_therapy_purchased", _on_talk_therapy_purchased)
 
 
 func _process(delta: float) -> void:
@@ -126,7 +126,7 @@ func _update_all() -> void:
 
 	gift_button.disabled = blocked
 	date_button.disabled = blocked
-	apologize_button.visible = UpgradeManager.get_level("fumble_talk_therapy") > 0 and npc.relationship_stage in [NPCManager.RelationshipStage.DIVORCED, NPCManager.RelationshipStage.EX]
+        apologize_button.visible = UpgradeManager.get_level("ex_factor_talk_therapy") > 0 and npc.relationship_stage in [NPCManager.RelationshipStage.DIVORCED, NPCManager.RelationshipStage.EX]
 func _update_relationship_bar() -> void:
 	var current_stage: int = npc.relationship_stage
 	if current_stage == NPCManager.RelationshipStage.MARRIED:
