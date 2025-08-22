@@ -147,7 +147,7 @@ func generate_available_workers() -> void:
 
 func _generate_random_worker(is_contractor: bool) -> Worker:
 	var worker = Worker.new()
-	var rng = RNGManager.get_rng()
+    var rng = RNGManager.worker_manager.get_rng()
 
 	''' Gender generator
 	var fem = randi_range(0, 1)

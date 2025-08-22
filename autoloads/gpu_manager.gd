@@ -62,7 +62,7 @@ func _on_minute_tick(_unused: int) -> void:
                scheduled_burns.erase(minute_of_hour)
                _execute_scheduled_burns(burns)
 
-var rng: RandomNumberGenerator = RNGManager.get_rng()
+var rng: RandomNumberGenerator = RNGManager.gpu.get_rng()
 var current_time: int = TimeManager.total_minutes_elapsed
 
        for symbol in next_block_time.keys():
@@ -125,7 +125,7 @@ func get_symbol_burnout_multiplier(symbol: String) -> float:
 
 func _run_hourly_burn_batch() -> void:
 	scheduled_burns.clear()
-	var rng: RandomNumberGenerator = RNGManager.get_rng()
+    var rng: RandomNumberGenerator = RNGManager.gpu.get_rng()
 	for crypto in MarketManager.crypto_market.values():
 	var symbol: String = crypto.symbol
 	var m_used: int = get_used_gpu_count_for(symbol)
@@ -179,7 +179,7 @@ func _sample_burnouts(T: int, p_eff: float, m_used: int, rng: RandomNumberGenera
 	return K
 
 func _execute_scheduled_burns(burns: Dictionary) -> void:
-	var rng: RandomNumberGenerator = RNGManager.get_rng()
+    var rng: RandomNumberGenerator = RNGManager.gpu.get_rng()
 	for symbol in burns.keys():
 	var count: int = int(burns[symbol])
 	_burn_random_gpus(symbol, count, rng)
@@ -306,7 +306,7 @@ func set_overclocked(index: int, overclocked: bool) -> void:
 			is_overclocked[index] = 0
 
 func process_gpu_tick() -> void:
-	var rng = RNGManager.get_rng()
+    var rng = RNGManager.gpu.get_rng()
 	total_power = 0  # Recalculate total power
 
 	for i in range(gpu_cryptos.size()):
