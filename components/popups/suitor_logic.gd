@@ -7,7 +7,7 @@ var state: SuitorState
 
 const STAGE_THRESHOLDS: Array[float] = [0.0, 0.0, 100.0, 1000.0, 10000.0, 100000.0]
 const LN10: float = 2.302585092994046  # natural log of 10
-const LOVE_AFFINITY_GAIN: float = 5.0
+const DEFAULT_LOVE_AFFINITY_GAIN: float = 5.0
 
 static func get_stage_bounds(stage: int, progress: float) -> Vector2:
 	if stage < NPCManager.RelationshipStage.MARRIED:
@@ -68,7 +68,8 @@ func on_date_paid() -> void:
 	progress_paused = false
 
 func apply_love() -> void:
-	npc.affinity = min(npc.affinity + LOVE_AFFINITY_GAIN, 100.0)
+        var gain: float = StatManager.get_stat("love_affinity_gain", DEFAULT_LOVE_AFFINITY_GAIN)
+        npc.affinity = min(npc.affinity + gain, 100.0)
 
 
 func get_stop_marks() -> Array[float]:
