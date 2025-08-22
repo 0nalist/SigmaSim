@@ -354,14 +354,14 @@ func _build_upgrade_cache() -> void:
 
 
 func _build_dependents_map() -> void:
-	_dependents.clear()
-	for derived in stat_dependencies.keys():
-		var deps: Array = stat_dependencies[derived]
-		for dep in deps:
-			if !_dependents.has(dep):
-				_dependents[dep] = []
-			_dependents[dep].append(derived)
-			_dependents[dep].append(derived)
+        _dependents.clear()
+        for derived in stat_dependencies.keys():
+                var deps: Array = stat_dependencies[derived]
+                for dep in deps:
+                        if !_dependents.has(dep):
+                                _dependents[dep] = []
+                        if not _dependents[dep].has(derived):
+                                _dependents[dep].append(derived)
 
 
 func _emit_stat_callbacks(stat: String, value: Variant) -> void:
