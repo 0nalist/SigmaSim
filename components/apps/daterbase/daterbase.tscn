@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://dw5hnnc0fsan4" path="res://components/apps/daterbase/daterbase.gd" id="2"]
-[ext_resource type="Shader" uid="uid://dw5y8ehkp7c1r" path="res://assets/shaders/pink_warp.gdshader" id="3_du6fw"]
+[ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_du6fw"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="3_kc04p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j8wav"]
@@ -13,6 +13,9 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.03
+shader_parameter/color_low = Color(0.213765, 0.0, 0.213765, 1.0)
+shader_parameter/color_mid = Color(1.0, 0.579437, 1.0, 1.0)
+shader_parameter/color_high = Color(1.0, 1.0, 1.0, 1.0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du6fw"]
 bg_color = Color(0.385493, 0.385493, 0.385492, 0.109804)
