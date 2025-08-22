@@ -192,6 +192,9 @@ color_picker_params = Array[StringName]([&"color_low", &"color_mid", &"color_hig
 toggle_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpButton")
 reset_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpResetButton")
 collect_warp_shaders = true
+flat_color_picker_path = NodePath("MarginContainer/VBoxContainer/ColorRowFlat/BlueWarpFlatColorPicker")
+flat_color_toggle_path = NodePath("MarginContainer/VBoxContainer/ColorRowFlat/BlueWarpFlatToggle")
+flat_color_rect_path = NodePath("/root/DesktopEnv/ShaderBackgroundsContainer/BlueWarpFlatColor")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer"]
 layout_mode = 2
@@ -248,6 +251,25 @@ text = "High"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+
+[node name="ColorRowFlat" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
+layout_mode = 2
+text = "Flat"
+
+[node name="BlueWarpFlatColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+color = Color(0, 0, 0.2, 1)
+
+[node name="BlueWarpFlatToggle" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Show"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2

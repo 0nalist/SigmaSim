@@ -11,6 +11,7 @@ const FOLDER_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/fol
 @onready var background: TextureRect = %Background
 
 @onready var blue_warp_shader_material: ShaderMaterial = %BlueWarpShader.material
+@onready var blue_warp_flat_color_rect: ColorRect = %BlueWarpFlatColor
 @onready var comic_dots1_shader_material: ShaderMaterial = %ComicDotsBlueVert.material
 @onready var comic_dots2_shader_material: ShaderMaterial = %ComicDotsBlueHor.material
 @onready var waves_shader_material: ShaderMaterial = %WavesShader.material
@@ -82,6 +83,10 @@ func _apply_shader_settings() -> void:
 	blue_warp_shader_material.set_shader_parameter("color_low", PlayerManager.get_shader_param("BlueWarp", "color_low", PlayerManager.dict_to_color(bw_def["color_low"])))
 	blue_warp_shader_material.set_shader_parameter("color_mid", PlayerManager.get_shader_param("BlueWarp", "color_mid", PlayerManager.dict_to_color(bw_def["color_mid"])))
 	blue_warp_shader_material.set_shader_parameter("color_high", PlayerManager.get_shader_param("BlueWarp", "color_high", PlayerManager.dict_to_color(bw_def["color_high"])))
+	var flat_color = PlayerManager.get_shader_param("BlueWarp", "flat_color", PlayerManager.dict_to_color(bw_def.get("flat_color", {"r": 0.0, "g": 0.0, "b": 0.2, "a": 1.0})))
+	var flat_visible = PlayerManager.get_shader_param("BlueWarp", "flat_visible", bw_def.get("flat_visible", false))
+	blue_warp_flat_color_rect.color = flat_color
+	blue_warp_flat_color_rect.visible = flat_visible
 
 	var cd1_def = defaults["ComicDots1"]
 	var cd1_color = PlayerManager.get_shader_param("ComicDots1", "circle_color", PlayerManager.dict_to_color(cd1_def["circle_color"]))
