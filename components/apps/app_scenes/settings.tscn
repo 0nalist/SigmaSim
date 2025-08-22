@@ -631,7 +631,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
 max_value = 64.0
-value = 32.0
+value = 33.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
 layout_mode = 2
@@ -688,7 +688,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
 max_value = 64.0
-value = 32.0
+value = 33.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
 layout_mode = 2
