@@ -294,10 +294,23 @@ func _on_exclusivity_button_pressed() -> void:
 										NPCManager.go_exclusive_during_dating(npc_idx)
 								else:
 										NPCManager.return_to_monogamy(npc_idx)
+				else:
+						var cheating := false
+						for idx in NPCManager.encountered_npcs:
+							var other_idx: int = int(idx)
+							var other: NPC = NPCManager.get_npc_by_index(other_idx)
+							if other.relationship_stage >= NPCManager.RelationshipStage.DATING and other.relationship_stage <= NPCManager.RelationshipStage.MARRIED:
+								cheating = true
+								break
+						if cheating:
+							 npc.exclusivity_core = NPCManager.ExclusivityCore.CHEATING
+							 npc.affinity *= 0.25
+							 npc.affinity_equilibrium *= 0.5
+							 NPCManager.notify_player_advanced_someone_to_dating(-1)
 						else:
-								npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
-								npc.affinity = min(npc.affinity * 1.5, 100.0)
-						_update_affinity_bar()
+							 npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+							 npc.affinity = min(npc.affinity * 1.5, 100.0)
+                                                _update_affinity_bar()
 						_update_exclusivity_label()
 						_update_exclusivity_button()
 				NPCManager.ExclusivityCore.CHEATING:
