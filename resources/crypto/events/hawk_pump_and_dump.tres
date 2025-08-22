@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+[ext_resource path="res://resources/markets/market_event.gd" type="Script" id=1]
+[sub_resource type="Resource" id=1 script="res://resources/markets/market_event_stage.gd"]
+duration_range = Vector2i(10, 60)
+target_multiplier_range = Vector2(20.0, 20.0)
+[sub_resource type="Resource" id=2 script="res://resources/markets/market_event_stage.gd"]
+duration_range = Vector2i(5, 30)
+target_multiplier_range = Vector2(0.01, 0.04)
+[resource]
+script = ExtResource("1")
+symbol = "HAWK"
+start_delay_range = Vector2i(10, 60)
+stages = [SubResource("1"), SubResource("2")]
