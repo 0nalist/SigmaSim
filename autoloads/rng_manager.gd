@@ -41,13 +41,13 @@ class WorkerManagerRNG extends RNGStream:
 	pass
 
 class MarketManagerRNG extends RNGStream:
-        pass
+	pass
 
 class MarketEventRNG extends RNGStream:
-        pass
+	pass
 
 class SiggyRNG extends RNGStream:
-        pass
+	pass
 
 class TickerRNG extends RNGStream:
 	pass
@@ -107,10 +107,10 @@ func init_seed(seed_value: int) -> void:
 	NameManager.set_name_seed(_derive_seed("name_manager"))
 	fumble_manager.init_seed(_derive_seed("fumble_manager"))
 	fumble_profile_stack.init_seed(_derive_seed("fumble_profile_stack"))
-        worker_manager.init_seed(_derive_seed("worker_manager"))
-        market_manager.init_seed(_derive_seed("market_manager"))
-        market_event.init_seed(_derive_seed("market_event"))
-        siggy.init_seed(_derive_seed("siggy"))
+	worker_manager.init_seed(_derive_seed("worker_manager"))
+	market_manager.init_seed(_derive_seed("market_manager"))
+	market_event.init_seed(_derive_seed("market_event"))
+	siggy.init_seed(_derive_seed("siggy"))
 	ticker.init_seed(_derive_seed("ticker"))
 	early_bird.init_seed(_derive_seed("early_bird"))
 	crypto.init_seed(_derive_seed("crypto"))

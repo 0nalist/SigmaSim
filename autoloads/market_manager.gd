@@ -23,10 +23,10 @@ var STOCK_RESOURCES = {
 }
 
 var CRYPTO_RESOURCES = {
-        "BITC": preload("res://resources/crypto/bitc_crypto.tres"),
-        "HAWK1": preload("res://resources/crypto/hawk1_crypto.tres"),
-        "HAWK2": preload("res://resources/crypto/hawk2_crypto.tres"),
-        "WORM": preload("res://resources/crypto/worm_crypto.tres"),
+	"BITC": preload("res://resources/crypto/bitc_crypto.tres"),
+	"HAWK1": preload("res://resources/crypto/hawk1_crypto.tres"),
+	"HAWK2": preload("res://resources/crypto/hawk2_crypto.tres"),
+	"WORM": preload("res://resources/crypto/worm_crypto.tres"),
 }
 
 func _ready() -> void:
@@ -65,22 +65,22 @@ func register_crypto(crypto: Cryptocurrency) -> void:
 		push_warning("register_crypto: symbol '" + crypto.symbol + "' already registered; skipping")
 		return
 
-        crypto_market[crypto.symbol] = crypto
-        emit_signal("crypto_price_updated", crypto.symbol, crypto)
+	crypto_market[crypto.symbol] = crypto
+	emit_signal("crypto_price_updated", crypto.symbol, crypto)
 
 func schedule_market_event(event: MarketEvent) -> void:
-        if event == null:
-                return
-        var asset = crypto_market.get(event.symbol)
-        if asset == null:
-                asset = stock_market.get(event.symbol)
-        if asset == null:
-                push_warning("schedule_market_event: unknown symbol '" + event.symbol + "'")
-                return
-        event.schedule(asset)
-        if not market_events.has(event.symbol):
-                market_events[event.symbol] = []
-        market_events[event.symbol].append(event)
+	if event == null:
+		return
+	var asset = crypto_market.get(event.symbol)
+	if asset == null:
+		asset = stock_market.get(event.symbol)
+	if asset == null:
+		push_warning("schedule_market_event: unknown symbol '" + event.symbol + "'")
+		return
+	event.schedule(asset)
+	if not market_events.has(event.symbol):
+		market_events[event.symbol] = []
+	market_events[event.symbol].append(event)
 func _on_minute_passed(current_time_minutes: int) -> void:
 	# Alternate stock and crypto ticks every minute
 	if current_time_minutes % 2 == 0:
@@ -191,34 +191,34 @@ func _init_crypto_market() -> void:
 			c.symbol = str(key_symbol)
 
 		print("registering crypto: '" + str(c.symbol) + "' from key '" + str(key_symbol) + "', resource_name='" + str(c.resource_name) + "'")
-                register_crypto(c)
-                if crypto_market.has(c.symbol):
-                        inserted_count += 1
+		register_crypto(c)
+		if crypto_market.has(c.symbol):
+			inserted_count += 1
 
-        debug_dump_crypto("post_init_loop")
+	debug_dump_crypto("post_init_loop")
 
-        # Randomly choose which HAWK crypto will receive the pump-and-dump event
-        var hawk_symbols := ["HAWK1", "HAWK2"]
-        var rng := RNGManager.market_event.get_rng()
-        var chosen_hawk := hawk_symbols[rng.randi_range(0, hawk_symbols.size() - 1)]
-        var event_res: Resource = ResourceLoader.load("res://resources/crypto/events/hawk_pump_and_dump.tres")
-        if event_res is MarketEvent:
-                var event_instance: MarketEvent = event_res.duplicate(true)
-                event_instance.symbol = chosen_hawk
-                schedule_market_event(event_instance)
+	# Randomly choose which HAWK crypto will receive the pump-and-dump event
+	var hawk_symbols := ["HAWK1", "HAWK2"]
+	var rng := RNGManager.market_event.get_rng()
+	var chosen_hawk := hawk_symbols[rng.randi_range(0, hawk_symbols.size() - 1)]
+	var event_res: Resource = ResourceLoader.load("res://resources/crypto/events/hawk_pump_and_dump.tres")
+	if event_res is MarketEvent:
+		var event_instance: MarketEvent = event_res.duplicate(true)
+		event_instance.symbol = chosen_hawk
+		schedule_market_event(event_instance)
 
-        var expected: Array = CRYPTO_RESOURCES.keys()
-        var actual: Array = crypto_market.keys()
-        expected.sort()
-        actual.sort()
-        if expected != actual:
-                push_warning("_init_crypto_market: expected symbols " + str(expected) + ", got " + str(actual))
+	var expected: Array = CRYPTO_RESOURCES.keys()
+	var actual: Array = crypto_market.keys()
+	expected.sort()
+	actual.sort()
+	if expected != actual:
+		push_warning("_init_crypto_market: expected symbols " + str(expected) + ", got " + str(actual))
 
-        debug_dump_crypto("post_init")
-        emit_signal("crypto_market_ready")
-        print("crypto market initialized; inserted count=", str(inserted_count))
-        print("crypto market keys: " + str(crypto_market.keys()))
-        print("crypto market state: " + JSON.stringify(crypto_market, "  "))
+	debug_dump_crypto("post_init")
+	emit_signal("crypto_market_ready")
+	print("crypto market initialized; inserted count=", str(inserted_count))
+	print("crypto market keys: " + str(crypto_market.keys()))
+	print("crypto market state: " + JSON.stringify(crypto_market, "  "))
 func _init_stock_market() -> void:
 		for symbol in STOCK_RESOURCES.keys():
 				var stock = STOCK_RESOURCES[symbol].duplicate(true)
