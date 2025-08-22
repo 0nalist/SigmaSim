@@ -84,8 +84,8 @@ func _ready() -> void:
 
 	
 	await get_tree().process_frame
-        if Events.has_signal("ex_factor_talk_therapy_purchased"):
-                Events.connect("ex_factor_talk_therapy_purchased", _on_talk_therapy_purchased)
+	if Events.has_signal("ex_factor_talk_therapy_purchased"):
+			Events.connect("ex_factor_talk_therapy_purchased", _on_talk_therapy_purchased)
 
 
 func _process(delta: float) -> void:
@@ -126,7 +126,9 @@ func _update_all() -> void:
 
 	gift_button.disabled = blocked
 	date_button.disabled = blocked
-        apologize_button.visible = UpgradeManager.get_level("ex_factor_talk_therapy") > 0 and npc.relationship_stage in [NPCManager.RelationshipStage.DIVORCED, NPCManager.RelationshipStage.EX]
+	apologize_button.visible = UpgradeManager.get_level("ex_factor_talk_therapy") > 0 and npc.relationship_stage in [NPCManager.RelationshipStage.DIVORCED, NPCManager.RelationshipStage.EX]
+
+
 func _update_relationship_bar() -> void:
 	var current_stage: int = npc.relationship_stage
 	if current_stage == NPCManager.RelationshipStage.MARRIED:
@@ -280,65 +282,69 @@ func _on_exclusivity_core_changed(idx: int, _old_core: int, new_core: int) -> vo
 				_update_exclusivity_button()
 
 func _on_relationship_stage_changed(idx: int, _old_stage: int, new_stage: int) -> void:
-				if idx != npc_idx:
-								return
-		npc.relationship_stage = new_stage
-		_update_exclusivity_label()
-		_update_exclusivity_button()
-		_update_affinity_bar()
+	if idx != npc_idx:
+		return
+	npc.relationship_stage = new_stage
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_affinity_bar()
 
 func _on_exclusivity_button_pressed() -> void:
-		if npc == null:
-				return
-		match npc.exclusivity_core:
-				NPCManager.ExclusivityCore.MONOG:
-						if npc_idx != -1:
-								if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
-										NPCManager.go_poly_during_dating(npc_idx)
-								else:
-										NPCManager.request_poly_at_serious_or_engaged(npc_idx)
-						else:
-								npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
-								npc.affinity *= 0.1
-						_update_affinity_bar()
-						_update_exclusivity_label()
-						_update_exclusivity_button()
-				NPCManager.ExclusivityCore.POLY:
-						if npc_idx != -1:
-								if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
-										NPCManager.go_exclusive_during_dating(npc_idx)
-								else:
-										NPCManager.return_to_monogamy(npc_idx)
+	if npc == null:
+		return
+	match npc.exclusivity_core:
+		NPCManager.ExclusivityCore.MONOG:
+			if npc_idx != -1:
+				if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
+					NPCManager.go_poly_during_dating(npc_idx)
 				else:
-						var cheating := false
-						for idx in NPCManager.encountered_npcs:
-							var other_idx: int = int(idx)
-							var other: NPC = NPCManager.get_npc_by_index(other_idx)
-							if other.relationship_stage >= NPCManager.RelationshipStage.DATING and other.relationship_stage <= NPCManager.RelationshipStage.MARRIED:
-								cheating = true
-								break
-						if cheating:
-							 npc.exclusivity_core = NPCManager.ExclusivityCore.CHEATING
-							 npc.affinity *= 0.25
-							 npc.affinity_equilibrium *= 0.5
-							 NPCManager.notify_player_advanced_someone_to_dating(-1)
-						else:
-							 npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
-							 npc.affinity = min(npc.affinity * 1.5, 100.0)
-                                                _update_affinity_bar()
-						_update_exclusivity_label()
-						_update_exclusivity_button()
-				NPCManager.ExclusivityCore.CHEATING:
-						if npc_idx != -1:
-								NPCManager.come_clean_from_cheating(npc_idx)
-						else:
-								npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
-								npc.affinity = 1.0
-						_update_affinity_bar()
-						_update_exclusivity_label()
-						_update_exclusivity_button()
-				_:
-						pass
+					NPCManager.request_poly_at_serious_or_engaged(npc_idx)
+			else:
+				npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+				npc.affinity *= 0.1
+			_update_affinity_bar()
+			_update_exclusivity_label()
+			_update_exclusivity_button()
+
+		NPCManager.ExclusivityCore.POLY:
+			if npc_idx != -1:
+				if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
+					NPCManager.go_exclusive_during_dating(npc_idx)
+				else:
+					NPCManager.return_to_monogamy(npc_idx)
+			else:
+				var cheating: bool = false
+				for idx in NPCManager.encountered_npcs:
+					var other_idx: int = int(idx)
+					var other: NPC = NPCManager.get_npc_by_index(other_idx)
+					if other.relationship_stage >= NPCManager.RelationshipStage.DATING and other.relationship_stage <= NPCManager.RelationshipStage.MARRIED:
+						cheating = true
+						break
+				if cheating:
+					npc.exclusivity_core = NPCManager.ExclusivityCore.CHEATING
+					npc.affinity *= 0.25
+					npc.affinity_equilibrium *= 0.5
+					NPCManager.notify_player_advanced_someone_to_dating(-1)
+				else:
+					npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+					npc.affinity = min(npc.affinity * 1.5, 100.0)
+				_update_affinity_bar()
+			_update_exclusivity_label()
+			_update_exclusivity_button()
+
+		NPCManager.ExclusivityCore.CHEATING:
+			if npc_idx != -1:
+				NPCManager.come_clean_from_cheating(npc_idx)
+			else:
+				npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+				npc.affinity = 1.0
+			_update_affinity_bar()
+			_update_exclusivity_label()
+			_update_exclusivity_button()
+
+		_:
+			pass
+
 
 func _on_next_stage_pressed() -> void:
 		next_stage_button.visible = false
