@@ -10,8 +10,12 @@ class_name ShaderControllerModule
 @export var toggle_button_path: NodePath
 @export var reset_button_path: NodePath
 @export var collect_warp_shaders: bool = false
+@export var flat_color_picker_path: NodePath
+@export var flat_color_toggle_path: NodePath
+@export var flat_color_rect_path: NodePath
 
 var shader_materials: Array[ShaderMaterial] = []
+var flat_color_rect: ColorRect
 
 func _ready() -> void:
 	if collect_warp_shaders:
@@ -36,6 +40,24 @@ func _ready() -> void:
 			var param = color_picker_params[i]
 			node.color = _get_param(param)
 			node.color_changed.connect(_on_color_changed.bind(param))
+	if flat_color_rect_path != NodePath():
+		flat_color_rect = get_tree().root.get_node_or_null(flat_color_rect_path)
+	if flat_color_picker_path != NodePath():
+		var picker = get_node_or_null(flat_color_picker_path)
+		if picker and picker is ColorPickerButton:
+			var color = PlayerManager.get_shader_param(shader_name, "flat_color", Color(0, 0, 0.2))
+			picker.color = color
+			if flat_color_rect:
+				flat_color_rect.color = color
+			picker.color_changed.connect(_on_flat_color_changed)
+	if flat_color_toggle_path != NodePath():
+		var toggle = get_node_or_null(flat_color_toggle_path)
+		if toggle and toggle is CheckButton:
+			var visible = PlayerManager.get_shader_param(shader_name, "flat_visible", false)
+			toggle.button_pressed = visible
+			if flat_color_rect:
+				flat_color_rect.visible = visible
+			toggle.toggled.connect(_on_flat_toggled)
 	if toggle_button_path != NodePath():
 		var button = get_node_or_null(toggle_button_path)
 		if button and button is CheckButton:
@@ -67,6 +89,16 @@ func _on_slider_changed(value: float, param: StringName) -> void:
 
 func _on_color_changed(color: Color, param: StringName) -> void:
 	_set_param(param, color)
+
+func _on_flat_color_changed(color: Color) -> void:
+	if flat_color_rect:
+		flat_color_rect.color = color
+	PlayerManager.set_shader_param(shader_name, "flat_color", color)
+
+func _on_flat_toggled(toggled_on: bool) -> void:
+	if flat_color_rect:
+		flat_color_rect.visible = toggled_on
+	PlayerManager.set_shader_param(shader_name, "flat_visible", toggled_on)
 
 func _on_toggled(toggled_on: bool) -> void:
 	Events.set_desktop_background_visible(shader_name, toggled_on)
@@ -110,3 +142,15 @@ func _on_reset_pressed() -> void:
 			var val = PlayerManager.dict_to_color(d[param])
 			node.color = val
 			_set_param(param, val)
+	if flat_color_picker_path != NodePath():
+		var picker = get_node_or_null(flat_color_picker_path)
+		if picker and picker is ColorPickerButton:
+			var val = PlayerManager.dict_to_color(d.get("flat_color", {"r": 0.0, "g": 0.0, "b": 0.2, "a": 1.0}))
+			picker.color = val
+			_on_flat_color_changed(val)
+	if flat_color_toggle_path != NodePath():
+		var toggle = get_node_or_null(flat_color_toggle_path)
+		if toggle and toggle is CheckButton:
+			var vis = d.get("flat_visible", false)
+			toggle.button_pressed = vis
+			_on_flat_toggled(vis)
