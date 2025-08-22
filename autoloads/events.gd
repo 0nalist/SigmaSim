@@ -31,3 +31,15 @@ func emit_upgrade_purchased(id: String, level: int) -> void:
 	var signal_name: String = "%s_purchased" % id
 	if has_signal(signal_name):
 		emit_signal(signal_name, level)
+
+
+## Wallet signals
+
+func focus_wallet_card(id: String) -> void:
+	emit_signal("wallet_focus_card", id)
+
+func flash_wallet_value(id: String, amount: float) -> void:
+	emit_signal("wallet_flash_value", id, amount)
+
+func animate_wallet_to(id: String, to_value: float) -> void:
+	emit_signal("wallet_animate_to", id, to_value)

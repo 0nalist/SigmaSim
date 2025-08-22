@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5yi7pql76suu"]
+
+[ext_resource type="Script" uid="uid://dlicpwlad7qfb" path="res://components/apps/wallet/wallet_ui.gd" id="1_3navu"]
+
+[node name="WalletUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3navu")
