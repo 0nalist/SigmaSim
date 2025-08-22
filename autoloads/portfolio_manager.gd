@@ -46,10 +46,11 @@ const CREDIT_REQUIREMENTS := {
 		"gpu": 700,
 		"pay_down_credit": 9999,
 		"stock": 800,
-		"gift": 500,
-		"date": 600,
-		"EarlyBird": 650,
-		"upgrades": 750,
+                "gift": 500,
+                "date": 600,
+                "proposal": 800,
+                "EarlyBird": 650,
+                "upgrades": 750,
 		
 }
 # attempt_spend without credit argument:

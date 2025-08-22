@@ -22,6 +22,11 @@ const LOVE_COOLDOWN_MINUTES: int = 24 * 60
 @onready var breakup_confirm_label: Label = %BreakupConfirmLabel
 @onready var breakup_confirm_yes_button: Button = %BreakupConfirmYesButton
 @onready var breakup_confirm_no_button: Button = %BreakupConfirmNoButton
+@onready var next_stage_confirm: CenterContainer = %NextStageConfirm
+@onready var next_stage_confirm_label: Label = %NextStageConfirmLabel
+@onready var next_stage_confirm_primary_button: Button = %NextStageConfirmPrimaryButton
+@onready var next_stage_confirm_alt_button: Button = %NextStageConfirmAltButton
+@onready var next_stage_confirm_no_button: Button = %NextStageConfirmNoButton
 @onready var dime_status_label: Label = %DimeStatusLabel
 @onready var exclusivity_label: Label = %ExclusivityLabel
 
@@ -51,11 +56,14 @@ func setup_custom(data: Dictionary) -> void:
 func _ready() -> void:
 	gift_button.pressed.connect(_on_gift_pressed)
 	date_button.pressed.connect(_on_date_pressed)
-	breakup_button.pressed.connect(_on_breakup_pressed)
-	apologize_button.pressed.connect(_on_apologize_pressed)
-	next_stage_button.pressed.connect(_on_next_stage_pressed)
+        breakup_button.pressed.connect(_on_breakup_pressed)
+        apologize_button.pressed.connect(_on_apologize_pressed)
+        next_stage_button.pressed.connect(_on_next_stage_pressed)
         breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
         breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
+        next_stage_confirm_primary_button.pressed.connect(_on_next_stage_confirm_primary_pressed)
+        next_stage_confirm_alt_button.pressed.connect(_on_next_stage_confirm_alt_pressed)
+        next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
         love_button.pressed.connect(_on_love_pressed)
         NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
         NPCManager.exclusivity_core_changed.connect(_on_exclusivity_core_changed)
@@ -215,12 +223,88 @@ func _on_relationship_stage_changed(idx: int, _old_stage: int, new_stage: int) -
         _update_exclusivity_label()
 
 func _on_next_stage_pressed() -> void:
-	next_stage_button.visible = false
-	logic.progress_paused = false
-	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED:
-		npc.relationship_stage += 1
-	logic.change_state(npc.relationship_stage)
-	_update_all()
+        next_stage_button.visible = false
+        _prepare_next_stage_confirm()
+        next_stage_confirm.visible = true
+
+func _prepare_next_stage_confirm() -> void:
+        var current_stage: int = npc.relationship_stage
+        var current_name: String = STAGE_NAMES[current_stage]
+        var next_name: String = STAGE_NAMES[min(current_stage + 1, STAGE_NAMES.size() - 1)]
+        next_stage_confirm_label.text = "Transition to %s?" % next_name
+        next_stage_confirm_no_button.text = "Stay %s" % current_name
+        next_stage_confirm_alt_button.visible = false
+        if current_stage == NPCManager.RelationshipStage.DATING:
+                if npc.exclusivity_core == NPCManager.ExclusivityCore.POLY:
+                        next_stage_confirm_label.text = "How do you want to get serious?"
+                        next_stage_confirm_primary_button.text = "Get Serious, Monogamous"
+                        next_stage_confirm_alt_button.text = "Get Serious, Polyamorous"
+                        next_stage_confirm_alt_button.visible = true
+                else:
+                        next_stage_confirm_primary_button.text = "Get Serious"
+        elif current_stage == NPCManager.RelationshipStage.SERIOUS:
+                next_stage_confirm_primary_button.text = "Propose ($%s)" % NumberFormatter.format_commas(npc.proposal_cost, 0)
+        else:
+                next_stage_confirm_primary_button.text = "Transition to %s" % next_name
+
+func _advance_to_next_stage() -> void:
+        next_stage_confirm.visible = false
+        logic.progress_paused = false
+        next_stage_button.visible = false
+        if npc_idx != -1:
+                NPCManager.set_relationship_stage(npc_idx, npc.relationship_stage + 1)
+        else:
+                npc.relationship_stage += 1
+                npc.affinity_equilibrium = float(npc.relationship_stage) * 10.0
+        logic.change_state(npc.relationship_stage)
+        _update_all()
+
+func _transition_dating_to_serious_monog() -> void:
+        next_stage_confirm.visible = false
+        logic.progress_paused = false
+        next_stage_button.visible = false
+        if npc_idx != -1:
+                NPCManager.transition_dating_to_serious_monog(npc_idx)
+        else:
+                npc.relationship_stage = NPCManager.RelationshipStage.SERIOUS
+                npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+                if not npc.claimed_serious_monog_boost:
+                        npc.affinity += 20.0
+                        npc.claimed_serious_monog_boost = true
+        logic.change_state(npc.relationship_stage)
+        _update_all()
+
+func _transition_dating_to_serious_poly() -> void:
+        next_stage_confirm.visible = false
+        logic.progress_paused = false
+        next_stage_button.visible = false
+        if npc_idx != -1:
+                NPCManager.transition_dating_to_serious_poly(npc_idx)
+        else:
+                npc.relationship_stage = NPCManager.RelationshipStage.SERIOUS
+                npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+                npc.affinity = npc.affinity * 0.1
+                npc.affinity_equilibrium = npc.affinity_equilibrium * 0.5
+        logic.change_state(npc.relationship_stage)
+        _update_all()
+
+func _on_next_stage_confirm_primary_pressed() -> void:
+        match npc.relationship_stage:
+                NPCManager.RelationshipStage.DATING:
+                        _transition_dating_to_serious_monog()
+                NPCManager.RelationshipStage.SERIOUS:
+                        if PortfolioManager.attempt_spend(npc.proposal_cost, PortfolioManager.CREDIT_REQUIREMENTS["proposal"]):
+                                _advance_to_next_stage()
+                _:
+                        _advance_to_next_stage()
+
+func _on_next_stage_confirm_alt_pressed() -> void:
+        if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
+                _transition_dating_to_serious_poly()
+
+func _on_next_stage_confirm_no_pressed() -> void:
+        next_stage_confirm.visible = false
+        next_stage_button.visible = true
 func _on_gift_pressed() -> void:
 	if PortfolioManager.attempt_spend(npc.gift_cost, PortfolioManager.CREDIT_REQUIREMENTS["gift"]):
 		npc.affinity = min(npc.affinity + 5.0, 100.0)
