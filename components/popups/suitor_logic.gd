@@ -68,8 +68,8 @@ func on_date_paid() -> void:
 	progress_paused = false
 
 func apply_love() -> void:
-        var gain: float = StatManager.get_stat("love_affinity_gain", DEFAULT_LOVE_AFFINITY_GAIN)
-        npc.affinity = min(npc.affinity + gain, 100.0)
+	var gain: float = StatManager.get_stat("love_affinity_gain", DEFAULT_LOVE_AFFINITY_GAIN)
+	npc.affinity = min(npc.affinity + gain, 100.0)
 
 
 func get_stop_marks() -> Array[float]:

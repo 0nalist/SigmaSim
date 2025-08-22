@@ -65,9 +65,10 @@ theme_override_constants/margin_bottom = 25
 [node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 
 [node name="General" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_title = "General"
@@ -162,7 +163,6 @@ layout_mode = 2
 text = "All, Old & Upcoming Apps"
 
 [node name="Backgrounds" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_title = "Desktop Background"

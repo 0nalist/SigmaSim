@@ -40,30 +40,30 @@ func _ready() -> void:
 			var param = color_picker_params[i]
 			node.color = _get_param(param)
 			node.color_changed.connect(_on_color_changed.bind(param))
-        if flat_color_rect_path != NodePath():
-                flat_color_rect = get_tree().root.get_node_or_null(flat_color_rect_path)
-        if flat_color_picker_path != NodePath():
-                var picker = get_node_or_null(flat_color_picker_path)
-                if picker and picker is ColorPickerButton:
-                        var color = PlayerManager.get_shader_param(shader_name, "flat_color", Color(0, 0, 0.2))
-                        picker.color = color
-                        if flat_color_rect:
-                                flat_color_rect.color = color
-                        picker.color_changed.connect(_on_flat_color_changed)
-        if flat_color_toggle_path != NodePath():
-                var toggle = get_node_or_null(flat_color_toggle_path)
-                if toggle and toggle is CheckButton:
-                        var visible = PlayerManager.get_shader_param(shader_name, "flat_visible", true)
-                        toggle.button_pressed = visible
-                        if flat_color_rect:
-                                flat_color_rect.visible = visible and Events.is_desktop_background_visible(shader_name)
-                        toggle.toggled.connect(_on_flat_toggled)
-                        Events.desktop_background_toggled.connect(_on_background_toggled)
-        if toggle_button_path != NodePath():
-                var button = get_node_or_null(toggle_button_path)
-                if button and button is CheckButton:
-                        button.button_pressed = Events.is_desktop_background_visible(shader_name)
-                        button.toggled.connect(_on_toggled)
+		if flat_color_rect_path != NodePath():
+				flat_color_rect = get_tree().root.get_node_or_null(flat_color_rect_path)
+		if flat_color_picker_path != NodePath():
+				var picker = get_node_or_null(flat_color_picker_path)
+				if picker and picker is ColorPickerButton:
+						var color = PlayerManager.get_shader_param(shader_name, "flat_color", Color(0, 0, 0.2))
+						picker.color = color
+						if flat_color_rect:
+								flat_color_rect.color = color
+						picker.color_changed.connect(_on_flat_color_changed)
+		if flat_color_toggle_path != NodePath():
+				var toggle = get_node_or_null(flat_color_toggle_path)
+				if toggle and toggle is CheckButton:
+						var visible = PlayerManager.get_shader_param(shader_name, "flat_visible", true)
+						toggle.button_pressed = visible
+						if flat_color_rect:
+								flat_color_rect.visible = visible and Events.is_desktop_background_visible(shader_name)
+						toggle.toggled.connect(_on_flat_toggled)
+						Events.desktop_background_toggled.connect(_on_background_toggled)
+		if toggle_button_path != NodePath():
+				var button = get_node_or_null(toggle_button_path)
+				if button and button is CheckButton:
+						button.button_pressed = Events.is_desktop_background_visible(shader_name)
+						button.toggled.connect(_on_toggled)
 	if reset_button_path != NodePath():
 		var reset = get_node_or_null(reset_button_path)
 		if reset and reset is Button:
@@ -97,20 +97,20 @@ func _on_flat_color_changed(color: Color) -> void:
 	PlayerManager.set_shader_param(shader_name, "flat_color", color)
 
 func _on_flat_toggled(toggled_on: bool) -> void:
-        if flat_color_rect:
-                flat_color_rect.visible = toggled_on and Events.is_desktop_background_visible(shader_name)
-        PlayerManager.set_shader_param(shader_name, "flat_visible", toggled_on)
+		if flat_color_rect:
+				flat_color_rect.visible = toggled_on and Events.is_desktop_background_visible(shader_name)
+		PlayerManager.set_shader_param(shader_name, "flat_visible", toggled_on)
 
 func _on_toggled(toggled_on: bool) -> void:
 	Events.set_desktop_background_visible(shader_name, toggled_on)
 
 func _on_background_toggled(name: String, visible: bool) -> void:
-        if name == shader_name and flat_color_rect:
-                var toggle: CheckButton = null
-                if flat_color_toggle_path != NodePath():
-                        toggle = get_node_or_null(flat_color_toggle_path)
-                var toggled_on: bool = toggle.button_pressed if toggle else false
-                flat_color_rect.visible = visible and toggled_on
+		if name == shader_name and flat_color_rect:
+				var toggle: CheckButton = null
+				if flat_color_toggle_path != NodePath():
+						toggle = get_node_or_null(flat_color_toggle_path)
+				var toggled_on: bool = toggle.button_pressed if toggle else false
+				flat_color_rect.visible = visible and toggled_on
 
 func _get_param(param: StringName):
 	if shader_materials.is_empty():

@@ -279,6 +279,7 @@ text = " No "
 
 [node name="NextStageConfirm" type="CenterContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="NextStageConfirm"]
