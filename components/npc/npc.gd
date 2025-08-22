@@ -166,13 +166,13 @@ func to_dict() -> Dictionary:
 		# to avoid inflated values when reloading before the TimeManager
 		# has restored the canonical clock. This value is re-expanded to
 		# an absolute timestamp in `from_dict`.
-                "love_cooldown": _get_love_cooldown(),
-                "gift_cost": gift_cost,
-                "date_cost": date_cost,
-                "proposal_cost": proposal_cost,
+				"love_cooldown": _get_love_cooldown(),
+				"gift_cost": gift_cost,
+				"date_cost": date_cost,
+				"proposal_cost": proposal_cost,
 
-                "income": income,
-                "wealth": wealth,
+				"income": income,
+				"wealth": wealth,
 		"preferred_pet_names": preferred_pet_names.duplicate(),
 		"player_pet_names": player_pet_names.duplicate(),
 		"alpha": alpha,
@@ -259,11 +259,11 @@ static func from_dict(data: Dictionary) -> NPC:
 		var _now: int = TimeManager.get_now_minutes()
 		npc.love_cooldown = _now + _saved_cd
 
-        npc.gift_cost = _safe_float(data.get("gift_cost"), 25.0)
-        npc.date_cost = _safe_float(data.get("date_cost"), 200.0)
-        npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
-        npc.income= _safe_int(data.get("income"), 0)
-        npc.wealth= _safe_int(data.get("wealth"), 0)
+		npc.gift_cost = _safe_float(data.get("gift_cost"), 25.0)
+		npc.date_cost = _safe_float(data.get("date_cost"), 200.0)
+		npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
+		npc.income= _safe_int(data.get("income"), 0)
+		npc.wealth= _safe_int(data.get("wealth"), 0)
 
 	_assign_string_array(npc.preferred_pet_names, data.get("preferred_pet_names"))
 	_assign_string_array(npc.player_pet_names, data.get("player_pet_names"))

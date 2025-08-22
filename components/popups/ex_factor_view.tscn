@@ -279,7 +279,6 @@ text = " No "
 
 [node name="NextStageConfirm" type="CenterContainer" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="NextStageConfirm"]
@@ -309,25 +308,23 @@ autowrap_mode = 3
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Buttons" type="HBoxContainer" parent="NextStageConfirm/Panel/MarginContainer/VBox"]
+[node name="VBoxContainer" type="VBoxContainer" parent="NextStageConfirm/Panel/MarginContainer/VBox"]
 layout_mode = 2
-size_flags_vertical = 8
-theme_override_constants/separation = 8
 
-[node name="NextStageConfirmPrimaryButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/Buttons"]
+[node name="NextStageConfirmPrimaryButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Transition"
 
-[node name="NextStageConfirmAltButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/Buttons"]
+[node name="NextStageConfirmAltButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Alt"
 
-[node name="NextStageConfirmNoButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/Buttons"]
+[node name="NextStageConfirmNoButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
