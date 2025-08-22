@@ -36,10 +36,14 @@ var commands := {
 		"args": "",
 		"description": "Clears the command log window.",
 	},
-	"stress_test": {
-		"args": "",
-		"description": "Opens every app in the app registry at once.",
-	},
+        "stress_test": {
+                "args": "",
+                "description": "Opens every app in the app registry at once.",
+        },
+       "upgrademax": {
+               "args": "",
+               "description": "Purchases all upgrades ignoring costs.",
+       },
 }
 
 
@@ -277,13 +281,25 @@ func process_command(command: String) -> bool:
 			return true
 		
 		
+		"upgrademax":
+			_purchase_all_upgrades()
+			return true
+
 		"clear_log":
 			_clear_command_log()
 			_set_feedback("Command log cleared.", true)
 			return true
-		
+
 		_:
-				return false
+			return false
+
+func _purchase_all_upgrades() -> void:
+	for id in UpgradeManager.upgrades.keys():
+		var max_level = UpgradeManager.max_level(id)
+		var target_level = max_level if max_level > 0 else 1
+		UpgradeManager.player_levels[id] = target_level
+		UpgradeManager.upgrade_purchased.emit(id, target_level)
+	UpgradeManager.emit_signal("levels_changed")
 
 func _parse_number(s: String) -> Variant:
 	s = s.strip_edges()
