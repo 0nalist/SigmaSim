@@ -24,9 +24,10 @@ var STOCK_RESOURCES = {
 }
 
 var CRYPTO_RESOURCES = {
-        "BITC": preload("res://resources/crypto/bitc_crypto.tres"),
-        "HAWK": preload("res://resources/crypto/hawk_crypto.tres"),
-        "WORM": preload("res://resources/crypto/worm_crypto.tres"),
+	"BITC": preload("res://resources/crypto/bitc_crypto.tres"),
+	"HAWK1": preload("res://resources/crypto/hawk_crypto.tres"),
+	"HAWK2": preload("res://resources/crypto/hawk_crypto.tres"),
+	"WORM": preload("res://resources/crypto/worm_crypto.tres"),
 }
 
 var EVENT_RESOURCES = {
@@ -34,14 +35,16 @@ var EVENT_RESOURCES = {
 }
 
 func _ready() -> void:
-        TimeManager.minute_passed.connect(_on_minute_passed)
-        if crypto_market.is_empty():
-                print("crypto market was empty")
-                _init_crypto_market()
-        if stock_market.is_empty():
-                _init_stock_market()
-        _init_market_events()
-        print("market manager ready, crypto should be initialized")
+	TimeManager.minute_passed.connect(_on_minute_passed)
+	if crypto_market.is_empty():
+		print("crypto market was empty")
+		_init_crypto_market()
+	if stock_market.is_empty():
+		_init_stock_market()
+	print("market manager ready, crypto should be initialized")
+
+func init_new_save_events() -> void:
+	_init_market_events()
 
 func register_crypto(crypto: Cryptocurrency) -> void:
 	if crypto == null:
@@ -188,12 +191,11 @@ func _init_crypto_market() -> void:
 			continue
 
 		var c: Cryptocurrency = crypto_res as Cryptocurrency
+		# Ensure each crypto uses its dictionary key as symbol and display name
+		c.symbol = str(key_symbol)
+		c.display_name = str(key_symbol)
 		print("_init_crypto_market: loaded '" + str(key_symbol) + "' -> symbol='" + str(c.symbol) + "', name='" + str(c.display_name) + "', price=" + str(c.price) + ", id=" + str(c.get_instance_id()))
-
-		if str(c.symbol).is_empty():
-			push_warning("_init_crypto_market: '" + str(key_symbol) + "' had empty symbol; setting symbol to key '" + str(key_symbol) + "'. Fix the .tres to export a non-empty symbol.")
-			c.symbol = str(key_symbol)
-
+		
 		print("registering crypto: '" + str(c.symbol) + "' from key '" + str(key_symbol) + "', resource_name='" + str(c.resource_name) + "'")
 		register_crypto(c)
 		if crypto_market.has(c.symbol):
@@ -219,18 +221,23 @@ func _init_stock_market() -> void:
                                 register_stock(stock)
 
 func _init_market_events() -> void:
-       for key in EVENT_RESOURCES.keys():
-               var base_res: Resource = EVENT_RESOURCES[key]
-               if base_res == null:
-                       continue
-               var event_res: Resource = base_res.duplicate(true)
-               if event_res is MarketEvent:
-                       var ev: MarketEvent = event_res
-                       ev.schedule(TimeManager.get_now_minutes(), RNGManager.market_manager.get_rng())
-                       if ev.target_type == "crypto":
-                               crypto_events[ev.target_symbol] = ev
-                       elif ev.target_type == "stock":
-                               stock_events[ev.target_symbol] = ev
+	crypto_events.clear()
+	stock_events.clear()
+	var rng = RNGManager.market_manager.get_rng()
+	for key in EVENT_RESOURCES.keys():
+		var base_res: Resource = EVENT_RESOURCES[key]
+		if base_res == null:
+			continue
+		var event_res: Resource = base_res.duplicate(true)
+		if event_res is MarketEvent:
+			var ev: MarketEvent = event_res
+			if key == "HAWK_PUMP":
+				ev.target_symbol = rng.randi_range(1, 2) == 1 ? "HAWK1" : "HAWK2"
+			ev.schedule(TimeManager.get_now_minutes(), rng)
+			if ev.target_type == "crypto":
+				crypto_events[ev.target_symbol] = ev
+			elif ev.target_type == "stock":
+				stock_events[ev.target_symbol] = ev
 
 ## --- SAVELOAD --- ##
 
