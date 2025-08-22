@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1")
-target_symbol = "HAWK"
+target_symbol = ""
 target_type = "crypto"
 start_min_minutes = 10
 start_max_minutes = 60
