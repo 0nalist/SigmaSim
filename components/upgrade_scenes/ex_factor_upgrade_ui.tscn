@@ -13,7 +13,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1")
-window_title = "eX Factor Upgrades"
+window_title = "eXFactor Upgrades"
 default_window_size = Vector2(480, 480)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -28,10 +28,10 @@ layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "e[sup]x[/sup] Factor Upgrades"
+text = "eXFactor Upgrades"
 horizontal_alignment = 1
 
 [node name="SystemUpgradeUI" parent="MarginContainer/VBoxContainer" instance=ExtResource("2")]
 layout_mode = 2
 size_flags_vertical = 3
-system_name = "e[sup]x[/sup] Factor"
+system_name = "eXFactor"
