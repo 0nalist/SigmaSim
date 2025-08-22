@@ -8,7 +8,10 @@ var use_json_for_last_names: bool = true # Set false if you want to load from a 
 var first_names: Array[GenderedFirstName] = []
 var last_names: Array[String] = []
 var middle_initials: Array[String] = []
-var global_seed: int = 123456
+var name_seed: int = 0
+
+func set_name_seed(seed: int) -> void:
+	name_seed = seed
 
 func _ready():
 	# Load names
@@ -59,7 +62,7 @@ func get_npc_name_by_index(npc_index: int) -> Dictionary:
 	var total_combos = first_names.size() * middle_initials.size() * last_names.size()
 	var suffix_num = npc_index / total_combos
 	var base_index = npc_index % total_combos
-	var name_index = feistel_shuffle(base_index, total_combos, global_seed)
+	var name_index = feistel_shuffle(base_index, total_combos, name_seed)
 
 	var first_count = first_names.size()
 	var middle_count = middle_initials.size()

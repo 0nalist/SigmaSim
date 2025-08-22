@@ -41,6 +41,25 @@ var credit_interest_rate: float:
 
 var credit_score: int = 700
 
+const CREDIT_REQUIREMENTS := {
+		# purchase_type : required_credit_score
+		"gpu": 700,
+		"pay_down_credit": 9999,
+		"stock": 800,
+		"gift": 500,
+		"date": 600,
+		"EarlyBird": 650,
+		"upgrades": 750,
+		
+}
+# attempt_spend without credit argument:
+# autoloads/upgrade_manager.gd -> _deduct_currency
+# components/popups/ex_factor_view.gd -> _on_gift_pressed, _on_date_pressed
+# components/ui/hire_popup.gd -> worker hire in _populate_hire_tab
+# components/apps/early_bird/early_bird.gd -> _on_autopilot_button_pressed
+
+
+
 var student_loans: float:
 	get:
 		return get_student_loans()
@@ -254,7 +273,7 @@ func _recalculate_credit_score():
 	credit_score = clamp(base_score, 300, 850)
 
 func pay_down_credit(amount: float) -> bool:
-	if attempt_spend(amount, 9999):
+	if attempt_spend(amount, CREDIT_REQUIREMENTS["pay_down_credit"]):
 		set_credit_used(max(get_credit_used() - amount, 0.0))
 		return true
 	return false
@@ -321,7 +340,7 @@ func buy_stock(symbol: String, amount: int = 1) -> bool:
 		return false
 
 	var total_price = stock.price * amount
-	if attempt_spend(total_price, 800):
+	if attempt_spend(total_price, CREDIT_REQUIREMENTS["stock"]):
 		stocks_owned[symbol] = stocks_owned.get(symbol, 0) + amount
 		MarketManager.apply_stock_transaction(symbol, amount)
 		return true

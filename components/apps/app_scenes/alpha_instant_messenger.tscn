@@ -45,9 +45,6 @@ window_title = "AIM"
 window_icon = ExtResource("3_8iipa")
 default_window_size = Vector2(190, 480)
 default_position = "left"
-color1 = Color(1, 1, 1, 1)
-color2 = Color(1, 1, 1, 1)
-color3 = Color(1, 1, 1, 1)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_w0u3w")

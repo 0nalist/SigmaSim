@@ -8,6 +8,7 @@ class_name EarlyBirdPipeManager
 
 var spawn_timer: Timer
 var cached_viewport_size: Vector2
+
 @onready var _root_control: Control = get_parent()
 
 func _ready() -> void:
@@ -18,6 +19,7 @@ func _ready() -> void:
 
         cached_viewport_size = _root_control.size
         _root_control.resized.connect(_on_viewport_size_changed)
+
 	
 
 func start_spawning() -> void:
@@ -27,15 +29,18 @@ func stop_spawning() -> void:
 	spawn_timer.stop()
 
 func reset() -> void:
-        stop_spawning()
-        for child in get_children():
-                if child is EarlyBirdPipePair:
-                        child.queue_free()
+
+		stop_spawning()
+		for child in get_children():
+				if child is EarlyBirdPipePair:
+						child.queue_free()
+
 
 func _on_spawn_pipe_pair() -> void:
 	var pipe_pair = pipe_pair_scene.instantiate()
 	add_child(pipe_pair)
 	
+
         pipe_pair.position = Vector2(
         cached_viewport_size.x + spawn_x_offset,
         0
@@ -43,6 +48,7 @@ func _on_spawn_pipe_pair() -> void:
         pipe_pair.player = %EarlyBirdPlayer
 
         pipe_pair.randomize_gap_position(cached_viewport_size.y)
+
 
 func set_move_speed(new_speed: float) -> void:
 	for child in get_children():
@@ -52,14 +58,18 @@ func set_move_speed(new_speed: float) -> void:
 	# Adjust spawn interval: faster speed = spawn farther apart
 	spawn_interval = clamp(1 + (100.0 / new_speed), 0.25, 2) 
 	if spawn_timer:
-                spawn_timer.wait_time = spawn_interval
+
+				spawn_timer.wait_time = spawn_interval
+
 
 
 
 func _on_viewport_size_changed() -> void:
+
         var new_size = _root_control.size
         if new_size.x > 1 and new_size.y > 1:
                 cached_viewport_size = new_size
+
 
 
 func get_active_pipe_pairs() -> Array[EarlyBirdPipePair]:

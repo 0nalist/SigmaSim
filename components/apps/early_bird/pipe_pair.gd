@@ -13,6 +13,7 @@ var player: Node = null # Reference to player for scoring check
 
 
 func _physics_process(delta: float) -> void:
+
         position.x -= move_speed * delta
 
         # Check for scoring
@@ -35,6 +36,7 @@ func randomize_gap_position(viewport_height: float) -> void:
                         viewport_height - safe_margin - gap_size / 2
         )
         position.y = gap_center_y
+
 
 
 

@@ -31,10 +31,10 @@ class GPURNG extends RNGStream:
 class RizzBattleDataRNG extends RNGStream:
 	pass
 
-class NameGeneratorRNG extends RNGStream:
+class FumbleManagerRNG extends RNGStream:
 	pass
 
-class FumbleManagerRNG extends RNGStream:
+class FumbleProfileStackRNG extends RNGStream:
 	pass
 
 class WorkerManagerRNG extends RNGStream:
@@ -76,8 +76,8 @@ class NPCManagerRNG extends RNGStream:
 var global := GlobalRNG.new()
 var gpu := GPURNG.new()
 var rizz_battle_data := RizzBattleDataRNG.new()
-var name_generator := NameGeneratorRNG.new()
 var fumble_manager := FumbleManagerRNG.new()
+var fumble_profile_stack := FumbleProfileStackRNG.new()
 var worker_manager := WorkerManagerRNG.new()
 var market_manager := MarketManagerRNG.new()
 var siggy := SiggyRNG.new()
@@ -95,12 +95,14 @@ func _derive_seed(name: String) -> int:
 	return hash(str(seed) + ":" + name)
 
 func init_seed(seed_value: int) -> void:
+	print("RNGManager.init_seed:", seed_value)
 	seed = seed_value
 	global.init_seed(seed)
 	gpu.init_seed(_derive_seed("gpu"))
 	rizz_battle_data.init_seed(_derive_seed("rizz_battle_data"))
-	name_generator.init_seed(_derive_seed("name_generator"))
+	NameManager.set_name_seed(_derive_seed("name_manager"))
 	fumble_manager.init_seed(_derive_seed("fumble_manager"))
+	fumble_profile_stack.init_seed(_derive_seed("fumble_profile_stack"))
 	worker_manager.init_seed(_derive_seed("worker_manager"))
 	market_manager.init_seed(_derive_seed("market_manager"))
 	siggy.init_seed(_derive_seed("siggy"))

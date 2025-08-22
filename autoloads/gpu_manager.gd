@@ -16,7 +16,6 @@ var gpu_base_price: float = 100.0
 var current_gpu_price: float = gpu_base_price
 var gpu_price_growth: float = 1.2  # price multiplier each purchase
 
-var gpu_credit_requirement: float = 700
 
 
 @export var base_power: int = 10
@@ -92,7 +91,7 @@ func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 	emit_signal("gpus_changed")
 
 func buy_gpu() -> bool:
-	if PortfolioManager.attempt_spend(current_gpu_price, gpu_credit_requirement):
+	if PortfolioManager.attempt_spend(current_gpu_price, PortfolioManager.CREDIT_REQUIREMENTS["gpu"]):
 		add_gpu("")  # Add a free GPU (unassigned)
 		current_gpu_price *= gpu_price_growth
 		emit_signal("gpus_changed")
