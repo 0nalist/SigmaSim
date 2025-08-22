@@ -27,22 +27,22 @@ var _save_queue: Dictionary = {}
 var _save_timer: Timer
 
 func _ready() -> void:
-        TimeManager.hour_passed.connect(_on_hour_passed)
-        _save_timer = Timer.new()
-        _save_timer.wait_time = 0.5
-        _save_timer.one_shot = true
-        _save_timer.timeout.connect(_flush_save_queue)
-        add_child(_save_timer)
+		TimeManager.hour_passed.connect(_on_hour_passed)
+		_save_timer = Timer.new()
+		_save_timer.wait_time = 0.5
+		_save_timer.one_shot = true
+		_save_timer.timeout.connect(_flush_save_queue)
+		add_child(_save_timer)
 
 func _queue_save(idx: int) -> void:
-        _save_queue[idx] = true
-        if _save_timer.is_stopped():
-                _save_timer.start()
+		_save_queue[idx] = true
+		if _save_timer.is_stopped():
+				_save_timer.start()
 
 func _flush_save_queue() -> void:
-        for idx in _save_queue.keys():
-                DBManager.save_npc(idx, npcs[idx])
-        _save_queue.clear()
+		for idx in _save_queue.keys():
+				DBManager.save_npc(idx, npcs[idx])
+		_save_queue.clear()
 
 # === MAIN API ===
 
@@ -77,27 +77,27 @@ func set_npc_field(idx: int, field: String, value) -> void:
 		npcs[idx].affinity_equilibrium = float(value) * 10.0
 		if persistent_npcs.has(idx):
 			persistent_npcs[idx]["affinity_equilibrium"] = npcs[idx].affinity_equilibrium
-        if persistent_npcs.has(idx):
-                persistent_npcs[idx][field] = value
-                _queue_save(idx)
-        else:
-                if not npc_overrides.has(idx):
-                        npc_overrides[idx] = {}
-                npc_overrides[idx][field] = value
-                if field == "portrait_config":
-                        promote_to_persistent(idx)
+		if persistent_npcs.has(idx):
+				persistent_npcs[idx][field] = value
+				_queue_save(idx)
+		else:
+				if not npc_overrides.has(idx):
+						npc_overrides[idx] = {}
+				npc_overrides[idx][field] = value
+				if field == "portrait_config":
+						promote_to_persistent(idx)
 
 	if field == "portrait_config":
 		emit_signal("portrait_changed", idx, value)
 	if field == "affinity":
 		emit_signal("affinity_changed", idx, value)
 func promote_to_persistent(idx: int) -> void:
-        if not persistent_npcs.has(idx):
-                var npc = get_npc_by_index(idx)
-                persistent_npcs[idx] = npc_overrides.get(idx, {}).duplicate()
-                npc_overrides.erase(idx)
-                _index_persistent_npc(idx)
-                _queue_save(idx)
+		if not persistent_npcs.has(idx):
+				var npc = get_npc_by_index(idx)
+				persistent_npcs[idx] = npc_overrides.get(idx, {}).duplicate()
+				npc_overrides.erase(idx)
+				_index_persistent_npc(idx)
+				_queue_save(idx)
 
 # Returns NPC indices matching a dot product similarity threshold with preferred_gender
 func get_npcs_by_gender_dot(app_name: String, preferred_gender: Vector3, min_similarity: float, count: int, exclude: Array[int]=[]) -> Array[int]:
@@ -257,6 +257,10 @@ func set_relationship_stage(npc_idx: int, new_stage: int) -> void:
 	persistent_npcs[npc_idx]["affinity_equilibrium"] = npc.affinity_equilibrium
 	DBManager.save_npc(npc_idx, npc)
 	emit_signal("relationship_stage_changed", npc_idx, old_stage, npc.relationship_stage)
+	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
+
+	if new_stage == RelationshipStage.DATING and old_stage < RelationshipStage.DATING:
+		notify_player_advanced_someone_to_dating(npc_idx)
 	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 func go_exclusive_during_dating(npc_idx: int) -> void:
