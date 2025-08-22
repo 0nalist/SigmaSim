@@ -255,20 +255,38 @@ func go_exclusive_during_dating(npc_idx: int) -> void:
 	var old_core: int = npc.exclusivity_core
 	var old_affinity: float = npc.affinity
 	var old_equilibrium: float = npc.affinity_equilibrium
-	npc.exclusivity_core = ExclusivityCore.MONOG
-	if not npc.claimed_exclusive_boost:
-		npc.affinity = npc.affinity + 20.0
-		npc.claimed_exclusive_boost = true
-	promote_to_persistent(npc_idx)
-	persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
-	persistent_npcs[npc_idx]["affinity"] = npc.affinity
-	persistent_npcs[npc_idx]["claimed_exclusive_boost"] = npc.claimed_exclusive_boost
+        npc.exclusivity_core = ExclusivityCore.MONOG
+        npc.affinity = min(npc.affinity * 1.5, 100.0)
+        npc.claimed_exclusive_boost = true
+        promote_to_persistent(npc_idx)
+        persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
+        persistent_npcs[npc_idx]["affinity"] = npc.affinity
+        persistent_npcs[npc_idx]["claimed_exclusive_boost"] = npc.claimed_exclusive_boost
 	DBManager.save_npc(npc_idx, npc)
 	if old_core != npc.exclusivity_core:
 		emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
 	if old_affinity != npc.affinity:
 		emit_signal("affinity_changed", npc_idx, npc.affinity)
-	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
+        print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
+
+func go_poly_during_dating(npc_idx: int) -> void:
+        var npc: NPC = get_npc_by_index(npc_idx)
+        if npc.relationship_stage != RelationshipStage.DATING:
+                return
+        if npc.exclusivity_core == ExclusivityCore.POLY:
+                return
+        var old_stage: int = npc.relationship_stage
+        var old_core: int = npc.exclusivity_core
+        var old_affinity: float = npc.affinity
+        npc.exclusivity_core = ExclusivityCore.POLY
+        npc.affinity = npc.affinity * 0.1
+        promote_to_persistent(npc_idx)
+        persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
+        persistent_npcs[npc_idx]["affinity"] = npc.affinity
+        DBManager.save_npc(npc_idx, npc)
+        emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
+        emit_signal("affinity_changed", npc_idx, npc.affinity)
+        print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity])
 
 func transition_dating_to_serious_monog(npc_idx: int) -> void:
 	var npc: NPC = get_npc_by_index(npc_idx)
@@ -322,18 +340,18 @@ func transition_dating_to_serious_poly(npc_idx: int) -> void:
 	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 func request_poly_at_serious_or_engaged(npc_idx: int) -> void:
-	var npc: NPC = get_npc_by_index(npc_idx)
-	if npc.relationship_stage != RelationshipStage.SERIOUS and npc.relationship_stage != RelationshipStage.ENGAGED:
-		return
+        var npc: NPC = get_npc_by_index(npc_idx)
+        if npc.relationship_stage != RelationshipStage.SERIOUS and npc.relationship_stage != RelationshipStage.ENGAGED and npc.relationship_stage != RelationshipStage.MARRIED:
+                return
 	if npc.exclusivity_core == ExclusivityCore.POLY:
 		return
 	var old_stage: int = npc.relationship_stage
 	var old_core: int = npc.exclusivity_core
 	var old_affinity: float = npc.affinity
 	var old_equilibrium: float = npc.affinity_equilibrium
-	npc.exclusivity_core = ExclusivityCore.POLY
-	npc.affinity = npc.affinity * 0.5
-	npc.affinity_equilibrium = npc.affinity_equilibrium * 0.5
+        npc.exclusivity_core = ExclusivityCore.POLY
+        npc.affinity = npc.affinity * 0.1
+        npc.affinity_equilibrium = npc.affinity_equilibrium * 0.5
 	promote_to_persistent(npc_idx)
 	persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
 	persistent_npcs[npc_idx]["affinity"] = npc.affinity
@@ -355,12 +373,31 @@ func return_to_monogamy(npc_idx: int) -> void:
 	var old_core: int = npc.exclusivity_core
 	var old_affinity: float = npc.affinity
 	var old_equilibrium: float = npc.affinity_equilibrium
-	npc.exclusivity_core = ExclusivityCore.MONOG
-	promote_to_persistent(npc_idx)
-	persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
-	DBManager.save_npc(npc_idx, npc)
-	emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
-	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
+        npc.exclusivity_core = ExclusivityCore.MONOG
+        npc.affinity = min(npc.affinity * 1.5, 100.0)
+        promote_to_persistent(npc_idx)
+        persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
+        persistent_npcs[npc_idx]["affinity"] = npc.affinity
+        DBManager.save_npc(npc_idx, npc)
+        emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
+        emit_signal("affinity_changed", npc_idx, npc.affinity)
+        print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
+
+func come_clean_from_cheating(npc_idx: int) -> void:
+        var npc: NPC = get_npc_by_index(npc_idx)
+        if npc.exclusivity_core != ExclusivityCore.CHEATING:
+                return
+        var old_core: int = npc.exclusivity_core
+        var old_affinity: float = npc.affinity
+        npc.exclusivity_core = ExclusivityCore.POLY
+        npc.affinity = 1.0
+        promote_to_persistent(npc_idx)
+        persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
+        persistent_npcs[npc_idx]["affinity"] = npc.affinity
+        DBManager.save_npc(npc_idx, npc)
+        emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
+        emit_signal("affinity_changed", npc_idx, npc.affinity)
+        print("NPC %d: come clean from cheating core %d -> %d affinity %.2f -> %.2f" % [npc_idx, old_core, npc.exclusivity_core, old_affinity, npc.affinity])
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
 	for idx in encountered_npcs:
