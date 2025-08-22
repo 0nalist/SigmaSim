@@ -27,15 +27,13 @@ func _physics_process(delta: float) -> void:
 				queue_free()
 
 func randomize_gap_position(viewport_height: float) -> void:
-		var safe_margin = 50.0
+        var safe_margin = 50.0
 
-		# Randomize center Y position for the GAP
-		var rng = RNGManager.early_bird.get_rng()
-		var gap_center_y = rng.randf_range(
-						safe_margin + gap_size / 2,
-						viewport_height - safe_margin - gap_size / 2
-		)
-		position.y = gap_center_y
+        # Randomize center Y position for the GAP within bounds
+        var rng = RNGManager.early_bird.get_rng()
+        var lower_bound = max(safe_margin + gap_size / 2, min_y + gap_size / 2)
+        var upper_bound = min(viewport_height - safe_margin - gap_size / 2, max_y - gap_size / 2)
+        position.y = rng.randf_range(lower_bound, upper_bound)
 
 
 
