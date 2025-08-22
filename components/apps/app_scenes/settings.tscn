@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="2_wlela"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_wxdtm"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="4_a82ne"]
+[ext_resource type="Script" path="res://components/shader_controller_module.gd" id="5_p2fk4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlela"]
 bg_color = Color(0.156141, 0.265577, 0.156147, 1)
@@ -182,6 +183,15 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_filter = 1
+script = ExtResource("5_p2fk4")
+shader_name = "BlueWarp"
+collect_warp_shaders = true
+toggle_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpButton")
+reset_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpResetButton")
+slider_nodes = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/BlueWarpStretchSlider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer2/BlueWarpThing1Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer3/BlueWarpThing2Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer4/BlueWarpThing3Slider"), NodePath("MarginContainer/VBoxContainer/HBoxContainer5/BlueWarpSpeedSlider")]
+slider_params = ["stretch", "thing1", "thing2", "thing3", "speed"]
+color_picker_nodes = [NodePath("MarginContainer/VBoxContainer/ColorRowLow/BlueWarpColorLowPicker"), NodePath("MarginContainer/VBoxContainer/ColorRowMid/BlueWarpColorMidPicker"), NodePath("MarginContainer/VBoxContainer/ColorRowHigh/BlueWarpColorHighPicker")]
+color_picker_params = ["color_low", "color_mid", "color_high"]
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer"]
 layout_mode = 2
@@ -677,16 +687,6 @@ text = "Reset"
 
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="pressed" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/CreateAppsFolderButton" to="." method="_on_create_apps_folder_button_pressed"]
-[connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/BlueWarpButton" to="." method="_on_blue_warp_button_toggled"]
-[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowLow/BlueWarpColorLowPicker" to="." method="_on_blue_warp_color_low_picker_color_changed"]
-[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowMid/BlueWarpColorMidPicker" to="." method="_on_blue_warp_color_mid_picker_color_changed"]
-[connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowHigh/BlueWarpColorHighPicker" to="." method="_on_blue_warp_color_high_picker_color_changed"]
-[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpStretchSlider" to="." method="_on_blue_warp_stretch_slider_value_changed"]
-[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer2/BlueWarpThing1Slider" to="." method="_on_blue_warp_thing1_slider_value_changed"]
-[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer3/BlueWarpThing2Slider" to="." method="_on_blue_warp_thing2_slider_value_changed"]
-[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer4/BlueWarpThing3Slider" to="." method="_on_blue_warp_thing3_slider_value_changed"]
-[connection signal="value_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/HBoxContainer5/BlueWarpSpeedSlider" to="." method="_on_blue_warp_speed_slider_value_changed"]
-[connection signal="pressed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/BlueWarpResetButton" to="." method="_on_blue_warp_reset_button_pressed"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/WavesButton" to="." method="_on_waves_button_toggled"]
 [connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer/BottomColorPicker" to="." method="_on_bottom_color_picker_color_changed"]
 [connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer/TopColorPicker" to="." method="_on_top_color_picker_color_changed"]

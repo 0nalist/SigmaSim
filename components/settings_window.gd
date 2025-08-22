@@ -6,7 +6,6 @@ extends Pane
 @onready var autosave_check_box: CheckBox = %AutosaveCheckBox
 @onready var autosave_timer_label: Label = %AutosaveTimerLabel
 
-@onready var blue_warp_button: CheckButton = %BlueWarpButton
 @onready var comic_dots1_button: CheckButton = %ComicDots1Button
 @onready var comic_dots2_button: CheckButton = %ComicDots2Button
 @onready var waves_button: CheckButton = %WavesButton
@@ -16,14 +15,6 @@ extends Pane
 @onready var wave_size_slider: HSlider = %WaveSizeSlider
 @onready var wave_time_mul_slider: HSlider = %WaveTimeMulSlider
 @onready var total_phases_slider: HSlider = %TotalPhasesSlider
-@onready var blue_warp_stretch_slider: HSlider = %BlueWarpStretchSlider
-@onready var blue_warp_thing1_slider: HSlider = %BlueWarpThing1Slider
-@onready var blue_warp_thing2_slider: HSlider = %BlueWarpThing2Slider
-@onready var blue_warp_thing3_slider: HSlider = %BlueWarpThing3Slider
-@onready var blue_warp_speed_slider: HSlider = %BlueWarpSpeedSlider
-@onready var blue_warp_color_low_picker: ColorPickerButton = %BlueWarpColorLowPicker
-@onready var blue_warp_color_mid_picker: ColorPickerButton = %BlueWarpColorMidPicker
-@onready var blue_warp_color_high_picker: ColorPickerButton = %BlueWarpColorHighPicker
 @onready var comic_dots1_color_picker: ColorPickerButton = %ComicDots1ColorPicker
 @onready var comic_dots1_multiplier_slider: HSlider = %ComicDots1MultiplierSlider
 @onready var comic_dots1_speed_slider: HSlider = %ComicDots1SpeedSlider
@@ -41,12 +32,9 @@ extends Pane
 @onready var tab_container: TabContainer = %TabContainer
 @onready var create_apps_folder_button: Button = %CreateAppsFolderButton
 @onready var waves_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/WavesShader").material
-@onready var blue_warp_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/BlueWarpShader").material
 @onready var comic_dots1_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueVert").material
 @onready var comic_dots2_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueHor").material
 @onready var electric_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ElectricShader").material
-
-var warp_shader_materials: Array[ShaderMaterial] = []
 
 func setup_custom(tab_name: String) -> void:
 		if tab_name == "Backgrounds":
@@ -66,29 +54,18 @@ func _ready() -> void:
 	autosave_check_box.button_pressed = TimeManager.autosave_enabled
 	_update_autosave_timer_label()
 	TimeManager.minute_passed.connect(_on_minute_passed)
-	blue_warp_button.button_pressed = Events.is_desktop_background_visible("BlueWarp")
-	comic_dots1_button.button_pressed = Events.is_desktop_background_visible("ComicDots1")
-	comic_dots2_button.button_pressed = Events.is_desktop_background_visible("ComicDots2")
-	waves_button.button_pressed = Events.is_desktop_background_visible("Waves")
-	_refresh_warp_shader_materials()
-	get_tree().node_added.connect(_on_node_added)
+        comic_dots1_button.button_pressed = Events.is_desktop_background_visible("ComicDots1")
+        comic_dots2_button.button_pressed = Events.is_desktop_background_visible("ComicDots2")
+        waves_button.button_pressed = Events.is_desktop_background_visible("Waves")
 	bottom_color_picker.color = waves_shader_material.get_shader_parameter("bottom_color")
 	top_color_picker.color = waves_shader_material.get_shader_parameter("top_color")
 	wave_amp_slider.value = waves_shader_material.get_shader_parameter("wave_amp")
 	wave_size_slider.value = waves_shader_material.get_shader_parameter("wave_size")
 	wave_time_mul_slider.value = waves_shader_material.get_shader_parameter("wave_time_mul")
 	total_phases_slider.value = waves_shader_material.get_shader_parameter("total_phases")
-	blue_warp_stretch_slider.value = blue_warp_shader_material.get_shader_parameter("stretch")
-	blue_warp_thing1_slider.value = blue_warp_shader_material.get_shader_parameter("thing1")
-	blue_warp_thing2_slider.value = blue_warp_shader_material.get_shader_parameter("thing2")
-	blue_warp_thing3_slider.value = blue_warp_shader_material.get_shader_parameter("thing3")
-	blue_warp_speed_slider.value = blue_warp_shader_material.get_shader_parameter("speed")
-	blue_warp_color_low_picker.color = blue_warp_shader_material.get_shader_parameter("color_low")
-	blue_warp_color_mid_picker.color = blue_warp_shader_material.get_shader_parameter("color_mid")
-	blue_warp_color_high_picker.color = blue_warp_shader_material.get_shader_parameter("color_high")
-	comic_dots1_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
-	comic_dots1_multiplier_slider.value = comic_dots1_shader_material.get_shader_parameter("circle_multiplier")
-	comic_dots1_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
+        comic_dots1_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
+        comic_dots1_multiplier_slider.value = comic_dots1_shader_material.get_shader_parameter("circle_multiplier")
+        comic_dots1_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
 	comic_dots2_color_picker.color = comic_dots2_shader_material.get_shader_parameter("circle_color")
 	comic_dots2_multiplier_slider.value = comic_dots2_shader_material.get_shader_parameter("circle_multiplier")
 	comic_dots2_speed_slider.value = comic_dots2_shader_material.get_shader_parameter("speed")
@@ -102,38 +79,6 @@ func _ready() -> void:
 	electric_scale_x_slider.value = electric_scale.x
 	electric_scale_y_slider.value = electric_scale.y
 
-func _refresh_warp_shader_materials() -> void:
-		warp_shader_materials.clear()
-		_collect_warp_shader_materials(get_tree().root)
-
-func _collect_warp_shader_materials(node: Node) -> void:
-		if node is CanvasItem:
-				var mat = node.material
-				if mat is ShaderMaterial and mat.shader and mat.shader.resource_path.ends_with("warp_shader.gdshader"):
-						if mat not in warp_shader_materials:
-								warp_shader_materials.append(mat)
-								_apply_saved_params_to_material(mat)
-		for child in node.get_children():
-				_collect_warp_shader_materials(child)
-
-func _on_node_added(node: Node) -> void:
-		_collect_warp_shader_materials(node)
-
-func _apply_saved_params_to_material(mat: ShaderMaterial) -> void:
-
-	var d: Dictionary = PlayerManager.DEFAULT_BACKGROUND_SHADERS["BlueWarp"]
-	mat.set_shader_parameter("stretch", PlayerManager.get_shader_param("BlueWarp", "stretch", d["stretch"]))
-	mat.set_shader_parameter("thing1", PlayerManager.get_shader_param("BlueWarp", "thing1", d["thing1"]))
-	mat.set_shader_parameter("thing2", PlayerManager.get_shader_param("BlueWarp", "thing2", d["thing2"]))
-	mat.set_shader_parameter("thing3", PlayerManager.get_shader_param("BlueWarp", "thing3", d["thing3"]))
-	mat.set_shader_parameter("speed", PlayerManager.get_shader_param("BlueWarp", "speed", d["speed"]))
-	if mat == blue_warp_shader_material:
-		var color_low: Color = PlayerManager.get_shader_param("BlueWarp", "color_low", PlayerManager.dict_to_color(d["color_low"]))
-		var color_mid: Color = PlayerManager.get_shader_param("BlueWarp", "color_mid", PlayerManager.dict_to_color(d["color_mid"]))
-		var color_high: Color = PlayerManager.get_shader_param("BlueWarp", "color_high", PlayerManager.dict_to_color(d["color_high"]))
-		mat.set_shader_parameter("color_low", color_low)
-		mat.set_shader_parameter("color_mid", color_mid)
-		mat.set_shader_parameter("color_high", color_high)
 
 
 func update_checked_mode() -> void:
@@ -179,11 +124,8 @@ func _on_create_apps_folder_button_pressed() -> void:
 	if desktop_env:
 		desktop_env._create_or_update_apps_folder()
 
-func _on_blue_warp_button_toggled(toggled_on: bool) -> void:
-	Events.set_desktop_background_visible("BlueWarp", toggled_on)
-
 func _on_comic_dots_1_button_toggled(toggled_on: bool) -> void:
-	Events.set_desktop_background_visible("ComicDots1", toggled_on)
+        Events.set_desktop_background_visible("ComicDots1", toggled_on)
 
 func _on_comic_dots_2_button_toggled(toggled_on: bool) -> void:
 	Events.set_desktop_background_visible("ComicDots2", toggled_on)
@@ -214,44 +156,6 @@ func _on_wave_time_mul_slider_value_changed(value: float) -> void:
 func _on_total_phases_slider_value_changed(value: float) -> void:
 	waves_shader_material.set_shader_parameter("total_phases", value)
 	PlayerManager.set_shader_param("Waves", "total_phases", value)
-
-func _on_blue_warp_stretch_slider_value_changed(value: float) -> void:
-		for mat in warp_shader_materials:
-				mat.set_shader_parameter("stretch", value)
-		PlayerManager.set_shader_param("BlueWarp", "stretch", value)
-
-func _on_blue_warp_thing1_slider_value_changed(value: float) -> void:
-		for mat in warp_shader_materials:
-				mat.set_shader_parameter("thing1", value)
-		PlayerManager.set_shader_param("BlueWarp", "thing1", value)
-
-func _on_blue_warp_thing2_slider_value_changed(value: float) -> void:
-		for mat in warp_shader_materials:
-				mat.set_shader_parameter("thing2", value)
-		PlayerManager.set_shader_param("BlueWarp", "thing2", value)
-
-func _on_blue_warp_thing3_slider_value_changed(value: float) -> void:
-		for mat in warp_shader_materials:
-				mat.set_shader_parameter("thing3", value)
-		PlayerManager.set_shader_param("BlueWarp", "thing3", value)
-
-func _on_blue_warp_speed_slider_value_changed(value: float) -> void:
-		for mat in warp_shader_materials:
-				mat.set_shader_parameter("speed", value)
-		PlayerManager.set_shader_param("BlueWarp", "speed", value)
-
-func _on_blue_warp_color_low_picker_color_changed(color: Color) -> void:
-
-	blue_warp_shader_material.set_shader_parameter("color_low", color)
-	PlayerManager.set_shader_param("BlueWarp", "color_low", color)
-
-func _on_blue_warp_color_mid_picker_color_changed(color: Color) -> void:
-	blue_warp_shader_material.set_shader_parameter("color_mid", color)
-	PlayerManager.set_shader_param("BlueWarp", "color_mid", color)
-
-func _on_blue_warp_color_high_picker_color_changed(color: Color) -> void:
-	blue_warp_shader_material.set_shader_parameter("color_high", color)
-	PlayerManager.set_shader_param("BlueWarp", "color_high", color)
 
 
 func _on_comic_dots_1_color_picker_color_changed(color: Color) -> void:
@@ -314,8 +218,8 @@ func _on_electric_scale_y_slider_value_changed(value: float) -> void:
 				PlayerManager.set_shader_param("Electric", "scale_y", value)
 
 func _on_waves_reset_button_pressed() -> void:
-		PlayerManager.reset_shader("Waves")
-		var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Waves"]
+                PlayerManager.reset_shader("Waves")
+                var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Waves"]
 		var bottom = PlayerManager.dict_to_color(d["bottom_color"])
 		var top = PlayerManager.dict_to_color(d["top_color"])
 		waves_shader_material.set_shader_parameter("bottom_color", bottom)
@@ -328,34 +232,8 @@ func _on_waves_reset_button_pressed() -> void:
 		top_color_picker.color = top
 		wave_amp_slider.value = d["wave_amp"]
 		wave_size_slider.value = d["wave_size"]
-		wave_time_mul_slider.value = d["wave_time_mul"]
-		total_phases_slider.value = d["total_phases"]
-
-func _on_blue_warp_reset_button_pressed() -> void:
-
-	PlayerManager.reset_shader("BlueWarp")
-	var d: Dictionary = PlayerManager.DEFAULT_BACKGROUND_SHADERS["BlueWarp"]
-	for mat in warp_shader_materials:
-		mat.set_shader_parameter("stretch", d["stretch"])
-		mat.set_shader_parameter("thing1", d["thing1"])
-		mat.set_shader_parameter("thing2", d["thing2"])
-		mat.set_shader_parameter("thing3", d["thing3"])
-		mat.set_shader_parameter("speed", d["speed"])
-	var color_low: Color = PlayerManager.dict_to_color(d["color_low"])
-	var color_mid: Color = PlayerManager.dict_to_color(d["color_mid"])
-	var color_high: Color = PlayerManager.dict_to_color(d["color_high"])
-	blue_warp_shader_material.set_shader_parameter("color_low", color_low)
-	blue_warp_shader_material.set_shader_parameter("color_mid", color_mid)
-	blue_warp_shader_material.set_shader_parameter("color_high", color_high)
-	blue_warp_stretch_slider.value = d["stretch"]
-	blue_warp_thing1_slider.value = d["thing1"]
-	blue_warp_thing2_slider.value = d["thing2"]
-	blue_warp_thing3_slider.value = d["thing3"]
-	blue_warp_speed_slider.value = d["speed"]
-	blue_warp_color_low_picker.color = color_low
-	blue_warp_color_mid_picker.color = color_mid
-	blue_warp_color_high_picker.color = color_high
-
+                wave_time_mul_slider.value = d["wave_time_mul"]
+                total_phases_slider.value = d["total_phases"]
 
 func _on_comic_dots_1_reset_button_pressed() -> void:
 				PlayerManager.reset_shader("ComicDots1")
