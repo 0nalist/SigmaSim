@@ -1,5 +1,5 @@
 extends Pane
-class_name SuitorView
+class_name ExFactorView
 
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
 const LOVE_COOLDOWN_MINUTES: int = 24 * 60
