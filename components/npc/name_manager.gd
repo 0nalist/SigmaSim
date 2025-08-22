@@ -8,7 +8,10 @@ var use_json_for_last_names: bool = true # Set false if you want to load from a 
 var first_names: Array[GenderedFirstName] = []
 var last_names: Array[String] = []
 var middle_initials: Array[String] = []
-var global_seed: int = 123456
+var global_seed: int = 0
+
+func set_global_seed(seed: int) -> void:
+	global_seed = seed
 
 func _ready():
 	# Load names
