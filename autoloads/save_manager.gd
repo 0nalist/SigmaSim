@@ -231,6 +231,9 @@ func reset_managers():
 	DesktopLayoutManager.reset()
 
 func delete_save(slot_id: int) -> void:
+	if slot_id == current_slot_id:
+		reset_managers()
+		current_slot_id = -1
 	var path := get_slot_path(slot_id)
 	if FileAccess.file_exists(path):
 		DirAccess.remove_absolute(path)
