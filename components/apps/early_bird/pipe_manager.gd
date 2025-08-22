@@ -12,13 +12,16 @@ var cached_viewport_size: Vector2
 @onready var _root_control: Control = get_parent()
 
 func _ready() -> void:
-		spawn_timer = Timer.new()
-		spawn_timer.wait_time = spawn_interval
-		spawn_timer.timeout.connect(_on_spawn_pipe_pair)
-		add_child(spawn_timer)
+        spawn_timer = Timer.new()
+        spawn_timer.wait_time = spawn_interval
+        spawn_timer.timeout.connect(_on_spawn_pipe_pair)
+        add_child(spawn_timer)
 
-		cached_viewport_size = _root_control.size
-		_root_control.resized.connect(_on_viewport_size_changed)
+        _root_control.resized.connect(_on_viewport_size_changed)
+        call_deferred("_update_cached_viewport_size")
+
+func _update_cached_viewport_size() -> void:
+        cached_viewport_size = _root_control.size
 
 	
 
@@ -66,9 +69,12 @@ func set_move_speed(new_speed: float) -> void:
 
 func _on_viewport_size_changed() -> void:
 
-		var new_size = _root_control.size
-		if new_size.x > 1 and new_size.y > 1:
-				cached_viewport_size = new_size
+        var new_size = _root_control.size
+        # Avoid updating the cached size when the window shrinks (e.g. during minimization),
+        # which would otherwise shift newly spawned pipes when running autopilot in the background.
+        if new_size.x < cached_viewport_size.x or new_size.y < cached_viewport_size.y:
+                return
+        cached_viewport_size = new_size
 
 
 
