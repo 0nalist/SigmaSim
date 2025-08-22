@@ -95,6 +95,7 @@ func _derive_seed(name: String) -> int:
 	return hash(str(seed) + ":" + name)
 
 func init_seed(seed_value: int) -> void:
+	print("RNGManager.init_seed:", seed_value)
 	seed = seed_value
 	global.init_seed(seed)
 	gpu.init_seed(_derive_seed("gpu"))
