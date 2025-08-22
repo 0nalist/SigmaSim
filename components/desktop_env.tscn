@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="23_dik0q"]
 [ext_resource type="Script" uid="uid://c7t01yq8wloqf" path="res://components/desktop_background.gd" id="24_jkb4t"]
+[ext_resource type="Shader" uid="uid://flatcolorbg" path="res://assets/shaders/flat_color_background.gdshader" id="25_flat"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_668nl"]
 shader = ExtResource("8_iij0d")
@@ -139,6 +140,10 @@ shader_parameter/circle_multiplier = 32.0
 shader_parameter/speed = 0.1
 shader_parameter/direction = Vector2(1, 1)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flat"]
+shader = ExtResource("25_flat")
+shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
 texture = ExtResource("9_m483i")
@@ -259,6 +264,8 @@ scale = Vector2(0.916622, 0.916622)
 texture = ExtResource("3_0utxc")
 expand_mode = 2
 stretch_mode = 5
+script = ExtResource("24_jkb4t")
+background_name = "Background"
 
 [node name="ColorRect" type="ColorRect" parent="."]
 unique_name_in_owner = true
@@ -367,6 +374,19 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")
 background_name = "ComicDots2"
+
+[node name="FlatColorBackground" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_flat")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("24_jkb4t")
+background_name = "FlatColor"
 
 [node name="TopBar" type="Control" parent="."]
 layout_mode = 1

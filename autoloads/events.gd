@@ -4,11 +4,13 @@ signal desktop_background_toggled(name: String, visible: bool)
 signal upgrade_purchased(id: String, level: int)
 
 var desktop_backgrounds: Dictionary = {
-	"BlueWarp": true,
-	"ComicDots1": false,
-	"ComicDots2": false,
-	"Waves": false,
-	"Electric": false,
+        "BlueWarp": true,
+        "ComicDots1": false,
+        "ComicDots2": false,
+        "Waves": false,
+        "Electric": false,
+        "Background": false,
+        "FlatColor": false,
 }
 
 func set_desktop_background_visible(name: String, visible: bool) -> void:
