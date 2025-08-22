@@ -6,6 +6,7 @@ signal affinity_changed(idx, value)
 signal exclusivity_core_changed(idx: int, old_core: int, new_core: int)
 signal relationship_stage_changed(idx: int, old_stage: int, new_stage: int)
 signal cheating_detected(primary_idx: int, other_idx: int)
+signal affinity_equilibrium_changed(idx: int, value: float)
 
 enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, DIVORCED, EX }
 enum ExclusivityCore { MONOG, POLY, CHEATING }
@@ -78,6 +79,9 @@ func set_npc_field(idx: int, field: String, value) -> void:
 			npcs[idx].affinity_equilibrium = float(value) * 10.0
 			if persistent_npcs.has(idx):
 					persistent_npcs[idx]["affinity_equilibrium"] = npcs[idx].affinity_equilibrium
+			emit_signal("affinity_equilibrium_changed", idx, npcs[idx].affinity_equilibrium)
+	elif field == "affinity_equilibrium":
+			emit_signal("affinity_equilibrium_changed", idx, npcs[idx].affinity_equilibrium)
 
 	if persistent_npcs.has(idx):
 			persistent_npcs[idx][field] = value
@@ -266,6 +270,8 @@ func set_relationship_stage(npc_idx: int, new_stage: int) -> void:
 	persistent_npcs[npc_idx]["affinity_equilibrium"] = npc.affinity_equilibrium
 	DBManager.save_npc(npc_idx, npc)
 	emit_signal("relationship_stage_changed", npc_idx, old_stage, npc.relationship_stage)
+	if old_equilibrium != npc.affinity_equilibrium:
+		emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
 	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 	if new_stage >= RelationshipStage.DATING and old_stage < RelationshipStage.DATING:
@@ -382,6 +388,8 @@ func transition_dating_to_serious_poly(npc_idx: int) -> void:
 		emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
 	if old_affinity != npc.affinity:
 		emit_signal("affinity_changed", npc_idx, npc.affinity)
+	if old_equilibrium != npc.affinity_equilibrium:
+		emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
 	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 func request_poly_at_serious_or_engaged(npc_idx: int) -> void:
@@ -406,6 +414,8 @@ func request_poly_at_serious_or_engaged(npc_idx: int) -> void:
 		emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
 	if old_affinity != npc.affinity:
 		emit_signal("affinity_changed", npc_idx, npc.affinity)
+	if old_equilibrium != npc.affinity_equilibrium:
+		emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
 	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 func return_to_monogamy(npc_idx: int) -> void:
@@ -471,6 +481,8 @@ func _mark_npc_as_cheating(npc_idx: int, other_idx: int) -> void:
 		DBManager.save_npc(npc_idx, npc)
 		emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
 		emit_signal("affinity_changed", npc_idx, npc.affinity)
+		if old_equilibrium != npc.affinity_equilibrium:
+				emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
 		emit_signal("cheating_detected", npc_idx, other_idx)
 		print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 

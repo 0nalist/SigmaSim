@@ -11,7 +11,7 @@ const PROGRESS_MIN_DELTA: float = 0.01
 @onready var relationship_stage_label: Label = %RelationshipStageLabel
 @onready var relationship_bar: RelationshipBar = %RelationshipBar
 @onready var next_stage_button: Button = %NextStageButton
-@onready var affinity_bar: StatProgressBar = %AffinityBar
+@onready var affinity_bar: AffinityBar = %AffinityBar
 @onready var relationship_value_label: Label = %RelationshipValueLabel
 @onready var affinity_value_label: Label = %AffinityValueLabel
 @onready var love_button: Button = %LoveButton
@@ -78,6 +78,7 @@ func _ready() -> void:
 	love_button.pressed.connect(_on_love_pressed)
 	exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
 	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
+	NPCManager.affinity_equilibrium_changed.connect(_on_affinity_equilibrium_changed)
 	NPCManager.exclusivity_core_changed.connect(_on_exclusivity_core_changed)
 	NPCManager.relationship_stage_changed.connect(_on_relationship_stage_changed)
 
@@ -150,6 +151,7 @@ func _update_relationship_bar() -> void:
 func _update_affinity_bar() -> void:
 		affinity_bar.max_value = 100
 		affinity_bar.update_value(npc.affinity)
+		affinity_bar.set_affinity_equilibrium(npc.affinity_equilibrium)
 		affinity_value_label.text = "%s / 100" % NumberFormatter.format_commas(npc.affinity, 0)
 
 func _update_breakup_button_text() -> void:
@@ -260,6 +262,12 @@ func _on_npc_affinity_changed(idx: int, value: float) -> void:
 		npc.affinity = value
 		_update_affinity_bar()
 
+func _on_affinity_equilibrium_changed(idx: int, value: float) -> void:
+		if idx != npc_idx:
+				return
+		npc.affinity_equilibrium = value
+		_update_affinity_bar()
+
 func _on_exclusivity_core_changed(idx: int, _old_core: int, new_core: int) -> void:
 				if idx != npc_idx:
 								return
@@ -270,9 +278,10 @@ func _on_exclusivity_core_changed(idx: int, _old_core: int, new_core: int) -> vo
 func _on_relationship_stage_changed(idx: int, _old_stage: int, new_stage: int) -> void:
 				if idx != npc_idx:
 								return
-				npc.relationship_stage = new_stage
-				_update_exclusivity_label()
-				_update_exclusivity_button()
+		npc.relationship_stage = new_stage
+		_update_exclusivity_label()
+		_update_exclusivity_button()
+		_update_affinity_bar()
 
 func _on_exclusivity_button_pressed() -> void:
 		if npc == null:
