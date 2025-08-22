@@ -54,12 +54,12 @@ func _ready() -> void:
 	breakup_button.pressed.connect(_on_breakup_pressed)
 	apologize_button.pressed.connect(_on_apologize_pressed)
 	next_stage_button.pressed.connect(_on_next_stage_pressed)
-        breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
-        breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
-        love_button.pressed.connect(_on_love_pressed)
-        NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
-        NPCManager.exclusivity_core_changed.connect(_on_exclusivity_core_changed)
-        NPCManager.relationship_stage_changed.connect(_on_relationship_stage_changed)
+	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
+	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
+	love_button.pressed.connect(_on_love_pressed)
+	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
+	NPCManager.exclusivity_core_changed.connect(_on_exclusivity_core_changed)
+	NPCManager.relationship_stage_changed.connect(_on_relationship_stage_changed)
 	
 	await get_tree().process_frame
 	if Events.has_signal("fumble_talk_therapy_purchased"):
@@ -88,8 +88,8 @@ func _update_all() -> void:
 	_update_breakup_button_text()
 	_update_action_buttons_text()
 	_update_love_button()
-  _update_dime_status_label()
-  _update_exclusivity_label()
+	_update_dime_status_label()
+	_update_exclusivity_label()
 	var blocked: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DIVORCED
 
 	gift_button.disabled = blocked
@@ -156,63 +156,63 @@ func _update_love_button() -> void:
 	var now: int = TimeManager.get_now_minutes()
 	var remaining: int = npc.love_cooldown - now
 	if remaining > 0:
-			love_button.disabled = true
-			var hours: int = remaining / 60
-			var minutes: int = remaining % 60
-			love_cooldown_label.visible = true
-			love_cooldown_label.text = "Love in %dh %dm" % [hours, minutes]
-        else:
-                        love_button.disabled = false
-                        love_cooldown_label.visible = false
+		love_button.disabled = true
+		var hours: int = remaining / 60
+		var minutes: int = remaining % 60
+		love_cooldown_label.visible = true
+		love_cooldown_label.text = "Love in %dh %dm" % [hours, minutes]
+	else:
+		love_button.disabled = false
+		love_cooldown_label.visible = false
 
 func _update_dime_status_label() -> void:
-        if npc == null:
-                return
-        dime_status_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
+		if npc == null:
+				return
+		dime_status_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
 
 func _update_exclusivity_label() -> void:
-        if npc == null:
-                return
-        var label_text: String
-        if npc_idx != -1:
-                label_text = NPCManager.exclusivity_descriptor_label(npc_idx)
-        else:
-                var desc = NPCManager.exclusivity_descriptor_for(npc.relationship_stage, npc.exclusivity_core, npc.claimed_exclusive_boost)
-                match desc:
-                        NPCManager.ExclusivityDescriptor.UNMENTIONED:
-                                label_text = "Unmentioned"
-                        NPCManager.ExclusivityDescriptor.DATING_AROUND:
-                                label_text = "Dating Around"
-                        NPCManager.ExclusivityDescriptor.EXCLUSIVE:
-                                label_text = "Exclusive"
-                        NPCManager.ExclusivityDescriptor.MONOGAMOUS:
-                                label_text = "Monogamous"
-                        NPCManager.ExclusivityDescriptor.POLYAMOROUS:
-                                label_text = "Polyamorous"
-                        NPCManager.ExclusivityDescriptor.OPEN:
-                                label_text = "Open"
-                        NPCManager.ExclusivityDescriptor.CHEATING:
-                                label_text = "Cheating"
-                        _:
-                                label_text = "Unmentioned"
-        exclusivity_label.text = label_text
+	if npc == null:
+			return
+	var label_text: String
+	if npc_idx != -1:
+			label_text = NPCManager.exclusivity_descriptor_label(npc_idx)
+	else:
+			var desc = NPCManager.exclusivity_descriptor_for(npc.relationship_stage, npc.exclusivity_core, npc.claimed_exclusive_boost)
+			match desc:
+					NPCManager.ExclusivityDescriptor.UNMENTIONED:
+							label_text = "Unmentioned"
+					NPCManager.ExclusivityDescriptor.DATING_AROUND:
+							label_text = "Dating Around"
+					NPCManager.ExclusivityDescriptor.EXCLUSIVE:
+							label_text = "Exclusive"
+					NPCManager.ExclusivityDescriptor.MONOGAMOUS:
+							label_text = "Monogamous"
+					NPCManager.ExclusivityDescriptor.POLYAMOROUS:
+							label_text = "Polyamorous"
+					NPCManager.ExclusivityDescriptor.OPEN:
+							label_text = "Open"
+					NPCManager.ExclusivityDescriptor.CHEATING:
+							label_text = "Cheating"
+					_:
+							label_text = "Unmentioned"
+	exclusivity_label.text = "Exclusivity: " + label_text
 func _on_npc_affinity_changed(idx: int, value: float) -> void:
-        if idx != npc_idx:
-                return
-        npc.affinity = value
-        _update_affinity_bar()
+		if idx != npc_idx:
+				return
+		npc.affinity = value
+		_update_affinity_bar()
 
 func _on_exclusivity_core_changed(idx: int, _old_core: int, new_core: int) -> void:
-        if idx != npc_idx:
-                return
-        npc.exclusivity_core = new_core
-        _update_exclusivity_label()
+		if idx != npc_idx:
+				return
+		npc.exclusivity_core = new_core
+		_update_exclusivity_label()
 
 func _on_relationship_stage_changed(idx: int, _old_stage: int, new_stage: int) -> void:
-        if idx != npc_idx:
-                return
-        npc.relationship_stage = new_stage
-        _update_exclusivity_label()
+		if idx != npc_idx:
+				return
+		npc.relationship_stage = new_stage
+		_update_exclusivity_label()
 
 func _on_next_stage_pressed() -> void:
 	next_stage_button.visible = false

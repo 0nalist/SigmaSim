@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/ex_factor_view.gd" id="2"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
-[ext_resource type="PackedScene" path="res://components/upgrade_scenes/ex_factor_upgrade_ui.tscn" id="3_n3cpl"]
+[ext_resource type="PackedScene" uid="uid://fna5puejflgh" path="res://components/upgrade_scenes/ex_factor_upgrade_ui.tscn" id="3_n3cpl"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_vl6ok"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
 [ext_resource type="Script" uid="uid://bvbiboe20qioe" path="res://components/popups/relationship_bar.gd" id="5"]
@@ -39,7 +39,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme = ExtResource("1")
 script = ExtResource("2")
-window_title = "EX Factor"
+window_title = "eX Factor"
 default_window_size = Vector2(400, 500)
 is_popup = true
 color1 = Color(1, 0, 0.941176, 1)
