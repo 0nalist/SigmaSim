@@ -22,7 +22,20 @@ func _draw() -> void:
     var fill_height: float = rect.size.y * ratio
     var fill_rect: Rect2 = Rect2(rect.position + Vector2(0, rect.size.y - fill_height), Vector2(rect.size.x, fill_height))
     draw_rect(fill_rect, Color(0.3, 0.8, 0.3))
+    var font: Font = ThemeDB.fallback_font
     for score in range(min_score, max_score + 1, step):
         var y: float = rect.size.y * (1.0 - float(score - min_score) / float(max_score - min_score))
         draw_line(Vector2(0, y), Vector2(rect.size.x, y), Color.WHITE)
+        var label_text: String = _get_label_for_score(score)
+        if label_text != "":
+            var text_size: Vector2 = font.get_string_size(label_text)
+            draw_string(font, Vector2(rect.size.x + 4.0, y + text_size.y / 2.0), label_text)
+
+func _get_label_for_score(score: int) -> String:
+    var available: Array[String] = []
+    for purchase in PortfolioManager.CREDIT_REQUIREMENTS.keys():
+        if PortfolioManager.CREDIT_REQUIREMENTS[purchase] <= score:
+            available.append(String(purchase))
+    available.sort()
+    return ", ".join(available)
 
