@@ -33,13 +33,17 @@ func _ready() -> void:
 		if node and node is HSlider:
 			var param = slider_params[i]
 			node.value = _get_param(param)
-			node.value_changed.connect(_on_slider_changed.bind(param))
+			var callable = _on_slider_changed.bind(param)
+			if not node.value_changed.is_connected(callable):
+				node.value_changed.connect(callable)
 	for i in range(color_picker_nodes.size()):
 		var node = get_node_or_null(color_picker_nodes[i])
 		if node and node is ColorPickerButton:
 			var param = color_picker_params[i]
 			node.color = _get_param(param)
-			node.color_changed.connect(_on_color_changed.bind(param))
+			var callable = _on_color_changed.bind(param)
+			if not node.color_changed.is_connected(callable):
+				node.color_changed.connect(callable)
 		if flat_color_rect_path != NodePath():
 				flat_color_rect = get_tree().root.get_node_or_null(flat_color_rect_path)
 		if flat_color_picker_path != NodePath():
@@ -49,7 +53,8 @@ func _ready() -> void:
 						picker.color = color
 						if flat_color_rect:
 								flat_color_rect.color = color
-						picker.color_changed.connect(_on_flat_color_changed)
+						if not picker.color_changed.is_connected(_on_flat_color_changed):
+								picker.color_changed.connect(_on_flat_color_changed)
 		if flat_color_toggle_path != NodePath():
 				var toggle = get_node_or_null(flat_color_toggle_path)
 				if toggle and toggle is CheckButton:
@@ -57,17 +62,21 @@ func _ready() -> void:
 						toggle.button_pressed = visible
 						if flat_color_rect:
 								flat_color_rect.visible = visible and Events.is_desktop_background_visible(shader_name)
-						toggle.toggled.connect(_on_flat_toggled)
-						Events.desktop_background_toggled.connect(_on_background_toggled)
+						if not toggle.toggled.is_connected(_on_flat_toggled):
+								toggle.toggled.connect(_on_flat_toggled)
+						if not Events.desktop_background_toggled.is_connected(_on_background_toggled):
+								Events.desktop_background_toggled.connect(_on_background_toggled)
 		if toggle_button_path != NodePath():
 				var button = get_node_or_null(toggle_button_path)
 				if button and button is CheckButton:
 						button.button_pressed = Events.is_desktop_background_visible(shader_name)
-						button.toggled.connect(_on_toggled)
+						if not button.toggled.is_connected(_on_toggled):
+								button.toggled.connect(_on_toggled)
 	if reset_button_path != NodePath():
 		var reset = get_node_or_null(reset_button_path)
 		if reset and reset is Button:
-			reset.pressed.connect(_on_reset_pressed)
+			if not reset.pressed.is_connected(_on_reset_pressed):
+				reset.pressed.connect(_on_reset_pressed)
 
 func _refresh_warp_shader_materials() -> void:
 	shader_materials.clear()
