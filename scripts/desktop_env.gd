@@ -108,14 +108,14 @@ func _apply_shader_settings() -> void:
 	var scale_y = PlayerManager.get_shader_param("Electric", "scale_y", e_def["scale_y"])
 	electric_shader_material.set_shader_parameter("background_color", bg_color)
 	electric_shader_material.set_shader_parameter("line_color", line_color)
-        electric_shader_material.set_shader_parameter("line_freq", line_freq)
-        electric_shader_material.set_shader_parameter("height", height)
-        electric_shader_material.set_shader_parameter("speed", speed)
-        electric_shader_material.set_shader_parameter("scale", Vector2(scale_x, scale_y))
+	electric_shader_material.set_shader_parameter("line_freq", line_freq)
+	electric_shader_material.set_shader_parameter("height", height)
+	electric_shader_material.set_shader_parameter("speed", speed)
+	electric_shader_material.set_shader_parameter("scale", Vector2(scale_x, scale_y))
 
-        var flat_def = defaults["FlatColor"]
-        var flat_col = PlayerManager.get_shader_param("FlatColor", "color", PlayerManager.dict_to_color(flat_def["color"]))
-        flat_color_shader_material.set_shader_parameter("color", flat_col)
+	var flat_def = defaults["FlatColor"]
+	var flat_col = PlayerManager.get_shader_param("FlatColor", "color", PlayerManager.dict_to_color(flat_def["color"]))
+	flat_color_shader_material.set_shader_parameter("color", flat_col)
 
 
 func hide_all_windows_and_panels() -> void:

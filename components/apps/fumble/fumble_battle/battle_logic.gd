@@ -11,7 +11,7 @@ func setup(npc_ref, stats_dict = {}):
 
 func resolve_move(move_type: String) -> Dictionary:
 	var chance = get_success_chance(move_type)
-     var success = RNGManager.fumble_battle_logic.get_rng().randf() < chance
+	var success = RNGManager.fumble_battle_logic.get_rng().randf() < chance
 	var mod = get_move_type_modifier(npc.chat_battle_type, move_type)
 	var reaction = ""
 	if mod == 2.0:

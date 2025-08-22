@@ -1,0 +1,196 @@
+[gd_scene load_steps=14 format=3 uid="uid://1jylhdkewo5k"]
+
+[ext_resource type="Texture2D" uid="uid://bx8di1m28cktr" path="res://assets/money_pixeled.png" id="1_m7phi"]
+[ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
+[ext_resource type="Texture2D" uid="uid://sfksofhgkiwu" path="res://assets/logos/dollar_rage.png" id="3_m7phi"]
+[ext_resource type="Texture2D" uid="uid://bht5uooi8rjgf" path="res://assets/ui/buttons/grey_button_pressed.png" id="4_frira"]
+[ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="4_gnfo0"]
+[ext_resource type="Script" uid="uid://bq3i6eu2isf1d" path="res://components/apps/broke_rage/stock_market.gd" id="5_lgac0"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="5_n67s2"]
+[ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="6_m7phi"]
+[ext_resource type="Script" uid="uid://b8wfu5cxh5oyw" path="res://components/ui/chart_component.gd" id="7_t3xq1"]
+[ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_htng3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcm1f"]
+texture = ExtResource("1_m7phi")
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yqo"]
+resource_local_to_scene = true
+shader = ExtResource("4_gnfo0")
+shader_parameter/stretch = 0.8
+shader_parameter/thing1 = 0.6
+shader_parameter/thing2 = 0.6
+shader_parameter/thing3 = 0.8
+shader_parameter/scale = 1.0
+shader_parameter/speed = 0.03
+shader_parameter/color_low = Color(0, 0, 0, 1)
+shader_parameter/color_mid = Color(0.15, 0.15, 0.15, 1)
+shader_parameter/color_high = Color(0.25, 0.25, 0.25, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gnfo0"]
+texture = ExtResource("4_frira")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+modulate_color = Color(0.00784314, 0.00784314, 0.00784314, 0.270588)
+
+[node name="BrokeRage" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_tcm1f")
+script = ExtResource("2_o2yqo")
+window_title = "BrokeRage"
+window_icon = ExtResource("3_m7phi")
+default_window_size = Vector2(735, 500)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_o2yqo")
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_gnfo0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Summary" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Summary" type="HBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CashChart" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("7_t3xq1")
+grid_line_counts = Vector2i(2, 3)
+default_window_minutes = 90
+min_window_minutes = 10
+max_points_per_series = 513
+lock_x_min = true
+poll_hz = 17
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
+layout_mode = 2
+
+[node name="BalanceLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("5_n67s2")
+text = "Balance: $ "
+horizontal_alignment = 2
+
+[node name="CashLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("5_n67s2")
+theme_override_font_sizes/font_size = 21
+text = "Cash: $ "
+horizontal_alignment = 2
+
+[node name="InvestedLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("5_n67s2")
+text = "Invested: $ "
+horizontal_alignment = 2
+
+[node name="DebtLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("5_n67s2")
+text = "Debt: $ "
+horizontal_alignment = 2
+
+[node name="PassiveIncomeLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("5_n67s2")
+text = "Passive Income: $0"
+horizontal_alignment = 2
+
+[node name="OwerViewButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = " Manage your debt 
+with OwerView "
+icon = ExtResource("6_m7phi")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StockMarket" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+script = ExtResource("5_lgac0")
+stock_row_scene = ExtResource("10_htng3")
+
+[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/ScrollContainer/StockMarket"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/Summary/MarginContainer/Summary/OwerViewButton" to="." method="_on_ower_view_button_pressed"]

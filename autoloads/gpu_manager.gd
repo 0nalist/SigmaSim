@@ -39,8 +39,8 @@ func _ready() -> void:
 
 func _on_minute_tick(_unused: int) -> void:
 
-  var rng: RandomNumberGenerator = RNGManager.gpu.get_rng()
-  var current_time: int = TimeManager.total_minutes_elapsed
+	var rng: RandomNumberGenerator = RNGManager.gpu.get_rng()
+	var current_time: int = TimeManager.total_minutes_elapsed
 	for symbol in next_block_time.keys():
 		var next_time: float = next_block_time[symbol]
 		var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
@@ -136,7 +136,7 @@ func set_overclocked(index: int, overclocked: bool) -> void:
 			is_overclocked[index] = 0
 
 func process_gpu_tick() -> void:
-    var rng = RNGManager.gpu.get_rng()
+	var rng = RNGManager.gpu.get_rng()
 	total_power = 0  # Recalculate total power
 
 	for i in range(gpu_cryptos.size()):

@@ -170,7 +170,7 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	move_usage_counts["catch"] = move_counts_to_use.get("catch", 0)
 	if chatlog.size() == 0 and move_counts_to_use.size() == 0:
 			var reveal_levels = UpgradeManager.get_level("fumble_speaking_from_experience")
-                    var rng = RNGManager.fumble_battle_ui.get_rng()
+			var rng = RNGManager.fumble_battle_ui.get_rng()
 			for i in range(reveal_levels):
 					var options := []
 					for m in equipped_moves:
@@ -406,7 +406,7 @@ func do_move(move_type: String) -> void:
 		is_animating = false
 		return
 
-    var rng = RNGManager.fumble_battle_ui.get_rng()
+	var rng = RNGManager.fumble_battle_ui.get_rng()
 	var chosen_line = options[rng.randi() % options.size()]
 	var prefix := ""
 	if chosen_line["prefixes"].size() > 0:
@@ -700,7 +700,7 @@ func _apply_effects(effects: Dictionary):
 
 func process_npc_response(move_type, response_id, success: bool) -> ChatBox:
 
-    var rng = RNGManager.fumble_battle_ui.get_rng()
+	var rng = RNGManager.fumble_battle_ui.get_rng()
 	var response_text = ""
 	var key = "FALSE"
 	if success:

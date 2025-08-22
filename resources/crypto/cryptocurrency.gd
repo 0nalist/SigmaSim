@@ -26,7 +26,7 @@ func update_price(delta: float) -> void:
 
 
 func update_from_market(volatility_scale: float = 1.0) -> void:
-     var rng: RandomNumberGenerator = RNGManager.crypto.get_rng()
+	var rng: RandomNumberGenerator = RNGManager.crypto.get_rng()
 	var noise: float = rng.randf_range(-0.5, 0.5)
 	var max_percent_change: float = volatility / 100.0 * volatility_scale
 	var delta: float = price * max_percent_change * noise

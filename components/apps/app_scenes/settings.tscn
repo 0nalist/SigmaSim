@@ -690,7 +690,7 @@ size_flags_horizontal = 6
 mouse_filter = 1
 script = ExtResource("5_p2fk4")
 shader_name = "FlatColor"
-shader_node_paths = Array[NodePath]([NodePath("Main/DesktopEnv/ShaderBackgroundsContainer/FlatColorBackground")])
+shader_node_paths = Array[String](["Main/DesktopEnv/ShaderBackgroundsContainer/FlatColorBackground"])
 color_picker_nodes = Array[NodePath]([NodePath("MarginContainer/VBoxContainer/HBoxContainer/FlatColorPicker")])
 color_picker_params = Array[StringName]([&"color"])
 toggle_button_path = NodePath("MarginContainer/VBoxContainer/FlatColorButton")
@@ -734,7 +734,7 @@ size_flags_horizontal = 6
 mouse_filter = 1
 script = ExtResource("5_p2fk4")
 shader_name = "Background"
-shader_node_paths = Array[NodePath]([NodePath("Main/DesktopEnv/Background")])
+shader_node_paths = Array[String](["Main/DesktopEnv/Background"])
 toggle_button_path = NodePath("MarginContainer/VBoxContainer/BackgroundButton")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/BackgroundContainer"]

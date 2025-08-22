@@ -106,7 +106,7 @@ func refresh_prices():
 	_update_stock_prices()
 
 func _update_stock_prices():
-    var rng = RNGManager.market_manager.get_rng()
+	var rng = RNGManager.market_manager.get_rng()
 	for stock in stock_market.values():
 		stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
 

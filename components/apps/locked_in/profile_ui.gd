@@ -62,7 +62,7 @@ func update_name_label():
 	username_button.text = "@" + PlayerManager.user_data["username"]
 
 func update_work_label():
-     var rng = RNGManager.locked_in.get_rng()
+	var rng = RNGManager.locked_in.get_rng()
 	if rng.randi_range(0,1) > 0:
 			work_label.text = PlayerManager.user_data["name"] + " woke up this morning and chose violence"
 	else:

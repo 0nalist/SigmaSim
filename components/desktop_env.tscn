@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=53 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -29,7 +29,11 @@
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="23_dik0q"]
 [ext_resource type="Script" uid="uid://c7t01yq8wloqf" path="res://components/desktop_background.gd" id="24_jkb4t"]
-[ext_resource type="Shader" uid="uid://flatcolorbg" path="res://assets/shaders/flat_color_background.gdshader" id="25_flat"]
+[ext_resource type="Shader" uid="uid://biinvb18hl7lc" path="res://assets/shaders/flat_color_background.gdshader" id="25_flat"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flat"]
+shader = ExtResource("25_flat")
+shader_parameter/color = Color(0, 0, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_668nl"]
 shader = ExtResource("8_iij0d")
@@ -141,10 +145,6 @@ shader_parameter/speed = 0.1
 shader_parameter/direction = Vector2(1, 1)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_flat"]
-shader = ExtResource("25_flat")
-shader_parameter/color = Color(0, 0, 0, 1)
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
 texture = ExtResource("9_m483i")
 texture_margin_left = 2.0
@@ -231,9 +231,33 @@ script = ExtResource("1_lpqk7")
 script = ExtResource("3_5aheu")
 target_control = NodePath("..")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "you're not supposed to see this"
+
 [node name="Bliss" type="TextureRect" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -267,15 +291,6 @@ stretch_mode = 5
 script = ExtResource("24_jkb4t")
 background_name = "Background"
 
-[node name="ColorRect" type="ColorRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="ShaderBackgroundsContainer" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -289,6 +304,19 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.05687, 1.05687)
 mouse_filter = 2
+
+[node name="FlatColorBackground" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_flat")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("24_jkb4t")
+background_name = "FlatColor"
 
 [node name="WavesShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true
@@ -374,19 +402,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")
 background_name = "ComicDots2"
-
-[node name="FlatColorBackground" type="ColorRect" parent="ShaderBackgroundsContainer"]
-unique_name_in_owner = true
-visible = false
-material = SubResource("ShaderMaterial_flat")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("24_jkb4t")
-background_name = "FlatColor"
 
 [node name="TopBar" type="Control" parent="."]
 layout_mode = 1
