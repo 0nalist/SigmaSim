@@ -42,6 +42,9 @@ script = ExtResource("1_wlela")
 window_title = "Settings"
 window_icon = ExtResource("2_wlela")
 default_window_size = Vector2(720, 510)
+color1 = Color(0, 0, 0, 1)
+color2 = Color(0.15, 0.15, 0.15, 1)
+color3 = Color(0.25, 0.25, 0.25, 1)
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2
