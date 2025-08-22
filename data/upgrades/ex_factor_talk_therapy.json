@@ -1,10 +1,10 @@
 {
-  "id": "fumble_talk_therapy",
+  "id": "ex_factor_talk_therapy",
   "name": "Talk Therapy",
   "description": "Unlocks the ability to apologize to exes, letting you restart at the talking stage.",
   "effects": [],
   "systems": [
-	"fumble"
+        "eXFactor"
   ],
   "dependencies": [],
   "cost_per_level": {
