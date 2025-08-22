@@ -297,8 +297,10 @@ func _on_background_select_image_button_pressed() -> void:
 		background_file_dialog.popup_centered()
 
 func _on_background_file_dialog_file_selected(path: String) -> void:
-	var tex: Resource = load(path)
-	if tex is Texture2D:
+	var image := Image.new()
+	var err := image.load(path)
+	if err == OK:
+			var tex: Texture2D = ImageTexture.create_from_image(image)
 			var bg: TextureRect = get_tree().root.get_node("Main/DesktopEnv/Background")
 			bg.texture = tex
 			PlayerManager.set_var("background_path", path)
