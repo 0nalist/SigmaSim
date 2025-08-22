@@ -347,7 +347,6 @@ background_name = "Waves"
 
 [node name="BlueWarpFlatColor" type="ColorRect" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -355,10 +354,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0.2, 1)
+script = ExtResource("24_jkb4t")
 
 [node name="BlueWarpShader" type="PanelContainer" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true
-visible = false
 material = SubResource("ShaderMaterial_yi8nh")
 layout_mode = 1
 anchors_preset = 15
