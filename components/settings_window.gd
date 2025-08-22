@@ -31,6 +31,7 @@ extends Pane
 @onready var electric_scale_y_slider: HSlider = %ElectricScaleYSlider
 @onready var tab_container: TabContainer = %TabContainer
 @onready var create_apps_folder_button: Button = %CreateAppsFolderButton
+@onready var background_file_dialog: FileDialog = %BackgroundFileDialog
 @onready var waves_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/WavesShader").material
 @onready var comic_dots1_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueVert").material
 @onready var comic_dots2_shader_material: ShaderMaterial = get_tree().root.get_node("Main/DesktopEnv/ShaderBackgroundsContainer/ComicDotsBlueHor").material
@@ -280,14 +281,26 @@ func _on_minute_passed(_total_minutes: int) -> void:
 		_update_autosave_timer_label()
 
 func _update_autosave_timer_label() -> void:
-	if not TimeManager.autosave_enabled:
-		autosave_timer_label.text = "Autosave disabled"
-		return
-	if not is_instance_valid(SaveManager) or SaveManager.current_slot_id <= 0:
-		autosave_timer_label.text = "No save loaded"
-		return
-	var total_minutes_left = TimeManager.autosave_interval * 60 - (TimeManager.autosave_hour_counter * 60 + TimeManager.current_minute)
-	total_minutes_left = max(total_minutes_left, 0)
-	var hours = total_minutes_left / 60
-	var minutes = total_minutes_left % 60
-	autosave_timer_label.text = "%d:%02d" % [hours, minutes]
+        if not TimeManager.autosave_enabled:
+                autosave_timer_label.text = "Autosave disabled"
+                return
+        if not is_instance_valid(SaveManager) or SaveManager.current_slot_id <= 0:
+                autosave_timer_label.text = "No save loaded"
+                return
+        var total_minutes_left = TimeManager.autosave_interval * 60 - (TimeManager.autosave_hour_counter * 60 + TimeManager.current_minute)
+        total_minutes_left = max(total_minutes_left, 0)
+        var hours = total_minutes_left / 60
+        var minutes = total_minutes_left % 60
+        autosave_timer_label.text = "%d:%02d" % [hours, minutes]
+
+func _on_background_select_image_button_pressed() -> void:
+        background_file_dialog.popup_centered()
+
+func _on_background_file_dialog_file_selected(path: String) -> void:
+        var tex: Resource = load(path)
+        if tex is Texture2D:
+                var bg: TextureRect = get_tree().root.get_node("Main/DesktopEnv/Background")
+                bg.texture = tex
+                PlayerManager.set_var("background_path", path)
+        else:
+                print("❌ Couldn't load texture from path: ", path)
