@@ -2,6 +2,8 @@
 class_name NPC
 extends Resource
 
+signal player_broke_up
+
 const BASE_GIFT_COST: float = 10.0
 const BASE_DATE_COST: float = 100.0
 

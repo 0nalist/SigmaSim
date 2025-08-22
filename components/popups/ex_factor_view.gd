@@ -513,16 +513,18 @@ func _on_breakup_confirm_yes_pressed() -> void:
 	npc.affinity *= 0.2
 	logic.change_state(npc.relationship_stage)
 	logic.progress_paused = true
-	next_stage_button.visible = false
-	gift_button.disabled = true
-	date_button.disabled = true
-	breakup_button.disabled = true
-	if npc_idx != -1:
-		NPCManager.promote_to_persistent(npc_idx)
-		NPCManager.set_relationship_stage(npc_idx, npc.relationship_stage)
-		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
-		NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
-	_update_all()
+        next_stage_button.visible = false
+        gift_button.disabled = true
+        date_button.disabled = true
+        breakup_button.disabled = true
+        npc.emit_signal("player_broke_up")
+        if npc_idx != -1:
+                NPCManager.promote_to_persistent(npc_idx)
+                NPCManager.set_relationship_stage(npc_idx, npc.relationship_stage)
+                NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+                NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
+                NPCManager.player_broke_up_with(npc_idx)
+        _update_all()
 
 func _on_breakup_confirm_no_pressed() -> void:
 	breakup_confirm.visible = false
