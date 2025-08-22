@@ -44,13 +44,13 @@ var credit_score: int = 700
 const CREDIT_REQUIREMENTS := {
 		# purchase_type : required_credit_score
 		"gpu": 700,
-		"pay_down_credit": 9999,
+		"pay_down_credit": 800,
 		"stock": 800,
-				"gift": 500,
-				"date": 600,
-				"proposal": 800,
-				"EarlyBird": 650,
-				"upgrades": 750,
+		"gift": 500,
+		"date": 600,
+		"proposal": 800,
+		"EarlyBird": 650,
+		"upgrades": 750,
 		
 }
 # attempt_spend without credit argument:
