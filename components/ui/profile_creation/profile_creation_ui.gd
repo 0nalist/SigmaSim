@@ -5,6 +5,8 @@ signal new_profile_abandoned
 
 @onready var back_button: Button = %BackButton
 @onready var next_button: Button = %NextButton
+@onready var step_label: Label = %StepLabel
+@onready var step_progress: ProgressBar = %StepProgress
 
 
 
@@ -26,24 +28,38 @@ var current_step := 0
 @onready var main_container: Control = %MainContainer
 
 func _ready():
-	user_data = PlayerManager.user_data
-	_show_step(current_step)
+        user_data = PlayerManager.user_data
+        step_progress.max_value = step_scenes.size()
+        _show_step(current_step)
 
 func _show_step(index: int) -> void:
 	for child in main_container.get_children():
 		if not child.is_class("Button"):
 			child.queue_free()
-	var step_instance = step_scenes[index].instantiate()
-	main_container.add_child(step_instance)
-	if step_instance.has_signal("step_valid"):
-		step_instance.step_valid.connect(_on_step_valid)
+        var step_instance = step_scenes[index].instantiate()
+        step_instance.modulate.a = 0.0
+        main_container.add_child(step_instance)
+        if step_instance.has_signal("step_valid"):
+                step_instance.step_valid.connect(_on_step_valid)
 
-	# Disable Next by default
-	next_button.disabled = true
+        # Disable Next by default
+        next_button.disabled = true
+
+        step_label.text = "Step %d/%d" % [index + 1, step_scenes.size()]
+        var fade_tween = create_tween()
+        fade_tween.tween_property(step_instance, "modulate:a", 1.0, 0.3)
+        create_tween().tween_property(step_progress, "value", index + 1, 0.2)
+        var label_tween = create_tween()
+        label_tween.tween_property(step_label, "scale", Vector2(1.1, 1.1), 0.1)
+        label_tween.tween_property(step_label, "scale", Vector2.ONE, 0.1)
 
 func _on_step_valid(valid: bool) -> void:
-	print("valid!!")
-	next_button.disabled = not valid
+        print("valid!!")
+        next_button.disabled = not valid
+        if valid:
+                var t = create_tween()
+                t.tween_property(next_button, "scale", Vector2(1.1, 1.1), 0.1)
+                t.tween_property(next_button, "scale", Vector2.ONE, 0.1)
 
 func _finish_profile_creation():
 	var password = user_data.get("password", "")
