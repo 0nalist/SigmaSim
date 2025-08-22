@@ -74,19 +74,6 @@ theme_override_constants/margin_bottom = 25
 [node name="VBoxContainer" type="VBoxContainer" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer"]
 layout_mode = 2
 
-[node name="StepLabel" type="Label" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-horizontal_alignment = 1
-size_flags_horizontal = 3
-text = "Step 1/6"
-
-[node name="StepProgress" type="ProgressBar" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-value = 1.0
-
 [node name="MainContainer" type="Control" parent="BackgroundPanel/ProfileCreationPanel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
