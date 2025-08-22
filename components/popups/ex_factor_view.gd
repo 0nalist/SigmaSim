@@ -64,13 +64,13 @@ func _ready() -> void:
 	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
 	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
 	next_stage_confirm_primary_button.pressed.connect(_on_next_stage_confirm_primary_pressed)
-        next_stage_confirm_alt_button.pressed.connect(_on_next_stage_confirm_alt_pressed)
-        next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
-        love_button.pressed.connect(_on_love_pressed)
-        exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
-        NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
-        NPCManager.exclusivity_core_changed.connect(_on_exclusivity_core_changed)
-        NPCManager.relationship_stage_changed.connect(_on_relationship_stage_changed)
+	next_stage_confirm_alt_button.pressed.connect(_on_next_stage_confirm_alt_pressed)
+	next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
+	love_button.pressed.connect(_on_love_pressed)
+	exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
+	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
+	NPCManager.exclusivity_core_changed.connect(_on_exclusivity_core_changed)
+	NPCManager.relationship_stage_changed.connect(_on_relationship_stage_changed)
 
 	
 	await get_tree().process_frame
@@ -99,11 +99,11 @@ func _update_all() -> void:
 	_update_affinity_bar()
 	_update_breakup_button_text()
 	_update_action_buttons_text()
-        _update_love_button()
-        _update_dime_status_label()
-        _update_exclusivity_label()
-        _update_exclusivity_button()
-        var blocked: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DIVORCED
+	_update_love_button()
+	_update_dime_status_label()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	var blocked: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DIVORCED
 
 	gift_button.disabled = blocked
 	date_button.disabled = blocked
@@ -183,49 +183,59 @@ func _update_dime_status_label() -> void:
 				return
 		dime_status_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
 
+
+
+
 func _update_exclusivity_label() -> void:
 	if npc == null:
-			return
+		return
+
 	var label_text: String
 	if npc_idx != -1:
-			label_text = NPCManager.exclusivity_descriptor_label(npc_idx)
+		label_text = NPCManager.exclusivity_descriptor_label(npc_idx)
 	else:
-			var desc = NPCManager.exclusivity_descriptor_for(npc.relationship_stage, npc.exclusivity_core, npc.claimed_exclusive_boost)
-			match desc:
-					NPCManager.ExclusivityDescriptor.UNMENTIONED:
-							label_text = "Unmentioned"
-					NPCManager.ExclusivityDescriptor.DATING_AROUND:
-							label_text = "Dating Around"
-					NPCManager.ExclusivityDescriptor.EXCLUSIVE:
-							label_text = "Exclusive"
-					NPCManager.ExclusivityDescriptor.MONOGAMOUS:
-							label_text = "Monogamous"
-					NPCManager.ExclusivityDescriptor.POLYAMOROUS:
-							label_text = "Polyamorous"
-					NPCManager.ExclusivityDescriptor.OPEN:
-							label_text = "Open"
-					NPCManager.ExclusivityDescriptor.CHEATING:
-							label_text = "Cheating"
-					_:
-							label_text = "Unmentioned"
-        exclusivity_label.text = "Exclusivity: " + label_text
+		var desc: int = NPCManager.exclusivity_descriptor_for(
+			npc.relationship_stage,
+			npc.exclusivity_core,
+			npc.claimed_exclusive_boost
+		)
+		match desc:
+			NPCManager.ExclusivityDescriptor.UNMENTIONED:
+				label_text = "Unmentioned"
+			NPCManager.ExclusivityDescriptor.DATING_AROUND:
+				label_text = "Dating Around"
+			NPCManager.ExclusivityDescriptor.EXCLUSIVE:
+				label_text = "Exclusive"
+			NPCManager.ExclusivityDescriptor.MONOGAMOUS:
+				label_text = "Monogamous"
+			NPCManager.ExclusivityDescriptor.POLYAMOROUS:
+				label_text = "Polyamorous"
+			NPCManager.ExclusivityDescriptor.OPEN:
+				label_text = "Open"
+			NPCManager.ExclusivityDescriptor.CHEATING:
+				label_text = "Cheating"
+			_:
+				label_text = "Unmentioned"
+
+	exclusivity_label.text = "Exclusivity: " + label_text
+
 
 func _update_exclusivity_button() -> void:
-        if npc == null:
-                return
-        if npc.relationship_stage < NPCManager.RelationshipStage.DATING or npc.relationship_stage > NPCManager.RelationshipStage.MARRIED:
-                exclusivity_button.visible = false
-                return
-        exclusivity_button.visible = true
-        match npc.exclusivity_core:
-                NPCManager.ExclusivityCore.MONOG:
-                        exclusivity_button.text = "Go Poly"
-                NPCManager.ExclusivityCore.POLY:
-                        exclusivity_button.text = "Go Monog"
-                NPCManager.ExclusivityCore.CHEATING:
-                        exclusivity_button.text = "Come Clean"
-                _:
-                        exclusivity_button.text = "Toggle"
+		if npc == null:
+				return
+		if npc.relationship_stage < NPCManager.RelationshipStage.DATING or npc.relationship_stage > NPCManager.RelationshipStage.MARRIED:
+				exclusivity_button.visible = false
+				return
+		exclusivity_button.visible = true
+		match npc.exclusivity_core:
+				NPCManager.ExclusivityCore.MONOG:
+						exclusivity_button.text = "Go Poly"
+				NPCManager.ExclusivityCore.POLY:
+						exclusivity_button.text = "Go Monog"
+				NPCManager.ExclusivityCore.CHEATING:
+						exclusivity_button.text = "Come Clean"
+				_:
+						exclusivity_button.text = "Toggle"
 func _on_npc_affinity_changed(idx: int, value: float) -> void:
 		if idx != npc_idx:
 				return
@@ -233,58 +243,58 @@ func _on_npc_affinity_changed(idx: int, value: float) -> void:
 		_update_affinity_bar()
 
 func _on_exclusivity_core_changed(idx: int, _old_core: int, new_core: int) -> void:
-                if idx != npc_idx:
-                                return
-                npc.exclusivity_core = new_core
-                _update_exclusivity_label()
-                _update_exclusivity_button()
+				if idx != npc_idx:
+								return
+				npc.exclusivity_core = new_core
+				_update_exclusivity_label()
+				_update_exclusivity_button()
 
 func _on_relationship_stage_changed(idx: int, _old_stage: int, new_stage: int) -> void:
-                if idx != npc_idx:
-                                return
-                npc.relationship_stage = new_stage
-                _update_exclusivity_label()
-                _update_exclusivity_button()
+				if idx != npc_idx:
+								return
+				npc.relationship_stage = new_stage
+				_update_exclusivity_label()
+				_update_exclusivity_button()
 
 func _on_exclusivity_button_pressed() -> void:
-        if npc == null:
-                return
-        match npc.exclusivity_core:
-                NPCManager.ExclusivityCore.MONOG:
-                        if npc_idx != -1:
-                                if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
-                                        NPCManager.go_poly_during_dating(npc_idx)
-                                else:
-                                        NPCManager.request_poly_at_serious_or_engaged(npc_idx)
-                        else:
-                                npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
-                                npc.affinity *= 0.1
-                        _update_affinity_bar()
-                        _update_exclusivity_label()
-                        _update_exclusivity_button()
-                NPCManager.ExclusivityCore.POLY:
-                        if npc_idx != -1:
-                                if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
-                                        NPCManager.go_exclusive_during_dating(npc_idx)
-                                else:
-                                        NPCManager.return_to_monogamy(npc_idx)
-                        else:
-                                npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
-                                npc.affinity = min(npc.affinity * 1.5, 100.0)
-                        _update_affinity_bar()
-                        _update_exclusivity_label()
-                        _update_exclusivity_button()
-                NPCManager.ExclusivityCore.CHEATING:
-                        if npc_idx != -1:
-                                NPCManager.come_clean_from_cheating(npc_idx)
-                        else:
-                                npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
-                                npc.affinity = 1.0
-                        _update_affinity_bar()
-                        _update_exclusivity_label()
-                        _update_exclusivity_button()
-                _:
-                        pass
+		if npc == null:
+				return
+		match npc.exclusivity_core:
+				NPCManager.ExclusivityCore.MONOG:
+						if npc_idx != -1:
+								if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
+										NPCManager.go_poly_during_dating(npc_idx)
+								else:
+										NPCManager.request_poly_at_serious_or_engaged(npc_idx)
+						else:
+								npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+								npc.affinity *= 0.1
+						_update_affinity_bar()
+						_update_exclusivity_label()
+						_update_exclusivity_button()
+				NPCManager.ExclusivityCore.POLY:
+						if npc_idx != -1:
+								if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
+										NPCManager.go_exclusive_during_dating(npc_idx)
+								else:
+										NPCManager.return_to_monogamy(npc_idx)
+						else:
+								npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+								npc.affinity = min(npc.affinity * 1.5, 100.0)
+						_update_affinity_bar()
+						_update_exclusivity_label()
+						_update_exclusivity_button()
+				NPCManager.ExclusivityCore.CHEATING:
+						if npc_idx != -1:
+								NPCManager.come_clean_from_cheating(npc_idx)
+						else:
+								npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+								npc.affinity = 1.0
+						_update_affinity_bar()
+						_update_exclusivity_label()
+						_update_exclusivity_button()
+				_:
+						pass
 
 func _on_next_stage_pressed() -> void:
 		next_stage_button.visible = false
