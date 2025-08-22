@@ -216,9 +216,10 @@ func exclusivity_descriptor_for(stage: int, core: int, had_exclusive_flag: bool)
 	if stage == RelationshipStage.DATING:
 		if core == ExclusivityCore.MONOG:
 			return ExclusivityDescriptor.EXCLUSIVE
-		if had_exclusive_flag:
-			return ExclusivityDescriptor.DATING_AROUND
-		return ExclusivityDescriptor.UNMENTIONED
+		#if had_exclusive_flag:
+		#	return ExclusivityDescriptor.DATING_AROUND
+		#return ExclusivityDescriptor.UNMENTIONED
+		return ExclusivityDescriptor.DATING_AROUND
 	if stage == RelationshipStage.SERIOUS or stage == RelationshipStage.ENGAGED:
 		if core == ExclusivityCore.MONOG:
 			return ExclusivityDescriptor.MONOGAMOUS

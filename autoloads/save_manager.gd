@@ -254,6 +254,7 @@ func reset_managers():
 	TimeManager.reset()
 	WorkerManager.reset()
 	TaskManager.reset()
+	UpgradeManager.reset()
 	GPUManager.reset()
 	BillManager.reset()
 	NPCManager.reset()
