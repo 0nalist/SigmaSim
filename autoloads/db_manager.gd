@@ -167,26 +167,26 @@ func load_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> NPC:
 	return NPC.from_dict(row)
 
 func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
-        var raw_rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["*"])
-        var out: Array = []
-        for row in raw_rows:
-                row["gender_vector"] = _safe_from_json(row.get("gender_vector", null), '{"x":0,"y":0,"z":1}')
-                row["tags"] = _safe_from_json(row.get("tags", null), "[]")
+	var raw_rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["*"])
+	var out: Array = []
+	for row in raw_rows:
+		row["gender_vector"] = _safe_from_json(row.get("gender_vector", null), '{"x":0,"y":0,"z":1}')
+		row["tags"] = _safe_from_json(row.get("tags", null), "[]")
 		row["likes"] = _safe_from_json(row.get("likes", null), "[]")
 		row["preferred_pet_names"] = _safe_from_json(row.get("preferred_pet_names", null), "[]")
 		row["player_pet_names"] = _safe_from_json(row.get("player_pet_names", null), "[]")
 		row["ocean"] = _safe_from_json(row.get("ocean", null), "{}")
 		row["wall_posts"] = _safe_from_json(row.get("wall_posts", null), "[]")
-                row["portrait_config"] = _safe_from_json(row.get("portrait_config", null), "{}")
-                out.append(NPC.from_dict(row))
-        return out
+		row["portrait_config"] = _safe_from_json(row.get("portrait_config", null), "{}")
+		out.append(NPC.from_dict(row))
+	return out
 
 func get_all_npc_ids(slot_id: int = SaveManager.current_slot_id) -> Array[int]:
-        var rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["id"])
-        var ids: Array[int] = []
-        for r in rows:
-                ids.append(int(r.id))
-        return ids
+		var rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["id"])
+		var ids: Array[int] = []
+		for r in rows:
+				ids.append(int(r.id))
+		return ids
 
 func _safe_from_json(value, fallback: String) -> Variant:
 	if value == null:
