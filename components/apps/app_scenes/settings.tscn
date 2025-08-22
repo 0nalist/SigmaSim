@@ -765,6 +765,8 @@ text = "Select Image"
 [node name="BackgroundFileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
 access = 2
+file_mode = 0
+ok_button_text = "Open"
 
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="pressed" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/CreateAppsFolderButton" to="." method="_on_create_apps_folder_button_pressed"]
