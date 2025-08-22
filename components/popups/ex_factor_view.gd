@@ -238,6 +238,10 @@ func _update_exclusivity_label() -> void:
 				label_text = "Unmentioned"
 
 	exclusivity_label.text = "Exclusivity: " + label_text
+	if npc.exclusivity_core == NPCManager.ExclusivityCore.CHEATING:
+		exclusivity_label.add_theme_color_override("font_color", Color.RED)
+	else:
+		exclusivity_label.remove_theme_color_override("font_color")
 
 
 func _update_exclusivity_button() -> void:
