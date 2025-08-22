@@ -467,46 +467,46 @@ func come_clean_from_cheating(npc_idx: int) -> void:
 		print("NPC %d: come clean from cheating core %d -> %d affinity %.2f -> %.2f" % [npc_idx, old_core, npc.exclusivity_core, old_affinity, npc.affinity])
 
 func _mark_npc_as_cheating(npc_idx: int, other_idx: int) -> void:
-                var npc: NPC = get_npc_by_index(npc_idx)
-                var old_stage: int = npc.relationship_stage
-		var old_core: int = npc.exclusivity_core
-		var old_affinity: float = npc.affinity
-		var old_equilibrium: float = npc.affinity_equilibrium
-		npc.exclusivity_core = ExclusivityCore.CHEATING
-		npc.affinity = npc.affinity * 0.25
-		npc.affinity_equilibrium = npc.affinity_equilibrium * 0.5
-		promote_to_persistent(npc_idx)
-		persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
-		persistent_npcs[npc_idx]["affinity"] = npc.affinity
-		persistent_npcs[npc_idx]["affinity_equilibrium"] = npc.affinity_equilibrium
-		DBManager.save_npc(npc_idx, npc)
-		emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
-		emit_signal("affinity_changed", npc_idx, npc.affinity)
-		if old_equilibrium != npc.affinity_equilibrium:
-				emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
-                emit_signal("cheating_detected", npc_idx, other_idx)
-                print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
+	var npc: NPC = get_npc_by_index(npc_idx)
+	var old_stage: int = npc.relationship_stage
+	var old_core: int = npc.exclusivity_core
+	var old_affinity: float = npc.affinity
+	var old_equilibrium: float = npc.affinity_equilibrium
+	npc.exclusivity_core = ExclusivityCore.CHEATING
+	npc.affinity = npc.affinity * 0.25
+	npc.affinity_equilibrium = npc.affinity_equilibrium * 0.5
+	promote_to_persistent(npc_idx)
+	persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
+	persistent_npcs[npc_idx]["affinity"] = npc.affinity
+	persistent_npcs[npc_idx]["affinity_equilibrium"] = npc.affinity_equilibrium
+	DBManager.save_npc(npc_idx, npc)
+	emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
+	emit_signal("affinity_changed", npc_idx, npc.affinity)
+	if old_equilibrium != npc.affinity_equilibrium:
+			emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
+			emit_signal("cheating_detected", npc_idx, other_idx)
+			print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 func player_broke_up_with(npc_idx: int) -> void:
-        emit_signal("breakup_occurred", npc_idx)
-        _check_cheating_after_breakup()
+		emit_signal("breakup_occurred", npc_idx)
+		_check_cheating_after_breakup()
 
 func _check_cheating_after_breakup() -> void:
-        for idx in encountered_npcs:
-                var check_idx: int = int(idx)
-                var npc: NPC = get_npc_by_index(check_idx)
-                if npc.exclusivity_core == ExclusivityCore.CHEATING:
-                        var still_cheating: bool = false
-                        for other in encountered_npcs:
-                                var other_idx: int = int(other)
-                                if other_idx == check_idx:
-                                        continue
-                                var other_npc: NPC = get_npc_by_index(other_idx)
-                                if other_npc.relationship_stage >= RelationshipStage.DATING and other_npc.relationship_stage <= RelationshipStage.MARRIED:
-                                        still_cheating = true
-                                        break
-                        if not still_cheating:
-                                come_clean_from_cheating(check_idx)
+		for idx in encountered_npcs:
+				var check_idx: int = int(idx)
+				var npc: NPC = get_npc_by_index(check_idx)
+				if npc.exclusivity_core == ExclusivityCore.CHEATING:
+						var still_cheating: bool = false
+						for other in encountered_npcs:
+								var other_idx: int = int(other)
+								if other_idx == check_idx:
+										continue
+								var other_npc: NPC = get_npc_by_index(other_idx)
+								if other_npc.relationship_stage >= RelationshipStage.DATING and other_npc.relationship_stage <= RelationshipStage.MARRIED:
+										still_cheating = true
+										break
+						if not still_cheating:
+								come_clean_from_cheating(check_idx)
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
 	for idx in encountered_npcs:
