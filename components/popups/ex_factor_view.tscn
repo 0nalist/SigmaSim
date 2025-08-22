@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_vl6ok"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
 [ext_resource type="Script" uid="uid://bvbiboe20qioe" path="res://components/popups/relationship_bar.gd" id="5"]
+[ext_resource type="PackedScene" path="res://components/upgrade_scenes/ex_factor_upgrade_ui.tscn" id="6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_78wgo"]
 resource_local_to_scene = true
@@ -44,6 +45,7 @@ is_popup = true
 color1 = Color(0.774734, 0.000462633, 0.774729, 1)
 color2 = Color(0.710983, 0.236749, 0.982591, 1)
 color3 = Color(0.992747, 0.58839, 1, 1)
+upgrade_pane = ExtResource("6")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_78wgo")
