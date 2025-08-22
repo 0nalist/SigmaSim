@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Theme" path="res://assets/windows_95_theme.tres" id="1"]
+[ext_resource type="Script" path="res://components/apps/notepad/notepad.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/logos/pdficon.png" id="3"]
+
+[node name="Notepad" type="MarginContainer"]
+theme = ExtResource("1")
+script = ExtResource("2")
+window_title = "Notepad"
+window_icon = ExtResource("3")
+default_window_size = Vector2(400, 300)
+
+[node name="TextEdit" type="TextEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+

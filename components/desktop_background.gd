@@ -13,17 +13,23 @@ func _gui_input(event: InputEvent) -> void:
 		if mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
 			print("clicked desktop background")
 			var actions: Array = []
-			var action_new: ContextAction = ContextAction.new()
-			action_new.id = 0
-			action_new.label = "New Folder"
-			action_new.method = "_ctx_new_folder"
-			action_new.args = [mb.global_position]
-			actions.append(action_new)
-			var action_bg: ContextAction = ContextAction.new()
-			action_bg.id = 1
-			action_bg.label = "Change Desktop Background"
-			action_bg.method = "_ctx_change_background"
-			actions.append(action_bg)
+                        var action_new: ContextAction = ContextAction.new()
+                        action_new.id = 0
+                        action_new.label = "New Folder"
+                        action_new.method = "_ctx_new_folder"
+                        action_new.args = [mb.global_position]
+                        actions.append(action_new)
+                        var action_note: ContextAction = ContextAction.new()
+                        action_note.id = 1
+                        action_note.label = "New Note"
+                        action_note.method = "_ctx_new_note"
+                        action_note.args = [mb.global_position]
+                        actions.append(action_note)
+                        var action_bg: ContextAction = ContextAction.new()
+                        action_bg.id = 2
+                        action_bg.label = "Change Desktop Background"
+                        action_bg.method = "_ctx_change_background"
+                        actions.append(action_bg)
 			ContextMenuManager.open_for(self, mb.global_position, actions)
 			accept_event()
 
@@ -41,7 +47,25 @@ func _ctx_new_folder(pos: Vector2) -> void:
 						break
 				counter += 1
 				name = "%s %d" % [base_name, counter]
-		DesktopLayoutManager.create_folder(name, "res://assets/logos/folder.png", pos)
+                DesktopLayoutManager.create_folder(name, "res://assets/logos/folder.png", pos)
+
+func _ctx_new_note(pos: Vector2) -> void:
+                var base_name := "Note"
+                var name := base_name
+                var counter := 1
+                while true:
+                                var exists := false
+                                for item in DesktopLayoutManager.items.values():
+                                                if item.get("title", "") == name:
+                                                                exists = true
+                                                                break
+                                if not exists:
+                                                break
+                                counter += 1
+                                name = "%s %d" % [base_name, counter]
+                var id = DesktopLayoutManager.create_app_shortcut("Notepad", name, "res://assets/logos/pdficon.png", pos)
+                DesktopLayoutManager.set_item_data(id, {"text": ""})
+                WindowManager.launch_app_by_name("Notepad", id)
 
 func _ctx_change_background() -> void:
 		var scene: PackedScene = WindowManager.app_registry.get("Settings")
