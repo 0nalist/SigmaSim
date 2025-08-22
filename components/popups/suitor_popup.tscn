@@ -16,9 +16,9 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.03
-shader_parameter/color_low = Color(1, 0.98, 0.94, 1)
-shader_parameter/color_mid = Color(1, 0.99, 0.99, 1)
-shader_parameter/color_high = Color(0.95, 0.95, 0.96, 1)
+shader_parameter/color_low = Color(1, 0, 0.941176, 1)
+shader_parameter/color_mid = Color(0.463319, 0.00196373, 0.715449, 1)
+shader_parameter/color_high = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edh50"]
 bg_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
@@ -41,6 +41,9 @@ script = ExtResource("2")
 window_title = "Suitor"
 default_window_size = Vector2(400, 500)
 is_popup = true
+color1 = Color(0.774734, 0.000462633, 0.774729, 1)
+color2 = Color(0.710983, 0.236749, 0.982591, 1)
+color3 = Color(0.992747, 0.58839, 1, 1)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_78wgo")
