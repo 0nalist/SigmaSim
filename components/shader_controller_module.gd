@@ -106,10 +106,13 @@ func _on_toggled(toggled_on: bool) -> void:
 func _get_param(param: StringName):
 	if shader_materials.is_empty():
 		return 0
+	if param == StringName():
+		return 0
 	if param == "scale_x" or param == "scale_y":
 		var scale: Vector2 = shader_materials[0].get_shader_parameter("scale")
 		return scale.x if param == "scale_x" else scale.y
-	return shader_materials[0].get_shader_parameter(param)
+	var result = shader_materials[0].get_shader_parameter(param)
+	return result if result != null else 0
 
 func _set_param(param: StringName, value) -> void:
 	if param == "scale_x" or param == "scale_y":
