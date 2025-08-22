@@ -23,11 +23,26 @@ var npcs: Dictionary = {}
 
 var persistent_by_gender: Dictionary = {}
 var persistent_by_wealth: Dictionary = {}
+var _save_queue: Dictionary = {}
+var _save_timer: Timer
 
 func _ready() -> void:
-	TimeManager.hour_passed.connect(_on_hour_passed)
+        TimeManager.hour_passed.connect(_on_hour_passed)
+        _save_timer = Timer.new()
+        _save_timer.wait_time = 0.5
+        _save_timer.one_shot = true
+        _save_timer.timeout.connect(_flush_save_queue)
+        add_child(_save_timer)
 
+func _queue_save(idx: int) -> void:
+        _save_queue[idx] = true
+        if _save_timer.is_stopped():
+                _save_timer.start()
 
+func _flush_save_queue() -> void:
+        for idx in _save_queue.keys():
+                DBManager.save_npc(idx, npcs[idx])
+        _save_queue.clear()
 
 # === MAIN API ===
 
@@ -62,28 +77,27 @@ func set_npc_field(idx: int, field: String, value) -> void:
 		npcs[idx].affinity_equilibrium = float(value) * 10.0
 		if persistent_npcs.has(idx):
 			persistent_npcs[idx]["affinity_equilibrium"] = npcs[idx].affinity_equilibrium
-	if persistent_npcs.has(idx):
-		persistent_npcs[idx][field] = value
-		DBManager.save_npc(idx, npcs[idx])
-	else:
-		if not npc_overrides.has(idx):
-			npc_overrides[idx] = {}
-		npc_overrides[idx][field] = value
-		if field == "portrait_config":
-			DBManager.save_npc(idx, npcs[idx])
-			promote_to_persistent(idx)
+        if persistent_npcs.has(idx):
+                persistent_npcs[idx][field] = value
+                _queue_save(idx)
+        else:
+                if not npc_overrides.has(idx):
+                        npc_overrides[idx] = {}
+                npc_overrides[idx][field] = value
+                if field == "portrait_config":
+                        promote_to_persistent(idx)
 
 	if field == "portrait_config":
 		emit_signal("portrait_changed", idx, value)
 	if field == "affinity":
 		emit_signal("affinity_changed", idx, value)
 func promote_to_persistent(idx: int) -> void:
-	if not persistent_npcs.has(idx):
-		var npc = get_npc_by_index(idx)
-		persistent_npcs[idx] = npc_overrides.get(idx, {}).duplicate()
-		npc_overrides.erase(idx)
-		_index_persistent_npc(idx)
-		DBManager.save_npc(idx, npc)
+        if not persistent_npcs.has(idx):
+                var npc = get_npc_by_index(idx)
+                persistent_npcs[idx] = npc_overrides.get(idx, {}).duplicate()
+                npc_overrides.erase(idx)
+                _index_persistent_npc(idx)
+                _queue_save(idx)
 
 # Returns NPC indices matching a dot product similarity threshold with preferred_gender
 func get_npcs_by_gender_dot(app_name: String, preferred_gender: Vector3, min_similarity: float, count: int, exclude: Array[int]=[]) -> Array[int]:

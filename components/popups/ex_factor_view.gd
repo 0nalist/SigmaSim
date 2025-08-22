@@ -3,6 +3,8 @@ class_name ExFactorView
 
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
 const LOVE_COOLDOWN_MINUTES: int = 24 * 60
+const PROGRESS_SAVE_INTERVAL: float = 0.5
+const PROGRESS_MIN_DELTA: float = 0.01
 
 @onready var name_label: Label = %NameLabel
 @onready var portrait_view: PortraitView = %Portrait
@@ -37,6 +39,7 @@ var breakup_reward: float = 0.0
 var apologize_cost: int = 10
 var npc_idx: int = -1
 var last_saved_progress: float = 0.0
+var progress_save_elapsed: float = 0.0
 
 func setup_custom(data: Dictionary) -> void:
 	npc = data.get("npc")
@@ -79,20 +82,29 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if npc == null or npc.relationship_stage >= NPCManager.RelationshipStage.DIVORCED:
-		return
-	var prev_progress: float = npc.relationship_progress
-	logic.process(delta)
-	if npc_idx != -1 and npc.relationship_progress != prev_progress:
-		NPCManager.promote_to_persistent(npc_idx)
-		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
-		last_saved_progress = npc.relationship_progress
-	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
-	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
-		next_stage_button.visible = true
-	_update_relationship_bar()
-	_update_breakup_button_text()
-	_update_love_button()
+        if npc == null or npc.relationship_stage >= NPCManager.RelationshipStage.DIVORCED:
+                return
+        var prev_progress: float = npc.relationship_progress
+        logic.process(delta)
+        if npc_idx != -1 and npc.relationship_progress != prev_progress:
+                progress_save_elapsed += delta
+                if progress_save_elapsed >= PROGRESS_SAVE_INTERVAL and abs(npc.relationship_progress - last_saved_progress) >= PROGRESS_MIN_DELTA:
+                        NPCManager.promote_to_persistent(npc_idx)
+                        NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+                        last_saved_progress = npc.relationship_progress
+                        progress_save_elapsed = 0.0
+        var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
+        if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
+                next_stage_button.visible = true
+        _update_relationship_bar()
+        _update_breakup_button_text()
+        _update_love_button()
+
+func _exit_tree() -> void:
+        if npc_idx != -1 and npc.relationship_progress != last_saved_progress:
+                NPCManager.promote_to_persistent(npc_idx)
+                NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+
 func _update_all() -> void:
 
 	_update_relationship_bar()
