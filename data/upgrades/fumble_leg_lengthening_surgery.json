@@ -3,18 +3,18 @@
   "name": "Leg Lengthening Surgery",
   "description": "Undergo leg lengthening surgery. Increases dime status by 1.0.",
   "effects": [
-                {
-                  "target": "attractiveness",
-                  "operation": "add",
-                  "value": 10.0
-                }
+				{
+				  "target": "attractiveness",
+				  "operation": "add",
+				  "value": 10.0
+				}
   ],
   "systems": [
-        "fumble"
+		"fumble"
   ],
   "dependencies": [],
   "cost_per_level": {
-                "cash": 450000
+				"cash": 450000
   },
   "max_level": 1,
   "repeatable": false,

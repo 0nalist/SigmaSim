@@ -473,7 +473,7 @@ func _update_upgrade_button_state() -> void:
 func set_window_title(title: String) -> void:
 	if title_label:
 		title_label.bbcode_enabled = true
-		title_label.text = title
+		title_label.parse_bbcode(title)
 
 
 func _on_upgrade_button_pressed() -> void:

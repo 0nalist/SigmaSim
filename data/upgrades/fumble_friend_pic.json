@@ -4,11 +4,11 @@
   "description": "Start each chat battle by lowering the NPC's apprehension by 10.",
   "effects": [],
   "systems": [
-    "fumble"
+	"fumble"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "ex": 5
+	"ex": 5
   },
   "max_level": 1,
   "repeatable": false,

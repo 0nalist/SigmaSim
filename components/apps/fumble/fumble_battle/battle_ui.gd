@@ -800,3 +800,5 @@ func _on_close_chat_button_pressed() -> void:
 
 func _on_daterbase_button_pressed() -> void:
 	WindowManager.launch_app_by_name("Daterbase")
+	await get_tree().create_timer(.75).timeout
+	queue_free()

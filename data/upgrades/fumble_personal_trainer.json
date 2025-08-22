@@ -14,9 +14,13 @@
   ],
   "dependencies": [],
   "cost_per_level": {
-				"cash": 1500
+				"cash": 150
   },
   "max_level": 10,
   "cooldown": 10080,
-  "scale_by_formula": false
+  	"scale_by_formula": true,
+		"cost_formula": {
+		  "cash": "base_cost[\"cash\"] * pow(3, level-1)"
+		},
+		"repeatable": true
 }
