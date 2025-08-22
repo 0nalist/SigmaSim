@@ -64,12 +64,12 @@ func _ready() -> void:
 	wave_size_slider.value = waves_shader_material.get_shader_parameter("wave_size")
 	wave_time_mul_slider.value = waves_shader_material.get_shader_parameter("wave_time_mul")
 	total_phases_slider.value = waves_shader_material.get_shader_parameter("total_phases")
-       comic_dots1_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
-       comic_dots1_multiplier_slider.value = _dots_size_from_multiplier(comic_dots1_shader_material.get_shader_parameter("circle_multiplier"))
-       comic_dots1_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
-       comic_dots2_color_picker.color = comic_dots2_shader_material.get_shader_parameter("circle_color")
-       comic_dots2_multiplier_slider.value = _dots_size_from_multiplier(comic_dots2_shader_material.get_shader_parameter("circle_multiplier"))
-       comic_dots2_speed_slider.value = comic_dots2_shader_material.get_shader_parameter("speed")
+	comic_dots1_color_picker.color = comic_dots1_shader_material.get_shader_parameter("circle_color")
+	comic_dots1_multiplier_slider.value = _dots_size_from_multiplier(comic_dots1_shader_material.get_shader_parameter("circle_multiplier"))
+	comic_dots1_speed_slider.value = comic_dots1_shader_material.get_shader_parameter("speed")
+	comic_dots2_color_picker.color = comic_dots2_shader_material.get_shader_parameter("circle_color")
+	comic_dots2_multiplier_slider.value = _dots_size_from_multiplier(comic_dots2_shader_material.get_shader_parameter("circle_multiplier"))
+	comic_dots2_speed_slider.value = comic_dots2_shader_material.get_shader_parameter("speed")
 	electric_button.button_pressed = Events.is_desktop_background_visible("Electric")
 	electric_bg_color_picker.color = electric_shader_material.get_shader_parameter("background_color")
 	electric_line_color_picker.color = electric_shader_material.get_shader_parameter("line_color")
@@ -175,9 +175,9 @@ func _on_comic_dots_1_color_picker_color_changed(color: Color) -> void:
 	PlayerManager.set_shader_param("ComicDots1", "circle_color", color)
 
 func _on_comic_dots_1_multiplier_slider_value_changed(value: float) -> void:
-       var mult = _dots_multiplier_from_size(value)
-       comic_dots1_shader_material.set_shader_parameter("circle_multiplier", mult)
-       PlayerManager.set_shader_param("ComicDots1", "circle_multiplier", mult)
+	var mult = _dots_multiplier_from_size(value)
+	comic_dots1_shader_material.set_shader_parameter("circle_multiplier", mult)
+	PlayerManager.set_shader_param("ComicDots1", "circle_multiplier", mult)
 
 func _on_comic_dots_1_speed_slider_value_changed(value: float) -> void:
 	comic_dots1_shader_material.set_shader_parameter("speed", value)
@@ -188,9 +188,9 @@ func _on_comic_dots_2_color_picker_color_changed(color: Color) -> void:
 	PlayerManager.set_shader_param("ComicDots2", "circle_color", color)
 
 func _on_comic_dots_2_multiplier_slider_value_changed(value: float) -> void:
-       var mult = _dots_multiplier_from_size(value)
-       comic_dots2_shader_material.set_shader_parameter("circle_multiplier", mult)
-       PlayerManager.set_shader_param("ComicDots2", "circle_multiplier", mult)
+	var mult = _dots_multiplier_from_size(value)
+	comic_dots2_shader_material.set_shader_parameter("circle_multiplier", mult)
+	PlayerManager.set_shader_param("ComicDots2", "circle_multiplier", mult)
 
 func _on_comic_dots_2_speed_slider_value_changed(value: float) -> void:
 	comic_dots2_shader_material.set_shader_parameter("speed", value)
@@ -250,45 +250,45 @@ func _on_waves_reset_button_pressed() -> void:
 	total_phases_slider.value = d["total_phases"]
 
 func _on_comic_dots_1_reset_button_pressed() -> void:
-				PlayerManager.reset_shader("ComicDots1")
-				var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["ComicDots1"]
-				var color = PlayerManager.dict_to_color(d["circle_color"])
-				comic_dots1_shader_material.set_shader_parameter("circle_color", color)
-                               comic_dots1_shader_material.set_shader_parameter("circle_multiplier", d["circle_multiplier"])
-                               comic_dots1_shader_material.set_shader_parameter("speed", d["speed"])
-                               comic_dots1_color_picker.color = color
-                               comic_dots1_multiplier_slider.value = _dots_size_from_multiplier(d["circle_multiplier"])
-                               comic_dots1_speed_slider.value = d["speed"]
+	PlayerManager.reset_shader("ComicDots1")
+	var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["ComicDots1"]
+	var color = PlayerManager.dict_to_color(d["circle_color"])
+	comic_dots1_shader_material.set_shader_parameter("circle_color", color)
+	comic_dots1_shader_material.set_shader_parameter("circle_multiplier", d["circle_multiplier"])
+	comic_dots1_shader_material.set_shader_parameter("speed", d["speed"])
+	comic_dots1_color_picker.color = color
+	comic_dots1_multiplier_slider.value = _dots_size_from_multiplier(d["circle_multiplier"])
+	comic_dots1_speed_slider.value = d["speed"]
 
 func _on_comic_dots_2_reset_button_pressed() -> void:
-				PlayerManager.reset_shader("ComicDots2")
-				var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["ComicDots2"]
-				var color = PlayerManager.dict_to_color(d["circle_color"])
-				comic_dots2_shader_material.set_shader_parameter("circle_color", color)
-                               comic_dots2_shader_material.set_shader_parameter("circle_multiplier", d["circle_multiplier"])
-                               comic_dots2_shader_material.set_shader_parameter("speed", d["speed"])
-                               comic_dots2_color_picker.color = color
-                               comic_dots2_multiplier_slider.value = _dots_size_from_multiplier(d["circle_multiplier"])
-                               comic_dots2_speed_slider.value = d["speed"]
+	PlayerManager.reset_shader("ComicDots2")
+	var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["ComicDots2"]
+	var color = PlayerManager.dict_to_color(d["circle_color"])
+	comic_dots2_shader_material.set_shader_parameter("circle_color", color)
+	comic_dots2_shader_material.set_shader_parameter("circle_multiplier", d["circle_multiplier"])
+	comic_dots2_shader_material.set_shader_parameter("speed", d["speed"])
+	comic_dots2_color_picker.color = color
+	comic_dots2_multiplier_slider.value = _dots_size_from_multiplier(d["circle_multiplier"])
+	comic_dots2_speed_slider.value = d["speed"]
 
 func _on_electric_reset_button_pressed() -> void:
-		PlayerManager.reset_shader("Electric")
-		var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Electric"]
-		var bg = PlayerManager.dict_to_color(d["background_color"])
-		var line = PlayerManager.dict_to_color(d["line_color"])
-		electric_shader_material.set_shader_parameter("background_color", bg)
-		electric_shader_material.set_shader_parameter("line_color", line)
-		electric_shader_material.set_shader_parameter("line_freq", d["line_freq"])
-		electric_shader_material.set_shader_parameter("height", d["height"])
-		electric_shader_material.set_shader_parameter("speed", d["speed"])
-		electric_shader_material.set_shader_parameter("scale", Vector2(d["scale_x"], d["scale_y"]))
-		electric_bg_color_picker.color = bg
-		electric_line_color_picker.color = line
-		electric_freq_slider.value = d["line_freq"]
-		electric_height_slider.value = d["height"]
-		electric_speed_slider.value = d["speed"]
-		electric_scale_x_slider.value = d["scale_x"]
-		electric_scale_y_slider.value = d["scale_y"]
+	PlayerManager.reset_shader("Electric")
+	var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["Electric"]
+	var bg = PlayerManager.dict_to_color(d["background_color"])
+	var line = PlayerManager.dict_to_color(d["line_color"])
+	electric_shader_material.set_shader_parameter("background_color", bg)
+	electric_shader_material.set_shader_parameter("line_color", line)
+	electric_shader_material.set_shader_parameter("line_freq", d["line_freq"])
+	electric_shader_material.set_shader_parameter("height", d["height"])
+	electric_shader_material.set_shader_parameter("speed", d["speed"])
+	electric_shader_material.set_shader_parameter("scale", Vector2(d["scale_x"], d["scale_y"]))
+	electric_bg_color_picker.color = bg
+	electric_line_color_picker.color = line
+	electric_freq_slider.value = d["line_freq"]
+	electric_height_slider.value = d["height"]
+	electric_speed_slider.value = d["speed"]
+	electric_scale_x_slider.value = d["scale_x"]
+	electric_scale_y_slider.value = d["scale_y"]
 
 func _on_minute_passed(_total_minutes: int) -> void:
 		_update_autosave_timer_label()

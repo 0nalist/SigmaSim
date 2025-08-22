@@ -103,7 +103,7 @@ func _on_flat_toggled(toggled_on: bool) -> void:
 	PlayerManager.set_shader_param(shader_name, "flat_visible", toggled_on)
 
 func _on_toggled(toggled_on: bool) -> void:
-Events.set_desktop_background_visible(shader_name, toggled_on)
+	Events.set_desktop_background_visible(shader_name, toggled_on)
 
 func _on_background_toggled(name: String, visible: bool) -> void:
 	if name == shader_name and flat_color_toggle_path != NodePath():
@@ -112,8 +112,8 @@ func _on_background_toggled(name: String, visible: bool) -> void:
 			toggle.visible = visible
 
 func _get_param(param: StringName):
-if shader_materials.is_empty():
-return 0
+	if shader_materials.is_empty():
+		return 0
 	if param == StringName():
 		return 0
 	if param == "scale_x" or param == "scale_y":

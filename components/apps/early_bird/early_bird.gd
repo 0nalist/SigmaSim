@@ -196,10 +196,10 @@ func _update_autopilot_button_text() -> void:
 				autopilot_button.text = "Autopilot"
 
 func _on_upgrade_purchased(id: String, _level: int) -> void:
-				if id == "earlybird_autopilot_free":
-								_update_autopilot_button_text()
-				elif id == "earlybird_disable_manual_flaps":
-								_update_disable_flaps_visibility()
+	if id == "earlybird_autopilot_free":
+		_update_autopilot_button_text()
+	elif id == "earlybird_disable_manual_flaps":
+		_update_disable_flaps_visibility()
 
 func _update_cash_per_score() -> void:
 	cash_per_score = StatManager.get_stat("cash_per_score", 0.01)
@@ -212,8 +212,8 @@ func _on_disable_flaps_toggled(pressed: bool) -> void:
 		manual_flaps_disabled = pressed
 
 func _update_disable_flaps_visibility() -> void:
-		var visible := UpgradeManager.get_level("earlybird_disable_manual_flaps") > 0
-		disable_flaps_checkbox.visible = visible
-		if not visible:
-				disable_flaps_checkbox.button_pressed = false
-				manual_flaps_disabled = false
+	var visible := UpgradeManager.get_level("earlybird_disable_manual_flaps") > 0
+	disable_flaps_checkbox.visible = visible
+	if not visible:
+		disable_flaps_checkbox.button_pressed = false
+		manual_flaps_disabled = false
