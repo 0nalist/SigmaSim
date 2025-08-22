@@ -41,6 +41,14 @@ const DEFAULT_BACKGROUND_SHADERS := {
 "scale_x": 3.25,
 "scale_y": 15.43,
 },
+"Balala": {
+"color_one": {"r": 0.4, "g": 0.2, "b": 0.6, "a": 1.0},
+"color_two": {"r": 0.0, "g": 0.0, "b": 0.0, "a": 1.0},
+"angle": 20.0,
+"line_count": 20.0,
+"speed": 10.0,
+"blur": 0.0,
+},
 "FlatColor": {
 "color": {"r": 0.0, "g": 0.0, "b": 0.0, "a": 1.0},
 },
