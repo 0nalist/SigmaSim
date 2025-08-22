@@ -297,12 +297,11 @@ func _on_background_select_image_button_pressed() -> void:
 		background_file_dialog.popup_centered()
 
 func _on_background_file_dialog_file_selected(path: String) -> void:
-	var image := Image.new()
-	var err := image.load(path)
-	if err == OK:
-			var tex: Texture2D = ImageTexture.create_from_image(image)
-			var bg: TextureRect = get_tree().root.get_node("Main/DesktopEnv/Background")
-			bg.texture = tex
-			PlayerManager.set_var("background_path", path)
+	var image: Image = Image.load_from_file(path)
+	if image and image.get_width() > 0:
+		var tex: Texture2D = ImageTexture.create_from_image(image)
+		var bg: TextureRect = get_tree().root.get_node("Main/DesktopEnv/Background")
+		bg.texture = tex
+		PlayerManager.set_var("background_path", path)
 	else:
-			print("❌ Couldn't load texture from path: ", path)
+		push_error("❌ Couldn't load texture from path: %s" % path)
