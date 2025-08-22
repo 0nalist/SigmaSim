@@ -51,6 +51,9 @@ script = ExtResource("2_o2yqo")
 window_title = "BrokeRage"
 window_icon = ExtResource("3_m7phi")
 default_window_size = Vector2(735, 500)
+color1 = Color(0, 0, 0, 1)
+color2 = Color(0.15, 0.15, 0.15, 1)
+color3 = Color(0.25, 0.25, 0.25, 1)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_o2yqo")

@@ -42,6 +42,9 @@ theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Daterbase"
 default_window_size = Vector2(800, 480)
+color1 = Color(0.213765, 0, 0.213765, 1)
+color2 = Color(1, 0.579437, 1, 1)
+color3 = Color(1, 1, 1, 1)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_j8wav")
