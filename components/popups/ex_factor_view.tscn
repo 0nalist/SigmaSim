@@ -102,9 +102,10 @@ horizontal_alignment = 1
 
 [node name="ExclusivityButton" type="Button" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
+size_flags_horizontal = 4
 focus_mode = 0
+theme_override_font_sizes/font_size = 14
 text = "Toggle"
 
 [node name="Control3" type="Control" parent="MarginContainer/VBox"]
@@ -197,6 +198,7 @@ custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+theme_override_font_sizes/font_size = 16
 text = " Love (free) "
 
 [node name="LoveCooldownLabel" type="Label" parent="MarginContainer/VBox/VBoxContainer/LoveBox"]
@@ -214,12 +216,14 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 16
 text = "Gift"
 
 [node name="DateButton" type="Button" parent="MarginContainer/VBox/VBoxContainer/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 16
 text = "Date"
 
 [node name="BreakupButton" type="Button" parent="MarginContainer/VBox/VBoxContainer"]

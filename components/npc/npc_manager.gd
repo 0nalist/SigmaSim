@@ -69,30 +69,33 @@ func get_npc_by_index(idx: int) -> NPC:
 	return npc
 
 func set_npc_field(idx: int, field: String, value) -> void:
-        if not npcs.has(idx):
-                push_error("Tried to set a field on a non-existent NPC!")
-                return
-        npcs[idx].set(field, value)
+	if not npcs.has(idx):
+			push_error("Tried to set a field on a non-existent NPC!")
+			return
+	npcs[idx].set(field, value)
 
-        if field == "relationship_stage":
-                npcs[idx].affinity_equilibrium = float(value) * 10.0
-                if persistent_npcs.has(idx):
-                        persistent_npcs[idx]["affinity_equilibrium"] = npcs[idx].affinity_equilibrium
+	if field == "relationship_stage":
+			npcs[idx].affinity_equilibrium = float(value) * 10.0
+			if persistent_npcs.has(idx):
+					persistent_npcs[idx]["affinity_equilibrium"] = npcs[idx].affinity_equilibrium
 
-        if persistent_npcs.has(idx):
-                persistent_npcs[idx][field] = value
-                _queue_save(idx)
-        else:
-                if not npc_overrides.has(idx):
-                        npc_overrides[idx] = {}
-                npc_overrides[idx][field] = value
-                if field == "portrait_config":
-                        promote_to_persistent(idx)
+	if persistent_npcs.has(idx):
+			persistent_npcs[idx][field] = value
+			_queue_save(idx)
+	else:
+			if not npc_overrides.has(idx):
+					npc_overrides[idx] = {}
+			npc_overrides[idx][field] = value
+			if field == "portrait_config":
+					promote_to_persistent(idx)
 
-        if field == "portrait_config":
-                emit_signal("portrait_changed", idx, value)
-        if field == "affinity":
-                emit_signal("affinity_changed", idx, value)
+	if field == "portrait_config":
+			emit_signal("portrait_changed", idx, value)
+	if field == "affinity":
+			emit_signal("affinity_changed", idx, value)
+
+
+
 func promote_to_persistent(idx: int) -> void:
 	if not persistent_npcs.has(idx):
 		var npc = get_npc_by_index(idx)
@@ -466,6 +469,7 @@ func _mark_npc_as_cheating(npc_idx: int, other_idx: int) -> void:
         print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
+
         for idx in encountered_npcs:
                 var npc_idx: int = int(idx)
                 if npc_idx == other_idx:
@@ -474,6 +478,7 @@ func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
                 if npc.exclusivity_core != ExclusivityCore.MONOG:
                         continue
                 _mark_npc_as_cheating(npc_idx, other_idx)
+
 
 func can_show_go_exclusive(npc_idx: int) -> bool:
 	var npc: NPC = get_npc_by_index(npc_idx)
