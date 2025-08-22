@@ -225,18 +225,18 @@ func _on_block_sprite_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			#CursorManager.set_pickaxe_click_cursor()
-			Input.set_custom_mouse_cursor(preload("res://assets/cursors/pickaxe2.png"),Input.CURSOR_ARROW, Vector2(0,0))
+			Input.set_custom_mouse_cursor(preload("res://assets/cursors/pickaxe2.png"),Input.CURSOR_ARROW, Vector2(24,4))
 			extra_power += 1.0
 			displayed_chance = calculate_block_chance()
 			if power_bar != null:
 				power_bar.value = displayed_chance
 		else:
 			#CursorManager.set_pickaxe_cursor()
-			Input.set_custom_mouse_cursor(preload("res://assets/cursors/pickaxe.png"), Input.CURSOR_ARROW, Vector2(0,0))
+			Input.set_custom_mouse_cursor(preload("res://assets/cursors/pickaxe.png"), Input.CURSOR_ARROW, Vector2(24,4))
 
 func _on_block_sprite_mouse_entered() -> void:
 	#CursorManager.set_pickaxe_cursor()
-	Input.set_custom_mouse_cursor(preload("res://assets/cursors/pickaxe.png"), Input.CURSOR_ARROW, Vector2(0,0))
+	Input.set_custom_mouse_cursor(preload("res://assets/cursors/pickaxe.png"), Input.CURSOR_ARROW, Vector2(24,4))
 
 func _on_block_sprite_mouse_exited() -> void:
 	CursorManager.set_default_cursor()
