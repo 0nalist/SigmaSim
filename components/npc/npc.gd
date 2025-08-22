@@ -2,6 +2,11 @@
 class_name NPC
 extends Resource
 
+const BASE_GIFT_COST: float = 10.0
+const BASE_DATE_COST: float = 100.0
+
+
+
 # === Basic Info ===
 @export var full_name: String
 @export var first_name: String
@@ -31,10 +36,11 @@ extends Resource
 
 @export_range(0, 100, 0.1) var rizz: int
 @export_range(0, 100, 1) var attractiveness: int
-@export var dates_paid: int = 0
+@export var date_count: int = 0
+@export var gift_count: int = 0
 @export var love_cooldown: int = 0
-@export var gift_cost: float = 25.0
-@export var date_cost: float = 200.0
+var gift_cost: float = 0.0
+var date_cost: float = 0.00
 @export var proposal_cost: float = 25000.0
 
 # === Economics ===
@@ -161,18 +167,17 @@ func to_dict() -> Dictionary:
 		"affinity_equilibrium": affinity_equilibrium,
 		"rizz": rizz,
 		"attractiveness": attractiveness,
-		"dates_paid": dates_paid,
+		"date_count": date_count,
+		"gift_count": gift_count,
 		# Store remaining cooldown time rather than absolute game minutes
 		# to avoid inflated values when reloading before the TimeManager
 		# has restored the canonical clock. This value is re-expanded to
 		# an absolute timestamp in `from_dict`.
-				"love_cooldown": _get_love_cooldown(),
-				"gift_cost": gift_cost,
-				"date_cost": date_cost,
-				"proposal_cost": proposal_cost,
+		"love_cooldown": _get_love_cooldown(),
+		"proposal_cost": proposal_cost,
 
-				"income": income,
-				"wealth": wealth,
+		"income": income,
+		"wealth": wealth,
 		"preferred_pet_names": preferred_pet_names.duplicate(),
 		"player_pet_names": player_pet_names.duplicate(),
 		"alpha": alpha,
@@ -248,22 +253,33 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 100.0)
 	npc.rizz = _safe_int(data.get("rizz"), 0)
 	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
-	npc.dates_paid = _safe_int(data.get("dates_paid"), 0)
-		# Older saves stored the absolute game-minute when the cooldown ended.
-		# Newer saves store only the remaining minutes. Detect which format was
-		# used and reconstruct the proper absolute timestamp.
+
+	var saved_gift_cost: float = _safe_float(data.get("gift_cost"), BASE_GIFT_COST)
+	var saved_date_cost: float = _safe_float(data.get("date_cost"), BASE_DATE_COST)
+	npc.date_count = _safe_int(data.get("date_count"), -1)
+	if npc.date_count < 0:
+			npc.date_count = _safe_int(data.get("dates_paid"), -1)
+	npc.gift_count = _safe_int(data.get("gift_count"), -1)
+	if npc.date_count < 0:
+			npc.date_count = int(log(max(saved_date_cost, BASE_DATE_COST) / BASE_DATE_COST) / log(2.0))
+	if npc.gift_count < 0:
+			npc.gift_count = int(log(max(saved_gift_cost, BASE_GIFT_COST) / BASE_GIFT_COST) / log(2.0))
+	npc.gift_cost = (float(npc.attractiveness) / 10.0) * BASE_GIFT_COST * pow(2.0, npc.gift_count)
+	npc.date_cost = (float(npc.attractiveness) / 10.0) * BASE_DATE_COST * pow(2.0, npc.date_count)
+
+	# Older saves stored the absolute game-minute when the cooldown ended.
+	# Newer saves store only the remaining minutes. Detect which format was
+	# used and reconstruct the proper absolute timestamp.
 	var _saved_cd: int = _safe_int(data.get("love_cooldown"), 0)
 	if _saved_cd > 24 * 60:
-		npc.love_cooldown = _saved_cd
+			npc.love_cooldown = _saved_cd
 	else:
-		var _now: int = TimeManager.get_now_minutes()
-		npc.love_cooldown = _now + _saved_cd
+			var _now: int = TimeManager.get_now_minutes()
+			npc.love_cooldown = _now + _saved_cd
 
-		npc.gift_cost = _safe_float(data.get("gift_cost"), 25.0)
-		npc.date_cost = _safe_float(data.get("date_cost"), 200.0)
-		npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
-		npc.income= _safe_int(data.get("income"), 0)
-		npc.wealth= _safe_int(data.get("wealth"), 0)
+	npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
+	npc.income= _safe_int(data.get("income"), 0)
+	npc.wealth= _safe_int(data.get("wealth"), 0)
 
 	_assign_string_array(npc.preferred_pet_names, data.get("preferred_pet_names"))
 	_assign_string_array(npc.player_pet_names, data.get("player_pet_names"))

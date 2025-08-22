@@ -102,9 +102,9 @@ func promote_to_persistent(idx: int) -> void:
 		persistent_npcs[idx] = npc_overrides.get(idx, {}).duplicate()
 		npc_overrides.erase(idx)
 		_index_persistent_npc(idx)
-		# Ensure dynamic costs are persisted immediately so they survive reloads
-		persistent_npcs[idx]["gift_cost"] = npc.gift_cost
-		persistent_npcs[idx]["date_cost"] = npc.date_cost
+		# Ensure dynamic counts are persisted immediately so they survive reloads
+		persistent_npcs[idx]["gift_count"] = npc.gift_count
+		persistent_npcs[idx]["date_count"] = npc.date_count
 		DBManager.save_npc(idx, npc)
 
 # Returns NPC indices matching a dot product similarity threshold with preferred_gender
@@ -482,7 +482,7 @@ func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
 		var npc: NPC = get_npc_by_index(npc_idx)
 		if npc.exclusivity_core != ExclusivityCore.MONOG:
 			continue
-		if npc.relationship_stage < RelationshipStage.DATING or npc.relationship_stage > RelationshipStage.MARRIED:
+		if npc.relationship_stage < RelationshipStage.DATING:
 			continue
 		_mark_npc_as_cheating(npc_idx, other_idx)
 

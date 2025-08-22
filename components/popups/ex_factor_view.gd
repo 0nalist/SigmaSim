@@ -43,6 +43,8 @@ var progress_save_elapsed: float = 0.0
 
 func setup_custom(data: Dictionary) -> void:
 	npc = data.get("npc")
+	npc.gift_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_GIFT_COST * pow(2.0, npc.gift_count)
+	npc.date_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_DATE_COST * pow(2.0, npc.date_count)
 	logic.setup(npc)
 	npc_idx = data.get("npc_idx", -1)
 	last_saved_progress = npc.relationship_progress
@@ -379,30 +381,33 @@ func _transition_dating_to_serious_poly() -> void:
 		_update_all()
 
 func _on_next_stage_confirm_primary_pressed() -> void:
-		match npc.relationship_stage:
-				NPCManager.RelationshipStage.DATING:
-						_transition_dating_to_serious_monog()
-				NPCManager.RelationshipStage.SERIOUS:
-						if PortfolioManager.attempt_spend(npc.proposal_cost, PortfolioManager.CREDIT_REQUIREMENTS["proposal"]):
-								_advance_to_next_stage()
-				_:
-						_advance_to_next_stage()
+	match npc.relationship_stage:
+		NPCManager.RelationshipStage.DATING:
+			_transition_dating_to_serious_monog()
+		NPCManager.RelationshipStage.SERIOUS:
+			if PortfolioManager.attempt_spend(npc.proposal_cost, PortfolioManager.CREDIT_REQUIREMENTS["proposal"]):
+				_advance_to_next_stage()
+		_:
+			_advance_to_next_stage()
 
 func _on_next_stage_confirm_alt_pressed() -> void:
-		if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
-				_transition_dating_to_serious_poly()
+	if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
+		_transition_dating_to_serious_poly()
 
 func _on_next_stage_confirm_no_pressed() -> void:
-		next_stage_confirm.visible = false
-		next_stage_button.visible = true
+	next_stage_confirm.visible = false
+	next_stage_button.visible = true
+
+
 func _on_gift_pressed() -> void:
 	if PortfolioManager.attempt_spend(npc.gift_cost, PortfolioManager.CREDIT_REQUIREMENTS["gift"]):
 		npc.affinity = min(npc.affinity + 5.0, 100.0)
-		npc.gift_cost *= 2.0
+		npc.gift_count += 1
+		npc.gift_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_GIFT_COST * pow(2.0, npc.gift_count)
 		if npc_idx != -1:
 			NPCManager.promote_to_persistent(npc_idx)
 			NPCManager.set_npc_field(npc_idx, "affinity", npc.affinity)
-			NPCManager.set_npc_field(npc_idx, "gift_cost", npc.gift_cost)
+			NPCManager.set_npc_field(npc_idx, "gift_count", npc.gift_count)
 		_update_affinity_bar()
 		_update_action_buttons_text()
 
@@ -437,11 +442,11 @@ func _on_date_pressed() -> void:
 		next_stage_button.visible = true
 	_update_relationship_bar()
 	_update_breakup_button_text()
-	npc.date_cost *= 2.0
+	npc.date_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_DATE_COST * pow(2.0, npc.date_count)
 	if npc_idx != -1:
-		NPCManager.promote_to_persistent(npc_idx)
-		NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
-		NPCManager.set_npc_field(npc_idx, "date_cost", npc.date_cost)
+			NPCManager.promote_to_persistent(npc_idx)
+			NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+			NPCManager.set_npc_field(npc_idx, "date_count", npc.date_count)
 	_update_action_buttons_text()
 
 

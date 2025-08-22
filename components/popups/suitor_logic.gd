@@ -64,8 +64,8 @@ func process(delta: float) -> void:
 
 
 func on_date_paid() -> void:
-	npc.dates_paid += 1
-	progress_paused = false
+		npc.date_count += 1
+		progress_paused = false
 
 func apply_love() -> void:
 	var gain: float = StatManager.get_stat("love_affinity_gain", DEFAULT_LOVE_AFFINITY_GAIN)
@@ -127,7 +127,7 @@ class PreMarriageState extends SuitorState:
 		for stop in stops:
 			var fraction: float = stop["fraction"]
 			var required: int = stop["required"]
-			if progress_fraction >= fraction and npc.dates_paid < required:
+			if progress_fraction >= fraction and npc.date_count < required:
 				npc.relationship_progress = bounds.x + fraction * stage_range
 				machine.progress_paused = true
 				break
@@ -141,7 +141,7 @@ class PreMarriageState extends SuitorState:
 		for stop in stops:
 			var fraction: float = stop["fraction"]
 			var required: int = stop["required"]
-			if npc.dates_paid < required:
+			if npc.date_count < required:
 				marks.append(fraction)
 		return marks
 
