@@ -39,6 +39,9 @@ const DEFAULT_BACKGROUND_SHADERS := {
 "scale_x": 3.25,
 "scale_y": 15.43,
 },
+"FlatColor": {
+"color": {"r": 0.0, "g": 0.0, "b": 0.0, "a": 1.0},
+},
 }
 
 var default_user_data: Dictionary = {
