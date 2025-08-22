@@ -32,8 +32,9 @@ func _build() -> void:
 	add_group("billing", rows2)
 
 	var controls: HBoxContainer = HBoxContainer.new()
-	controls.theme_override_constants["separation"] = 8
+	controls.add_theme_constant_override("separation", 8)
 	controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
 
 	_autopay_check = CheckBox.new()
 	_autopay_check.text = "Autopay"
