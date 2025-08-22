@@ -11,16 +11,6 @@ signal block_attempted(symbol: String)
 
 var next_block_time := {}  # symbol -> float (absolute in-game minute when next roll occurs)
 
-# Hourly burnout scheduling
-var scheduled_burns: Dictionary = {}
-var last_batch_hour: int = -1
-var batch_minute: int = 2
-
-# Block attempt tracking
-var attempts_window: Dictionary = {}
-var attempts_totals: Dictionary = {}
-var attempts_index: int = 0
-
 # GPU Pricing
 var gpu_base_price: float = 100.0
 var current_gpu_price: float = gpu_base_price
@@ -44,196 +34,36 @@ var burnout_chances: PackedFloat32Array = []
 var to_remove: PackedInt32Array = []
 
 func _ready() -> void:
-TimeManager.minute_passed.connect(_on_minute_tick)
-MarketManager.crypto_market_ready.connect(setup_crypto_cooldowns)
-block_attempted.connect(_on_block_attempted)
+	TimeManager.minute_passed.connect(_on_minute_tick)
+	MarketManager.crypto_market_ready.connect(setup_crypto_cooldowns)
 
 func _on_minute_tick(_unused: int) -> void:
-       _advance_attempt_windows()
-       var minute_of_hour: int = TimeManager.current_minute
-       var current_hour: int = TimeManager.current_hour
+	var rng = RNGManager.get_rng()
+	var current_time = TimeManager.total_minutes_elapsed
 
-       if minute_of_hour == batch_minute and minute_of_hour != 0 and current_hour != last_batch_hour:
-               _run_hourly_burn_batch()
-               last_batch_hour = current_hour
+	for symbol in next_block_time.keys():
+		var next_time: float = next_block_time[symbol]
+		var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
+		if not crypto:
+			continue
 
-       if scheduled_burns.has(minute_of_hour):
-               var burns: Dictionary = scheduled_burns[minute_of_hour]
-               scheduled_burns.erase(minute_of_hour)
-               _execute_scheduled_burns(burns)
+		var power := get_power_for(symbol)
+		if power <= 0:
+			while current_time >= next_time:
+				next_time += crypto.block_time
+			next_block_time[symbol] = next_time
+			continue
 
-var rng: RandomNumberGenerator = RNGManager.get_rng()
-var current_time: int = TimeManager.total_minutes_elapsed
+		while current_time >= next_time:
+			emit_signal("block_attempted", symbol)
+			var random_difficulty = rng.randi_range(0, crypto.power_required)
+			if power >= random_difficulty:
+				PortfolioManager.add_crypto(symbol, crypto.block_size)
+				emit_signal("crypto_mined", crypto)
+			next_time += crypto.block_time
+		next_block_time[symbol] = next_time
 
-       for symbol in next_block_time.keys():
-               var next_time: float = next_block_time[symbol]
-               var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
-               if not crypto:
-                       continue
-
-var power: int = get_power_for(symbol)
-               if power <= 0:
-                       while current_time >= next_time:
-                               next_time += crypto.block_time
-                       next_block_time[symbol] = next_time
-                       continue
-
-               while current_time >= next_time:
-                       emit_signal("block_attempted", symbol)
-                       var random_difficulty = rng.randi_range(0, crypto.power_required)
-                       if power >= random_difficulty:
-                               PortfolioManager.add_crypto(symbol, crypto.block_size)
-                               emit_signal("crypto_mined", crypto)
-                       next_time += crypto.block_time
-               next_block_time[symbol] = next_time
-
-       emit_signal("gpus_changed")  # Notify Minerr UI to refresh
-
-func _on_block_attempted(symbol: String) -> void:
-if not attempts_window.has(symbol):
-var arr: Array = []
-arr.resize(60)
-attempts_window[symbol] = arr
-attempts_totals[symbol] = 0
-var arr: Array = attempts_window[symbol]
-arr[attempts_index] = int(arr[attempts_index]) + 1
-attempts_totals[symbol] = int(attempts_totals[symbol]) + 1
-
-func _advance_attempt_windows() -> void:
-	attempts_index = (attempts_index + 1) % 60
-	for symbol in attempts_window.keys():
-	var arr: Array = attempts_window[symbol]
-	attempts_totals[symbol] = int(attempts_totals[symbol]) - int(arr[attempts_index])
-	arr[attempts_index] = 0
-
-func get_attempts_per_hour(symbol: String) -> float:
-	if attempts_totals.has(symbol):
-	return float(attempts_totals[symbol])
-	var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
-	if crypto:
-	return 60.0 / max(crypto.block_time, 1.0)
-	return 0.0
-
-func get_used_gpu_count_for(symbol: String) -> int:
-	return get_gpu_count_for(symbol)
-
-func get_global_burnout_multiplier() -> float:
-	return 1.0
-
-func get_symbol_burnout_multiplier(symbol: String) -> float:
-	return 1.0
-
-func _run_hourly_burn_batch() -> void:
-	scheduled_burns.clear()
-	var rng: RandomNumberGenerator = RNGManager.get_rng()
-	for crypto in MarketManager.crypto_market.values():
-	var symbol: String = crypto.symbol
-	var m_used: int = get_used_gpu_count_for(symbol)
-	if m_used <= 0:
-	continue
-	var A: float = get_attempts_per_hour(symbol)
-	if A <= 0.0:
-	continue
-	var p_eff: float = clamp(0.01 * get_global_burnout_multiplier() * get_symbol_burnout_multiplier(symbol), 0.001, 0.25)
-	var T: int = int(floor(m_used * A))
-	if T <= 0:
-	continue
-	var K: int = _sample_burnouts(T, p_eff, m_used, rng)
-	if K <= 0:
-	continue
-	for i in range(K):
-	var r: int = rng.randi_range(0, 59)
-	var bucket: Dictionary = scheduled_burns.get(r, {})
-	bucket[symbol] = int(bucket.get(symbol, 0)) + 1
-	scheduled_burns[r] = bucket
-
-func _sample_burnouts(T: int, p_eff: float, m_used: int, rng: RandomNumberGenerator) -> int:
-	var K: int = 0
-	if T <= 200:
-	for i in range(T):
-	if rng.randf() < p_eff:
-	K += 1
-	elif T * p_eff <= 30.0 and p_eff <= 0.05:
-	var lam: float = T * p_eff
-	var L: float = exp(-lam)
-	var k: int = 0
-	var p_val: float = 1.0
-	while k < m_used and p_val > L:
-	k += 1
-	p_val *= rng.randf()
-	K = k - 1
-	elif T * p_eff >= 30.0 and T * (1.0 - p_eff) >= 30.0:
-	var mu: float = T * p_eff
-	var sigma: float = sqrt(T * p_eff * (1.0 - p_eff))
-	K = int(round(rng.randfn(mu, sigma)))
-	if K < 0:
-	K = 0
-	else:
-	for i in range(T):
-	if rng.randf() < p_eff:
-	K += 1
-	if K >= m_used:
-	break
-	if K > m_used:
-	K = m_used
-	return K
-
-func _execute_scheduled_burns(burns: Dictionary) -> void:
-	var rng: RandomNumberGenerator = RNGManager.get_rng()
-	for symbol in burns.keys():
-	var count: int = int(burns[symbol])
-	_burn_random_gpus(symbol, count, rng)
-	_cleanup_burned_gpus()
-
-func _burn_random_gpus(symbol: String, count: int, rng: RandomNumberGenerator) -> void:
-	var indices: Array = _get_used_gpu_indices(symbol)
-	var m: int = indices.size()
-	if m == 0:
-	return
-	if count > m:
-	count = m
-	var selected: Array = _select_random_indices(indices, count, rng)
-	for idx in selected:
-	to_remove.append(int(idx))
-	emit_signal("gpu_burned_out", int(idx))
-
-func _get_used_gpu_indices(symbol: String) -> Array:
-	var arr: Array = []
-	for i in range(gpu_cryptos.size()):
-	if gpu_cryptos[i] == symbol:
-	arr.append(i)
-	return arr
-
-func _select_random_indices(source: Array, count: int, rng: RandomNumberGenerator) -> Array:
-	var m: int = source.size()
-	var result: Array = []
-	if count <= 0 or m == 0:
-	return result
-	if count > m:
-	count = m
-	if count > m / 3:
-	var survivors_dict: Dictionary = _floyd_sample_range(m, m - count, rng)
-	var survivor_map: Dictionary = {}
-	for key in survivors_dict.keys():
-	survivor_map[int(key)] = true
-	for i in range(m):
-	if not survivor_map.has(i):
-	result.append(source[i])
-	else:
-	var chosen: Dictionary = _floyd_sample_range(m, count, rng)
-	for key in chosen.keys():
-	result.append(source[int(key)])
-	return result
-
-func _floyd_sample_range(n: int, k: int, rng: RandomNumberGenerator) -> Dictionary:
-	var chosen: Dictionary = {}
-	for i in range(n - k, n):
-	var r: int = rng.randi_range(0, i)
-	if chosen.has(r):
-	chosen[i] = true
-	else:
-	chosen[r] = true
-	return chosen
+	emit_signal("gpus_changed")  # Notify Minerr UI to refresh
 
 func setup_crypto_cooldowns() -> void:
 	next_block_time.clear()
@@ -410,31 +240,19 @@ func reset() -> void:
 	total_power = 0
 	current_gpu_price = gpu_base_price
 	next_block_time.clear()
-	scheduled_burns.clear()
-	attempts_window.clear()
-	attempts_totals.clear()
-	attempts_index = 0
-	last_batch_hour = -1
 
 func get_save_data() -> Dictionary:
 	var next_times: Dictionary = {}
 	for symbol in next_block_time:
 		next_times[symbol] = next_block_time[symbol]
-	var burns: Array = []
-	for minute in scheduled_burns.keys():
-		var per_symbol: Dictionary = scheduled_burns[minute]
-		for symbol in per_symbol.keys():
-			burns.append({"minute": minute, "symbol": symbol, "count": int(per_symbol[symbol])})
+
 	return {
 		"current_gpu_price": current_gpu_price,
 		"gpu_cryptos": gpu_cryptos,
 		"is_overclocked": is_overclocked,
 		"burnout_chances": burnout_chances,
-		"next_block_time": next_times,
-		"scheduled_burns": burns,
-		"last_batch_hour": last_batch_hour
+		"next_block_time": next_times
 	}
-
 
 func load_from_data(data: Dictionary) -> void:
 	reset()
@@ -472,29 +290,7 @@ func load_from_data(data: Dictionary) -> void:
 	for symbol in saved_times.keys():
 		next_block_time[symbol] = float(saved_times[symbol])
 
-	scheduled_burns.clear()
-	var burns: Array = data.get("scheduled_burns", [])
-	for entry in burns:
-		var minute: int = int(entry.get("minute", -1))
-		var symbol: String = str(entry.get("symbol", ""))
-		var count: int = int(entry.get("count", 0))
-		if minute < 0 or minute > 59 or count <= 0 or symbol == "":
-		continue
-		var bucket: Dictionary = scheduled_burns.get(minute, {})
-		bucket[symbol] = int(bucket.get(symbol, 0)) + count
-		scheduled_burns[minute] = bucket
-	last_batch_hour = int(data.get("last_batch_hour", -1))
-	var current_minute: int = TimeManager.current_minute
-	var to_exec: Array = []
-	for minute in scheduled_burns.keys():
-		if minute < current_minute:
-		to_exec.append(minute)
-	for minute in to_exec:
-		var burns_now: Dictionary = scheduled_burns[minute]
-		scheduled_burns.erase(minute)
-		_execute_scheduled_burns(burns_now)
-
-emit_signal("gpus_changed")
+	emit_signal("gpus_changed")
 
 func array_to_packed_byte_array(arr: Array) -> PackedByteArray:
 	var pba := PackedByteArray()
