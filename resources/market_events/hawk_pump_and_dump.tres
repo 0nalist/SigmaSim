@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MarketEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/market_events/market_event.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+target_symbol = "HAWK"
+target_type = "crypto"
+start_min_minutes = 10
+start_max_minutes = 60
+pump_duration_min = 10
+pump_duration_max = 60
+pump_multiplier_min = 20.0
+pump_multiplier_max = 20.0
+dump_duration_min = 5
+dump_duration_max = 30
+dump_multiplier_min = 0.1
+dump_multiplier_max = 0.9
