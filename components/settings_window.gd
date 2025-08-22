@@ -120,15 +120,19 @@ func _on_node_added(node: Node) -> void:
         _collect_warp_shader_materials(node)
 
 func _apply_saved_params_to_material(mat: ShaderMaterial) -> void:
-        var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["BlueWarp"]
-        mat.set_shader_parameter("stretch", PlayerManager.get_shader_param("BlueWarp", "stretch", d["stretch"]))
-        mat.set_shader_parameter("thing1", PlayerManager.get_shader_param("BlueWarp", "thing1", d["thing1"]))
-        mat.set_shader_parameter("thing2", PlayerManager.get_shader_param("BlueWarp", "thing2", d["thing2"]))
-        mat.set_shader_parameter("thing3", PlayerManager.get_shader_param("BlueWarp", "thing3", d["thing3"]))
-        mat.set_shader_parameter("speed", PlayerManager.get_shader_param("BlueWarp", "speed", d["speed"]))
-        mat.set_shader_parameter("color_low", PlayerManager.get_shader_param("BlueWarp", "color_low", PlayerManager.dict_to_color(d["color_low"])))
-        mat.set_shader_parameter("color_mid", PlayerManager.get_shader_param("BlueWarp", "color_mid", PlayerManager.dict_to_color(d["color_mid"])))
-        mat.set_shader_parameter("color_high", PlayerManager.get_shader_param("BlueWarp", "color_high", PlayerManager.dict_to_color(d["color_high"])))
+	var d: Dictionary = PlayerManager.DEFAULT_BACKGROUND_SHADERS["BlueWarp"]
+	mat.set_shader_parameter("stretch", PlayerManager.get_shader_param("BlueWarp", "stretch", d["stretch"]))
+	mat.set_shader_parameter("thing1", PlayerManager.get_shader_param("BlueWarp", "thing1", d["thing1"]))
+	mat.set_shader_parameter("thing2", PlayerManager.get_shader_param("BlueWarp", "thing2", d["thing2"]))
+	mat.set_shader_parameter("thing3", PlayerManager.get_shader_param("BlueWarp", "thing3", d["thing3"]))
+	mat.set_shader_parameter("speed", PlayerManager.get_shader_param("BlueWarp", "speed", d["speed"]))
+	if mat == blue_warp_shader_material:
+		var color_low: Color = PlayerManager.get_shader_param("BlueWarp", "color_low", PlayerManager.dict_to_color(d["color_low"]))
+		var color_mid: Color = PlayerManager.get_shader_param("BlueWarp", "color_mid", PlayerManager.dict_to_color(d["color_mid"]))
+		var color_high: Color = PlayerManager.get_shader_param("BlueWarp", "color_high", PlayerManager.dict_to_color(d["color_high"]))
+		mat.set_shader_parameter("color_low", color_low)
+		mat.set_shader_parameter("color_mid", color_mid)
+		mat.set_shader_parameter("color_high", color_high)
 
 func update_checked_mode() -> void:
 	var mode = DisplayServer.window_get_mode()
@@ -235,19 +239,16 @@ func _on_blue_warp_speed_slider_value_changed(value: float) -> void:
         PlayerManager.set_shader_param("BlueWarp", "speed", value)
 
 func _on_blue_warp_color_low_picker_color_changed(color: Color) -> void:
-        for mat in warp_shader_materials:
-                mat.set_shader_parameter("color_low", color)
-        PlayerManager.set_shader_param("BlueWarp", "color_low", color)
+	blue_warp_shader_material.set_shader_parameter("color_low", color)
+	PlayerManager.set_shader_param("BlueWarp", "color_low", color)
 
 func _on_blue_warp_color_mid_picker_color_changed(color: Color) -> void:
-        for mat in warp_shader_materials:
-                mat.set_shader_parameter("color_mid", color)
-        PlayerManager.set_shader_param("BlueWarp", "color_mid", color)
+	blue_warp_shader_material.set_shader_parameter("color_mid", color)
+	PlayerManager.set_shader_param("BlueWarp", "color_mid", color)
 
 func _on_blue_warp_color_high_picker_color_changed(color: Color) -> void:
-        for mat in warp_shader_materials:
-                mat.set_shader_parameter("color_high", color)
-        PlayerManager.set_shader_param("BlueWarp", "color_high", color)
+	blue_warp_shader_material.set_shader_parameter("color_high", color)
+	PlayerManager.set_shader_param("BlueWarp", "color_high", color)
 
 func _on_comic_dots_1_color_picker_color_changed(color: Color) -> void:
 	comic_dots1_shader_material.set_shader_parameter("circle_color", color)
@@ -327,25 +328,28 @@ func _on_waves_reset_button_pressed() -> void:
 		total_phases_slider.value = d["total_phases"]
 
 func _on_blue_warp_reset_button_pressed() -> void:
-                PlayerManager.reset_shader("BlueWarp")
-                var d = PlayerManager.DEFAULT_BACKGROUND_SHADERS["BlueWarp"]
-                for mat in warp_shader_materials:
-                                mat.set_shader_parameter("stretch", d["stretch"])
-                                mat.set_shader_parameter("thing1", d["thing1"])
-                                mat.set_shader_parameter("thing2", d["thing2"])
-                                mat.set_shader_parameter("thing3", d["thing3"])
-                                mat.set_shader_parameter("speed", d["speed"])
-                                mat.set_shader_parameter("color_low", PlayerManager.dict_to_color(d["color_low"]))
-                                mat.set_shader_parameter("color_mid", PlayerManager.dict_to_color(d["color_mid"]))
-                                mat.set_shader_parameter("color_high", PlayerManager.dict_to_color(d["color_high"]))
-                blue_warp_stretch_slider.value = d["stretch"]
-                blue_warp_thing1_slider.value = d["thing1"]
-                blue_warp_thing2_slider.value = d["thing2"]
-                blue_warp_thing3_slider.value = d["thing3"]
-                blue_warp_speed_slider.value = d["speed"]
-                blue_warp_color_low_picker.color = PlayerManager.dict_to_color(d["color_low"])
-                blue_warp_color_mid_picker.color = PlayerManager.dict_to_color(d["color_mid"])
-                blue_warp_color_high_picker.color = PlayerManager.dict_to_color(d["color_high"])
+	PlayerManager.reset_shader("BlueWarp")
+	var d: Dictionary = PlayerManager.DEFAULT_BACKGROUND_SHADERS["BlueWarp"]
+	for mat in warp_shader_materials:
+		mat.set_shader_parameter("stretch", d["stretch"])
+		mat.set_shader_parameter("thing1", d["thing1"])
+		mat.set_shader_parameter("thing2", d["thing2"])
+		mat.set_shader_parameter("thing3", d["thing3"])
+		mat.set_shader_parameter("speed", d["speed"])
+	var color_low: Color = PlayerManager.dict_to_color(d["color_low"])
+	var color_mid: Color = PlayerManager.dict_to_color(d["color_mid"])
+	var color_high: Color = PlayerManager.dict_to_color(d["color_high"])
+	blue_warp_shader_material.set_shader_parameter("color_low", color_low)
+	blue_warp_shader_material.set_shader_parameter("color_mid", color_mid)
+	blue_warp_shader_material.set_shader_parameter("color_high", color_high)
+	blue_warp_stretch_slider.value = d["stretch"]
+	blue_warp_thing1_slider.value = d["thing1"]
+	blue_warp_thing2_slider.value = d["thing2"]
+	blue_warp_thing3_slider.value = d["thing3"]
+	blue_warp_speed_slider.value = d["speed"]
+	blue_warp_color_low_picker.color = color_low
+	blue_warp_color_mid_picker.color = color_mid
+	blue_warp_color_high_picker.color = color_high
 
 func _on_comic_dots_1_reset_button_pressed() -> void:
 				PlayerManager.reset_shader("ComicDots1")
