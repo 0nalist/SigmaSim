@@ -12,13 +12,13 @@ var cached_viewport_size: Vector2
 @onready var _root_control: Control = get_parent()
 
 func _ready() -> void:
-        spawn_timer = Timer.new()
-        spawn_timer.wait_time = spawn_interval
-        spawn_timer.timeout.connect(_on_spawn_pipe_pair)
-        add_child(spawn_timer)
+		spawn_timer = Timer.new()
+		spawn_timer.wait_time = spawn_interval
+		spawn_timer.timeout.connect(_on_spawn_pipe_pair)
+		add_child(spawn_timer)
 
-        cached_viewport_size = _root_control.size
-        _root_control.resized.connect(_on_viewport_size_changed)
+		cached_viewport_size = _root_control.size
+		_root_control.resized.connect(_on_viewport_size_changed)
 
 	
 
@@ -41,13 +41,13 @@ func _on_spawn_pipe_pair() -> void:
 	add_child(pipe_pair)
 	
 
-        pipe_pair.position = Vector2(
-        cached_viewport_size.x + spawn_x_offset,
-        0
-        )
-        pipe_pair.player = %EarlyBirdPlayer
+	pipe_pair.position = Vector2(
+	cached_viewport_size.x + spawn_x_offset,
+	0
+	)
+	pipe_pair.player = %EarlyBirdPlayer
 
-        pipe_pair.randomize_gap_position(cached_viewport_size.y)
+	pipe_pair.randomize_gap_position(cached_viewport_size.y)
 
 
 func set_move_speed(new_speed: float) -> void:
@@ -66,9 +66,9 @@ func set_move_speed(new_speed: float) -> void:
 
 func _on_viewport_size_changed() -> void:
 
-        var new_size = _root_control.size
-        if new_size.x > 1 and new_size.y > 1:
-                cached_viewport_size = new_size
+		var new_size = _root_control.size
+		if new_size.x > 1 and new_size.y > 1:
+				cached_viewport_size = new_size
 
 
 

@@ -1,7 +1,7 @@
 {
   "id": "earlybird_disable_manual_flaps",
-  "name": "Wing Restraints",
-  "description": "Unlocks a checkbox to disable manual flaps.",
+  "name": "No Flap",
+  "description": "Unlocks a button to disable manual flapping.",
   "effects": [],
   "systems": [
 	"earlybird"
