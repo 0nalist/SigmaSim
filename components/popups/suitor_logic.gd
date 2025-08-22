@@ -10,7 +10,7 @@ const LN10: float = 2.302585092994046  # natural log of 10
 const LOVE_AFFINITY_GAIN: float = 5.0
 
 static func get_stage_bounds(stage: int, progress: float) -> Vector2:
-       if stage < NPCManager.RelationshipStage.MARRIED:
+	if stage < NPCManager.RelationshipStage.MARRIED:
 		var lower: float = STAGE_THRESHOLDS[stage]
 		var upper: float = STAGE_THRESHOLDS[stage + 1]
 		return Vector2(lower, upper)
@@ -37,23 +37,23 @@ func setup(npc_instance: NPC) -> void:
 func change_state(stage: int) -> void:
 	if state != null:
 		state.exit()
-       match stage:
-	       NPCManager.RelationshipStage.STRANGER:
-		       state = StrangerState.new(self)
-	       NPCManager.RelationshipStage.TALKING:
-		       state = TalkingState.new(self)
-	       NPCManager.RelationshipStage.DATING:
-		       state = DatingState.new(self)
-	       NPCManager.RelationshipStage.SERIOUS:
-		       state = SeriousState.new(self)
-	       NPCManager.RelationshipStage.ENGAGED:
-		       state = EngagedState.new(self)
-	       NPCManager.RelationshipStage.MARRIED:
-		       state = MarriedState.new(self)
-	       NPCManager.RelationshipStage.DIVORCED:
-		       state = DivorcedState.new(self)
-	       NPCManager.RelationshipStage.EX:
-		       state = ExState.new(self)
+	match stage:
+		NPCManager.RelationshipStage.STRANGER:
+			state = StrangerState.new(self)
+		NPCManager.RelationshipStage.TALKING:
+			state = TalkingState.new(self)
+		NPCManager.RelationshipStage.DATING:
+			state = DatingState.new(self)
+		NPCManager.RelationshipStage.SERIOUS:
+			state = SeriousState.new(self)
+		NPCManager.RelationshipStage.ENGAGED:
+			state = EngagedState.new(self)
+		NPCManager.RelationshipStage.MARRIED:
+			state = MarriedState.new(self)
+		NPCManager.RelationshipStage.DIVORCED:
+			state = DivorcedState.new(self)
+		NPCManager.RelationshipStage.EX:
+			state = ExState.new(self)
 	state.enter()
 
 func process(delta: float) -> void:
@@ -77,7 +77,7 @@ func get_stop_marks() -> Array[float]:
 	return []
 
 static func get_stop_points(stage: int) -> Array:
-       if stage >= NPCManager.RelationshipStage.MARRIED:
+	if stage >= NPCManager.RelationshipStage.MARRIED:
 		return []
 	var points: Array = []
 	var prev_required: int = (stage - 1) * stage / 2
@@ -130,7 +130,7 @@ class PreMarriageState extends SuitorState:
 				npc.relationship_progress = bounds.x + fraction * stage_range
 				machine.progress_paused = true
 				break
-	       if stage < NPCManager.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
+		if stage < NPCManager.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
 			npc.relationship_progress = bounds.y
 			machine.progress_paused = true
 
@@ -145,24 +145,24 @@ class PreMarriageState extends SuitorState:
 		return marks
 
 class StrangerState extends PreMarriageState:
-       func _init(machine: SuitorLogic) -> void:
-	       super._init(machine, NPCManager.RelationshipStage.STRANGER)
+	func _init(machine: SuitorLogic) -> void:
+		super._init(machine, NPCManager.RelationshipStage.STRANGER)
 
 class TalkingState extends PreMarriageState:
-       func _init(machine: SuitorLogic) -> void:
-	       super._init(machine, NPCManager.RelationshipStage.TALKING)
+	func _init(machine: SuitorLogic) -> void:
+		super._init(machine, NPCManager.RelationshipStage.TALKING)
 
 class DatingState extends PreMarriageState:
-       func _init(machine: SuitorLogic) -> void:
-	       super._init(machine, NPCManager.RelationshipStage.DATING)
+	func _init(machine: SuitorLogic) -> void:
+		super._init(machine, NPCManager.RelationshipStage.DATING)
 
 class SeriousState extends PreMarriageState:
-       func _init(machine: SuitorLogic) -> void:
-	       super._init(machine, NPCManager.RelationshipStage.SERIOUS)
+	func _init(machine: SuitorLogic) -> void:
+		super._init(machine, NPCManager.RelationshipStage.SERIOUS)
 
 class EngagedState extends PreMarriageState:
-       func _init(machine: SuitorLogic) -> void:
-	       super._init(machine, NPCManager.RelationshipStage.ENGAGED)
+	func _init(machine: SuitorLogic) -> void:
+		super._init(machine, NPCManager.RelationshipStage.ENGAGED)
 
 class MarriedState extends SuitorState:
 	func update(delta: float) -> void:

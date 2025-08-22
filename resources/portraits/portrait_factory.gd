@@ -59,7 +59,7 @@ static func generate_config_for_name(full_name: String) -> PortraitConfig:
 static func ensure_config_for_npc(idx: int, full_name: String) -> PortraitConfig:
 	var slot_id := SaveManager.current_slot_id
 	var where := "id = %d AND slot_id = %d" % [idx, slot_id]
-	var rows := DBManager.db.select_rows("npc", where, ["portrait_config"])
+	var rows = DBManager.db.select_rows("npc", where, ["portrait_config"])
 
 	if rows.size() > 0:
 		var raw = rows[0].get("portrait_config", null)

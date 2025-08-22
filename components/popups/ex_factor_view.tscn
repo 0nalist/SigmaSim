@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://dim0nwjmfwi3g"]
+[gd_scene load_steps=10 format=3 uid="uid://dim0nwjmfwi3g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/ex_factor_view.gd" id="2"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="3"]
+[ext_resource type="PackedScene" path="res://components/upgrade_scenes/ex_factor_upgrade_ui.tscn" id="3_n3cpl"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_vl6ok"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
 [ext_resource type="Script" uid="uid://bvbiboe20qioe" path="res://components/popups/relationship_bar.gd" id="5"]
@@ -43,6 +44,7 @@ default_window_size = Vector2(400, 500)
 is_popup = true
 color1 = Color(1, 0, 0.941176, 1)
 color2 = Color(0.463319, 0.00196373, 0.715449, 1)
+upgrade_pane = ExtResource("3_n3cpl")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_78wgo")
