@@ -197,7 +197,7 @@ reset_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpResetButton"
 collect_warp_shaders = true
 flat_color_picker_path = NodePath("MarginContainer/VBoxContainer/ColorRowFlat/BlueWarpFlatColorPicker")
 flat_color_toggle_path = NodePath("MarginContainer/VBoxContainer/ColorRowFlat/BlueWarpFlatToggle")
-flat_color_rect_path = NodePath("/root/DesktopEnv/ShaderBackgroundsContainer/BlueWarpFlatColor")
+flat_color_rect_path = NodePath("Main/DesktopEnv/ShaderBackgroundsContainer/BlueWarpFlatColor")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer"]
 layout_mode = 2
