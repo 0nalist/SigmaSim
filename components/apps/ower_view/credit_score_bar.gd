@@ -5,14 +5,38 @@ extends Control
 @export var step: int = 50
 
 var current_score: int = min_score
+var gradient_tex: ImageTexture = null
 
 func _ready() -> void:
 	PortfolioManager.credit_updated.connect(_on_credit_changed)
 	_on_credit_changed(0.0, 0.0)
+	_generate_gradient_texture()
 
 func _on_credit_changed(_used: float, _limit: float) -> void:
 	current_score = PortfolioManager.get_credit_score()
 	queue_redraw()
+
+func _generate_gradient_texture() -> void:
+	# Generate gradient once for full control height
+	var h: int = int(size.y)
+	if h <= 0:
+		return
+
+	var img := Image.create(1, h, false, Image.FORMAT_RGBA8)
+	img.lock()
+	for y in range(h):
+		var t: float = 1.0 - (float(y) / float(h))  # bottom=0, top=1
+		var col: Color
+		if t < 0.5:
+			col = Color.RED.lerp(Color.YELLOW, t / 0.5)
+		else:
+			col = Color.YELLOW.lerp(Color.GREEN, (t - 0.5) / 0.5)
+		img.set_pixel(0, y, col)
+	img.unlock()
+
+	var tex := ImageTexture.create_from_image(img)
+	gradient_tex = tex
+
 func _draw() -> void:
 	var rect: Rect2 = Rect2(Vector2.ZERO, size)
 
@@ -25,26 +49,15 @@ func _draw() -> void:
 	bg_box.corner_radius_bottom_right = 8
 	draw_style_box(bg_box, rect)
 
-	var ratio: float = float(current_score - min_score) / float(max_score - min_score)
-	ratio = clamp(ratio, 0.0, 1.0)
+	if gradient_tex != null:
+		var ratio: float = float(current_score - min_score) / float(max_score - min_score)
+		ratio = clamp(ratio, 0.0, 1.0)
 
-	var fill_height: float = rect.size.y * ratio
-	var fill_rect: Rect2 = Rect2(rect.position + Vector2(0, rect.size.y - fill_height), Vector2(rect.size.x, fill_height))
-
-	# build vertical gradient from red → yellow → green
-	var grad := Gradient.new()
-	grad.colors = [Color.RED, Color.YELLOW, Color.GREEN]
-	grad.offsets = [0.0, 0.5, 1.0]
-
-	var grad_tex := GradientTexture2D.new()
-	grad_tex.gradient = grad
-	grad_tex.width = 1
-	grad_tex.height = int(fill_height)
-	grad_tex.fill_from = Vector2(0, 1)  # bottom to top
-	grad_tex.fill_to = Vector2(0, 0)
-
-	# draw gradient into the filled portion
-	draw_texture_rect(grad_tex, fill_rect, true)
+		var fill_height: float = rect.size.y * ratio
+		if fill_height > 0.0:
+			var fill_rect := Rect2(rect.position + Vector2(0, rect.size.y - fill_height), Vector2(rect.size.x, fill_height))
+			# Draw stretched gradient only in the filled portion
+			draw_texture_rect_region(gradient_tex, fill_rect, Rect2(Vector2.ZERO, Vector2(1, gradient_tex.get_height())), true)
 
 	# font
 	var font: Font = ThemeDB.fallback_font
@@ -62,7 +75,7 @@ func _draw() -> void:
 		else:
 			section_color = Color.YELLOW.lerp(Color.GREEN, (t - 0.5) / 0.5)
 
-		# draw horizontal line in black
+		# black tick line
 		draw_line(Vector2(0, y), Vector2(rect.size.x, y), Color.BLACK)
 
 		# left label = credit score
@@ -85,3 +98,8 @@ func _get_label_for_score(score: int) -> String:
 			unlocked_here.append(String(purchase))
 	unlocked_here.sort()
 	return ", ".join(unlocked_here)
+
+func _notification(what: int) -> void:
+	# Regenerate gradient when control is resized
+	if what == NOTIFICATION_RESIZED:
+		_generate_gradient_texture()
