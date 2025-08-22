@@ -25,6 +25,20 @@ var ticker_entries: Array = [
 		"condition": null
 	},
 	
+	{
+		"text": "Cats are girls and dogs are boys",
+		"condition": null
+	},
+	
+	{
+		"text": "tysm for playing my little game <3",
+		"condition": null
+	},
+	
+	{
+		"text": "Breaking news: Free will rumored to be fake",
+		"condition": null
+	},
 	
 	{
 		"text": "No news is good news?     No!     News is good news.",
@@ -36,10 +50,20 @@ var ticker_entries: Array = [
 		"text": "Nine out of ten dentists regret loving me",
 		"condition": null
 	},
+	
+	
 	{
-		"text": "You can elect yourself CEO of a company if you own 50% + 1 of the shares (once I implement this lmao)",
+		"text": "You can elect yourself CEO of a company if you own 50% + 1 of the shares (once I implement this in like a year)",
 		"condition": null
 	},
+	
+	{
+		"text": "Miss your ex? You can always APOLOGIZE (Talk Therapy required)",
+		"condition": null
+	},
+	
+	
+	
 	{
 		"text": "Have you tried turning it off and then turning it back on again?",
 		"condition": null
