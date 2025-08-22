@@ -96,11 +96,17 @@ func _on_sort_option_selected(index: int) -> void:
 	refresh_upgrades()
 
 func _on_purchase_requested(upgrade_id: String):
-	if UpgradeManager.purchase(upgrade_id):
-		_display_message("Upgrade purchased: %s" % upgrade_id)
-		refresh_upgrades()
-	else:
-		_display_message("Cannot purchase upgrade: %s" % upgrade_id)
+        if UpgradeManager.purchase(upgrade_id):
+                _display_message("Upgrade purchased: %s" % upgrade_id)
+                # UpgradeManager emits an `upgrade_purchased` signal on success
+                # which is already connected to `_on_upgrade_changed`. That
+                # handler refreshes the list, so calling `refresh_upgrades()`
+                # here causes the UI to rebuild twice in the same frame. The
+                # duplicate rebuild results in a noticeable frame drop when an
+                # upgrade is purchased. Rely on the signal-driven refresh to
+                # avoid the extra work.
+        else:
+                _display_message("Cannot purchase upgrade: %s" % upgrade_id)
 
 func _on_upgrade_changed(id: String, new_level: int):
 	refresh_upgrades()
