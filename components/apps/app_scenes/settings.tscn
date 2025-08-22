@@ -795,8 +795,8 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 
-[connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/AutosaveRow/AutosaveCheckBox" to="." method="_on_autosave_check_box_toggled"]
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="pressed" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/CreateAppsFolderButton" to="." method="_on_create_apps_folder_button_pressed"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/WavesButton" to="." method="_on_waves_button_toggled"]
 [connection signal="color_changed" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer/BottomColorPicker" to="." method="_on_bottom_color_picker_color_changed"]

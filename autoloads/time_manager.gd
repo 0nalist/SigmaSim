@@ -49,11 +49,11 @@ var month_names := [
 
 # -------- Lifecycle --------
 func _ready() -> void:
-        # Initialize from defaults and compute derived values
-        load_autosave_setting()
-        _rebuild_total_minutes_from_defaults()
-        _recompute_from_total_minutes()
-        time_ticking = false
+		# Initialize from defaults and compute derived values
+		load_autosave_setting()
+		_rebuild_total_minutes_from_defaults()
+		_recompute_from_total_minutes()
+		time_ticking = false
 
 # -------- Public control API (unchanged names) --------
 func start_time() -> void: # kept for compatibility
@@ -239,8 +239,8 @@ func load_from_data(data: Dictionary) -> void:
 		is_fast_forwarding = true
 		fast_forward_minutes_left = int(data.get("fast_forward_minutes_left", 0))
 
-        autosave_enabled = bool(data.get("autosave_enabled", autosave_enabled))
-        save_autosave_setting()
+		autosave_enabled = bool(data.get("autosave_enabled", autosave_enabled))
+		save_autosave_setting()
 
 	# Recompute and mirror compatibility fields
 	_recompute_from_total_minutes()
@@ -257,18 +257,18 @@ func reset() -> void:
 	time_accumulator = 0.0
 	is_fast_forwarding = false
 	fast_forward_minutes_left = 0
-        autosave_hour_counter = 0
-        load_autosave_setting()
+	autosave_hour_counter = 0
+	load_autosave_setting()
 
 func load_autosave_setting() -> void:
-        var cfg := ConfigFile.new()
-        if cfg.load(SETTINGS_PATH) == OK:
-                autosave_enabled = bool(cfg.get_value("general", "autosave_enabled", autosave_enabled))
+		var cfg := ConfigFile.new()
+		if cfg.load(SETTINGS_PATH) == OK:
+				autosave_enabled = bool(cfg.get_value("general", "autosave_enabled", autosave_enabled))
 
 func save_autosave_setting() -> void:
-        var cfg := ConfigFile.new()
-        cfg.set_value("general", "autosave_enabled", autosave_enabled)
-        cfg.save(SETTINGS_PATH)
+		var cfg := ConfigFile.new()
+		cfg.set_value("general", "autosave_enabled", autosave_enabled)
+		cfg.save(SETTINGS_PATH)
 
 # -------- Internal core (driven by _total_minutes_elapsed) --------
 func _advance_time(minutes_to_add: int) -> void:
