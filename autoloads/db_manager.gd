@@ -71,7 +71,7 @@ const SCHEMA: Dictionary = {
 				"stats": {"data_type": "text"},
 				"move_usage_counts": {"data_type": "text"},
 				"outcome": {"data_type": "text"}
-		   }
+		}
 }
 
 func _ready():
@@ -120,14 +120,14 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	var dict = npc.to_dict()
 	dict["id"] = idx
 	dict["slot_id"] = slot_id
-       if npc.claimed_exclusive_boost:
-	       dict["claimed_exclusive_boost"] = 1
-       else:
-	       dict["claimed_exclusive_boost"] = 0
-       if npc.claimed_serious_monog_boost:
-	       dict["claimed_serious_monog_boost"] = 1
-       else:
-	       dict["claimed_serious_monog_boost"] = 0
+	if npc.claimed_exclusive_boost:
+		dict["claimed_exclusive_boost"] = 1
+	else:
+		dict["claimed_exclusive_boost"] = 0
+	if npc.claimed_serious_monog_boost:
+		dict["claimed_serious_monog_boost"] = 1
+	else:
+		dict["claimed_serious_monog_boost"] = 0
 	# Serialize all complex fields as JSON
 	dict["gender_vector"] = to_json(dict.get("gender_vector", {"x":0,"y":0,"z":1}))
 	dict["tags"] = to_json(dict.get("tags", []))
