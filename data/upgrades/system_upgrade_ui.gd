@@ -14,18 +14,24 @@ class_name SystemUpgradeUI
 var sort_mode: int = 0
 
 func _ready() -> void:
-	UpgradeManager.connect("upgrade_purchased", _on_upgrade_changed)
+        UpgradeManager.connect("upgrade_purchased", _on_upgrade_changed)
+        PortfolioManager.cash_updated.connect(_on_resources_changed)
+        StatManager.stat_changed.connect(_on_stat_changed)
 
-	sort_option_button.add_item("Price: Low to High", 0)
-	sort_option_button.add_item("Price: High to Low", 1)
-	sort_option_button.add_item("Name", 2)
-	sort_option_button.item_selected.connect(_on_sort_option_selected)
+        sort_option_button.add_item("Price: Low to High", 0)
+        sort_option_button.add_item("Price: High to Low", 1)
+        sort_option_button.add_item("Name", 2)
+        sort_option_button.item_selected.connect(_on_sort_option_selected)
 
-	refresh_upgrades()
+        refresh_upgrades()
 
 func _exit_tree() -> void:
-	if UpgradeManager.is_connected("upgrade_purchased", _on_upgrade_changed):
-		UpgradeManager.disconnect("upgrade_purchased", _on_upgrade_changed)
+        if UpgradeManager.is_connected("upgrade_purchased", _on_upgrade_changed):
+                UpgradeManager.disconnect("upgrade_purchased", _on_upgrade_changed)
+        if PortfolioManager.cash_updated.is_connected(_on_resources_changed):
+                PortfolioManager.cash_updated.disconnect(_on_resources_changed)
+        if StatManager.stat_changed.is_connected(_on_stat_changed):
+                StatManager.stat_changed.disconnect(_on_stat_changed)
 
 func refresh_upgrades() -> void:
 	for child in upgrades_list.get_children():
@@ -103,8 +109,20 @@ func _on_purchase_requested(upgrade_id: String):
 		_display_message("Cannot purchase upgrade: %s" % upgrade_id)
 
 func _on_upgrade_changed(id: String, new_level: int):
-	refresh_upgrades()
+        refresh_upgrades()
+
+func _on_resources_changed(_value) -> void:
+        refresh_upgrades()
+
+func _on_stat_changed(stat: String, _value) -> void:
+        # Only refresh if the changed stat is part of any upgrade cost
+        var upgrades = UpgradeManager.get_upgrades_for_system(system_name, show_locked)
+        for upgrade in upgrades:
+                var cost = UpgradeManager.get_cost_for_next_level(upgrade["id"])
+                if stat in cost.keys():
+                        refresh_upgrades()
+                        return
 
 func _display_message(msg: String) -> void:
-	if info_label:
-		info_label.text = msg
+        if info_label:
+                info_label.text = msg
