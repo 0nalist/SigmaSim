@@ -71,15 +71,15 @@ func _apply_shader_settings() -> void:
 	waves_shader_material.set_shader_parameter("wave_time_mul", wave_time_mul)
 	waves_shader_material.set_shader_parameter("total_phases", total_phases)
 
-        var bw_def = defaults["BlueWarp"]
-        blue_warp_shader_material.set_shader_parameter("stretch", PlayerManager.get_shader_param("BlueWarp", "stretch", bw_def["stretch"]))
-        blue_warp_shader_material.set_shader_parameter("thing1", PlayerManager.get_shader_param("BlueWarp", "thing1", bw_def["thing1"]))
-        blue_warp_shader_material.set_shader_parameter("thing2", PlayerManager.get_shader_param("BlueWarp", "thing2", bw_def["thing2"]))
-        blue_warp_shader_material.set_shader_parameter("thing3", PlayerManager.get_shader_param("BlueWarp", "thing3", bw_def["thing3"]))
-        blue_warp_shader_material.set_shader_parameter("speed", PlayerManager.get_shader_param("BlueWarp", "speed", bw_def["speed"]))
-        blue_warp_shader_material.set_shader_parameter("color_low", PlayerManager.get_shader_param("BlueWarp", "color_low", PlayerManager.dict_to_color(bw_def["color_low"])))
-        blue_warp_shader_material.set_shader_parameter("color_mid", PlayerManager.get_shader_param("BlueWarp", "color_mid", PlayerManager.dict_to_color(bw_def["color_mid"])))
-        blue_warp_shader_material.set_shader_parameter("color_high", PlayerManager.get_shader_param("BlueWarp", "color_high", PlayerManager.dict_to_color(bw_def["color_high"])))
+	var bw_def = defaults["BlueWarp"]
+	blue_warp_shader_material.set_shader_parameter("stretch", PlayerManager.get_shader_param("BlueWarp", "stretch", bw_def["stretch"]))
+	blue_warp_shader_material.set_shader_parameter("thing1", PlayerManager.get_shader_param("BlueWarp", "thing1", bw_def["thing1"]))
+	blue_warp_shader_material.set_shader_parameter("thing2", PlayerManager.get_shader_param("BlueWarp", "thing2", bw_def["thing2"]))
+	blue_warp_shader_material.set_shader_parameter("thing3", PlayerManager.get_shader_param("BlueWarp", "thing3", bw_def["thing3"]))
+	blue_warp_shader_material.set_shader_parameter("speed", PlayerManager.get_shader_param("BlueWarp", "speed", bw_def["speed"]))
+	blue_warp_shader_material.set_shader_parameter("color_low", PlayerManager.get_shader_param("BlueWarp", "color_low", PlayerManager.dict_to_color(bw_def["color_low"])))
+	blue_warp_shader_material.set_shader_parameter("color_mid", PlayerManager.get_shader_param("BlueWarp", "color_mid", PlayerManager.dict_to_color(bw_def["color_mid"])))
+	blue_warp_shader_material.set_shader_parameter("color_high", PlayerManager.get_shader_param("BlueWarp", "color_high", PlayerManager.dict_to_color(bw_def["color_high"])))
 
 	var cd1_def = defaults["ComicDots1"]
 	var cd1_color = PlayerManager.get_shader_param("ComicDots1", "circle_color", PlayerManager.dict_to_color(cd1_def["circle_color"]))
