@@ -450,23 +450,44 @@ func _on_relevant_stat_changed(_a = null, _b = null):
 
 
 func _update_upgrade_button_state() -> void:
-	if not pane or not pane.upgrade_pane:
-		upgrade_button.visible = false
-		return
+       if not pane or not pane.upgrade_pane:
+               upgrade_button.visible = false
+               return
 
-	var upgrades = UpgradeManager.get_upgrades_for_system(pane.window_title)
+       # Determine which upgrade systems this window cares about.  Many panes
+       # provide a dedicated upgrade scene with a specific system name or
+       # filter that does not necessarily match the window title.  Previously
+       # we only checked `pane.window_title`, which meant upgrades whose system
+       # string differed (e.g. "Workforce" vs "WorkForce") were ignored.
+       var systems: Array[String] = []
 
-	var any_available := false
-	for upgrade in upgrades:
-		var id = upgrade.get("id")
-		if not UpgradeManager.is_locked(id) and UpgradeManager.can_purchase(id):
-			any_available = true
-			break
-	upgrade_button.visible = true
-	upgrade_button.flat = not any_available
+       var scene: Node = pane.upgrade_pane.instantiate()
+       if scene:
+               if scene.has_method("get"):
+                       var sys = scene.get("system_name")
+                       if typeof(sys) == TYPE_STRING and sys != "":
+                               systems.append(sys)
+                       var filt = scene.get("upgrade_filter")
+                       if typeof(filt) == TYPE_STRING and filt != "":
+                               systems.append(filt)
+               scene.queue_free()
 
-	upgrade_button.visible = true
-	upgrade_button.flat = not any_available
+       if systems.is_empty():
+               systems.append(pane.window_title)
+
+       var any_available := false
+       for system in systems:
+               var upgrades = UpgradeManager.get_upgrades_for_system(system)
+               for upgrade in upgrades:
+                       var id = upgrade.get("id")
+                       if not UpgradeManager.is_locked(id) and UpgradeManager.can_purchase(id):
+                               any_available = true
+                               break
+               if any_available:
+                       break
+
+       upgrade_button.visible = true
+       upgrade_button.flat = not any_available
 
 
 

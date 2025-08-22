@@ -16,8 +16,12 @@ var is_locked: bool = false
 @onready var cooldown_label: Label = %CooldownLabel
 
 func _ready() -> void:
-		buy_button.pressed.connect(_on_buy_button_pressed)
-		TimeManager.minute_passed.connect(_on_minute_passed)
+       buy_button.pressed.connect(_on_buy_button_pressed)
+       TimeManager.minute_passed.connect(_on_minute_passed)
+       # Re-evaluate affordability whenever relevant stats change so the Buy
+       # button correctly enables when the player gains resources.
+       PortfolioManager.cash_updated.connect(_on_resources_changed)
+       StatManager.stat_changed.connect(_on_stat_changed)
 
 func set_upgrade(upgrade: Dictionary) -> void:
 	upgrade_data = upgrade
@@ -69,7 +73,19 @@ func _on_PurchaseButton_pressed() -> void:
 		emit_signal("buy_requested", upgrade_data["id"])
 
 func _on_minute_passed(_m: int) -> void:
-		_update_cooldown()
+               _update_cooldown()
+
+func _on_resources_changed(_value = 0) -> void:
+       _update_cooldown()
+
+func _on_stat_changed(stat: String, _value) -> void:
+       # Some upgrades use non-cash currencies stored in StatManager (e.g. ex).
+       # If the changed stat is part of the cost, refresh the button state.
+       if upgrade_data.is_empty():
+               return
+       var cost = UpgradeManager.get_cost_for_next_level(upgrade_data.get("id"))
+       if stat in cost.keys():
+               _update_cooldown()
 
 func _update_cooldown() -> void:
 		if upgrade_data.is_empty():
@@ -96,5 +112,9 @@ func _format_minutes(minutes: int) -> String:
 		return " ".join(parts)
 
 func _exit_tree() -> void:
-		if TimeManager.minute_passed.is_connected(_on_minute_passed):
-				TimeManager.minute_passed.disconnect(_on_minute_passed)
+               if TimeManager.minute_passed.is_connected(_on_minute_passed):
+                               TimeManager.minute_passed.disconnect(_on_minute_passed)
+               if PortfolioManager.cash_updated.is_connected(_on_resources_changed):
+                               PortfolioManager.cash_updated.disconnect(_on_resources_changed)
+               if StatManager.stat_changed.is_connected(_on_stat_changed):
+                               StatManager.stat_changed.disconnect(_on_stat_changed)
