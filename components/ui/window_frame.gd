@@ -137,12 +137,21 @@ func animate_resize_y(target_y: float, duration: float = 0.4):
 	tween.tween_property(self, "size:y", target_y, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _set_content(new_content: Control) -> void:
-	for child in content_panel.get_children():
-		child.queue_free()
-	content_panel.add_child(new_content)
-	_update_upgrade_button_state()
-	if windowless_mode:
-		call_deferred("_setup_windowless_drag")
+        for child in content_panel.get_children():
+                child.queue_free()
+        content_panel.add_child(new_content)
+
+        # Only expose the upgrade button when the child pane actually
+        # provides an upgrade pane.  This ensures windows that do not
+        # support upgrades do not show an empty or misleading button.
+        if new_content is Pane and new_content.upgrade_pane:
+                upgrade_button.show()
+                _update_upgrade_button_state()
+        else:
+                upgrade_button.hide()
+
+        if windowless_mode:
+                call_deferred("_setup_windowless_drag")
 
 func _set_windowless_mode(enabled: bool) -> void:
 	_windowless_mode = enabled

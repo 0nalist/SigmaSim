@@ -176,6 +176,7 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+visible = false
 focus_mode = 0
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_f5uc2")
 theme_override_styles/hover = SubResource("StyleBoxTexture_74cm5")
