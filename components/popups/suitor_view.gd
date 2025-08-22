@@ -55,6 +55,7 @@ func _ready() -> void:
 	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
 	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
 	love_button.pressed.connect(_on_love_pressed)
+	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
 	
 	await get_tree().process_frame
 	if Events.has_signal("fumble_talk_therapy_purchased"):
@@ -152,6 +153,12 @@ func _update_love_button() -> void:
 	else:
 			love_button.disabled = false
 			love_cooldown_label.visible = false
+func _on_npc_affinity_changed(idx: int, value: float) -> void:
+	if idx != npc_idx:
+		return
+	npc.affinity = value
+	_update_affinity_bar()
+
 func _on_next_stage_pressed() -> void:
 	next_stage_button.visible = false
 	logic.progress_paused = false
