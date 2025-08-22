@@ -117,8 +117,9 @@ func _on_siggy_button_toggled(toggled_on: bool) -> void:
 		%SiggyButton.text = "Siggy. Please come back. I miss you"
 
 func _on_autosave_check_box_toggled(toggled_on: bool) -> void:
-	TimeManager.autosave_enabled = toggled_on
-	_update_autosave_timer_label()
+        TimeManager.autosave_enabled = toggled_on
+        TimeManager.save_autosave_setting()
+        _update_autosave_timer_label()
 
 func _on_create_apps_folder_button_pressed() -> void:
 	var desktop_env = get_tree().root.get_node("Main/DesktopEnv")
