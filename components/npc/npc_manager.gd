@@ -621,10 +621,10 @@ func restore_encountered_from_db() -> void:
 
 
 func reset() -> void:
-		encounter_count = 0
-		encountered_npcs = []
-		encountered_npcs_by_app = {}
-		active_npcs_by_app = {}
+	encounter_count = 0
+	encountered_npcs = []
+	encountered_npcs_by_app = {}
+	active_npcs_by_app = {}
 
 	relationship_status = {}
 	persistent_npcs = {}
