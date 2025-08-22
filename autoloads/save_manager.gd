@@ -114,6 +114,12 @@ func save_to_slot(slot_id: int) -> void:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
 
+
+# Ensure any pending NPC updates (like gift/date cost changes) are written to the database before saving the slot.
+	if NPCManager != null:
+			NPCManager._flush_save_queue()
+
+
 	var data := {
 		"stats": StatManager.get_save_data(),
 		"portfolio": PortfolioManager.get_save_data(),
@@ -158,6 +164,10 @@ func load_from_slot(slot_id: int) -> void:
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
 		return
+
+	# Flush NPC save queue so dynamic fields aren't lost when switching slots.
+	if NPCManager != null:
+			NPCManager._flush_save_queue()
 
 	reset_managers()
 	BillManager.is_loading = true

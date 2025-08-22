@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b27d8ea1c6d6"]
 
 [ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="1"]
-[ext_resource type="Script" uid="uid://c7d6a3de1c99" path="res://components/apps/daterbase/daterbase_upgrades.gd" id="2"]
+[ext_resource type="Script" uid="uid://c7d6a3de1dba" path="res://components/apps/daterbase/daterbase_upgrades.gd" id="2"]
 
 [node name="DaterbaseUpgrades" type="PanelContainer"]
 anchors_preset = 15
