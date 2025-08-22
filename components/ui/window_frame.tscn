@@ -148,7 +148,7 @@ size_flags_vertical = 4
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
+[node name="TitleLabel" type="RichTextLabel" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
@@ -159,6 +159,7 @@ theme_override_font_sizes/font_size = 16
 text = "Window"
 autowrap_mode = 1
 
+bbcode_enabled = true
 [node name="TabBar" type="TabBar" parent="VBoxContainer/HeaderContainer/MarginContainer/Header"]
 visible = false
 layout_mode = 2

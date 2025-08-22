@@ -49,7 +49,7 @@ var _portrait_views_by_npc: Dictionary = {}
 var _affinity_labels_by_npc: Dictionary = {}
 
 const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
-const SUITOR_POPUP_SCENE: PackedScene = preload("res://components/popups/suitor_popup.tscn")
+const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
 
 
@@ -331,11 +331,11 @@ func _create_header_label(text: String) -> Label:
 func _on_row_gui_input(event: InputEvent, idx: int, npc: NPC) -> void:
 	var mouse_event: InputEventMouseButton = event as InputEventMouseButton
 	if mouse_event != null and mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
-		_open_suitor_popup(idx, npc)
+		_open_ex_factor_view(idx, npc)
 
-func _open_suitor_popup(idx: int, npc: NPC) -> void:
-	var key: String = "suitor_%d" % npc.get_instance_id()
-	WindowManager.launch_popup(SUITOR_POPUP_SCENE, key, {"npc": npc, "npc_idx": idx})
+func _open_ex_factor_view(idx: int, npc: NPC) -> void:
+	var key: String = "ex_factor_%d" % npc.get_instance_id()
+	WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": idx})
 
 func _on_npc_portrait_changed(idx: int, cfg: PortraitConfig) -> void:
 	if _portrait_views_by_npc.has(idx):

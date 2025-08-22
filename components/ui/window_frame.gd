@@ -44,7 +44,7 @@ var is_dragging := false
 var drag_offset := Vector2.ZERO
 
 @onready var favicon: TextureRect = %Favicon
-@onready var title_label: Label = %TitleLabel
+@onready var title_label: RichTextLabel = %TitleLabel
 @onready var header: HBoxContainer = %Header
 @onready var header_container: PanelContainer = %HeaderContainer
 @onready var upgrade_button: Button = %UpgradeButton
@@ -471,8 +471,9 @@ func _update_upgrade_button_state() -> void:
 
 
 func set_window_title(title: String) -> void:
-	if title_label:
-		title_label.text = title
+        if title_label:
+                title_label.bbcode_enabled = true
+                title_label.text = title
 
 
 func _on_upgrade_button_pressed() -> void:
