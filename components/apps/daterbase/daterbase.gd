@@ -66,10 +66,12 @@ func _ready() -> void:
 	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
 
 	numeric_regex = RegEx.new()
-	numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
+        numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
 
-	_build_table_shell()
-	_activate_tab(&"Daterbase")
+        _build_table_shell()
+        UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
+        _update_tab_unlocks()
+        _activate_tab(&"Daterbase")
 
 # =========================================
 # Shell
@@ -147,7 +149,19 @@ func _on_sql_tab_pressed() -> void:
 				_activate_tab(&"SQL")
 
 func _on_headhunters_tab_pressed() -> void:
-			_activate_tab(&"Headhunters")
+        _activate_tab(&"Headhunters")
+
+func _update_tab_unlocks() -> void:
+        sql_tab_button.disabled = UpgradeManager.get_level("daterbase_unlock_sql") <= 0
+        headhunters_tab_button.disabled = UpgradeManager.get_level("daterbase_unlock_headhunters") <= 0
+        if sql_tab_button.disabled and _active_tab == &"SQL":
+                _activate_tab(&"Daterbase")
+        if headhunters_tab_button.disabled and _active_tab == &"Headhunters":
+                _activate_tab(&"Daterbase")
+
+func _on_upgrade_purchased(id: String, _level: int) -> void:
+        if id == "daterbase_unlock_sql" or id == "daterbase_unlock_headhunters":
+                _update_tab_unlocks()
 
 # =========================================
 # Buttons

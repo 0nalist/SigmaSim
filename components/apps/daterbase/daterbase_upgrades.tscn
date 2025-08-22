@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://b27d8ea1c6d6"]
+
+[ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="1"]
+[ext_resource type="Script" uid="uid://c7d6a3de1c99" path="res://components/apps/daterbase/daterbase_upgrades.gd" id="2"]
+
+[node name="DaterbaseUpgrades" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("2")
+window_title = "Daterbase Upgrades"
+default_window_size = Vector2(480, 480)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="SystemUpgradeUI" parent="MarginContainer" instance=ExtResource("1")]
+layout_mode = 2
+size_flags_vertical = 3
+system_name = "daterbase"
