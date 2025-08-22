@@ -45,6 +45,7 @@ func launch_startup_apps() -> void:
 func _deferred_load_save():
 	SaveManager.load_from_slot(SaveManager.current_slot_id)
 	_apply_shader_settings()
+	_sync_warp_shaders()
 	var path = PlayerManager.user_data.get("background_path", "")
 	if path != "":
 		var tex = load(path)
@@ -248,3 +249,31 @@ func _unhandled_input(event: InputEvent) -> void:
 		if ev.keycode == KEY_S and target_control != null:
 			TraumaManager.hit_pane(target_control, 0.6)
 			'''
+
+func _sync_warp_shaders() -> void:
+	_apply_warp_shader_params(get_tree().root)
+	get_tree().node_added.connect(_on_warp_shader_node_added)
+
+func _on_warp_shader_node_added(n: Node) -> void:
+	_apply_warp_shader_params(n)
+
+func _apply_warp_shader_params(n: Node) -> void:
+	if n is CanvasItem:
+		var mat = n.material
+		if mat is ShaderMaterial and mat.shader:
+			var path = mat.shader.resource_path
+			if path.ends_with("warp_shader.gdshader") or path.ends_with("pink_warp.gdshader"):
+				var stretch = blue_warp_shader_material.get_shader_parameter("stretch")
+				var thing1 = blue_warp_shader_material.get_shader_parameter("thing1")
+				var thing2 = blue_warp_shader_material.get_shader_parameter("thing2")
+				var thing3 = blue_warp_shader_material.get_shader_parameter("thing3")
+				var speed = blue_warp_shader_material.get_shader_parameter("speed")
+				var scale = blue_warp_shader_material.get_shader_parameter("scale")
+				mat.set_shader_parameter("stretch", stretch)
+				mat.set_shader_parameter("thing1", thing1)
+				mat.set_shader_parameter("thing2", thing2)
+				mat.set_shader_parameter("thing3", thing3)
+				mat.set_shader_parameter("speed", speed)
+				mat.set_shader_parameter("scale", scale)
+	for c in n.get_children():
+		_apply_warp_shader_params(c)
