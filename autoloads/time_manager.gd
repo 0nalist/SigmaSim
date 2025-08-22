@@ -213,7 +213,8 @@ func get_save_data() -> Dictionary:
 		"current_year": current_year,
 		"day_of_week": day_of_week,
 		"is_fast_forwarding": is_fast_forwarding,
-		"fast_forward_minutes_left": fast_forward_minutes_left
+		"fast_forward_minutes_left": fast_forward_minutes_left,
+		"autosave_enabled": autosave_enabled
 	}
 
 func load_from_data(data: Dictionary) -> void:
@@ -235,6 +236,8 @@ func load_from_data(data: Dictionary) -> void:
 		is_fast_forwarding = true
 		fast_forward_minutes_left = int(data.get("fast_forward_minutes_left", 0))
 
+	autosave_enabled = bool(data.get("autosave_enabled", autosave_enabled))
+
 	# Recompute and mirror compatibility fields
 	_recompute_from_total_minutes()
 
@@ -251,6 +254,7 @@ func reset() -> void:
 	is_fast_forwarding = false
 	fast_forward_minutes_left = 0
 	autosave_hour_counter = 0
+	autosave_enabled = true
 
 # -------- Internal core (driven by _total_minutes_elapsed) --------
 func _advance_time(minutes_to_add: int) -> void:
