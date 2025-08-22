@@ -105,7 +105,7 @@ func talk(text: String, time_per_char := 0.05) -> void:
 
 	var original_pos = siggy_sprite.position
 	var original_rotation = siggy_sprite.rotation_degrees
-	var rng = RNGManager.get_rng()
+    var rng = RNGManager.siggy.get_rng()
 
 	for i in range(total_chars):
 		speech_label.visible_ratio = float(i + 1) / total_chars
@@ -155,7 +155,7 @@ func get_money_tip() -> String:
 	if tips.is_empty():
 		return "Try cutting back on spending for now."
 
-	var rng = RNGManager.get_rng()
+    var rng = RNGManager.siggy.get_rng()
 	return tips[rng.randi() % tips.size()]
 
 func out_of_pocket_wildcard() -> String:
@@ -164,7 +164,7 @@ func out_of_pocket_wildcard() -> String:
 	wildcards.append("...all I'm saying is, buildings don't just fall down like that!")
 	wildcards.append("And that's the day I learned why they're called sperm whales")
 
-	var rng = RNGManager.get_rng()
+    var rng = RNGManager.siggy.get_rng()
 	return str(wildcards[rng.randi_range(0, wildcards.size() - 1)])
 
 func _on_talk_button_pressed() -> void:
