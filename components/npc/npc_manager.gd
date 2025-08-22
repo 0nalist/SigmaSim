@@ -172,10 +172,11 @@ func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
 		var npc: NPC = get_npc_by_index(npc_idx)
 		var target: float = npc.affinity_equilibrium
 		var current: float = npc.affinity
+		var rate: float = StatManager.get_stat("affinity_drift_rate", 1.0)
 		if current < target:
-			set_npc_field(npc_idx, "affinity", min(current + 1.0, target))
+			set_npc_field(npc_idx, "affinity", min(current + rate, target))
 		elif current > target:
-			set_npc_field(npc_idx, "affinity", max(current - 1.0, target))
+			set_npc_field(npc_idx, "affinity", max(current - rate, target))
 
 # === BATCH HELPERS ===
 
