@@ -278,8 +278,8 @@ func _get_currency_amount(currency: String) -> float:
 	return PortfolioManager.get_crypto_amount(currency)
 
 func _deduct_currency(currency: String, amount: float) -> bool:
-	if currency == "cash":
-		return PortfolioManager.attempt_spend(amount)
+    if currency == "cash":
+            return PortfolioManager.attempt_spend(amount, PortfolioManager.CREDIT_REQUIREMENTS["upgrades"])
 	if currency == "ex":
 		if StatManager.get_stat("ex") < amount:
 			return false

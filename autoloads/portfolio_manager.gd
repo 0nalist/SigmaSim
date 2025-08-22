@@ -53,10 +53,7 @@ const CREDIT_REQUIREMENTS := {
 		
 }
 # attempt_spend without credit argument:
-# autoloads/upgrade_manager.gd -> _deduct_currency
-# components/popups/ex_factor_view.gd -> _on_gift_pressed, _on_date_pressed
 # components/ui/hire_popup.gd -> worker hire in _populate_hire_tab
-# components/apps/early_bird/early_bird.gd -> _on_autopilot_button_pressed
 
 
 
