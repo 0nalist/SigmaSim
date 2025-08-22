@@ -336,6 +336,7 @@ background_name = "FlatColor"
 
 [node name="Balala" type="ColorRect" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true
+visible = false
 material = SubResource("ShaderMaterial_oaahw")
 layout_mode = 1
 anchors_preset = 15
