@@ -13,9 +13,9 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.03
-shader_parameter/color_low = Color(0.213765, 0.0, 0.213765, 1.0)
-shader_parameter/color_mid = Color(1.0, 0.579437, 1.0, 1.0)
-shader_parameter/color_high = Color(1.0, 1.0, 1.0, 1.0)
+shader_parameter/color_low = Color(0.213765, 0, 0.213765, 1)
+shader_parameter/color_mid = Color(1, 0.579437, 1, 1)
+shader_parameter/color_high = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_du6fw"]
 bg_color = Color(0.385493, 0.385493, 0.385492, 0.109804)
