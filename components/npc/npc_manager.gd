@@ -92,12 +92,15 @@ func set_npc_field(idx: int, field: String, value) -> void:
 	if field == "affinity":
 		emit_signal("affinity_changed", idx, value)
 func promote_to_persistent(idx: int) -> void:
-		if not persistent_npcs.has(idx):
-				var npc = get_npc_by_index(idx)
-				persistent_npcs[idx] = npc_overrides.get(idx, {}).duplicate()
-				npc_overrides.erase(idx)
-				_index_persistent_npc(idx)
-				_queue_save(idx)
+	if not persistent_npcs.has(idx):
+		var npc = get_npc_by_index(idx)
+		persistent_npcs[idx] = npc_overrides.get(idx, {}).duplicate()
+		npc_overrides.erase(idx)
+		_index_persistent_npc(idx)
+		# Ensure dynamic costs are persisted immediately so they survive reloads
+		persistent_npcs[idx]["gift_cost"] = npc.gift_cost
+		persistent_npcs[idx]["date_cost"] = npc.date_cost
+		DBManager.save_npc(idx, npc)
 
 # Returns NPC indices matching a dot product similarity threshold with preferred_gender
 func get_npcs_by_gender_dot(app_name: String, preferred_gender: Vector3, min_similarity: float, count: int, exclude: Array[int]=[]) -> Array[int]:
