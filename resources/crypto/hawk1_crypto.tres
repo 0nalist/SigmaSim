@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Cryptocurrency" load_steps=3 format=3 uid="uid://bjah3mncmmb8"]
+
+[ext_resource type="Texture2D" uid="uid://bw7dnfkddu22m" path="res://assets/moneytoburn.png" id="1_ubfbx"]
+[ext_resource type="Script" uid="uid://llcvncktu5" path="res://resources/crypto/cryptocurrency.gd" id="2_rd2bo"]
+
+[resource]
+script = ExtResource("2_rd2bo")
+symbol = "HAWK1"
+display_name = "HAWK1A"
+icon = ExtResource("1_ubfbx")
+price = 4.2
+volatility = 1.0
+power_required = 1000
+block_size = 1.0
+block_time = 9.0
+price_history = Array[float]([])
+all_time_high = 1.0
+metadata/_custom_type_script = "uid://llcvncktu5"

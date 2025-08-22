@@ -3,7 +3,7 @@ extends Node
 
 var stock_market: Dictionary = {}  # symbol: Stock
 var crypto_market: Dictionary = {}  # symbol: Crypto
-var stock_events: Dictionary = {}   # symbol: MarketEvent
+var stock_events: Dictionary = {}# symbol: MarketEvent
 var crypto_events: Dictionary = {}  # symbol: MarketEvent
 
 signal crypto_market_ready
@@ -25,16 +25,17 @@ var STOCK_RESOURCES = {
 
 var CRYPTO_RESOURCES = {
 	"BITC": preload("res://resources/crypto/bitc_crypto.tres"),
-	"HAWK1": preload("res://resources/crypto/hawk_crypto.tres"),
-	"HAWK2": preload("res://resources/crypto/hawk_crypto.tres"),
+	"HAWK1": preload("res://resources/crypto/hawk1_crypto.tres"),
+	"HAWK2": preload("res://resources/crypto/hawk2_crypto.tres"),
 	"WORM": preload("res://resources/crypto/worm_crypto.tres"),
 }
 
 var EVENT_RESOURCES = {
-        "HAWK_PUMP": preload("res://resources/market_events/hawk_pump_and_dump.tres"),
+		"HAWK_PUMP": preload("res://resources/market_events/hawk_pump_and_dump.tres"),
 }
 
 func _ready() -> void:
+
 	TimeManager.minute_passed.connect(_on_minute_passed)
 	if crypto_market.is_empty():
 		print("crypto market was empty")
@@ -45,6 +46,7 @@ func _ready() -> void:
 
 func init_new_save_events() -> void:
 	_init_market_events()
+
 
 func register_crypto(crypto: Cryptocurrency) -> void:
 	if crypto == null:
@@ -75,6 +77,8 @@ func register_crypto(crypto: Cryptocurrency) -> void:
 
 	crypto_market[crypto.symbol] = crypto
 	emit_signal("crypto_price_updated", crypto.symbol, crypto)
+
+
 func _on_minute_passed(current_time_minutes: int) -> void:
 	# Alternate stock and crypto ticks every minute
 	if current_time_minutes % 2 == 0:
@@ -116,53 +120,53 @@ func refresh_prices():
 	_update_stock_prices()
 
 func _update_stock_prices():
-       var rng = RNGManager.market_manager.get_rng()
-       var now = TimeManager.get_now_minutes()
-       for stock in stock_market.values():
-               var event: MarketEvent = stock_events.get(stock.symbol)
-               var old_price = stock.price
-               if event == null or not event.is_active():
-                       stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
+	var rng = RNGManager.market_manager.get_rng()
+	var now = TimeManager.get_now_minutes()
+	for stock in stock_market.values():
+			var event: MarketEvent = stock_events.get(stock.symbol)
+			var old_price = stock.price
+			if event == null or not event.is_active():
+					stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
 
-                       stock.momentum -= 1
-                       if stock.momentum <= 0:
-                               stock.sentiment = rng.randf_range(-1.0, 1.0)
-                               stock.momentum = rng.randi_range(5, 20)
+					stock.momentum -= 1
+					if stock.momentum <= 0:
+							stock.sentiment = rng.randf_range(-1.0, 1.0)
+							stock.momentum = rng.randi_range(5, 20)
 
-                       var deviation = stock.price / stock.intrinsic_value
-                       var noise = rng.randf_range(-0.5, 0.5)
-                       var directional_bias = stock.sentiment * 0.25
-                       var total_factor = clamp(noise + directional_bias, -1.0, 1.0)
-                       var max_percent_change = stock.volatility / 100.0
-                       var delta = stock.price * max_percent_change * total_factor
+					var deviation = stock.price / stock.intrinsic_value
+					var noise = rng.randf_range(-0.5, 0.5)
+					var directional_bias = stock.sentiment * 0.25
+					var total_factor = clamp(noise + directional_bias, -1.0, 1.0)
+					var max_percent_change = stock.volatility / 100.0
+					var delta = stock.price * max_percent_change * total_factor
 
-                       if deviation > 2.0 and rng.randf() < 0.2:
-                               delta -= stock.price * rng.randf_range(0.1, 0.3)
-                       elif deviation < 0.5 and rng.randf() < 0.2:
-                               delta += stock.price * rng.randf_range(0.1, 0.3)
+					if deviation > 2.0 and rng.randf() < 0.2:
+							delta -= stock.price * rng.randf_range(0.1, 0.3)
+					elif deviation < 0.5 and rng.randf() < 0.2:
+							delta += stock.price * rng.randf_range(0.1, 0.3)
 
-                       stock.price = max(snapped(stock.price + delta, 0.01), 0.01)
-               if event != null:
-                       event.process(now, stock)
-                       if event.is_finished():
-                               stock_events.erase(stock.symbol)
+					stock.price = max(snapped(stock.price + delta, 0.01), 0.01)
+			if event != null:
+					event.process(now, stock)
+					if event.is_finished():
+							stock_events.erase(stock.symbol)
 
-               if abs(stock.price - old_price) > 0.001:
-                       emit_signal("stock_price_updated", stock.symbol, stock)
+			if abs(stock.price - old_price) > 0.001:
+					emit_signal("stock_price_updated", stock.symbol, stock)
 
 func _update_crypto_prices():
-       var now: int = TimeManager.get_now_minutes()
-       for crypto in crypto_market.values():
-               var event: MarketEvent = crypto_events.get(crypto.symbol)
-               var old_price = crypto.price
-               if event == null or not event.is_active():
-                       crypto.update_from_market()
-               if event != null:
-                       event.process(now, crypto)
-                       if event.is_finished():
-                               crypto_events.erase(crypto.symbol)
-               if abs(crypto.price - old_price) > 0.001:
-                       emit_signal("crypto_price_updated", crypto.symbol, crypto)
+	var now: int = TimeManager.get_now_minutes()
+	for crypto in crypto_market.values():
+			var event: MarketEvent = crypto_events.get(crypto.symbol)
+			var old_price = crypto.price
+			if event == null or not event.is_active():
+					crypto.update_from_market()
+			if event != null:
+					event.process(now, crypto)
+					if event.is_finished():
+							crypto_events.erase(crypto.symbol)
+			if abs(crypto.price - old_price) > 0.001:
+					emit_signal("crypto_price_updated", crypto.symbol, crypto)
 
 ## --- Initialization --- ##
 
@@ -216,11 +220,12 @@ func _init_crypto_market() -> void:
 	print("crypto market keys: " + str(crypto_market.keys()))
 	print("crypto market state: " + JSON.stringify(crypto_market, "  "))
 func _init_stock_market() -> void:
-                for symbol in STOCK_RESOURCES.keys():
-                                var stock = STOCK_RESOURCES[symbol].duplicate(true)
-                                register_stock(stock)
+				for symbol in STOCK_RESOURCES.keys():
+								var stock = STOCK_RESOURCES[symbol].duplicate(true)
+								register_stock(stock)
 
 func _init_market_events() -> void:
+
 	crypto_events.clear()
 	stock_events.clear()
 	var rng = RNGManager.market_manager.get_rng()
@@ -238,6 +243,7 @@ func _init_market_events() -> void:
 				crypto_events[ev.target_symbol] = ev
 			elif ev.target_type == "stock":
 				stock_events[ev.target_symbol] = ev
+
 
 ## --- SAVELOAD --- ##
 
