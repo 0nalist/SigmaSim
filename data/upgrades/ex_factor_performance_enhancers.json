@@ -10,12 +10,15 @@
 	}
   ],
   "systems": [
-	"e[sup]x[/sup] Factor"
+        "eXFactor"
   ],
   "dependencies": [],
   "cost_per_level": {
-	"ex": 100
+        "ex": 1
   },
-  "max_level": 20,
+  "scale_by_formula": true,
+  "cost_formula": {
+        "ex": "base_cost[\"ex\"] * pow(10, level-1)"
+  },
   "repeatable": true
 }
