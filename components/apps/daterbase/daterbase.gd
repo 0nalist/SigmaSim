@@ -47,6 +47,7 @@ var _ran_initial_show_all: bool = false
 
 var _portrait_views_by_npc: Dictionary = {}
 var _affinity_labels_by_npc: Dictionary = {}
+var _exclusivity_labels_by_npc: Dictionary = {}
 
 const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
 const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
@@ -62,8 +63,9 @@ func _ready() -> void:
 	hh_create_button.pressed.connect(_on_hh_create_pressed)
 	hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
 
-	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
-	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
+        NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
+        NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
+        NPCManager.exclusivity_core_changed.connect(_on_npc_exclusivity_core_changed)
 
 	numeric_regex = RegEx.new()
 	numeric_regex.compile("^[-+]?\\d*(?:\\.\\d+)?(?:[eE][-+]?\\d+)?$")
@@ -243,104 +245,112 @@ func _is_safe_select(query_text: String) -> bool:
 # =========================================
 
 func _load_default_entries() -> void:
-	for child in results_container_daterbase.get_children():
-		child.queue_free()
-	_portrait_views_by_npc.clear()
-	_affinity_labels_by_npc.clear()
+        for child in results_container_daterbase.get_children():
+                child.queue_free()
+        _portrait_views_by_npc.clear()
+        _affinity_labels_by_npc.clear()
+        _exclusivity_labels_by_npc.clear()
 
-	var daterbase_entries: Array = DBManager.get_daterbase_entries()
-	if daterbase_entries.is_empty():
-		var empty_label: Label = Label.new()
-		empty_label.text = "no one wants you yet"
-		empty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		empty_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		results_container_daterbase.add_child(empty_label)
-		return
+        var daterbase_entries: Array = DBManager.get_daterbase_entries()
+        if daterbase_entries.is_empty():
+                var empty_label: Label = Label.new()
+                empty_label.text = "no one wants you yet"
+                empty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                empty_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+                results_container_daterbase.add_child(empty_label)
+                return
 
-	var header: HBoxContainer = HBoxContainer.new()
-	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var header_labels: Array[Label] = []
-	header_labels.append(_create_header_label("Portrait"))
-	header_labels.append(_create_header_label("Full Name"))
-	header_labels.append(_create_header_label("Dime Status"))
-	header_labels.append(_create_header_label("Relationship Status"))
-	header_labels.append(_create_header_label("Affinity"))
-	for lbl in header_labels:
-		header.add_child(lbl)
-	results_container_daterbase.add_child(header)
+        var header: HBoxContainer = HBoxContainer.new()
+        header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+        var header_labels: Array[Label] = []
+        header_labels.append(_create_header_label("Portrait"))
+        header_labels.append(_create_header_label("Full Name"))
+        header_labels.append(_create_header_label("Dime Status"))
+        header_labels.append(_create_header_label("Relationship Status"))
+        header_labels.append(_create_header_label("Exclusivity"))
+        header_labels.append(_create_header_label("Affinity"))
+        for lbl in header_labels:
+                header.add_child(lbl)
+        results_container_daterbase.add_child(header)
 
-	var default_font: Font = get_theme_default_font()
-	var default_font_size: int = get_theme_default_font_size()
-	var column_widths: Array[int] = [132, 0, 0, 0, 0]
-	for header_index in range(1, header_labels.size()):
-		var header_size: Vector2 = default_font.get_string_size(header_labels[header_index].text, default_font_size)
-		column_widths[header_index] = int(ceil(header_size.x)) + EXTRA_HEADER_PADDING
+        var default_font: Font = get_theme_default_font()
+        var default_font_size: int = get_theme_default_font_size()
+        var column_widths: Array[int] = [132, 0, 0, 0, 0, 0]
+        for header_index in range(1, header_labels.size()):
+                var header_size: Vector2 = default_font.get_string_size(header_labels[header_index].text, default_font_size)
+                column_widths[header_index] = int(ceil(header_size.x)) + EXTRA_HEADER_PADDING
 
-	var rows: Array[HBoxContainer] = []
-	daterbase_entries = DBManager.get_daterbase_entries()
-	for entry_dictionary in daterbase_entries:
-		var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
-		if npc_object.relationship_stage == NPCManager.RelationshipStage.STRANGER:
-			NPCManager.set_relationship_stage(entry_dictionary.npc_id, NPCManager.RelationshipStage.TALKING)
-			npc_object.relationship_stage = NPCManager.RelationshipStage.TALKING
-			npc_object.affinity += 1
+        var rows: Array[HBoxContainer] = []
+        daterbase_entries = DBManager.get_daterbase_entries()
+        for entry_dictionary in daterbase_entries:
+                var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
+                if npc_object.relationship_stage == NPCManager.RelationshipStage.STRANGER:
+                        NPCManager.set_relationship_stage(entry_dictionary.npc_id, NPCManager.RelationshipStage.TALKING)
+                        npc_object.relationship_stage = NPCManager.RelationshipStage.TALKING
+                        npc_object.affinity += 1
 
-		var row: HBoxContainer = HBoxContainer.new()
-		row.mouse_filter = Control.MOUSE_FILTER_STOP
-		row.gui_input.connect(_on_row_gui_input.bind(entry_dictionary.npc_id, npc_object))
+                var row: HBoxContainer = HBoxContainer.new()
+                row.mouse_filter = Control.MOUSE_FILTER_STOP
+                row.gui_input.connect(_on_row_gui_input.bind(entry_dictionary.npc_id, npc_object))
 
-		var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
-		portrait.portrait_creator_enabled = false
-		portrait.custom_minimum_size = Vector2(132, 132)
-		portrait.size = Vector2(132, 132)
-		portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		if npc_object.portrait_config != null:
-			portrait.apply_config(npc_object.portrait_config)
-		_portrait_views_by_npc[entry_dictionary.npc_id] = portrait
-		row.add_child(portrait)
+                var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
+                portrait.portrait_creator_enabled = false
+                portrait.custom_minimum_size = Vector2(132, 132)
+                portrait.size = Vector2(132, 132)
+                portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                if npc_object.portrait_config != null:
+                        portrait.apply_config(npc_object.portrait_config)
+                _portrait_views_by_npc[entry_dictionary.npc_id] = portrait
+                row.add_child(portrait)
 
-		var name_label: Label = Label.new()
-		name_label.text = npc_object.full_name
-		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(name_label)
+                var name_label: Label = Label.new()
+                name_label.text = npc_object.full_name
+                name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                row.add_child(name_label)
 
-		var dime_label: Label = Label.new()
-		dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
-		dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(dime_label)
+                var dime_label: Label = Label.new()
+                dime_label.text = "🔥 %.1f/10" % (float(npc_object.attractiveness) / 10.0)
+                dime_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                row.add_child(dime_label)
 
-		var rel_label: Label = Label.new()
-		rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
-		rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(rel_label)
+                var rel_label: Label = Label.new()
+                rel_label.text = STAGE_NAMES[npc_object.relationship_stage]
+                rel_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                row.add_child(rel_label)
 
-		var affinity_label: Label = Label.new()
-		affinity_label.text = "%.1f" % npc_object.affinity
-		affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(affinity_label)
-		_affinity_labels_by_npc[entry_dictionary.npc_id] = affinity_label
+                var ex_label: Label = Label.new()
+                ex_label.text = NPCManager.exclusivity_descriptor_label(entry_dictionary.npc_id)
+                ex_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                row.add_child(ex_label)
+                _exclusivity_labels_by_npc[entry_dictionary.npc_id] = ex_label
 
-		var text_values: Array = [name_label.text, dime_label.text, rel_label.text, affinity_label.text]
-		for idx in range(text_values.size()):
-			var measured: Vector2 = default_font.get_string_size(text_values[idx], default_font_size)
-			column_widths[idx + 1] = max(column_widths[idx + 1], int(ceil(measured.x)) + EXTRA_HEADER_PADDING)
+                var affinity_label: Label = Label.new()
+                affinity_label.text = "%.1f" % npc_object.affinity
+                affinity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                row.add_child(affinity_label)
+                _affinity_labels_by_npc[entry_dictionary.npc_id] = affinity_label
 
-		results_container_daterbase.add_child(row)
-		rows.append(row)
+                var text_values: Array = [name_label.text, dime_label.text, rel_label.text, ex_label.text, affinity_label.text]
+                for idx in range(text_values.size()):
+                        var measured: Vector2 = default_font.get_string_size(text_values[idx], default_font_size)
+                        column_widths[idx + 1] = max(column_widths[idx + 1], int(ceil(measured.x)) + EXTRA_HEADER_PADDING)
 
-	for header_index in range(header_labels.size()):
-		header_labels[header_index].custom_minimum_size.x = column_widths[header_index]
-		if header_index != 0:
-			header_labels[header_index].size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                results_container_daterbase.add_child(row)
+                rows.append(row)
 
-	for row in rows:
-		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		for child_index in range(row.get_child_count()):
-			var ctrl: Control = row.get_child(child_index)
-			ctrl.custom_minimum_size.x = column_widths[child_index]
-			if child_index != 0:
-				ctrl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        for header_index in range(header_labels.size()):
+                header_labels[header_index].custom_minimum_size.x = column_widths[header_index]
+                if header_index != 0:
+                        header_labels[header_index].size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+        for row in rows:
+                row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                for child_index in range(row.get_child_count()):
+                        var ctrl: Control = row.get_child(child_index)
+                        ctrl.custom_minimum_size.x = column_widths[child_index]
+                        if child_index != 0:
+                                ctrl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 
 func _create_header_label(text: String) -> Label:
@@ -365,9 +375,14 @@ func _on_npc_portrait_changed(idx: int, cfg: PortraitConfig) -> void:
 
 
 func _on_npc_affinity_changed(idx: int, value: float) -> void:
-	if _affinity_labels_by_npc.has(idx):
-		var lbl: Label = _affinity_labels_by_npc[idx]
-		lbl.text = "%.1f" % value
+        if _affinity_labels_by_npc.has(idx):
+                var lbl: Label = _affinity_labels_by_npc[idx]
+                lbl.text = "%.1f" % value
+
+func _on_npc_exclusivity_core_changed(idx: int, _old_core: int, _new_core: int) -> void:
+        if _exclusivity_labels_by_npc.has(idx):
+                var lbl: Label = _exclusivity_labels_by_npc[idx]
+                lbl.text = NPCManager.exclusivity_descriptor_label(idx)
 
 func _display_generic_rows(result_rows: Array) -> void:
 	if result_rows.size() == 0:
