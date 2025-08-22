@@ -20,22 +20,50 @@ var _border_highlight_running: bool = false
 var _value_flash_running: bool = false
 var _tween: Tween = null
 
+var _pending_setup: bool = false
+var _pending_id: String = ""
+var _pending_title: String = ""
+var _pending_subtitle: String = ""
+
+var _shell_built: bool = false
+
 func _d(msg: String) -> void:
-        if WALLET_DEBUG:
-                print("[Wallet] " + msg)
+	if WALLET_DEBUG:
+		print("[Wallet] " + msg)
 
 func _ready() -> void:
-	pivot_offset = size * 0.5
+	_ensure_shell()
+
+func _ensure_shell() -> void:
+	if _shell_built:
+		return
 	_build_card_shell()
 	_apply_default_theme()
 	_apply_card_size()
+	_apply_pending_setup()
+	_shell_built = true
+	# Center pivot after a frame so size is valid
+	call_deferred("_apply_pivot")
+
+func _apply_pivot() -> void:
+	pivot_offset = size * 0.5
 
 func setup(id: String, title: String, subtitle: String = "") -> void:
-	card_id = id
-	card_title = title
-	card_subtitle = subtitle
-	if is_inside_tree():
+	_pending_setup = true
+	_pending_id = id
+	_pending_title = title
+	_pending_subtitle = subtitle
+	_apply_pending_setup()
+
+func _apply_pending_setup() -> void:
+	if not _pending_setup:
+		return
+	card_id = _pending_id
+	card_title = _pending_title
+	card_subtitle = _pending_subtitle
+	if _title_label != null:
 		_title_label.text = card_title
+	if _subtitle_label != null:
 		_subtitle_label.text = card_subtitle
 
 func _build_card_shell() -> void:
@@ -44,13 +72,13 @@ func _build_card_shell() -> void:
 	_root.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_root.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_root.custom_minimum_size = Vector2(preferred_width, preferred_height)
-	_root.theme_override_constants["separation"] = 8
+	_root.add_theme_constant_override("separation", 8)
 	add_child(_root)
 
 	_header_box = HBoxContainer.new()
 	_header_box.name = "Header"
 	_header_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_header_box.theme_override_constants["separation"] = 6
+	_header_box.add_theme_constant_override("separation", 6)
 	_root.add_child(_header_box)
 
 	_title_label = Label.new()
@@ -77,13 +105,13 @@ func _build_card_shell() -> void:
 	_content.name = "Content"
 	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_content.theme_override_constants["separation"] = 6
+	_content.add_theme_constant_override("separation", 6)
 	_root.add_child(_content)
 
 	_footer_box = HBoxContainer.new()
 	_footer_box.name = "Footer"
 	_footer_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_footer_box.theme_override_constants["separation"] = 8
+	_footer_box.add_theme_constant_override("separation", 8)
 	_root.add_child(_footer_box)
 
 func _apply_default_theme() -> void:
@@ -100,18 +128,21 @@ func _apply_default_theme() -> void:
 	sb.corner_radius_bottom_right = 16
 	sb.shadow_size = 10
 	sb.shadow_color = Color(0, 0, 0, 0.35)
+	sb.content_margin_left = 10.0
+	sb.content_margin_right = 10.0
+	sb.content_margin_top = 10.0
+	sb.content_margin_bottom = 10.0
 	add_theme_stylebox_override("panel", sb)
-	add_theme_constant_override("margin_left", 10)
-	add_theme_constant_override("margin_right", 10)
-	add_theme_constant_override("margin_top", 10)
-	add_theme_constant_override("margin_bottom", 10)
 
 func _apply_card_size() -> void:
 	custom_minimum_size = Vector2(preferred_width, preferred_height)
 
 func add_group(group_title: String, rows: Array) -> void:
+	_ensure_shell()
+	if _content == null:
+		return
 	var group_v: VBoxContainer = VBoxContainer.new()
-	group_v.theme_override_constants["separation"] = 2
+	group_v.add_theme_constant_override("separation", 2)
 	group_v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	group_v.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
@@ -124,7 +155,7 @@ func add_group(group_title: String, rows: Array) -> void:
 	for entry in rows:
 		var row_h: HBoxContainer = HBoxContainer.new()
 		row_h.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row_h.theme_override_constants["separation"] = 6
+		row_h.add_theme_constant_override("separation", 6)
 
 		var l: Label = Label.new()
 		l.text = String(entry.get("label", ""))
@@ -144,6 +175,9 @@ func add_group(group_title: String, rows: Array) -> void:
 	_content.add_child(group_v)
 
 func add_meter(label_text: String, percent_0_100: float) -> ProgressBar:
+	_ensure_shell()
+	if _content == null:
+		return null
 	var cap_h: HBoxContainer = HBoxContainer.new()
 	cap_h.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
@@ -170,7 +204,9 @@ func add_meter(label_text: String, percent_0_100: float) -> ProgressBar:
 	return bar
 
 func set_footer_note(text: String) -> void:
-	# Properly clear footer children
+	_ensure_shell()
+	if _footer_box == null:
+		return
 	for child in _footer_box.get_children():
 		child.queue_free()
 	var lab: Label = Label.new()
@@ -180,6 +216,7 @@ func set_footer_note(text: String) -> void:
 	_footer_box.add_child(lab)
 
 func flash_border() -> void:
+	_ensure_shell()
 	if _border_highlight_running:
 		return
 	_border_highlight_running = true
@@ -192,6 +229,7 @@ func flash_border() -> void:
 	_border_highlight_running = false
 
 func bump_value_color() -> void:
+	_ensure_shell()
 	if _value_flash_running:
 		return
 	_value_flash_running = true

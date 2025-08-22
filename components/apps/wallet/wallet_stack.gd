@@ -35,15 +35,15 @@ func clear_cards() -> void:
 		child.queue_free()
 
 func add_card(id: String, card: Control) -> void:
-        _card_ids.append(id)
-        _cards.append(card)
-        add_child(card)
-        await card.ready
-        if card.size == Vector2.ZERO:
-                await get_tree().process_frame
-        card.pivot_offset = card.size * 0.5
-        _update_layout_immediate()
-        _emit_active_changed()
+		_card_ids.append(id)
+		_cards.append(card)
+		add_child(card)
+		await card.ready
+		if card.size == Vector2.ZERO:
+				await get_tree().process_frame
+		card.pivot_offset = card.size * 0.5
+		_update_layout_immediate()
+		_emit_active_changed()
 
 func set_active_by_id(id: String) -> void:
 	var idx: int = _card_ids.find(id)
@@ -60,16 +60,16 @@ func get_active_id() -> String:
 	return _card_ids[_active_index]
 
 func _gui_input(event: InputEvent) -> void:
-        if not mouse_scroll_enabled:
-                return
-        if not _hovering:
-                return
-        if event is InputEventMouseButton:
-                var ev: InputEventMouseButton = event as InputEventMouseButton
-                if ev.button_index == MOUSE_BUTTON_WHEEL_UP and ev.pressed:
-                        _prev()
-                elif ev.button_index == MOUSE_BUTTON_WHEEL_DOWN and ev.pressed:
-                        _next()
+		if not mouse_scroll_enabled:
+				return
+		if not _hovering:
+				return
+		if event is InputEventMouseButton:
+				var ev: InputEventMouseButton = event as InputEventMouseButton
+				if ev.button_index == MOUSE_BUTTON_WHEEL_UP and ev.pressed:
+						_prev()
+				elif ev.button_index == MOUSE_BUTTON_WHEEL_DOWN and ev.pressed:
+						_next()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_MOUSE_ENTER:
@@ -94,11 +94,11 @@ func _next() -> void:
 	_cycle_to_index(target, true)
 
 func _cycle_to_index(target_index: int, do_flip: bool) -> void:
-        if _is_animating:
-                return
-        if _tween != null and _tween.is_running():
-                _tween.kill()
-        _is_animating = true
+	if _is_animating:
+			return
+	if _tween != null and _tween.is_running():
+			_tween.kill()
+	_is_animating = true
 
 	var current_top: Control = _cards[_active_index]
 	var next_top: Control = _cards[target_index]

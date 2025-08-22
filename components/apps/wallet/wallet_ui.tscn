@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c5yi7pql76suu"]
+[gd_scene load_steps=3 format=3 uid="uid://c5yi7pql76suu"]
 
 [ext_resource type="Script" uid="uid://dlicpwlad7qfb" path="res://components/apps/wallet/wallet_ui.gd" id="1_3navu"]
+[ext_resource type="Script" uid="uid://brmyuuaxwsx7c" path="res://components/apps/wallet/wallet_stack.gd" id="2_fc48o"]
 
 [node name="WalletUI" type="Control"]
 layout_mode = 3
@@ -10,3 +11,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3navu")
+window_title = "Wallet"
+request_windowless_mode = true
+show_in_taskbar = false
+window_can_close = false
+window_can_minimize = false
+window_can_maximize = false
+user_resizable = false
+
+[node name="WalletStack" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_fc48o")

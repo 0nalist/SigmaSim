@@ -107,10 +107,10 @@ func get_var(key: String, default_value = null):
 	return user_data.get(key, default_value)
 
 func set_var(key: String, value) -> void:
-                user_data[key] = value
+				user_data[key] = value
 
 func get_stat(name: String, default_value: float = 0.0) -> float:
-        return float(user_data.get(name, default_value))
+		return float(user_data.get(name, default_value))
 
 func color_to_dict(color: Color) -> Dictionary:
 		return {
