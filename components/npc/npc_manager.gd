@@ -69,28 +69,30 @@ func get_npc_by_index(idx: int) -> NPC:
 	return npc
 
 func set_npc_field(idx: int, field: String, value) -> void:
-	if not npcs.has(idx):
-		push_error("Tried to set a field on a non-existent NPC!")
-		return
-	npcs[idx].set(field, value)
-	if field == "relationship_stage":
-		npcs[idx].affinity_equilibrium = float(value) * 10.0
-		if persistent_npcs.has(idx):
-			persistent_npcs[idx]["affinity_equilibrium"] = npcs[idx].affinity_equilibrium
-		if persistent_npcs.has(idx):
-				persistent_npcs[idx][field] = value
-				_queue_save(idx)
-		else:
-				if not npc_overrides.has(idx):
-						npc_overrides[idx] = {}
-				npc_overrides[idx][field] = value
-				if field == "portrait_config":
-						promote_to_persistent(idx)
+        if not npcs.has(idx):
+                push_error("Tried to set a field on a non-existent NPC!")
+                return
+        npcs[idx].set(field, value)
 
-	if field == "portrait_config":
-		emit_signal("portrait_changed", idx, value)
-	if field == "affinity":
-		emit_signal("affinity_changed", idx, value)
+        if field == "relationship_stage":
+                npcs[idx].affinity_equilibrium = float(value) * 10.0
+                if persistent_npcs.has(idx):
+                        persistent_npcs[idx]["affinity_equilibrium"] = npcs[idx].affinity_equilibrium
+
+        if persistent_npcs.has(idx):
+                persistent_npcs[idx][field] = value
+                _queue_save(idx)
+        else:
+                if not npc_overrides.has(idx):
+                        npc_overrides[idx] = {}
+                npc_overrides[idx][field] = value
+                if field == "portrait_config":
+                        promote_to_persistent(idx)
+
+        if field == "portrait_config":
+                emit_signal("portrait_changed", idx, value)
+        if field == "affinity":
+                emit_signal("affinity_changed", idx, value)
 func promote_to_persistent(idx: int) -> void:
 	if not persistent_npcs.has(idx):
 		var npc = get_npc_by_index(idx)
