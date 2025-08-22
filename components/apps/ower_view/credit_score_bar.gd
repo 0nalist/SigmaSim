@@ -13,17 +13,38 @@ func _ready() -> void:
 func _on_credit_changed(_used: float, _limit: float) -> void:
 	current_score = PortfolioManager.get_credit_score()
 	queue_redraw()
-
 func _draw() -> void:
 	var rect: Rect2 = Rect2(Vector2.ZERO, size)
-	draw_rect(rect, Color(0.2, 0.2, 0.2))
+
+	# background with rounded edges
+	var bg_box := StyleBoxFlat.new()
+	bg_box.bg_color = Color(0.2, 0.2, 0.2)
+	bg_box.corner_radius_top_left = 8
+	bg_box.corner_radius_top_right = 8
+	bg_box.corner_radius_bottom_left = 8
+	bg_box.corner_radius_bottom_right = 8
+	draw_style_box(bg_box, rect)
 
 	var ratio: float = float(current_score - min_score) / float(max_score - min_score)
 	ratio = clamp(ratio, 0.0, 1.0)
 
 	var fill_height: float = rect.size.y * ratio
 	var fill_rect: Rect2 = Rect2(rect.position + Vector2(0, rect.size.y - fill_height), Vector2(rect.size.x, fill_height))
-	draw_rect(fill_rect, Color(0.3, 0.8, 0.3))
+
+	# build vertical gradient from red → yellow → green
+	var grad := Gradient.new()
+	grad.colors = [Color.RED, Color.YELLOW, Color.GREEN]
+	grad.offsets = [0.0, 0.5, 1.0]
+
+	var grad_tex := GradientTexture2D.new()
+	grad_tex.gradient = grad
+	grad_tex.width = 1
+	grad_tex.height = int(fill_height)
+	grad_tex.fill_from = Vector2(0, 1)  # bottom to top
+	grad_tex.fill_to = Vector2(0, 0)
+
+	# draw gradient into the filled portion
+	draw_texture_rect(grad_tex, fill_rect, true)
 
 	# font
 	var font: Font = ThemeDB.fallback_font
@@ -41,8 +62,8 @@ func _draw() -> void:
 		else:
 			section_color = Color.YELLOW.lerp(Color.GREEN, (t - 0.5) / 0.5)
 
-		# draw horizontal line
-		draw_line(Vector2(0, y), Vector2(rect.size.x, y), Color.WHITE)
+		# draw horizontal line in black
+		draw_line(Vector2(0, y), Vector2(rect.size.x, y), Color.BLACK)
 
 		# left label = credit score
 		var score_text: String = str(score)
@@ -56,7 +77,6 @@ func _draw() -> void:
 			var unlock_size: Vector2 = font.get_string_size(unlocks, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
 			draw_string(font, Vector2(rect.size.x + 4.0, y + unlock_size.y / 2.0),
 				unlocks, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.WHITE)
-
 
 func _get_label_for_score(score: int) -> String:
 	var unlocked_here: Array[String] = []

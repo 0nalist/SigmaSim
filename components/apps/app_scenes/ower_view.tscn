@@ -41,12 +41,16 @@ layout_mode = 2
 layout_mode = 2
 text = "Credit Score"
 
-[node name="CreditScoreBar" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 15
+
+[node name="CreditScoreBar" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3")
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(64, 0)
-layout_mode = 2
