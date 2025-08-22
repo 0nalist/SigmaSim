@@ -14,10 +14,10 @@ var _min_due: float = 0.0
 var _autopay: bool = false
 
 func _ready() -> void:
-	setup("student_loan", "Student Loan", "Long-Term Debt")
-	_build()
-	_refresh_from_sources()
-	BillManager.student_loan_changed.connect(_on_changed)
+        setup("student_loan", "Student Loan", "Long-Term Debt")
+        _build()
+        _refresh_from_sources()
+        BillManager.student_loan_changed.connect(_on_changed)
 
 func _build() -> void:
 	var rows1: Array = []
@@ -58,28 +58,28 @@ func _build() -> void:
 	_pay_button.pressed.connect(_on_pay_pressed)
 	controls.add_child(_pay_button)
 
-	var content: VBoxContainer = get_node("Root/Content") as VBoxContainer
-	content.add_child(controls)
+        if _content != null:
+                _content.add_child(controls)
 
 	set_footer_note("interest accrues daily")
 
 func _refresh_from_sources() -> void:
-	var d: Dictionary = BillManager.get_student_loan_summary()
-	_principal = float(d.get("principal", 0.0))
-	_interest_rate = float(d.get("interest_rate", 0.0))
-	_accrued_interest = float(d.get("accrued_interest", 0.0))
-	_next_due = String(d.get("next_due", ""))
-	_min_due = float(d.get("min_due", 0.0))
-	_autopay = bool(d.get("autopay", false))
-	_rebuild_display()
+        var d: Dictionary = BillManager.get_student_loan_summary()
+        _principal = float(d.get("principal", 0.0))
+        _interest_rate = float(d.get("interest_rate", 0.0))
+        _accrued_interest = float(d.get("accrued_interest", 0.0))
+        _next_due = String(d.get("next_due", ""))
+        _min_due = float(d.get("min_due", 0.0))
+        _autopay = bool(d.get("autopay", false))
+        _rebuild_display()
+        _d("refreshed student loan summary")
 
 func _rebuild_display() -> void:
-	var content: VBoxContainer = get_node("Root/Content") as VBoxContainer
-	if content == null:
-		return
-	for child in content.get_children():
-		child.queue_free()
-	_build()
+        if _content == null:
+                return
+        for child in _content.get_children():
+                child.queue_free()
+        _build()
 
 func _on_changed() -> void:
 	_refresh_from_sources()
@@ -93,11 +93,13 @@ func _on_slider_changed(v: float) -> void:
 	_pay_label.text = "$" + String.num(v, 2)
 
 func _on_pay_pressed() -> void:
-	var amount: float = float(_pay_slider.value)
-	if amount <= 0.0:
-		return
-	var max_afford: float = PortfolioManager.cash
-	if amount > max_afford:
-		amount = max_afford
-	BillManager.pay_student_loan(amount)
-	_refresh_from_sources()
+        var amount: float = float(_pay_slider.value)
+        if amount <= 0.0:
+                return
+        var max_afford: float = 0.0
+        if Engine.has_singleton("PortfolioManager"):
+                max_afford = PortfolioManager.cash
+        if amount > max_afford:
+                amount = max_afford
+        BillManager.pay_student_loan(amount)
+        _refresh_from_sources()

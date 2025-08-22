@@ -1,6 +1,8 @@
 extends PanelContainer
 class_name WalletCardBase
 
+const WALLET_DEBUG: bool = false
+
 var _root: VBoxContainer
 var _header_box: HBoxContainer
 var _title_label: Label
@@ -17,6 +19,10 @@ var _footer_box: HBoxContainer
 var _border_highlight_running: bool = false
 var _value_flash_running: bool = false
 var _tween: Tween = null
+
+func _d(msg: String) -> void:
+        if WALLET_DEBUG:
+                print("[Wallet] " + msg)
 
 func _ready() -> void:
 	pivot_offset = size * 0.5
