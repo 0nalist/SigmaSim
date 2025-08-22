@@ -17,6 +17,9 @@ const SCHEMA: Dictionary = {
 		"relationship_status": {"data_type": "text"},
 		"relationship_stage": {"data_type": "int"},
 		"relationship_progress": {"data_type": "real"},
+		"exclusivity_core": {"data_type": "int"},
+		"claimed_exclusive_boost": {"data_type": "int"},
+		"claimed_serious_monog_boost": {"data_type": "int"},
 "affinity": {"data_type": "real"},
 "affinity_equilibrium": {"data_type": "real"},
 "rizz": {"data_type": "int"},
@@ -117,6 +120,14 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	var dict = npc.to_dict()
 	dict["id"] = idx
 	dict["slot_id"] = slot_id
+       if npc.claimed_exclusive_boost:
+	       dict["claimed_exclusive_boost"] = 1
+       else:
+	       dict["claimed_exclusive_boost"] = 0
+       if npc.claimed_serious_monog_boost:
+	       dict["claimed_serious_monog_boost"] = 1
+       else:
+	       dict["claimed_serious_monog_boost"] = 0
 	# Serialize all complex fields as JSON
 	dict["gender_vector"] = to_json(dict.get("gender_vector", {"x":0,"y":0,"z":1}))
 	dict["tags"] = to_json(dict.get("tags", []))

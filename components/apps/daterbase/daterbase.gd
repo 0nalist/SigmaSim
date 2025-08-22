@@ -267,9 +267,9 @@ func _load_default_entries() -> void:
 	daterbase_entries = DBManager.get_daterbase_entries()
 	for entry_dictionary in daterbase_entries:
 		var npc_object: NPC = NPCManager.get_npc_by_index(entry_dictionary.npc_id)
-		if npc_object.relationship_stage == NPC.RelationshipStage.STRANGER:
-			NPCManager.set_npc_field(entry_dictionary.npc_id, "relationship_stage", NPC.RelationshipStage.TALKING)
-			npc_object.relationship_stage = NPC.RelationshipStage.TALKING
+	   if npc_object.relationship_stage == NPCManager.RelationshipStage.STRANGER:
+		   NPCManager.set_relationship_stage(entry_dictionary.npc_id, NPCManager.RelationshipStage.TALKING)
+		   npc_object.relationship_stage = NPCManager.RelationshipStage.TALKING
 			npc_object.affinity += 1
 		var row := HBoxContainer.new()
 		row.mouse_filter = Control.MOUSE_FILTER_STOP
