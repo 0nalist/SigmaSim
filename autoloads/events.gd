@@ -2,6 +2,9 @@ extends Node
 
 signal desktop_background_toggled(name: String, visible: bool)
 signal upgrade_purchased(id: String, level: int)
+signal wallet_focus_card(id: String)
+signal wallet_flash_value(id: String, amount: float)
+signal wallet_animate_to(id: String, to_value: float)
 
 var desktop_backgrounds: Dictionary = {
 		"BlueWarp": true,

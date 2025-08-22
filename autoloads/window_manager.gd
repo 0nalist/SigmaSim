@@ -24,8 +24,9 @@ var app_registry := {
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
 	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
-	"NewYou": preload("res://components/apps/new_you/new_you.tscn"),
-	
+        "NewYou": preload("res://components/apps/new_you/new_you.tscn"),
+        "Wallet": preload("res://components/apps/wallet/wallet_ui.tscn"),
+
 }
 
 var start_apps := {
