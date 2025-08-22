@@ -8,19 +8,19 @@ class RNGStream:
 	var seed: int = 0
 
 	func init_seed(seed_value: int) -> void:
-		seed = seed_value
-		rng.seed = seed
-		rng.state = 0
+	seed = seed_value
+	rng.seed = seed
+	rng.state = 0
 
 	func get_rng() -> RandomNumberGenerator:
-		return rng
+	return rng
 
 	func shuffle(arr: Array) -> void:
-		for i in range(arr.size() - 1, 0, -1):
-			var j = rng.randi_range(0, i)
-			var temp = arr[i]
-			arr[i] = arr[j]
-			arr[j] = temp
+	for i in range(arr.size() - 1, 0, -1):
+		var j = rng.randi_range(0, i)
+		var temp = arr[i]
+		arr[i] = arr[j]
+		arr[j] = temp
 
 class GlobalRNG extends RNGStream:
 	pass
@@ -29,9 +29,6 @@ class GPURNG extends RNGStream:
 	pass
 
 class RizzBattleDataRNG extends RNGStream:
-	pass
-
-class NameGeneratorRNG extends RNGStream:
 	pass
 
 class FumbleManagerRNG extends RNGStream:
@@ -79,7 +76,6 @@ class NPCManagerRNG extends RNGStream:
 var global := GlobalRNG.new()
 var gpu := GPURNG.new()
 var rizz_battle_data := RizzBattleDataRNG.new()
-var name_generator := NameGeneratorRNG.new()
 var fumble_manager := FumbleManagerRNG.new()
 var fumble_profile_stack := FumbleProfileStackRNG.new()
 var worker_manager := WorkerManagerRNG.new()
@@ -104,7 +100,7 @@ func init_seed(seed_value: int) -> void:
 	global.init_seed(seed)
 	gpu.init_seed(_derive_seed("gpu"))
 	rizz_battle_data.init_seed(_derive_seed("rizz_battle_data"))
-	name_generator.init_seed(_derive_seed("name_generator"))
+	NameManager.set_global_seed(_derive_seed("name_manager"))
 	fumble_manager.init_seed(_derive_seed("fumble_manager"))
 	fumble_profile_stack.init_seed(_derive_seed("fumble_profile_stack"))
 	worker_manager.init_seed(_derive_seed("worker_manager"))
@@ -120,7 +116,7 @@ func init_seed(seed_value: int) -> void:
 	task_manager.init_seed(_derive_seed("task_manager"))
 	npc_manager.init_seed(_derive_seed("npc_manager"))
 	if OS.is_debug_build():
-		print("Global RNG Seed: ", seed)
+	print("Global RNG Seed: ", seed)
 
 func get_rng() -> RandomNumberGenerator:
 	return global.get_rng()
