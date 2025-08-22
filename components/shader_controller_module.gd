@@ -53,11 +53,13 @@ func _ready() -> void:
 	if flat_color_toggle_path != NodePath():
 		var toggle = get_node_or_null(flat_color_toggle_path)
 		if toggle and toggle is CheckButton:
-			var visible = PlayerManager.get_shader_param(shader_name, "flat_visible", false)
+			var visible = PlayerManager.get_shader_param(shader_name, "flat_visible", true)
 			toggle.button_pressed = visible
 			if flat_color_rect:
 				flat_color_rect.visible = visible
 			toggle.toggled.connect(_on_flat_toggled)
+			toggle.visible = Events.is_desktop_background_visible(shader_name)
+			Events.desktop_background_toggled.connect(_on_background_toggled)
 	if toggle_button_path != NodePath():
 		var button = get_node_or_null(toggle_button_path)
 		if button and button is CheckButton:
@@ -101,11 +103,17 @@ func _on_flat_toggled(toggled_on: bool) -> void:
 	PlayerManager.set_shader_param(shader_name, "flat_visible", toggled_on)
 
 func _on_toggled(toggled_on: bool) -> void:
-	Events.set_desktop_background_visible(shader_name, toggled_on)
+Events.set_desktop_background_visible(shader_name, toggled_on)
+
+func _on_background_toggled(name: String, visible: bool) -> void:
+	if name == shader_name and flat_color_toggle_path != NodePath():
+		var toggle = get_node_or_null(flat_color_toggle_path)
+		if toggle:
+			toggle.visible = visible
 
 func _get_param(param: StringName):
-	if shader_materials.is_empty():
-		return 0
+if shader_materials.is_empty():
+return 0
 	if param == StringName():
 		return 0
 	if param == "scale_x" or param == "scale_y":

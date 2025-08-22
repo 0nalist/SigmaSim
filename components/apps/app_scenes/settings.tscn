@@ -271,6 +271,7 @@ color = Color(0, 0, 0.2, 1)
 [node name="BlueWarpFlatToggle" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
 unique_name_in_owner = true
 layout_mode = 2
+button_pressed = true
 focus_mode = 0
 text = "Show"
 
