@@ -24,7 +24,7 @@ func _ready() -> void:
 	sort_option_button.add_item("Name", 2)
 	sort_option_button.item_selected.connect(_on_sort_option_selected)
 
-        refresh_upgrades()
+	refresh_upgrades()
 
 func _exit_tree() -> void:
 	if UpgradeManager.is_connected("upgrade_purchased", _on_upgrade_changed):
@@ -99,8 +99,8 @@ func _sort_by_price_desc(a, b):
 	return a_cash > b_cash
 
 func _on_sort_option_selected(index: int) -> void:
-        sort_mode = index
-        _queue_refresh()
+		sort_mode = index
+		_queue_refresh()
 
 func _on_purchase_requested(upgrade_id: String):
 	if UpgradeManager.purchase(upgrade_id):
@@ -116,30 +116,30 @@ func _on_purchase_requested(upgrade_id: String):
 		_display_message("Cannot purchase upgrade: %s" % upgrade_id)
 
 func _on_upgrade_changed(id: String, new_level: int):
-                _queue_refresh()
+				_queue_refresh()
 
 func _on_resources_changed(_value) -> void:
-                _queue_refresh()
+				_queue_refresh()
 
 func _on_stat_changed(stat: String, _value) -> void:
 	# Only refresh if the changed stat is part of any upgrade cost
-        var upgrades = UpgradeManager.get_upgrades_for_system(system_name, show_locked)
-        for upgrade in upgrades:
-                        var cost = UpgradeManager.get_cost_for_next_level(upgrade["id"])
-                        if stat in cost.keys():
-                                        _queue_refresh()
-                                        return
+		var upgrades = UpgradeManager.get_upgrades_for_system(system_name, show_locked)
+		for upgrade in upgrades:
+						var cost = UpgradeManager.get_cost_for_next_level(upgrade["id"])
+						if stat in cost.keys():
+										_queue_refresh()
+										return
 
 func _display_message(msg: String) -> void:
-                if info_label:
-                                info_label.text = msg
+				if info_label:
+								info_label.text = msg
 
 func _queue_refresh() -> void:
-        if _refresh_queued:
-                return
-        _refresh_queued = true
-        call_deferred("_deferred_refresh")
+		if _refresh_queued:
+				return
+		_refresh_queued = true
+		call_deferred("_deferred_refresh")
 
 func _deferred_refresh() -> void:
-        _refresh_queued = false
-        refresh_upgrades()
+		_refresh_queued = false
+		refresh_upgrades()

@@ -54,6 +54,10 @@ func setup_custom(data: Dictionary) -> void:
 		portrait_view.apply_config(npc.portrait_config)
 	breakup_reward = 0.0
 	apologize_cost = 10
+	
+	if npc_idx != -1 and npc.relationship_stage >= NPCManager.RelationshipStage.DATING:
+		NPCManager.notify_player_advanced_someone_to_dating(npc_idx)
+	
 	_update_all()
 
 
