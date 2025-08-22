@@ -15,15 +15,19 @@ extends Resource
 @export var occupation: String = "Funemployed"
 @export var relationship_status: String = "Single"
 
-enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, DIVORCED, EX }
-@export var relationship_stage: RelationshipStage = RelationshipStage.STRANGER
+@export var relationship_stage: int = NPCManager.RelationshipStage.STRANGER
 @export_range(0, 1000000000, 1) var relationship_progress: float = 0.0
+
+@export var exclusivity_core: int = NPCManager.ExclusivityCore.POLY
+
+@export var claimed_exclusive_boost: bool = false
+@export var claimed_serious_monog_boost: bool = false
 
 # Relationship with Player
 
 @export_range(-100, 100, 0.1) var affinity: float = 0.0 # 0–100
 
-@export_range(0, 100, 0.1) var affinity_equilibrium: float = 0.0
+@export_range(0, 100, 0.1) var affinity_equilibrium: float = 100.0
 
 @export_range(0, 100, 0.1) var rizz: int
 @export_range(0, 100, 1) var attractiveness: int
@@ -149,6 +153,9 @@ func to_dict() -> Dictionary:
 		"relationship_status": relationship_status,
 		"relationship_stage": relationship_stage,
 		"relationship_progress": relationship_progress,
+		"exclusivity_core": exclusivity_core,
+		"claimed_exclusive_boost": claimed_exclusive_boost,
+		"claimed_serious_monog_boost": claimed_serious_monog_boost,
 		"affinity": affinity,
 		"affinity_equilibrium": affinity_equilibrium,
 		"rizz": rizz,
@@ -204,13 +211,39 @@ static func from_dict(data: Dictionary) -> NPC:
 	else:
 		npc.gender_vector = Vector3(0,0,1)
 
-	npc.username = _safe_string(data.get("username"))
-	npc.occupation  = _safe_string(data.get("occupation"), "Funemployed")
-	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
-	npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
-	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
-	npc.affinity = _safe_float(data.get("affinity"), 0.0)
-	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), float(npc.relationship_stage) * 10.0)
+       npc.username = _safe_string(data.get("username"))
+       npc.occupation  = _safe_string(data.get("occupation"), "Funemployed")
+       npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
+       npc.relationship_stage = _safe_int(data.get("relationship_stage"), NPCManager.RelationshipStage.STRANGER)
+       npc.relationship_progress = _safe_float(data.get("relationship_progress"))
+       npc.exclusivity_core = _safe_int(data.get("exclusivity_core"), NPCManager.ExclusivityCore.POLY)
+       if not data.has("exclusivity_core"):
+	       var legacy_ex: Variant = data.get("exclusivity")
+	       if legacy_ex != null:
+		       var legacy_val: String = _safe_string(legacy_ex)
+		       match legacy_val:
+			       "EXCLUSIVE", "MONOGAMOUS":
+				       npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+			       "POLY", "OPEN":
+				       npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+			       "CHEATING":
+				       npc.exclusivity_core = NPCManager.ExclusivityCore.CHEATING
+			       "UNMENTIONED", "DATING_AROUND":
+				       npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+			       _:
+				       if npc.relationship_stage >= NPCManager.RelationshipStage.SERIOUS:
+					       npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+				       else:
+					       npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+	       else:
+		       if npc.relationship_stage >= NPCManager.RelationshipStage.SERIOUS:
+			       npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+		       else:
+			       npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+       npc.claimed_exclusive_boost = _safe_int(data.get("claimed_exclusive_boost"), 0) != 0
+       npc.claimed_serious_monog_boost = _safe_int(data.get("claimed_serious_monog_boost"), 0) != 0
+       npc.affinity = _safe_float(data.get("affinity"), 0.0)
+       npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 100.0)
 	npc.rizz = _safe_int(data.get("rizz"), 0)
 	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
 	npc.dates_paid = _safe_int(data.get("dates_paid"), 0)
@@ -295,3 +328,9 @@ func get_marriage_level() -> int:
 		tmp = tmp / 10
 		digits += 1
 	return digits - 5
+
+func is_in_dating() -> bool:
+       return relationship_stage == NPCManager.RelationshipStage.DATING
+
+func is_serious_or_higher() -> bool:
+       return relationship_stage >= NPCManager.RelationshipStage.SERIOUS
