@@ -605,8 +605,6 @@ func get_fumble_matches_with_times() -> Array:
 
 
 
-
-
 # Returns true if a battle is active with this NPC (FumbleManager sets this flag)
 func is_fumble_battle_active(npc_idx: int) -> bool:
 		return FumbleManager.has_active_battle(npc_idx)
