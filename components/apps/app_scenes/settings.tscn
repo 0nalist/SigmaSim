@@ -62,10 +62,9 @@ theme_override_constants/margin_bottom = 25
 [node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 
 [node name="General" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_title = "General"
@@ -157,9 +156,10 @@ text = "Siggy?"
 [node name="CreateAppsFolderButton" type="Button" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Create Apps Folder"
+text = "All, Old & Upcoming Apps"
 
 [node name="Backgrounds" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 metadata/_tab_title = "Desktop Background"
@@ -764,9 +764,10 @@ text = "Select Image"
 
 [node name="BackgroundFileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
-access = 2
-file_mode = 0
+title = "Open a File"
 ok_button_text = "Open"
+file_mode = 0
+access = 2
 
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="pressed" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/CreateAppsFolderButton" to="." method="_on_create_apps_folder_button_pressed"]

@@ -53,27 +53,27 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
 
-        reset_managers()
-        BillManager.is_loading = true
-        current_slot_id = slot_id
+	reset_managers()
+	BillManager.is_loading = true
+	current_slot_id = slot_id
 
-        # Respect an existing seed when creating a new profile. If no seed is
-        # provided (or it's 0), derive one from the user's password using the
-        # djb2 hash. Only fall back to the current Unix time when a password is
-        # unavailable. This avoids overwriting the deterministic seed generated
-        # during profile creation.
-        var seed_val: int = user_data.get("global_rng_seed", 0)
-        if seed_val == 0:
-                var password = user_data.get("password", "")
-                if password != "":
-                        seed_val = PlayerManager.djb2(password)
-                else:
-                        seed_val = int(Time.get_unix_time_from_system())
-                user_data["global_rng_seed"] = seed_val
+	# Respect an existing seed when creating a new profile. If no seed is
+	# provided (or it's 0), derive one from the user's password using the
+	# djb2 hash. Only fall back to the current Unix time when a password is
+	# unavailable. This avoids overwriting the deterministic seed generated
+	# during profile creation.
+	var seed_val: int = user_data.get("global_rng_seed", 0)
+	if seed_val == 0:
+		var password = user_data.get("password", "")
+		if password != "":
+			seed_val = PlayerManager.djb2(password)
+		else:
+			seed_val = int(Time.get_unix_time_from_system())
+		user_data["global_rng_seed"] = seed_val
 
-        RNGManager.init_seed(int(seed_val))
-        PlayerManager.user_data = user_data.duplicate(true)
-        PlayerManager.ensure_default_stats()
+	RNGManager.init_seed(int(seed_val))
+	PlayerManager.user_data = user_data.duplicate(true)
+	PlayerManager.ensure_default_stats()
 
 	var background = user_data.get("background", "")
 	if background != "":
@@ -146,12 +146,12 @@ func save_to_slot(slot_id: int) -> void:
 
 func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
-			push_error("❌ Invalid slot_id: %d" % slot_id)
-			return
+		push_error("❌ Invalid slot_id: %d" % slot_id)
+		return
 
 	var path = get_slot_path(slot_id)
 	if not FileAccess.file_exists(path):
-			return
+		return
 
 	reset_managers()
 	BillManager.is_loading = true
@@ -169,16 +169,16 @@ func load_from_slot(slot_id: int) -> void:
 	var data: Dictionary = result
 
 	if data.has("player"):
-			PlayerManager.load_from_data(data["player"])
-			if not PlayerManager.user_data.has("global_rng_seed"):
-					var password = PlayerManager.user_data.get("password", "")
-					var seed_val: int
-					if password != "":
-							seed_val = PlayerManager.djb2(password)
-					else:
-							seed_val = int(Time.get_unix_time_from_system())
-					PlayerManager.user_data["global_rng_seed"] = seed_val
-			RNGManager.init_seed(PlayerManager.user_data["global_rng_seed"])
+		PlayerManager.load_from_data(data["player"])
+		if not PlayerManager.user_data.has("global_rng_seed"):
+			var password = PlayerManager.user_data.get("password", "")
+			var seed_val: int
+			if password != "":
+				seed_val = PlayerManager.djb2(password)
+			else:
+				seed_val = int(Time.get_unix_time_from_system())
+			PlayerManager.user_data["global_rng_seed"] = seed_val
+		RNGManager.init_seed(PlayerManager.user_data["global_rng_seed"])
 
 	if data.has("stats"):
 			StatManager.load_from_data(data["stats"])
