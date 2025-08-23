@@ -456,6 +456,7 @@ func do_move(move_type: String) -> void:
 		await get_tree().create_timer(0.25).timeout
 		await player_chat.set_stat_effects(filtered_effects)
 		await player_chat.reveal_result_color("success")
+		TraumaManager.hit_pane(npc_portrait, 0.6)
 		battle_stats = logic.get_stats().duplicate()
 		await update_progress_bars()
 		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
@@ -639,7 +640,15 @@ func _reveal_chat_effects_and_results(player_chat: ChatBox, player_result: Strin
 		if idxn >= 0 and idxn < chatlog.size():
 				chatlog[idxn].result = npc_result
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
-
+	if player_chat:
+		await player_chat.set_stat_effects(player_effects)
+		if player_result == "success":
+			TraumaManager.hit_pane(npc_portrait, 0.6)
+		elif player_result == "fail":
+			TraumaManager.hit_pane(profile_pic, 0.6)
+		var idx = player_chat.chatlog_index
+		if idx >= 0 and idx < chatlog.size():
+			chatlog[idx].effects = player_effects.duplicate()
 
 
 

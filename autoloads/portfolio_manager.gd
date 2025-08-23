@@ -49,7 +49,7 @@ const CREDIT_REQUIREMENTS := {
 		"gift": 500,
 		"date": 600,
 		"proposal": 800,
-		"EarlyBird": 650,
+		"EarlyBird": 550,
 		"upgrades": 750,
 		
 }

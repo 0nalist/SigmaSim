@@ -23,8 +23,6 @@ func _ready() -> void:
 func _update_cached_viewport_size() -> void:
 		cached_viewport_size = _root_control.size
 
-	
-
 func start_spawning() -> void:
 	spawn_timer.start()
 
@@ -32,7 +30,6 @@ func stop_spawning() -> void:
 	spawn_timer.stop()
 
 func reset() -> void:
-
 	stop_spawning()
 	for child in get_children():
 			if child is EarlyBirdPipePair:

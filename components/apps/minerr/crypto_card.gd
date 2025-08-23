@@ -57,13 +57,13 @@ func setup(crypto_data: Cryptocurrency) -> void:
 	remove_gpu_button.pressed.connect(_emit_remove_gpu)
 	overclock_button.pressed.connect(_emit_overclock_toggled)
 	upgrade_button.pressed.connect(_emit_open_upgrades)
-        gui_input.connect(_on_card_gui_input)
-        sell_button.pressed.connect(_on_sell_pressed)
+	gui_input.connect(_on_card_gui_input)
+	sell_button.pressed.connect(_on_sell_pressed)
 
-        # Open detailed popup when clicking symbol, name, or price labels
-        symbol_label.gui_input.connect(_on_popup_label_gui_input)
-        display_name_label.gui_input.connect(_on_popup_label_gui_input)
-        price_label.gui_input.connect(_on_popup_label_gui_input)
+	# Open detailed popup when clicking symbol, name, or price labels
+	symbol_label.gui_input.connect(_on_popup_label_gui_input)
+	display_name_label.gui_input.connect(_on_popup_label_gui_input)
+	price_label.gui_input.connect(_on_popup_label_gui_input)
 
 	TimeManager.minute_passed.connect(_on_time_tick)
 	GPUManager.gpus_changed.connect(update_display)
@@ -96,18 +96,19 @@ func _emit_open_upgrades() -> void:
 	emit_signal("open_upgrades", crypto.symbol)
 
 func _on_card_gui_input(event: InputEvent) -> void:
-        if event is InputEventMouseButton and event.pressed:
-                if crypto == null:
-                        return
-                emit_signal("selected", crypto.symbol)
+		if event is InputEventMouseButton and event.pressed:
+				if crypto == null:
+						return
+				emit_signal("selected", crypto.symbol)
 
 func _on_popup_label_gui_input(event: InputEvent) -> void:
-       if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-               if crypto == null:
-                       return
-               var popup_scene = preload("res://components/popups/crypto_popup_ui.tscn")
-               var popup = popup_scene.instantiate() as Pane
-               WindowManager.launch_pane_instance(popup, crypto)
+	print("crypto popup launch requested")
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			if crypto == null:
+					return
+			var popup_scene = preload("res://components/popups/crypto_popup_ui.tscn")
+			var popup = popup_scene.instantiate() as Pane
+			WindowManager.launch_pane_instance(popup, crypto)
 
 func _process(delta: float) -> void:
 	if crypto == null:
