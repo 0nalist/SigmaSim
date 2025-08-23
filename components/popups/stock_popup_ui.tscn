@@ -17,7 +17,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_6hvw1")
 script = ExtResource("1_ba7qw")
-default_window_size = Vector2(300, 260)
+default_window_size = Vector2(420, 260)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

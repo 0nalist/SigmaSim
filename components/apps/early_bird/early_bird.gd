@@ -178,8 +178,13 @@ func _on_autopilot_button_pressed() -> void:
 		if cost > 0.0:
 			autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
 		StatManager.set_base_stat("autopilot_cost", autopilot_cost)
-	else:
-		autopilot.enabled = false
+		
+		_update_autopilot_button_text()
+		autopilot_button.disabled = true
+		await get_tree().create_timer(2.0).timeout
+		autopilot_button.disabled = false
+		return
+	autopilot.enabled = false
 	_update_autopilot_button_text()
 
 func _get_autopilot_cost() -> float:
