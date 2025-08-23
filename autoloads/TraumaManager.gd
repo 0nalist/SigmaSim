@@ -9,12 +9,16 @@ signal pane_trauma_changed(target: Node, value: float)
 @export var global_frequency_hz: float = 18.0
 @export var global_magnitude_px: float = 12.0
 @export var global_rotation_deg: float = 1.2
+@export var global_displacement_multiplier: float = 1.0
+@export var global_rotation_multiplier: float = 1.0
 
 # ------------------ Pane shake defaults --------------------------
 @export var pane_decay_per_second_default: float = 3.0
 @export var pane_frequency_hz_default: float = 22.0
 @export var pane_magnitude_px_default: float = 8.0
 @export var pane_rotation_deg_default: float = 1.8
+@export var pane_displacement_multiplier_default: float = 1.0
+@export var pane_rotation_multiplier_default: float = 1.0
 
 # Noise seeds (stable)
 @export var seed_x: int = 1337
@@ -44,6 +48,8 @@ class PaneShakeState:
 	var frequency_hz: float = 22.0
 	var magnitude_px: float = 8.0
 	var rotation_deg: float = 1.8
+	var displacement_mult: float = 1.0
+	var rotation_mult: float = 1.0
 	var seed_offset: float = 0.0
 
 
@@ -103,6 +109,8 @@ func register_pane(target: CanvasItem, allow_translate: bool = true) -> void:
 	state.frequency_hz = pane_frequency_hz_default
 	state.magnitude_px = pane_magnitude_px_default
 	state.rotation_deg = pane_rotation_deg_default
+	state.displacement_mult = pane_displacement_multiplier_default
+	state.rotation_mult = pane_rotation_multiplier_default
 	state.seed_offset = float((id % 997) + 1) * 13.37
 
 	_try_set_center_pivot_if_control(target)
@@ -145,7 +153,9 @@ func set_pane_params(
 	decay_per_second: float,
 	frequency_hz: float,
 	magnitude_px: float,
-	rotation_deg: float
+	rotation_deg: float,
+	displacement_mult: float = 1.0,
+	rotation_mult: float = 1.0
 ) -> void:
 	if target == null:
 		return
@@ -157,7 +167,8 @@ func set_pane_params(
 	s.frequency_hz = maxf(0.0, frequency_hz)
 	s.magnitude_px = maxf(0.0, magnitude_px)
 	s.rotation_deg = maxf(0.0, rotation_deg)
-
+	s.displacement_mult = maxf(0.0, displacement_mult)
+	s.rotation_mult = maxf(0.0, rotation_mult)
 
 func clear_pane(target: CanvasItem) -> void:
 	if target == null:
@@ -196,8 +207,8 @@ func _update_global(delta: float) -> void:
 	var ny: float = _noise_y.get_noise_2d(0.0, t)
 	var nr: float = _noise_r.get_noise_2d(t, t * 0.5)
 
-	var offset: Vector2 = Vector2(nx, ny) * (global_magnitude_px * amp)
-	var rot_rad: float = deg_to_rad(global_rotation_deg * amp) * nr
+	var offset: Vector2 = Vector2(nx, ny) * (global_magnitude_px * amp * global_displacement_multiplier)
+	var rot_rad: float = deg_to_rad(global_rotation_deg * amp * global_rotation_multiplier) * nr
 
 	var xform: Transform2D = Transform2D(rot_rad, offset)
 	get_viewport().canvas_transform = xform
@@ -236,8 +247,8 @@ func _update_panes(delta: float) -> void:
 		var ny: float = _noise_y.get_noise_2d(0.0, t)
 		var nr: float = _noise_r.get_noise_2d(t, t * 0.5)
 
-		var trans_offset: Vector2 = Vector2(nx, ny) * (state.magnitude_px * amp)
-		var rot_deg: float = state.rotation_deg * amp * nr
+		var trans_offset: Vector2 = Vector2(nx, ny) * (state.magnitude_px * amp * state.displacement_mult)
+		var rot_deg: float = state.rotation_deg * amp * state.rotation_mult * nr
 
 		_apply_shake(state, trans_offset, rot_deg)
 
