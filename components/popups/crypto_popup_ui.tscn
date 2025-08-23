@@ -149,9 +149,11 @@ layout_mode = 2
 [node name="BuyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Buy"
 
 [node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Sell"
