@@ -44,86 +44,102 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="InfoGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="InfoVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="InfoGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox"]
 layout_mode = 2
 columns = 2
 
-[node name="SymbolLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="SymbolLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 text = "Symbol"
 
-[node name="LabelSymbol" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="LabelSymbol" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="PriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="PriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 text = "Price"
 
-[node name="LabelPrice" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="LabelPrice" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="IntrinsicLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="IntrinsicLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 text = "Intrinsic"
 
-[node name="LabelIntrinsic" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="LabelIntrinsic" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="TrailingLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="TrailingLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 text = "Trailing Avg"
 
-[node name="LabelTrailing" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="LabelTrailing" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="SentimentLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="SentimentLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 text = "Sentiment"
 
-[node name="LabelSentiment" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="LabelSentiment" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="VolatilityLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="VolatilityLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 text = "Volatility"
 
-[node name="LabelVolatility" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="LabelVolatility" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="MomentumLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="MomentumLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 text = "Momentum"
 
-[node name="LabelMomentum" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="LabelMomentum" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="OwnershipLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="OwnershipLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 text = "Owned"
 
-[node name="LabelOwnership" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoGrid"]
+[node name="LabelOwnership" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
+
+[node name="ButtonBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox"]
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Buy"
+
+[node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Sell"
