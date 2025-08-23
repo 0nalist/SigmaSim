@@ -5,6 +5,7 @@ class_name BrokeRage
 @onready var cash_label: Label = %CashLabel
 @onready var balance_label: Label = %BalanceLabel
 @onready var invested_label: Label = %InvestedLabel
+@onready var stocks_label: Label = %StocksLabel
 @onready var debt_label: Label = %DebtLabel
 
 @onready var cash_chart: ChartComponent = %CashChart
@@ -89,9 +90,10 @@ func _on_investments_updated(amount: float):
 	var delta = amount - last_invested
 	last_invested = amount
 
-	invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
-	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
-	charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
+        invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
+        balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
+        charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
+        stocks_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
 	#TODO: ^Fix: Invalid assignment of property or key 'text' with value of type 'String' on a base object of type 'previously freed'.
 	
 	if delta > 0.01:
