@@ -155,18 +155,19 @@ func _update_stock_prices() -> void:
                         emit_signal("stock_price_updated", stock.symbol, stock)
 
 func _update_crypto_prices() -> void:
-	var now: int = TimeManager.get_now_minutes()
-	for crypto: Cryptocurrency in crypto_market.values():
-		var event: MarketEvent = crypto_events.get(crypto.symbol)
-		var old_price: float = crypto.price
-		if event == null or not event.is_active():
-			crypto.update_from_market()
-		if event != null:
-			event.process(now, crypto)
-			if event.is_finished():
-				crypto_events.erase(crypto.symbol)
-		if abs(crypto.price - old_price) > 0.001:
-			emit_signal("crypto_price_updated", crypto.symbol, crypto)
+        var now: int = TimeManager.get_now_minutes()
+        for crypto: Cryptocurrency in crypto_market.values():
+                var event: MarketEvent = crypto_events.get(crypto.symbol)
+                var old_price: float = crypto.price
+                if event == null or not event.is_active():
+                        crypto.update_from_market()
+                if event != null:
+                        event.process(now, crypto)
+                        if event.is_finished():
+                                crypto_events.erase(crypto.symbol)
+                HistoryManager.add_sample(crypto.symbol, now, crypto.price)
+                if abs(crypto.price - old_price) > 0.001:
+                        emit_signal("crypto_price_updated", crypto.symbol, crypto)
 
 ## --- Initialization --- ##
 
