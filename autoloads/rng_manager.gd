@@ -7,10 +7,14 @@ class RNGStream:
 	var rng := RandomNumberGenerator.new()
 	var seed: int = 0
 
-	func init_seed(seed_value: int) -> void:
-		seed = seed_value
-		rng.seed = seed
-		rng.state = 0
+        func init_seed(seed_value: int) -> void:
+                seed = seed_value
+                rng.seed = seed
+                # Avoid forcing the RNG state to 0, which would cause the first
+                # generated number to always be zero regardless of the seed. By
+                # relying solely on the seed property we get a deterministic
+                # yet varied sequence, allowing events like the HAWK pump to
+                # randomly target HAWK1 or HAWK2 as intended.
 
 	func get_rng() -> RandomNumberGenerator:
 		return rng
