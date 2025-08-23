@@ -4,6 +4,8 @@ class_name Stock
 @export var symbol: String
 @export var price: float = 1.0
 @export var shares_outstanding: int = 1000
+@export var display_name: String = ""
+
 
 # --- Price Modeling ---
 @export var intrinsic_value: float = 1.0
