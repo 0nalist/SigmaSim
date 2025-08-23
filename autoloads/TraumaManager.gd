@@ -9,7 +9,7 @@ signal pane_trauma_changed(target: Node, value: float)
 @export var global_frequency_hz: float = 18.0
 @export var global_magnitude_px: float = 12.0
 @export var global_rotation_deg: float = 1.2
-@export var global_displacement_multiplier: float = 1.0
+@export var global_displacement_multiplier: float = 3.0
 @export var global_rotation_multiplier: float = 1.0
 
 # ------------------ Pane shake defaults --------------------------

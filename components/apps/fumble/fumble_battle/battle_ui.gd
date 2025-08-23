@@ -641,6 +641,10 @@ func _reveal_chat_effects_and_results(player_chat: ChatBox, player_result: Strin
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
 
 
+
+
+
+
 func animate_success_or_fail(success: bool):
 	var player_result = "success"
 	var npc_result = "success"
