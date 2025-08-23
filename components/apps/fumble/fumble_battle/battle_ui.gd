@@ -78,11 +78,11 @@ const REACTION_EMOJI = {
 
 
 func shake_player_portrait(amount: float) -> void:
-        TraumaManager.hit_item(profile_pic, amount)
+		TraumaManager.hit_item(profile_pic, amount)
 
 
 func shake_npc_portrait(amount: float) -> void:
-        TraumaManager.hit_item(npc_portrait, amount)
+		TraumaManager.hit_item(npc_portrait, amount)
 
 
 func get_reaction_tooltip(reaction: String) -> String:
@@ -102,7 +102,7 @@ func get_reaction_tooltip(reaction: String) -> String:
 
 
 func _ready():
-        action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
+	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
 	
 	
 	catch_button.pressed.connect(_on_catch_button_pressed)
@@ -112,18 +112,18 @@ func _ready():
 	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
 	close_fumble_profile_button.pressed.connect(_on_close_fumble_profile_button_pressed)
 
-        end_battle_screen_container.hide()
-        blocked_container.hide()
+	end_battle_screen_container.hide()
+	blocked_container.hide()
 
 	StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
 	StatManager.connect_to_stat("confidence", self, "_on_confidence_changed")
-        _update_player_attractiveness_label()
+	_update_player_attractiveness_label()
 
-        no_confidence_container.hide()
+	no_confidence_container.hide()
 
-        # Register portraits with TraumaManager so they can shake when hit.
-        TraumaManager.register_item(profile_pic)
-        TraumaManager.register_item(npc_portrait)
+	# Register portraits with TraumaManager so they can shake when hit.
+	TraumaManager.register_item(profile_pic)
+	TraumaManager.register_item(npc_portrait)
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, move_usage_counts_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
