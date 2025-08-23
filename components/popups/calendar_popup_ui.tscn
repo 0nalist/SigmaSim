@@ -1,11 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://674hnm8vwbpn"]
+[gd_scene load_steps=4 format=3 uid="uid://674hnm8vwbpn"]
 
 [ext_resource type="Script" uid="uid://cj85lih8q20wk" path="res://components/popups/calendar_popup_ui.gd" id="1_4v806"]
-[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="2_1hpkc"]
-[ext_resource type="Texture2D" uid="uid://cgxywei8rjptj" path="res://assets/logos/monocle_man.png" id="3_35l7a"]
+[ext_resource type="Texture2D" uid="uid://cgxywei8rjptj" path="res://assets/logos/monocle_man.png" id="2_35l7a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glnmr"]
-bg_color = Color(0.369509, 0.258885, 0.0304572, 1)
+bg_color = Color(1, 1, 1, 1)
+border_color = Color(0.8, 0.8, 0.8, 1)
+border_width_top = 1
+border_width_bottom = 1
+border_width_left = 1
+border_width_right = 1
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+corner_radius_bottom_right = 8
+shadow_color = Color(0, 0, 0, 0.1)
+shadow_size = 4
 
 [node name="CalendarPopupUI" type="PanelContainer"]
 anchors_preset = 15
@@ -40,18 +50,18 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 24
 text = "Month YEAR"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("2_1hpkc")
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 text = "Mon"
 horizontal_alignment = 1
 
@@ -59,6 +69,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 text = "Tue"
 horizontal_alignment = 1
 
@@ -66,6 +77,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 text = "Wed"
 horizontal_alignment = 1
 
@@ -73,6 +85,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 text = "Thu"
 horizontal_alignment = 1
 
@@ -80,6 +93,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 text = "Fri"
 horizontal_alignment = 1
 
@@ -87,6 +101,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 text = "Sat"
 horizontal_alignment = 1
 
@@ -94,6 +109,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 text = "Sun"
 horizontal_alignment = 1
 
@@ -101,6 +117,8 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/hseparation = 4
+theme_override_constants/vseparation = 4
 columns = 7
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -111,7 +129,7 @@ size_flags_horizontal = 8
 unique_name_in_owner = true
 layout_mode = 2
 text = "LifeStylist "
-icon = ExtResource("3_35l7a")
+icon = ExtResource("2_35l7a")
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(50, 0)
@@ -124,7 +142,8 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 focus_mode = 0
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
 text = "Autopay Bills"
 alignment = 2
 
