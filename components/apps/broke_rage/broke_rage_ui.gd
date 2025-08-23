@@ -21,6 +21,22 @@ class_name BrokeRage
 @onready var charts_cash_label: Label = %ChartsCashLabel
 @onready var charts_portfolio_label: Label = %ChartsPortfolioLabel
 
+@onready var charts_content: Control = _ensure_charts_content()
+
+func _ensure_charts_content() -> Control:
+	var existing: Node = charts_view.get_node_or_null("ChartsContent")
+	if existing != null and existing is Control:
+		return existing as Control
+
+	var content: VBoxContainer = VBoxContainer.new()
+	content.name = "ChartsContent"
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	charts_view.add_child(content)
+	return content
+
+
+
 var last_invested: float = 0.0
 var _active_tab: StringName = &"Summary"
 
@@ -75,7 +91,7 @@ func _on_investments_updated(amount: float):
 
 	invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
 	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
-	#charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
+	charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
 	#TODO: ^Fix: Invalid assignment of property or key 'text' with value of type 'String' on a base object of type 'previously freed'.
 	
 	if delta > 0.01:
@@ -104,23 +120,34 @@ func _on_debt_updated() -> void:
 func _on_ower_view_button_pressed() -> void:
 		WindowManager.launch_app_by_name("OwerView")
 
-func _activate_tab(tab_name: StringName) -> void:
 
-		if tab_name == &"Summary":
-				summary_tab_button.set_pressed(true)
-				charts_tab_button.set_pressed(false)
-				charts_summary_tab_button.set_pressed(true)
-				charts_charts_tab_button.set_pressed(false)
-				summary_view.visible = true
-				charts_view.visible = false
-		else:
-				summary_tab_button.set_pressed(false)
-				charts_tab_button.set_pressed(true)
-				charts_summary_tab_button.set_pressed(false)
-				charts_charts_tab_button.set_pressed(true)
-				summary_view.visible = false
-				charts_view.visible = true
-		_active_tab = tab_name
+func _activate_tab(tab_name: StringName) -> void:
+	if tab_name == &"Summary":
+		if is_instance_valid(summary_tab_button):
+			summary_tab_button.set_pressed(true)
+		if is_instance_valid(charts_tab_button):
+			charts_tab_button.set_pressed(false)
+		if is_instance_valid(charts_summary_tab_button):
+			charts_summary_tab_button.set_pressed(true)
+		if is_instance_valid(charts_charts_tab_button):
+			charts_charts_tab_button.set_pressed(false)
+
+		summary_view.visible = true
+		charts_view.visible = false
+	else:
+		if is_instance_valid(summary_tab_button):
+			summary_tab_button.set_pressed(false)
+		if is_instance_valid(charts_tab_button):
+			charts_tab_button.set_pressed(true)
+		if is_instance_valid(charts_summary_tab_button):
+			charts_summary_tab_button.set_pressed(false)
+		if is_instance_valid(charts_charts_tab_button):
+			charts_charts_tab_button.set_pressed(true)
+
+		summary_view.visible = false
+		charts_view.visible = true
+
+	_active_tab = tab_name
 
 
 func _on_summary_tab_pressed() -> void:
@@ -129,27 +156,31 @@ func _on_summary_tab_pressed() -> void:
 func _on_charts_tab_pressed() -> void:
 		_activate_tab(&"Charts")
 
+
 func _build_charts_view() -> void:
-		for child in charts_view.get_children():
-				child.queue_free()
+	# Only clear dynamic chart content, not the tab buttons or labels.
+	for child: Node in charts_content.get_children():
+		child.queue_free()
 
-		var container: Control = null
-		for symbol: String in MarketManager.stock_market.keys():
-				var stock: Stock = MarketManager.get_stock(symbol)
-				var chart := ChartComponent.new()
-				chart.custom_minimum_size = Vector2(350, 150)
-				chart.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				chart.size_flags_vertical = Control.SIZE_EXPAND_FILL
-				chart.add_series(symbol, stock.display_name)
-				if container == null:
-						container = chart
-				else:
-						var split := VSplitContainer.new()
-						split.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-						split.size_flags_vertical = Control.SIZE_EXPAND_FILL
-						split.add_child(container)
-						split.add_child(chart)
-						container = split
+	var container: Control = null
 
-		if container != null:
-				charts_view.add_child(container)
+	for symbol: String in MarketManager.stock_market.keys():
+		var stock: Stock = MarketManager.get_stock(symbol)
+		var chart: ChartComponent = ChartComponent.new()
+		chart.custom_minimum_size = Vector2(350, 150)
+		chart.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		chart.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		chart.add_series(symbol, stock.display_name)
+
+		if container == null:
+			container = chart
+		else:
+			var split: VSplitContainer = VSplitContainer.new()
+			split.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			split.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			split.add_child(container)
+			split.add_child(chart)
+			container = split
+
+	if container != null:
+		charts_content.add_child(container)
