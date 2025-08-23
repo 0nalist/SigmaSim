@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://kr7m06k7j1jl"]
+[gd_scene load_steps=4 format=3 uid="uid://kr7m06k7j1jl"]
 
 [ext_resource type="Script" uid="uid://cbhnd41c3mysn" path="res://components/popups/stock_popup_ui.gd" id="1_ba7qw"]
+[ext_resource type="Script" uid="uid://b8wfu5cxh5oyw" path="res://components/ui/chart_component.gd" id="2_dgxvn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6hvw1"]
 bg_color = Color(0.180005, 0.180005, 0.180005, 1)
@@ -33,50 +34,67 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
+[node name="PriceChart" type="Control" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 120)
+script = ExtResource("2_dgxvn")
+lock_y_min = true
+lock_x_min = true
+palette = PackedColorArray(Color(0, 1, 0))
+
 [node name="LabelSymbol" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0)
 
 [node name="LabelPrice" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0)
 
 [node name="LabelIntrinsic" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0)
 
 [node name="LabelTrailing" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0)
 
 [node name="LabelSentiment" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0)
 
 [node name="LabelVolatility" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0)
 
 [node name="LabelMomentum" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0)
 
 [node name="LabelOwnership" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0)
