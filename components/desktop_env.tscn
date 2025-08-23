@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=55 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c88l4sfbsyhbr" path="res://assets/wide_bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_1f48f6f3-2b0b-4da7-a461-17d252f99557_upscayl_4x_realesrgan-x4plus.png" id="4_adib1"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="4_fjtwy"]
 [ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://components/ticker.gd" id="5_g75lf"]
+[ext_resource type="Texture2D" uid="uid://05nd44ors1af" path="res://assets/bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_60333a89-cac8-4c0a-80f0-1d9e592735cc (1).png" id="5_oaahw"]
 [ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="5_yi8nh"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
 [ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="7_c7kal"]
@@ -233,7 +234,7 @@ create_or_update_apps_folder = false
 script = ExtResource("3_5aheu")
 target_control = NodePath("..")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="bill2" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -241,11 +242,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_adib1")
-expand_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_oaahw")
+expand_mode = 3
 stretch_mode = 5
 
 [node name="ColorRect" type="ColorRect" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -264,6 +275,12 @@ offset_bottom = 7.5
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "you're not supposed to see this"
+
+[node name="Button" type="Button" parent="ColorRect/Label"]
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+text = "& you wouldn't believe me if i told you what's under it"
 
 [node name="BlackRect" type="ColorRect" parent="."]
 visible = false

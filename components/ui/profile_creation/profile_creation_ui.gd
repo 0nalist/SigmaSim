@@ -42,13 +42,13 @@ func _show_step(index: int) -> void:
 	next_button.disabled = true
 
 func _on_step_valid(valid: bool) -> void:
-        print("valid!!")
-        next_button.disabled = not valid
+		print("valid!!")
+		next_button.disabled = not valid
 
-func _unhandled_input(event: InputEvent) -> void:
-        if event.is_action_pressed("ui_accept") and not next_button.disabled:
-                next_button.emit_signal("pressed")
-                get_viewport().set_input_as_handled()
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_accept") and not next_button.disabled:
+			next_button.emit_signal("pressed")
+			get_viewport().set_input_as_handled()
 
 func _finish_profile_creation():
 	var password = user_data.get("password", "")
