@@ -37,7 +37,7 @@ const DEFAULT_BACKGROUND_SHADERS := {
 "line_color": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0},
 "line_freq": 5.085,
 "height": 0.6,
-"speed": 2.555,
+"speed": 0.155,
 "scale_x": 3.25,
 "scale_y": 15.43,
 },
