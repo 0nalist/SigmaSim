@@ -120,9 +120,9 @@ func refresh_prices() -> void:
 func _update_stock_prices() -> void:
 	var rng := RNGManager.market_manager.get_rng()
 	var now: int = TimeManager.get_now_minutes()
-	for stock: Stock in stock_market.values():
-		var event: MarketEvent = stock_events.get(stock.symbol)
-		var old_price: float = stock.price
+        for stock: Stock in stock_market.values():
+                var event: MarketEvent = stock_events.get(stock.symbol)
+                var old_price: float = stock.price
 		if event == null or not event.is_active():
 			stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
 
@@ -143,15 +143,16 @@ func _update_stock_prices() -> void:
 			elif deviation < 0.5 and rng.randf() < 0.2:
 				delta += stock.price * rng.randf_range(0.1, 0.3)
 
-			stock.price = max(snapped(stock.price + delta, 0.01), 0.01)
+                        stock.price = max(snapped(stock.price + delta, 0.01), 0.01)
 
-		if event != null:
-			event.process(now, stock)
-			if event.is_finished():
-				stock_events.erase(stock.symbol)
+                if event != null:
+                        event.process(now, stock)
+                        if event.is_finished():
+                                stock_events.erase(stock.symbol)
+                HistoryManager.add_sample(stock.symbol, now, stock.price)
 
-		if abs(stock.price - old_price) > 0.001:
-			emit_signal("stock_price_updated", stock.symbol, stock)
+                if abs(stock.price - old_price) > 0.001:
+                        emit_signal("stock_price_updated", stock.symbol, stock)
 
 func _update_crypto_prices() -> void:
 	var now: int = TimeManager.get_now_minutes()
