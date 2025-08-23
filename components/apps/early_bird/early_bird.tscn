@@ -162,7 +162,7 @@ texture = ExtResource("9_eegpt")
 unique_name_in_owner = true
 script = ExtResource("3_kqjgp")
 pipe_pair_scene = ExtResource("6_4pdpe")
-spawn_x_offset = 100.0
+spawn_x_offset = 1920.0
 
 [node name="Foreground" type="Parallax2D" parent="."]
 unique_name_in_owner = true
