@@ -95,41 +95,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox"]
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/VBoxContainer"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_gnfo0")
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="TabBar" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/VBoxContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="SummaryTabButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Summary"
-
-[node name="ChartsTabButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Charts"
-
-[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
-custom_minimum_size = Vector2(0, 6)
-layout_mode = 2
-
 [node name="ContentArea" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -213,6 +178,41 @@ mouse_filter = 1
 theme = ExtResource("5_n67s2")
 text = "Passive Income: $0"
 horizontal_alignment = 2
+
+[node name="TabsVBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_gnfo0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TabBar" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SummaryTabButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer/MarginContainer/TabBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Summary"
+
+[node name="ChartsTabButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer/MarginContainer/TabBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Charts"
+
+[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer/MarginContainer/TabBar"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
 
 [node name="OwerViewButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary"]
 unique_name_in_owner = true
