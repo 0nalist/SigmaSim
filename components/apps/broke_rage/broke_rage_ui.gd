@@ -16,6 +16,11 @@ class_name BrokeRage
 @onready var summary_view: VBoxContainer = %SummaryView
 @onready var charts_view: VBoxContainer = %ChartsView
 
+@onready var charts_summary_tab_button: Button = %SummaryTabButtonCharts
+@onready var charts_charts_tab_button: Button = %ChartsTabButtonCharts
+@onready var charts_cash_label: Label = %ChartsCashLabel
+@onready var charts_portfolio_label: Label = %ChartsPortfolioLabel
+
 var last_invested: float = 0.0
 var _active_tab: StringName = &"Summary"
 
@@ -47,13 +52,14 @@ func _ready() -> void:
         _activate_tab(&"Summary")
 
 func _on_cash_updated(_cash: float) -> void:
-	var cash = PortfolioManager.cash
-	var balance = PortfolioManager.get_balance()
+        var cash = PortfolioManager.cash
+        var balance = PortfolioManager.get_balance()
 
-	cash_label.text = "Cash: $" + NumberFormatter.format_number(cash)
-	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(balance))
+        cash_label.text = "Cash: $" + NumberFormatter.format_number(cash)
+        balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(balance))
+        charts_cash_label.text = "Cash: $" + NumberFormatter.format_number(cash)
 
-	HistoryManager.add_sample("cash", Time.get_ticks_msec() / 1000.0, cash)
+        HistoryManager.add_sample("cash", Time.get_ticks_msec() / 1000.0, cash)
 
 	await get_tree().process_frame
 	#emit_signal("title_updated", "BrokeRage - $%.2f" % cash) # Not currently working
@@ -67,8 +73,9 @@ func _on_investments_updated(amount: float):
 	var delta = amount - last_invested
 	last_invested = amount
 
-	invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
-	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
+        invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
+        balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
+        charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
 		
 	
 	if delta > 0.01:
@@ -101,11 +108,15 @@ func _activate_tab(tab_name: StringName) -> void:
         if tab_name == &"Summary":
                 summary_tab_button.set_pressed(true)
                 charts_tab_button.set_pressed(false)
+                charts_summary_tab_button.set_pressed(true)
+                charts_charts_tab_button.set_pressed(false)
                 summary_view.visible = true
                 charts_view.visible = false
         else:
                 summary_tab_button.set_pressed(false)
                 charts_tab_button.set_pressed(true)
+                charts_summary_tab_button.set_pressed(false)
+                charts_charts_tab_button.set_pressed(true)
                 summary_view.visible = false
                 charts_view.visible = true
         _active_tab = tab_name
