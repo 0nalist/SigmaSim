@@ -10,36 +10,24 @@ class_name StockPopupUI
 @onready var label_momentum = %LabelMomentum
 @onready var label_owned = %LabelOwnership
 
-@onready var price_chart: ChartComponent = %PriceChart
-
 var stock: Stock
-var _series_id: String = ""
 
 func setup_custom(args) -> void:
 	if args is Stock:
 		setup(args)
 
 func setup(_stock: Stock) -> void:
-        stock = _stock
-        _series_id = "stock_price_%s" % stock.symbol
-        price_chart.clear_series()
-        price_chart.lock_y_min = true
-        price_chart.lock_x_min = true
-        price_chart.add_series(_series_id, stock.symbol, Color.LIME_GREEN)
-        var now: int = TimeManager.get_now_minutes()
-        HistoryManager.add_sample(_series_id, now, stock.price)
-        _update_ui()
-        window_title = str(stock.symbol) + " " + str(stock.price)
-        # Connect signal
-        MarketManager.stock_price_updated.connect(_on_stock_price_updated)
+	stock = _stock
+	_update_ui()
+	window_title = str(stock.symbol) + " " + str(stock.price)
+	# Connect signal
+	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
 func _on_stock_price_updated(symbol: String, updated_stock: Stock) -> void:
-        if stock == null or updated_stock.symbol != stock.symbol:
-                return
-        stock = updated_stock
-        var now: int = TimeManager.get_now_minutes()
-        HistoryManager.add_sample(_series_id, now, stock.price)
-        _update_ui()
+	if stock == null or updated_stock.symbol != stock.symbol:
+		return
+	stock = updated_stock
+	_update_ui()
 
 func _update_ui() -> void:
 	window_title = str(stock.symbol) + " " + str(stock.price)
