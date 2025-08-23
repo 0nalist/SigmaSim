@@ -4,7 +4,7 @@ class_name EarlyBirdPipeManager
 
 @export var pipe_pair_scene: PackedScene
 @export var spawn_interval: float = 2
-@export var spawn_x_offset: float = 1000.0
+@export var spawn_x_offset: float = 1920.0
 
 var spawn_timer: Timer
 var cached_viewport_size: Vector2
