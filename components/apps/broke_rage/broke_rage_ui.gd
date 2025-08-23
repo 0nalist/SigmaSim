@@ -75,8 +75,8 @@ func _on_investments_updated(amount: float):
 
 	invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
 	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
-	charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
-	
+	#charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
+	#TODO: ^Fix: Invalid assignment of property or key 'text' with value of type 'String' on a base object of type 'previously freed'.
 	
 	if delta > 0.01:
 		flash_invested_label(Color.GREEN)
