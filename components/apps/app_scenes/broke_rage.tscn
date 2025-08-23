@@ -254,4 +254,34 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="ChartsTopBar" type="HBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SummaryTabButtonCharts" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/ChartsTopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Summary"
+
+[node name="ChartsTabButtonCharts" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/ChartsTopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Charts"
+
+[node name="ChartsCashLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/ChartsTopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cash: $"
+
+[node name="ChartsPortfolioLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/ChartsTopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stocks: $"
+
 [connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/OwerViewButton" to="." method="_on_ower_view_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/ChartsTopBar/SummaryTabButtonCharts" to="." method="_on_summary_tab_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/ChartsTopBar/ChartsTabButtonCharts" to="." method="_on_charts_tab_pressed"]
