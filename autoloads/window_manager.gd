@@ -22,10 +22,12 @@ var app_registry := {
 	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
-		"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
-		"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
-		"NewYou": preload("res://components/apps/new_you/new_you.tscn"),
-		"Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
+
+	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
+	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
+	"NewYou": preload("res://components/apps/new_you/new_you.tscn"),
+	"Wallet": preload("res://components/apps/wallet/wallet_ui.tscn"),
+  "Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
 
 }
 

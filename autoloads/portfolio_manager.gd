@@ -207,25 +207,37 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 
 ## --- Cash Methods
 func add_cash(amount: float):
-	if amount < 0.0:
-		printerr("Tried to add negative cash")
-		return
-	set_cash(get_cash() + amount)
+		if amount < 0.0:
+				printerr("Tried to add negative cash")
+				return
+		set_cash(get_cash() + amount)
+		emit_signal("cash_updated", get_cash())
+		emit_signal("resource_changed", "cash", get_cash())
+		Events.focus_wallet_card("brag")
+		Events.flash_wallet_value("brag", amount)
 
 func spend_cash(amount: float):
-	if amount < 0.0:
-		printerr("Tried to spend negative cash")
-		return
-	set_cash(get_cash() - amount)
+		if amount < 0.0:
+				printerr("Tried to spend negative cash")
+				return
+		set_cash(get_cash() - amount)
+		emit_signal("cash_updated", get_cash())
+		emit_signal("resource_changed", "cash", get_cash())
+		Events.focus_wallet_card("brag")
+		Events.flash_wallet_value("brag", -amount)
 
 func can_pay_with_cash(amount: float) -> bool:
 	return get_cash() >= amount
 
 func pay_with_cash(amount: float) -> bool:
-	if can_pay_with_cash(amount):
-		set_cash(get_cash() - amount)
-		return true
-	return false
+		if can_pay_with_cash(amount):
+				set_cash(get_cash() - amount)
+				emit_signal("cash_updated", get_cash())
+				emit_signal("resource_changed", "cash", get_cash())
+				Events.focus_wallet_card("brag")
+				Events.flash_wallet_value("brag", -amount)
+				return true
+		return false
 
 
 
@@ -243,14 +255,28 @@ func pay_with_credit(amount: float) -> bool:
 	return false
 
 func get_credit_remaining() -> float:
-	return get_credit_limit() - get_credit_used()
+		return get_credit_limit() - get_credit_used()
 
 
 func get_total_debt() -> float:
-	return snapped(get_credit_used() + get_student_loans(), 0.01)
+		return snapped(get_credit_used() + get_student_loans(), 0.01)
 
 func get_credit_score() -> int:
-	return credit_score
+		return credit_score
+
+func try_spend_cash(amount: float) -> bool:
+		if amount <= 0.0:
+				return false
+		if get_cash() < amount:
+				return false
+		spend_cash(amount)
+		return true
+
+func get_cash_inflow_24h() -> float:
+		return 0.0
+
+func get_cash_outflow_24h() -> float:
+		return 0.0
 
 func _recalculate_credit_score():
 	var usage_ratio := get_credit_used() / get_credit_limit()

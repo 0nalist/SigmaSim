@@ -47,18 +47,18 @@ const DEFAULT_BACKGROUND_SHADERS := {
 }
 
 var default_user_data: Dictionary = {
-		# Identity
-		"name": "",
-		"username": "",
-"password": "",
-				"pronouns": "",
-				"attracted_to": "",
-								"portrait_config": {},
-				"background_path": "",
-			"education_level": "",
-			"starting_student_debt": 0.0,
-			"starting_credit_limit": 0.0,
-				"bio": "",
+	# Identity
+	"name": "",
+	"username": "",
+	"password": "",
+	"pronouns": "",
+	"attracted_to": "",
+	"portrait_config": {},
+	"background_path": "",
+	"education_level": "",
+	"starting_student_debt": 0.0,
+	"starting_credit_limit": 0.0,
+	"bio": "",
 
 	# Core Stats
 	"alpha": 0.0,
@@ -84,22 +84,22 @@ var default_user_data: Dictionary = {
 	# Other Traits
 
 	"zodiac_sign": "",
-		"mbti": "",
+	"mbti": "",
 
-	# Fumble preferences
-		"fumble_pref_x": 0.0,
-		"fumble_pref_y": 0.0,
-		"fumble_pref_z": 0.0,
-		"fumble_curiosity": 50.0,
-		"fumble_fugly_filter_threshold": 0,
+# Fumble preferences
+	"fumble_pref_x": 0.0,
+	"fumble_pref_y": 0.0,
+	"fumble_pref_z": 0.0,
+	"fumble_curiosity": 50.0,
+	"fumble_fugly_filter_threshold": 0,
 
-		# Flags and progression
-"unlocked_perks": [],
-   "seen_dialogue_ids": [],
-"global_rng_seed": 0,
-# Background shader settings
-"background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
-}
+	# Flags and progression
+	"unlocked_perks": [],
+	"seen_dialogue_ids": [],
+	"global_rng_seed": 0,
+	# Background shader settings
+	"background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
+	}
 
 var user_data: Dictionary = default_user_data.duplicate(true)
 
@@ -109,7 +109,10 @@ func get_var(key: String, default_value = null):
 	return user_data.get(key, default_value)
 
 func set_var(key: String, value) -> void:
-		user_data[key] = value
+				user_data[key] = value
+
+func get_stat(name: String, default_value: float = 0.0) -> float:
+		return float(user_data.get(name, default_value))
 
 func color_to_dict(color: Color) -> Dictionary:
 		return {

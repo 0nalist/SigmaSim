@@ -93,7 +93,7 @@ func _process(delta: float) -> void:
 
 # -------- Canonical getters (new + compatibility) --------
 func get_now_minutes() -> int:
-	return _total_minutes_elapsed
+		return _total_minutes_elapsed
 
 # Kept for callers that still use in-game minutes since midnight
 func get_time_hms() -> Dictionary:
@@ -200,8 +200,11 @@ func get_total_days_since_start(target_day: int, target_month: int, target_year:
 		total_days += get_days_in_month(m, target_year)
 		m += 1
 	# Remaining days
-	total_days += target_day - start_day
+		total_days += target_day - start_day
 	return total_days
+
+func get_total_minutes_played() -> int:
+		return _total_minutes_elapsed
 
 # -------- Save / Load (keys preserved) --------
 func get_default_save_data() -> Dictionary:

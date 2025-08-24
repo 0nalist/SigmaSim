@@ -3,7 +3,9 @@ extends Node
 
 signal lifestyle_updated
 signal autopay_changed(enabled: bool)
-signal debt_resources_changed
+signal debt_resources_changed()
+signal credit_txn_occurred(amount: float)
+signal student_loan_changed()
 
 var _autopay_enabled: bool = false
 var autopay_enabled: bool:
@@ -652,3 +654,51 @@ var lifestyle_options := {
 		}
 	],
 }
+
+func get_credit_summary() -> Dictionary:
+		var out: Dictionary = {}
+		out["balance"] = 0.0
+		out["limit"] = 0.0
+		out["apr"] = 0.0
+		out["min_due"] = 0.0
+		out["next_due"] = ""
+		out["autopay"] = false
+		if Engine.has_singleton("PortfolioManager"):
+				out["balance"] = float(PortfolioManager.credit_used)
+				out["limit"] = float(PortfolioManager.credit_limit)
+		return out
+
+func pay_credit(amount: float) -> void:
+		credit_txn_occurred.emit(amount)
+		debt_resources_changed.emit()
+		var util: float = 0.0
+		if Engine.has_singleton("PortfolioManager"):
+				var limit: float = PortfolioManager.credit_limit
+				var used: float = PortfolioManager.credit_used
+				if limit > 0.0:
+						util = (used / limit) * 100.0
+		Events.focus_wallet_card("credit")
+		Events.animate_wallet_to("credit", util)
+
+func set_credit_autopay(_enabled: bool) -> void:
+		debt_resources_changed.emit()
+
+func get_last_credit_txn_ago() -> String:
+		return "—"
+
+func get_student_loan_summary() -> Dictionary:
+		var out: Dictionary = {}
+		out["principal"] = 0.0
+		out["interest_rate"] = 0.0
+		out["accrued_interest"] = 0.0
+		out["next_due"] = ""
+		out["min_due"] = 0.0
+		out["autopay"] = false
+		return out
+
+func pay_student_loan(_amount: float) -> void:
+		student_loan_changed.emit()
+		Events.focus_wallet_card("student_loan")
+
+func set_student_loan_autopay(_enabled: bool) -> void:
+		student_loan_changed.emit()

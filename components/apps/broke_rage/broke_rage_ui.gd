@@ -2,6 +2,7 @@ extends Pane
 class_name BrokeRage
 
 @onready var stock_market: VBoxContainer = %StockMarket
+
 @onready var cash_label: Label = %CashLabel
 @onready var balance_label: Label = %BalanceLabel
 @onready var invested_label: Label = %InvestedLabel
@@ -117,7 +118,11 @@ func _on_debt_updated() -> void:
 	debt_label.text = "Debt: $" + NumberFormatter.format_number(PortfolioManager.get_total_debt())
 
 
+func _on_wallet_button_pressed() -> void:
+		WindowManager.launch_app_by_name("Wallet")
+
 func _on_ower_view_button_pressed() -> void:
+
 		WindowManager.launch_app_by_name("OwerView")
 
 
@@ -184,3 +189,4 @@ func _build_charts_view() -> void:
 
 	if container != null:
 		charts_content.add_child(container)
+
