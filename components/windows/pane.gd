@@ -24,6 +24,7 @@ signal window_icon_changed(new_icon)
 @export var allow_multiple: bool = false
 @export var unique_popup_key: String = ""
 @export var is_popup: bool = false
+@export var persist_on_save: bool = false
 
 @export var window_can_close: bool = true
 @export var window_can_minimize: bool = true

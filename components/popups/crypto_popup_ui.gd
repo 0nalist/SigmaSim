@@ -1,6 +1,8 @@
 extends Pane
 class_name CryptoPopupUI
 
+@export var persist_on_save := true
+
 @onready var label_symbol: Label = %LabelSymbol
 @onready var label_name: Label = %LabelName
 @onready var label_price: Label = %LabelPrice
@@ -21,13 +23,14 @@ func setup_custom(args) -> void:
 				setup(args)
 
 func setup(_crypto: Cryptocurrency) -> void:
-	crypto = _crypto
-	HistoryManager.add_sample(crypto.symbol, TimeManager.get_now_minutes(), crypto.price)
-	price_chart.clear_series()
-	price_chart.add_series(crypto.symbol, "Price", Color(1, 0.6, 0.2))
-	_update_ui()
-	window_title = str(crypto.symbol) + " " + str(crypto.price)
-	MarketManager.crypto_price_updated.connect(_on_crypto_price_updated)
+       crypto = _crypto
+       unique_popup_key = "crypto_%s" % crypto.symbol
+       HistoryManager.add_sample(crypto.symbol, TimeManager.get_now_minutes(), crypto.price)
+       price_chart.clear_series()
+       price_chart.add_series(crypto.symbol, "Price", Color(1, 0.6, 0.2))
+       _update_ui()
+       window_title = str(crypto.symbol) + " " + str(crypto.price)
+       MarketManager.crypto_price_updated.connect(_on_crypto_price_updated)
 
 func _ready() -> void:
 	super._ready()
@@ -58,5 +61,18 @@ func _on_buy_pressed() -> void:
 		_update_ui()
 
 func _on_sell_pressed() -> void:
-	if crypto and PortfolioManager.sell_crypto(crypto.symbol, 1.0):
-		_update_ui()
+       if crypto and PortfolioManager.sell_crypto(crypto.symbol, 1.0):
+               _update_ui()
+
+
+func get_custom_save_data() -> Dictionary:
+       if crypto:
+               return {"symbol": crypto.symbol}
+       return {}
+
+func load_custom_save_data(data: Dictionary) -> void:
+       var symbol: String = data.get("symbol", "")
+       if symbol != "":
+               var c: Cryptocurrency = MarketManager.crypto_market.get(symbol)
+               if c:
+                       setup(c)
