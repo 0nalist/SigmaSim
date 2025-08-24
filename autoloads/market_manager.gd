@@ -3,6 +3,8 @@ extends Node
 
 var stock_market: Dictionary = {}  # symbol: Stock
 var crypto_market: Dictionary = {}  # symbol: Crypto
+var stock_events: Dictionary = {}   # symbol: MarketEvent
+var crypto_events: Dictionary = {}  # symbol: MarketEvent
 
 signal crypto_market_ready
 
@@ -11,7 +13,7 @@ signal crypto_tick()
 signal stock_price_updated(symbol: String, stock: Stock)
 signal crypto_price_updated(name: String, crypto: Cryptocurrency)
 
-var STOCK_RESOURCES = {
+var STOCK_RESOURCES := {
 	"ALPH_STOCK": preload("res://resources/stocks/alph_stock.tres"),
 	"BRO_STOCK": preload("res://resources/stocks/bro_stock.tres"),
 	"GME_STOCK": preload("res://resources/stocks/gme_stock.tres"),
@@ -21,10 +23,15 @@ var STOCK_RESOURCES = {
 	"YOLO_STOCK": preload("res://resources/stocks/yolo_stock.tres"),
 }
 
-var CRYPTO_RESOURCES = {
+var CRYPTO_RESOURCES := {
 	"BITC": preload("res://resources/crypto/bitc_crypto.tres"),
-	"HAWK": preload("res://resources/crypto/hawk_crypto.tres"),
+	"HAWK1": preload("res://resources/crypto/hawk1_crypto.tres"),
+	"HAWK2": preload("res://resources/crypto/hawk2_crypto.tres"),
 	"WORM": preload("res://resources/crypto/worm_crypto.tres"),
+}
+
+var EVENT_RESOURCES := {
+	"HAWK_PUMP": preload("res://resources/market_events/hawk_pump_and_dump.tres"),
 }
 
 func _ready() -> void:
@@ -35,6 +42,10 @@ func _ready() -> void:
 	if stock_market.is_empty():
 		_init_stock_market()
 	print("market manager ready, crypto should be initialized")
+
+func init_new_save_events() -> void:
+	_init_market_events()
+
 
 func register_crypto(crypto: Cryptocurrency) -> void:
 	if crypto == null:
@@ -65,6 +76,8 @@ func register_crypto(crypto: Cryptocurrency) -> void:
 
 	crypto_market[crypto.symbol] = crypto
 	emit_signal("crypto_price_updated", crypto.symbol, crypto)
+
+
 func _on_minute_passed(current_time_minutes: int) -> void:
 	# Alternate stock and crypto ticks every minute
 	if current_time_minutes % 2 == 0:
@@ -78,12 +91,11 @@ func register_stock(stock: Stock) -> void:
 	stock_market[stock.symbol] = stock
 
 
-
 func get_stock(symbol: String) -> Stock:
 	return stock_market.get(symbol)
 
 func apply_stock_transaction(symbol: String, shares_delta: int) -> void:
-	var stock = stock_market.get(symbol)
+	var stock: Stock = stock_market.get(symbol)
 	if not stock:
 		return
 
@@ -91,7 +103,7 @@ func apply_stock_transaction(symbol: String, shares_delta: int) -> void:
 	stock.player_owned_shares = clamp(stock.player_owned_shares, 0, stock.shares_outstanding)
 
 	# Simple supply/demand logic
-	var ownership_ratio = stock.get_player_ownership_ratio()
+	var ownership_ratio: float = stock.get_player_ownership_ratio()
 	if shares_delta > 0:
 		stock.sentiment += ownership_ratio * 0.5
 		stock.price += stock.price * ownership_ratio * 0.1
@@ -102,44 +114,63 @@ func apply_stock_transaction(symbol: String, shares_delta: int) -> void:
 	stock.price = max(snapped(stock.price, 0.01), 0.01)
 	emit_signal("stock_price_updated", symbol, stock)
 
-func refresh_prices():
+func refresh_prices() -> void:
 	_update_stock_prices()
 
-func _update_stock_prices():
-	var rng = RNGManager.market_manager.get_rng()
-	for stock in stock_market.values():
-		stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
+func _update_stock_prices() -> void:
+	var rng: RandomNumberGenerator = RNGManager.market_manager.get_rng()
+	var now: int = TimeManager.get_now_minutes()
+	for stock: Stock in stock_market.values():
+		var event: MarketEvent = stock_events.get(stock.symbol)
+		var old_price: float = stock.price
 
-		stock.momentum -= 1
-		if stock.momentum <= 0:
-			stock.sentiment = rng.randf_range(-1.0, 1.0)
-			stock.momentum = rng.randi_range(5, 20)
+		if event == null or not event.is_active():
+			stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
 
-		var deviation = stock.price / stock.intrinsic_value
-		var noise = rng.randf_range(-0.5, 0.5)
-		var directional_bias = stock.sentiment * 0.25
-		var total_factor = clamp(noise + directional_bias, -1.0, 1.0)
-		var max_percent_change = stock.volatility / 100.0
-		var delta = stock.price * max_percent_change * total_factor
+			stock.momentum -= 1
+			if stock.momentum <= 0:
+				stock.sentiment = rng.randf_range(-1.0, 1.0)
+				stock.momentum = rng.randi_range(5, 20)
 
-		if deviation > 2.0 and rng.randf() < 0.2:
-			delta -= stock.price * rng.randf_range(0.1, 0.3)
-		elif deviation < 0.5 and rng.randf() < 0.2:
-			delta += stock.price * rng.randf_range(0.1, 0.3)
+			var deviation: float = stock.price / stock.intrinsic_value
+			var noise: float = rng.randf_range(-0.5, 0.5)
+			var directional_bias: float = stock.sentiment * 0.25
+			var total_factor: float = clamp(noise + directional_bias, -1.0, 1.0)
+			var max_percent_change: float = stock.volatility / 100.0
+			var delta: float = stock.price * max_percent_change * total_factor
 
-		var old_price = stock.price
-		stock.price = max(snapped(stock.price + delta, 0.01), 0.01)
+			if deviation > 2.0 and rng.randf() < 0.2:
+				delta -= stock.price * rng.randf_range(0.1, 0.3)
+			elif deviation < 0.5 and rng.randf() < 0.2:
+				delta += stock.price * rng.randf_range(0.1, 0.3)
+
+			stock.price = max(snapped(stock.price + delta, 0.01), 0.01)
+
+		if event != null:
+			event.process(now, stock)
+			if event.is_finished():
+				stock_events.erase(stock.symbol)
+
+		HistoryManager.add_sample(stock.symbol, now, stock.price)
 
 		if abs(stock.price - old_price) > 0.001:
 			emit_signal("stock_price_updated", stock.symbol, stock)
 
-func _update_crypto_prices():
-	for crypto in crypto_market.values():
-		var old_price = crypto.price
-		crypto.update_from_market()
 
-		if abs(crypto.price - old_price) > 0.001:
-			emit_signal("crypto_price_updated", crypto.symbol, crypto)
+func _update_crypto_prices() -> void:
+		var now: int = TimeManager.get_now_minutes()
+		for crypto: Cryptocurrency in crypto_market.values():
+				var event: MarketEvent = crypto_events.get(crypto.symbol)
+				var old_price: float = crypto.price
+				if event == null or not event.is_active():
+						crypto.update_from_market()
+				if event != null:
+						event.process(now, crypto)
+						if event.is_finished():
+								crypto_events.erase(crypto.symbol)
+				HistoryManager.add_sample(crypto.symbol, now, crypto.price)
+				if abs(crypto.price - old_price) > 0.001:
+						emit_signal("crypto_price_updated", crypto.symbol, crypto)
 
 ## --- Initialization --- ##
 
@@ -148,7 +179,7 @@ func _init_crypto_market() -> void:
 	print("_init_crypto_market: starting; resource keys=", str(CRYPTO_RESOURCES.keys()))
 	var inserted_count: int = 0
 
-	for key_symbol in CRYPTO_RESOURCES.keys():
+	for key_symbol: String in CRYPTO_RESOURCES.keys():
 		var base_res: Resource = CRYPTO_RESOURCES[key_symbol]
 		if base_res == null:
 			push_error("_init_crypto_market: base resource for key '" + str(key_symbol) + "' is null")
@@ -156,7 +187,7 @@ func _init_crypto_market() -> void:
 
 		if base_res is Cryptocurrency:
 			var base_c: Cryptocurrency = base_res as Cryptocurrency
-			print("_init_crypto_market: base '" + str(key_symbol) + "' -> symbol='" + str(base_c.symbol) + "', name='" + str(base_c.display_name) + "', price=" + str(base_c.price) + ", id=" + str(base_c.get_instance_id()))
+			print("_init_crypto_market: base '" + str(key_symbol) + "' -> symbol='", str(base_c.symbol), "', name='", str(base_c.display_name), "', price=", str(base_c.price), ", id=", str(base_c.get_instance_id()))
 
 		var crypto_res: Resource = ResourceLoader.load(base_res.resource_path, "", ResourceLoader.CACHE_MODE_IGNORE)
 		if crypto_res == null:
@@ -168,13 +199,9 @@ func _init_crypto_market() -> void:
 			continue
 
 		var c: Cryptocurrency = crypto_res as Cryptocurrency
-		print("_init_crypto_market: loaded '" + str(key_symbol) + "' -> symbol='" + str(c.symbol) + "', name='" + str(c.display_name) + "', price=" + str(c.price) + ", id=" + str(c.get_instance_id()))
-
-		if str(c.symbol).is_empty():
-			push_warning("_init_crypto_market: '" + str(key_symbol) + "' had empty symbol; setting symbol to key '" + str(key_symbol) + "'. Fix the .tres to export a non-empty symbol.")
-			c.symbol = str(key_symbol)
-
-		print("registering crypto: '" + str(c.symbol) + "' from key '" + str(key_symbol) + "', resource_name='" + str(c.resource_name) + "'")
+		# Do NOT override symbol/display_name; rely on the resource itself.
+		print("_init_crypto_market: loaded '", str(key_symbol), "' -> symbol='", str(c.symbol), "', name='", str(c.display_name), "', price=", str(c.price), ", id=", str(c.get_instance_id()))
+		print("registering crypto: '", str(c.symbol), "' from key '", str(key_symbol), "', resource_name='", str(c.resource_name), "'")
 		register_crypto(c)
 		if crypto_market.has(c.symbol):
 			inserted_count += 1
@@ -193,20 +220,46 @@ func _init_crypto_market() -> void:
 	print("crypto market initialized; inserted count=", str(inserted_count))
 	print("crypto market keys: " + str(crypto_market.keys()))
 	print("crypto market state: " + JSON.stringify(crypto_market, "  "))
+
 func _init_stock_market() -> void:
-		for symbol in STOCK_RESOURCES.keys():
-				var stock = STOCK_RESOURCES[symbol].duplicate(true)
-				register_stock(stock)
+	for symbol: String in STOCK_RESOURCES.keys():
+		var stock: Stock = STOCK_RESOURCES[symbol].duplicate(true)
+		register_stock(stock)
+
+func _init_market_events() -> void:
+	crypto_events.clear()
+	stock_events.clear()
+	var rng := RNGManager.market_manager.get_rng()
+	for key: String in EVENT_RESOURCES.keys():
+		var base_res: Resource = EVENT_RESOURCES[key]
+		if base_res == null:
+			continue
+		var event_res: Resource = base_res.duplicate(true)
+		if event_res is MarketEvent:
+			var ev: MarketEvent = event_res
+			if key == "HAWK_PUMP":
+				# (Fixed) No ternary operator; choose between HAWK1 and HAWK2.
+				var pick: int = rng.randi_range(1, 2)
+				if pick == 1:
+					ev.target_symbol = "HAWK1"
+				else:
+					ev.target_symbol = "HAWK2"
+			ev.schedule(TimeManager.get_now_minutes(), rng)
+			if ev.target_type == "crypto":
+				crypto_events[ev.target_symbol] = ev
+			elif ev.target_type == "stock":
+				stock_events[ev.target_symbol] = ev
+
 
 ## --- SAVELOAD --- ##
 
 func get_save_data() -> Dictionary:
-	var stock_data := {}
-	for symbol in stock_market:
+	var stock_data: Dictionary = {}
+	for symbol: String in stock_market:
 		stock_data[symbol] = stock_market[symbol].to_dict()
 
-	var crypto_data := {}
-	for symbol in crypto_market:
+	var crypto_data: Dictionary = {}
+	for symbol: String in crypto_market:
 		crypto_data[symbol] = crypto_market[symbol].to_dict()
 
 	return {
@@ -219,16 +272,16 @@ func load_from_data(data: Dictionary) -> void:
 	crypto_market.clear()
 
 	# --- Stocks (unchanged) ---
-	for symbol in STOCK_RESOURCES.keys():
+	for symbol: String in STOCK_RESOURCES.keys():
 		var stock: Stock = STOCK_RESOURCES[symbol].duplicate(true)
 		if data.get("stock_market", {}).has(symbol):
 			stock.from_dict(data["stock_market"][symbol])
 		register_stock(stock)
 
-	# --- Cryptos (fixed) ---
+	# --- Cryptos (respect resource-exported symbol/display_name) ---
 	var saved_crypto: Dictionary = data.get("crypto_market", {})
 
-	for key_symbol in CRYPTO_RESOURCES.keys():
+	for key_symbol: String in CRYPTO_RESOURCES.keys():
 		var base_res: Resource = CRYPTO_RESOURCES[key_symbol]
 		if base_res == null:
 			push_error("load_from_data: base crypto for key '" + str(key_symbol) + "' is null")
@@ -249,15 +302,17 @@ func load_from_data(data: Dictionary) -> void:
 			c.from_dict(saved_crypto[key_symbol])
 
 		if str(c.symbol).is_empty():
+			# Fallback only—prefer the .tres value.
 			push_warning("load_from_data: '" + str(key_symbol) + "' had empty symbol; setting to key. Fix the .tres.")
 			c.symbol = str(key_symbol)
 
 		register_crypto(c)
+
 	debug_dump_crypto("post_load")
 	emit_signal("crypto_market_ready")
 
 func debug_dump_crypto(context: String) -> void:
 	print("-- crypto dump ", context, " --")
-	for symbol in crypto_market.keys():
+	for symbol: String in crypto_market.keys():
 		var c: Cryptocurrency = crypto_market[symbol]
 		print(symbol, ",", c.display_name, ", price=", c.price, ", power=", c.power_required, ", id=", str(c.get_instance_id()))

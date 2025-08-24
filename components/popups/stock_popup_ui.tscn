@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://kr7m06k7j1jl"]
+[gd_scene load_steps=4 format=3 uid="uid://kr7m06k7j1jl"]
 
 [ext_resource type="Script" uid="uid://cbhnd41c3mysn" path="res://components/popups/stock_popup_ui.gd" id="1_ba7qw"]
+[ext_resource type="PackedScene" uid="uid://defhlwtmryxw4" path="res://components/ui/chart_component_ui.tscn" id="2_jvfw0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6hvw1"]
-bg_color = Color(0.180005, 0.180005, 0.180005, 1)
+bg_color = Color(0, 0, 0, 1)
 
 [node name="StockPopupUI" type="Panel"]
 anchors_preset = 15
@@ -16,7 +17,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_6hvw1")
 script = ExtResource("1_ba7qw")
-default_window_size = Vector2(250, 200)
+default_window_size = Vector2(420, 260)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -32,51 +33,115 @@ theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="LabelSymbol" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PriceChart" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_jvfw0")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-horizontal_alignment = 1
+size_flags_horizontal = 3
 
-[node name="LabelPrice" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="InfoVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="InfoGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox"]
+layout_mode = 2
+columns = 2
+
+[node name="SymbolLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Symbol"
+
+[node name="LabelSymbol" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="LabelIntrinsic" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="PriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Price"
+
+[node name="LabelPrice" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="LabelTrailing" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="IntrinsicLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Intrinsic"
+
+[node name="LabelIntrinsic" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="LabelSentiment" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="TrailingLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Trailing Avg"
+
+[node name="LabelTrailing" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="LabelVolatility" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="SentimentLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Sentiment"
+
+[node name="LabelSentiment" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="LabelMomentum" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="VolatilityLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Volatility"
+
+[node name="LabelVolatility" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0, 1)
 
-[node name="LabelOwnership" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="MomentumLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Momentum"
+
+[node name="LabelMomentum" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+
+[node name="OwnershipLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "Owned"
+
+[node name="LabelOwnership" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+
+[node name="ButtonBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox"]
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Buy"
+
+[node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Sell"

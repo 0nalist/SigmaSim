@@ -1,0 +1,159 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0xq6y7t2f5e"]
+
+[ext_resource type="Script" uid="uid://c022cc1jq6lr" path="res://components/popups/crypto_popup_ui.gd" id="1_ah1wq"]
+[ext_resource type="PackedScene" uid="uid://defhlwtmryxw4" path="res://components/ui/chart_component_ui.tscn" id="2_165jd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="CryptoPopupUI" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+script = ExtResource("1_ah1wq")
+default_window_size = Vector2(470, 300)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PriceChart" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_165jd")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+default_window_minutes = 90
+min_window_minutes = 10
+
+[node name="InfoVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="InfoGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox"]
+layout_mode = 2
+columns = 2
+
+[node name="SymbolLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "Symbol"
+
+[node name="LabelSymbol" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "Name"
+
+[node name="LabelName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="PriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "Price"
+
+[node name="LabelPrice" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="VolatilityLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "Volatility"
+
+[node name="LabelVolatility" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="BlockSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "Block Size"
+
+[node name="LabelBlockSize" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="BlockTimeLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "Block Time"
+
+[node name="LabelBlockTime" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="PowerLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "Power Req."
+
+[node name="LabelPower" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="AllTimeHighLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "All Time High"
+
+[node name="LabelAllTimeHigh" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="OwnedLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+text = "Owned"
+
+[node name="LabelOwned" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/InfoGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.2, 1)
+
+[node name="ButtonBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox"]
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Buy"
+
+[node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Sell"

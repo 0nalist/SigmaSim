@@ -1,0 +1,24 @@
+{
+  "id": "ex_factor_performance_enhancers",
+  "name": "Performance Enhancers",
+  "description": "Each level increases affinity gained from Love by 1.",
+  "effects": [
+	{
+	  "target": "love_affinity_gain",
+	  "operation": "add",
+	  "value": 1.0
+	}
+  ],
+  "systems": [
+		"eXFactor"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+		"ex": 1
+  },
+  "scale_by_formula": true,
+  "cost_formula": {
+		"ex": "base_cost[\"ex\"] * pow(2, level-1)"
+  },
+  "repeatable": true
+}

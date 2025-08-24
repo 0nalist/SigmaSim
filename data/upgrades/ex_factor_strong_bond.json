@@ -1,0 +1,22 @@
+{
+  "id": "ex_factor_strong_bond",
+  "name": "Strong Bond",
+  "description": "Halves the speed of affinity drift towards equilibrium.",
+  "effects": [
+    {
+      "target": "affinity_drift_rate",
+      "operation": "mul",
+      "value": 0.5,
+      "scale_with_level": false
+    }
+  ],
+  "systems": [
+    "eXFactor"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+    "ex": 100
+  },
+  "max_level": 1,
+  "repeatable": false
+}

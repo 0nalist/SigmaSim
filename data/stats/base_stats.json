@@ -7,6 +7,8 @@
   "power_per_click": 1.0,
   "cash_per_score": 0.01,
   "autopilot_cost": 1.0,
+  "affinity_drift_rate": 1.0,
+  "love_affinity_gain": 5.0,
   "worm_yield": 1.0,
   "upgrade_cooldown_multiplier": 1.0
 }

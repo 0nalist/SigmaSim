@@ -77,6 +77,14 @@ const REACTION_EMOJI = {
 }
 
 
+func shake_player_portrait(amount: float) -> void:
+		TraumaManager.hit_item(profile_pic, amount)
+
+
+func shake_npc_portrait(amount: float) -> void:
+		TraumaManager.hit_item(npc_portrait, amount)
+
+
 func get_reaction_tooltip(reaction: String) -> String:
 	match reaction:
 		"heart":
@@ -110,8 +118,12 @@ func _ready():
 	StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
 	StatManager.connect_to_stat("confidence", self, "_on_confidence_changed")
 	_update_player_attractiveness_label()
-	
+
 	no_confidence_container.hide()
+
+	# Register portraits with TraumaManager so they can shake when hit.
+	TraumaManager.register_item(profile_pic)
+	TraumaManager.register_item(npc_portrait)
 	
 
 func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], stats_in: Dictionary = {}, move_usage_counts_in: Dictionary = {}, new_npc_idx: int = -1, outcome: String = "active"):
@@ -456,6 +468,7 @@ func do_move(move_type: String) -> void:
 		await get_tree().create_timer(0.25).timeout
 		await player_chat.set_stat_effects(filtered_effects)
 		await player_chat.reveal_result_color("success")
+		TraumaManager.hit_pane(npc_portrait, 0.6)
 		battle_stats = logic.get_stats().duplicate()
 		await update_progress_bars()
 		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
@@ -639,6 +652,18 @@ func _reveal_chat_effects_and_results(player_chat: ChatBox, player_result: Strin
 		if idxn >= 0 and idxn < chatlog.size():
 				chatlog[idxn].result = npc_result
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "active")
+	if player_chat:
+		await player_chat.set_stat_effects(player_effects)
+		if player_result == "success":
+			TraumaManager.hit_pane(npc_portrait, 0.6)
+		elif player_result == "fail":
+			TraumaManager.hit_pane(profile_pic, 0.6)
+		var idx = player_chat.chatlog_index
+		if idx >= 0 and idx < chatlog.size():
+			chatlog[idx].effects = player_effects.duplicate()
+
+
+
 
 
 func animate_success_or_fail(success: bool):
@@ -800,3 +825,5 @@ func _on_close_chat_button_pressed() -> void:
 
 func _on_daterbase_button_pressed() -> void:
 	WindowManager.launch_app_by_name("Daterbase")
+	await get_tree().create_timer(.75).timeout
+	queue_free()

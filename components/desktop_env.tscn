@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=56 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -7,10 +7,13 @@
 [ext_resource type="Script" uid="uid://nc5fi5e4a2r3" path="res://scripts/trauma_example.gd" id="3_5aheu"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
 [ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/backgrounds/Bliss_(Windows_XP) (2).png" id="3_rbayd"]
+[ext_resource type="Texture2D" uid="uid://c88l4sfbsyhbr" path="res://assets/wide_bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_1f48f6f3-2b0b-4da7-a461-17d252f99557_upscayl_4x_realesrgan-x4plus.png" id="4_adib1"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="4_fjtwy"]
 [ext_resource type="Script" uid="uid://bwo1i6ejj0oqo" path="res://components/ticker.gd" id="5_g75lf"]
+[ext_resource type="Texture2D" uid="uid://05nd44ors1af" path="res://assets/bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_60333a89-cac8-4c0a-80f0-1d9e592735cc (1).png" id="5_oaahw"]
 [ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="5_yi8nh"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="6_bnui0"]
+[ext_resource type="Script" uid="uid://b1lotrk85dstt" path="res://components/color_rect.gd" id="6_r681a"]
 [ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="7_c7kal"]
 [ext_resource type="Shader" uid="uid://bnamg60bf362u" path="res://assets/shaders/pixel_planet_shader.gdshader" id="7_ptlp0"]
 [ext_resource type="Shader" uid="uid://t13ojurwyi0y" path="res://assets/shaders/discrete_ocean_waves_shader.gdshader" id="8_iij0d"]
@@ -34,6 +37,15 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_flat"]
 shader = ExtResource("25_flat")
 shader_parameter/color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8lg5h"]
+shader = ExtResource("9_668nl")
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/line_color = Color(0, 1, 1, 1)
+shader_parameter/line_freq = 5.085
+shader_parameter/height = 0.6
+shader_parameter/speed = 2.555
+shader_parameter/scale = Vector2(3.25, 15.43)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_668nl"]
 shader = ExtResource("8_iij0d")
@@ -112,15 +124,6 @@ shader_parameter/dither_levels = 0
 shader_parameter/shading_noise_cell_amount = 40
 shader_parameter/shading_noise_strength = 0.3
 shader_parameter/shading_noise_period = Vector3(9.5, 9.5, 9.5)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8lg5h"]
-shader = ExtResource("9_668nl")
-shader_parameter/background_color = Color(0, 0, 0, 1)
-shader_parameter/line_color = Color(0, 1, 1, 1)
-shader_parameter/line_freq = 5.085
-shader_parameter/height = 0.6
-shader_parameter/speed = 2.555
-shader_parameter/scale = Vector2(3.25, 15.43)
 
 [sub_resource type="Gradient" id="Gradient_iij0d"]
 
@@ -226,10 +229,31 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_0utxc")
 script = ExtResource("1_lpqk7")
+create_or_update_apps_folder = false
 
 [node name="Node" type="Node" parent="." node_paths=PackedStringArray("target_control")]
 script = ExtResource("3_5aheu")
 target_control = NodePath("..")
+
+[node name="bill2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_adib1")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_oaahw")
+expand_mode = 3
+stretch_mode = 5
 
 [node name="ColorRect" type="ColorRect" parent="."]
 unique_name_in_owner = true
@@ -239,25 +263,42 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("6_r681a")
 
-[node name="Label" type="Label" parent="ColorRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = 4
 anchor_top = 0.5
-anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -7.5
-offset_right = 20.0
-offset_bottom = 7.5
-grow_horizontal = 2
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
 grow_vertical = 2
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "you're not supposed to see this"
 
+[node name="Button" type="Button" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "& you wouldn't believe me if i told you what's under it"
+flat = true
+
+[node name="BlackRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0295066, 0.0295066, 0.0295066, 1)
+
 [node name="Bliss" type="TextureRect" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -273,7 +314,6 @@ stretch_mode = 4
 
 [node name="Background" type="TextureRect" parent="."]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -318,6 +358,19 @@ grow_vertical = 2
 script = ExtResource("24_jkb4t")
 background_name = "FlatColor"
 
+[node name="ElectricShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_8lg5h")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("24_jkb4t")
+background_name = "Electric"
+
 [node name="WavesShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true
 visible = false
@@ -330,6 +383,18 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("24_jkb4t")
 background_name = "Waves"
+
+[node name="BlueWarpFlatColor" type="ColorRect" parent="ShaderBackgroundsContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0.2, 1)
+script = ExtResource("24_jkb4t")
 
 [node name="BlueWarpShader" type="PanelContainer" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true
@@ -354,19 +419,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="ElectricShader" type="ColorRect" parent="ShaderBackgroundsContainer"]
-unique_name_in_owner = true
-visible = false
-material = SubResource("ShaderMaterial_8lg5h")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("24_jkb4t")
-background_name = "Electric"
 
 [node name="ComicDotsBlueVert" type="ColorRect" parent="ShaderBackgroundsContainer"]
 unique_name_in_owner = true
@@ -924,6 +976,7 @@ mouse_filter = 2
 
 [node name="CalendarPopupUI" parent="TaskbarLayer/CalendarContainer" instance=ExtResource("16_g75lf")]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(650, 450)
 layout_mode = 1
 anchors_preset = 3
@@ -937,6 +990,7 @@ grow_vertical = 0
 pivot_offset = Vector2(36, 36)
 day_panel_scene = ExtResource("20_vxmwr")
 
+[connection signal="pressed" from="ColorRect/VBoxContainer/Button" to="ColorRect" method="_on_button_pressed"]
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]
 [connection signal="mouse_exited" from="TaskbarLayer/TaskbarWrapper/StartPanel" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_mouse_exited"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SiggyButton" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_siggy_button_pressed"]

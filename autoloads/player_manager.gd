@@ -11,6 +11,8 @@ const DEFAULT_BACKGROUND_SHADERS := {
 "color_low": {"r": 0.02, "g": 0.05, "b": 0.10, "a": 1.0},
 "color_mid": {"r": 0.10, "g": 0.30, "b": 0.55, "a": 1.0},
 "color_high": {"r": 0.30, "g": 0.60, "b": 0.85, "a": 1.0},
+"flat_color": {"r": 0.0, "g": 0.0, "b": 0.2, "a": 1.0},
+"flat_visible": true,
 },
 "ComicDots1": {
 "circle_color": {"r": 0.00000481308, "g": 0.665883, "b": 0.95733, "a": 1.0},
@@ -35,7 +37,7 @@ const DEFAULT_BACKGROUND_SHADERS := {
 "line_color": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0},
 "line_freq": 5.085,
 "height": 0.6,
-"speed": 2.555,
+"speed": 0.155,
 "scale_x": 3.25,
 "scale_y": 15.43,
 },

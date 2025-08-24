@@ -44,7 +44,7 @@ var is_dragging := false
 var drag_offset := Vector2.ZERO
 
 @onready var favicon: TextureRect = %Favicon
-@onready var title_label: Label = %TitleLabel
+@onready var title_label: RichTextLabel = %TitleLabel
 @onready var header: HBoxContainer = %Header
 @onready var header_container: PanelContainer = %HeaderContainer
 @onready var upgrade_button: Button = %UpgradeButton
@@ -137,12 +137,21 @@ func animate_resize_y(target_y: float, duration: float = 0.4):
 	tween.tween_property(self, "size:y", target_y, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 func _set_content(new_content: Control) -> void:
-	for child in content_panel.get_children():
-		child.queue_free()
-	content_panel.add_child(new_content)
-	_update_upgrade_button_state()
-	if windowless_mode:
-		call_deferred("_setup_windowless_drag")
+		for child in content_panel.get_children():
+				child.queue_free()
+		content_panel.add_child(new_content)
+
+		# Only expose the upgrade button when the child pane actually
+		# provides an upgrade pane.  This ensures windows that do not
+		# support upgrades do not show an empty or misleading button.
+		if new_content is Pane and new_content.upgrade_pane:
+				upgrade_button.show()
+				_update_upgrade_button_state()
+		else:
+				upgrade_button.hide()
+
+		if windowless_mode:
+				call_deferred("_setup_windowless_drag")
 
 func _set_windowless_mode(enabled: bool) -> void:
 	_windowless_mode = enabled
@@ -451,7 +460,7 @@ func _on_relevant_stat_changed(_a = null, _b = null):
 
 func _update_upgrade_button_state() -> void:
 	if not pane or not pane.upgrade_pane:
-		upgrade_button.visible = false
+		upgrade_button.hide()
 		return
 
 	var upgrades = UpgradeManager.get_upgrades_for_system(pane.window_title)
@@ -462,8 +471,6 @@ func _update_upgrade_button_state() -> void:
 		if not UpgradeManager.is_locked(id) and UpgradeManager.can_purchase(id):
 			any_available = true
 			break
-	upgrade_button.visible = true
-	upgrade_button.flat = not any_available
 
 	upgrade_button.visible = true
 	upgrade_button.flat = not any_available
@@ -472,7 +479,8 @@ func _update_upgrade_button_state() -> void:
 
 func set_window_title(title: String) -> void:
 	if title_label:
-		title_label.text = title
+		title_label.bbcode_enabled = true
+		title_label.parse_bbcode(title)
 
 
 func _on_upgrade_button_pressed() -> void:

@@ -167,20 +167,25 @@ func _on_quit_pressed() -> void:
 		window_frame.queue_free()
 
 func _on_autopilot_button_pressed() -> void:
-		if autopilot == null:
-				return
-		var cost := _get_autopilot_cost()
-		if not autopilot.enabled:
-				if cost > 0.0 and not PortfolioManager.attempt_spend(cost):
-						autopilot_button.button_pressed = false
-						return
-				autopilot.enabled = true
-				if cost > 0.0:
-						autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
-						StatManager.set_base_stat("autopilot_cost", autopilot_cost)
-		else:
-				autopilot.enabled = false
+	if autopilot == null:
+		return
+	var cost := _get_autopilot_cost()
+	if not autopilot.enabled:
+		if cost > 0.0 and not PortfolioManager.attempt_spend(cost, PortfolioManager.CREDIT_REQUIREMENTS["EarlyBird"]):
+			autopilot_button.button_pressed = false
+			return
+		autopilot.enabled = true
+		if cost > 0.0:
+			autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
+		StatManager.set_base_stat("autopilot_cost", autopilot_cost)
+		
 		_update_autopilot_button_text()
+		autopilot_button.disabled = true
+		await get_tree().create_timer(2.0).timeout
+		autopilot_button.disabled = false
+		return
+	autopilot.enabled = false
+	_update_autopilot_button_text()
 
 func _get_autopilot_cost() -> float:
 		if UpgradeManager.get_level("earlybird_autopilot_free") > 0:
@@ -188,18 +193,18 @@ func _get_autopilot_cost() -> float:
 		return autopilot_cost
 
 func _update_autopilot_button_text() -> void:
-		autopilot_button.button_pressed = autopilot.enabled
-		if not autopilot.enabled:
-				var cost := _get_autopilot_cost()
-				autopilot_button.text = "Autopilot: $" + NumberFormatter.format_commas(cost, 2, true)
-		else:
-				autopilot_button.text = "Autopilot"
+	autopilot_button.button_pressed = autopilot.enabled
+	var cost := _get_autopilot_cost()
+	if not autopilot.enabled and cost > 0.0:
+		autopilot_button.text = "Autopilot: $" + NumberFormatter.format_commas(cost, 2, true)
+	else:
+		autopilot_button.text = "Autopilot"
 
 func _on_upgrade_purchased(id: String, _level: int) -> void:
-				if id == "earlybird_autopilot_free":
-								_update_autopilot_button_text()
-				elif id == "earlybird_disable_manual_flaps":
-								_update_disable_flaps_visibility()
+	if id == "earlybird_autopilot_free":
+		_update_autopilot_button_text()
+	elif id == "earlybird_disable_manual_flaps":
+		_update_disable_flaps_visibility()
 
 func _update_cash_per_score() -> void:
 	cash_per_score = StatManager.get_stat("cash_per_score", 0.01)
@@ -212,8 +217,8 @@ func _on_disable_flaps_toggled(pressed: bool) -> void:
 		manual_flaps_disabled = pressed
 
 func _update_disable_flaps_visibility() -> void:
-		var visible := UpgradeManager.get_level("earlybird_disable_manual_flaps") > 0
-		disable_flaps_checkbox.visible = visible
-		if not visible:
-				disable_flaps_checkbox.button_pressed = false
-				manual_flaps_disabled = false
+	var visible := UpgradeManager.get_level("earlybird_disable_manual_flaps") > 0
+	disable_flaps_checkbox.visible = visible
+	if not visible:
+		disable_flaps_checkbox.button_pressed = false
+		manual_flaps_disabled = false

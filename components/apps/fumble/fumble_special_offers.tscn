@@ -32,6 +32,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_jpqxb")
 script = ExtResource("1_jpqxb")
 window_title = "Fumble Special Offers"
+default_window_size = Vector2(520, 480)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_vkkf1")

@@ -13,6 +13,7 @@ var player: Node = null # Reference to player for scoring check
 
 
 func _physics_process(delta: float) -> void:
+
 	position.x -= move_speed * delta
 
 	# Check for scoring
@@ -23,19 +24,17 @@ func _physics_process(delta: float) -> void:
 			scored = true
 
 	if position.x < -300:
-		queue_free()
+			queue_free()
 
-func randomize_gap_position() -> void:
-	var viewport_height = get_parent().get_parent().size.y
+func randomize_gap_position(viewport_height: float) -> void:
 	var safe_margin = 50.0
 
-	# Randomize center Y position for the GAP
+	# Randomize center Y position for the GAP within bounds
 	var rng = RNGManager.early_bird.get_rng()
-	var gap_center_y = rng.randf_range(
-			safe_margin + gap_size / 2,
-			viewport_height - safe_margin - gap_size / 2
-	)
-	position.y = gap_center_y
+	var lower_bound = max(safe_margin + gap_size / 2, min_y + gap_size / 2)
+	var upper_bound = min(viewport_height - safe_margin - gap_size / 2, max_y - gap_size / 2)
+	position.y = rng.randf_range(lower_bound, upper_bound)
+
 
 
 

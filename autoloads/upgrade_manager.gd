@@ -130,11 +130,14 @@ func is_locked(id: String) -> bool:
 	return false
 
 func get_upgrades_for_system(system: String, include_locked := false) -> Array:
+	var target := system.to_lower()
 	var result: Array = []
 	for upgrade in upgrades.values():
-		if system in upgrade.get("systems", []):
-			if include_locked or not is_locked(upgrade.get("id")):
-				result.append(upgrade)
+		for sys in upgrade.get("systems", []):
+			if typeof(sys) == TYPE_STRING and sys.to_lower() == target:
+				if include_locked or not is_locked(upgrade.get("id")):
+					result.append(upgrade)
+				break
 	return result
 
 func get_upgrade_layers(list: Array) -> Array:
@@ -279,7 +282,7 @@ func _get_currency_amount(currency: String) -> float:
 
 func _deduct_currency(currency: String, amount: float) -> bool:
 	if currency == "cash":
-		return PortfolioManager.attempt_spend(amount)
+			return PortfolioManager.attempt_spend(amount, PortfolioManager.CREDIT_REQUIREMENTS["upgrades"])
 	if currency == "ex":
 		if StatManager.get_stat("ex") < amount:
 			return false

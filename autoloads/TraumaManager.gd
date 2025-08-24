@@ -9,12 +9,16 @@ signal pane_trauma_changed(target: Node, value: float)
 @export var global_frequency_hz: float = 18.0
 @export var global_magnitude_px: float = 12.0
 @export var global_rotation_deg: float = 1.2
+@export var global_displacement_multiplier: float = 3.0
+@export var global_rotation_multiplier: float = 1.0
 
 # ------------------ Pane shake defaults --------------------------
 @export var pane_decay_per_second_default: float = 3.0
 @export var pane_frequency_hz_default: float = 22.0
 @export var pane_magnitude_px_default: float = 8.0
 @export var pane_rotation_deg_default: float = 1.8
+@export var pane_displacement_multiplier_default: float = 1.0
+@export var pane_rotation_multiplier_default: float = 1.0
 
 # Noise seeds (stable)
 @export var seed_x: int = 1337
@@ -44,6 +48,8 @@ class PaneShakeState:
 	var frequency_hz: float = 22.0
 	var magnitude_px: float = 8.0
 	var rotation_deg: float = 1.8
+	var displacement_mult: float = 1.0
+	var rotation_mult: float = 1.0
 	var seed_offset: float = 0.0
 
 
@@ -84,53 +90,79 @@ func clear_global() -> void:
 	_reset_viewport_transform()
 
 
+func _register_canvas_item(target: CanvasItem, allow_translate: bool, respect_container: bool) -> void:
+		if target == null:
+				return
+		var id: int = target.get_instance_id()
+		if _pane_states.has(id):
+				return
+
+		var state: PaneShakeState = PaneShakeState.new()
+		state.node = target
+		state.allow_translate = allow_translate and (not respect_container or not _is_in_container(target))
+		state.base_position = _get_position(target)
+		state.base_rotation = _get_rotation(target)
+		state.base_scale = _get_scale(target)
+		state.base_pivot = _get_pivot(target)
+		state.trauma = 0.0
+		state.decay_per_second = pane_decay_per_second_default
+		state.frequency_hz = pane_frequency_hz_default
+		state.magnitude_px = pane_magnitude_px_default
+		state.rotation_deg = pane_rotation_deg_default
+		state.displacement_mult = pane_displacement_multiplier_default
+		state.rotation_mult = pane_rotation_multiplier_default
+		state.seed_offset = float((id % 997) + 1) * 13.37
+
+		_try_set_center_pivot_if_control(target)
+
+		_pane_states[id] = state
+		target.tree_exiting.connect(_on_pane_tree_exiting.bind(id))
+
+
 func register_pane(target: CanvasItem, allow_translate: bool = true) -> void:
-	if target == null:
-		return
-	var id: int = target.get_instance_id()
-	if _pane_states.has(id):
-		return
+		_register_canvas_item(target, allow_translate, true)
 
-	var state: PaneShakeState = PaneShakeState.new()
-	state.node = target
-	state.allow_translate = allow_translate and not _is_in_container(target)
-	state.base_position = _get_position(target)
-	state.base_rotation = _get_rotation(target)
-	state.base_scale = _get_scale(target)
-	state.base_pivot = _get_pivot(target)
-	state.trauma = 0.0
-	state.decay_per_second = pane_decay_per_second_default
-	state.frequency_hz = pane_frequency_hz_default
-	state.magnitude_px = pane_magnitude_px_default
-	state.rotation_deg = pane_rotation_deg_default
-	state.seed_offset = float((id % 997) + 1) * 13.37
 
-	_try_set_center_pivot_if_control(target)
-
-	_pane_states[id] = state
-	target.tree_exiting.connect(_on_pane_tree_exiting.bind(id))
+func register_item(target: CanvasItem, allow_translate: bool = true) -> void:
+		# Same as register_pane but does not restrict translation for controls inside containers.
+		_register_canvas_item(target, allow_translate, false)
 
 
 func unregister_pane(target: CanvasItem) -> void:
-	if target == null:
-		return
-	var id: int = target.get_instance_id()
-	if not _pane_states.has(id):
-		return
-	var state: PaneShakeState = _pane_states[id]
-	_restore_pane(state)
-	_pane_states.erase(id)
+		if target == null:
+				return
+		var id: int = target.get_instance_id()
+		if not _pane_states.has(id):
+				return
+		var state: PaneShakeState = _pane_states[id]
+		_restore_pane(state)
+		_pane_states.erase(id)
+
+
+func unregister_item(target: CanvasItem) -> void:
+		unregister_pane(target)
+
+
+func _hit_canvas_item(target: CanvasItem, amount: float, respect_container: bool) -> void:
+		if target == null:
+				return
+		var id: int = target.get_instance_id()
+		if not _pane_states.has(id):
+				if respect_container:
+						register_pane(target, true)
+				else:
+						register_item(target, true)
+		var state: PaneShakeState = _pane_states[id]
+		state.trauma = clamp(state.trauma + amount, 0.0, 1.0)
+		emit_signal("pane_trauma_changed", target, state.trauma)
 
 
 func hit_pane(target: CanvasItem, amount: float) -> void:
-	if target == null:
-		return
-	var id: int = target.get_instance_id()
-	if not _pane_states.has(id):
-		register_pane(target, true)
-	var state: PaneShakeState = _pane_states[id]
-	state.trauma = clamp(state.trauma + amount, 0.0, 1.0)
-	emit_signal("pane_trauma_changed", target, state.trauma)
+		_hit_canvas_item(target, amount, true)
+
+
+func hit_item(target: CanvasItem, amount: float) -> void:
+		_hit_canvas_item(target, amount, false)
 
 
 func hit_group(group: StringName, amount: float) -> void:
@@ -141,11 +173,13 @@ func hit_group(group: StringName, amount: float) -> void:
 
 
 func set_pane_params(
-	target: CanvasItem,
-	decay_per_second: float,
-	frequency_hz: float,
-	magnitude_px: float,
-	rotation_deg: float
+		target: CanvasItem,
+		decay_per_second: float,
+		frequency_hz: float,
+		magnitude_px: float,
+	rotation_deg: float,
+	displacement_mult: float = 1.0,
+	rotation_mult: float = 1.0
 ) -> void:
 	if target == null:
 		return
@@ -157,18 +191,35 @@ func set_pane_params(
 	s.frequency_hz = maxf(0.0, frequency_hz)
 	s.magnitude_px = maxf(0.0, magnitude_px)
 	s.rotation_deg = maxf(0.0, rotation_deg)
+	s.displacement_mult = maxf(0.0, displacement_mult)
+	s.rotation_mult = maxf(0.0, rotation_mult)
 
+
+func set_item_params(
+		target: CanvasItem,
+		decay_per_second: float,
+		frequency_hz: float,
+		magnitude_px: float,
+		rotation_deg: float,
+		displacement_mult: float = 1.0,
+		rotation_mult: float = 1.0
+) -> void:
+		set_pane_params(target, decay_per_second, frequency_hz, magnitude_px, rotation_deg, displacement_mult, rotation_mult)
 
 func clear_pane(target: CanvasItem) -> void:
-	if target == null:
-		return
-	var id: int = target.get_instance_id()
-	if not _pane_states.has(id):
-		return
-	var s: PaneShakeState = _pane_states[id]
-	s.trauma = 0.0
-	emit_signal("pane_trauma_changed", target, 0.0)
-	_restore_pane(s)
+		if target == null:
+				return
+		var id: int = target.get_instance_id()
+		if not _pane_states.has(id):
+				return
+		var s: PaneShakeState = _pane_states[id]
+		s.trauma = 0.0
+		emit_signal("pane_trauma_changed", target, 0.0)
+		_restore_pane(s)
+
+
+func clear_item(target: CanvasItem) -> void:
+		clear_pane(target)
 
 
 # ------------------ Processing ------------------
@@ -196,8 +247,8 @@ func _update_global(delta: float) -> void:
 	var ny: float = _noise_y.get_noise_2d(0.0, t)
 	var nr: float = _noise_r.get_noise_2d(t, t * 0.5)
 
-	var offset: Vector2 = Vector2(nx, ny) * (global_magnitude_px * amp)
-	var rot_rad: float = deg_to_rad(global_rotation_deg * amp) * nr
+	var offset: Vector2 = Vector2(nx, ny) * (global_magnitude_px * amp * global_displacement_multiplier)
+	var rot_rad: float = deg_to_rad(global_rotation_deg * amp * global_rotation_multiplier) * nr
 
 	var xform: Transform2D = Transform2D(rot_rad, offset)
 	get_viewport().canvas_transform = xform
@@ -236,8 +287,8 @@ func _update_panes(delta: float) -> void:
 		var ny: float = _noise_y.get_noise_2d(0.0, t)
 		var nr: float = _noise_r.get_noise_2d(t, t * 0.5)
 
-		var trans_offset: Vector2 = Vector2(nx, ny) * (state.magnitude_px * amp)
-		var rot_deg: float = state.rotation_deg * amp * nr
+		var trans_offset: Vector2 = Vector2(nx, ny) * (state.magnitude_px * amp * state.displacement_mult)
+		var rot_deg: float = state.rotation_deg * amp * state.rotation_mult * nr
 
 		_apply_shake(state, trans_offset, rot_deg)
 

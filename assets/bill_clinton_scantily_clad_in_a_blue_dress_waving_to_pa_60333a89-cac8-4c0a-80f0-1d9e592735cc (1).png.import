@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://05nd44ors1af"
+path="res://.godot/imported/bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_60333a89-cac8-4c0a-80f0-1d9e592735cc (1).png-77ebcc9527712cb85ef7720e16a46e66.ctex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://assets/bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_60333a89-cac8-4c0a-80f0-1d9e592735cc (1).png"
+dest_files=["res://.godot/imported/bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_60333a89-cac8-4c0a-80f0-1d9e592735cc (1).png-77ebcc9527712cb85ef7720e16a46e66.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

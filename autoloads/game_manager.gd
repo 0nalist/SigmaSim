@@ -64,6 +64,8 @@ func reset_managers() -> void:
 	PlayerManager.reset()
 	WindowManager.reset()
 	TaskManager.reset()
+	UpgradeManager.reset()
+	# Add more as systems grow
 	# Add more as systems grow
 
 func _on_reload_save():

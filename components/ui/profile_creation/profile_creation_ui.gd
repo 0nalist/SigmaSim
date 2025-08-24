@@ -42,22 +42,30 @@ func _show_step(index: int) -> void:
 	next_button.disabled = true
 
 func _on_step_valid(valid: bool) -> void:
-	print("valid!!")
-	next_button.disabled = not valid
+		print("valid!!")
+		next_button.disabled = not valid
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_accept") and not next_button.disabled:
+			next_button.emit_signal("pressed")
+			get_viewport().set_input_as_handled()
 
 func _finish_profile_creation():
-		var password = user_data.get("password", "")
-		var seed_val: int
-		if password != "":
-				seed_val = PlayerManager.djb2(password)
-		else:
-				seed_val = int(Time.get_unix_time_from_system())
-		user_data["global_rng_seed"] = seed_val
-		RNGManager.init_seed(seed_val)
-		var slot_id = SaveManager.get_next_available_slot()
-		SaveManager.initialize_new_profile(slot_id, user_data)
-		emit_signal("profile_created", slot_id)
-		queue_free()
+	var password = user_data.get("password", "")
+	var seed_val: int
+	if password != "":
+		seed_val = PlayerManager.djb2(password)
+		print("Profile creation password:", password, " -> seed:", seed_val)
+	else:
+		seed_val = int(Time.get_unix_time_from_system())
+		print("Profile creation no password; using unix time seed:", seed_val)
+	user_data["global_rng_seed"] = seed_val
+	RNGManager.init_seed(seed_val)
+	var slot_id = SaveManager.get_next_available_slot()
+	print("Finalizing profile in slot", slot_id, "with seed", seed_val)
+	SaveManager.initialize_new_profile(slot_id, user_data)
+	emit_signal("profile_created", slot_id)
+	queue_free()
 
 
 

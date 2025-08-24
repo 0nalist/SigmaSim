@@ -2,6 +2,13 @@
 class_name NPC
 extends Resource
 
+signal player_broke_up
+
+const BASE_GIFT_COST: float = 10.0
+const BASE_DATE_COST: float = 100.0
+
+
+
 # === Basic Info ===
 @export var full_name: String
 @export var first_name: String
@@ -15,22 +22,28 @@ extends Resource
 @export var occupation: String = "Funemployed"
 @export var relationship_status: String = "Single"
 
-enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, DIVORCED, EX }
-@export var relationship_stage: RelationshipStage = RelationshipStage.STRANGER
+@export var relationship_stage: int = NPCManager.RelationshipStage.STRANGER
 @export_range(0, 1000000000, 1) var relationship_progress: float = 0.0
+
+@export var exclusivity_core: int = NPCManager.ExclusivityCore.POLY
+
+@export var claimed_exclusive_boost: bool = false
+@export var claimed_serious_monog_boost: bool = false
 
 # Relationship with Player
 
 @export_range(-100, 100, 0.1) var affinity: float = 0.0 # 0–100
 
-@export_range(0, 100, 0.1) var affinity_equilibrium: float = 0.0
+@export_range(0, 100, 0.1) var affinity_equilibrium: float = 100.0
 
 @export_range(0, 100, 0.1) var rizz: int
 @export_range(0, 100, 1) var attractiveness: int
-@export var dates_paid: int = 0
+@export var date_count: int = 0
+@export var gift_count: int = 0
 @export var love_cooldown: int = 0
-@export var gift_cost: float = 25.0
-@export var date_cost: float = 200.0
+var gift_cost: float = 0.0
+var date_cost: float = 0.00
+@export var proposal_cost: float = 25000.0
 
 # === Economics ===
 var income: int
@@ -149,18 +162,21 @@ func to_dict() -> Dictionary:
 		"relationship_status": relationship_status,
 		"relationship_stage": relationship_stage,
 		"relationship_progress": relationship_progress,
+		"exclusivity_core": exclusivity_core,
+		"claimed_exclusive_boost": claimed_exclusive_boost,
+		"claimed_serious_monog_boost": claimed_serious_monog_boost,
 		"affinity": affinity,
 		"affinity_equilibrium": affinity_equilibrium,
 		"rizz": rizz,
 		"attractiveness": attractiveness,
-		"dates_paid": dates_paid,
+		"date_count": date_count,
+		"gift_count": gift_count,
 		# Store remaining cooldown time rather than absolute game minutes
 		# to avoid inflated values when reloading before the TimeManager
 		# has restored the canonical clock. This value is re-expanded to
 		# an absolute timestamp in `from_dict`.
 		"love_cooldown": _get_love_cooldown(),
-		"gift_cost": gift_cost,
-		"date_cost": date_cost,
+		"proposal_cost": proposal_cost,
 
 		"income": income,
 		"wealth": wealth,
@@ -207,25 +223,63 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.username = _safe_string(data.get("username"))
 	npc.occupation  = _safe_string(data.get("occupation"), "Funemployed")
 	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
-	npc.relationship_stage = _safe_int(data.get("relationship_stage"), RelationshipStage.STRANGER)
+	npc.relationship_stage = _safe_int(data.get("relationship_stage"), NPCManager.RelationshipStage.STRANGER)
 	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
+	npc.exclusivity_core = _safe_int(data.get("exclusivity_core"), NPCManager.ExclusivityCore.POLY)
+	if not data.has("exclusivity_core"):
+		var legacy_ex: Variant = data.get("exclusivity")
+		if legacy_ex != null:
+			var legacy_val: String = _safe_string(legacy_ex)
+			match legacy_val:
+				"EXCLUSIVE", "MONOGAMOUS":
+					npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+				"POLY", "OPEN":
+					npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+				"CHEATING":
+					npc.exclusivity_core = NPCManager.ExclusivityCore.CHEATING
+				"UNMENTIONED", "DATING_AROUND":
+					npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+				_:
+					if npc.relationship_stage >= NPCManager.RelationshipStage.SERIOUS:
+						npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+					else:
+						npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+		else:
+			if npc.relationship_stage >= NPCManager.RelationshipStage.SERIOUS:
+				npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+			else:
+				npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+	npc.claimed_exclusive_boost = _safe_int(data.get("claimed_exclusive_boost"), 0) != 0
+	npc.claimed_serious_monog_boost = _safe_int(data.get("claimed_serious_monog_boost"), 0) != 0
 	npc.affinity = _safe_float(data.get("affinity"), 0.0)
-	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), float(npc.relationship_stage) * 10.0)
+	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 100.0)
 	npc.rizz = _safe_int(data.get("rizz"), 0)
 	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
-	npc.dates_paid = _safe_int(data.get("dates_paid"), 0)
-		# Older saves stored the absolute game-minute when the cooldown ended.
-		# Newer saves store only the remaining minutes. Detect which format was
-		# used and reconstruct the proper absolute timestamp.
+
+	var saved_gift_cost: float = _safe_float(data.get("gift_cost"), BASE_GIFT_COST)
+	var saved_date_cost: float = _safe_float(data.get("date_cost"), BASE_DATE_COST)
+	npc.date_count = _safe_int(data.get("date_count"), -1)
+	if npc.date_count < 0:
+			npc.date_count = _safe_int(data.get("dates_paid"), -1)
+	npc.gift_count = _safe_int(data.get("gift_count"), -1)
+	if npc.date_count < 0:
+			npc.date_count = int(log(max(saved_date_cost, BASE_DATE_COST) / BASE_DATE_COST) / log(2.0))
+	if npc.gift_count < 0:
+			npc.gift_count = int(log(max(saved_gift_cost, BASE_GIFT_COST) / BASE_GIFT_COST) / log(2.0))
+	npc.gift_cost = (float(npc.attractiveness) / 10.0) * BASE_GIFT_COST * pow(2.0, npc.gift_count)
+	npc.date_cost = (float(npc.attractiveness) / 10.0) * BASE_DATE_COST * pow(2.0, npc.date_count)
+
+	# Older saves stored the absolute game-minute when the cooldown ended.
+	# Newer saves store only the remaining minutes. Detect which format was
+	# used and reconstruct the proper absolute timestamp.
 	var _saved_cd: int = _safe_int(data.get("love_cooldown"), 0)
 	if _saved_cd > 24 * 60:
-		npc.love_cooldown = _saved_cd
+			npc.love_cooldown = _saved_cd
 	else:
-		var _now: int = TimeManager.get_now_minutes()
-		npc.love_cooldown = _now + _saved_cd
+			var _now: int = TimeManager.get_now_minutes()
+			npc.love_cooldown = _now + _saved_cd
 
-	npc.gift_cost = _safe_float(data.get("gift_cost"), 25.0)
-	npc.date_cost = _safe_float(data.get("date_cost"), 200.0)
+	npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
 	npc.income= _safe_int(data.get("income"), 0)
 	npc.wealth= _safe_int(data.get("wealth"), 0)
 
@@ -295,3 +349,9 @@ func get_marriage_level() -> int:
 		tmp = tmp / 10
 		digits += 1
 	return digits - 5
+
+func is_in_dating() -> bool:
+	return relationship_stage == NPCManager.RelationshipStage.DATING
+
+func is_serious_or_higher() -> bool:
+	return relationship_stage >= NPCManager.RelationshipStage.SERIOUS

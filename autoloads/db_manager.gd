@@ -17,14 +17,17 @@ const SCHEMA: Dictionary = {
 		"relationship_status": {"data_type": "text"},
 		"relationship_stage": {"data_type": "int"},
 		"relationship_progress": {"data_type": "real"},
-"affinity": {"data_type": "real"},
-"affinity_equilibrium": {"data_type": "real"},
-"rizz": {"data_type": "int"},
+		"exclusivity_core": {"data_type": "int"},
+		"claimed_exclusive_boost": {"data_type": "int"},
+		"claimed_serious_monog_boost": {"data_type": "int"},
+		"affinity": {"data_type": "real"},
+		"affinity_equilibrium": {"data_type": "real"},
+		"rizz": {"data_type": "int"},
 		"attractiveness": {"data_type": "int"},
-		"dates_paid": {"data_type": "int"},
+		"date_count": {"data_type": "int"},
+		"gift_count": {"data_type": "int"},
 		"love_cooldown": {"data_type": "int"},
-		"gift_cost": {"data_type": "real"},
-		"date_cost": {"data_type": "real"},
+		"proposal_cost": {"data_type": "real"},
 		"income": {"data_type": "int"},
 		"wealth": {"data_type": "int"},
 		"preferred_pet_names": {"data_type": "text"},
@@ -68,7 +71,7 @@ const SCHEMA: Dictionary = {
 				"stats": {"data_type": "text"},
 				"move_usage_counts": {"data_type": "text"},
 				"outcome": {"data_type": "text"}
-		   }
+		}
 }
 
 func _ready():
@@ -117,6 +120,14 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	var dict = npc.to_dict()
 	dict["id"] = idx
 	dict["slot_id"] = slot_id
+	if npc.claimed_exclusive_boost:
+		dict["claimed_exclusive_boost"] = 1
+	else:
+		dict["claimed_exclusive_boost"] = 0
+	if npc.claimed_serious_monog_boost:
+		dict["claimed_serious_monog_boost"] = 1
+	else:
+		dict["claimed_serious_monog_boost"] = 0
 	# Serialize all complex fields as JSON
 	dict["gender_vector"] = to_json(dict.get("gender_vector", {"x":0,"y":0,"z":1}))
 	dict["tags"] = to_json(dict.get("tags", []))
@@ -169,6 +180,13 @@ func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
 		row["portrait_config"] = _safe_from_json(row.get("portrait_config", null), "{}")
 		out.append(NPC.from_dict(row))
 	return out
+
+func get_all_npc_ids(slot_id: int = SaveManager.current_slot_id) -> Array[int]:
+		var rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["id"])
+		var ids: Array[int] = []
+		for r in rows:
+				ids.append(int(r.id))
+		return ids
 
 func _safe_from_json(value, fallback: String) -> Variant:
 	if value == null:

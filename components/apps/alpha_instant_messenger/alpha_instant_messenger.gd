@@ -1,7 +1,7 @@
 extends Pane
 class_name AlphaInstantMessenger
 
-const SUITOR_POPUP_SCENE: PackedScene = preload("res://components/popups/suitor_popup.tscn")
+const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
 
 @onready var contacts_vbox: VBoxContainer = %ContactsVBox
 @onready var contact_button_template: Button = %ContactButtonTemplate
@@ -22,14 +22,14 @@ func _populate_contacts() -> void:
 		btn.visible = true
 		btn.text = "@%s" % npc.username
 		btn.pressed.connect(func() -> void:
-			_open_suitor_popup(idx, npc)
+			_open_ex_factor_view(idx, npc)
 		)
 		contacts_vbox.add_child(btn)
 	contact_button_template.visible = false
 
-func _open_suitor_popup(idx: int, npc: NPC) -> void:
-	var key: String = "suitor_%d" % npc.get_instance_id()
-	WindowManager.launch_popup(SUITOR_POPUP_SCENE, key, {"npc": npc, "npc_idx": idx})
+func _open_ex_factor_view(idx: int, npc: NPC) -> void:
+	var key: String = "ex_factor_%d" % npc.get_instance_id()
+	WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": idx})
 
 func _on_window_close() -> void:
 	print("closegrinder")

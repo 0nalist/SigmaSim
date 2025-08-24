@@ -41,7 +41,10 @@ size_flags_vertical = 3
 script = ExtResource("1_wlela")
 window_title = "Settings"
 window_icon = ExtResource("2_wlela")
-default_window_size = Vector2(720, 510)
+default_window_size = Vector2(760, 510)
+color1 = Color(0, 0, 0, 1)
+color2 = Color(0.15, 0.15, 0.15, 1)
+color3 = Color(0.25, 0.25, 0.25, 1)
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -157,7 +160,7 @@ text = "Siggy?"
 [node name="CreateAppsFolderButton" type="Button" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Create Apps Folder"
+text = "All, Old & Upcoming Apps"
 
 [node name="Backgrounds" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
 layout_mode = 2
@@ -192,6 +195,9 @@ color_picker_params = Array[StringName]([&"color_low", &"color_mid", &"color_hig
 toggle_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpButton")
 reset_button_path = NodePath("MarginContainer/VBoxContainer/BlueWarpResetButton")
 collect_warp_shaders = true
+flat_color_picker_path = NodePath("MarginContainer/VBoxContainer/ColorRowFlat/BlueWarpFlatColorPicker")
+flat_color_toggle_path = NodePath("MarginContainer/VBoxContainer/ColorRowFlat/BlueWarpFlatToggle")
+flat_color_rect_path = NodePath("Main/DesktopEnv/ShaderBackgroundsContainer/BlueWarpFlatColor")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer"]
 layout_mode = 2
@@ -248,6 +254,26 @@ text = "High"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+
+[node name="ColorRowFlat" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
+layout_mode = 2
+text = "Flat"
+
+[node name="BlueWarpFlatColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+color = Color(0, 0, 0.2, 1)
+
+[node name="BlueWarpFlatToggle" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Show"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -764,8 +790,12 @@ text = "Select Image"
 
 [node name="BackgroundFileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
 access = 2
 
+[connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/AutosaveRow/AutosaveCheckBox" to="." method="_on_autosave_check_box_toggled"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/SiggyButton" to="." method="_on_siggy_button_toggled"]
 [connection signal="pressed" from="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer2/CreateAppsFolderButton" to="." method="_on_create_apps_folder_button_pressed"]
 [connection signal="toggled" from="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/WavesButton" to="." method="_on_waves_button_toggled"]
