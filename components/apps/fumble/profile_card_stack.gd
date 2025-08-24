@@ -63,7 +63,7 @@ func _update_card_positions() -> void:
 
 
 func swipe_left() -> void:
-	if is_animating or cards.size() < 2:
+	if is_animating or cards.size() < 1:
 		return
 	is_animating = true
 	var card = cards[cards.size() - 1]
@@ -80,7 +80,7 @@ func swipe_left() -> void:
 
 
 func swipe_right() -> void:
-	if is_animating or cards.size() < 2:
+	if is_animating or cards.size() < 1:
 		return
 	is_animating = true
 	var card = cards[cards.size() - 1]
