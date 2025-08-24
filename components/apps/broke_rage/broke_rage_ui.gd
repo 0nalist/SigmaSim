@@ -189,4 +189,3 @@ func _build_charts_view() -> void:
 
 	if container != null:
 		charts_content.add_child(container)
-
