@@ -322,6 +322,12 @@ func can_purchase(id: String) -> bool:
 			var remainder = amount - PortfolioManager.cash
 			if remainder <= 0:
 				continue
+			# Respect credit score requirements for upgrades. If the
+			# player lacks the minimum score, purchasing should be
+			# disallowed even when credit limit remains.
+			var required_score = PortfolioManager.CREDIT_REQUIREMENTS.get("upgrades", 0)
+			if PortfolioManager.credit_score < required_score:
+				return false
 			if not PortfolioManager.can_pay_with_credit(remainder):
 				return false
 		elif currency == "ex":

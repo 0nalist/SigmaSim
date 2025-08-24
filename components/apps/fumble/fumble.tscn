@@ -302,6 +302,9 @@ layout_mode = 2
 layout_mode = 2
 text = "Min 🔥"
 
+[node name="FuglyLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
+layout_mode = 2
+
 [node name="FuglyFilterSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
 unique_name_in_owner = true
 layout_mode = 2

@@ -4,11 +4,11 @@
   "description": "Unlock the SQL tab in Daterbase.",
   "effects": [],
   "systems": [
-    "daterbase"
+	"daterbase"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "cash": 1
+	"cash": 1
   },
   "max_level": 1,
   "repeatable": false

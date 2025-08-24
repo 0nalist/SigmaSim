@@ -4,7 +4,7 @@
   "description": "Unlocks the ability to apologize to exes, letting you restart at the talking stage.",
   "effects": [],
   "systems": [
-        "eXFactor"
+		"eXFactor"
   ],
   "dependencies": [],
   "cost_per_level": {
