@@ -1,23 +1,65 @@
-# Provides a float that transparently promotes to a mantissa/exponent
-# representation once it grows beyond a threshold. Prioritizes performance
-# over accuracy by skipping math when exponents differ greatly.
+# Big-number with fast mantissa/exponent and cheap merges.
+# Prioritizes throughput: caches small powers of 10, jumps normalization with log()
+# (converted to base-10), and ignores work when exponent gaps are large.
 class_name FlexNumber
 
 # === Tunables ===
 const THRESHOLD: float = 1_000_000_000.0
 const EXP_DIFF_CUTOFF: int = 12
 
-# Small lookup to avoid pow(10, k) for -12..+12 in add().
-# Indexing helper: POW10[diff + POW10_BIAS] where diff in [-12, 12]
-const POW10_BIAS: int = 12
+# Extend cache to reduce pow() calls meaningfully without memory bloat.
+# Range covers [-32, +32] -> 65 entries
+const POW10_BIAS: int = 32
 const POW10: Array[float] = [
-	1e-12, 1e-11, 1e-10, 1e-9, 1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0,
-	1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12
+	1e-32, 1e-31, 1e-30, 1e-29, 1e-28, 1e-27, 1e-26, 1e-25, 1e-24, 1e-23,
+	1e-22, 1e-21, 1e-20, 1e-19, 1e-18, 1e-17, 1e-16, 1e-15, 1e-14, 1e-13,
+	1e-12, 1e-11, 1e-10, 1e-9,  1e-8,  1e-7,  1e-6,  1e-5,  1e-4,  1e-3,
+	1e-2,  1e-1,  1.0,
+	1e1,   1e2,   1e3,   1e4,   1e5,   1e6,   1e7,   1e8,   1e9,   1e10,
+	1e11,  1e12,  1e13,  1e14,  1e15,  1e16,  1e17,  1e18,  1e19,  1e20,
+	1e21,  1e22,  1e23,  1e24,  1e25,  1e26,  1e27,  1e28,  1e29,  1e30,
+	1e31,  1e32
 ]
+
+static func _fast_pow10(k: int) -> float:
+	var idx: int = k + POW10_BIAS
+	if idx >= 0 and idx < POW10.size():
+		return POW10[idx]
+	return pow(10.0, float(k))
+
+static func _decompose(value: float) -> Array:
+	# Returns [mantissa: float, exponent: int] with mantissa in [1,10) or (-10,-1], except 0.
+	var m: float = value
+	var e: int = 0
+	if m == 0.0:
+		return [0.0, 0]
+	var am: float = absf(m)
+
+	# If way outside range, jump using base-10 log to reduce loops to O(1).
+	if am >= 1_000_000.0 or am <= 0.000001:
+		var ge: float = floor(log(am) / log(10.0))
+		e = int(ge)
+		m = m / _fast_pow10(e)
+		am = absf(m)
+
+	# Finish with tiny integer steps to land in [1,10)
+	while am >= 10.0:
+		m *= 0.1
+		e += 1
+		am = absf(m)
+	while am < 1.0:
+		m *= 10.0
+		e -= 1
+		am = absf(m)
+	return [m, e]
+
+static func _compose(m: float, e: int) -> float:
+	# Compose mantissa/exponent, using cache when possible.
+	return m * _fast_pow10(e)
 
 var _is_big: bool = false
 var _value: float = 0.0
-var _mantissa: float = 0.0   # In [1,10) or (-10,-1], except for zero
+var _mantissa: float = 0.0  # In [1,10) or (-10,-1], except zero
 var _exponent: int = 0
 
 func _init(v: float = 0.0) -> void:
@@ -31,11 +73,9 @@ func set_value(v: float) -> void:
 	var av: float = absf(v)
 	if av >= THRESHOLD:
 		_is_big = true
-		# Fast exponent estimate without log10: climb by ×10/÷10
-		# Start with coarse guess using builtin frexp NOTE: not available in GDScript, so use loop
-		_mantissa = v
-		_exponent = 0
-		_normalize()  # cheap integer-step normalization
+		var pair: Array = _decompose(v)
+		_mantissa = pair[0]
+		_exponent = int(pair[1])
 	else:
 		_is_big = false
 		_value = v
@@ -45,67 +85,48 @@ func is_big() -> bool:
 
 func to_float() -> float:
 	if _is_big:
-		# Avoid pow; use manual scaling when exponent is small, else fallback to pow once.
-		# Since exponent can be large, just use pow here (rarely called compared to core ops).
-		return _mantissa * pow(10.0, float(_exponent))
-	else:
-		return _value
+		return _compose(_mantissa, _exponent)
+	return _value
 
 func add(amount: float) -> void:
 	if amount == 0.0:
 		return
 
-	# If self is small, try to stay small.
+	# Small self: stay small if possible
 	if not _is_big:
 		var v: float = _value + amount
-		# Only promote when exceeding threshold.
 		if v != 0.0 and absf(v) >= THRESHOLD:
 			_is_big = true
-			_mantissa = v
-			_exponent = 0
-			_normalize()
+			var pair_promote: Array = _decompose(v)
+			_mantissa = pair_promote[0]
+			_exponent = int(pair_promote[1])
 		else:
 			_value = v
 		return
 
-	# Here: self is big. Combine with 'amount' efficiently.
+	# Big self: merge efficiently
 	var aabs: float = absf(amount)
 	if aabs < THRESHOLD:
-		# Scale small amount into our exponent domain without pow
-		# m += amount / 10^exp  -> use pow once via table if exp small; else pow
-		var scaled: float
-		var e: int = _exponent
-		if e >= -POW10_BIAS and e <= POW10_BIAS:
-			scaled = amount / POW10[e + POW10_BIAS]
-		else:
-			scaled = amount / pow(10.0, float(e))
-		_mantissa += scaled
+		# Scale small addend into current exponent domain: m += amount / 10^e
+		_mantissa += amount / _fast_pow10(_exponent)
 		_normalize()
 		return
 
-	# amount is "big". Compute its exp cheaply (integer step).
-	var m_other: float = amount
-	var e_other: int = 0
-	_normalize_pair(m_other, e_other)  # normalize (by ref semantics)
+	# Big addend: decompose once
+	var other: Array = _decompose(amount)
+	var m_other: float = other[0]
+	var e_other: int = int(other[1])
 
 	var diff: int = _exponent - e_other
 	if diff >= EXP_DIFF_CUTOFF:
-		# Other is much smaller -> ignore
-		return
+		return  # other is negligible
 	if diff <= -EXP_DIFF_CUTOFF:
-		# Other dominates -> replace
 		_mantissa = m_other
 		_exponent = e_other
 		return
 
-	# Merge close exponents: m += other_m * 10^{-diff}
-	var scale: float
-	var idx: int = -diff + POW10_BIAS
-	if idx >= 0 and idx < POW10.size():
-		scale = POW10[idx]
-	else:
-		scale = pow(10.0, float(-diff))
-	_mantissa += m_other * scale
+	# Close enough: m += m_other * 10^{-diff}
+	_mantissa += m_other * _fast_pow10(-diff)
 	_normalize()
 
 func subtract(amount: float) -> void:
@@ -121,19 +142,28 @@ func multiply(amount: float) -> void:
 		var v: float = _value * amount
 		if v != 0.0 and absf(v) >= THRESHOLD:
 			_is_big = true
-			_mantissa = v
-			_exponent = 0
-			_normalize()
+			var pair_promote: Array = _decompose(v)
+			_mantissa = pair_promote[0]
+			_exponent = int(pair_promote[1])
 		else:
 			_value = v
 		return
 
-	# Big path: keep integer-step adjustments; avoid log10
-	_mantissa *= amount
+	# Big self:
+	var aabs: float = absf(amount)
+	if aabs < THRESHOLD:
+		# Scale mantissa only; normalization is cheap
+		_mantissa *= amount
+		_normalize()
+		return
+
+	# Big factor: decompose to avoid huge loops
+	var other: Array = _decompose(amount)
+	_mantissa *= other[0]
+	_exponent += int(other[1])
 	_normalize()
 
 func _normalize() -> void:
-	# Keep mantissa in [1,10) or (-10,-1], or go to zero/small path.
 	if not _is_big:
 		return
 
@@ -143,7 +173,16 @@ func _normalize() -> void:
 		_value = 0.0
 		return
 
-	# Integer-step normalization (no log10/pow)
+	# Jump if way out of range using base-10 log via natural log conversion
+	if am >= 1_000_000.0 or am <= 0.000001:
+		var ge: float = floor(log(am) / log(10.0))
+		var shift: int = int(ge)
+		if shift != 0:
+			_mantissa = _mantissa / _fast_pow10(shift)
+			_exponent += shift
+			am = absf(_mantissa)
+
+	# Finish with tiny integer steps
 	while am >= 10.0:
 		_mantissa *= 0.1
 		_exponent += 1
@@ -153,46 +192,7 @@ func _normalize() -> void:
 		_exponent -= 1
 		am = absf(_mantissa)
 
-	# Demote if we dropped below threshold overall.
-	# Instead of recomposing fully, check the cheapest sufficient condition:
-	# if exponent < 9, absolute value < 1e9 for a normalized mantissa in [1,10).
-	# (Because |mantissa|<10 and 10^exponent with exponent<=8 => <10^9)
+	# Demotion: safe because normalized |mantissa| < 10 and exponent <= 8 implies |value| < 1e9
 	if _exponent <= 8:
-		var approx: float = _mantissa * pow(10.0, float(_exponent))
-		if absf(approx) < THRESHOLD:
-			_is_big = false
-			_value = approx
-
-# Helper to normalize a raw (mantissa, exponent) pair given in "mantissa = value, exponent = 0"
-# This avoids calling log10; used when we need the "other" side in add().
-func _normalize_pair(m_in_out: float, e_in_out: int) -> void:
-	var m: float = m_in_out
-	var e: int = e_in_out
-
-	if m == 0.0:
-		# zero stays zero
-		m_in_out = 0.0
-		e_in_out = 0
-		return
-
-	var am: float = absf(m)
-	while am >= 10.0:
-		m *= 0.1
-		e += 1
-		am = absf(m)
-	while am < 1.0:
-		m *= 10.0
-		e -= 1
-		am = absf(m)
-
-	# Write back (GDScript passes by value; callers should capture return instead)
-	# Workaround: return as a tuple via Dictionary
-	# But to keep the API internal, we’ll expose a mini “return” function:
-	__assign_pair(m_in_out, e_in_out, m, e)
-
-# Internal writeback helper (emulates "out parameters")
-func __assign_pair(_m_ref: float, _e_ref: int, m: float, e: int) -> void:
-	# This function exists only to document intent; GDScript passes by value.
-	# So we will not call it; instead, callers will inline the normalization logic
-	# and assign to their locals. (Left here for clarity.)
-	pass
+		_is_big = false
+		_value = _compose(_mantissa, _exponent)
