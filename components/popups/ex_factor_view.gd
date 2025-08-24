@@ -1,6 +1,8 @@
 extends Pane
 class_name ExFactorView
 
+@export var persist_on_save := true
+
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
 const LOVE_COOLDOWN_MINUTES: int = 24 * 60
 const PROGRESS_SAVE_INTERVAL: float = 0.5
@@ -40,27 +42,29 @@ var apologize_cost: int = 10
 var npc_idx: int = -1
 var last_saved_progress: float = 0.0
 var progress_save_elapsed: float = 0.0
+var pending_npc_idx: int = -1
 
 func setup_custom(data: Dictionary) -> void:
-	npc = data.get("npc")
-	npc.gift_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_GIFT_COST * pow(2.0, npc.gift_count)
-	npc.date_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_DATE_COST * pow(2.0, npc.date_count)
-	logic.setup(npc)
-	npc_idx = data.get("npc_idx", -1)
-	last_saved_progress = npc.relationship_progress
-	name_label.text = npc.full_name
-	portrait_view.portrait_creator_enabled = true
-	if npc_idx != -1:
-		portrait_view.subject_npc_idx = npc_idx
-	if portrait_view.has_method("apply_config") and npc.portrait_config:
-		portrait_view.apply_config(npc.portrait_config)
-	breakup_reward = 0.0
-	apologize_cost = 10
-	
-	if npc_idx != -1 and npc.relationship_stage >= NPCManager.RelationshipStage.DATING:
-		NPCManager.notify_player_advanced_someone_to_dating(npc_idx)
-	
-	_update_all()
+       npc = data.get("npc")
+       npc.gift_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_GIFT_COST * pow(2.0, npc.gift_count)
+       npc.date_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_DATE_COST * pow(2.0, npc.date_count)
+       logic.setup(npc)
+       npc_idx = data.get("npc_idx", -1)
+       unique_popup_key = "exfactor_%d" % npc_idx
+       last_saved_progress = npc.relationship_progress
+       name_label.text = npc.full_name
+       portrait_view.portrait_creator_enabled = true
+       if npc_idx != -1:
+               portrait_view.subject_npc_idx = npc_idx
+       if portrait_view.has_method("apply_config") and npc.portrait_config:
+               portrait_view.apply_config(npc.portrait_config)
+       breakup_reward = 0.0
+       apologize_cost = 10
+
+       if npc_idx != -1 and npc.relationship_stage >= NPCManager.RelationshipStage.DATING:
+               NPCManager.notify_player_advanced_someone_to_dating(npc_idx)
+
+       _update_all()
 
 
 func _ready() -> void:
@@ -108,9 +112,35 @@ func _process(delta: float) -> void:
 	_update_love_button()
 
 func _exit_tree() -> void:
-		if npc_idx != -1 and npc.relationship_progress != last_saved_progress:
-				NPCManager.promote_to_persistent(npc_idx)
-				NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+                if npc_idx != -1 and npc.relationship_progress != last_saved_progress:
+                                NPCManager.promote_to_persistent(npc_idx)
+                                NPCManager.set_npc_field(npc_idx, "relationship_progress", npc.relationship_progress)
+
+
+func get_custom_save_data() -> Dictionary:
+       if npc_idx != -1:
+               return {"npc_idx": npc_idx}
+       elif pending_npc_idx != -1:
+               return {"npc_idx": pending_npc_idx}
+       return {}
+
+func load_custom_save_data(data: Dictionary) -> void:
+       pending_npc_idx = data.get("npc_idx", -1)
+       if pending_npc_idx != -1:
+               call_deferred("_try_load_npc")
+
+var npc_try_count: int = 0
+func _try_load_npc() -> void:
+       if pending_npc_idx == -1:
+               return
+       var found: NPC = NPCManager.get_npc_by_index(pending_npc_idx)
+       if found:
+               setup_custom({"npc": found, "npc_idx": pending_npc_idx})
+               pending_npc_idx = -1
+               npc_try_count = 0
+       elif npc_try_count < 5:
+               npc_try_count += 1
+               call_deferred("_try_load_npc")
 
 func _update_all() -> void:
 

@@ -223,13 +223,12 @@ func load_from_slot(slot_id: int) -> void:
 			GPUManager.load_from_data(data["gpus"])
 	if data.has("bills"):
 			BillManager.load_from_data(data["bills"])
-	if data.has("desktop"):
-			DesktopLayoutManager.load_from_data(data["desktop"])
-	if data.has("windows"):  # Always load windows last
-		WindowManager.load_from_data(data["windows"])
-	BillManager.is_loading = false
-	BillManager.show_due_popups()
-	NPCManager.restore_encountered_from_db()
+        if data.has("desktop"):
+                        DesktopLayoutManager.load_from_data(data["desktop"])
+        if data.has("windows"):  # Always load windows last
+                WindowManager.load_from_data(data["windows"])
+        BillManager.is_loading = false
+        NPCManager.restore_encountered_from_db()
 
 
 func reset_game_state() -> void:

@@ -340,16 +340,16 @@ func reset() -> void:
 
 # --- Save / Load ---
 func get_save_data() -> Array:
-	var window_data = []
-	for win in open_windows.keys():
-		var pane = win.pane
-		if not pane or pane.is_popup:
-			continue  # Bill popups handled by BillManager separately
+        var window_data = []
+        for win in open_windows.keys():
+                var pane = win.pane
+               if not pane or (pane.is_popup and not pane.persist_on_save):
+                       continue  # Skip transient popups
 
-		var scene_path = pane.scene_file_path if pane.has_method("get_scene_file_path") else pane.get_script().resource_path
+                var scene_path = pane.scene_file_path if pane.has_method("get_scene_file_path") else pane.get_script().resource_path
 
-		window_data.append({
-			"scene_path": scene_path,
+                window_data.append({
+                        "scene_path": scene_path,
 			"position": SaveManager.vector2_to_dict(win.position),
 			"size": SaveManager.vector2_to_dict(win.size),
 			"minimized": not win.visible,
