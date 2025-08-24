@@ -338,20 +338,19 @@ func reset() -> void:
 	popup_registry.clear()
 	focused_window = null
 
-# --- Save / Load --- #
 
 # --- Save / Load ---
 func get_save_data() -> Array:
-        var window_data = []
-        for win in open_windows.keys():
-                var pane = win.pane
-               if not pane or (pane.is_popup and not pane.persist_on_save):
-                       continue  # Skip transient popups
+	var window_data: Array = []
+	for win in open_windows.keys():
+		var pane = win.pane
+		if not pane or (pane.is_popup and not pane.persist_on_save):
+			continue  # Skip transient popups
 
-                var scene_path = pane.scene_file_path if pane.has_method("get_scene_file_path") else pane.get_script().resource_path
+		var scene_path: String = pane.scene_file_path if pane.has_method("get_scene_file_path") else pane.get_script().resource_path
 
-                window_data.append({
-                        "scene_path": scene_path,
+		window_data.append({
+			"scene_path": scene_path,
 			"position": SaveManager.vector2_to_dict(win.position),
 			"size": SaveManager.vector2_to_dict(win.size),
 			"minimized": not win.visible,
@@ -360,11 +359,12 @@ func get_save_data() -> Array:
 		})
 	return window_data
 
+
 func load_from_data(window_data: Array) -> void:
 	reset()
 
 	for entry in window_data:
-		var scene_path = entry.get("scene_path", "")
+		var scene_path: String = entry.get("scene_path", "")
 		if scene_path == "":
 			continue
 
@@ -373,21 +373,21 @@ func load_from_data(window_data: Array) -> void:
 			push_error("Could not load scene at path: %s" % scene_path)
 			continue
 
-		var pane = scene.instantiate() as Pane
+		var pane: Pane = scene.instantiate() as Pane
 		if not pane:
 			push_error("Loaded scene does not extend Pane!")
 			continue
 
-		var window = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+		var window: WindowFrame = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
 		window.load_pane(pane)
 
 		register_window(window, pane.show_in_taskbar)
 
 		if entry.has("windowless_mode"):
 			window.windowless_mode = entry["windowless_mode"]
-		
-		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), pane.default_window_size)
-		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
+
+		var restored_size: Vector2 = SaveManager.dict_to_vector2(entry.get("size", {}), pane.default_window_size)
+		var restored_position: Vector2 = SaveManager.dict_to_vector2(entry.get("position", {}))
 
 		# IMPORTANT: Set position and size AFTER registering
 		window.set_deferred("size", restored_size)

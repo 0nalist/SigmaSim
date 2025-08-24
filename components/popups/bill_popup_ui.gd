@@ -69,24 +69,24 @@ func _on_autopay_changed(enabled: bool) -> void:
 # --- SAVE SUPPORT ---
 
 func get_custom_save_data() -> Dictionary:
-       return {
-               "bill_name": bill_name,
-               "amount": amount,
-               "date_key": date_key
-       }
+	return {
+			"bill_name": bill_name,
+			"amount": amount,
+			"date_key": date_key
+	}
 
 func load_custom_save_data(data: Dictionary) -> void:
-       bill_name = data.get("bill_name", "")
-       amount = data.get("amount", 0.0)
-       date_key = data.get("date_key", TimeManager.get_formatted_date())
-       interest_rate = PortfolioManager.credit_interest_rate
-       total_with_interest = amount * (1.0 + interest_rate)
-       _update_display()
+	bill_name = data.get("bill_name", "")
+	amount = data.get("amount", 0.0)
+	date_key = data.get("date_key", TimeManager.get_formatted_date())
+	interest_rate = PortfolioManager.credit_interest_rate
+	total_with_interest = amount * (1.0 + interest_rate)
+	_update_display()
 
-       BillManager.register_popup(self, date_key)
+	BillManager.register_popup(self, date_key)
 
-       var window = get_parent().get_parent().get_parent() as WindowFrame
-       if window:
-               window.window_can_close = false
-               window.refresh_window_controls()
-               window.set_size(Vector2(400,480))
+	var window = get_parent().get_parent().get_parent() as WindowFrame
+	if window:
+			window.window_can_close = false
+			window.refresh_window_controls()
+			window.set_size(Vector2(400,480))

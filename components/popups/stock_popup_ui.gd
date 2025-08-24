@@ -1,7 +1,7 @@
 extends Pane
 class_name StockPopupUI
 
-@export var persist_on_save := true
+
 
 @onready var label_symbol = %LabelSymbol
 @onready var label_price = %LabelPrice
@@ -22,15 +22,15 @@ func setup_custom(args) -> void:
 		setup(args)
 
 func setup(_stock: Stock) -> void:
-       stock = _stock
-       unique_popup_key = "stock_%s" % stock.symbol
-       HistoryManager.add_sample(stock.symbol, TimeManager.get_now_minutes(), stock.price)
-       price_chart.clear_series()
-       price_chart.add_series(stock.symbol, "Price", Color.GREEN)
-       _update_ui()
-       window_title = str(stock.symbol) + " " + str(stock.price)
-       # Connect signal
-       MarketManager.stock_price_updated.connect(_on_stock_price_updated)
+	stock = _stock
+	unique_popup_key = "stock_%s" % stock.symbol
+	HistoryManager.add_sample(stock.symbol, TimeManager.get_now_minutes(), stock.price)
+	price_chart.clear_series()
+	price_chart.add_series(stock.symbol, "Price", Color.GREEN)
+	_update_ui()
+	window_title = str(stock.symbol) + " " + str(stock.price)
+	# Connect signal
+	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
 func _ready() -> void:
 	super._ready()
@@ -55,22 +55,22 @@ func _update_ui() -> void:
 	label_owned.text = str(PortfolioManager.stocks_owned.get(stock.symbol, 0))
 
 func _on_buy_pressed() -> void:
-				if stock and PortfolioManager.buy_stock(stock.symbol):
-								_update_ui()
+	if stock and PortfolioManager.buy_stock(stock.symbol):
+		_update_ui()
 
 func _on_sell_pressed() -> void:
-                               if stock and PortfolioManager.sell_stock(stock.symbol):
-                                                               _update_ui()
+	if stock and PortfolioManager.sell_stock(stock.symbol):
+		_update_ui()
 
 
 func get_custom_save_data() -> Dictionary:
-       if stock:
-               return {"symbol": stock.symbol}
-       return {}
+	if stock:
+			return {"symbol": stock.symbol}
+	return {}
 
 func load_custom_save_data(data: Dictionary) -> void:
-       var symbol: String = data.get("symbol", "")
-       if symbol != "":
-               var s: Stock = MarketManager.get_stock(symbol)
-               if s:
-                       setup(s)
+	var symbol: String = data.get("symbol", "")
+	if symbol != "":
+		var s: Stock = MarketManager.get_stock(symbol)
+		if s:
+			setup(s)
