@@ -43,4 +43,17 @@ func _update_ui() -> void:
 		label_block_time.text = "%.2f" % crypto.block_time
 		label_power.text = str(crypto.power_required)
 		label_all_time_high.text = "$%.2f" % crypto.all_time_high
-		label_owned.text = "%.4f" % PortfolioManager.get_crypto_amount(crypto.symbol)
+                label_owned.text = "%.4f" % PortfolioManager.get_crypto_amount(crypto.symbol)
+
+
+# --- Save Support ---
+
+func get_custom_save_data() -> Dictionary:
+        return {"symbol": crypto.symbol if crypto != null else ""}
+
+func load_custom_save_data(data: Dictionary) -> void:
+        var symbol: String = data.get("symbol", "")
+        if symbol != "":
+                var c: Cryptocurrency = MarketManager.crypto_market.get(symbol)
+                if c:
+                        setup(c)

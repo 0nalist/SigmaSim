@@ -18,6 +18,9 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
 script = ExtResource("1_ah1wq")
 default_window_size = Vector2(470, 300)
+is_popup = true
+persistent = true
+show_in_taskbar = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

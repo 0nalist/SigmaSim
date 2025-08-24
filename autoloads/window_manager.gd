@@ -341,21 +341,25 @@ func reset() -> void:
 # --- Save / Load ---
 func get_save_data() -> Array:
 	var window_data = []
-	for win in open_windows.keys():
-		var pane = win.pane
-		if not pane or pane.is_popup:
-			continue  # Bill popups handled by BillManager separately
+        for win in open_windows.keys():
+                var pane = win.pane
+                if not pane:
+                        continue
+                if pane.is_popup and not pane.persistent:
+                        continue  # Skip non-persistent popups (e.g. bill reminders)
 
 		var scene_path = pane.scene_file_path if pane.has_method("get_scene_file_path") else pane.get_script().resource_path
 
-		window_data.append({
-			"scene_path": scene_path,
-			"position": SaveManager.vector2_to_dict(win.position),
-			"size": SaveManager.vector2_to_dict(win.size),
-			"minimized": not win.visible,
-			"windowless_mode": win.windowless_mode,
-			"custom_data": pane.get_custom_save_data() if pane.has_method("get_custom_save_data") else {},
-		})
+                window_data.append({
+                        "scene_path": scene_path,
+                        "position": SaveManager.vector2_to_dict(win.position),
+                        "size": SaveManager.vector2_to_dict(win.size),
+                        "minimized": not win.visible,
+                        "windowless_mode": win.windowless_mode,
+                        "unique_popup_key": pane.unique_popup_key,
+                        "is_popup": pane.is_popup,
+                        "custom_data": pane.get_custom_save_data() if pane.has_method("get_custom_save_data") else {},
+                })
 	return window_data
 
 func load_from_data(window_data: Array) -> void:
@@ -376,24 +380,26 @@ func load_from_data(window_data: Array) -> void:
 			push_error("Loaded scene does not extend Pane!")
 			continue
 
-		var window = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
-		window.load_pane(pane)
+                var window = preload("res://components/ui/window_frame.tscn").instantiate() as WindowFrame
+                window.load_pane(pane)
 
-		register_window(window, pane.show_in_taskbar)
+                pane.unique_popup_key = entry.get("unique_popup_key", "")
 
-		if entry.has("windowless_mode"):
-			window.windowless_mode = entry["windowless_mode"]
-		
-		var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), pane.default_window_size)
-		var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
+                register_window(window, pane.show_in_taskbar)
 
-		# IMPORTANT: Set position and size AFTER registering
-		window.set_deferred("size", restored_size)
-		window.set_deferred("position", restored_position)
-		window.default_size = restored_size
+                if entry.has("windowless_mode"):
+                        window.windowless_mode = entry["windowless_mode"]
 
-		if entry.get("minimized", false):
-			window.hide()
+                var restored_size = SaveManager.dict_to_vector2(entry.get("size", {}), pane.default_window_size)
+                var restored_position = SaveManager.dict_to_vector2(entry.get("position", {}))
 
-		if pane.has_method("load_custom_save_data"):
-			pane.load_custom_save_data(entry.get("custom_data", {}))
+                # IMPORTANT: Set position and size AFTER registering
+                window.set_deferred("size", restored_size)
+                window.set_deferred("position", restored_position)
+                window.default_size = restored_size
+
+                if entry.get("minimized", false):
+                        window.hide()
+
+                if pane.has_method("load_custom_save_data"):
+                        pane.load_custom_save_data(entry.get("custom_data", {}))

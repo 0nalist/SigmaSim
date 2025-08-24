@@ -41,5 +41,18 @@ func _update_ui() -> void:
 		label_trailing.text = "$%.2f" % stock.trailing_average
 		label_sentiment.text = "%.2f" % stock.sentiment
 		label_volatility.text = "%.2f" % stock.volatility
-		label_momentum.text = "%.2f" % stock.momentum
-		label_owned.text = str(PortfolioManager.stocks_owned.get(stock.symbol, 0))
+                label_momentum.text = "%.2f" % stock.momentum
+                label_owned.text = str(PortfolioManager.stocks_owned.get(stock.symbol, 0))
+
+
+# --- Save Support ---
+
+func get_custom_save_data() -> Dictionary:
+        return {"symbol": stock.symbol if stock != null else ""}
+
+func load_custom_save_data(data: Dictionary) -> void:
+        var symbol: String = data.get("symbol", "")
+        if symbol != "":
+                var s: Stock = MarketManager.get_stock(symbol)
+                if s:
+                        setup(s)

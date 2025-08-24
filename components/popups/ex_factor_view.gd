@@ -557,7 +557,19 @@ func _on_apologize_pressed() -> void:
 	_update_all()
 
 func _on_talk_therapy_purchased(level: int) -> void:
-	if npc == null:
-		return
-	if npc.relationship_stage in [NPCManager.RelationshipStage.DIVORCED, NPCManager.RelationshipStage.EX]:
-		apologize_button.visible = true
+        if npc == null:
+                return
+        if npc.relationship_stage in [NPCManager.RelationshipStage.DIVORCED, NPCManager.RelationshipStage.EX]:
+                apologize_button.visible = true
+
+# --- Save Support ---
+
+func get_custom_save_data() -> Dictionary:
+        return {"npc_idx": npc_idx}
+
+func load_custom_save_data(data: Dictionary) -> void:
+        npc_idx = data.get("npc_idx", -1)
+        if npc_idx != -1:
+                var n: NPC = NPCManager.get_npc_by_index(npc_idx)
+                if n:
+                        setup_custom({"npc": n, "npc_idx": npc_idx})
