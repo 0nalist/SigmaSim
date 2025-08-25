@@ -37,12 +37,12 @@ func _ready() -> void:
 
 # --- persistence: autosave driver ---
 func _on_minute_tick(_mins_since_midnight: int) -> void:
-        if not persist_to_disk:
-                return
-        _minutes_since_persist += 1
-        if _minutes_since_persist >= max(1, persist_every_minutes):
-                _minutes_since_persist = 0
-                _save_to_disk_safe()
+		if not persist_to_disk:
+				return
+		_minutes_since_persist += 1
+		if _minutes_since_persist >= max(1, persist_every_minutes):
+				_minutes_since_persist = 0
+				_save_to_disk_safe()
 
 
 

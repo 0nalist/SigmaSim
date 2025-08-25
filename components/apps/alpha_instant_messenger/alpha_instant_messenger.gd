@@ -28,8 +28,8 @@ func _populate_contacts() -> void:
 	contact_button_template.visible = false
 
 func _open_ex_factor_view(idx: int, npc: NPC) -> void:
-        var key: String = "ex_factor_%d" % idx
-        WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": idx})
+	var key: String = "ex_factor_%d" % idx
+	WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": idx})
 
 func _on_window_close() -> void:
 	print("closegrinder")

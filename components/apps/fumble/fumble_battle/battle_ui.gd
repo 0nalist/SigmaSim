@@ -118,16 +118,16 @@ func _ready():
 	end_battle_screen_container.hide()
 	blocked_container.hide()
 
-        StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
-        StatManager.connect_to_stat("confidence", self, "_on_confidence_changed")
-        _update_player_attractiveness_label()
+	StatManager.connect_to_stat("dime_status", self, "_on_dime_status_changed")
+	StatManager.connect_to_stat("confidence", self, "_on_confidence_changed")
+	_update_player_attractiveness_label()
 
-        auto_timer = Timer.new()
-        auto_timer.wait_time = 0.1
-        auto_timer.one_shot = false
-        auto_timer.autostart = true
-        add_child(auto_timer)
-        auto_timer.timeout.connect(_on_auto_timer_timeout)
+	auto_timer = Timer.new()
+	auto_timer.wait_time = 0.1
+	auto_timer.one_shot = false
+	auto_timer.autostart = true
+	add_child(auto_timer)
+	auto_timer.timeout.connect(_on_auto_timer_timeout)
 
 	no_confidence_container.hide()
 
@@ -331,8 +331,8 @@ func _on_catch_button_pressed():
 	await do_move("catch")
 
 func _on_ghost_button_pressed():
-        if is_animating:
-                return
+	if is_animating:
+			return
 	if blocked:
 		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "blocked")
 		DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.BLOCKED_PLAYER)
@@ -345,22 +345,22 @@ func _on_ghost_button_pressed():
 	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "ghosted")
 	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.ACTIVE_CHAT)
 	persist_battle_stats_to_npc()
-        chat_closed.emit()
-        queue_free()
+	chat_closed.emit()
+	queue_free()
 
 
 func _on_auto_timer_timeout() -> void:
-        if is_animating:
-                return
-        var options: Array = []
-        for btn in action_buttons:
-                if btn.is_auto_selected():
-                        options.append(btn.action)
-        if options.is_empty():
-                return
-        var rng = RNGManager.fumble_battle_ui.get_rng()
-        var action = options[rng.randi_range(0, options.size() - 1)]
-        await do_move(action.name)
+		if is_animating:
+				return
+		var options: Array = []
+		for btn in action_buttons:
+				if btn.is_auto_selected():
+						options.append(btn.action)
+		if options.is_empty():
+				return
+		var rng = RNGManager.fumble_battle_ui.get_rng()
+		var action = options[rng.randi_range(0, options.size() - 1)]
+		await do_move(action.name)
 
 
 

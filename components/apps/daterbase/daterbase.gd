@@ -365,8 +365,8 @@ func _on_row_gui_input(event: InputEvent, idx: int, npc: NPC) -> void:
 		_open_ex_factor_view(idx, npc)
 
 func _open_ex_factor_view(idx: int, npc: NPC) -> void:
-        var key: String = "ex_factor_%d" % idx
-        WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": idx})
+		var key: String = "ex_factor_%d" % idx
+		WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": idx})
 
 func _on_npc_portrait_changed(idx: int, cfg: PortraitConfig) -> void:
 	if _portrait_views_by_npc.has(idx):

@@ -50,7 +50,7 @@ func setup_custom(data: Dictionary) -> void:
 	npc.date_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_DATE_COST * pow(2.0, npc.date_count)
 	logic.setup(npc)
 	npc_idx = data.get("npc_idx", -1)
-        unique_popup_key = "ex_factor_%d" % npc_idx
+	unique_popup_key = "ex_factor_%d" % npc_idx
 	last_saved_progress = npc.relationship_progress
 	
 	await ready
