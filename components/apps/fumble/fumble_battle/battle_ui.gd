@@ -607,7 +607,7 @@ var ex_award: float
 var confidence_award: float = 25.0
 
 func show_victory_screen():
-	ex_award = npc.attractiveness / 10.0 # TEMP
+	ex_award = npc.attractiveness / 100.0
 	victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
 	victory_confidence_label.text = "Confidence +" + str(confidence_award)
 	victory_name_label.text = npc.first_name + " has been added to"

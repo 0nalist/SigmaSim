@@ -75,10 +75,10 @@ const SCHEMA: Dictionary = {
 }
 
 func _enter_tree():
-        db = SQLite.new()
-        db.path = "user://sigmasim.db"
-        db.open_db()
-        _init_schema()
+		db = SQLite.new()
+		db.path = "user://sigmasim.db"
+		db.open_db()
+		_init_schema()
 
 func _init_schema():
 	for table_name in SCHEMA.keys():
