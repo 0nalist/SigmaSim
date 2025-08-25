@@ -36,3 +36,7 @@ func _on_pressed() -> void:
 
 func is_auto_selected() -> bool:
     return auto_checkbox.button_pressed if auto_checkbox else false
+
+func reset_auto_checkbox() -> void:
+    if auto_checkbox:
+        auto_checkbox.button_pressed = false
