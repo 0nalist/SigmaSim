@@ -271,16 +271,16 @@ func _on_dime_status_changed(_value: float) -> void:
 		_update_player_attractiveness_label()
 
 func _on_confidence_changed(value: float) -> void:
-        if blocked or victorious:
-                        return
-        var disable := value <= 0.0
-        for btn in action_buttons:
-                        btn.disabled = disable
-        catch_button.disabled = disable
-        inventory_button.disabled = disable
-        no_confidence_container.visible = disable
-        if disable:
-                _reset_auto_checkboxes()
+		if blocked or victorious:
+						return
+		var disable := value <= 0.0
+		for btn in action_buttons:
+						btn.disabled = disable
+		catch_button.disabled = disable
+		inventory_button.disabled = disable
+		no_confidence_container.visible = disable
+		if disable:
+				_reset_auto_checkboxes()
 
 
 func _update_player_attractiveness_label() -> void:
@@ -609,16 +609,16 @@ var ex_award: float
 var confidence_award: float = 25.0
 
 func show_victory_screen():
-        _reset_auto_checkboxes()
-        ex_award = npc.attractiveness / 100.0
-        victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
-        victory_confidence_label.text = "Confidence +" + str(confidence_award)
-        victory_name_label.text = npc.first_name + " has been added to"
-        end_battle_screen_container.show()
-        end_battle(victorious, npc)
-        FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "victory")
-        DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
-        persist_battle_stats_to_npc()
+		_reset_auto_checkboxes()
+		ex_award = npc.attractiveness / 100.0
+		victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+		victory_confidence_label.text = "Confidence +" + str(confidence_award)
+		victory_name_label.text = npc.first_name + " has been added to"
+		end_battle_screen_container.show()
+		end_battle(victorious, npc)
+		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "victory")
+		DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
+		persist_battle_stats_to_npc()
 
 func end_battle(success: bool, npc: NPC) -> void:
 	# Lock out further player interaction
@@ -634,16 +634,16 @@ func end_battle(success: bool, npc: NPC) -> void:
 		pass
 
 func _disable_all_action_buttons() -> void:
-        for btn in action_buttons:
-                btn.disabled = true
-        catch_button.disabled = true
-        ghost_button.disabled = true
-        ghost_button.text = "TTYL"
-        inventory_button.disabled = true
+		for btn in action_buttons:
+				btn.disabled = true
+		catch_button.disabled = true
+		ghost_button.disabled = true
+		ghost_button.text = "TTYL"
+		inventory_button.disabled = true
 
 func _reset_auto_checkboxes() -> void:
-        for btn in action_buttons:
-                btn.reset_auto_checkbox()
+		for btn in action_buttons:
+				btn.reset_auto_checkbox()
 
 
 
