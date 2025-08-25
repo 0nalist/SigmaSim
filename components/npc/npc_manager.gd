@@ -18,6 +18,8 @@ var encountered_npcs: Array[int] = []
 var encountered_npcs_by_app: Dictionary = {}
 var active_npcs_by_app: Dictionary = {}
 
+var daterbase_npcs: Array[int] = []
+
 var relationship_status: Dictionary = {}
 var persistent_npcs: Dictionary = {}
 var npc_overrides: Dictionary = {}
@@ -29,12 +31,13 @@ var _save_queue: Dictionary = {}
 var _save_timer: Timer
 
 func _ready() -> void:
-		TimeManager.hour_passed.connect(_on_hour_passed)
-		_save_timer = Timer.new()
-		_save_timer.wait_time = 0.5
-		_save_timer.one_shot = true
-		_save_timer.timeout.connect(_flush_save_queue)
-		add_child(_save_timer)
+                TimeManager.hour_passed.connect(_on_hour_passed)
+                _save_timer = Timer.new()
+                _save_timer.wait_time = 0.5
+                _save_timer.one_shot = true
+                _save_timer.timeout.connect(_flush_save_queue)
+                add_child(_save_timer)
+                load_daterbase_cache()
 
 func _queue_save(idx: int) -> void:
 		_save_queue[idx] = true
@@ -42,9 +45,22 @@ func _queue_save(idx: int) -> void:
 				_save_timer.start()
 
 func _flush_save_queue() -> void:
-		for idx in _save_queue.keys():
-				DBManager.save_npc(idx, npcs[idx])
-		_save_queue.clear()
+                for idx in _save_queue.keys():
+                                DBManager.save_npc(idx, npcs[idx])
+                _save_queue.clear()
+
+func load_daterbase_cache() -> void:
+                daterbase_npcs.clear()
+                var entries: Array = DBManager.get_daterbase_entries()
+                for entry in entries:
+                                daterbase_npcs.append(int(entry.npc_id))
+
+func add_daterbase_npc(idx: int) -> void:
+                if not daterbase_npcs.has(idx):
+                                daterbase_npcs.append(idx)
+
+func get_daterbase_npcs() -> Array[int]:
+                return daterbase_npcs
 
 # === MAIN API ===
 
@@ -199,17 +215,15 @@ func _load_npc_from_db(idx: int) -> NPC:
 	return npc
 
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
-	var entries: Array = DBManager.get_daterbase_entries()
-	for entry in entries:
-		var npc_idx: int = int(entry.npc_id)
-		var npc: NPC = get_npc_by_index(npc_idx)
-		var target: float = npc.affinity_equilibrium
-		var current: float = npc.affinity
-		var rate: float = StatManager.get_stat("affinity_drift_rate", 1.0)
-		if current < target:
-			set_npc_field(npc_idx, "affinity", min(current + rate, target))
-		elif current > target:
-			set_npc_field(npc_idx, "affinity", max(current - rate, target))
+        for npc_idx in daterbase_npcs:
+                var npc: NPC = get_npc_by_index(npc_idx)
+                var target: float = npc.affinity_equilibrium
+                var current: float = npc.affinity
+                var rate: float = StatManager.get_stat("affinity_drift_rate", 1.0)
+                if current < target:
+                        set_npc_field(npc_idx, "affinity", min(current + rate, target))
+                elif current > target:
+                        set_npc_field(npc_idx, "affinity", max(current - rate, target))
 
 # === RELATIONSHIP MANAGEMENT ===
 
