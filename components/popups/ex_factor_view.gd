@@ -50,7 +50,7 @@ func setup_custom(data: Dictionary) -> void:
 	npc.date_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_DATE_COST * pow(2.0, npc.date_count)
 	logic.setup(npc)
 	npc_idx = data.get("npc_idx", -1)
-        unique_popup_key = "ex_factor_%d" % npc_idx
+	unique_popup_key = "ex_factor_%d" % npc_idx
 	last_saved_progress = npc.relationship_progress
 	
 	await ready
@@ -136,18 +136,17 @@ func load_custom_save_data(data: Dictionary) -> void:
 	if pending_npc_idx != -1 and is_node_ready():
 		call_deferred("_try_load_npc")
 
-var npc_try_count: int = 0
 func _try_load_npc() -> void:
 	if pending_npc_idx == -1:
-			return
-	var found: NPC = NPCManager.get_npc_by_index(pending_npc_idx)
-	if found:
-			setup_custom({"npc": found, "npc_idx": pending_npc_idx})
+		return
+	while pending_npc_idx != -1:
+		var found: NPC = NPCManager.get_npc_by_index(pending_npc_idx)
+		if found:
+			await setup_custom({"npc": found, "npc_idx": pending_npc_idx})
 			pending_npc_idx = -1
-			npc_try_count = 0
-	elif npc_try_count < 5:
-			npc_try_count += 1
-			call_deferred("_try_load_npc")
+		else:
+			await get_tree().process_frame
+
 
 func _update_all() -> void:
 
