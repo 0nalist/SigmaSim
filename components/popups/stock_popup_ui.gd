@@ -73,4 +73,5 @@ func load_custom_save_data(data: Dictionary) -> void:
 	if symbol != "":
 		var s: Stock = MarketManager.get_stock(symbol)
 		if s:
+			await ready   # or call_deferred("setup", s)
 			setup(s)

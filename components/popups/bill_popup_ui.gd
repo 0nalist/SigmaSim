@@ -84,7 +84,7 @@ func load_custom_save_data(data: Dictionary) -> void:
 	_update_display()
 
 	BillManager.register_popup(self, date_key)
-
+	await ready
 	var window = get_parent().get_parent().get_parent() as WindowFrame
 	if window:
 			window.window_can_close = false
