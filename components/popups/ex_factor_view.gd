@@ -141,9 +141,14 @@ func get_custom_save_data() -> Dictionary:
 	return {}
 
 func load_custom_save_data(data: Dictionary) -> void:
-	pending_npc_idx = data.get("npc_idx", -1)
-	if pending_npc_idx != -1 and is_node_ready():
-		call_deferred("_try_load_npc")
+        pending_npc_idx = data.get("npc_idx", -1)
+        if pending_npc_idx == -1:
+                return
+
+        if is_node_ready():
+                call_deferred("_try_load_npc")
+        else:
+                ready.connect(_try_load_npc, CONNECT_ONE_SHOT)
 
 func _try_load_npc() -> void:
 	if pending_npc_idx == -1:
