@@ -6,7 +6,7 @@ func _ready() -> void:
 		StatManager.recalculate_all_stats_once()
 		var npc := NPC.new()
 		npc.affinity = 0.0
-		var logic := SuitorLogic.new()
+		var logic := ExFactorLogic.new()
 		#logic.setup(npc)
 		#logic.apply_love()
 		assert(npc.affinity == 7.0)

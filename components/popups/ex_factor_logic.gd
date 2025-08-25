@@ -1,4 +1,4 @@
-class_name SuitorLogic
+class_name ExFactorLogic
 extends Node
 
 signal progress_changed(new_progress: float)
@@ -130,7 +130,7 @@ func try_date() -> bool:
 	_recalc_costs()
 
 	# Progress bump from paying for date (kept same formula).
-	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
+	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
 	var boost: float = npc.date_cost / 10.0
 	npc.relationship_progress = min(npc.relationship_progress + boost, bounds.y)
 
@@ -168,7 +168,7 @@ func apply_love(now_minutes: int) -> void:
 	emit_signal("request_persist", {"love_cooldown": npc.love_cooldown, "affinity": npc.affinity})
 
 func preview_breakup_reward() -> float:
-	var bounds: Vector2 = SuitorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
+	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
 	var denom: float = bounds.y - bounds.x
 	var fraction: float = 0.0
 	if denom > 0.0:
@@ -362,10 +362,10 @@ func _emit_blocked() -> void:
 # ---------------------------- States ----------------------------
 
 class SuitorState:
-	var machine: SuitorLogic
+	var machine: ExFactorLogic
 	var npc: NPC
 
-	func _init(machine_ref: SuitorLogic) -> void:
+	func _init(machine_ref: ExFactorLogic) -> void:
 		machine = machine_ref
 		npc = machine_ref.npc
 
@@ -384,12 +384,12 @@ class SuitorState:
 class PreMarriageState extends SuitorState:
 	var stage: int
 
-	func _init(machine_ref: SuitorLogic, stage_id: int) -> void:
+	func _init(machine_ref: ExFactorLogic, stage_id: int) -> void:
 		super._init(machine_ref)
 		stage = stage_id
 
 	func update(delta: float) -> void:
-		var bounds: Vector2 = SuitorLogic.get_stage_bounds(stage, npc.relationship_progress)
+		var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, npc.relationship_progress)
 		var rate: float = max(npc.affinity, 0.0) * 0.1
 		npc.relationship_progress += rate * delta
 
@@ -398,7 +398,7 @@ class PreMarriageState extends SuitorState:
 		if range_size > 0.0:
 			frac = (npc.relationship_progress - bounds.x) / range_size
 
-		var stops: Array = SuitorLogic.get_stop_points(stage)
+		var stops: Array = ExFactorLogic.get_stop_points(stage)
 		for stop in stops:
 			var f: float = stop["fraction"]
 			var req: int = stop["required"]
@@ -415,7 +415,7 @@ class PreMarriageState extends SuitorState:
 
 	func get_stop_marks() -> Array[float]:
 		var marks: Array[float] = []
-		var stops: Array = SuitorLogic.get_stop_points(stage)
+		var stops: Array = ExFactorLogic.get_stop_points(stage)
 		for stop in stops:
 			var f2: float = stop["fraction"]
 			var req2: int = stop["required"]
@@ -424,23 +424,23 @@ class PreMarriageState extends SuitorState:
 		return marks
 
 class StrangerState extends PreMarriageState:
-	func _init(machine_ref: SuitorLogic) -> void:
+	func _init(machine_ref: ExFactorLogic) -> void:
 		super._init(machine_ref, NPCManager.RelationshipStage.STRANGER)
 
 class TalkingState extends PreMarriageState:
-	func _init(machine_ref: SuitorLogic) -> void:
+	func _init(machine_ref: ExFactorLogic) -> void:
 		super._init(machine_ref, NPCManager.RelationshipStage.TALKING)
 
 class DatingState extends PreMarriageState:
-	func _init(machine_ref: SuitorLogic) -> void:
+	func _init(machine_ref: ExFactorLogic) -> void:
 		super._init(machine_ref, NPCManager.RelationshipStage.DATING)
 
 class SeriousState extends PreMarriageState:
-	func _init(machine_ref: SuitorLogic) -> void:
+	func _init(machine_ref: ExFactorLogic) -> void:
 		super._init(machine_ref, NPCManager.RelationshipStage.SERIOUS)
 
 class EngagedState extends PreMarriageState:
-	func _init(machine_ref: SuitorLogic) -> void:
+	func _init(machine_ref: ExFactorLogic) -> void:
 		super._init(machine_ref, NPCManager.RelationshipStage.ENGAGED)
 
 class MarriedState extends SuitorState:

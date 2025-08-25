@@ -33,7 +33,7 @@ const PROGRESS_MIN_DELTA: float = 0.01
 @onready var exclusivity_button: Button = %ExclusivityButton
 
 var npc: NPC
-var logic: SuitorLogic = SuitorLogic.new()
+var logic: ExFactorLogic = ExFactorLogic.new()
 var npc_idx: int = -1
 var last_saved_progress: float = 0.0
 var progress_save_elapsed: float = 0.0
@@ -175,7 +175,7 @@ func _refresh_all() -> void:
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
 	if stage == NPCManager.RelationshipStage.MARRIED:
-		var level: int = SuitorLogic.get_marriage_level(npc.relationship_progress)
+		var level: int = ExFactorLogic.get_marriage_level(npc.relationship_progress)
 		relationship_stage_label.text = "Level %d Marriage" % level
 		relationship_bar.set_mark_fractions([])
 		relationship_value_label.text = ""
@@ -190,7 +190,7 @@ func _update_relationship_bar() -> void:
 	var next_stage: int = stage + 1
 	relationship_stage_label.text = "%s -> %s" % [STAGE_NAMES[stage], STAGE_NAMES[next_stage]]
 
-	var bounds: Vector2 = SuitorLogic.get_stage_bounds(stage, npc.relationship_progress)
+	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, npc.relationship_progress)
 	var maxv: float = bounds.y - bounds.x
 	var val: float = npc.relationship_progress - bounds.x
 	relationship_bar.max_value = maxv
