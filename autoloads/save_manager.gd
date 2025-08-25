@@ -133,9 +133,10 @@ func save_to_slot(slot_id: int) -> void:
 		"bills": BillManager.get_save_data(),
 		"gpus": GPUManager.get_save_data(),
 		"upgrades": UpgradeManager.get_save_data(),
+		"history": HistoryManager.get_save_data(),
 		"windows": WindowManager.get_save_data(),
 		"desktop": DesktopLayoutManager.get_save_data(),
-	}
+        }
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
@@ -215,11 +216,14 @@ func load_from_slot(slot_id: int) -> void:
 			UpgradeManager.load_from_data(data["upgrades"])
 	if data.has("tasks"):
 			TaskManager.load_from_data(data["tasks"])
-	if data.has("market"):
-			MarketManager.load_from_data(data["market"])
+        if data.has("market"):
+                        MarketManager.load_from_data(data["market"])
 
-	if data.has("workers"):
-			WorkerManager.load_from_data(data["workers"])
+        if data.has("history"):
+                        HistoryManager.load_from_data(data["history"])
+
+        if data.has("workers"):
+                        WorkerManager.load_from_data(data["workers"])
 	if data.has("gpus"):
 			GPUManager.load_from_data(data["gpus"])
 	if data.has("bills"):
