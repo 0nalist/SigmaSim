@@ -59,16 +59,20 @@ func setup_custom(data: Dictionary) -> void:
 		ready.connect(_finalize_setup, CONNECT_ONE_SHOT)
 
 func _connect_logic_signals() -> void:
-	logic.progress_changed.connect(_on_progress_changed)
-	logic.stage_gate_reached.connect(_on_stage_gate)
-	logic.stage_changed.connect(_on_stage_changed)
-	logic.affinity_changed.connect(_on_affinity_changed)
-	logic.equilibrium_changed.connect(_on_equilibrium_changed)
-	logic.costs_changed.connect(_on_costs_changed)
-	logic.cooldown_changed.connect(_on_cooldown_changed)
-	logic.exclusivity_changed.connect(_on_exclusivity_changed)
-	logic.blocked_state_changed.connect(_on_blocked_state_changed)
-	logic.request_persist.connect(_persist_fields)
+        logic.progress_changed.connect(_on_progress_changed)
+        logic.stage_gate_reached.connect(_on_stage_gate)
+        logic.stage_changed.connect(_on_stage_changed)
+        logic.affinity_changed.connect(_on_affinity_changed)
+        logic.equilibrium_changed.connect(_on_equilibrium_changed)
+        logic.costs_changed.connect(_on_costs_changed)
+        logic.cooldown_changed.connect(_on_cooldown_changed)
+        logic.exclusivity_changed.connect(_on_exclusivity_changed)
+        logic.blocked_state_changed.connect(_on_blocked_state_changed)
+        logic.request_persist.connect(_persist_fields)
+
+        if npc_idx != -1:
+                NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
+                NPCManager.affinity_equilibrium_changed.connect(_on_npc_equilibrium_changed)
 
 func _finalize_setup() -> void:
 	if npc == null:
@@ -117,8 +121,13 @@ func _process(delta: float) -> void:
 			progress_save_elapsed = 0.0
 
 func _exit_tree() -> void:
-	if npc_idx != -1 and npc.relationship_progress != last_saved_progress:
-		_persist_fields({"relationship_progress": npc.relationship_progress})
+        if npc_idx != -1:
+                if NPCManager.affinity_changed.is_connected(_on_npc_affinity_changed):
+                        NPCManager.affinity_changed.disconnect(_on_npc_affinity_changed)
+                if NPCManager.affinity_equilibrium_changed.is_connected(_on_npc_equilibrium_changed):
+                        NPCManager.affinity_equilibrium_changed.disconnect(_on_npc_equilibrium_changed)
+                if npc.relationship_progress != last_saved_progress:
+                        _persist_fields({"relationship_progress": npc.relationship_progress})
 
 # ---------------------------- Persistence glue ----------------------------
 
@@ -400,5 +409,15 @@ func _on_blocked_state_changed(is_blocked: bool) -> void:
 		(npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX)
 
 func _on_talk_therapy_purchased(_level: int) -> void:
-	if npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX:
-		apologize_button.visible = true
+        if npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX:
+                apologize_button.visible = true
+
+func _on_npc_affinity_changed(idx: int, _value: float) -> void:
+        if idx != npc_idx:
+                return
+        _update_affinity_bar()
+
+func _on_npc_equilibrium_changed(idx: int, _value: float) -> void:
+        if idx != npc_idx:
+                return
+        _update_affinity_bar()
