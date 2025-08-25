@@ -105,8 +105,9 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 					"credit_limit": 0.0
 			})
 
-	MarketManager.init_new_save_events()
-	save_to_slot(slot_id)
+        MarketManager.init_new_save_events()
+        save_to_slot(slot_id)
+        BillManager.is_loading = false
 
 
 # --- Save/Load Full Game State ---

@@ -37,16 +37,24 @@ var is_loading := false
 var debt_resources: Array[Dictionary] = []
 
 
+func _initialize_default_lifestyle() -> void:
+        lifestyle_categories.clear()
+        lifestyle_indices.clear()
+        for category in lifestyle_options.keys():
+                var option = lifestyle_options[category][0]
+                lifestyle_categories[category] = option
+                lifestyle_indices[category] = 0
+        emit_signal("lifestyle_updated")
+
+
 func _ready() -> void:
-	TimeManager.day_passed.connect(_on_day_passed)
-	#TimeManager.hour_passed.connect(_on_hour_passed)
-	PortfolioManager.credit_updated.connect(_on_credit_updated)
-	PortfolioManager.resource_changed.connect(_on_resource_changed)
-	if lifestyle_categories.is_empty():
-		for category in lifestyle_options.keys():
-			var option = lifestyle_options[category][0]
-			set_lifestyle_choice(category, option, 0)
-	print("active bills: " + str(active_bills))
+        TimeManager.day_passed.connect(_on_day_passed)
+        #TimeManager.hour_passed.connect(_on_hour_passed)
+        PortfolioManager.credit_updated.connect(_on_credit_updated)
+        PortfolioManager.resource_changed.connect(_on_resource_changed)
+        if lifestyle_categories.is_empty():
+                _initialize_default_lifestyle()
+        print("active bills: " + str(active_bills))
 
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
@@ -311,13 +319,11 @@ func _set_student_loan_balance(amount: float) -> void:
 
 
 func reset() -> void:
-	autopay_enabled = false
-	active_bills.clear()
-	pending_bill_data.clear()
-	lifestyle_categories.clear()
-	lifestyle_indices.clear()
-	debt_resources.clear()
-	emit_signal("lifestyle_updated")
+        autopay_enabled = false
+        active_bills.clear()
+        pending_bill_data.clear()
+        debt_resources.clear()
+        _initialize_default_lifestyle()
 
 
 func get_save_data() -> Dictionary:
