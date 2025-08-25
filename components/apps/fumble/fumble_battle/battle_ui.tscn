@@ -616,19 +616,6 @@ theme_override_font_sizes/font_size = 16
 text = "RIZZ"
 script = ExtResource("14_cbat")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionButton1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionButton1/MarginContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 8
-
 [node name="ActionButton2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
