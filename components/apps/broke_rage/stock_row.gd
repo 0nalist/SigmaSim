@@ -19,10 +19,14 @@ func setup(_stock: Stock) -> void:
 	last_price = stock.price
 	update_display(stock)
 
-	buy_button.pressed.connect(func():
-		emit_signal("buy_pressed", stock.symbol)
-		update_display(stock)
-	)
+        buy_button.pressed.connect(func():
+                var price := stock.price
+                if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
+                        print("Credit purchase requires Pattern Day Trader upgrade")
+                        return
+                emit_signal("buy_pressed", stock.symbol)
+                update_display(stock)
+        )
 	sell_button.pressed.connect(func():
 		emit_signal("sell_pressed", stock.symbol)
 		update_display(stock)

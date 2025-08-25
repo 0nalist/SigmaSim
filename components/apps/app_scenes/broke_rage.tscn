@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://1jylhdkewo5k"]
+[gd_scene load_steps=15 format=3 uid="uid://1jylhdkewo5k"]
 
 [ext_resource type="Texture2D" uid="uid://bx8di1m28cktr" path="res://assets/money_pixeled.png" id="1_m7phi"]
 [ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="6_m7phi"]
 [ext_resource type="Script" uid="uid://b8wfu5cxh5oyw" path="res://components/ui/chart_component.gd" id="7_t3xq1"]
 [ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_htng3"]
+[ext_resource type="PackedScene" uid="uid://brokerageupgrade" path="res://components/upgrade_scenes/brokerage_upgrade_ui.tscn" id="11_broker"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcm1f"]
 texture = ExtResource("1_m7phi")
@@ -51,6 +52,7 @@ script = ExtResource("2_o2yqo")
 window_title = "BrokeRage"
 window_icon = ExtResource("3_m7phi")
 default_window_size = Vector2(735, 500)
+upgrade_pane = ExtResource("11_broker")
 color1 = Color(0, 0, 0, 1)
 color2 = Color(0.15, 0.15, 0.15, 1)
 color3 = Color(0.25, 0.25, 0.25, 1)

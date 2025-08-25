@@ -1,0 +1,12 @@
+{
+  "id": "brokerage_pattern_day_trader",
+  "name": "Pattern Day Trader",
+  "description": "Allows purchasing stocks with credit.",
+  "effects": [],
+  "systems": ["brokerage"],
+  "dependencies": [],
+  "cost_per_level": {"cash": 25000},
+  "max_level": 1,
+  "repeatable": false,
+  "scale_by_formula": false
+}
