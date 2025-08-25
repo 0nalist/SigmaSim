@@ -1,0 +1,16 @@
+{
+  "id": "fumble_predictive_text",
+  "name": "Predictive Text",
+  "description": "Unlocks auto-select checkboxes for action moves.",
+  "effects": [],
+  "systems": [
+    "fumble"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+    "cash": 5
+  },
+  "max_level": 1,
+  "repeatable": false,
+  "scale_by_formula": false
+}
