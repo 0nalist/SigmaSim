@@ -9,15 +9,16 @@ signal student_loan_changed()
 
 var _autopay_enabled: bool = false
 var autopay_enabled: bool:
-		get:
-				return _autopay_enabled
-		set(value):
-				if _autopay_enabled == value:
-						return
-				_autopay_enabled = value
-				autopay_changed.emit(value)
+                get:
+                                return _autopay_enabled
+                set(value):
+                                if _autopay_enabled == value:
+                                                return
+                                _autopay_enabled = value
+                                autopay_changed.emit(value)
 var active_bills: Dictionary = {}
 var pending_bill_data: Dictionary = {}  # date_key: Array[Dictionary]
+var paid_bills: Dictionary = {}  # date_key: Array[String]
 
 var lifestyle_categories := {}  # category_name: Dictionary
 
@@ -48,18 +49,18 @@ func _initialize_default_lifestyle() -> void:
 
 
 func _ready() -> void:
-		TimeManager.day_passed.connect(_on_day_passed)
-		#TimeManager.hour_passed.connect(_on_hour_passed)
-		PortfolioManager.credit_updated.connect(_on_credit_updated)
-		PortfolioManager.resource_changed.connect(_on_resource_changed)
-		if lifestyle_categories.is_empty():
-				_initialize_default_lifestyle()
-		print("active bills: " + str(active_bills))
+                TimeManager.day_passed.connect(_on_day_passed)
+                #TimeManager.hour_passed.connect(_on_hour_passed)
+                PortfolioManager.credit_updated.connect(_on_credit_updated)
+                PortfolioManager.resource_changed.connect(_on_resource_changed)
+                if lifestyle_categories.is_empty():
+                                _initialize_default_lifestyle()
+                print("active bills: " + str(active_bills))
 
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
-	if is_loading:
-			return
+        if is_loading:
+                        return
 
 	var yesterday = _get_yesterday()
 	auto_resolve_bills_for_date(_format_date_key(yesterday))
@@ -75,16 +76,20 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	if not pending_bill_data.has(today_key):
 		pending_bill_data[today_key] = []
 
-	var bills_today = get_due_bills_for_date(new_day, new_month, new_year)
+        var bills_today = get_due_bills_for_date(new_day, new_month, new_year)
 
-	for bill_name in bills_today:
-		# 🧠 Check if this bill popup already exists or is pending for today
-		var already_open := false
-		for existing in active_bills[today_key]:
-				if is_instance_valid(existing) and existing.bill_name == bill_name:
-						already_open = true
-						break
-		if not already_open:
+        var already_paid: Array = paid_bills.get(today_key, [])
+
+        for bill_name in bills_today:
+                if bill_name in already_paid:
+                                continue
+                # 🧠 Check if this bill popup already exists or is pending for today
+                var already_open := false
+                for existing in active_bills[today_key]:
+                                if is_instance_valid(existing) and existing.bill_name == bill_name:
+                                                already_open = true
+                                                break
+                if not already_open:
 				for pending in pending_bill_data[today_key]:
 						if pending.get("bill_name", "") == bill_name:
 								already_open = true
@@ -98,8 +103,9 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 				print("Skipping %s bill (amount is 0)" % bill_name)
 				continue
 
-		if autopay_enabled and attempt_to_autopay(bill_name):
-			continue
+                if autopay_enabled and attempt_to_autopay(bill_name):
+                        mark_bill_paid(bill_name, today_key)
+                        continue
 
 		# Queue bill popup for display
 		pending_bill_data[today_key].append({
@@ -132,7 +138,7 @@ func center_bill_window(win: WindowFrame) -> void:
 
 
 func attempt_to_autopay(bill_name: String) -> bool:
-	var amount := get_bill_amount(bill_name)
+        var amount := get_bill_amount(bill_name)
 
 	if PortfolioManager.pay_with_cash(amount):
 		print("✅ Autopaid %s with cash" % bill_name)
@@ -143,8 +149,19 @@ func attempt_to_autopay(bill_name: String) -> bool:
 		return true
 	else:
 		print("❌ Autopay failed for %s" % bill_name)
-		#Siggy.activate("bill_unpayable")
-		return false
+                #Siggy.activate("bill_unpayable")
+                return false
+
+
+func mark_bill_paid(bill_name: String, date_key: String) -> void:
+        if not paid_bills.has(date_key):
+                paid_bills[date_key] = []
+        if bill_name not in paid_bills[date_key]:
+                paid_bills[date_key].append(bill_name)
+
+
+func is_bill_paid(bill_name: String, date_key: String) -> bool:
+        return bill_name in paid_bills.get(date_key, [])
 
 
 func get_due_bills_for_date(day: int, month: int, year: int) -> Array[String]:
@@ -186,18 +203,20 @@ func get_due_bills_for_month(month: int, year: int) -> Dictionary:
 
 func auto_resolve_bills_for_date(date_str: String) -> void:
 	
-	for popup in active_bills.get(date_str, []):
-		if popup and popup.visible:
-			if PortfolioManager.pay_with_cash(popup.amount):
-				print("✅ Autopaid %s with cash" % popup.amount)
-				popup.close()
-				return
-			elif PortfolioManager.can_pay_with_credit(popup.amount):
-				PortfolioManager.pay_with_credit(popup.amount)
-				popup.close()
-			else:
-				GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
-				#GameManager.trigger_game_over("Unpaid bill: %s" % popup.bill_name)
+        for popup in active_bills.get(date_str, []):
+                if popup and popup.visible:
+                        if PortfolioManager.pay_with_cash(popup.amount):
+                                print("✅ Autopaid %s with cash" % popup.amount)
+                                mark_bill_paid(popup.bill_name, date_str)
+                                popup.close()
+                                return
+                        elif PortfolioManager.can_pay_with_credit(popup.amount):
+                                PortfolioManager.pay_with_credit(popup.amount)
+                                mark_bill_paid(popup.bill_name, date_str)
+                                popup.close()
+                        else:
+                                GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
+                                #GameManager.trigger_game_over("Unpaid bill: %s" % popup.bill_name)
 			
 
 func get_bill_color(bill_name: String) -> Color:
@@ -319,28 +338,31 @@ func _set_student_loan_balance(amount: float) -> void:
 
 
 func reset() -> void:
-		autopay_enabled = false
-		active_bills.clear()
-		pending_bill_data.clear()
-		debt_resources.clear()
-		_initialize_default_lifestyle()
+                autopay_enabled = false
+                active_bills.clear()
+                pending_bill_data.clear()
+                paid_bills.clear()
+                debt_resources.clear()
+                _initialize_default_lifestyle()
 
 
 func get_save_data() -> Dictionary:
-	return {
-			"autopay_enabled": autopay_enabled,
-			"lifestyle_categories": lifestyle_categories.duplicate(),
-			"lifestyle_indices": lifestyle_indices.duplicate(),
-			"debt_resources": debt_resources.duplicate(true)
-	}
+        return {
+                        "autopay_enabled": autopay_enabled,
+                        "lifestyle_categories": lifestyle_categories.duplicate(),
+                        "lifestyle_indices": lifestyle_indices.duplicate(),
+                        "debt_resources": debt_resources.duplicate(true),
+                        "paid_bills": paid_bills.duplicate(true)
+        }
 
 func load_from_data(data: Dictionary) -> void:
-	autopay_enabled = data.get("autopay_enabled", false)
-	lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
-	lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
-	active_bills.clear()
-	pending_bill_data.clear()
-	var temp: Array = data.get("debt_resources", []).duplicate(true)
+        autopay_enabled = data.get("autopay_enabled", false)
+        lifestyle_categories = data.get("lifestyle_categories", {}).duplicate()
+        lifestyle_indices = data.get("lifestyle_indices", {}).duplicate()
+        paid_bills = data.get("paid_bills", {}).duplicate()
+        active_bills.clear()
+        pending_bill_data.clear()
+        var temp: Array = data.get("debt_resources", []).duplicate(true)
 	debt_resources.clear()
 	for entry in temp:
 		if typeof(entry) == TYPE_DICTIONARY:
