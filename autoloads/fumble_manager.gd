@@ -90,16 +90,18 @@ func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, mov
 
 	var data = DBManager.load_fumble_battle(battle_id, SaveManager.current_slot_id)
 	var npc_idx = int(data.npc_id) if data.size() > 0 else -1
-	if npc_idx != -1:
-		print("Saving battle", battle_id, "slot", SaveManager.current_slot_id, "outcome", outcome)
-		DBManager.save_fumble_battle(
-				battle_id,
-				npc_idx,
-				chatlog,
-				stats,
-				move_usage_counts,
-				outcome
-		)
+        if npc_idx != -1:
+                print("Saving battle", battle_id, "slot", SaveManager.current_slot_id, "outcome", outcome)
+                DBManager.save_fumble_battle(
+                                battle_id,
+                                npc_idx,
+                                chatlog,
+                                stats,
+                                move_usage_counts,
+                                outcome
+                )
+                if outcome == "victory":
+                        NPCManager.add_daterbase_npc(npc_idx)
 
 func load_battle_state(battle_id: String) -> Dictionary:
 	var data = DBManager.load_fumble_battle(battle_id, SaveManager.current_slot_id)
