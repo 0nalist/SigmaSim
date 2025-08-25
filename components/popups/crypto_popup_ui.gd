@@ -23,14 +23,14 @@ func setup_custom(args) -> void:
 				setup(args)
 
 func setup(_crypto: Cryptocurrency) -> void:
-        crypto = _crypto
-        unique_popup_key = "crypto_%s" % crypto.symbol
-        HistoryManager.add_sample(crypto.symbol, TimeManager.get_now_minutes(), crypto.price)
-        price_chart.clear_series()
-        price_chart.add_series(crypto.symbol, "Price", Color(1, 0.6, 0.2))
-        _update_ui()
-        window_title = str(crypto.symbol) + " " + str(crypto.price)
-        MarketManager.crypto_price_updated.connect(_on_crypto_price_updated)
+	crypto = _crypto
+	unique_popup_key = "crypto_%s" % crypto.symbol
+	HistoryManager.add_sample(crypto.symbol, TimeManager.get_now_minutes(), crypto.price)
+	price_chart.clear_series()
+	price_chart.add_series(crypto.symbol, "Price", Color(1, 0.6, 0.2))
+	_update_ui()
+	window_title = str(crypto.symbol) + " " + str(crypto.price)
+	MarketManager.crypto_price_updated.connect(_on_crypto_price_updated)
 
 func _ready() -> void:
 	super._ready()
@@ -71,9 +71,9 @@ func get_custom_save_data() -> Dictionary:
 	return {}
 
 func load_custom_save_data(data: Dictionary) -> void:
-        var symbol: String = data.get("symbol", "")
-        if symbol != "":
-                        var c: Cryptocurrency = MarketManager.crypto_market.get(symbol)
-                        if c:
-                                        await ready   # or call_deferred("setup", c)
-                                        setup(c)
+	var symbol: String = data.get("symbol", "")
+	if symbol != "":
+		var c: Cryptocurrency = MarketManager.crypto_market.get(symbol)
+		if c:
+			await ready   # or call_deferred("setup", c)
+			setup(c)
