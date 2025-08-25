@@ -377,7 +377,6 @@ autostart = true
 [node name="Sprite2D" type="Sprite2D" parent="Worm"]
 
 [connection signal="pressed" from="HUD/HBoxContainer/AutopilotButton" to="." method="_on_autopilot_button_pressed"]
-[connection signal="input_event" from="Worm" to="Worm" method="_on_input_event"]
 [connection signal="mouse_entered" from="Worm" to="Worm" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Worm" to="Worm" method="_on_mouse_exited"]
 [connection signal="gui_input" from="Worm/WormTexture" to="Worm" method="_on_worm_texture_gui_input"]
