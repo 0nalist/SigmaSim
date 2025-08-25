@@ -44,12 +44,20 @@ var last_saved_progress: float = 0.0
 var progress_save_elapsed: float = 0.0
 var pending_npc_idx: int = -1
 
+var npc_try_count = 0
+const NPC_TRY_MAX: int = 30
+const NPC_TRY_DELAY: float = 0.1
+
+
 func setup_custom(data: Dictionary) -> void:
+	print("[ExFactorView] setup_custom called with data=", data)
 	npc = data.get("npc")
+	print("[ExFactorView] npc=", npc)
 	npc.gift_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_GIFT_COST * pow(2.0, npc.gift_count)
 	npc.date_cost = (float(npc.attractiveness) / 10.0) * NPC.BASE_DATE_COST * pow(2.0, npc.date_count)
 	logic.setup(npc)
 	npc_idx = data.get("npc_idx", -1)
+	print("[ExFactorView] npc_idx=", npc_idx)
 	unique_popup_key = "ex_factor_%d" % npc_idx
 	last_saved_progress = npc.relationship_progress
 	
@@ -90,12 +98,12 @@ func _ready() -> void:
 	NPCManager.relationship_stage_changed.connect(_on_relationship_stage_changed)
 
 	if pending_npc_idx != -1:
+		print("[ExFactorView] _ready with pending_npc_idx=", pending_npc_idx)
 		call_deferred("_try_load_npc")
-	
+
 	await get_tree().process_frame
 	if Events.has_signal("ex_factor_talk_therapy_purchased"):
-			Events.connect("ex_factor_talk_therapy_purchased", _on_talk_therapy_purchased)
-
+		Events.connect("ex_factor_talk_therapy_purchased", _on_talk_therapy_purchased)
 
 func _process(delta: float) -> void:
 	if npc == null or npc.relationship_stage >= NPCManager.RelationshipStage.DIVORCED:
@@ -132,21 +140,24 @@ func get_custom_save_data() -> Dictionary:
 	return {}
 
 func load_custom_save_data(data: Dictionary) -> void:
+	print("[ExFactorView] load_custom_save_data called with data=", data)
 	pending_npc_idx = data.get("npc_idx", -1)
+	print("[ExFactorView] pending_npc_idx set to", pending_npc_idx)
 	if pending_npc_idx != -1 and is_node_ready():
-		call_deferred("_try_load_npc")
+			call_deferred("_try_load_npc")
 
 func _try_load_npc() -> void:
+	print("[ExFactorView] _try_load_npc called with pending_npc_idx=", pending_npc_idx)
 	if pending_npc_idx == -1:
-		return
+			return
 	while pending_npc_idx != -1:
-		var found: NPC = NPCManager.get_npc_by_index(pending_npc_idx)
-		if found:
-			await setup_custom({"npc": found, "npc_idx": pending_npc_idx})
-			pending_npc_idx = -1
-		else:
-			await get_tree().process_frame
-
+			var found: NPC = NPCManager.get_npc_by_index(pending_npc_idx)
+			print("[ExFactorView] attempting load npc_idx=", pending_npc_idx, " found=", found)
+			if found:
+					await setup_custom({"npc": found, "npc_idx": pending_npc_idx})
+					pending_npc_idx = -1
+			else:
+					await get_tree().process_frame
 
 func _update_all() -> void:
 
