@@ -552,16 +552,16 @@ func _recheck_daterbase_exclusivity(changed_idx: int) -> void:
 					come_clean_from_cheating(npc_idx)
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
-	for idx in daterbase_npcs:
-			var npc_idx: int = int(idx)
-			if npc_idx == other_idx:
-					continue
-			var npc: NPC = get_npc_by_index(npc_idx)
-			if npc.exclusivity_core != ExclusivityCore.MONOG:
-					continue
-			if npc.relationship_stage < RelationshipStage.DATING:
-					continue
-			_mark_npc_as_cheating(npc_idx, other_idx)
+        for idx in daterbase_npcs:
+                        var npc_idx: int = int(idx)
+                        if npc_idx == other_idx:
+                                        continue
+                        var npc: NPC = get_npc_by_index(npc_idx)
+                        if npc.exclusivity_core != ExclusivityCore.MONOG:
+                                        continue
+                        if npc.relationship_stage < RelationshipStage.DATING or npc.relationship_stage > RelationshipStage.MARRIED:
+                                        continue
+                        _mark_npc_as_cheating(npc_idx, other_idx)
 
 
 func can_show_go_exclusive(npc_idx: int) -> bool:
