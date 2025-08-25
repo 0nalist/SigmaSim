@@ -21,7 +21,6 @@ script = ExtResource("2_2jqea")
 window_title = "Bill"
 default_window_size = Vector2(400, 500)
 is_popup = true
-persist_on_save = true
 window_can_close = false
 window_can_minimize = false
 window_can_maximize = false

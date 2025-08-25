@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://brokerageupgradeui"]
+[gd_scene load_steps=3 format=3 uid="uid://b86c78q3ogadc"]
 
 [ext_resource type="Script" uid="uid://brokerageupgradeuigds" path="res://components/upgrade_scenes/brokerage_upgrade_ui.gd" id="1_abcde"]
 [ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2_abcde"]

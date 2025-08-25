@@ -342,8 +342,8 @@ func _prepare_next_stage_confirm() -> void:
 	if current_stage == NPCManager.RelationshipStage.DATING:
 		if npc.exclusivity_core == NPCManager.ExclusivityCore.POLY:
 			next_stage_confirm_label.text = "How do you want to get serious?"
-			next_stage_confirm_primary_button.text = "Get Serious, Monogamous"
-			next_stage_confirm_alt_button.text = "Get Serious, Polyamorous"
+			next_stage_confirm_primary_button.text = "Get SERIOUS, Monogamously"
+			next_stage_confirm_alt_button.text = "Get SERIOUS, Polyamorously"
 			next_stage_confirm_alt_button.visible = true
 		else:
 			next_stage_confirm_primary_button.text = "Get Serious"
