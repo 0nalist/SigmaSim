@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cel7rmg2pea12"]
+[gd_scene load_steps=38 format=3 uid="uid://cel7rmg2pea12"]
 
 [ext_resource type="Script" uid="uid://b4cmpyad34a6u" path="res://components/apps/fumble/fumble_battle/battle_ui.gd" id="1_ctqjn"]
 [ext_resource type="Texture2D" uid="uid://dqig7emb4n7md" path="res://assets/80scarpet.png" id="2_7gtst"]
@@ -19,8 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://dnvlxo5xu0ypo" path="res://assets/emojis/smiling_eyes_blush_twemoji_x72_1f60a.png" id="11_7gtst"]
 [ext_resource type="Texture2D" uid="uid://8icgbuxae2a8" path="res://assets/emojis/grimace_twemoji_x72_1f62c.png" id="12_mq0jq"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="13_pv"]
+[ext_resource type="Script" uid="uid://curvuva8to2r7" path="res://components/apps/fumble/fumble_battle/chat_battle_action_button.gd" id="14_cbat"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="20_7gtst"]
-[ext_resource type="Script" path="res://components/apps/fumble/fumble_battle/chat_battle_action_button.gd" id="14_cbat"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6oduf"]
 border_color = Color(0, 0, 0, 1)
@@ -608,13 +608,13 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="ActionButton1" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-script = ExtResource("14_cbat")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "RIZZ"
+script = ExtResource("14_cbat")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionButton1"]
 layout_mode = 1
@@ -630,13 +630,13 @@ layout_mode = 2
 size_flags_horizontal = 8
 
 [node name="ActionButton2" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-script = ExtResource("14_cbat")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "SIMP"
+script = ExtResource("14_cbat")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -644,22 +644,22 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="ActionButton3" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
-script = ExtResource("14_cbat")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "NEG"
+script = ExtResource("14_cbat")
 
 [node name="ActionButton4" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
-script = ExtResource("14_cbat")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "APOLOGIZE"
+script = ExtResource("14_cbat")
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2

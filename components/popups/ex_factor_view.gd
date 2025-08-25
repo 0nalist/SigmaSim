@@ -52,6 +52,9 @@ func setup_custom(data: Dictionary) -> void:
 	npc_idx = data.get("npc_idx", -1)
 	unique_popup_key = "exfactor_%d" % npc_idx
 	last_saved_progress = npc.relationship_progress
+	
+	await ready
+	
 	name_label.text = npc.full_name
 	portrait_view.portrait_creator_enabled = true
 	if npc_idx != -1:
@@ -86,6 +89,8 @@ func _ready() -> void:
 	NPCManager.exclusivity_core_changed.connect(_on_exclusivity_core_changed)
 	NPCManager.relationship_stage_changed.connect(_on_relationship_stage_changed)
 
+	if pending_npc_idx != -1:
+		call_deferred("_try_load_npc")
 	
 	await get_tree().process_frame
 	if Events.has_signal("ex_factor_talk_therapy_purchased"):
@@ -119,15 +124,17 @@ func _exit_tree() -> void:
 
 func get_custom_save_data() -> Dictionary:
 	if npc_idx != -1:
-			return {"npc_idx": npc_idx}
+		NPCManager.promote_to_persistent(npc_idx)
+		return {"npc_idx": npc_idx}
 	elif pending_npc_idx != -1:
-			return {"npc_idx": pending_npc_idx}
+		NPCManager.promote_to_persistent(pending_npc_idx)
+		return {"npc_idx": pending_npc_idx}
 	return {}
 
 func load_custom_save_data(data: Dictionary) -> void:
 	pending_npc_idx = data.get("npc_idx", -1)
-	if pending_npc_idx != -1:
-			call_deferred("_try_load_npc")
+	if pending_npc_idx != -1 and is_node_ready():
+		call_deferred("_try_load_npc")
 
 var npc_try_count: int = 0
 func _try_load_npc() -> void:
@@ -530,6 +537,8 @@ func _on_breakup_pressed() -> void:
 		text += "\n\n%s will get half of all of your assets" % npc.first_name
 	breakup_confirm_label.text = text
 	breakup_confirm.visible = true
+
+
 func _on_breakup_confirm_yes_pressed() -> void:
 	breakup_confirm.visible = false
 	var current_ex: float = StatManager.get_stat("ex", 0.0)

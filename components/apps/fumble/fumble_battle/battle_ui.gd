@@ -102,12 +102,12 @@ func get_reaction_tooltip(reaction: String) -> String:
 
 
 func _ready():
-        action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
-        for btn in action_buttons:
-                btn.action_pressed.connect(_on_action_button_pressed)
+	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
+	for btn in action_buttons:
+			btn.action_pressed.connect(_on_action_button_pressed)
 
-        catch_button.pressed.connect(_on_catch_button_pressed)
-        ghost_button.pressed.connect(_on_ghost_button_pressed)
+	catch_button.pressed.connect(_on_catch_button_pressed)
+	ghost_button.pressed.connect(_on_ghost_button_pressed)
 	
 	profile_center_container.hide()
 	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
@@ -278,26 +278,26 @@ func _update_player_attractiveness_label() -> void:
 
 
 func update_action_buttons():
-        if logic == null:
-                return
+	if logic == null:
+			return
 
-        for i in equipped_moves.size():
-                var move_type = equipped_moves[i].to_lower()
-                var use_count = move_usage_counts.get(move_type, 0)
+	for i in equipped_moves.size():
+			var move_type = equipped_moves[i].to_lower()
+			var use_count = move_usage_counts.get(move_type, 0)
 
-                var label_base = equipped_moves[i].to_upper() + "\n"
+			var label_base = equipped_moves[i].to_upper() + "\n"
 
-                if use_count >= 3:
-                        var chance := logic.get_success_chance(move_type)
-                        var chance_percent = round(chance * 100.0)
-                        label_base += str(chance_percent) + "%"
-                else:
-                        var mystery := String("?").repeat(3 - use_count)
-                        label_base += mystery
+			if use_count >= 3:
+					var chance := logic.get_success_chance(move_type)
+					var chance_percent = round(chance * 100.0)
+					label_base += str(chance_percent) + "%"
+			else:
+					var mystery := String("?").repeat(3 - use_count)
+					label_base += mystery
 
-                var action := ChatBattleAction.new()
-                action.name = equipped_moves[i]
-                action_buttons[i].load_action(action, label_base)
+			var action := ChatBattleAction.new()
+			action.name = equipped_moves[i]
+			action_buttons[i].load_action(action, label_base)
 
 # === Catch button logic ===
 	var catch_uses = move_usage_counts.get("catch", 0)
@@ -312,9 +312,9 @@ func update_action_buttons():
 
 
 func _on_action_button_pressed(action: ChatBattleAction) -> void:
-        if is_animating:
-                return
-        await do_move(action.name)
+		if is_animating:
+				return
+		await do_move(action.name)
 
 func _on_catch_button_pressed():
 	if is_animating:

@@ -26,6 +26,9 @@ func setup(_crypto: Cryptocurrency) -> void:
 	crypto = _crypto
 	unique_popup_key = "crypto_%s" % crypto.symbol
 	HistoryManager.add_sample(crypto.symbol, TimeManager.get_now_minutes(), crypto.price)
+	
+	await ready
+	
 	price_chart.clear_series()
 	price_chart.add_series(crypto.symbol, "Price", Color(1, 0.6, 0.2))
 	_update_ui()

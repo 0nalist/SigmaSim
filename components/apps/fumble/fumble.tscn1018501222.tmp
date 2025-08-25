@@ -138,7 +138,7 @@ theme_override_constants/outline_size = 12
 text = "You"
 
 [node name="PortraitView" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2" instance=ExtResource("5_5uoqt")]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 size_flags_horizontal = 4
 subject_is_player = true
