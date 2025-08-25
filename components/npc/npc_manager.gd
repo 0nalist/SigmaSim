@@ -286,6 +286,8 @@ func set_relationship_stage(npc_idx: int, new_stage: int) -> void:
 	persistent_npcs[npc_idx]["relationship_stage"] = npc.relationship_stage
 	persistent_npcs[npc_idx]["affinity_equilibrium"] = npc.affinity_equilibrium
 	DBManager.save_npc(npc_idx, npc)
+	if new_stage >= RelationshipStage.DATING:
+		add_daterbase_npc(npc_idx)
 	emit_signal("relationship_stage_changed", npc_idx, old_stage, npc.relationship_stage)
 	if old_equilibrium != npc.affinity_equilibrium:
 		emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
