@@ -34,11 +34,11 @@ func _start_pulsing() -> void:
 	pulse_tween.tween_property(sprite, "scale", Vector2(1.0, 1.0), pulse_animation_interval / 2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _collect_worm() -> void:
-        var value = StatManager.get_stat("worm_yield", 1.0)
-        PortfolioManager.add_cash(value)
-        if StatpopManager:
-                var amount := NumberFormatter.format_commas(value, 2, true)
-                StatpopManager.spawn("+$" + amount, global_position, "click", Color.GREEN)
+	var value = StatManager.get_stat("worm_yield", 1.0)
+	PortfolioManager.add_cash(value)
+	if StatpopManager:
+			var amount := NumberFormatter.format_commas(value, 2, true)
+			StatpopManager.spawn("+$" + amount, global_position, "click", Color.GREEN)
 
 
 func _on_worm_texture_mouse_entered() -> void:
@@ -54,9 +54,9 @@ func _on_worm_texture_mouse_exited() -> void:
 
 
 func _on_worm_texture_gui_input(event: InputEvent) -> void:
-        if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-                accept_event()
-                _collect_worm()
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		worm_texture.accept_event()
+		_collect_worm()
 
 
 func _on_timer_timeout() -> void:

@@ -566,50 +566,50 @@ func _load_from_disk_safe() -> void:
 
 # -------------- helpers: build/flatten ring buffers ------------
 func _make_empty_line(cap: int) -> Dictionary:
-        var line: Dictionary = {
-                "times": PackedInt32Array(),
-                "values": PackedFloat32Array(),
-                "head": 0, "size": 0, "capacity": cap
-        }
+		var line: Dictionary = {
+				"times": PackedInt32Array(),
+				"values": PackedFloat32Array(),
+				"head": 0, "size": 0, "capacity": cap
+		}
 
-        var times: PackedInt32Array = line["times"]
-        var values: PackedFloat32Array = line["values"]
-        times.resize(cap)
-        values.resize(cap)
-        line["times"] = times
-        line["values"] = values
-        return line
+		var times: PackedInt32Array = line["times"]
+		var values: PackedFloat32Array = line["values"]
+		times.resize(cap)
+		values.resize(cap)
+		line["times"] = times
+		line["values"] = values
+		return line
 
 func _make_empty_candles(cap: int) -> Dictionary:
-        var c: Dictionary = {
-                "t_open": PackedInt32Array(),
-                "t_close": PackedInt32Array(),
-                "open": PackedFloat32Array(),
-                "high": PackedFloat32Array(),
-                "low": PackedFloat32Array(),
-                "close": PackedFloat32Array(),
-                "head": 0, "size": 0, "capacity": cap
-        }
+		var c: Dictionary = {
+				"t_open": PackedInt32Array(),
+				"t_close": PackedInt32Array(),
+				"open": PackedFloat32Array(),
+				"high": PackedFloat32Array(),
+				"low": PackedFloat32Array(),
+				"close": PackedFloat32Array(),
+				"head": 0, "size": 0, "capacity": cap
+		}
 
-        var t_open: PackedInt32Array = c["t_open"]
-        var t_close: PackedInt32Array = c["t_close"]
-        var open: PackedFloat32Array = c["open"]
-        var high: PackedFloat32Array = c["high"]
-        var low: PackedFloat32Array = c["low"]
-        var close: PackedFloat32Array = c["close"]
-        t_open.resize(cap)
-        t_close.resize(cap)
-        open.resize(cap)
-        high.resize(cap)
-        low.resize(cap)
-        close.resize(cap)
-        c["t_open"] = t_open
-        c["t_close"] = t_close
-        c["open"] = open
-        c["high"] = high
-        c["low"] = low
-        c["close"] = close
-        return c
+		var t_open: PackedInt32Array = c["t_open"]
+		var t_close: PackedInt32Array = c["t_close"]
+		var open: PackedFloat32Array = c["open"]
+		var high: PackedFloat32Array = c["high"]
+		var low: PackedFloat32Array = c["low"]
+		var close: PackedFloat32Array = c["close"]
+		t_open.resize(cap)
+		t_close.resize(cap)
+		open.resize(cap)
+		high.resize(cap)
+		low.resize(cap)
+		close.resize(cap)
+		c["t_open"] = t_open
+		c["t_close"] = t_close
+		c["open"] = open
+		c["high"] = high
+		c["low"] = low
+		c["close"] = close
+		return c
 
 func _export_line(line: Dictionary) -> Dictionary:
 	var size_i: int = int(line["size"])

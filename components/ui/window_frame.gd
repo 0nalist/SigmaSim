@@ -82,6 +82,20 @@ func _ready() -> void:
 	if windowless_mode:
 		call_deferred("_setup_windowless_drag")
 
+func _unhandled_input(event: InputEvent) -> void:
+	if WindowManager == null or WindowManager.focused_window != self:
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo:
+		var key_event := event as InputEventKey
+		if key_event.ctrl_pressed and (key_event.keycode == KEY_W or key_event.keycode == KEY_Q):
+			if window_can_close:
+				_on_close_pressed()
+
+
+
+
+
 func _finalize_window_size():
 	if pane and default_size != Vector2.ZERO:
 		size = default_size
