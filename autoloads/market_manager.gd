@@ -272,11 +272,17 @@ func load_from_data(data: Dictionary) -> void:
 	crypto_market.clear()
 
 	# --- Stocks (unchanged) ---
-	for symbol: String in STOCK_RESOURCES.keys():
-		var stock: Stock = STOCK_RESOURCES[symbol].duplicate(true)
-		if data.get("stock_market", {}).has(symbol):
-			stock.from_dict(data["stock_market"][symbol])
-		register_stock(stock)
+	# Stock resources use keys like "ALPH_STOCK" but the actual symbol used in
+	# save data is stored on the resource itself (e.g. "$ALPH"). When loading
+	# we must look up saved values by the stock's symbol instead of the
+	# resource key, otherwise prices revert to their default values.
+	for res_key: String in STOCK_RESOURCES.keys():
+			var stock: Stock = STOCK_RESOURCES[res_key].duplicate(true)
+			var stock_symbol := stock.symbol
+			var saved_stocks: Dictionary = data.get("stock_market", {})
+			if saved_stocks.has(stock_symbol):
+					stock.from_dict(saved_stocks[stock_symbol])
+			register_stock(stock)
 
 	# --- Cryptos (respect resource-exported symbol/display_name) ---
 	var saved_crypto: Dictionary = data.get("crypto_market", {})
