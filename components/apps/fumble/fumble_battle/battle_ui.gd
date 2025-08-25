@@ -25,10 +25,10 @@ var block_warning_active: bool = false
 @onready var npc_attractiveness_label: Label = %NPCAttractivenessLabel
 @onready var npc_name_label: Label = %NPCNameLabel
 
-@onready var action_button_1: Button = %ActionButton1
-@onready var action_button_2: Button = %ActionButton2
-@onready var action_button_3: Button = %ActionButton3
-@onready var action_button_4: Button = %ActionButton4
+@onready var action_button_1: ChatBattleActionButton = %ActionButton1
+@onready var action_button_2: ChatBattleActionButton = %ActionButton2
+@onready var action_button_3: ChatBattleActionButton = %ActionButton3
+@onready var action_button_4: ChatBattleActionButton = %ActionButton4
 
 @onready var ghost_button: Button = %GhostButton
 @onready var catch_button: Button = %CatchButton
@@ -102,11 +102,12 @@ func get_reaction_tooltip(reaction: String) -> String:
 
 
 func _ready():
-	action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
-	
-	
-	catch_button.pressed.connect(_on_catch_button_pressed)
-	ghost_button.pressed.connect(_on_ghost_button_pressed)
+        action_buttons = [action_button_1, action_button_2, action_button_3, action_button_4]
+        for btn in action_buttons:
+                btn.action_pressed.connect(_on_action_button_pressed)
+
+        catch_button.pressed.connect(_on_catch_button_pressed)
+        ghost_button.pressed.connect(_on_ghost_button_pressed)
 	
 	profile_center_container.hide()
 	npc_profile_button.pressed.connect(_on_npc_profile_button_pressed)
@@ -277,38 +278,28 @@ func _update_player_attractiveness_label() -> void:
 
 
 func update_action_buttons():
-	if logic == null:
-		return
+        if logic == null:
+                return
 
-	for i in equipped_moves.size():
-		var move_type = equipped_moves[i].to_lower()
-		var use_count = move_usage_counts.get(move_type, 0)
+        for i in equipped_moves.size():
+                var move_type = equipped_moves[i].to_lower()
+                var use_count = move_usage_counts.get(move_type, 0)
 
-		var label_base = equipped_moves[i].to_upper() + "\n"
+                var label_base = equipped_moves[i].to_upper() + "\n"
 
-		if use_count >= 3:
-			var chance := logic.get_success_chance(move_type)
-			var chance_percent = round(chance * 100.0)
-			label_base += str(chance_percent) + "%"
-		else:
-			var mystery := String("?").repeat(3 - use_count)
-			label_base += mystery
+                if use_count >= 3:
+                        var chance := logic.get_success_chance(move_type)
+                        var chance_percent = round(chance * 100.0)
+                        label_base += str(chance_percent) + "%"
+                else:
+                        var mystery := String("?").repeat(3 - use_count)
+                        label_base += mystery
 
-		action_buttons[i].text = label_base
+                var action := ChatBattleAction.new()
+                action.name = equipped_moves[i]
+                action_buttons[i].load_action(action, label_base)
 
-		# Prevent signal stacking
-	#	if action_buttons[i].is_connected("pressed", Callable(self, "_on_action_button_pressed")):
-	#		action_buttons[i].disconnect("pressed", Callable(self, "_on_action_button_pressed"))
-	#	action_buttons[i].pressed.connect(_on_action_button_pressed.bind(i))
-	#			# Prevent signal stacking
-		var cb := Callable(self, "_on_action_button_pressed").bind(i)
-		if action_buttons[i].is_connected("pressed", cb):
-				action_buttons[i].disconnect("pressed", cb)
-		action_buttons[i].pressed.connect(cb)
-
-
-
-	# === Catch button logic ===
+# === Catch button logic ===
 	var catch_uses = move_usage_counts.get("catch", 0)
 	var label_base = "CATCH\n"
 	if catch_uses >= 3:
@@ -320,11 +311,10 @@ func update_action_buttons():
 	catch_button.text = label_base
 
 
-func _on_action_button_pressed(index):
-	if is_animating:
-		return
-	var move_type = equipped_moves[index]
-	await do_move(move_type)
+func _on_action_button_pressed(action: ChatBattleAction) -> void:
+        if is_animating:
+                return
+        await do_move(action.name)
 
 func _on_catch_button_pressed():
 	if is_animating:
