@@ -22,7 +22,12 @@ func _on_gui_input(event: InputEvent) -> void:
 		var mb: InputEventMouseButton = event
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			if mb.double_click and mb.pressed:
-				WindowManager.launch_app_by_name(app_name, item_id)
+					var item := DesktopLayoutManager.get_item(item_id)
+					var data = item.get("data", {})
+					if data is Dictionary and data.size() > 0:
+							WindowManager.launch_app_by_name(app_name, item_id)
+					else:
+							WindowManager.launch_app_by_name(app_name)
 			elif mb.pressed:
 				is_dragging = true
 				drag_offset = mb.position
