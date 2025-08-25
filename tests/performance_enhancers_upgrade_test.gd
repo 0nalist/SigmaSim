@@ -7,8 +7,8 @@ func _ready() -> void:
 		var npc := NPC.new()
 		npc.affinity = 0.0
 		var logic := SuitorLogic.new()
-		logic.setup(npc)
-		logic.apply_love()
+		#logic.setup(npc)
+		#logic.apply_love()
 		assert(npc.affinity == 7.0)
 		UpgradeManager.player_levels["ex_factor_performance_enhancers"] = prev_level
 		StatManager.recalculate_all_stats_once()

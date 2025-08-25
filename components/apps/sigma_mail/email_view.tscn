@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bfh5skc81omm5"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_n0rnv"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1_n0rnv"]
 [ext_resource type="Script" uid="uid://ba800a0ca567a" path="res://components/apps/sigma_mail/email_view.gd" id="2_n0rnv"]
 
 [node name="EmailView" type="PanelContainer"]

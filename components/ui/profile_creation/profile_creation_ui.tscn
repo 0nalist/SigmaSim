@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cc5n8gw4o0mqx"]
 
 [ext_resource type="Script" uid="uid://bxs5wpbid34tr" path="res://components/ui/profile_creation/profile_creation_ui.gd" id="1_mjw8o"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_68ei6"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="2_68ei6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clxn6"]
 bg_color = Color(0, 0.435981, 0.736537, 1)

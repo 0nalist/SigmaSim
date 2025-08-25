@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://dkd8ber0rdok0"]
 
-[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_wbg8h"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_wbg8h"]
 [ext_resource type="Script" uid="uid://dqadp0a03aco3" path="res://components/apps/work_force.gd" id="2_bq8vs"]
 [ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="2_ngx45"]
 [ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="3_bq8vs"]

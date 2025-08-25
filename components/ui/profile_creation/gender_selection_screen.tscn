@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://12a1fc403866"]
 
 [ext_resource type="Script" uid="uid://8ac725c14d5a" path="res://components/ui/profile_creation/gender_selection_screen.gd" id="1_a7i1o"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_t2cd2"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="2_t2cd2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iw0c"]
 bg_color = Color(0.784795, 0.324115, 0.742834, 1)

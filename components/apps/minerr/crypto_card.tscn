@@ -1,6 +1,6 @@
 [gd_scene load_steps=31 format=3 uid="uid://cd6b75613o34u"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_clvji"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1_clvji"]
 [ext_resource type="Texture2D" uid="uid://chka0bjnrrdmr" path="res://assets/ui/buttons/dark_purple_normal.png" id="2_opq6i"]
 [ext_resource type="Script" uid="uid://dprwc8feasjw2" path="res://components/apps/minerr/crypto_card.gd" id="3_ixyll"]
 [ext_resource type="Texture2D" uid="uid://j2kkf8roo1a4" path="res://assets/minerr/blockchain_background.png" id="4_baesq"]

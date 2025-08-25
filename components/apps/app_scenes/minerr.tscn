@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://brs7oc40iion5" path="res://assets/cursors/pickaxe.png" id="4_23boj"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="5_23boj"]
 [ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="8_x88rl"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="9_0t4uf"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="9_0t4uf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wupxk"]
 resource_local_to_scene = true

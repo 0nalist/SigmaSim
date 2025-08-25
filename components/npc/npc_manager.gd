@@ -334,15 +334,15 @@ func go_poly_during_dating(npc_idx: int) -> void:
 func transition_dating_to_serious_monog(npc_idx: int) -> void:
 	var npc: NPC = get_npc_by_index(npc_idx)
 	if npc.relationship_stage != RelationshipStage.DATING:
-			return
+		return
 	for idx in encountered_npcs:
-			var other_idx: int = int(idx)
-			if other_idx == npc_idx:
-					continue
-			var other: NPC = get_npc_by_index(other_idx)
-			if other.relationship_stage >= RelationshipStage.DATING and other.relationship_stage <= RelationshipStage.MARRIED:
-					_mark_npc_as_cheating(npc_idx, other_idx)
-					return
+		var other_idx: int = int(idx)
+		if other_idx == npc_idx:
+			continue
+		var other: NPC = get_npc_by_index(other_idx)
+		if other.relationship_stage >= RelationshipStage.DATING and other.relationship_stage <= RelationshipStage.MARRIED:
+			_mark_npc_as_cheating(npc_idx, other_idx)
+			return
 	var old_stage: int = npc.relationship_stage
 	var old_core: int = npc.exclusivity_core
 	var old_affinity: float = npc.affinity
@@ -396,7 +396,7 @@ func transition_dating_to_serious_poly(npc_idx: int) -> void:
 func request_poly_at_serious_or_engaged(npc_idx: int) -> void:
 	var npc: NPC = get_npc_by_index(npc_idx)
 	if npc.relationship_stage != RelationshipStage.SERIOUS and npc.relationship_stage != RelationshipStage.ENGAGED and npc.relationship_stage != RelationshipStage.MARRIED:
-			return
+		return
 	if npc.exclusivity_core == ExclusivityCore.POLY:
 		return
 	var old_stage: int = npc.relationship_stage
@@ -426,13 +426,13 @@ func return_to_monogamy(npc_idx: int) -> void:
 	if npc.exclusivity_core != ExclusivityCore.POLY:
 			return
 	for idx in encountered_npcs:
-			var other_idx: int = int(idx)
-			if other_idx == npc_idx:
-					continue
-			var other: NPC = get_npc_by_index(other_idx)
-			if other.relationship_stage >= RelationshipStage.DATING and other.relationship_stage <= RelationshipStage.MARRIED:
-					_mark_npc_as_cheating(npc_idx, other_idx)
-					return
+		var other_idx: int = int(idx)
+		if other_idx == npc_idx:
+			continue
+		var other: NPC = get_npc_by_index(other_idx)
+		if other.relationship_stage >= RelationshipStage.DATING and other.relationship_stage <= RelationshipStage.MARRIED:
+			_mark_npc_as_cheating(npc_idx, other_idx)
+			return
 	var old_stage: int = npc.relationship_stage
 	var old_core: int = npc.exclusivity_core
 	var old_affinity: float = npc.affinity
@@ -451,20 +451,20 @@ func return_to_monogamy(npc_idx: int) -> void:
 	
 
 func come_clean_from_cheating(npc_idx: int) -> void:
-		var npc: NPC = get_npc_by_index(npc_idx)
-		if npc.exclusivity_core != ExclusivityCore.CHEATING:
-				return
-		var old_core: int = npc.exclusivity_core
-		var old_affinity: float = npc.affinity
-		npc.exclusivity_core = ExclusivityCore.POLY
-		npc.affinity = 1.0
-		promote_to_persistent(npc_idx)
-		persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
-		persistent_npcs[npc_idx]["affinity"] = npc.affinity
-		DBManager.save_npc(npc_idx, npc)
-		emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
-		emit_signal("affinity_changed", npc_idx, npc.affinity)
-		print("NPC %d: come clean from cheating core %d -> %d affinity %.2f -> %.2f" % [npc_idx, old_core, npc.exclusivity_core, old_affinity, npc.affinity])
+	var npc: NPC = get_npc_by_index(npc_idx)
+	if npc.exclusivity_core != ExclusivityCore.CHEATING:
+			return
+	var old_core: int = npc.exclusivity_core
+	var old_affinity: float = npc.affinity
+	npc.exclusivity_core = ExclusivityCore.POLY
+	npc.affinity = 1.0
+	promote_to_persistent(npc_idx)
+	persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
+	persistent_npcs[npc_idx]["affinity"] = npc.affinity
+	DBManager.save_npc(npc_idx, npc)
+	emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
+	emit_signal("affinity_changed", npc_idx, npc.affinity)
+	print("NPC %d: come clean from cheating core %d -> %d affinity %.2f -> %.2f" % [npc_idx, old_core, npc.exclusivity_core, old_affinity, npc.affinity])
 
 func _mark_npc_as_cheating(npc_idx: int, other_idx: int) -> void:
 	var npc: NPC = get_npc_by_index(npc_idx)
@@ -492,21 +492,21 @@ func player_broke_up_with(npc_idx: int) -> void:
 		_check_cheating_after_breakup()
 
 func _check_cheating_after_breakup() -> void:
-		for idx in encountered_npcs:
-				var check_idx: int = int(idx)
-				var npc: NPC = get_npc_by_index(check_idx)
-				if npc.exclusivity_core == ExclusivityCore.CHEATING:
-						var still_cheating: bool = false
-						for other in encountered_npcs:
-								var other_idx: int = int(other)
-								if other_idx == check_idx:
-										continue
-								var other_npc: NPC = get_npc_by_index(other_idx)
-								if other_npc.relationship_stage >= RelationshipStage.DATING and other_npc.relationship_stage <= RelationshipStage.MARRIED:
-										still_cheating = true
-										break
-						if not still_cheating:
-								come_clean_from_cheating(check_idx)
+	for idx in encountered_npcs:
+		var check_idx: int = int(idx)
+		var npc: NPC = get_npc_by_index(check_idx)
+		if npc.exclusivity_core == ExclusivityCore.CHEATING:
+			var still_cheating: bool = false
+			for other in encountered_npcs:
+				var other_idx: int = int(other)
+				if other_idx == check_idx:
+					continue
+				var other_npc: NPC = get_npc_by_index(other_idx)
+				if other_npc.relationship_stage >= RelationshipStage.DATING and other_npc.relationship_stage <= RelationshipStage.MARRIED:
+					still_cheating = true
+					break
+			if not still_cheating:
+				come_clean_from_cheating(check_idx)
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
 	for idx in encountered_npcs:
@@ -613,17 +613,17 @@ func get_fumble_matches() -> Array:
 	return matches
 
 func get_fumble_matches_with_times() -> Array:
-		var out: Array = []
-		var rows = DBManager.get_all_fumble_relationship_rows()
-		for r in rows:
-			var status_enum: FumbleManager.FumbleStatus = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
-			if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
-					out.append({
-							"npc_id": int(r.npc_id),
-							"created_at": int(r.created_at),
-							"updated_at": int(r.updated_at)
-					})
-		return out
+	var out: Array = []
+	var rows = DBManager.get_all_fumble_relationship_rows()
+	for r in rows:
+		var status_enum: FumbleManager.FumbleStatus = FumbleManager.FUMBLE_STATUS_LOOKUP.get(r.status, FumbleManager.FumbleStatus.LIKED)
+		if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+				out.append({
+						"npc_id": int(r.npc_id),
+						"created_at": int(r.created_at),
+						"updated_at": int(r.updated_at)
+				})
+	return out
 
 
 

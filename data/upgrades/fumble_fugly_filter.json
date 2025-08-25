@@ -1,7 +1,7 @@
 {
   "id": "fumble_fugly_filter",
   "name": "Fugly Filter",
-  "description": "Adds a minimum attractiveness filter to Fumble matches. Each level raises the maximum threshold by 1.",
+  "description": "Filter out the uggos. Every point let's you filter out people 0.1 higher.",
   "effects": [],
   "systems": [
 	"fumble"

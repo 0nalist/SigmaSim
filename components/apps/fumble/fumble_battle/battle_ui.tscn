@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b4cmpyad34a6u" path="res://components/apps/fumble/fumble_battle/battle_ui.gd" id="1_ctqjn"]
 [ext_resource type="Texture2D" uid="uid://dqig7emb4n7md" path="res://assets/80scarpet.png" id="2_7gtst"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_ctqjn"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="2_ctqjn"]
 [ext_resource type="PackedScene" uid="uid://5esyyyvfivml" path="res://components/apps/fumble/fumble_battle/victory_number_chat_box.tscn" id="3_an8fo"]
 [ext_resource type="Script" uid="uid://ryyas7jb3kgr" path="res://components/apps/fumble/fumble_battle/battle_logic.gd" id="3_clyoa"]
 [ext_resource type="PackedScene" uid="uid://dyv7bmgfriqht" path="res://components/apps/fumble/fumble_battle/chat_box.tscn" id="4_34iuq"]

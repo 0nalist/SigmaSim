@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ob4xsqxgnua2" path="res://tools/upgrade_editor/upgrade_tree_editor.gd" id="1_lr88f"]
 [ext_resource type="PackedScene" uid="uid://d1oxjb362g2rw" path="res://tools/upgrade_editor/editor_canvas.tscn" id="2_lr88f"]
 [ext_resource type="Script" uid="uid://d0g3pmb5mdyjs" path="res://tools/upgrade_editor/dependency_overlay.gd" id="2_mshn7"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="4_g6i53"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="4_g6i53"]
 [ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="5_pf3is"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gtf1o"]

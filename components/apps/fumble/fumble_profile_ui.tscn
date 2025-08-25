@@ -1,22 +1,23 @@
 [gd_scene load_steps=7 format=3 uid="uid://cwin011rx52n7"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_a0w3w"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1_a0w3w"]
 [ext_resource type="Script" uid="uid://ck1rp36ofvy52" path="res://components/apps/fumble/fumble_profile.gd" id="1_r7irv"]
 [ext_resource type="PackedScene" uid="uid://bo7jj5gh57d4n" path="res://components/greek_stats_ui.tscn" id="4_5ticg"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="5_pv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ticg"]
 bg_color = Color(0.968627, 0.968627, 1, 1)
-border_width_left = 16
-border_width_top = 16
-border_width_right = 12
-border_width_bottom = 12
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
-shadow_size = 13
-shadow_offset = Vector2(4, 7)
+shadow_size = 7
+shadow_offset = Vector2(3, 7)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0w3w"]
 bg_color = Color(0.804743, 0.804743, 0.804743, 1)
@@ -41,10 +42,10 @@ script = ExtResource("1_r7irv")
 [node name="ProfileMarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="ScrollContainer" type="ScrollContainer" parent="ProfileMarginContainer"]
 layout_mode = 2
@@ -90,7 +91,7 @@ layout_mode = 2
 size_flags_vertical = 8
 theme = ExtResource("1_a0w3w")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Name McNamerson"
+text = "Type"
 horizontal_alignment = 1
 
 [node name="Control" type="Control" parent="ProfileMarginContainer/ScrollContainer/VBoxContainer"]

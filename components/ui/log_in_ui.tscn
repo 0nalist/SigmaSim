@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://c4tt0mgxvgw5g"]
 
-[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_6fwkw"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
 [ext_resource type="PackedScene" uid="uid://cc5n8gw4o0mqx" path="res://components/ui/profile_creation/profile_creation_ui.tscn" id="3_6fwkw"]
 [ext_resource type="Texture2D" uid="uid://gl0rjxkrh4wh" path="res://assets/logos/AOLlogoMaster.png" id="4_6fwkw"]

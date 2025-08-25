@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://db60wtbc86hq2"]
 
-[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="1_eluir"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_eluir"]
 [ext_resource type="Script" uid="uid://depfu1b1jt3ke" path="res://components/ui/worker_card/grinderr.gd" id="2_3bg0q"]
 [ext_resource type="PackedScene" uid="uid://kpqwebu0bb67" path="res://components/popups/gig_popup.tscn" id="3_85ayv"]
 [ext_resource type="Texture2D" uid="uid://c3ned4vckwjvs" path="res://assets/logos/hamster_close_x32.png" id="4_1rfep"]

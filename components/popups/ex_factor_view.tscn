@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dim0nwjmfwi3g"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/ex_factor_view.gd" id="2"]
 [ext_resource type="Script" uid="uid://dq20ffib6tocu" path="res://components/popups/affinity_bar.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://fna5puejflgh" path="res://components/upgrade_scenes/ex_factor_upgrade_ui.tscn" id="3_n3cpl"]
@@ -81,11 +81,26 @@ layout_mode = 2
 size_flags_horizontal = 4
 horizontal_alignment = 1
 
-[node name="ExclusivityLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+
+[node name="ExclusivityLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 10
 horizontal_alignment = 1
+
+[node name="Control5" type="Control" parent="MarginContainer/VBox/HBoxContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="ExclusivityButton" type="Button" parent="MarginContainer/VBox/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 14
+text = "Toggle"
 
 [node name="Control4" type="Control" parent="MarginContainer/VBox"]
 layout_mode = 2
@@ -97,14 +112,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Take this relationship to the next stage"
 autowrap_mode = 3
-
-[node name="ExclusivityButton" type="Button" parent="MarginContainer/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-focus_mode = 0
-theme_override_font_sizes/font_size = 14
-text = "Toggle"
 
 [node name="Control3" type="Control" parent="MarginContainer/VBox"]
 layout_mode = 2

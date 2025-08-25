@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://kpqwebu0bb67" path="res://components/popups/gig_popup.tscn" id="2_2n38o"]
 [ext_resource type="Script" uid="uid://c1h61rb6ygcx4" path="res://components/ui/gig_card/gig_card.gd" id="2_4eflt"]
-[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/windows_xp_theme.tres" id="2_x10w4"]
+[ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="2_x10w4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4eflt"]
 bg_color = Color(3.18866e-07, 0.218351, 0.149065, 1)

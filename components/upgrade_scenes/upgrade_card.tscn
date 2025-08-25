@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dsuhxnhukwvd"]
 
 [ext_resource type="Script" uid="uid://ccoco6yx2vht0" path="res://components/upgrade_scenes/upgrade_card.gd" id="1_68qdy"]
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="2_2byyh"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="2_2byyh"]
 [ext_resource type="Texture2D" uid="uid://b8piqndlfnolp" path="res://assets/early_bird/wojak_bird_1.png" id="3_m1epy"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m1epy"]

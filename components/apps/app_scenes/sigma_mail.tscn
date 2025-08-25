@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://s5xw8m1ptgdq"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1_8wqna"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1_8wqna"]
 [ext_resource type="Script" uid="uid://du7g6y35nj384" path="res://components/apps/sigma_mail/sigma_mail.gd" id="2_wwi5a"]
 [ext_resource type="Texture2D" uid="uid://c3tog5y8fjq0c" path="res://assets/logos/Lost in south.png" id="3_unqnx"]
 [ext_resource type="Texture2D" uid="uid://b471ke68etlp5" path="res://assets/logos/SigmaMailx64.png" id="3_wwi5a"]

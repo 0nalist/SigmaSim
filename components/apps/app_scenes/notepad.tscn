@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dlswgjv5hjkj5"]
 
-[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/windows_95_theme.tres" id="1"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://sxs1cwjhm5x7" path="res://components/apps/notepad/notepad.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://mpip7wcjjyrr" path="res://assets/logos/pdficon.png" id="3"]
 
