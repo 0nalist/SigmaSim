@@ -37,16 +37,22 @@ func _ready() -> void:
 
 # --- persistence: autosave driver ---
 func _on_minute_tick(_mins_since_midnight: int) -> void:
-	if not persist_to_disk:
-		return
-	_minutes_since_persist += 1
-	if _minutes_since_persist >= max(1, persist_every_minutes):
-		_minutes_since_persist = 0
-		_save_to_disk_safe()
+        if not persist_to_disk:
+                return
+        _minutes_since_persist += 1
+        if _minutes_since_persist >= max(1, persist_every_minutes):
+                _minutes_since_persist = 0
+                _save_to_disk_safe()
 
 
 
 # -------------------- PUBLIC API --------------------
+
+func reset() -> void:
+	_series.clear()
+	_minutes_since_persist = 0
+	if persist_to_disk and FileAccess.file_exists(persist_path):
+		DirAccess.remove_absolute(persist_path)
 
 func register_series(id: StringName) -> void:
 	if _series.has(id):
