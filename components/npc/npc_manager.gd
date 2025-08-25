@@ -31,15 +31,15 @@ var _save_queue: Dictionary = {}
 var _save_timer: Timer
 
 func _ready() -> void:
-                TimeManager.hour_passed.connect(_on_hour_passed)
-                _save_timer = Timer.new()
-                _save_timer.wait_time = 0.5
-                _save_timer.one_shot = true
-                _save_timer.timeout.connect(_flush_save_queue)
-                add_child(_save_timer)
-                relationship_stage_changed.connect(func(idx, _o, _n): _recheck_daterbase_exclusivity(idx))
-                exclusivity_core_changed.connect(func(idx, _o, _n): _recheck_daterbase_exclusivity(idx))
-                load_daterbase_cache()
+				TimeManager.hour_passed.connect(_on_hour_passed)
+				_save_timer = Timer.new()
+				_save_timer.wait_time = 0.5
+				_save_timer.one_shot = true
+				_save_timer.timeout.connect(_flush_save_queue)
+				add_child(_save_timer)
+				relationship_stage_changed.connect(func(idx, _o, _n): _recheck_daterbase_exclusivity(idx))
+				exclusivity_core_changed.connect(func(idx, _o, _n): _recheck_daterbase_exclusivity(idx))
+				load_daterbase_cache()
 
 func _queue_save(idx: int) -> void:
 		_save_queue[idx] = true
@@ -47,22 +47,22 @@ func _queue_save(idx: int) -> void:
 				_save_timer.start()
 
 func _flush_save_queue() -> void:
-                for idx in _save_queue.keys():
-                                DBManager.save_npc(idx, npcs[idx])
-                _save_queue.clear()
+				for idx in _save_queue.keys():
+								DBManager.save_npc(idx, npcs[idx])
+				_save_queue.clear()
 
 func load_daterbase_cache() -> void:
-                daterbase_npcs.clear()
-                var entries: Array = DBManager.get_daterbase_entries()
-                for entry in entries:
-                                daterbase_npcs.append(int(entry.npc_id))
+				daterbase_npcs.clear()
+				var entries: Array = DBManager.get_daterbase_entries()
+				for entry in entries:
+								daterbase_npcs.append(int(entry.npc_id))
 
 func add_daterbase_npc(idx: int) -> void:
-                if not daterbase_npcs.has(idx):
-                                daterbase_npcs.append(idx)
+				if not daterbase_npcs.has(idx):
+								daterbase_npcs.append(idx)
 
 func get_daterbase_npcs() -> Array[int]:
-                return daterbase_npcs
+				return daterbase_npcs
 
 # === MAIN API ===
 
@@ -217,15 +217,15 @@ func _load_npc_from_db(idx: int) -> NPC:
 	return npc
 
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
-        for npc_idx in daterbase_npcs:
-                var npc: NPC = get_npc_by_index(npc_idx)
-                var target: float = npc.affinity_equilibrium
-                var current: float = npc.affinity
-                var rate: float = StatManager.get_stat("affinity_drift_rate", 1.0)
-                if current < target:
-                        set_npc_field(npc_idx, "affinity", min(current + rate, target))
-                elif current > target:
-                        set_npc_field(npc_idx, "affinity", max(current - rate, target))
+		for npc_idx in daterbase_npcs:
+				var npc: NPC = get_npc_by_index(npc_idx)
+				var target: float = npc.affinity_equilibrium
+				var current: float = npc.affinity
+				var rate: float = StatManager.get_stat("affinity_drift_rate", 1.0)
+				if current < target:
+						set_npc_field(npc_idx, "affinity", min(current + rate, target))
+				elif current > target:
+						set_npc_field(npc_idx, "affinity", max(current - rate, target))
 
 # === RELATIONSHIP MANAGEMENT ===
 
@@ -508,57 +508,60 @@ func player_broke_up_with(npc_idx: int) -> void:
 		_check_cheating_after_breakup()
 
 func _check_cheating_after_breakup() -> void:
-        for idx in encountered_npcs:
-                var check_idx: int = int(idx)
-                var npc: NPC = get_npc_by_index(check_idx)
-                if npc.exclusivity_core == ExclusivityCore.CHEATING:
-                        var still_cheating: bool = false
-                        for other in encountered_npcs:
-                                var other_idx: int = int(other)
-                                if other_idx == check_idx:
-                                        continue
-                                var other_npc: NPC = get_npc_by_index(other_idx)
-                                if other_npc.relationship_stage >= RelationshipStage.DATING and other_npc.relationship_stage <= RelationshipStage.MARRIED:
-                                        still_cheating = true
-                                        break
-                        if not still_cheating:
-                                come_clean_from_cheating(check_idx)
+		for idx in encountered_npcs:
+				var check_idx: int = int(idx)
+				var npc: NPC = get_npc_by_index(check_idx)
+				if npc.exclusivity_core == ExclusivityCore.CHEATING:
+						var still_cheating: bool = false
+						for other in encountered_npcs:
+								var other_idx: int = int(other)
+								if other_idx == check_idx:
+										continue
+								var other_npc: NPC = get_npc_by_index(other_idx)
+								if other_npc.relationship_stage >= RelationshipStage.DATING and other_npc.relationship_stage <= RelationshipStage.MARRIED:
+										still_cheating = true
+										break
+						if not still_cheating:
+								come_clean_from_cheating(check_idx)
 
 func _recheck_daterbase_exclusivity(changed_idx: int) -> void:
-       var active: Array[int] = []
-       for idx in daterbase_npcs:
-               var npc = get_npc_by_index(int(idx))
-               if npc.relationship_stage >= RelationshipStage.DATING and npc.relationship_stage <= RelationshipStage.MARRIED:
-                       active.append(int(idx))
+	var active: Array[int] = []
+	for idx in daterbase_npcs:
+			var npc = get_npc_by_index(int(idx))
+			if npc.relationship_stage >= RelationshipStage.DATING and npc.relationship_stage <= RelationshipStage.MARRIED:
+					active.append(int(idx))
 
-       for idx in daterbase_npcs:
-               var npc_idx: int = int(idx)
-               if npc_idx == changed_idx:
-                       continue
-               var npc: NPC = get_npc_by_index(npc_idx)
-               var npc_active: bool = active.has(npc_idx)
-               var other_active_count: int = active.size() - (npc_active ? 1 : 0)
-               if npc.exclusivity_core == ExclusivityCore.MONOG and npc_active and other_active_count > 0:
-                       var other_idx: int = -1
-                       for ai in active:
-                               if ai != npc_idx:
-                                       other_idx = int(ai)
-                                       break
-                       _mark_npc_as_cheating(npc_idx, other_idx)
-               elif npc.exclusivity_core == ExclusivityCore.CHEATING and (not npc_active or other_active_count == 0):
-                       come_clean_from_cheating(npc_idx)
+	for idx in daterbase_npcs:
+			var npc_idx: int = int(idx)
+			if npc_idx == changed_idx:
+					continue
+			var npc: NPC = get_npc_by_index(npc_idx)
+			var npc_active: bool = active.has(npc_idx)
+			var other_active_count: int = active.size()
+			if npc_active:
+				other_active_count -= 1
+
+			if npc.exclusivity_core == ExclusivityCore.MONOG and npc_active and other_active_count > 0:
+					var other_idx: int = -1
+					for ai in active:
+							if ai != npc_idx:
+									other_idx = int(ai)
+									break
+					_mark_npc_as_cheating(npc_idx, other_idx)
+			elif npc.exclusivity_core == ExclusivityCore.CHEATING and (not npc_active or other_active_count == 0):
+					come_clean_from_cheating(npc_idx)
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
-       for idx in daterbase_npcs:
-               var npc_idx: int = int(idx)
-               if npc_idx == other_idx:
-                       continue
-               var npc: NPC = get_npc_by_index(npc_idx)
-               if npc.exclusivity_core != ExclusivityCore.MONOG:
-                       continue
-               if npc.relationship_stage < RelationshipStage.DATING:
-                       continue
-               _mark_npc_as_cheating(npc_idx, other_idx)
+	for idx in daterbase_npcs:
+			var npc_idx: int = int(idx)
+			if npc_idx == other_idx:
+					continue
+			var npc: NPC = get_npc_by_index(npc_idx)
+			if npc.exclusivity_core != ExclusivityCore.MONOG:
+					continue
+			if npc.relationship_stage < RelationshipStage.DATING:
+					continue
+			_mark_npc_as_cheating(npc_idx, other_idx)
 
 
 func can_show_go_exclusive(npc_idx: int) -> bool:

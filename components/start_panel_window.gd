@@ -22,7 +22,7 @@ func _ready() -> void:
 		var button := Button.new()
 		button.text = preview.window_title
 		button.focus_mode = Control.FOCUS_NONE
-		button.theme = preload("res://assets/windows_95_theme.tres")
+		button.theme = preload("res://assets/themes/windows_95_theme.tres")
 		button.custom_minimum_size = Vector2(160, 40)
 		button.add_theme_font_size_override("font_size", 10)
 
