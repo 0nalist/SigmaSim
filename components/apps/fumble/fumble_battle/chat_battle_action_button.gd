@@ -19,7 +19,12 @@ func _ready() -> void:
         auto_checkbox.position = Vector2(4, 4)
         add_child(auto_checkbox)
 
-    auto_checkbox.visible = true
+    auto_checkbox.visible = UpgradeManager.get_level("fumble_predictive_text") > 0
+    UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
+
+func _on_upgrade_purchased(id: String, _level: int) -> void:
+    if id == "fumble_predictive_text":
+        auto_checkbox.visible = true
 
 func load_action(new_action: ChatBattleAction, display_text: String) -> void:
     action = new_action
