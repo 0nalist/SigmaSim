@@ -23,11 +23,14 @@ const SETTINGS_PATH := "user://settings.cfg"
 
 # Canonical clock: total in-game minutes since campaign start
 var _total_minutes_elapsed: int = 0
+# Baseline at profile start so we can report elapsed playtime relative to a new profile
+var _start_total_minutes: int = 0
 
 # -------- Derived / compatibility fields (kept, but driven from _total_minutes_elapsed) --------
 var in_game_minutes := 23 * 60
 var time_accumulator := 0.0
-var total_minutes_elapsed: int = 0 # kept for compatibility, mirrors _total_minutes_elapsed
+# Minutes elapsed since the current profile began
+var total_minutes_elapsed: int = 0
 
 var current_minute := 0
 var current_hour := 0
@@ -93,7 +96,7 @@ func _process(delta: float) -> void:
 
 # -------- Canonical getters (new + compatibility) --------
 func get_now_minutes() -> int:
-		return _total_minutes_elapsed
+                return _total_minutes_elapsed - _start_total_minutes
 
 # Kept for callers that still use in-game minutes since midnight
 func get_time_hms() -> Dictionary:
@@ -204,19 +207,20 @@ func get_total_days_since_start(target_day: int, target_month: int, target_year:
 	return total_days
 
 func get_total_minutes_played() -> int:
-		return _total_minutes_elapsed
+                return total_minutes_elapsed
 
 # -------- Save / Load (keys preserved) --------
 func get_default_save_data() -> Dictionary:
 	return default_start_date_time.duplicate()
 
 func get_save_data() -> Dictionary:
-	return {
-		"in_game_minutes": in_game_minutes,
-		"total_minutes_elapsed": _total_minutes_elapsed,
-		"current_day": current_day,
-		"current_month": current_month,
-		"current_year": current_year,
+        return {
+                "in_game_minutes": in_game_minutes,
+                "total_minutes_elapsed": _total_minutes_elapsed,
+                "start_total_minutes": _start_total_minutes,
+                "current_day": current_day,
+                "current_month": current_month,
+                "current_year": current_year,
 		"day_of_week": day_of_week,
 		"is_fast_forwarding": is_fast_forwarding,
 		"fast_forward_minutes_left": fast_forward_minutes_left,
@@ -225,15 +229,17 @@ func get_save_data() -> Dictionary:
 
 func load_from_data(data: Dictionary) -> void:
 	# Restore canonical minutes if provided; otherwise reconstruct from provided date/time
-	var has_total := data.has("total_minutes_elapsed")
-	if has_total:
-		_total_minutes_elapsed = int(data.get("total_minutes_elapsed", 0))
-	else:
-		var restored_day := int(data.get("current_day", 1))
-		var restored_month := int(data.get("current_month", 1))
-		var restored_year := int(data.get("current_year", 2025))
-		var minutes_since_midnight := int(data.get("in_game_minutes", 0))
-		_total_minutes_elapsed = _days_since_epoch(restored_day, restored_month, restored_year) * 1440 + minutes_since_midnight
+        var has_total := data.has("total_minutes_elapsed")
+        if has_total:
+                _total_minutes_elapsed = int(data.get("total_minutes_elapsed", 0))
+        else:
+                var restored_day := int(data.get("current_day", 1))
+                var restored_month := int(data.get("current_month", 1))
+                var restored_year := int(data.get("current_year", 2025))
+                var minutes_since_midnight := int(data.get("in_game_minutes", 0))
+                _total_minutes_elapsed = _days_since_epoch(restored_day, restored_month, restored_year) * 1440 + minutes_since_midnight
+
+        _start_total_minutes = int(data.get("start_total_minutes", 0))
 
 	# Restore fast-forward UI state
 	is_fast_forwarding = false
@@ -246,22 +252,24 @@ func load_from_data(data: Dictionary) -> void:
 		save_autosave_setting()
 
 	# Recompute and mirror compatibility fields
-	_recompute_from_total_minutes()
+        _recompute_from_total_minutes()
 
-	autosave_hour_counter = 0
-	# Emit signals to let listeners refresh
-	emit_signal("minute_passed", in_game_minutes)
-	emit_signal("hour_passed", current_hour, _total_minutes_elapsed)
-	emit_signal("day_passed", current_day, current_month, current_year)
+        autosave_hour_counter = 0
+        # Emit signals to let listeners refresh
+        emit_signal("minute_passed", in_game_minutes)
+        emit_signal("hour_passed", current_hour, total_minutes_elapsed)
+        emit_signal("day_passed", current_day, current_month, current_year)
 
 func reset() -> void:
-	_rebuild_total_minutes_from_defaults()
-	_recompute_from_total_minutes()
-	time_accumulator = 0.0
-	is_fast_forwarding = false
-	fast_forward_minutes_left = 0
-	autosave_hour_counter = 0
-	load_autosave_setting()
+        _rebuild_total_minutes_from_defaults()
+        _recompute_from_total_minutes()
+        _start_total_minutes = _total_minutes_elapsed
+        total_minutes_elapsed = 0
+        time_accumulator = 0.0
+        is_fast_forwarding = false
+        fast_forward_minutes_left = 0
+        autosave_hour_counter = 0
+        load_autosave_setting()
 
 func load_autosave_setting() -> void:
 		var cfg := ConfigFile.new()
@@ -290,7 +298,7 @@ func _advance_time(minutes_to_add: int) -> void:
 
 		# Hour crossed when minute hits 0
 		if current_minute == 0:
-			emit_signal("hour_passed", current_hour, _total_minutes_elapsed)
+                        emit_signal("hour_passed", current_hour, total_minutes_elapsed)
 			autosave_hour_counter += 1
 			if autosave_enabled and autosave_hour_counter >= autosave_interval:
 				autosave_hour_counter = 0
@@ -301,8 +309,8 @@ func _advance_time(minutes_to_add: int) -> void:
 		if current_day != prev_day or current_month != prev_month or current_year != prev_year:
 			emit_signal("day_passed", current_day, current_month, current_year)
 
-	# Mirror compatibility field after loop
-	total_minutes_elapsed = _total_minutes_elapsed
+        # Mirror compatibility field after loop
+        total_minutes_elapsed = _total_minutes_elapsed - _start_total_minutes
 
 func _rebuild_total_minutes_from_defaults() -> void:
 	var start_day := int(default_start_date_time.get("current_day", 1))
@@ -347,8 +355,8 @@ func _recompute_from_total_minutes() -> void:
 	current_year = y
 	day_of_week = get_weekday_for_date(current_day, current_month, current_year)
 
-	# Mirror compatibility
-	total_minutes_elapsed = _total_minutes_elapsed
+        # Mirror compatibility
+        total_minutes_elapsed = _total_minutes_elapsed - _start_total_minutes
 
 func _days_since_epoch(day: int, month: int, year: int) -> int:
 	var sd := int(default_start_date_time.get("current_day", 1))
