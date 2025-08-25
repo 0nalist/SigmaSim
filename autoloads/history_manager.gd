@@ -54,22 +54,30 @@ func reset() -> void:
 	if persist_to_disk and FileAccess.file_exists(persist_path):
 		DirAccess.remove_absolute(persist_path)
 
+
 func register_series(id: StringName) -> void:
 	if _series.has(id):
 		return
+
 	var tiers: Array = []
 	for cfg in TIER_CONFIG:
 		var cap: int = int(cfg.capacity)
-		var line := {
+
+		var line: Dictionary = {
 			"times": PackedInt32Array(),
 			"values": PackedFloat32Array(),
 			"head": 0,
 			"size": 0,
 			"capacity": cap
 		}
-		line.times.resize(cap)
-		line.values.resize(cap)
-		var candles := {
+		var lt: PackedInt32Array = line["times"]
+		var lv: PackedFloat32Array = line["values"]
+		lt.resize(cap)
+		lv.resize(cap)
+		line["times"] = lt
+		line["values"] = lv
+
+		var candles: Dictionary = {
 			"t_open": PackedInt32Array(),
 			"t_close": PackedInt32Array(),
 			"open": PackedFloat32Array(),
@@ -80,15 +88,26 @@ func register_series(id: StringName) -> void:
 			"size": 0,
 			"capacity": cap
 		}
-		candles.t_open.resize(cap)
-		candles.t_close.resize(cap)
-		candles.open.resize(cap)
-		candles.high.resize(cap)
-		candles.low.resize(cap)
-		candles.close.resize(cap)
+		var c_to: PackedInt32Array = candles["t_open"]
+		var c_tc: PackedInt32Array = candles["t_close"]
+		var c_o: PackedFloat32Array = candles["open"]
+		var c_h: PackedFloat32Array = candles["high"]
+		var c_l: PackedFloat32Array = candles["low"]
+		var c_c: PackedFloat32Array = candles["close"]
+		c_to.resize(cap); c_tc.resize(cap); c_o.resize(cap)
+		c_h.resize(cap); c_l.resize(cap); c_c.resize(cap)
+		candles["t_open"] = c_to
+		candles["t_close"] = c_tc
+		candles["open"] = c_o
+		candles["high"] = c_h
+		candles["low"] = c_l
+		candles["close"] = c_c
+
 		tiers.append({"line": line, "candles": candles})
+
 	_series[id] = {"tiers": tiers}
 	emit_signal("series_registered", id)
+
 
 func add_sample(id: StringName, t_minute: int, value: float) -> void:
 	if not _series.has(id):
@@ -115,7 +134,6 @@ func add_sample(id: StringName, t_minute: int, value: float) -> void:
 			_candle_update(next_candles, i, last_prev_time, last_prev_value)
 	emit_signal("series_sampled", id, t_minute)
 
-
 func get_series_window_line(id: StringName, t_start_min: int, t_end_min: int, max_points: int = 1024) -> PackedVector2Array:
 	if not _series.has(id):
 		return PackedVector2Array()
@@ -130,17 +148,23 @@ func get_series_window_line(id: StringName, t_start_min: int, t_end_min: int, ma
 			tier_index = i
 			break
 
-	var line: Dictionary = _series[id].tiers[tier_index].line
+	var line: Dictionary = _series[id]["tiers"][tier_index]["line"]
 	var out: PackedVector2Array = PackedVector2Array()
 
-	for i in range(line.size):
-		var idx: int = (line.head + i) % line.capacity
-		var t: int = line.times[idx]
-		if t < t_start_min:
+	var head: int = int(line["head"])
+	var size_i: int = int(line["size"])
+	var cap_i: int = int(line["capacity"])
+	var times: PackedInt32Array = line["times"]
+	var values: PackedFloat32Array = line["values"]
+
+	for i in range(size_i):
+		var idx: int = (head + i) % cap_i
+		var t_i: int = times[idx]
+		if t_i < t_start_min:
 			continue
-		if t > t_end_min:
+		if t_i > t_end_min:
 			break
-		out.append(Vector2(float(t), line.values[idx]))
+		out.append(Vector2(float(t_i), values[idx]))
 
 		if out.size() > max_points:
 			var stride: int = int(ceil(float(out.size()) / float(max_points)))
@@ -151,16 +175,6 @@ func get_series_window_line(id: StringName, t_start_min: int, t_end_min: int, ma
 				thinned.append(out[out.size() - 1])
 			out = thinned
 
-	if DEBUG_HISTORY:
-		var first_two: Array = []
-		var last_two: Array = []
-		for k in range(min(2, out.size())):
-			first_two.append(out[k].x)
-		for k in range(max(0, out.size() - 2), out.size()):
-			last_two.append(out[k].x)
-		print("get_series_window_line %s tier=%d window=[%d,%d] len=%d first=%s last=%s"
-			% [id, tier_index, t_start_min, t_end_min, window_len, first_two, last_two])
-
 	return out
 
 
@@ -169,6 +183,7 @@ func get_series_window_candles(id: StringName, t_start_min: int, t_end_min: int,
 		return []
 	if t_end_min <= t_start_min:
 		return []
+
 	var window_len: int = t_end_min - t_start_min
 	var tier_index: int = 0
 	for i in range(TIER_CONFIG.size()):
@@ -176,31 +191,47 @@ func get_series_window_candles(id: StringName, t_start_min: int, t_end_min: int,
 		if approx <= max_candles or i == TIER_CONFIG.size() - 1:
 			tier_index = i
 			break
-	var candles: Dictionary = _series[id].tiers[tier_index].candles
+
+	var candles: Dictionary = _series[id]["tiers"][tier_index]["candles"]
 	var out: Array[Dictionary] = []
-	for i in range(candles.size):
-		var idx: int = (candles.head + i) % candles.capacity
-		var t_open: int = candles.t_open[idx]
-		if t_open < t_start_min:
+
+	var head: int = int(candles["head"])
+	var size_i: int = int(candles["size"])
+	var cap_i: int = int(candles["capacity"])
+
+	var t_open: PackedInt32Array = candles["t_open"]
+	var t_close: PackedInt32Array = candles["t_close"]
+	var open: PackedFloat32Array = candles["open"]
+	var high: PackedFloat32Array = candles["high"]
+	var low: PackedFloat32Array = candles["low"]
+	var close: PackedFloat32Array = candles["close"]
+
+	for i in range(size_i):
+		var idx: int = (head + i) % cap_i
+		var o_t: int = t_open[idx]
+		if o_t < t_start_min:
 			continue
-		if t_open > t_end_min:
+		if o_t > t_end_min:
 			break
 		var d: Dictionary = {
-			"t_open": t_open,
-			"t_close": candles.t_close[idx],
-			"open": candles.open[idx],
-			"high": candles.high[idx],
-			"low": candles.low[idx],
-			"close": candles.close[idx]
+			"t_open": o_t,
+			"t_close": t_close[idx],
+			"open": open[idx],
+			"high": high[idx],
+			"low": low[idx],
+			"close": close[idx]
 		}
 		out.append(d)
+
 	if out.size() > max_candles:
 		var stride: int = int(ceil(float(out.size()) / float(max_candles)))
 		var thinned: Array[Dictionary] = []
 		for j in range(0, out.size(), stride):
 			thinned.append(out[j])
 		out = thinned
+
 	return out
+
 
 func newest_timestamp(id: StringName) -> int:
 	if not _series.has(id):
@@ -210,99 +241,188 @@ func newest_timestamp(id: StringName) -> int:
 # ---------- Internal ring-buffer helpers ----------
 
 func _line_push(line: Dictionary, tier_index: int, t: int, value: float) -> void:
-	var idx: int = (line.head + line.size) % line.capacity
-	if line.size < line.capacity:
-		line.times[idx] = t
-		line.values[idx] = value
-		line.size += 1
+	var cap_i: int = int(line["capacity"])
+	var head: int = int(line["head"])
+	var size_i: int = int(line["size"])
+
+	var times: PackedInt32Array = line["times"]
+	var values: PackedFloat32Array = line["values"]
+
+	var idx: int = (head + size_i) % cap_i
+	if size_i < cap_i:
+		times[idx] = t
+		values[idx] = value
+		size_i += 1
 	else:
-		line.times[line.head] = t
-		line.values[line.head] = value
-		line.head = (line.head + 1) % line.capacity
+		times[head] = t
+		values[head] = value
+		head = (head + 1) % cap_i
+
+	line["times"] = times
+	line["values"] = values
+	line["head"] = head
+	line["size"] = size_i
+
 	_line_prune(line, tier_index, t)
 
+
 func _line_prune(line: Dictionary, tier_index: int, current_t: int) -> void:
+	var cap_i: int = int(line["capacity"])
+	var head: int = int(line["head"])
+	var size_i: int = int(line["size"])
+	var times: PackedInt32Array = line["times"]
+
 	var horizon: int = int(TIER_CONFIG[tier_index].horizon)
-	while line.size > 0:
-		var oldest: int = line.times[line.head]
+	while size_i > 0:
+		var oldest: int = times[head]
 		if current_t - oldest > horizon:
-			line.head = (line.head + 1) % line.capacity
-			line.size -= 1
+			head = (head + 1) % cap_i
+			size_i -= 1
 		else:
 			break
 
+	line["head"] = head
+	line["size"] = size_i
+
+
 func _line_last_time(line: Dictionary) -> int:
-	if line.size == 0:
+	var size_i: int = int(line["size"])
+	if size_i == 0:
 		return -2147483648
-	var idx: int = (line.head + line.size - 1) % line.capacity
-	return line.times[idx]
+	var head: int = int(line["head"])
+	var cap_i: int = int(line["capacity"])
+	var times: PackedInt32Array = line["times"]
+	var idx: int = (head + size_i - 1) % cap_i
+	return times[idx]
+
 
 func _line_last_value(line: Dictionary) -> float:
-	if line.size == 0:
+	var size_i: int = int(line["size"])
+	if size_i == 0:
 		return 0.0
-	var idx: int = (line.head + line.size - 1) % line.capacity
-	return line.values[idx]
+	var head: int = int(line["head"])
+	var cap_i: int = int(line["capacity"])
+	var values: PackedFloat32Array = line["values"]
+	var idx: int = (head + size_i - 1) % cap_i
+	return values[idx]
 
 func _candle_update(candles: Dictionary, tier_index: int, t: int, value: float) -> void:
 	var dt: int = int(TIER_CONFIG[tier_index].dt)
 	var bucket_start: int = (t / dt) * dt
 	var bucket_end: int = bucket_start + dt
-	if candles.size == 0:
+
+	var size_i: int = int(candles["size"])
+	if size_i == 0:
 		_candle_push(candles, tier_index, bucket_start, bucket_end, value, value, value, value)
 		return
-	var last_idx: int = (candles.head + candles.size - 1) % candles.capacity
-	var last_open: int = candles.t_open[last_idx]
+
+	var head: int = int(candles["head"])
+	var cap_i: int = int(candles["capacity"])
+
+	var t_open: PackedInt32Array = candles["t_open"]
+	var t_close: PackedInt32Array = candles["t_close"]
+	var open: PackedFloat32Array = candles["open"]
+	var high: PackedFloat32Array = candles["high"]
+	var low: PackedFloat32Array = candles["low"]
+	var close: PackedFloat32Array = candles["close"]
+
+	var last_idx: int = (head + size_i - 1) % cap_i
+	var last_open: int = t_open[last_idx]
+
 	if bucket_start == last_open:
-		candles.t_close[last_idx] = bucket_end
-		candles.close[last_idx] = value
-		if value > candles.high[last_idx]:
-			candles.high[last_idx] = value
-		if value < candles.low[last_idx]:
-			candles.low[last_idx] = value
+		t_close[last_idx] = bucket_end
+		close[last_idx] = value
+		if value > high[last_idx]:
+			high[last_idx] = value
+		if value < low[last_idx]:
+			low[last_idx] = value
+
+		candles["t_close"] = t_close
+		candles["high"] = high
+		candles["low"] = low
+		candles["close"] = close
+
 		_candle_prune(candles, tier_index, t)
 	elif bucket_start > last_open:
 		_candle_push(candles, tier_index, bucket_start, bucket_end, value, value, value, value)
 
-func _candle_push(candles: Dictionary, tier_index: int, t_open: int, t_close: int, open: float, high: float, low: float, close: float) -> void:
-	var idx: int = (candles.head + candles.size) % candles.capacity
-	if candles.size < candles.capacity:
-		candles.t_open[idx] = t_open
-		candles.t_close[idx] = t_close
-		candles.open[idx] = open
-		candles.high[idx] = high
-		candles.low[idx] = low
-		candles.close[idx] = close
-		candles.size += 1
+
+func _candle_push(candles: Dictionary, tier_index: int, t_open_v: int, t_close_v: int, open_v: float, high_v: float, low_v: float, close_v: float) -> void:
+	var cap_i: int = int(candles["capacity"])
+	var head: int = int(candles["head"])
+	var size_i: int = int(candles["size"])
+
+	var t_open: PackedInt32Array = candles["t_open"]
+	var t_close: PackedInt32Array = candles["t_close"]
+	var open: PackedFloat32Array = candles["open"]
+	var high: PackedFloat32Array = candles["high"]
+	var low: PackedFloat32Array = candles["low"]
+	var close: PackedFloat32Array = candles["close"]
+
+	var idx: int = (head + size_i) % cap_i
+	if size_i < cap_i:
+		t_open[idx] = t_open_v
+		t_close[idx] = t_close_v
+		open[idx] = open_v
+		high[idx] = high_v
+		low[idx] = low_v
+		close[idx] = close_v
+		size_i += 1
 	else:
-		candles.t_open[candles.head] = t_open
-		candles.t_close[candles.head] = t_close
-		candles.open[candles.head] = open
-		candles.high[candles.head] = high
-		candles.low[candles.head] = low
-		candles.close[candles.head] = close
-		candles.head = (candles.head + 1) % candles.capacity
-	_candle_prune(candles, tier_index, t_open)
+		t_open[head] = t_open_v
+		t_close[head] = t_close_v
+		open[head] = open_v
+		high[head] = high_v
+		low[head] = low_v
+		close[head] = close_v
+		head = (head + 1) % cap_i
+
+	candles["t_open"] = t_open
+	candles["t_close"] = t_close
+	candles["open"] = open
+	candles["high"] = high
+	candles["low"] = low
+	candles["close"] = close
+	candles["head"] = head
+	candles["size"] = size_i
+
+	_candle_prune(candles, tier_index, t_open_v)
+
 
 func _candle_prune(candles: Dictionary, tier_index: int, current_t: int) -> void:
+	var cap_i: int = int(candles["capacity"])
+	var head: int = int(candles["head"])
+	var size_i: int = int(candles["size"])
+	var t_close: PackedInt32Array = candles["t_close"]
+
 	var horizon: int = int(TIER_CONFIG[tier_index].horizon)
-	while candles.size > 0:
-		var oldest_close: int = candles.t_close[candles.head]
+	while size_i > 0:
+		var oldest_close: int = t_close[head]
 		if current_t - oldest_close > horizon:
-			candles.head = (candles.head + 1) % candles.capacity
-			candles.size -= 1
+			head = (head + 1) % cap_i
+			size_i -= 1
 		else:
 			break
 
+	candles["head"] = head
+	candles["size"] = size_i
 
 func get_latest_point(id: StringName) -> Vector2:
-	# Returns Vector2(t_minute, value) from the finest tier, or Vector2(-INF, 0.0) if none.
 	if not _series.has(id):
 		return Vector2(-INF, 0.0)
-	var line: Dictionary = _series[id].tiers[0].line
-	if line.size == 0:
+	var line: Dictionary = _series[id]["tiers"][0]["line"]
+	var size_i: int = int(line["size"])
+	if size_i == 0:
 		return Vector2(-INF, 0.0)
-	var idx: int = (line.head + line.size - 1) % line.capacity
-	return Vector2(float(line.times[idx]), line.values[idx])
+
+	var head: int = int(line["head"])
+	var cap_i: int = int(line["capacity"])
+	var times: PackedInt32Array = line["times"]
+	var values: PackedFloat32Array = line["values"]
+
+	var idx: int = (head + size_i - 1) % cap_i
+	return Vector2(float(times[idx]), values[idx])
+
 
 # Returns { "found": bool, "t": int, "v": float } for the finest tier (tier 0).
 func get_value_at_or_before(id: StringName, t_minute: int) -> Dictionary:
