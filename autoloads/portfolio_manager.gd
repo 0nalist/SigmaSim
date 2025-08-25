@@ -359,17 +359,20 @@ func halve_assets() -> void:
 
 ## --- Stock Methods
 func buy_stock(symbol: String, amount: int = 1) -> bool:
-	var stock = stock_data.get(symbol)
-	if stock == null:
-		return false
+        var stock = stock_data.get(symbol)
+        if stock == null:
+                return false
 
-	var total_price = stock.price * amount
-	if attempt_spend(total_price, CREDIT_REQUIREMENTS["stock"]):
-		stocks_owned[symbol] = stocks_owned.get(symbol, 0) + amount
-		MarketManager.apply_stock_transaction(symbol, amount)
-		return true
+        var total_price = stock.price * amount
+        var required_score := CREDIT_REQUIREMENTS["stock"]
+        if UpgradeManager.get_level("brokerage_pattern_day_trader") > 0:
+                required_score = 0
+        if attempt_spend(total_price, required_score):
+                stocks_owned[symbol] = stocks_owned.get(symbol, 0) + amount
+                MarketManager.apply_stock_transaction(symbol, amount)
+                return true
 
-	return false
+        return false
 
 
 func sell_stock(symbol: String, amount: int = 1) -> bool:

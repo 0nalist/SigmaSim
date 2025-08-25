@@ -11,7 +11,7 @@ func _ready():
         pm.credit_used = 0.0
         pm.credit_limit = 1000.0
         pm.credit_interest_rate = 0.0
-        pm.credit_score = 800
+        pm.credit_score = 500
         var result := pm.buy_stock(stock.symbol)
         assert(not result)
         UpgradeManager.player_levels["brokerage_pattern_day_trader"] = 1
