@@ -1,10 +1,7 @@
 class_name PortraitView
 extends Control
 
-@export var portrait_scale: float = 2.0:
-    set(value):
-        field = value
-        _apply_scale()
+const PORTRAIT_SCALE := 2.0
 
 @export var portrait_creator_enabled: bool = true
 @export var subject_is_player: bool = false
@@ -31,27 +28,14 @@ func _ready() -> void:
 			apply_config(cfg)
 
 func _center_layers() -> void:
-        for child in get_children():
-                if child is TextureRect:
-                        child.position = (size - child.size) / 2
-
-
-func _apply_scale() -> void:
-        for layer in PortraitCache.layers_order():
-                var rect: TextureRect = get_node_or_null(layer)
-                if rect == null or rect.texture == null:
-                        continue
-                var tex: Texture2D = rect.texture
-                var native_size: Vector2 = tex.get_size()
-                var scaled_size: Vector2 = native_size * portrait_scale
-                rect.custom_minimum_size = scaled_size
-                rect.size = scaled_size
-        _center_layers()
+	for child in get_children():
+		if child is TextureRect:
+			child.position = (size - child.size) / 2
 
 
 func apply_config(cfg: PortraitConfig) -> void:
-        config = cfg.duplicate(true)
-        for layer in PortraitCache.layers_order():
+	config = cfg.duplicate(true)
+	for layer in PortraitCache.layers_order():
 		var rect: TextureRect = get_node_or_null(layer)
 		if rect == null:
 			continue
@@ -59,19 +43,23 @@ func apply_config(cfg: PortraitConfig) -> void:
 		var idx: int = cfg.indices.get(layer, 0)
 		var tex := PortraitCache.get_texture(layer, idx)
 
-                # Crisp sampling + scale-by-size
-                rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-                rect.stretch_mode = TextureRect.STRETCH_SCALE
+		# Crisp sampling + scale-by-size
+		rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		rect.stretch_mode = TextureRect.STRETCH_SCALE
 
-                if tex is Texture2D:
-                        rect.texture = tex
-                        rect.visible = true
-                else:
-                        # No texture selected for this layer
-                        rect.texture = null
-                        rect.custom_minimum_size = Vector2.ZERO
-                        rect.size = Vector2.ZERO
-                        rect.visible = false
+		if tex is Texture2D:
+			rect.texture = tex
+			var native_size: Vector2 = (tex as Texture2D).get_size()
+			var scaled_size: Vector2 = native_size * PORTRAIT_SCALE
+			rect.custom_minimum_size = scaled_size
+			rect.size = scaled_size
+			rect.visible = true
+		else:
+			# No texture selected for this layer
+			rect.texture = null
+			rect.custom_minimum_size = Vector2.ZERO
+			rect.size = Vector2.ZERO
+			rect.visible = false
 
 		var col_val = cfg.colors.get(layer, Color.WHITE)
 		if col_val is String:
@@ -79,7 +67,8 @@ func apply_config(cfg: PortraitConfig) -> void:
 		else:
 			rect.modulate = col_val
 
-        _apply_scale()
+		# Keep each layer centered within the view
+		rect.position = (size - rect.size) / 2
 
 
 func _on_mouse_entered() -> void:
