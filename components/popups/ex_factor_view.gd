@@ -60,9 +60,13 @@ func setup_custom(data: Dictionary) -> void:
 	print("[ExFactorView] npc_idx=", npc_idx)
 	unique_popup_key = "ex_factor_%d" % npc_idx
 	last_saved_progress = npc.relationship_progress
-	
-	await ready
-	
+	if is_node_ready():
+			_finalize_setup()
+	else:
+			ready.connect(_finalize_setup, CONNECT_ONE_SHOT)
+
+
+func _finalize_setup() -> void:
 	name_label.text = npc.full_name
 	portrait_view.portrait_creator_enabled = true
 	if npc_idx != -1:

@@ -57,6 +57,7 @@ func _on_pay_by_credit_button_pressed() -> void:
 		close()
 	else:
 		print("❌ Not enough credit")
+	WindowManager.focus_window(get_parent().get_parent().get_parent())
 	WindowManager.launch_app_by_name("OwerView")
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
