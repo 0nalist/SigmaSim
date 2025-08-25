@@ -686,17 +686,17 @@ func restore_encountered_from_db() -> void:
 
 
 func reset() -> void:
-        encounter_count = 0
-        encountered_npcs = []
-        encountered_npcs_by_app = {}
-        active_npcs_by_app = {}
+	encounter_count = 0
+	encountered_npcs = []
+	encountered_npcs_by_app = {}
+	active_npcs_by_app = {}
 
-        daterbase_npcs = []
+	daterbase_npcs = []
 
-        relationship_status = {}
-        persistent_npcs = {}
-        npc_overrides = {}
-        npcs = {}
+	relationship_status = {}
+	persistent_npcs = {}
+	npc_overrides = {}
+	npcs = {}
 
 	persistent_by_gender = {}
 	persistent_by_wealth = {}
