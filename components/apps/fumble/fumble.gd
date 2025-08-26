@@ -10,6 +10,8 @@ var curiosity: float = 0.85
 var card_stack: ProfileCardStack = null
 var pride_material = preload("res://components/apps/fumble/fumble_label_pride_month_material.tres")
 
+const TAG_COOLDOWN_MINUTES: int = 24 * 60
+
 @onready var fumble_label = %FumbleLabel
 @onready var profile_container: Control = %ProfileContainer
 @onready var swipe_left_button: Button = %SwipeLeftButton
@@ -31,6 +33,12 @@ var pride_material = preload("res://components/apps/fumble/fumble_label_pride_mo
 @onready var tag_option_button3: OptionButton = %TagOption3
 var tag_option_buttons: Array[OptionButton] = []
 
+@onready var type_cooldown_label: Label = %TypeCooldownLabel
+@onready var likes_cooldown_label: Label = %LikesCooldownLabel
+@onready var dislikes_cooldown_label: Label = %DislikesCooldownLabel
+var tag_cooldown_labels: Array[Label] = []
+var tag_cooldown_ends: Array[int] = []
+
 @onready var confidence_progress_bar: StatProgressBar = %ConfidenceProgressBar
 @onready var ex_progress_bar: StatProgressBar = %ExProgressBar
 
@@ -44,8 +52,10 @@ var tag_option_buttons: Array[OptionButton] = []
 
 
 func _ready():
-	tag_option_buttons = [tag_option_button1, tag_option_button2, tag_option_button3]
-	_setup_over_frames()
+        tag_option_buttons = [tag_option_button1, tag_option_button2, tag_option_button3]
+        tag_cooldown_labels = [type_cooldown_label, likes_cooldown_label, dislikes_cooldown_label]
+        TimeManager.hour_passed.connect(_on_hour_passed)
+        _setup_over_frames()
 
 
 func _setup_over_frames() -> void:
@@ -86,13 +96,14 @@ func _setup_over_frames() -> void:
 	if Events.has_signal("fumble_fugly_filter_purchased"):
 		Events.connect("fumble_fugly_filter_purchased", _on_fugly_filter_purchased)
 
-	for i in range(tag_option_buttons.size()):
-		tag_option_buttons[i].item_selected.connect(_on_tag_option_selected.bind(i))
+        for i in range(tag_option_buttons.size()):
+                tag_option_buttons[i].item_selected.connect(_on_tag_option_selected.bind(i))
 
-		await get_tree().process_frame
+                await get_tree().process_frame
 
-	_populate_tag_dropdowns()
-	_load_preferences()
+        _populate_tag_dropdowns()
+        _load_preferences()
+        _load_tag_cooldowns()
 	bio_text_edit.text = PlayerManager.get_var("bio", "")
 	bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
 
@@ -268,24 +279,55 @@ func _populate_tag_dropdowns() -> void:
 
 	var likes: Array = NPCFactory.LIKE_DATA.keys()
 	likes.sort()
-	for ob in [tag_option_button2, tag_option_button3]:
-		ob.clear()
-		ob.add_item("--")
-		for like in likes:
-			ob.add_item(like)
-		ob.select(0)
+        for ob in [tag_option_button2, tag_option_button3]:
+                ob.clear()
+                ob.add_item("--")
+                for like in likes:
+                        ob.add_item(like)
+                ob.select(0)
+
+func _load_tag_cooldowns() -> void:
+        tag_cooldown_ends = [
+                PlayerManager.get_var("fumble_type_cd", 0),
+                PlayerManager.get_var("fumble_like_cd", 0),
+                PlayerManager.get_var("fumble_dislike_cd", 0),
+        ]
+        _update_tag_cooldowns()
+
+func _update_tag_cooldowns() -> void:
+        var now = TimeManager.get_now_minutes()
+        for i in range(tag_option_buttons.size()):
+                var remaining = tag_cooldown_ends.size() > i ? tag_cooldown_ends[i] - now : 0
+                var ob = tag_option_buttons[i]
+                var label = tag_cooldown_labels[i]
+                if remaining > 0:
+                        ob.disabled = true
+                        var hours = int(ceil(float(remaining) / 60.0))
+                        label.visible = true
+                        label.text = "%dh" % hours
+                else:
+                        ob.disabled = false
+                        label.visible = false
+                        label.text = ""
+
+func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
+        _update_tag_cooldowns()
 func _on_tag_option_selected(index: int, which: int) -> void:
-		var ob = tag_option_buttons[which]
-		var text = ob.get_item_text(index)
-		if text == "--":
-				text = ""
-		match which:
-				0:
-						PlayerManager.set_var("fumble_type", text)
-				1:
-						PlayerManager.set_var("fumble_like", text)
-				2:
-						PlayerManager.set_var("fumble_dislike", text)
+                var ob = tag_option_buttons[which]
+                var text = ob.get_item_text(index)
+                if text == "--":
+                                text = ""
+                match which:
+                                0:
+                                                PlayerManager.set_var("fumble_type", text)
+                                1:
+                                                PlayerManager.set_var("fumble_like", text)
+                                2:
+                                                PlayerManager.set_var("fumble_dislike", text)
+                tag_cooldown_ends[which] = TimeManager.get_now_minutes() + TAG_COOLDOWN_MINUTES
+                var key = ["fumble_type_cd", "fumble_like_cd", "fumble_dislike_cd"][which]
+                PlayerManager.set_var(key, tag_cooldown_ends[which])
+                _update_tag_cooldowns()
 
 func _on_resize_x_requested(pixels):
 		var window_frame = get_parent().get_parent().get_parent()
@@ -304,14 +346,15 @@ func _on_bio_text_edit_text_changed() -> void:
 
 
 func _on_visibility_changed() -> void:
-				if not visible:
-								return
-				_load_preferences()
-				_update_fugly_filter_ui()
-				_on_gender_slider_changed(0)
-				_on_curiosity_h_slider_value_changed(curiosity_slider.value)
-				if card_stack and card_stack.cards.is_empty():
-								await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
+        if not visible:
+                return
+        _load_preferences()
+        _update_fugly_filter_ui()
+        _load_tag_cooldowns()
+        _on_gender_slider_changed(0)
+        _on_curiosity_h_slider_value_changed(curiosity_slider.value)
+        if card_stack and card_stack.cards.is_empty():
+                await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
 
 
 func _on_confidence_changed(value: float) -> void:
