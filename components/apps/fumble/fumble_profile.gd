@@ -20,24 +20,30 @@ extends PanelContainer
 @onready var astrology_value: Label = %AstrologyValue
 @onready var greek_stats_ui: Node = %GreekStatsUI
 @onready var wealth_value: Label = %WealthValue
+@onready var mbti_value: Label = %MBTIValue
+@onready var openness_value: Label = %OpennessValue
+@onready var conscientiousness_value: Label = %ConscientiousnessValue
+@onready var extraversion_value: Label = %ExtraversionValue
+@onready var agreeableness_value: Label = %AgreeablenessValue
+@onready var neuroticism_value: Label = %NeuroticismValue
 
 @onready var likes_section: VBoxContainer = %LikesSection
 @onready var tags_section: VBoxContainer = %TagsSection
 @onready var bio_panel: PanelContainer = %BioPanel
 @onready var greek_panel: PanelContainer = %GreekPanel
+@onready var stats_grid: GridContainer = %GridContainer
 
 # Updated: astrology_row / wealth_row don’t exist in your scene,
 # so we animate the value labels instead.
 @onready var sections: Array[Control] = [
-	dime_status_label,
-	name_label,
-	type_label,
-	likes_section,
-	tags_section,
-	bio_panel,
-	astrology_value,
-	greek_panel,
-	wealth_value
+		dime_status_label,
+		name_label,
+		type_label,
+		likes_section,
+		tags_section,
+		bio_panel,
+        stats_grid,
+        greek_panel
 ]
 
 
@@ -66,9 +72,11 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	_populate_likes(npc)
 	_populate_tags(npc)
 	_populate_bio(npc)
-	_populate_astrology(npc)
-	_populate_greek(npc)
-	_populate_wealth(npc)
+        _populate_astrology(npc)
+        _populate_greek(npc)
+        _populate_wealth(npc)
+        _populate_mbti(npc)
+        _populate_ocean(npc)
 
 	_run_entrance_animation()
 
@@ -88,9 +96,15 @@ func _apply_colors() -> void:
 		likes_label.modulate = label_color
 		tags_label.modulate = label_color
 
-		bio_text.modulate = value_color
-		astrology_value.modulate = value_color
-		wealth_value.modulate = value_color
+                bio_text.modulate = value_color
+                astrology_value.modulate = value_color
+                wealth_value.modulate = value_color
+                mbti_value.modulate = value_color
+                openness_value.modulate = value_color
+                conscientiousness_value.modulate = value_color
+                extraversion_value.modulate = value_color
+                agreeableness_value.modulate = value_color
+                neuroticism_value.modulate = value_color
 
 func _populate_likes(npc: NPC) -> void:
 	likes_label.text = "Likes"
@@ -166,12 +180,26 @@ func _populate_greek(npc: NPC) -> void:
 			bar.value = stats[key]
 
 func _populate_wealth(npc: NPC) -> void:
-	var formatted: String
-	if Engine.has_singleton("NumberFormatter") and NumberFormatter.has_method("format_commas"):
-		formatted = NumberFormatter.format_commas(npc.wealth)
-	else:
-		formatted = format_commas(npc.wealth)
-	wealth_value.text = "$" + formatted
+        var formatted: String
+        if Engine.has_singleton("NumberFormatter") and NumberFormatter.has_method("format_commas"):
+                formatted = NumberFormatter.format_commas(npc.wealth)
+        else:
+                formatted = format_commas(npc.wealth)
+        wealth_value.text = "$" + formatted
+
+func _populate_mbti(npc: NPC) -> void:
+        var mbti: String = npc.mbti
+        if mbti == null or mbti == "":
+                mbti_value.text = "Unknown"
+        else:
+                mbti_value.text = str(mbti)
+
+func _populate_ocean(npc: NPC) -> void:
+        openness_value.text = "%0.1f" % npc.openness
+        conscientiousness_value.text = "%0.1f" % npc.conscientiousness
+        extraversion_value.text = "%0.1f" % npc.extraversion
+        agreeableness_value.text = "%0.1f" % npc.agreeableness
+        neuroticism_value.text = "%0.1f" % npc.neuroticism
 
 
 func _run_entrance_animation() -> void:
