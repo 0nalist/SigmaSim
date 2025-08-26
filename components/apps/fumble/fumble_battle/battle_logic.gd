@@ -50,27 +50,27 @@ func get_success_chance(move_type: String) -> float:
 				var self_esteem_bonus = max(0, 50 - self_esteem) * 0.01
 				return clamp(chance + self_esteem_bonus, 0.0, 1.0)
 
-        var base_chance = 0.5 + (get_attractiveness_delta() / 10.0)
-        if move_type == "simp":
-                base_chance = 0.65 + (get_attractiveness_delta() / 10.0)
+	var base_chance = 0.5 + (get_attractiveness_delta() / 10.0)
+	if move_type == "simp":
+			base_chance = 0.65 + (get_attractiveness_delta() / 10.0)
 
-        var type_chance_adj = RizzBattleData.get_type_mod_chance_adjust(npc_type, move_type)
-        var chance = base_chance + type_chance_adj
+	var type_chance_adj = RizzBattleData.get_type_mod_chance_adjust(npc_type, move_type)
+	var chance = base_chance + type_chance_adj
 
-        if UpgradeManager.get_level("fumble_my_type") > 0:
-                var player_type = PlayerManager.get_var("fumble_type", "")
-                if player_type != "" and player_type == npc.chat_battle_type:
-                        chance += 0.1
-        if UpgradeManager.get_level("fumble_shared_hobbies") > 0:
-                var player_like = PlayerManager.get_var("fumble_like", "")
-                if player_like != "" and npc.likes.has(player_like):
-                        chance += 0.1
-        if UpgradeManager.get_level("fumble_hate_bonding") > 0:
-                var player_dislike = PlayerManager.get_var("fumble_dislike", "")
-                if player_dislike != "" and npc.dislikes != null and npc.dislikes.has(player_dislike):
-                        chance += 0.1
+	if UpgradeManager.get_level("fumble_my_type") > 0:
+			var player_type = PlayerManager.get_var("fumble_type", "")
+			if player_type != "" and player_type == npc.chat_battle_type:
+					chance += 0.1
+	if UpgradeManager.get_level("fumble_shared_hobbies") > 0:
+			var player_like = PlayerManager.get_var("fumble_like", "")
+			if player_like != "" and npc.likes.has(player_like):
+					chance += 0.1
+	if UpgradeManager.get_level("fumble_hate_bonding") > 0:
+			var player_dislike = PlayerManager.get_var("fumble_dislike", "")
+			if player_dislike != "" and npc.dislikes != null and npc.dislikes.has(player_dislike):
+					chance += 0.1
 
-        return clamp(chance, 0.0, 1.0)
+	return clamp(chance, 0.0, 1.0)
 
 
 

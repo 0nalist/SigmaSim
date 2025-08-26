@@ -189,10 +189,10 @@ func to_dict() -> Dictionary:
 		"delta": delta,
 		"omega": omega,
 		"sigma": sigma,
-                "tags": tags.duplicate(),
-                "likes": likes.duplicate(),
-                "dislikes": dislikes.duplicate(),
-                "fumble_bio": fumble_bio,
+				"tags": tags.duplicate(),
+				"likes": likes.duplicate(),
+				"dislikes": dislikes.duplicate(),
+				"fumble_bio": fumble_bio,
 		"self_esteem": self_esteem,
 		"apprehension": apprehension,
 		"chemistry": chemistry,
@@ -293,10 +293,10 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.delta = _safe_float(data.get("delta"))
 	npc.omega = _safe_float(data.get("omega"))
 	npc.sigma = _safe_float(data.get("sigma"))
-        _assign_string_array(npc.tags, data.get("tags"), ["alive"])
-        _assign_string_array(npc.likes, data.get("likes"))
-        _assign_string_array(npc.dislikes, data.get("dislikes"))
-        npc.fumble_bio  = _safe_string(data.get("fumble_bio"))
+	_assign_string_array(npc.tags, data.get("tags"), ["alive"])
+	_assign_string_array(npc.likes, data.get("likes"))
+	_assign_string_array(npc.dislikes, data.get("dislikes"))
+	npc.fumble_bio  = _safe_string(data.get("fumble_bio"))
 	npc.self_esteem = _safe_int(data.get("self_esteem"), 70)
 	npc.apprehension= _safe_int(data.get("apprehension"), 50)
 	npc.chemistry= _safe_int(data.get("chemistry"), 0)
