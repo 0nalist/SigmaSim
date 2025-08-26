@@ -1,10 +1,9 @@
-[gd_scene load_steps=56 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=55 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="1_lx1wk"]
 [ext_resource type="Texture2D" uid="uid://f3id4mqiae6r" path="res://assets/backgrounds/purplefieldgreenskyx480_restrictive.png" id="3_0utxc"]
-[ext_resource type="Script" uid="uid://nc5fi5e4a2r3" path="res://scripts/trauma_example.gd" id="3_5aheu"]
 [ext_resource type="Texture2D" uid="uid://crn8fnvyp4qgp" path="res://assets/logos/trashcan.png" id="3_05goa"]
 [ext_resource type="Texture2D" uid="uid://cjflmmx8qr1cg" path="res://assets/backgrounds/Bliss_(Windows_XP) (2).png" id="3_rbayd"]
 [ext_resource type="Texture2D" uid="uid://c88l4sfbsyhbr" path="res://assets/wide_bill_clinton_scantily_clad_in_a_blue_dress_waving_to_pa_1f48f6f3-2b0b-4da7-a461-17d252f99557_upscayl_4x_realesrgan-x4plus.png" id="4_adib1"]
@@ -230,10 +229,6 @@ grow_vertical = 2
 theme = ExtResource("1_0utxc")
 script = ExtResource("1_lpqk7")
 create_or_update_apps_folder = false
-
-[node name="Node" type="Node" parent="." node_paths=PackedStringArray("target_control")]
-script = ExtResource("3_5aheu")
-target_control = NodePath("..")
 
 [node name="bill2" type="TextureRect" parent="."]
 layout_mode = 1

@@ -108,10 +108,10 @@ func _ready() -> void:
 	next_stage_confirm_primary_button.pressed.connect(_on_next_stage_confirm_primary_pressed)
 	next_stage_confirm_alt_button.pressed.connect(_on_next_stage_confirm_alt_pressed)
 	next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
-        love_button.pressed.connect(_on_love_pressed)
-        exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
-       StatManager.stat_changed.connect(_on_stat_changed)
-       TimeManager.minute_passed.connect(_on_minute_passed)
+	love_button.pressed.connect(_on_love_pressed)
+	exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
+	StatManager.stat_changed.connect(_on_stat_changed)
+	TimeManager.minute_passed.connect(_on_minute_passed)
 
 	await get_tree().process_frame
 	if Events.has_signal("ex_factor_talk_therapy_purchased"):
@@ -131,17 +131,19 @@ func _process(delta: float) -> void:
 			progress_save_elapsed = 0.0
 
 func _exit_tree() -> void:
-        if TimeManager.minute_passed.is_connected(_on_minute_passed):
-                TimeManager.minute_passed.disconnect(_on_minute_passed)
-        if npc_idx != -1:
-                if NPCManager.affinity_changed.is_connected(_on_npc_affinity_changed):
+
+		if TimeManager.minute_passed.is_connected(_on_minute_passed):
+				TimeManager.minute_passed.disconnect(_on_minute_passed)
+		if npc_idx != -1:
+				if NPCManager.affinity_changed.is_connected(_on_npc_affinity_changed):
                         NPCManager.affinity_changed.disconnect(_on_npc_affinity_changed)
-                if NPCManager.affinity_equilibrium_changed.is_connected(_on_npc_equilibrium_changed):
+        if NPCManager.affinity_equilibrium_changed.is_connected(_on_npc_equilibrium_changed):
                         NPCManager.affinity_equilibrium_changed.disconnect(_on_npc_equilibrium_changed)
-                if NPCManager.exclusivity_core_changed.is_connected(_on_npc_exclusivity_core_changed):
+        if NPCManager.exclusivity_core_changed.is_connected(_on_npc_exclusivity_core_changed):
                         NPCManager.exclusivity_core_changed.disconnect(_on_npc_exclusivity_core_changed)
-                if npc.relationship_progress != last_saved_progress:
+        if npc.relationship_progress != last_saved_progress:
                         _persist_fields({"relationship_progress": npc.relationship_progress})
+
 
 # ---------------------------- Persistence glue ----------------------------
 
@@ -187,14 +189,15 @@ func _try_load_npc() -> void:
 # ---------------------------- UI updates ----------------------------
 
 func _refresh_all() -> void:
-	_update_relationship_bar()
-	_update_affinity_bar()
-	_update_buttons_text()
-	_update_love_button()
-	_update_dime_status_label()
-	_update_exclusivity_label()
-	_update_exclusivity_button()
-	_update_apologize_button()
+		_update_relationship_bar()
+		_update_affinity_bar()
+		_update_buttons_text()
+		_update_love_button()
+		_update_dime_status_label()
+		_update_exclusivity_label()
+		_update_exclusivity_button()
+		_update_next_stage_button()
+		_update_apologize_button()
 	
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
@@ -292,16 +295,21 @@ func _update_exclusivity_label() -> void:
 		exclusivity_label.remove_theme_color_override("font_color")
 
 func _update_exclusivity_button() -> void:
-	var visible: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DATING and \
-			npc.relationship_stage <= NPCManager.RelationshipStage.MARRIED
-	exclusivity_button.visible = visible
-	if not visible:
-			return
-	match npc.exclusivity_core:
-			NPCManager.ExclusivityCore.MONOG: exclusivity_button.text = "Go Poly"
-			NPCManager.ExclusivityCore.POLY: exclusivity_button.text = "Go Monog"
-			NPCManager.ExclusivityCore.CHEATING: exclusivity_button.text = "Come Clean"
-			_: exclusivity_button.text = "Toggle"
+		var visible: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DATING and \
+						npc.relationship_stage <= NPCManager.RelationshipStage.MARRIED
+		exclusivity_button.visible = visible
+		if not visible:
+						return
+		match npc.exclusivity_core:
+						NPCManager.ExclusivityCore.MONOG: exclusivity_button.text = "Go Poly"
+						NPCManager.ExclusivityCore.POLY: exclusivity_button.text = "Go Monog"
+						NPCManager.ExclusivityCore.CHEATING: exclusivity_button.text = "Come Clean"
+						_: exclusivity_button.text = "Toggle"
+
+func _update_next_stage_button() -> void:
+		var show: bool = logic.progress_paused and npc.relationship_stage < NPCManager.RelationshipStage.DIVORCED
+		next_stage_button.visible = show
+		next_stage_button.disabled = not show
 
 func _update_apologize_button() -> void:
 	var has_upgrade: bool = UpgradeManager.get_level("ex_factor_talk_therapy") > 0
@@ -395,8 +403,8 @@ func _on_next_stage_confirm_alt_pressed() -> void:
 		_show_quip("next level")
 
 func _on_next_stage_confirm_no_pressed() -> void:
-	next_stage_confirm.visible = false
-	next_stage_button.visible = true
+		next_stage_confirm.visible = false
+		_update_next_stage_button()
 
 func _on_exclusivity_button_pressed() -> void:
 		logic.toggle_exclusivity()
@@ -474,13 +482,14 @@ func _on_progress_changed(_p: float) -> void:
 	_update_relationship_bar()
 
 func _on_stage_gate() -> void:
-	next_stage_button.visible = true
+		_update_next_stage_button()
 
 func _on_stage_changed(_stage: int) -> void:
-	_update_relationship_bar()
-	_update_love_button()
-	_update_exclusivity_label()
-	_update_exclusivity_button()
+		_update_relationship_bar()
+		_update_love_button()
+		_update_exclusivity_label()
+		_update_exclusivity_button()
+		_update_next_stage_button()
 
 func _on_affinity_changed(_a: float) -> void:
 	_update_affinity_bar()
@@ -492,14 +501,14 @@ func _on_costs_changed(_gift: float, _date: float) -> void:
 	_update_buttons_text()
 
 func _on_cooldown_changed(_ready_at: int) -> void:
-        _update_love_button()
+		_update_love_button()
 
 func _on_minute_passed(_m: int) -> void:
-        _update_love_button()
+		_update_love_button()
 
 func _on_exclusivity_changed(_core: int) -> void:
-        _update_exclusivity_label()
-        _update_exclusivity_button()
+		_update_exclusivity_label()
+		_update_exclusivity_button()
 
 func _on_blocked_state_changed(is_blocked: bool) -> void:
 	gift_button.disabled = is_blocked

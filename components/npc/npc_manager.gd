@@ -43,6 +43,10 @@ func _ready() -> void:
 						_recheck_daterbase_exclusivity(idx))
 				entered_dating_stage.connect(func(idx): _recheck_daterbase_exclusivity(idx))
 				exclusivity_core_changed.connect(func(idx, _o, _n): _recheck_daterbase_exclusivity(idx))
+				breakup_occurred.connect(func(idx):
+					_recheck_daterbase_exclusivity(idx)
+					_check_cheating_after_breakup()
+				)
 				load_daterbase_cache()
 
 func _queue_save(idx: int) -> void:
@@ -511,7 +515,6 @@ func _mark_npc_as_cheating(npc_idx: int, other_idx: int) -> void:
 
 func player_broke_up_with(npc_idx: int) -> void:
 		emit_signal("breakup_occurred", npc_idx)
-		_check_cheating_after_breakup()
 
 func _check_cheating_after_breakup() -> void:
 		for idx in encountered_npcs:

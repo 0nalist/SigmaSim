@@ -154,6 +154,7 @@ func _on_player_scored() -> void:
 	winnings += cash_per_score
 	if UpgradeManager.get_level("earlybird_earlier_bird") > 0:
 		PortfolioManager.add_cash(cash_per_score)
+		StatpopManager.spawn("+$"+NumberFormatter.format_commas(cash_per_score), player.position, "passive", Color.GREEN)
 	hud.update_score(player.score)
 	hud.update_winnings(winnings)
 
