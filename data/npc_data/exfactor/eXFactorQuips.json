@@ -1,0 +1,191 @@
+[
+	{
+		"type": "any",
+		"action": "gift",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "Awww, you ;;You ",
+		"core": "didn't have to do that",
+		"suffix": ".;;!"
+	},
+	{
+		"type": "any",
+		"action": "gift",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "Wow, just ;;",
+		"core": "what I always wanted",
+		"suffix": ";;!"
+	},
+	{
+		"type": "any",
+		"action": "gift",
+		"stage": "serious",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "Keep buying me thoughtful gifts like that and ",
+		"suffix": "we're going to end up married :)"
+	},
+	{
+		"type": "any",
+		"action": "gift",
+		"stage": "talking",
+		"exclusivity": "any",
+		"prefix": "Wow, you ;;You ",
+		"core": "really know how I ",
+		"suffix": "deserve to be treated :);;like to be treated."
+	},
+	{
+		"type": "any",
+		"action": "gift",
+		"stage": "any",
+		"exclusivity": "poly",
+		"prefix": "Awww, ",
+		"core": "thank you",
+		"suffix": "! I'll wear that when I go out with {random first_name} tomorrow."
+	},
+	{
+		"type": "any",
+		"action": "gift",
+		"stage": "any",
+		"exclusivity": "monog",
+		"prefix": "Awww, ",
+		"core": "thank you",
+		"suffix": "! I'll wear that on our next date :)"
+	},
+	{
+		"type": "any",
+		"action": "love",
+		"stage": "serious",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "I love you too",
+		"suffix": ":);;!;;;);;"
+	},
+	{
+		"type": "any",
+		"action": "love",
+		"stage": "serious",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "Are we soulmates",
+		"suffix": "?;;??;;?? :)"
+	},
+	{
+		"type": "any",
+		"action": "love",
+		"stage": "any",
+		"exclusivity": "poly",
+		"prefix": "",
+		"core": "That was even better than ",
+		"suffix": "{random first_name} last night!"
+	},
+	{
+		"type": "any",
+		"action": "love",
+		"stage": "any",
+		"exclusivity": "poly",
+		"prefix": "",
+		"core": "That was incredible",
+		"suffix": ". By the way, {random first_name} is coming over later!"
+	},
+	{
+		"type": "any",
+		"action": "love",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "That was ",
+		"suffix": "incredible :);;amazing :);;mind blowing :);;spectacular :)"
+	},
+	{
+		"type": "any",
+		"action": "next level",
+		"stage": "dating",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "Are we the best at dating",
+		"suffix": "?;;??;;?? :)"
+	},
+	{
+		"type": "any",
+		"action": "next level",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "I'm so happy things are ",
+		"suffix": "moving forward :);;moving in the right direction."
+	},
+	{
+		"type": "any",
+		"action": "next level",
+		"stage": "any",
+		"exclusivity": "poly",
+		"prefix": "",
+		"core": "I'm so happy to be with someone who ",
+		"suffix": "understands how much I value my independence :)"
+	},
+	{
+		"type": "any",
+		"action": "come clean",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "I can't help but think this was ",
+		"core": "my fault",
+		"suffix": ".;;. I hope we can move past this."
+	},
+	{
+		"type": "any",
+		"action": "come clean",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "Well, I appreciate your ;;We can move forward with ",
+		"core": "honesty",
+		"suffix": ", at least.;;, at the very least.;;."
+	},
+	{
+		"type": "any",
+		"action": "breakup",
+		"stage": "married",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "Thanks for wasting my time",
+		"suffix": "! At least I get half your stuff."
+	},
+	{
+		"type": "any",
+		"action": "breakup",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "Thanks for wasting my time",
+		"suffix": "!;;!!;;"
+	},
+	{
+		"type": "any",
+		"action": "date",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "",
+		"core": "I'm going to remember this day ",
+		"suffix": "for a long time!;;forever!"
+	},
+	{
+		"type": "any",
+		"action": "date",
+		"stage": "any",
+		"exclusivity": "any",
+		"prefix": "Oh, ",
+		"core": "that was such a perfect date",
+		"suffix": ".;;. I'm so glad to have spent it with you :)"
+	},
+	{
+		"type": "any",
+		"action": "date",
+		"stage": "any",
+		"exclusivity": "poly",
+		"prefix": "",
+		"core": "That was fun! ",
+		"suffix": "Maybe {random_first_name} could tag along on our next date?"
+	},
+]
