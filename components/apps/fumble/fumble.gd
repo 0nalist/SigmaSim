@@ -229,12 +229,14 @@ func _on_fugly_filter_purchased(_level: int) -> void:
 
 
 func _update_fugly_filter_ui() -> void:
-        var level := UpgradeManager.get_level("fumble_fugly_filter")
-        fugly_container.visible = level > 0
-        fugly_spinbox.max_value = level
-        fugly_spinbox.min_value = 0
-        var current = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_spinbox.value)
-        fugly_spinbox.value = clamp(current, 0, fugly_spinbox.max_value)
+       var level := UpgradeManager.get_level("fumble_fugly_filter")
+       fugly_container.visible = level > 0
+       fugly_spinbox.step = 0.1
+       fugly_spinbox.format = "%.1f"
+       fugly_spinbox.max_value = level / 10.0
+       fugly_spinbox.min_value = 0.0
+       var current: float = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_spinbox.value)
+       fugly_spinbox.value = clamp(current, 0.0, fugly_spinbox.max_value)
 
 
 func _load_preferences() -> void:
