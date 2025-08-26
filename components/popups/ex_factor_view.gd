@@ -32,6 +32,11 @@ const PROGRESS_MIN_DELTA: float = 0.01
 @onready var exclusivity_label: Label = %ExclusivityLabel
 @onready var exclusivity_button: Button = %ExclusivityButton
 
+const SPEECH_BUBBLE_SCENE := preload("res://components/ui/speech_bubble.tscn")
+const QUIPS_PATH := "res://data/npc_data/exfactor/eXFactorQuips.json"
+
+var _quips: Array = []
+
 var npc: NPC
 var logic: ExFactorLogic = ExFactorLogic.new()
 var npc_idx: int = -1
@@ -291,20 +296,23 @@ func _update_exclusivity_button() -> void:
 # ---------------------------- Button handlers ----------------------------
 
 func _on_gift_pressed() -> void:
-	if logic.try_gift():
-		_update_affinity_bar()
-		_update_buttons_text()
+        if logic.try_gift():
+                _update_affinity_bar()
+                _update_buttons_text()
+                _show_quip("gift")
 
 func _on_date_pressed() -> void:
-	if logic.try_date():
-		_update_relationship_bar()
-		_update_buttons_text()
+        if logic.try_date():
+                _update_relationship_bar()
+                _update_buttons_text()
+                _show_quip("date")
 
 func _on_love_pressed() -> void:
-	var now_m: int = TimeManager.get_now_minutes()
-	logic.apply_love(now_m)
-	_update_affinity_bar()
-	_update_love_button()
+        var now_m: int = TimeManager.get_now_minutes()
+        logic.apply_love(now_m)
+        _update_affinity_bar()
+        _update_love_button()
+        _show_quip("love")
 
 func _on_breakup_pressed() -> void:
 	breakup_preview = logic.preview_breakup_reward()
@@ -315,9 +323,10 @@ func _on_breakup_pressed() -> void:
 	breakup_confirm.visible = true
 
 func _on_breakup_confirm_yes_pressed() -> void:
-	breakup_confirm.visible = false
-	logic.confirm_breakup()
-	_refresh_all()
+        breakup_confirm.visible = false
+        logic.confirm_breakup()
+        _refresh_all()
+        _show_quip("breakup")
 
 func _on_breakup_confirm_no_pressed() -> void:
 	breakup_confirm.visible = false
@@ -353,24 +362,76 @@ func _prepare_next_stage_confirm() -> void:
 		next_stage_confirm_primary_button.text = "Transition to %s" % next_name
 
 func _on_next_stage_confirm_primary_pressed() -> void:
-	next_stage_confirm.visible = false
-	logic.request_next_stage_primary()
-	_refresh_all()
+        next_stage_confirm.visible = false
+        logic.request_next_stage_primary()
+        _refresh_all()
+        _show_quip("next level")
 
 func _on_next_stage_confirm_alt_pressed() -> void:
-	next_stage_confirm.visible = false
-	logic.request_next_stage_alt_for_dating()
-	_refresh_all()
+        next_stage_confirm.visible = false
+        logic.request_next_stage_alt_for_dating()
+        _refresh_all()
+        _show_quip("next level")
 
 func _on_next_stage_confirm_no_pressed() -> void:
 	next_stage_confirm.visible = false
 	next_stage_button.visible = true
 
 func _on_exclusivity_button_pressed() -> void:
-	logic.toggle_exclusivity()
-	_update_exclusivity_label()
-	_update_exclusivity_button()
-	_update_affinity_bar()
+        logic.toggle_exclusivity()
+        _update_exclusivity_label()
+        _update_exclusivity_button()
+        _update_affinity_bar()
+
+func _load_quips() -> void:
+        if _quips.size() == 0:
+                var file = FileAccess.open(QUIPS_PATH, FileAccess.READ)
+                if file:
+                        _quips = JSON.parse_string(file.get_as_text())
+
+func _pick_variant(text: String, rng: RandomNumberGenerator) -> String:
+        if text.is_empty():
+                return ""
+        var parts = text.split(";;")
+        return parts[rng.randi_range(0, parts.size() - 1)]
+
+func _select_quip(action: String) -> String:
+        _load_quips()
+        if npc == null:
+                return ""
+        var stage_str = STAGE_NAMES[npc.relationship_stage].to_lower()
+        var exclusivity_str = npc.exclusivity_core == NPCManager.ExclusivityCore.POLY ? "poly" : "monog"
+        var rng = RNGManager.npc_manager.get_rng()
+        var candidates: Array = []
+        for entry in _quips:
+                if entry.get("action", "") not in [action, "any"]:
+                        continue
+                if entry.get("stage", "any") not in [stage_str, "any"]:
+                        continue
+                if entry.get("exclusivity", "any") not in [exclusivity_str, "any"]:
+                        continue
+                candidates.append(entry)
+        if candidates.is_empty():
+                return ""
+        var chosen: Dictionary = candidates[rng.randi_range(0, candidates.size() - 1)]
+        var prefix = _pick_variant(chosen.get("prefix", ""), rng)
+        var core = _pick_variant(chosen.get("core", ""), rng)
+        var suffix = _pick_variant(chosen.get("suffix", ""), rng)
+        var line = prefix + core + suffix
+        line = line.replace("{random first_name}", "{random_first_name}")
+        return MarkupParser.parse(line, npc)
+
+func _show_quip(action: String) -> void:
+        var text = _select_quip(action)
+        if text == "":
+                return
+        var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
+        add_child(bubble)
+        bubble.set_text(text)
+        var rect = portrait_view.get_global_rect()
+        var pos = Vector2(rect.position.x - bubble.size.x - 10, rect.position.y + (rect.size.y - bubble.size.y) * 0.5)
+        bubble.global_position = pos
+        bubble.pop_and_fade()
 
 # ---------------------------- Logic signal sinks ----------------------------
 
