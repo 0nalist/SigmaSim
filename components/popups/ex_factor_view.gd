@@ -29,6 +29,7 @@ const PROGRESS_MIN_DELTA: float = 0.01
 @onready var next_stage_confirm_alt_button: Button = %NextStageConfirmAltButton
 @onready var next_stage_confirm_no_button: Button = %NextStageConfirmNoButton
 @onready var dime_status_label: Label = %DimeStatusLabel
+@onready var relationship_status_label: Label = %RelationshipStatusLabel
 @onready var exclusivity_label: Label = %ExclusivityLabel
 @onready var exclusivity_button: Button = %ExclusivityButton
 
@@ -189,15 +190,16 @@ func _try_load_npc() -> void:
 # ---------------------------- UI updates ----------------------------
 
 func _refresh_all() -> void:
-		_update_relationship_bar()
-		_update_affinity_bar()
-		_update_buttons_text()
-		_update_love_button()
-		_update_dime_status_label()
-		_update_exclusivity_label()
-		_update_exclusivity_button()
-		_update_next_stage_button()
-		_update_apologize_button()
+	_update_relationship_bar()
+	_update_affinity_bar()
+	_update_buttons_text()
+	_update_love_button()
+	_update_dime_status_label()
+	_update_relationship_status_label()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_next_stage_button()
+	_update_apologize_button()
 	
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
@@ -269,6 +271,49 @@ func _update_love_button() -> void:
 
 func _update_dime_status_label() -> void:
 	dime_status_label.text = "🔥 %.1f/10" % (float(npc.attractiveness) / 10.0)
+
+func _update_relationship_status_label() -> void:
+	var text: String = ""
+	match npc.relationship_stage:
+		NPCManager.RelationshipStage.TALKING:
+			text = "You are TALKING to"
+		NPCManager.RelationshipStage.DATING:
+			match npc.exclusivity_core:
+				NPCManager.ExclusivityCore.MONOG:
+					text = "You are DATING EXCLUSIVELY"
+				NPCManager.ExclusivityCore.CHEATING:
+					text = "You are DATING and CHEATING ON"
+				_:
+					text = "You are DATING"
+		NPCManager.RelationshipStage.SERIOUS:
+			match npc.exclusivity_core:
+				NPCManager.ExclusivityCore.MONOG:
+					text = "You are SERIOUSLY DATING, EXCLUSIVELY"
+				NPCManager.ExclusivityCore.CHEATING:
+					text = "You are SERIOUSLY DATING, and CHEATING ON"
+				_:
+					text = "You are SERIOUSLY DATING, POLYAMOROUSLY"
+		NPCManager.RelationshipStage.ENGAGED:
+			match npc.exclusivity_core:
+				NPCManager.ExclusivityCore.MONOG:
+					text = "You are ENGAGED to"
+				NPCManager.ExclusivityCore.CHEATING:
+					text = "You are ENGAGED and CHEATING ON"
+				_:
+					text = "You are ENGAGED, and POLY with"
+		NPCManager.RelationshipStage.MARRIED:
+			match npc.exclusivity_core:
+				NPCManager.ExclusivityCore.MONOG:
+					text = "You are MARRIED to"
+				NPCManager.ExclusivityCore.CHEATING:
+					text = "You are MARRIED and CHEATING ON"
+				_:
+					text = "You are MARRIED, and POLY with"
+		NPCManager.RelationshipStage.DIVORCED, NPCManager.RelationshipStage.EX:
+			text = "Your EX:"
+		_:
+			text = ""
+	relationship_status_label.text = text
 
 func _update_exclusivity_label() -> void:
 	var label_text: String
@@ -485,11 +530,12 @@ func _on_stage_gate() -> void:
 		_update_next_stage_button()
 
 func _on_stage_changed(_stage: int) -> void:
-		_update_relationship_bar()
-		_update_love_button()
-		_update_exclusivity_label()
-		_update_exclusivity_button()
-		_update_next_stage_button()
+	_update_relationship_bar()
+	_update_love_button()
+	_update_relationship_status_label()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_next_stage_button()
 
 func _on_affinity_changed(_a: float) -> void:
 	_update_affinity_bar()
@@ -507,8 +553,9 @@ func _on_minute_passed(_m: int) -> void:
 		_update_love_button()
 
 func _on_exclusivity_changed(_core: int) -> void:
-		_update_exclusivity_label()
-		_update_exclusivity_button()
+	_update_relationship_status_label()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
 
 func _on_blocked_state_changed(is_blocked: bool) -> void:
 	gift_button.disabled = is_blocked
