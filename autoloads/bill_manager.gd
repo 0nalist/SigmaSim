@@ -171,13 +171,13 @@ func get_due_bills_for_date(day: int, month: int, year: int) -> Array[String]:
 		var week_index = int(total_days / 7)
 
 		if week_index % 4 == 0:
-			bills.append("Rent")
+				bills.append("Rent")
 		if week_index % 4 == 1:
-			bills.append("Medical Insurance")
+				bills.append("Student Loan")
 		if week_index % 4 == 2:
-			bills.append("Student Loan")
+				bills.append("Credit Card")
 		if week_index % 4 == 3:
-			bills.append("Credit Card")
+				bills.append("Medical Insurance")
 
 	if get_daily_lifestyle_cost() > 0:
 		bills.append("Lifestyle Spending")
