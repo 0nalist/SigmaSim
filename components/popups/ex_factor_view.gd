@@ -304,7 +304,7 @@ func _update_apologize_button() -> void:
 	if not apologize_button.visible:
 		return
 	var cost: int = logic.get_apologize_cost()
-	apologize_button.text = "Apologize (-%s Ex)" % NumberFormatter.format_number(cost)
+	apologize_button.text = "Apologize (%s Ex)" % NumberFormatter.format_number(cost)
 	apologize_button.disabled = StatManager.get_stat("ex", 0.0) < float(cost)
 
 

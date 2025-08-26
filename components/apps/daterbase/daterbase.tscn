@@ -99,15 +99,6 @@ theme_override_font_sizes/font_size = 16
 toggle_mode = true
 text = "Daterbase"
 
-[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 16
-disabled = true
-toggle_mode = true
-text = "SQL"
-
 [node name="HeadhuntersTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -116,6 +107,15 @@ theme_override_font_sizes/font_size = 16
 disabled = true
 toggle_mode = true
 text = "Headhunters"
+
+[node name="SQLTabButton" type="Button" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 16
+disabled = true
+toggle_mode = true
+text = "SQL"
 
 [node name="Control2" type="Control" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer/MarginContainer/TabBar"]
 custom_minimum_size = Vector2(0, 6)

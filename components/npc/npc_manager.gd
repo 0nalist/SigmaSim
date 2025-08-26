@@ -155,38 +155,38 @@ func gender_dot_similarity(a: Vector3, b: Vector3) -> float:
 
 
 func _merge_npc_data(npc: NPC, data: Dictionary) -> void:
-		if data.is_empty():
-				return
-		var exported: Dictionary = {}
-		for prop in npc.get_property_list():
-				if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
-						exported[prop.name] = true
-		for key in data.keys():
-				if not exported.has(key):
-						continue
-				var override_val = data[key]
-				var existing_val = npc.get(key)
-				match typeof(override_val):
-						TYPE_ARRAY:
-								if typeof(existing_val) == TYPE_ARRAY:
-										existing_val.clear()
-										for v in override_val:
-												existing_val.append(v)
-								else:
-										npc.set(key, override_val.duplicate())
-						TYPE_DICTIONARY:
-								if typeof(existing_val) == TYPE_DICTIONARY:
-										for sub_key in override_val.keys():
-												existing_val[sub_key] = override_val[sub_key]
-								else:
-										npc.set(key, override_val.duplicate())
-						TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING:
-								npc.set(key, override_val)
-						TYPE_OBJECT:
-								npc.set(key, override_val)
-						_:
-								if existing_val == null:
-									npc.set(key, override_val)
+	if data.is_empty():
+			return
+	var exported: Dictionary = {}
+	for prop in npc.get_property_list():
+		if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+				exported[prop.name] = true
+	for key in data.keys():
+		if not exported.has(key):
+				continue
+		var override_val = data[key]
+		var existing_val = npc.get(key)
+		match typeof(override_val):
+			TYPE_ARRAY:
+					if typeof(existing_val) == TYPE_ARRAY:
+							existing_val.clear()
+							for v in override_val:
+									existing_val.append(v)
+					else:
+							npc.set(key, override_val.duplicate())
+			TYPE_DICTIONARY:
+					if typeof(existing_val) == TYPE_DICTIONARY:
+							for sub_key in override_val.keys():
+									existing_val[sub_key] = override_val[sub_key]
+					else:
+							npc.set(key, override_val.duplicate())
+			TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING:
+					npc.set(key, override_val)
+			TYPE_OBJECT:
+					npc.set(key, override_val)
+			_:
+					if existing_val == null:
+						npc.set(key, override_val)
 
 
 
