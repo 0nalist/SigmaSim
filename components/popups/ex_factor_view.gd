@@ -185,7 +185,8 @@ func _refresh_all() -> void:
 	_update_dime_status_label()
 	_update_exclusivity_label()
 	_update_exclusivity_button()
-
+	_update_apologize_button()
+	
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
 	if stage == NPCManager.RelationshipStage.MARRIED:
@@ -283,15 +284,19 @@ func _update_exclusivity_label() -> void:
 
 func _update_exclusivity_button() -> void:
 	var visible: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DATING and \
-		npc.relationship_stage <= NPCManager.RelationshipStage.MARRIED
+			npc.relationship_stage <= NPCManager.RelationshipStage.MARRIED
 	exclusivity_button.visible = visible
 	if not visible:
-		return
+			return
 	match npc.exclusivity_core:
-		NPCManager.ExclusivityCore.MONOG: exclusivity_button.text = "Go Poly"
-		NPCManager.ExclusivityCore.POLY: exclusivity_button.text = "Go Monog"
-		NPCManager.ExclusivityCore.CHEATING: exclusivity_button.text = "Come Clean"
-		_: exclusivity_button.text = "Toggle"
+			NPCManager.ExclusivityCore.MONOG: exclusivity_button.text = "Go Poly"
+			NPCManager.ExclusivityCore.POLY: exclusivity_button.text = "Go Monog"
+			NPCManager.ExclusivityCore.CHEATING: exclusivity_button.text = "Come Clean"
+			_: exclusivity_button.text = "Toggle"
+
+func _update_apologize_button() -> void:
+	apologize_button.visible = UpgradeManager.get_level("ex_factor_talk_therapy") > 0 and \
+			(npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX)
 
 # ---------------------------- Button handlers ----------------------------
 
@@ -429,12 +434,12 @@ func _show_quip(action: String) -> void:
 	var text = _select_quip(action)
 	if text == "":
 			return
-        var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
-        add_child(bubble)
-        bubble.set_as_top_level(true)
-        bubble.set_text(text)
-        bubble.follow(portrait_view)
-        bubble.pop_and_fade()
+	var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
+	add_child(bubble)
+	bubble.set_as_top_level(true)
+	bubble.set_text(text)
+	bubble.follow(portrait_view)
+	bubble.pop_and_fade()
 
 # ---------------------------- Logic signal sinks ----------------------------
 
@@ -469,12 +474,11 @@ func _on_exclusivity_changed(_core: int) -> void:
 func _on_blocked_state_changed(is_blocked: bool) -> void:
 	gift_button.disabled = is_blocked
 	date_button.disabled = is_blocked
-	apologize_button.visible = UpgradeManager.get_level("ex_factor_talk_therapy") > 0 and \
-		(npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX)
+	_update_apologize_button()
+
 
 func _on_talk_therapy_purchased(_level: int) -> void:
-		if npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX:
-				apologize_button.visible = true
+	_update_apologize_button()
 
 func _on_npc_affinity_changed(idx: int, _value: float) -> void:
 		if idx != npc_idx:
