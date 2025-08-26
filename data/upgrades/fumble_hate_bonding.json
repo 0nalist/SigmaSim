@@ -1,0 +1,14 @@
+{
+  "id": "fumble_hate_bonding",
+  "name": "Hate Bonding",
+  "description": "Increases action success chance when you share a dislike with an NPC.",
+  "effects": [],
+  "systems": ["fumble"],
+  "dependencies": [],
+  "cost_per_level": {
+    "ex": 10
+  },
+  "max_level": 1,
+  "repeatable": false,
+  "scale_by_formula": false
+}

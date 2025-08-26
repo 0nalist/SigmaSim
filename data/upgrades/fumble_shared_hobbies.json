@@ -1,0 +1,14 @@
+{
+  "id": "fumble_shared_hobbies",
+  "name": "Shared Hobbies",
+  "description": "Increases action success chance when you share a like with an NPC.",
+  "effects": [],
+  "systems": ["fumble"],
+  "dependencies": [],
+  "cost_per_level": {
+    "ex": 10
+  },
+  "max_level": 1,
+  "repeatable": false,
+  "scale_by_formula": false
+}

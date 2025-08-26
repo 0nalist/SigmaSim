@@ -1,0 +1,14 @@
+{
+  "id": "fumble_my_type",
+  "name": "My Type",
+  "description": "Increases action success chance when your type matches theirs.",
+  "effects": [],
+  "systems": ["fumble"],
+  "dependencies": [],
+  "cost_per_level": {
+    "ex": 10
+  },
+  "max_level": 1,
+  "repeatable": false,
+  "scale_by_formula": false
+}
