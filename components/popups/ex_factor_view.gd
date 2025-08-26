@@ -107,6 +107,7 @@ func _ready() -> void:
 	next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
 	love_button.pressed.connect(_on_love_pressed)
 	exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
+	StatManager.stat_changed.connect(_on_stat_changed)
 
 	await get_tree().process_frame
 	if Events.has_signal("ex_factor_talk_therapy_purchased"):
@@ -295,8 +296,15 @@ func _update_exclusivity_button() -> void:
 			_: exclusivity_button.text = "Toggle"
 
 func _update_apologize_button() -> void:
-	apologize_button.visible = UpgradeManager.get_level("ex_factor_talk_therapy") > 0 and \
-			(npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX)
+	var has_upgrade: bool = UpgradeManager.get_level("ex_factor_talk_therapy") > 0
+	var in_ex_stage: bool = npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX
+	apologize_button.visible = has_upgrade and in_ex_stage
+	if not apologize_button.visible:
+		return
+	var cost: int = logic.get_apologize_cost()
+	apologize_button.text = "Apologize (-%s Ex)" % NumberFormatter.format_number(cost)
+	apologize_button.disabled = StatManager.get_stat("ex", 0.0) < float(cost)
+
 
 # ---------------------------- Button handlers ----------------------------
 
@@ -479,6 +487,11 @@ func _on_blocked_state_changed(is_blocked: bool) -> void:
 
 func _on_talk_therapy_purchased(_level: int) -> void:
 	_update_apologize_button()
+
+
+func _on_stat_changed(stat: String, _value: Variant) -> void:
+	if stat == "ex":
+		_update_apologize_button()
 
 func _on_npc_affinity_changed(idx: int, _value: float) -> void:
 		if idx != npc_idx:

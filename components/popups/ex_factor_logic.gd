@@ -23,6 +23,7 @@ const STAGE_THRESHOLDS: Array[float] = [0.0, 0.0, 100.0, 1000.0, 10000.0, 100000
 const LN10: float = 2.302585092994046
 const DEFAULT_LOVE_AFFINITY_GAIN: float = 5.0
 const LOVE_COOLDOWN_MINUTES: int = 24 * 60
+const APOLOGIZE_COST: int = 10
 
 static func get_stage_bounds(stage: int, progress: float) -> Vector2:
 	if stage < NPCManager.RelationshipStage.MARRIED:
@@ -213,31 +214,39 @@ func confirm_breakup() -> void:
 	npc.emit_signal("player_broke_up")
 
 func apologize_try() -> bool:
-	var cost: int = 10
-	var current_ex: float = StatManager.get_stat("ex", 0.0)
-	if current_ex < float(cost):
-		return false
+        var cost: int = APOLOGIZE_COST
+        var current_ex: float = StatManager.get_stat("ex", 0.0)
+        if current_ex < float(cost):
+                return false
 
-	StatManager.set_base_stat("ex", current_ex - float(cost))
+        StatManager.set_base_stat("ex", current_ex - float(cost))
 
-	npc.relationship_stage = NPCManager.RelationshipStage.TALKING
-	npc.relationship_progress = 0.0
-	npc.affinity = 1.0
+        npc.relationship_stage = NPCManager.RelationshipStage.TALKING
+        npc.relationship_progress = 0.0
+        npc.affinity = 1.0
+        npc.gift_count = 0
+        npc.date_count = 0
+        _recalc_costs()
 
-	progress_paused = false
-	change_state(npc.relationship_stage)
+        progress_paused = false
+        change_state(npc.relationship_stage)
 
-	emit_signal("affinity_changed", npc.affinity)
-	emit_signal("progress_changed", npc.relationship_progress)
-	emit_signal("request_persist", {
-		"relationship_progress": npc.relationship_progress,
-		"affinity": npc.affinity
-	})
+        emit_signal("affinity_changed", npc.affinity)
+        emit_signal("progress_changed", npc.relationship_progress)
+        emit_signal("request_persist", {
+                "relationship_progress": npc.relationship_progress,
+                "affinity": npc.affinity,
+                "gift_count": npc.gift_count,
+                "date_count": npc.date_count
+        })
 
-	if npc_idx != -1:
-		NPCManager.set_relationship_stage(npc_idx, npc.relationship_stage)
+        if npc_idx != -1:
+                NPCManager.set_relationship_stage(npc_idx, npc.relationship_stage)
 
 	return true
+
+func get_apologize_cost() -> int:
+	return APOLOGIZE_COST
 
 func request_next_stage_primary() -> void:
 	if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
