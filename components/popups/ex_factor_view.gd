@@ -315,6 +315,14 @@ func _update_relationship_status_label() -> void:
 			text = ""
 	relationship_status_label.text = text
 
+	# Color the text red if cheating, else white
+	if npc.exclusivity_core == NPCManager.ExclusivityCore.CHEATING:
+		relationship_status_label.add_theme_color_override("font_color", Color.RED)
+	else:
+		relationship_status_label.add_theme_color_override("font_color", Color.WHITE)
+
+
+
 func _update_exclusivity_label() -> void:
 	var label_text: String
 	if npc_idx != -1:

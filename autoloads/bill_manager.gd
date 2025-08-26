@@ -23,12 +23,12 @@ var paid_bills: Dictionary = {}  # date_key: Array[String]
 var lifestyle_categories := {}  # category_name: Dictionary
 
 
-# Ordered list: Week 0 → Rent, Week 1 → Insurance, etc.
+# Ordered list
 var weekly_bill_cycle := [
-	{"name": "Rent", "color": Color.RED},
-	{"name": "Medical Insurance", "color": Color.BLUE},
 	{"name": "Student Loan", "color": Color.GREEN},
+	{"name": "Rent", "color": Color.RED},
 	{"name": "Credit Card", "color": Color.PURPLE},
+	{"name": "Medical Insurance", "color": Color.BLUE},
 ]
 
 var static_bill_amounts := {}

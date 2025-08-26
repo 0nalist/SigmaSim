@@ -27,6 +27,9 @@ class_name EarlyBird
 @onready var forest_2: Parallax2D = %Forest2
 @onready var forest_3: Parallax2D = %Forest3
 
+@onready var statpops_silenced: bool = false
+
+
 var current_speed: float = 0.0
 var speed_timer := 0.0
 
