@@ -130,10 +130,12 @@ func try_date() -> bool:
 	npc.date_count += 1
 	_recalc_costs()
 
-	# Progress bump from paying for date (kept same formula).
 	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
 	var boost: float = npc.date_cost / 10.0
-	npc.relationship_progress = min(npc.relationship_progress + boost, bounds.y)
+	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED:
+			npc.relationship_progress = min(npc.relationship_progress + boost, bounds.y)
+	else:
+			npc.relationship_progress += boost
 
 	emit_signal("costs_changed", npc.gift_cost, npc.date_cost)
 	emit_signal("progress_changed", npc.relationship_progress)

@@ -591,8 +591,8 @@ func _on_npc_equilibrium_changed(idx: int, _value: float) -> void:
 				_update_affinity_bar()
 
 func _on_npc_exclusivity_core_changed(idx: int, _old_core: int, _new_core: int) -> void:
-							   if idx != npc_idx:
-															   return
-							   _update_exclusivity_label()
-							   _update_exclusivity_button()
-							   _update_relationship_status_label()
+				if idx != npc_idx:
+								return
+				_update_exclusivity_label()
+				_update_exclusivity_button()
+				_update_relationship_status_label()
