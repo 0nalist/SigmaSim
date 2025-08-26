@@ -24,21 +24,22 @@ extends PanelContainer
 @onready var likes_section: VBoxContainer = %LikesSection
 @onready var tags_section: VBoxContainer = %TagsSection
 @onready var bio_panel: PanelContainer = %BioPanel
-@onready var astrology_row: HBoxContainer = %AstrologyRow
 @onready var greek_panel: PanelContainer = %GreekPanel
-@onready var wealth_row: HBoxContainer = %WealthRow
 
+# Updated: astrology_row / wealth_row don’t exist in your scene,
+# so we animate the value labels instead.
 @onready var sections: Array[Control] = [
-		dime_status_label,
-		name_label,
-		type_label,
-		likes_section,
-		tags_section,
-		bio_panel,
-		astrology_row,
-		greek_panel,
-		wealth_row
+	dime_status_label,
+	name_label,
+	type_label,
+	likes_section,
+	tags_section,
+	bio_panel,
+	astrology_value,
+	greek_panel,
+	wealth_value
 ]
+
 
 func _ready() -> void:
 		_apply_colors()
@@ -172,6 +173,7 @@ func _populate_wealth(npc: NPC) -> void:
 		formatted = format_commas(npc.wealth)
 	wealth_value.text = "$" + formatted
 
+
 func _run_entrance_animation() -> void:
 	portrait.modulate.a = 0.0
 	var p_tween: Tween = create_tween()
@@ -189,6 +191,7 @@ func _run_entrance_animation() -> void:
 		root_tween.parallel().tween_property(node, "modulate:a", 1.0, 0.25).set_delay(delay)
 		root_tween.parallel().tween_property(node, "position:y", ny, 0.25).from(ny + 10.0).set_delay(delay)
 		index += 1
+
 
 func _clear_children(container: Node) -> void:
 	for child in container.get_children():

@@ -72,15 +72,15 @@ func add_daterbase_npc(idx: int) -> void:
 								daterbase_npcs.append(idx)
 
 func get_daterbase_npcs() -> Array[int]:
-                                return daterbase_npcs
+								return daterbase_npcs
 
 func load_fumble_relationship_cache() -> void:
-                                matched_npcs_by_app["fumble"] = []
-                                var rels: Dictionary = DBManager.get_all_fumble_relationships()
-                                for idx in rels.keys():
-                                                                var status_enum: FumbleManager.FumbleStatus = rels[idx]
-                                                                if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
-                                                                                matched_npcs_by_app["fumble"].append(int(idx))
+								matched_npcs_by_app["fumble"] = []
+								var rels: Dictionary = DBManager.get_all_fumble_relationships()
+								for idx in rels.keys():
+																var status_enum: FumbleManager.FumbleStatus = rels[idx]
+																if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+																				matched_npcs_by_app["fumble"].append(int(idx))
 
 # === MAIN API ===
 
@@ -674,13 +674,13 @@ func get_batch_of_new_npc_indices(app_name: String, count: int) -> Array[int]:
 	return result
 
 func get_batch_of_recycled_npc_indices(app_name: String, count: int) -> Array[int]:
-        var pool: Array[int] = []
-        var encountered = encountered_npcs_by_app.get(app_name, [])
-        var active = active_npcs_by_app.get(app_name, [])
-        var matched = matched_npcs_by_app.get(app_name, {})
-        for idx in encountered:
-                if not active.has(idx) and not persistent_npcs.has(idx) and not matched.has(idx):
-                        pool.append(idx)
+	var pool: Array[int] = []
+	var encountered = encountered_npcs_by_app.get(app_name, [])
+	var active = active_npcs_by_app.get(app_name, [])
+	var matched = matched_npcs_by_app.get(app_name, {})
+	for idx in encountered:
+			if not active.has(idx) and not persistent_npcs.has(idx) and not matched.has(idx):
+					pool.append(idx)
 	RNGManager.npc_manager.shuffle(pool)
 	var result: Array[int] = []
 	for idx in pool.slice(0, count):
@@ -700,25 +700,25 @@ func mark_npc_inactive_in_app(idx: int, app_name: String) -> void:
 		active_npcs_by_app[app_name].erase(idx)
 
 func set_relationship_status(idx: int, app_name: String, status: FumbleManager.FumbleStatus) -> void:
-        var prev_status: int = relationship_status.get(idx, {}).get(app_name, -1)
-        if not relationship_status.has(idx):
-                relationship_status[idx] = {}
-        relationship_status[idx][app_name] = status
+		var prev_status: int = relationship_status.get(idx, {}).get(app_name, -1)
+		if not relationship_status.has(idx):
+				relationship_status[idx] = {}
+		relationship_status[idx][app_name] = status
 
-        var liked_states = [FumbleManager.FumbleStatus.LIKED, FumbleManager.FumbleStatus.MATCHED]
-        var was_matched = liked_states.has(prev_status)
-        var is_matched = liked_states.has(status)
-        if is_matched and not was_matched:
-                if not matched_npcs_by_app.has(app_name):
-                        matched_npcs_by_app[app_name] = []
-                if not matched_npcs_by_app[app_name].has(idx):
-                        matched_npcs_by_app[app_name].append(idx)
-        elif was_matched and not is_matched:
-                if matched_npcs_by_app.has(app_name):
-                        matched_npcs_by_app[app_name].erase(idx)
+		var liked_states = [FumbleManager.FumbleStatus.LIKED, FumbleManager.FumbleStatus.MATCHED]
+		var was_matched = liked_states.has(prev_status)
+		var is_matched = liked_states.has(status)
+		if is_matched and not was_matched:
+				if not matched_npcs_by_app.has(app_name):
+						matched_npcs_by_app[app_name] = []
+				if not matched_npcs_by_app[app_name].has(idx):
+						matched_npcs_by_app[app_name].append(idx)
+		elif was_matched and not is_matched:
+				if matched_npcs_by_app.has(app_name):
+						matched_npcs_by_app[app_name].erase(idx)
 
-        if app_name == "fumble":
-                DBManager.save_fumble_relationship(idx, status)
+		if app_name == "fumble":
+				DBManager.save_fumble_relationship(idx, status)
 
 
 # Returns all NPC indices the player has "liked" in Fumble
@@ -761,13 +761,13 @@ func restore_encountered_from_db() -> void:
 
 
 func reset() -> void:
-        encounter_count = 0
-        encountered_npcs = []
-        encountered_npcs_by_app = {}
-        active_npcs_by_app = {}
-        matched_npcs_by_app = {}
+	encounter_count = 0
+	encountered_npcs = []
+	encountered_npcs_by_app = {}
+	active_npcs_by_app = {}
+	matched_npcs_by_app = {}
 
-        daterbase_npcs = []
+	daterbase_npcs = []
 
 	relationship_status = {}
 	persistent_npcs = {}

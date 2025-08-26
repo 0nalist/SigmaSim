@@ -233,11 +233,11 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("desktop"):
 					DesktopLayoutManager.load_from_data(data["desktop"])
 	if data.has("windows"):  # Always load windows last
-                WindowManager.load_from_data(data["windows"])
-                BillManager.is_loading = false
-                NPCManager.restore_encountered_from_db()
-                NPCManager.load_daterbase_cache()
-                NPCManager.load_fumble_relationship_cache()
+				WindowManager.load_from_data(data["windows"])
+				BillManager.is_loading = false
+				NPCManager.restore_encountered_from_db()
+				NPCManager.load_daterbase_cache()
+				NPCManager.load_fumble_relationship_cache()
 
 
 func reset_game_state() -> void:
