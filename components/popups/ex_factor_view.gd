@@ -36,6 +36,7 @@ const SPEECH_BUBBLE_SCENE := preload("res://components/ui/speech_bubble.tscn")
 const QUIPS_PATH := "res://data/npc_data/exfactor/eXFactorQuips.json"
 
 var _quips: Array = []
+var _active_speech_bubble: SpeechBubble
 
 var npc: NPC
 var logic: ExFactorLogic = ExFactorLogic.new()
@@ -426,15 +427,25 @@ func _select_quip(action: String) -> String:
 		return MarkupParser.parse(line, npc)
 
 func _show_quip(action: String) -> void:
-	var text = _select_quip(action)
-	if text == "":
-			return
+        if _active_speech_bubble and is_instance_valid(_active_speech_bubble):
+                return
+        var text = _select_quip(action)
+        if text == "":
+                return
         var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
+        _active_speech_bubble = bubble
+        bubble.tree_exited.connect(func(): _active_speech_bubble = null)
         add_child(bubble)
         bubble.set_as_top_level(true)
         bubble.set_text(text)
         bubble.follow(portrait_view)
-        bubble.pop_and_fade()
+        var label: Label = bubble.get_label()
+        label.visible_ratio = 0.0
+        var char_time := 0.05
+        var duration := float(text.length()) * char_time
+        bubble.pop_and_fade(duration + 1.0)
+        var tween: Tween = bubble.create_tween()
+        tween.tween_property(label, "visible_ratio", 1.0, duration)
 
 # ---------------------------- Logic signal sinks ----------------------------
 
