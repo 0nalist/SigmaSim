@@ -170,23 +170,23 @@ func _build_charts_view() -> void:
 
 	var container: Control = null
 
-        for symbol: String in MarketManager.stock_market.keys():
-                var stock: Stock = MarketManager.get_stock(symbol)
-                var popup: StockPopupUI = stock_popup_scene.instantiate()
-                popup.custom_minimum_size = Vector2(350, 150)
-                popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-                popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
-                popup.setup(stock)
+	for symbol: String in MarketManager.stock_market.keys():
+			var stock: Stock = MarketManager.get_stock(symbol)
+			var popup: StockPopupUI = stock_popup_scene.instantiate()
+			popup.custom_minimum_size = Vector2(350, 150)
+			popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			popup.setup(stock)
 
-                if container == null:
-                        container = popup
-                else:
-                        var split: VSplitContainer = VSplitContainer.new()
-                        split.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-                        split.size_flags_vertical = Control.SIZE_EXPAND_FILL
-                        split.add_child(container)
-                        split.add_child(popup)
-                        container = split
+			if container == null:
+					container = popup
+			else:
+					var split: VSplitContainer = VSplitContainer.new()
+					split.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+					split.size_flags_vertical = Control.SIZE_EXPAND_FILL
+					split.add_child(container)
+					split.add_child(popup)
+					container = split
 
 	if container != null:
 		charts_content.add_child(container)

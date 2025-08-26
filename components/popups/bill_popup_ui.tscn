@@ -10,6 +10,7 @@
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eog2v"]
 seamless = true
+seamless_blend_skirt = 0.008
 color_ramp = SubResource("Gradient_2jqea")
 noise = SubResource("FastNoiseLite_5t0q5")
 
@@ -20,7 +21,7 @@ shader_parameter/bottom_color = Color(4.04298e-06, 0.52603, 0.756903, 1)
 shader_parameter/middle_color = Color(1, 0.5, 0, 1)
 shader_parameter/top_color = Color(1, 0.03, 0.001, 1)
 shader_parameter/fire_alpha = 1.0
-shader_parameter/fire_speed = Vector2(0, 0.02)
+shader_parameter/fire_speed = Vector2(0, 0.2)
 shader_parameter/fire_aperture = 0.425
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hytj0"]
