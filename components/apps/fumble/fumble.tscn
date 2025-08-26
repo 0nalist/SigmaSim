@@ -163,9 +163,9 @@ text = "Type"
 
 [node name="TypeCooldownLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/TypeVBox/TypeHeader"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-visible = false
 
 [node name="TagOption1" type="OptionButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/TypeVBox"]
 unique_name_in_owner = true
@@ -188,9 +188,9 @@ text = "Likes"
 
 [node name="LikesCooldownLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/LikesVBox/LikesHeader"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-visible = false
 
 [node name="TagOption2" type="OptionButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/LikesVBox"]
 unique_name_in_owner = true
@@ -213,9 +213,9 @@ text = "Dislikes"
 
 [node name="DislikesCooldownLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/DislikesVBox/DislikesHeader"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-visible = false
 
 [node name="TagOption3" type="OptionButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/DislikesVBox"]
 unique_name_in_owner = true
