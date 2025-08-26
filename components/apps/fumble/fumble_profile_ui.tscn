@@ -86,6 +86,14 @@ theme_override_font_sizes/font_size = 18
 text = "Type"
 horizontal_alignment = 1
 
+[node name="JobLabel" type="Label" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "Job"
+horizontal_alignment = 1
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="Margin/Scroll/VBox"]
 layout_mode = 2
 
