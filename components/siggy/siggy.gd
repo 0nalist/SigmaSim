@@ -5,8 +5,8 @@ var bounce_height := 9
 var bounce_speed := 0.08  # Time per bounce
 
 @onready var siggy_sprite := %SiggySprite
-@onready var speech_label: Label = %SpeechLabel
-@onready var speech_bubble: NinePatchRect = %SpeechBubble
+#@onready var speech_bubble.speech_label: Label = %SpeechLabel
+@onready var speech_bubble: SpeechBubble = %SpeechBubble
 
 func _ready():
 	hide()
@@ -64,29 +64,29 @@ func slide_in_from_right():
 	tween.tween_property(self, "position", target_pos, slide_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func talk(text: String, time_per_char := 0.05) -> void:
-	speech_label.text = text
+	speech_bubble.speech_label.text = text
 
 	await get_tree().process_frame
-	speech_label.visible_ratio = 1.0  # ensure full size for size calculation
+	speech_bubble.speech_label.visible_ratio = 1.0  # ensure full size for size calculation
 
 	# Determine ideal width without wrapping
-	speech_label.autowrap_mode = TextServer.AUTOWRAP_OFF
-	var label_size = speech_label.get_combined_minimum_size()
+	speech_bubble.speech_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	var label_size = speech_bubble.speech_label.get_combined_minimum_size()
 	var max_width = 260
 	var target_width = clamp(label_size.x, 80, max_width)
-	speech_label.custom_minimum_size.x = target_width
+	speech_bubble.speech_label.custom_minimum_size.x = target_width
 
 	# Re-enable wrapping and calculate height
-	speech_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	speech_bubble.speech_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	await get_tree().process_frame
-	label_size = speech_label.get_combined_minimum_size()
+	label_size = speech_bubble.speech_label.get_combined_minimum_size()
 
 	# Add padding/margin
 	var padding = Vector2(20, 20)
 	var target_size = label_size + padding
 	speech_bubble.custom_minimum_size = target_size
 
-	speech_label.visible_ratio = 0.0
+	speech_bubble.speech_label.visible_ratio = 0.0
 	speech_bubble.visible = true
 	speech_bubble.modulate.a = 0.0
 	speech_bubble.scale = Vector2.ZERO
@@ -108,7 +108,7 @@ func talk(text: String, time_per_char := 0.05) -> void:
 	var rng = RNGManager.siggy.get_rng()
 
 	for i in range(total_chars):
-		speech_label.visible_ratio = float(i + 1) / total_chars
+		speech_bubble.speech_label.visible_ratio = float(i + 1) / total_chars
 
 		if i % bounce_every_n_chars == 0:
 			var bounce_tween = create_tween()
