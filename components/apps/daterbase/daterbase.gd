@@ -73,9 +73,9 @@ func _ready() -> void:
 	headhunters_tab_button.pressed.connect(_on_headhunters_tab_pressed)
 	hh_create_button.pressed.connect(_on_hh_create_pressed)
 	hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
-		hh_open_fumble_button.pressed.connect(_on_hh_open_fumble_button_pressed)
+	hh_open_fumble_button.pressed.connect(_on_hh_open_fumble_button_pressed)
 
-		_refresh_hh_open_fumble_button()
+	_refresh_hh_open_fumble_button()
 
 	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
 	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
@@ -230,9 +230,9 @@ func _display_headhunter_npc(full_name: String) -> void:
 	for child in hh_stats_container.get_children():
 		child.queue_free()
 
-		var npc: NPC = NPCFactory.create_npc_from_name(full_name)
-		hh_current_npc = npc
-		_refresh_hh_open_fumble_button()
+	var npc: NPC = NPCFactory.create_npc_from_name(full_name)
+	hh_current_npc = npc
+	_refresh_hh_open_fumble_button()
 
 	var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
 	portrait.portrait_creator_enabled = false
