@@ -68,11 +68,16 @@ static func create_npc(npc_index: int) -> NPC:
 		npc.tags.append_array(generate_npc_tags(full_name, TAG_DATA, 3))
 	else:
 		push_error("NPC resource missing 'tags' property!")
-	if "likes" in npc.get_property_list().map(func(x): return x.name):
-		npc.likes.clear()
-		npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
-	else:
-		push_error("NPC resource missing 'likes' property!")
+        if "likes" in npc.get_property_list().map(func(x): return x.name):
+                npc.likes.clear()
+                npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
+        else:
+                push_error("NPC resource missing 'likes' property!")
+        if "dislikes" in npc.get_property_list().map(func(x): return x.name):
+                npc.dislikes.clear()
+                npc.dislikes.append_array(generate_npc_dislikes(full_name, LIKE_DATA, npc.likes, 1))
+        else:
+                push_error("NPC resource missing 'dislikes' property!")
 
 	# The NPC resource always has `tags` and `likes` properties, so we can
 	# assign directly without checking the property list. The previous
@@ -88,8 +93,11 @@ static func create_npc(npc_index: int) -> NPC:
 	npc.tags.clear()
 	npc.tags.append_array(generate_npc_tags(full_name, TAG_DATA, 3))
 
-	npc.likes.clear()
-	npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
+        npc.likes.clear()
+        npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
+
+        npc.dislikes.clear()
+        npc.dislikes.append_array(generate_npc_dislikes(full_name, LIKE_DATA, npc.likes, 1))
 
 
 	# Now generate fumble_bio (dynamic)
@@ -155,10 +163,13 @@ static func create_npc_from_name(full_name: String) -> NPC:
 	npc.tags.clear()
 	npc.tags.append_array(generate_npc_tags(full_name, TAG_DATA, 3))
 
-	npc.likes.clear()
-	npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
+        npc.likes.clear()
+        npc.likes.append_array(generate_npc_likes(full_name, LIKE_DATA, 3))
 
-	npc.fumble_bio = generate_npc_fumble_bio(npc)
+        npc.dislikes.clear()
+        npc.dislikes.append_array(generate_npc_dislikes(full_name, LIKE_DATA, npc.likes, 1))
+
+        npc.fumble_bio = generate_npc_fumble_bio(npc)
 
 	npc.preferred_pet_names = _generate_pet_names(full_name, "preferred")
 	npc.player_pet_names = _generate_pet_names(full_name, "player")
@@ -277,12 +288,27 @@ static func generate_npc_likes(seed: String, like_data: Dictionary, like_count: 
 				weighted_list.append(l)
 		var chosen = weighted_list[rng.randi_range(0, weighted_list.size() - 1)]
 		selected.append(chosen)
-	return selected
+        return selected
 
 static func _is_excluded_like(like_a: String, like_b: String, like_data: Dictionary) -> bool:
-	var excl_a = like_data.get(like_a, {}).get("excluded", [])
-	var excl_b = like_data.get(like_b, {}).get("excluded", [])
-	return like_b in excl_a or like_a in excl_b
+        var excl_a = like_data.get(like_a, {}).get("excluded", [])
+        var excl_b = like_data.get(like_b, {}).get("excluded", [])
+        return like_b in excl_a or like_a in excl_b
+
+static func generate_npc_dislikes(seed: String, like_data: Dictionary, existing_likes: Array, dislike_count: int = 1) -> Array:
+        var available = like_data.keys().duplicate()
+        for l in existing_likes:
+                available.erase(l)
+        if available.size() == 0:
+                return []
+        var rng = RandomNumberGenerator.new()
+        rng.seed = djb2(seed + "dislike")
+        var selected = []
+        while selected.size() < dislike_count and available.size() > 0:
+                var chosen = available[rng.randi_range(0, available.size() - 1)]
+                selected.append(chosen)
+                available.erase(chosen)
+        return selected
 
 
 # Returns a random bio_dict from FUMBLE_BIOS, weighted by .weight

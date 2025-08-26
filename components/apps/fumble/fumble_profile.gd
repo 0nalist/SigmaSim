@@ -14,6 +14,8 @@ extends PanelContainer
 @onready var type_label: Label = %TypeLabel
 @onready var likes_container: Control = %LikesContainer
 @onready var likes_label: Label = %LikesLabel
+@onready var dislikes_container: Control = %DislikesContainer
+@onready var dislikes_label: Label = %DislikesLabel
 @onready var tags_container: Control = %TagsContainer
 @onready var tags_label: Label = %TagsLabel
 @onready var bio_text: RichTextLabel = %BioText
@@ -28,6 +30,7 @@ extends PanelContainer
 @onready var neuroticism_value: Label = %NeuroticismValue
 
 @onready var likes_section: VBoxContainer = %LikesSection
+@onready var dislikes_section: VBoxContainer = %DislikesSection
 @onready var tags_section: VBoxContainer = %TagsSection
 @onready var bio_panel: PanelContainer = %BioPanel
 @onready var greek_panel: PanelContainer = %GreekPanel
@@ -36,14 +39,15 @@ extends PanelContainer
 # Updated: astrology_row / wealth_row don’t exist in your scene,
 # so we animate the value labels instead.
 @onready var sections: Array[Control] = [
-		dime_status_label,
-		name_label,
-		type_label,
-		likes_section,
-		tags_section,
-		bio_panel,
-		stats_grid,
-		greek_panel
+                dime_status_label,
+                name_label,
+                type_label,
+                likes_section,
+                dislikes_section,
+                tags_section,
+                bio_panel,
+                stats_grid,
+                greek_panel
 ]
 
 
@@ -66,12 +70,13 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 		dime_status = "🔥 %0.1f/10" % (float(npc.attractiveness) / 10.0)
 	dime_status_label.text = dime_status
 
-	name_label.text = npc.full_name
-	type_label.text = str(npc.chat_battle_type)
+        name_label.text = npc.full_name
+        type_label.text = str(npc.chat_battle_type)
 
-	_populate_likes(npc)
-	_populate_tags(npc)
-	_populate_bio(npc)
+        _populate_likes(npc)
+        _populate_dislikes(npc)
+        _populate_tags(npc)
+        _populate_bio(npc)
 	_populate_astrology(npc)
 	_populate_greek(npc)
 	_populate_wealth(npc)
@@ -93,8 +98,9 @@ func _apply_colors() -> void:
 	dime_status_label.modulate = label_color
 	name_label.modulate = label_color
 	type_label.modulate = label_color
-	likes_label.modulate = label_color
-	tags_label.modulate = label_color
+        likes_label.modulate = label_color
+        dislikes_label.modulate = label_color
+        tags_label.modulate = label_color
 
 	bio_text.modulate = value_color
 	astrology_value.modulate = value_color
@@ -118,7 +124,20 @@ func _populate_likes(npc: NPC) -> void:
 				var none_label: Label = Label.new()
 				none_label.text = "No likes listed"
 				none_label.modulate = none_label_color
-				likes_container.add_child(none_label)
+                                likes_container.add_child(none_label)
+
+func _populate_dislikes(npc: NPC) -> void:
+        dislikes_label.text = "Dislikes"
+        _clear_children(dislikes_container)
+        if npc.dislikes != null and npc.dislikes.size() > 0:
+                for dislike in npc.dislikes:
+                        var pill: Control = _make_like_pill(_safe_str(dislike))
+                        dislikes_container.add_child(pill)
+        else:
+                var none_label: Label = Label.new()
+                none_label.text = "No dislikes listed"
+                none_label.modulate = none_label_color
+                dislikes_container.add_child(none_label)
 
 func _populate_tags(npc: NPC) -> void:
 		tags_label.text = "Tags"
