@@ -8,6 +8,7 @@ signal relationship_stage_changed(idx: int, old_stage: int, new_stage: int)
 signal cheating_detected(primary_idx: int, other_idx: int)
 signal affinity_equilibrium_changed(idx: int, value: float)
 signal breakup_occurred(idx: int)
+signal entered_dating_stage(idx: int)
 
 enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, DIVORCED, EX }
 enum ExclusivityCore { MONOG, POLY, CHEATING }
@@ -37,7 +38,10 @@ func _ready() -> void:
 				_save_timer.one_shot = true
 				_save_timer.timeout.connect(_flush_save_queue)
 				add_child(_save_timer)
-				relationship_stage_changed.connect(func(idx, _o, _n): _recheck_daterbase_exclusivity(idx))
+				relationship_stage_changed.connect(func(idx, old_stage, new_stage):
+					if not (old_stage == RelationshipStage.TALKING and new_stage == RelationshipStage.DATING):
+						_recheck_daterbase_exclusivity(idx))
+				entered_dating_stage.connect(func(idx): _recheck_daterbase_exclusivity(idx))
 				exclusivity_core_changed.connect(func(idx, _o, _n): _recheck_daterbase_exclusivity(idx))
 				load_daterbase_cache()
 
@@ -293,8 +297,8 @@ func set_relationship_stage(npc_idx: int, new_stage: int) -> void:
 		emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
 	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
-	if new_stage >= RelationshipStage.DATING and old_stage < RelationshipStage.DATING:
-		notify_player_advanced_someone_to_dating(npc_idx)
+	if old_stage == RelationshipStage.TALKING and new_stage == RelationshipStage.DATING:
+		emit_signal("entered_dating_stage", npc_idx)
 	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 func go_exclusive_during_dating(npc_idx: int) -> void:
