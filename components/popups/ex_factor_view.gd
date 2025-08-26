@@ -427,9 +427,13 @@ func _show_quip(action: String) -> void:
                 return
         var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
         add_child(bubble)
+        bubble.set_as_top_level(true)
         bubble.set_text(text)
         var rect = portrait_view.get_global_rect()
-        var pos = Vector2(rect.position.x - bubble.size.x - 10, rect.position.y + (rect.size.y - bubble.size.y) * 0.5)
+        var pos = Vector2(
+                rect.position.x - bubble.size.x - 10,
+                rect.position.y + (rect.size.y - bubble.size.y) * 0.5,
+        )
         bubble.global_position = pos
         bubble.pop_and_fade()
 
