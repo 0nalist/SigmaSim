@@ -31,9 +31,15 @@ func _ready() -> void:
     view.setup_custom({"npc": npc1, "npc_idx": npc1_idx})
     await get_tree().process_frame
 
+    # Opening the view should not trigger cheating cascades
+    assert(npc2.exclusivity_core == NPCManager.ExclusivityCore.MONOG)
+    assert(not view.relationship_status_label.has_theme_color_override("font_color"))
+
     npc_mgr.notify_player_advanced_someone_to_dating(npc2_idx)
     await get_tree().process_frame
 
     assert(view.exclusivity_label.text == "Exclusivity: Cheating")
+    assert(view.exclusivity_button.text == "Come Clean")
+    assert(view.relationship_status_label.get_theme_color("font_color") == Color.RED)
     print("exclusivity_label_update_test passed")
     quit()
