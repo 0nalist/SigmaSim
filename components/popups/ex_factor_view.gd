@@ -211,11 +211,19 @@ func _refresh_all() -> void:
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
 	if stage == NPCManager.RelationshipStage.MARRIED:
-		var level: int = ExFactorLogic.get_marriage_level(npc.relationship_progress)
-		relationship_stage_label.text = "Level %d Marriage" % level
-		relationship_bar.set_mark_fractions([])
-		relationship_value_label.text = ""
-		return
+			var level: int = ExFactorLogic.get_marriage_level(npc.relationship_progress)
+			relationship_stage_label.text = "Level %d Marriage" % level
+			var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, npc.relationship_progress)
+			var maxv: float = bounds.y - bounds.x
+			var val: float = npc.relationship_progress - bounds.x
+			relationship_bar.max_value = maxv
+			relationship_bar.update_value(val)
+			relationship_value_label.text = "%s / %s" % [
+					NumberFormatter.format_commas(val, 2),
+					NumberFormatter.format_commas(maxv, 2)
+			]
+			relationship_bar.set_mark_fractions([])
+			return
 
 	if stage == NPCManager.RelationshipStage.DIVORCED or stage == NPCManager.RelationshipStage.EX:
 		relationship_stage_label.text = STAGE_NAMES[stage]
@@ -621,14 +629,14 @@ func _on_npc_stage_changed(idx: int, _old_stage: int, _new_stage: int) -> void:
 		_update_apologize_button()
 
 func _on_cheating_detected(primary_idx: int, other_idx: int) -> void:
-        # If this view’s NPC is either the one marked cheating or the “other”, refresh.
-        if primary_idx != npc_idx and other_idx != npc_idx:
-                return
-        _sync_from_manager()
-        _update_relationship_status_label()
-        _update_exclusivity_label()
-        _update_exclusivity_button()
-        _update_affinity_bar()
+		# If this view’s NPC is either the one marked cheating or the “other”, refresh.
+		if primary_idx != npc_idx and other_idx != npc_idx:
+				return
+		_sync_from_manager()
+		_update_relationship_status_label()
+		_update_exclusivity_label()
+		_update_exclusivity_button()
+		_update_affinity_bar()
 
 func _sync_from_manager() -> void:
 	if npc_idx == -1:
