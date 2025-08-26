@@ -32,6 +32,13 @@ func set_upgrade(upgrade: Dictionary) -> void:
 	set_locked(UpgradeManager.is_locked(upgrade["id"]))
 	_update_cooldown()
 
+func refresh() -> void:
+	if upgrade_data.is_empty():
+		return
+	set_level(StatManager.get_upgrade_level(upgrade_data["id"]))
+	_refresh_cost()
+	_update_cooldown()
+
 func set_locked(locked: bool) -> void:
 	is_locked = locked
 	buy_button.disabled = locked
