@@ -219,45 +219,59 @@ func _update_fugly_filter_ui() -> void:
 
 
 func _load_preferences() -> void:
-	x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
-	y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
-	z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
-	curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
-	fugly_slider.value = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_slider.value)
+        x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
+        y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
+        z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
+        curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
+        fugly_slider.value = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_slider.value)
 
-	var saved_tags = [
-			PlayerManager.get_var("fumble_tag1", ""),
-			PlayerManager.get_var("fumble_tag2", ""),
-			PlayerManager.get_var("fumble_tag3", ""),
-	]
+        var saved_prefs = [
+                        PlayerManager.get_var("fumble_type", ""),
+                        PlayerManager.get_var("fumble_like", ""),
+                        PlayerManager.get_var("fumble_dislike", ""),
+        ]
 
-	for i in range(tag_option_buttons.size()):
-			var ob = tag_option_buttons[i]
-			var tag = saved_tags[i]
-			var selected_idx = 0
-			if tag != "":
-					for j in range(ob.get_item_count()):
-							if ob.get_item_text(j) == tag:
-									selected_idx = j
-									break
-			ob.select(selected_idx)
+        for i in range(tag_option_buttons.size()):
+                        var ob = tag_option_buttons[i]
+                        var pref = saved_prefs[i]
+                        var selected_idx = 0
+                        if pref != "":
+                                        for j in range(ob.get_item_count()):
+                                                        if ob.get_item_text(j) == pref:
+                                                                        selected_idx = j
+                                                                        break
+                        ob.select(selected_idx)
 
 func _populate_tag_dropdowns() -> void:
-	var tags: Array = NPCFactory.TAG_DATA.keys()
-	tags.sort()
-	for ob in tag_option_buttons:
-			ob.clear()
-			ob.add_item("--")
-			for tag in tags:
-					ob.add_item(tag)
-			ob.select(0)
+        var tags: Array = NPCFactory.TAG_DATA.keys()
+        tags.sort()
+        tag_option_button1.clear()
+        tag_option_button1.add_item("--")
+        for tag in tags:
+                tag_option_button1.add_item(tag)
+        tag_option_button1.select(0)
+
+        var likes: Array = NPCFactory.LIKE_DATA.keys()
+        likes.sort()
+        for ob in [tag_option_button2, tag_option_button3]:
+                ob.clear()
+                ob.add_item("--")
+                for like in likes:
+                        ob.add_item(like)
+                ob.select(0)
 
 func _on_tag_option_selected(index: int, which: int) -> void:
-	var ob = tag_option_buttons[which]
-	var text = ob.get_item_text(index)
-	if text == "--":
-			text = ""
-	PlayerManager.set_var("fumble_tag%s" % [which + 1], text)
+        var ob = tag_option_buttons[which]
+        var text = ob.get_item_text(index)
+        if text == "--":
+                text = ""
+        match which:
+                0:
+                        PlayerManager.set_var("fumble_type", text)
+                1:
+                        PlayerManager.set_var("fumble_like", text)
+                2:
+                        PlayerManager.set_var("fumble_dislike", text)
 
 func _on_resize_x_requested(pixels):
 		var window_frame = get_parent().get_parent().get_parent()
