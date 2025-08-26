@@ -2,6 +2,7 @@ extends NinePatchRect
 class_name SpeechBubble
 
 @onready var speech_label: Label = %SpeechLabel
+var follow_control: Control
 
 func _ready() -> void:
 	visible = false
@@ -47,7 +48,23 @@ func pop_and_fade(lifetime: float = 3.0) -> void:
 	fade.tween_callback(queue_free)
 
 func get_label() -> Label:
-	return speech_label
+        return speech_label
+
+func follow(control: Control) -> void:
+        follow_control = control
+        _update_follow_position()
+
+func _process(_delta: float) -> void:
+        if follow_control and is_instance_valid(follow_control):
+                _update_follow_position()
+
+func _update_follow_position() -> void:
+        if follow_control and is_instance_valid(follow_control):
+                var rect = follow_control.get_global_rect()
+                global_position = Vector2(
+                        rect.position.x - size.x - 10,
+                        rect.position.y + (rect.size.y - size.y) * 0.5,
+                )
 
 # --- Helpers ---
 
