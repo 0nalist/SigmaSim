@@ -26,7 +26,7 @@ func _ready() -> void:
 	sort_option_button.add_item("Name", 2)
 	sort_option_button.item_selected.connect(_on_sort_option_selected)
 
-        refresh_upgrades()
+	refresh_upgrades()
 
 func _exit_tree() -> void:
 	if UpgradeManager.is_connected("upgrade_purchased", _on_upgrade_changed):
@@ -37,54 +37,54 @@ func _exit_tree() -> void:
 			StatManager.stat_changed.disconnect(_on_stat_changed)
 
 func refresh_upgrades() -> void:
-        var upgrades = UpgradeManager.get_upgrades_for_system(system_name, show_locked)
-        _rebuild_stat_map(upgrades)
+		var upgrades = UpgradeManager.get_upgrades_for_system(system_name, show_locked)
+		_rebuild_stat_map(upgrades)
 
-        match sort_mode:
-                0:
-                        upgrades.sort_custom(_sort_by_price_asc)
-                1:
-                        upgrades.sort_custom(_sort_by_price_desc)
-                _:
-                        upgrades.sort_custom(_sort_by_unlock_then_id)
+		match sort_mode:
+				0:
+						upgrades.sort_custom(_sort_by_price_asc)
+				1:
+						upgrades.sort_custom(_sort_by_price_desc)
+				_:
+						upgrades.sort_custom(_sort_by_unlock_then_id)
 
-        var to_remove: Array = _rows.keys().duplicate()
-        var index: int = 0
-        for upgrade in upgrades:
-                var id: String = upgrade["id"]
-                to_remove.erase(id)
+		var to_remove: Array = _rows.keys().duplicate()
+		var index: int = 0
+		for upgrade in upgrades:
+				var id: String = upgrade["id"]
+				to_remove.erase(id)
 
-                var row
-                if _rows.has(id):
-                        row = _rows[id]
-                        row.set_locked(UpgradeManager.is_locked(id))
-                        row.refresh()
-                else:
-                        row = upgrade_ui.instantiate()
-                        _rows[id] = row
-                        row.set_upgrade(upgrade)
-                        row.set_locked(UpgradeManager.is_locked(id))
-                        row.connect("purchase_requested", _on_purchase_requested)
-                        upgrades_list.add_child(row)
+				var row
+				if _rows.has(id):
+						row = _rows[id]
+						row.set_locked(UpgradeManager.is_locked(id))
+						row.refresh()
+				else:
+						row = upgrade_ui.instantiate()
+						_rows[id] = row
+						row.set_upgrade(upgrade)
+						row.set_locked(UpgradeManager.is_locked(id))
+						row.connect("purchase_requested", _on_purchase_requested)
+						upgrades_list.add_child(row)
 
-                if row.get_index() != index:
-                        upgrades_list.move_child(row, index)
-                index += 1
+				if row.get_index() != index:
+						upgrades_list.move_child(row, index)
+				index += 1
 
-        for id in to_remove:
-                var row = _rows[id]
-                row.queue_free()
-                _rows.erase(id)
+		for id in to_remove:
+				var row = _rows[id]
+				row.queue_free()
+				_rows.erase(id)
 
 func _rebuild_stat_map(upgrades: Array) -> void:
-        _stat_to_upgrades.clear()
-        for upgrade in upgrades:
-                var id: String = upgrade["id"]
-                var cost = UpgradeManager.get_cost_for_next_level(id)
-                for stat in cost.keys():
-                        if not _stat_to_upgrades.has(stat):
-                                _stat_to_upgrades[stat] = []
-                        _stat_to_upgrades[stat].append(id)
+		_stat_to_upgrades.clear()
+		for upgrade in upgrades:
+				var id: String = upgrade["id"]
+				var cost = UpgradeManager.get_cost_for_next_level(id)
+				for stat in cost.keys():
+						if not _stat_to_upgrades.has(stat):
+								_stat_to_upgrades[stat] = []
+						_stat_to_upgrades[stat].append(id)
 
 func _sort_by_unlock_then_id(a, b):
 	var a_locked = UpgradeManager.is_locked(a["id"])
@@ -151,18 +151,18 @@ func _on_resources_changed(_value) -> void:
 				_queue_refresh()
 
 func _on_stat_changed(stat: String, _value) -> void:
-        if _stat_to_upgrades.has(stat):
-                _queue_refresh()
+		if _stat_to_upgrades.has(stat):
+				_queue_refresh()
 
 func _display_message(msg: String) -> void:
 				if info_label:
 								info_label.text = msg
 
 func _queue_refresh() -> void:
-        if not _refresh_pending:
-                _refresh_pending = true
-                call_deferred("_deferred_refresh")
+		if not _refresh_pending:
+				_refresh_pending = true
+				call_deferred("_deferred_refresh")
 
 func _deferred_refresh() -> void:
-        _refresh_pending = false
-        refresh_upgrades()
+		_refresh_pending = false
+		refresh_upgrades()
