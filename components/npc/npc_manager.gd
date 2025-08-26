@@ -30,6 +30,7 @@ var persistent_by_gender: Dictionary = {}
 var persistent_by_wealth: Dictionary = {}
 var _save_queue: Dictionary = {}
 var _save_timer: Timer
+var _last_dating_notify_time_msec: int = 0
 
 func _ready() -> void:
 				TimeManager.hour_passed.connect(_on_hour_passed)
@@ -574,16 +575,21 @@ func _recheck_daterbase_exclusivity(changed_idx: int) -> void:
 										come_clean_from_cheating(npc_idx)
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
-		for idx in encountered_npcs:
-				var npc_idx: int = int(idx)
-				if npc_idx == other_idx:
-												continue
-				var npc: NPC = get_npc_by_index(npc_idx)
-				if npc.exclusivity_core != ExclusivityCore.MONOG:
-												continue
-				if npc.relationship_stage < RelationshipStage.DATING or npc.relationship_stage > RelationshipStage.MARRIED:
-												continue
-				_mark_npc_as_cheating(npc_idx, other_idx)
+        var now_msec: int = Time.get_ticks_msec()
+        if now_msec - _last_dating_notify_time_msec < 100:
+                return
+        _last_dating_notify_time_msec = now_msec
+
+        for idx in encountered_npcs:
+                var npc_idx: int = int(idx)
+                if npc_idx == other_idx:
+                        continue
+                var npc: NPC = get_npc_by_index(npc_idx)
+                if npc.exclusivity_core != ExclusivityCore.MONOG:
+                        continue
+                if npc.relationship_stage < RelationshipStage.DATING or npc.relationship_stage > RelationshipStage.MARRIED:
+                        continue
+                _mark_npc_as_cheating(npc_idx, other_idx)
 
 
 func can_show_go_exclusive(npc_idx: int) -> bool:

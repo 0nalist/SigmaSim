@@ -96,10 +96,7 @@ func _finalize_setup() -> void:
 	if portrait_view.has_method("apply_config") and npc.portrait_config:
 		portrait_view.apply_config(npc.portrait_config)
 
-	if npc_idx != -1 and npc.relationship_stage >= NPCManager.RelationshipStage.DATING:
-		NPCManager.notify_player_advanced_someone_to_dating(npc_idx)
-
-	_refresh_all()
+        _refresh_all()
 
 func _ready() -> void:
 	gift_button.pressed.connect(_on_gift_pressed)
@@ -325,11 +322,11 @@ func _update_relationship_status_label() -> void:
 			text = ""
 	relationship_status_label.text = text
 
-	# Color the text red if cheating, else white
-	if npc.exclusivity_core == NPCManager.ExclusivityCore.CHEATING:
-		relationship_status_label.add_theme_color_override("font_color", Color.RED)
-	else:
-		relationship_status_label.add_theme_color_override("font_color", Color.WHITE)
+        # Color the text red if cheating, otherwise remove any override
+        if npc.exclusivity_core == NPCManager.ExclusivityCore.CHEATING:
+                relationship_status_label.add_theme_color_override("font_color", Color.RED)
+        else:
+                relationship_status_label.remove_theme_color_override("font_color")
 
 
 
@@ -591,42 +588,47 @@ func _on_stat_changed(stat: String, _value: Variant) -> void:
 		_update_apologize_button()
 
 func _on_npc_affinity_changed(idx: int, _value: float) -> void:
-		if idx != npc_idx:
-				return
-		_update_affinity_bar()
+                if idx != npc_idx:
+                                return
+                _sync_from_manager()
+                _update_affinity_bar()
 
 func _on_npc_equilibrium_changed(idx: int, _value: float) -> void:
-				if idx != npc_idx:
-								return
-				_update_affinity_bar()
+                                if idx != npc_idx:
+                                                                return
+                                _sync_from_manager()
+                                _update_affinity_bar()
 
 func _on_npc_exclusivity_core_changed(idx: int, _old_core: int, _new_core: int) -> void:
-				if idx != npc_idx:
-								return
-				_update_exclusivity_label()
-				_update_exclusivity_button()
-				_update_relationship_status_label()
+                                if idx != npc_idx:
+                                                                return
+                                _sync_from_manager()
+                                _update_exclusivity_label()
+                                _update_exclusivity_button()
+                                _update_relationship_status_label()
 
 func _on_npc_stage_changed(idx: int, _old_stage: int, _new_stage: int) -> void:
-	if idx != npc_idx:
-		return
-	# Re-run all UI derived from stage.
-	_update_relationship_bar()
-	_update_love_button()
-	_update_relationship_status_label()
-	_update_exclusivity_label()
-	_update_exclusivity_button()
-	_update_next_stage_button()
-	_update_apologize_button()
+        if idx != npc_idx:
+                return
+        _sync_from_manager()
+        # Re-run all UI derived from stage.
+        _update_relationship_bar()
+        _update_love_button()
+        _update_relationship_status_label()
+        _update_exclusivity_label()
+        _update_exclusivity_button()
+        _update_next_stage_button()
+        _update_apologize_button()
 
 func _on_cheating_detected(primary_idx: int, other_idx: int) -> void:
 	# If this view’s NPC is either the one marked cheating or the “other”, refresh.
 	if primary_idx != npc_idx and other_idx != npc_idx:
 		return
-	_update_relationship_status_label()
-	_update_exclusivity_label()
-	_update_exclusivity_button()
-	_update_affinity_bar()
+        _sync_from_manager()
+        _update_relationship_status_label()
+        _update_exclusivity_label()
+        _update_exclusivity_button()
+        _update_affinity_bar()
 
 func _sync_from_manager() -> void:
 	if npc_idx == -1:
