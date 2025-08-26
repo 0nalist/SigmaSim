@@ -674,12 +674,13 @@ func get_batch_of_new_npc_indices(app_name: String, count: int) -> Array[int]:
 	return result
 
 func get_batch_of_recycled_npc_indices(app_name: String, count: int) -> Array[int]:
-	var pool: Array[int] = []
-	var encountered = encountered_npcs_by_app.get(app_name, [])
-	var active = active_npcs_by_app.get(app_name, [])
-	for idx in encountered:
-		if not active.has(idx) and not persistent_npcs.has(idx):
-			pool.append(idx)
+        var pool: Array[int] = []
+        var encountered = encountered_npcs_by_app.get(app_name, [])
+        var active = active_npcs_by_app.get(app_name, [])
+        var matched = matched_npcs_by_app.get(app_name, {})
+        for idx in encountered:
+                if not active.has(idx) and not persistent_npcs.has(idx) and not matched.has(idx):
+                        pool.append(idx)
 	RNGManager.npc_manager.shuffle(pool)
 	var result: Array[int] = []
 	for idx in pool.slice(0, count):
