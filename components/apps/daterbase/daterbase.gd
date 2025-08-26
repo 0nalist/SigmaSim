@@ -73,9 +73,9 @@ func _ready() -> void:
 	headhunters_tab_button.pressed.connect(_on_headhunters_tab_pressed)
 	hh_create_button.pressed.connect(_on_hh_create_pressed)
 	hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
-	hh_open_fumble_button.pressed.connect(_on_hh_open_fumble_button_pressed)
+        hh_open_fumble_button.pressed.connect(_on_hh_open_fumble_button_pressed)
 
-	hh_open_fumble_button.disabled = true
+        _refresh_hh_open_fumble_button()
 
 	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
 	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
@@ -142,14 +142,15 @@ func _activate_tab(tab_name: StringName) -> void:
 		_ensure_results_tree_parent(results_container_sql)
 		query_edit.grab_focus()
 	else:
-		daterbase_tab_button.set_pressed(false)
-		sql_tab_button.set_pressed(false)
-		headhunters_tab_button.set_pressed(true)
-		daterbase_view.visible = false
-		sql_view.visible = false
-		headhunters_view.visible = true
-		error_label.text = ""
-		hh_name_edit.grab_focus()
+                daterbase_tab_button.set_pressed(false)
+                sql_tab_button.set_pressed(false)
+                headhunters_tab_button.set_pressed(true)
+                daterbase_view.visible = false
+                sql_view.visible = false
+                headhunters_view.visible = true
+                error_label.text = ""
+                hh_name_edit.grab_focus()
+                _refresh_hh_open_fumble_button()
 
 
 
@@ -176,8 +177,13 @@ func _update_tab_unlocks() -> void:
 				_activate_tab(&"Daterbase")
 
 func _on_upgrade_purchased(id: String, _level: int) -> void:
-		if id == "daterbase_unlock_sql" or id == "daterbase_unlock_headhunters":
-				_update_tab_unlocks()
+                if id == "daterbase_unlock_sql" or id == "daterbase_unlock_headhunters":
+                                _update_tab_unlocks()
+
+func _refresh_hh_open_fumble_button() -> void:
+                var cost: float = PlayerManager.get_var("hh_open_fumble_cost", 10)
+                hh_open_fumble_button.text = "Open in Fumble (%d EX)" % int(cost)
+                hh_open_fumble_button.disabled = hh_current_npc == null or StatManager.get_stat("ex", 0.0) < cost
 
 # =========================================
 # Buttons
@@ -224,9 +230,9 @@ func _display_headhunter_npc(full_name: String) -> void:
 	for child in hh_stats_container.get_children():
 		child.queue_free()
 
-	var npc: NPC = NPCFactory.create_npc_from_name(full_name)
-	hh_current_npc = npc
-	hh_open_fumble_button.disabled = false
+        var npc: NPC = NPCFactory.create_npc_from_name(full_name)
+        hh_current_npc = npc
+        _refresh_hh_open_fumble_button()
 
 	var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
 	portrait.portrait_creator_enabled = false
@@ -250,16 +256,23 @@ func _display_headhunter_npc(full_name: String) -> void:
 
 
 func _on_hh_open_fumble_button_pressed() -> void:
-		if hh_current_npc == null:
-				return
-		var idx = NPCManager.get_batch_of_new_npc_indices("fumble", 1)[0]
-		NPCManager.npcs[idx] = hh_current_npc
-		WindowManager.launch_app_by_name("Fumble")
-		await get_tree().process_frame
-		var win = WindowManager.find_window_by_app("Fumble")
-		if win and win.pane is FumbleUI:
-				var pane: FumbleUI = win.pane
-				pane.add_npc_profile_to_top(idx)
+                if hh_current_npc == null:
+                                return
+                var cost: float = PlayerManager.get_var("hh_open_fumble_cost", 10)
+                var current_ex: float = StatManager.get_stat("ex", 0.0)
+                if current_ex < cost:
+                                return
+                StatManager.set_base_stat("ex", current_ex - cost)
+                PlayerManager.set_var("hh_open_fumble_cost", cost * 2)
+                _refresh_hh_open_fumble_button()
+                var idx = NPCManager.get_batch_of_new_npc_indices("fumble", 1)[0]
+                NPCManager.npcs[idx] = hh_current_npc
+                WindowManager.launch_app_by_name("Fumble")
+                await get_tree().process_frame
+                var win = WindowManager.find_window_by_app("Fumble")
+                if win and win.pane is FumbleUI:
+                                var pane: FumbleUI = win.pane
+                                pane.add_npc_profile_to_top(idx)
 
 # =========================================
 # Safety

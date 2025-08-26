@@ -96,13 +96,16 @@ var default_user_data: Dictionary = {
 				   "fumble_like": "",
 				   "fumble_dislike": "",
 				   "fumble_type_cd": 0,
-				   "fumble_like_cd": 0,
-				   "fumble_dislike_cd": 0,
+                                   "fumble_like_cd": 0,
+                                   "fumble_dislike_cd": 0,
 
-	# Flags and progression
-	"unlocked_perks": [],
-	"seen_dialogue_ids": [],
-	"global_rng_seed": 0,
+        # Daterbase Headhunters
+        "hh_open_fumble_cost": 10,
+
+        # Flags and progression
+        "unlocked_perks": [],
+        "seen_dialogue_ids": [],
+        "global_rng_seed": 0,
 	# Background shader settings
 	"background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
 	}
