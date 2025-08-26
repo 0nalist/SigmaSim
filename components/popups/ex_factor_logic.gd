@@ -306,18 +306,20 @@ func toggle_exclusivity() -> void:
 # ---------------------------- Internal helpers ----------------------------
 
 func _advance_one_stage() -> void:
-	npc.relationship_stage += 1
-	if npc.relationship_stage >= NPCManager.RelationshipStage.MARRIED:
-		npc.affinity_equilibrium = npc.affinity_equilibrium
-	else:
-		npc.affinity_equilibrium = float(npc.relationship_stage) * 10.0
+        var new_stage: int = npc.relationship_stage + 1
 
-	if npc_idx != -1:
-		NPCManager.set_relationship_stage(npc_idx, npc.relationship_stage)
+        if npc_idx != -1:
+                NPCManager.set_relationship_stage(npc_idx, new_stage)
+        else:
+                npc.relationship_stage = new_stage
+                if npc.relationship_stage >= NPCManager.RelationshipStage.MARRIED:
+                        npc.affinity_equilibrium = npc.affinity_equilibrium
+                else:
+                        npc.affinity_equilibrium = float(npc.relationship_stage) * 10.0
 
-	progress_paused = false
-	change_state(npc.relationship_stage)
-	emit_signal("equilibrium_changed", npc.affinity_equilibrium)
+        progress_paused = false
+        change_state(npc.relationship_stage)
+        emit_signal("equilibrium_changed", npc.affinity_equilibrium)
 
 func _transition_dating_to_serious_monog() -> void:
 	if npc_idx != -1:

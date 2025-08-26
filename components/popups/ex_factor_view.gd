@@ -621,14 +621,14 @@ func _on_npc_stage_changed(idx: int, _old_stage: int, _new_stage: int) -> void:
 		_update_apologize_button()
 
 func _on_cheating_detected(primary_idx: int, other_idx: int) -> void:
-	# If this view’s NPC is either the one marked cheating or the “other”, refresh.
-	if primary_idx != npc_idx and other_idx != npc_idx:
-		return
-		_sync_from_manager()
-		_update_relationship_status_label()
-		_update_exclusivity_label()
-		_update_exclusivity_button()
-		_update_affinity_bar()
+        # If this view’s NPC is either the one marked cheating or the “other”, refresh.
+        if primary_idx != npc_idx and other_idx != npc_idx:
+                return
+        _sync_from_manager()
+        _update_relationship_status_label()
+        _update_exclusivity_label()
+        _update_exclusivity_button()
+        _update_affinity_bar()
 
 func _sync_from_manager() -> void:
 	if npc_idx == -1:
