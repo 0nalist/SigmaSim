@@ -9,42 +9,52 @@ func _ready() -> void:
 	z_index = 1000
 
 func set_text(text: String) -> void:
-		speech_label.text = text
-		speech_label.visible_ratio = 1.0
-		speech_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	# Config
+	var max_width: float = 260.0
+	var min_width: float = 80.0
+	var padding: Vector2 = Vector2(20.0, 20.0)
 
-		# Reset any previous sizing so the bubble can shrink back down.
-		speech_label.custom_minimum_size = Vector2.ZERO
-		speech_label.size = Vector2.ZERO
-		custom_minimum_size = Vector2.ZERO
-		size = Vector2.ZERO
+	# Configure the label first.
+	speech_label.visible_ratio = 1.0  # Label supports this. 
+	speech_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	speech_label.text = text
 
-		var label_size = speech_label.get_combined_minimum_size()
-		var max_width = 260
-		var target_width = clamp(label_size.x, 80, max_width)
-		speech_label.custom_minimum_size.x = target_width
-		speech_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		speech_label.size.x = target_width
+	# Choose a target width and apply it to the Label so wrapping will occur.
+	var label_req: Vector2 = speech_label.get_combined_minimum_size()
+	var target_width: float = clamp(label_req.x, min_width, max_width)
+	speech_label.custom_minimum_size = Vector2(target_width, 0.0)
+	speech_label.size = Vector2(target_width, 0.0)
 
-		# Use the content height so we don't end up with a bubble taller than its text.
-		var padding = Vector2(20, 20)
-		var target_size = Vector2(target_width, speech_label.get_content_height()) + padding
-		custom_minimum_size = target_size
-		size = target_size
-		pivot_offset = target_size
+	# Measure wrapped text using the Label's current theme font & size.
+	var text_size: Vector2 = _measure_wrapped(text, target_width)
 
+	# Size the bubble to fit the text + padding.
+	var target_size: Vector2 = Vector2(target_width, text_size.y) + padding
+	custom_minimum_size = target_size
+	size = target_size
+	pivot_offset = target_size
 
 func pop_and_fade(lifetime: float = 3.0) -> void:
 	scale = Vector2.ZERO
 	modulate.a = 0.0
 	visible = true
-	var tween = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(self, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(self, "modulate:a", 1.0, 0.2)
-	var fade = create_tween()
+	var fade: Tween = create_tween()
 	fade.tween_interval(lifetime)
 	fade.tween_property(self, "modulate:a", 0.0, 0.2)
 	fade.tween_callback(queue_free)
 
 func get_label() -> Label:
 	return speech_label
+
+# --- Helpers ---
+
+func _measure_wrapped(text: String, width: float) -> Vector2:
+	# This uses the actual font on the Label (including theme overrides).
+	var font: Font = speech_label.get_theme_font("font")
+	var font_size: int = speech_label.get_theme_font_size("font_size")
+	# Height accounts for wrapping at the given width.
+	var size: Vector2 = font.get_multiline_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, width, font_size)
+	return size
