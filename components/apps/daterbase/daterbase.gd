@@ -52,6 +52,14 @@ var _exclusivity_labels_by_npc: Dictionary = {}
 const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
 const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
+const DATERBASE_HEADERS: Array[String] = [
+"Portrait",
+"Full Name",
+"Dime Status",
+"Relationship Status",
+"Exclusivity",
+"Affinity",
+]
 
 
 func _ready() -> void:
@@ -250,36 +258,42 @@ func _load_default_entries() -> void:
 	_affinity_labels_by_npc.clear()
 	_exclusivity_labels_by_npc.clear()
 
-	var npc_indices: Array[int] = NPCManager.get_daterbase_npcs()
-	if npc_indices.is_empty():
-		var empty_label: Label = Label.new()
-		empty_label.text = "no one wants you yet"
-		empty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		empty_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		results_container_daterbase.add_child(empty_label)
-		return
+        var npc_indices: Array[int] = NPCManager.get_daterbase_npcs()
+        if sort_column_index != -1:
+                npc_indices.sort_custom(self, "_npc_less_than")
+                if not sort_ascending:
+                        npc_indices.reverse()
+        if npc_indices.is_empty():
+                var empty_label: Label = Label.new()
+                empty_label.text = "no one wants you yet"
+                empty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+                empty_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+                results_container_daterbase.add_child(empty_label)
+                return
 
-	var header: HBoxContainer = HBoxContainer.new()
-	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var header_labels: Array[Label] = []
-	header_labels.append(_create_header_label("Portrait"))
-	header_labels.append(_create_header_label("Full Name"))
-	header_labels.append(_create_header_label("Dime Status"))
-	header_labels.append(_create_header_label("Relationship Status"))
-	header_labels.append(_create_header_label("Exclusivity"))
-	header_labels.append(_create_header_label("Affinity"))
-	for lbl in header_labels:
-		header.add_child(lbl)
-	results_container_daterbase.add_child(header)
+        var header: HBoxContainer = HBoxContainer.new()
+        header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+        var header_buttons: Array[Button] = []
+        for header_index in range(DATERBASE_HEADERS.size()):
+                var base_text: String = DATERBASE_HEADERS[header_index]
+                if sort_column_index == header_index:
+                        if sort_ascending:
+                                base_text += " ▲"
+                        else:
+                                base_text += " ▼"
+                var btn: Button = _create_header_button(base_text, header_index)
+                header_buttons.append(btn)
+                header.add_child(btn)
+        results_container_daterbase.add_child(header)
 
-	var default_font: Font = get_theme_default_font()
-	var default_font_size: int = get_theme_default_font_size()
-	var column_widths: Array[int] = [132, 0, 0, 0, 0, 0]
+        var default_font: Font = get_theme_default_font()
+        var default_font_size: int = get_theme_default_font_size()
+        var column_widths: Array[int] = [132, 0, 0, 0, 0, 0]
 
-	for header_index in range(1, header_labels.size()):
-		var header_size: Vector2 = default_font.get_string_size(header_labels[header_index].text, default_font_size)
-		column_widths[header_index] = int(ceil(header_size.x)) + EXTRA_HEADER_PADDING
+        for header_index in range(1, header_buttons.size()):
+                var header_size: Vector2 = default_font.get_string_size(header_buttons[header_index].text, default_font_size)
+                column_widths[header_index] = int(ceil(header_size.x)) + EXTRA_HEADER_PADDING
 
 	var rows: Array[HBoxContainer] = []
 	for npc_idx in npc_indices:
@@ -344,10 +358,10 @@ func _load_default_entries() -> void:
 		results_container_daterbase.add_child(row)
 		rows.append(row)
 
-	for header_index in range(header_labels.size()):
-		header_labels[header_index].custom_minimum_size.x = column_widths[header_index]
-		if header_index != 0:
-			header_labels[header_index].size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        for header_index in range(header_buttons.size()):
+                header_buttons[header_index].custom_minimum_size.x = column_widths[header_index]
+                if header_index != 0:
+                        header_buttons[header_index].size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	for row in rows:
 		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -357,11 +371,12 @@ func _load_default_entries() -> void:
 			if child_index != 0:
 				ctrl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-func _create_header_label(text: String) -> Label:
-	var lbl := Label.new()
-	lbl.text = text
-	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return lbl
+func _create_header_button(text: String, column_index: int) -> Button:
+        var btn := Button.new()
+        btn.text = text
+        btn.focus_mode = Control.FOCUS_NONE
+        btn.pressed.connect(_on_header_pressed.bind(column_index))
+        return btn
 	
 func _on_row_gui_input(event: InputEvent, idx: int, npc: NPC) -> void:
 	var mouse_event: InputEventMouseButton = event as InputEventMouseButton
@@ -384,9 +399,41 @@ func _on_npc_affinity_changed(idx: int, value: float) -> void:
 				lbl.text = "%.1f" % value
 
 func _on_npc_exclusivity_core_changed(idx: int, _old_core: int, _new_core: int) -> void:
-		if _exclusivity_labels_by_npc.has(idx):
-				var lbl: Label = _exclusivity_labels_by_npc[idx]
-				lbl.text = NPCManager.exclusivity_descriptor_label(idx)
+        if _exclusivity_labels_by_npc.has(idx):
+                                var lbl: Label = _exclusivity_labels_by_npc[idx]
+                                lbl.text = NPCManager.exclusivity_descriptor_label(idx)
+
+func _on_header_pressed(column_index: int) -> void:
+        if sort_column_index == column_index:
+                sort_ascending = not sort_ascending
+        else:
+                sort_column_index = column_index
+                sort_ascending = true
+        _load_default_entries()
+
+func _npc_less_than(left_idx: int, right_idx: int) -> bool:
+        var left_npc: NPC = NPCManager.get_npc_by_index(left_idx)
+        var right_npc: NPC = NPCManager.get_npc_by_index(right_idx)
+        var left_value: Variant = _get_sort_value(left_idx, left_npc)
+        var right_value: Variant = _get_sort_value(right_idx, right_npc)
+        return _compare_any(left_value, right_value, true)
+
+func _get_sort_value(idx: int, npc: NPC) -> Variant:
+        match sort_column_index:
+                0:
+                        return idx
+                1:
+                        return npc.full_name
+                2:
+                        return npc.attractiveness
+                3:
+                        return npc.relationship_stage
+                4:
+                        return NPCManager.exclusivity_descriptor_for(npc.relationship_stage, npc.exclusivity_core, npc.claimed_exclusive_boost)
+                5:
+                        return npc.affinity
+                _:
+                        return idx
 
 func _display_generic_rows(result_rows: Array) -> void:
 	if result_rows.size() == 0:
