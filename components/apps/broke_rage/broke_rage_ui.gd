@@ -23,7 +23,7 @@ class_name BrokeRage
 @onready var charts_portfolio_label: Label = %ChartsPortfolioLabel
 
 @onready var charts_content: Control = _ensure_charts_content()
-var stock_popup_scene: PackedScene = preload("res://components/popups/stock_popup_ui.tscn")
+				var stock_popup_scene: PackedScene = preload("res://components/popups/stock_popup_ui.tscn")
 
 func _ensure_charts_content() -> Control:
 		var existing: Node = charts_view.get_node_or_null("ChartsContent")
@@ -169,7 +169,9 @@ func _build_charts_view() -> void:
 		for child: Node in charts_content.get_children():
 				child.queue_free()
 
-		for symbol: String in MarketManager.stock_market.keys():
+		var symbols := MarketManager.stock_market.keys()
+		for i in range(symbols.size()):
+				var symbol: String = symbols[i]
 				var stock: Stock = MarketManager.get_stock(symbol)
 				var popup: StockPopupUI = stock_popup_scene.instantiate()
 				popup.custom_minimum_size = Vector2(350, 150)
@@ -177,3 +179,8 @@ func _build_charts_view() -> void:
 				popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
 				popup.setup(stock)
 				charts_content.add_child(popup)
+
+				if i < symbols.size() - 1:
+						var spacer: Control = Control.new()
+						spacer.custom_minimum_size = Vector2(0, 12)
+						charts_content.add_child(spacer)
