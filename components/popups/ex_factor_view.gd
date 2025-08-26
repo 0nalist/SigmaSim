@@ -34,8 +34,10 @@ const PROGRESS_MIN_DELTA: float = 0.01
 
 const SPEECH_BUBBLE_SCENE := preload("res://components/ui/speech_bubble.tscn")
 const QUIPS_PATH := "res://data/npc_data/exfactor/eXFactorQuips.json"
+const QUIP_CHAR_DELAY: float = 0.05
 
 var _quips: Array = []
+var _active_speech_bubble: SpeechBubble
 
 var npc: NPC
 var logic: ExFactorLogic = ExFactorLogic.new()
@@ -431,15 +433,26 @@ func _select_quip(action: String) -> String:
 		return MarkupParser.parse(line, npc)
 
 func _show_quip(action: String) -> void:
+	if _active_speech_bubble and is_instance_valid(_active_speech_bubble):
+		return
 	var text = _select_quip(action)
 	if text == "":
-			return
+		return
 	var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
 	add_child(bubble)
 	bubble.set_as_top_level(true)
 	bubble.set_text(text)
 	bubble.follow(portrait_view)
-	bubble.pop_and_fade()
+	_active_speech_bubble = bubble
+	bubble.tree_exited.connect(func(): _active_speech_bubble = null)
+	var label: Label = bubble.get_label()
+	label.visible_ratio = 0.0
+	var lifetime: float = max(3.0, text.length() * QUIP_CHAR_DELAY + 1.0)
+	bubble.pop_and_fade(lifetime)
+	await get_tree().create_timer(0.35).timeout
+	for i in range(text.length()):
+		label.visible_ratio = float(i + 1) / text.length()
+		await get_tree().create_timer(QUIP_CHAR_DELAY).timeout
 
 # ---------------------------- Logic signal sinks ----------------------------
 
