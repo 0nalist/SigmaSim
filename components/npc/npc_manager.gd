@@ -303,6 +303,8 @@ func set_relationship_stage(npc_idx: int, new_stage: int) -> void:
 
 	if old_stage == RelationshipStage.TALKING and new_stage == RelationshipStage.DATING:
 		emit_signal("entered_dating_stage", npc_idx)
+	if old_stage < RelationshipStage.DATING and new_stage >= RelationshipStage.DATING:
+		notify_player_advanced_someone_to_dating(npc_idx)
 	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
 
 func go_exclusive_during_dating(npc_idx: int) -> void:
@@ -498,20 +500,31 @@ func _mark_npc_as_cheating(npc_idx: int, other_idx: int) -> void:
 	var old_core: int = npc.exclusivity_core
 	var old_affinity: float = npc.affinity
 	var old_equilibrium: float = npc.affinity_equilibrium
+
 	npc.exclusivity_core = ExclusivityCore.CHEATING
 	npc.affinity = npc.affinity * 0.25
 	npc.affinity_equilibrium = npc.affinity_equilibrium * 0.5
+
 	promote_to_persistent(npc_idx)
 	persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
 	persistent_npcs[npc_idx]["affinity"] = npc.affinity
 	persistent_npcs[npc_idx]["affinity_equilibrium"] = npc.affinity_equilibrium
 	DBManager.save_npc(npc_idx, npc)
+
 	emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
 	emit_signal("affinity_changed", npc_idx, npc.affinity)
+
 	if old_equilibrium != npc.affinity_equilibrium:
-			emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
-			emit_signal("cheating_detected", npc_idx, other_idx)
-			print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core, old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium])
+		emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
+
+	# Always emit cheating_detected so UIs can refresh reliably.
+	emit_signal("cheating_detected", npc_idx, other_idx)
+
+	print("NPC %d: stage %d -> %d core %d -> %d affinity %.2f -> %.2f eq %.2f -> %.2f" % [
+		npc_idx, old_stage, npc.relationship_stage, old_core, npc.exclusivity_core,
+		old_affinity, npc.affinity, old_equilibrium, npc.affinity_equilibrium
+	])
+
 
 func player_broke_up_with(npc_idx: int) -> void:
 		emit_signal("breakup_occurred", npc_idx)

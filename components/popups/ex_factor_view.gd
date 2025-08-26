@@ -79,9 +79,12 @@ func _connect_logic_signals() -> void:
 	logic.request_persist.connect(_persist_fields)
 
 	if npc_idx != -1:
-					NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
-					NPCManager.affinity_equilibrium_changed.connect(_on_npc_equilibrium_changed)
-					NPCManager.exclusivity_core_changed.connect(_on_npc_exclusivity_core_changed)
+		NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
+		NPCManager.affinity_equilibrium_changed.connect(_on_npc_equilibrium_changed)
+		NPCManager.exclusivity_core_changed.connect(_on_npc_exclusivity_core_changed)
+		NPCManager.relationship_stage_changed.connect(_on_npc_stage_changed)
+		NPCManager.cheating_detected.connect(_on_cheating_detected)
+
 
 func _finalize_setup() -> void:
 	if npc == null:
@@ -132,18 +135,25 @@ func _process(delta: float) -> void:
 			progress_save_elapsed = 0.0
 
 func _exit_tree() -> void:
+	if TimeManager.minute_passed.is_connected(_on_minute_passed):
+		TimeManager.minute_passed.disconnect(_on_minute_passed)
 
-		if TimeManager.minute_passed.is_connected(_on_minute_passed):
-				TimeManager.minute_passed.disconnect(_on_minute_passed)
-		if npc_idx != -1:
-				if NPCManager.affinity_changed.is_connected(_on_npc_affinity_changed):
-						NPCManager.affinity_changed.disconnect(_on_npc_affinity_changed)
+	if npc_idx != -1:
+		if NPCManager.affinity_changed.is_connected(_on_npc_affinity_changed):
+			NPCManager.affinity_changed.disconnect(_on_npc_affinity_changed)
 		if NPCManager.affinity_equilibrium_changed.is_connected(_on_npc_equilibrium_changed):
-						NPCManager.affinity_equilibrium_changed.disconnect(_on_npc_equilibrium_changed)
+			NPCManager.affinity_equilibrium_changed.disconnect(_on_npc_equilibrium_changed)
 		if NPCManager.exclusivity_core_changed.is_connected(_on_npc_exclusivity_core_changed):
-						NPCManager.exclusivity_core_changed.disconnect(_on_npc_exclusivity_core_changed)
-		if npc.relationship_progress != last_saved_progress:
-						_persist_fields({"relationship_progress": npc.relationship_progress})
+			NPCManager.exclusivity_core_changed.disconnect(_on_npc_exclusivity_core_changed)
+		# NEW:
+		if NPCManager.relationship_stage_changed.is_connected(_on_npc_stage_changed):
+			NPCManager.relationship_stage_changed.disconnect(_on_npc_stage_changed)
+		if NPCManager.cheating_detected.is_connected(_on_cheating_detected):
+			NPCManager.cheating_detected.disconnect(_on_cheating_detected)
+
+	if npc.relationship_progress != last_saved_progress:
+		_persist_fields({"relationship_progress": npc.relationship_progress})
+
 
 
 # ---------------------------- Persistence glue ----------------------------
@@ -315,11 +325,12 @@ func _update_relationship_status_label() -> void:
 			text = ""
 	relationship_status_label.text = text
 
-	# Color the text red if cheating, else white
+	# Color the text red if cheating
 	if npc.exclusivity_core == NPCManager.ExclusivityCore.CHEATING:
 		relationship_status_label.add_theme_color_override("font_color", Color.RED)
 	else:
-		relationship_status_label.add_theme_color_override("font_color", Color.WHITE)
+		relationship_status_label.remove_theme_color_override("font_color")
+
 
 
 
@@ -596,3 +607,24 @@ func _on_npc_exclusivity_core_changed(idx: int, _old_core: int, _new_core: int) 
 				_update_exclusivity_label()
 				_update_exclusivity_button()
 				_update_relationship_status_label()
+
+func _on_npc_stage_changed(idx: int, _old_stage: int, _new_stage: int) -> void:
+	if idx != npc_idx:
+		return
+	# Re-run all UI derived from stage.
+	_update_relationship_bar()
+	_update_love_button()
+	_update_relationship_status_label()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_next_stage_button()
+	_update_apologize_button()
+
+func _on_cheating_detected(primary_idx: int, other_idx: int) -> void:
+	# If this view’s NPC is either the one marked cheating or the “other”, refresh.
+	if primary_idx != npc_idx and other_idx != npc_idx:
+		return
+	_update_relationship_status_label()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_affinity_bar()
