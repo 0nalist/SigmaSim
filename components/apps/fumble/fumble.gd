@@ -91,8 +91,8 @@ func _setup_over_frames() -> void:
 	y_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	curiosity_slider.value_changed.connect(_on_curiosity_h_slider_value_changed)
-        curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
-        fugly_spinbox.value_changed.connect(_on_fugly_spinbox_value_changed)
+	curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
+	fugly_spinbox.value_changed.connect(_on_fugly_spinbox_value_changed)
 	if Events.has_signal("fumble_fugly_filter_purchased"):
 		Events.connect("fumble_fugly_filter_purchased", _on_fugly_filter_purchased)
 
@@ -215,10 +215,10 @@ func _on_curiosity_h_slider_drag_ended(_changed) -> void:
 
 
 func _on_fugly_spinbox_value_changed(value: float) -> void:
-        PlayerManager.set_var("fumble_fugly_filter_threshold", value)
-        if card_stack:
-                                                                        await card_stack.apply_fugly_filter()
-        chats_tab.refresh_matches()
+		PlayerManager.set_var("fumble_fugly_filter_threshold", value)
+		if card_stack:
+																		await card_stack.apply_fugly_filter()
+		chats_tab.refresh_matches()
 
 
 func _on_fugly_filter_purchased(_level: int) -> void:
@@ -229,39 +229,39 @@ func _on_fugly_filter_purchased(_level: int) -> void:
 
 
 func _update_fugly_filter_ui() -> void:
-       var level := UpgradeManager.get_level("fumble_fugly_filter")
-       fugly_container.visible = level > 0
-       fugly_spinbox.step = 0.1
-       fugly_spinbox.format = "%.1f"
-       fugly_spinbox.max_value = level / 10.0
-       fugly_spinbox.min_value = 0.0
-       var current: float = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_spinbox.value)
-       fugly_spinbox.value = clamp(current, 0.0, fugly_spinbox.max_value)
+	var level := UpgradeManager.get_level("fumble_fugly_filter")
+	fugly_container.visible = level > 0
+	fugly_spinbox.step = 0.1
+	fugly_spinbox.format = "%.1f"
+	fugly_spinbox.max_value = level / 10.0
+	fugly_spinbox.min_value = 0.0
+	var current: float = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_spinbox.value)
+	fugly_spinbox.value = clamp(current, 0.0, fugly_spinbox.max_value)
 
 
 func _load_preferences() -> void:
-		x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
-		y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
-		z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
-		curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
-                fugly_spinbox.value = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_spinbox.value)
+	x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
+	y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
+	z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
+	curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
+	fugly_spinbox.value = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_spinbox.value)
 
-		var saved_prefs = [
-						PlayerManager.get_var("fumble_type", ""),
-						PlayerManager.get_var("fumble_like", ""),
-						PlayerManager.get_var("fumble_dislike", ""),
-		]
+	var saved_prefs = [
+					PlayerManager.get_var("fumble_type", ""),
+					PlayerManager.get_var("fumble_like", ""),
+					PlayerManager.get_var("fumble_dislike", ""),
+	]
 
-		for i in range(tag_option_buttons.size()):
-						var ob = tag_option_buttons[i]
-						var pref = saved_prefs[i]
-						var selected_idx = 0
-						if pref != "":
-										for j in range(ob.get_item_count()):
-														if ob.get_item_text(j) == pref:
-																		selected_idx = j
-																		break
-						ob.select(selected_idx)
+	for i in range(tag_option_buttons.size()):
+					var ob = tag_option_buttons[i]
+					var pref = saved_prefs[i]
+					var selected_idx = 0
+					if pref != "":
+									for j in range(ob.get_item_count()):
+													if ob.get_item_text(j) == pref:
+																	selected_idx = j
+																	break
+					ob.select(selected_idx)
 
 func _populate_tag_dropdowns() -> void:
 	var battle_types: Array = []

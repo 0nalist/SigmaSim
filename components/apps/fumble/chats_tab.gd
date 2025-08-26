@@ -50,10 +50,10 @@ func refresh_matches(time_budget_msec: int = 8) -> void:
 	var battles: Array = FumbleManager.get_active_battles()
 	var battle_npc_indices := battles.map(func(b): return b.npc_idx)
 
-       var total_attractiveness: int = 0
-       var match_count: int = 0
-       var data: Array = []
-       var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
+	var total_attractiveness: int = 0
+	var match_count: int = 0
+	var data: Array = []
+	var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
 	var start_time: int = Time.get_ticks_msec()
 

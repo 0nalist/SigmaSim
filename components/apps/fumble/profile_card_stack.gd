@@ -185,8 +185,8 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 	var num_new: int = swipe_pool_size - num_recycled
 	var pool: Array[int] = []
 
-       var exclude: Array = npc_indices + swipe_pool
-       var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
+	var exclude: Array = npc_indices + swipe_pool
+	var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
 	var new_indices: Array[int] = []
 	for idx in NPCManager.get_batch_of_new_npc_indices(app_name, num_new * 3):
@@ -286,7 +286,7 @@ func apply_gender_filter(gender_vec: Vector3, threshold: float = -1.0) -> void:
 
 # Removes NPCs below the fugly filter threshold without refreshing the entire stack.
 func apply_fugly_filter() -> void:
-       var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
+	var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
 	# Filter out existing entries in the swipe_pool that no longer meet the requirement
 	for i in range(swipe_pool.size() - 1, -1, -1):
