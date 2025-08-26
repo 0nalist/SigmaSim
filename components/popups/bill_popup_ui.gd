@@ -31,14 +31,14 @@ func init(name: String) -> void:
 	_update_display()
 
 func _update_display() -> void:
-       if is_instance_valid(bill_label):
-               bill_label.text = "%s\n$%s" % [bill_name, NumberFormatter.format_commas(amount)]
-       if is_instance_valid(interest_label):
-               var total := amount * (1.0 + PortfolioManager.credit_interest_rate)
-               interest_label.text = "Paying with credit will cost $%s total at %.0f%% interest" % [
-                       NumberFormatter.format_commas(total),
-                       PortfolioManager.credit_interest_rate * 100
-               ]
+	if is_instance_valid(bill_label):
+			bill_label.text = "%s\n$%s" % [bill_name, NumberFormatter.format_commas(amount)]
+	if is_instance_valid(interest_label):
+			var total := amount * (1.0 + PortfolioManager.credit_interest_rate)
+			interest_label.text = "Paying with credit will cost $%s total at %.0f%% interest" % [
+					NumberFormatter.format_commas(total),
+					PortfolioManager.credit_interest_rate * 100
+			]
 
 
 func update_amount_display() -> void:

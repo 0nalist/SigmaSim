@@ -372,7 +372,7 @@ func load_from_data(data: Dictionary) -> void:
 
 func register_popup(popup: BillPopupUI, date_key: String) -> void:
 	if not active_bills.has(date_key):
-			active_bills[date_key] = []
+		active_bills[date_key] = []
 	active_bills[date_key].append(popup)
 
 
