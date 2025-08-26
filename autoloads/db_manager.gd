@@ -40,6 +40,7 @@ const SCHEMA: Dictionary = {
 		"sigma": {"data_type": "real"},
 		"tags": {"data_type": "text"},
 		"likes": {"data_type": "text"},
+		"dislikes": {"data_type": "text"},
 		"fumble_bio": {"data_type": "text"},
 		"self_esteem": {"data_type": "int"},
 		"apprehension": {"data_type": "int"},
@@ -132,6 +133,7 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	dict["gender_vector"] = to_json(dict.get("gender_vector", {"x":0,"y":0,"z":1}))
 	dict["tags"] = to_json(dict.get("tags", []))
 	dict["likes"] = to_json(dict.get("likes", []))
+	dict["dislikes"] = to_json(dict.get("dislikes", []))
 	dict["preferred_pet_names"] = to_json(dict.get("preferred_pet_names", []))
 	dict["player_pet_names"] = to_json(dict.get("player_pet_names", []))
 	dict["ocean"] = to_json(dict.get("ocean", {}))
@@ -159,6 +161,7 @@ func load_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> NPC:
 	row["gender_vector"] = _safe_from_json(row.get("gender_vector", null), '{"x":0,"y":0,"z":1}')
 	row["tags"] = _safe_from_json(row.get("tags", null), "[]")
 	row["likes"] = _safe_from_json(row.get("likes", null), "[]")
+	row["dislikes"] = _safe_from_json(row.get("dislikes", null), "[]")
 	row["preferred_pet_names"] = _safe_from_json(row.get("preferred_pet_names", null), "[]")
 	row["player_pet_names"] = _safe_from_json(row.get("player_pet_names", null), "[]")
 	row["ocean"] = _safe_from_json(row.get("ocean", null), "{}")
@@ -173,6 +176,7 @@ func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
 		row["gender_vector"] = _safe_from_json(row.get("gender_vector", null), '{"x":0,"y":0,"z":1}')
 		row["tags"] = _safe_from_json(row.get("tags", null), "[]")
 		row["likes"] = _safe_from_json(row.get("likes", null), "[]")
+		row["dislikes"] = _safe_from_json(row.get("dislikes", null), "[]")
 		row["preferred_pet_names"] = _safe_from_json(row.get("preferred_pet_names", null), "[]")
 		row["player_pet_names"] = _safe_from_json(row.get("player_pet_names", null), "[]")
 		row["ocean"] = _safe_from_json(row.get("ocean", null), "{}")
