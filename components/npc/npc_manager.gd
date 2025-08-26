@@ -571,36 +571,32 @@ func _check_cheating_after_breakup() -> void:
 								_resolve_cheating(check_idx)
 
 func _recheck_daterbase_exclusivity(changed_idx: int) -> void:
-		var active: Array[int] = []
-		for idx in encountered_npcs:
-				var idx_int: int = int(idx)
-				var npc: NPC = npcs.get(idx_int)
-				if npc == null:
-						continue
-				if npc.relationship_stage >= RelationshipStage.DATING and npc.relationship_stage <= RelationshipStage.MARRIED:
-						active.append(idx_int)
+	var active: Array[int] = []
+	for idx in encountered_npcs:
+			var idx_int: int = int(idx)
+			var npc: NPC = npcs.get(idx_int)
+			if npc == null:
+					continue
+			if npc.relationship_stage >= RelationshipStage.DATING and npc.relationship_stage <= RelationshipStage.MARRIED:
+					active.append(idx_int)
 
-		for idx in encountered_npcs:
-				var npc_idx: int = int(idx)
-				if npc_idx == changed_idx:
-						continue
-				var npc: NPC = npcs.get(npc_idx)
-				if npc == null:
-						continue
-				var npc_active: bool = active.has(npc_idx)
-				var other_active_count: int = active.size()
-				if npc_active:
+	for idx in encountered_npcs:
+		var npc_idx: int = int(idx)
+		var npc: NPC = get_npc_by_index(npc_idx)
+		var npc_active: bool = active.has(npc_idx)
+		var other_active_count: int = active.size()
+		if npc_active:
 						other_active_count -= 1
 
-				if npc.exclusivity_core == ExclusivityCore.MONOG and npc_active and other_active_count > 0:
-						var other_idx: int = -1
-						for ai in active:
-								if ai != npc_idx:
-										other_idx = int(ai)
-										break
-						_mark_npc_as_cheating(npc_idx, other_idx)
-				elif npc.exclusivity_core == ExclusivityCore.CHEATING and (not npc_active or other_active_count == 0):
-						_resolve_cheating(npc_idx)
+		if npc.exclusivity_core == ExclusivityCore.MONOG and npc_active and other_active_count > 0:
+			var other_idx: int = -1
+			for ai in active:
+				if ai != npc_idx:
+					other_idx = int(ai)
+					break
+			_mark_npc_as_cheating(npc_idx, other_idx)
+		elif npc.exclusivity_core == ExclusivityCore.CHEATING and (not npc_active or other_active_count == 0):
+			_resolve_cheating(npc_idx)
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
 		var now_msec: int = Time.get_ticks_msec()

@@ -22,15 +22,15 @@ extends PanelContainer
 @onready var wealth_row: HBoxContainer = %WealthRow
 
 @onready var sections: Array[Control] = [
-        dime_status_label,
-        name_label,
-        type_label,
-        likes_section,
-        tags_section,
-        bio_panel,
-        astrology_row,
-        greek_panel,
-        wealth_row
+		dime_status_label,
+		name_label,
+		type_label,
+		likes_section,
+		tags_section,
+		bio_panel,
+		astrology_row,
+		greek_panel,
+		wealth_row
 ]
 
 func load_npc(npc: NPC, npc_idx: int = -1) -> void:
@@ -49,15 +49,15 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 		dime_status = "🔥 %0.1f/10" % (float(npc.attractiveness) / 10.0)
 	dime_status_label.text = dime_status
 
-        name_label.text = npc.full_name
-        type_label.text = str(npc.chat_battle_type)
+	name_label.text = npc.full_name
+	type_label.text = str(npc.chat_battle_type)
 
-        _populate_likes(npc)
-        _populate_tags(npc)
-        _populate_bio(npc)
-        _populate_astrology(npc)
-        _populate_greek(npc)
-        _populate_wealth(npc)
+	_populate_likes(npc)
+	_populate_tags(npc)
+	_populate_bio(npc)
+	_populate_astrology(npc)
+	_populate_greek(npc)
+	_populate_wealth(npc)
 
 	_run_entrance_animation()
 
@@ -71,21 +71,21 @@ func _populate_likes(npc: NPC) -> void:
 	else:
 		var none_label: Label = Label.new()
 		none_label.text = "No likes listed"
-                none_label.modulate = Color(1.0, 1.0, 1.0, 0.6)
-                likes_container.add_child(none_label)
+		none_label.modulate = Color(1.0, 1.0, 1.0, 0.6)
+		likes_container.add_child(none_label)
 
 func _populate_tags(npc: NPC) -> void:
-        tags_label.text = "Tags"
-        _clear_children(tags_container)
-        if npc.tags != null and npc.tags.size() > 0:
-                for tag in npc.tags:
-                        var pill: Control = _make_like_pill(_safe_str(tag))
-                        tags_container.add_child(pill)
-        else:
-                var none_label: Label = Label.new()
-                none_label.text = "No tags listed"
-                none_label.modulate = Color(1.0, 1.0, 1.0, 0.6)
-                tags_container.add_child(none_label)
+		tags_label.text = "Tags"
+		_clear_children(tags_container)
+		if npc.tags != null and npc.tags.size() > 0:
+				for tag in npc.tags:
+						var pill: Control = _make_like_pill(_safe_str(tag))
+						tags_container.add_child(pill)
+		else:
+				var none_label: Label = Label.new()
+				none_label.text = "No tags listed"
+				none_label.modulate = Color(1.0, 1.0, 1.0, 0.6)
+				tags_container.add_child(none_label)
 
 func _populate_bio(npc: NPC) -> void:
 	var lines: Array[String] = []

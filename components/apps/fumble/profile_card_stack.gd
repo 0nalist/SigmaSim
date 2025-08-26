@@ -274,6 +274,9 @@ func apply_gender_filter(gender_vec: Vector3, threshold: float = -1.0) -> void:
 		if not removed:
 			break
 
+		await _refill_swipe_pool_async()
+		if cards.size() < CARD_VISIBLE_COUNT:
+			await _populate_cards_over_frames(CARD_VISIBLE_COUNT - cards.size(), true)
 
 # Removes NPCs below the fugly filter threshold without refreshing the entire stack.
 func apply_fugly_filter() -> void:
