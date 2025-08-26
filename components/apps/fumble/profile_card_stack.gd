@@ -33,6 +33,7 @@ func load_initial_cards() -> void:
 	clear_cards()
 	await _refill_swipe_pool_async()
 	await _populate_cards_over_frames(CARD_VISIBLE_COUNT, true)
+	await _ensure_card_count_async()
 
 
 func _add_card_at_top(idx: int) -> void:
@@ -139,6 +140,7 @@ func refresh_swipe_pool_with_gender(gender_vec: Vector3, threshold: float = -1.0
 	await _refill_swipe_pool_async()
 	clear_cards()
 	await _populate_cards_over_frames(CARD_VISIBLE_COUNT, true)
+	await _ensure_card_count_async()
 
 
 func refresh_pool_under_top_with_gender(gender_vec: Vector3, threshold: float = -1.0) -> void:
@@ -154,13 +156,7 @@ func refresh_pool_under_top_with_gender(gender_vec: Vector3, threshold: float = 
 
 	swipe_pool.clear()
 	await _refill_swipe_pool_async()
-
-	while cards.size() < CARD_VISIBLE_COUNT:
-		var idx: int = await _fetch_next_index_from_pool()
-		if idx == -1:
-			break
-		_add_card_at_bottom(idx)
-		await get_tree().process_frame
+	await _ensure_card_count_async(false)
 
 
 # Async helper
@@ -174,6 +170,18 @@ func _populate_cards_over_frames(count: int, add_at_top: bool = true) -> void:
 		else:
 			_add_card_at_bottom(idx)
 		await get_tree().process_frame  # Spread out the work
+
+func _ensure_card_count_async(add_at_top: bool = true) -> void:
+	while cards.size() < CARD_VISIBLE_COUNT:
+		var idx: int = await _fetch_next_index_from_pool()
+		if idx == -1:
+			await get_tree().process_frame
+			continue
+		if add_at_top:
+			_add_card_at_top(idx)
+		else:
+			_add_card_at_bottom(idx)
+		await get_tree().process_frame
 
 
 func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
@@ -323,3 +331,4 @@ func apply_fugly_filter() -> void:
 
 		if not removed:
 			break
+	await _ensure_card_count_async(false)
