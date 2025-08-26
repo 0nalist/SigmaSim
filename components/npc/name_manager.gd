@@ -9,18 +9,21 @@ var first_names: Array[GenderedFirstName] = []
 var last_names: Array[String] = []
 var middle_initials: Array[String] = []
 var name_seed: int = 0
+var _rng := RandomNumberGenerator.new()
 
 func set_name_seed(seed: int) -> void:
-	name_seed = seed
+        name_seed = seed
+        _rng.seed = seed
 
 func _ready():
 	# Load names
 	_load_first_names()
 	_load_last_names()
 
-	# Generate A-Z middle initials
-	for ascii in range(65, 91):
-		middle_initials.append(String.chr(ascii))
+        # Generate A-Z middle initials
+        for ascii in range(65, 91):
+                middle_initials.append(String.chr(ascii))
+        _rng.seed = name_seed
 
 func _load_first_names():
 	first_names.clear()
@@ -56,7 +59,19 @@ func _load_last_names():
 		if not file:
 			push_error("Couldn't load last names TXT: %s" % last_names_json_path)
 			return
-		last_names = file.get_as_text().split("\n", false)
+                last_names = file.get_as_text().split("\n", false)
+
+func get_random_first_name() -> String:
+        if first_names.size() == 0:
+                return "FirstName"
+        var idx = _rng.randi_range(0, first_names.size() - 1)
+        return first_names[idx].name
+
+func get_random_last_name() -> String:
+        if last_names.size() == 0:
+                return "LastName"
+        var idx = _rng.randi_range(0, last_names.size() - 1)
+        return last_names[idx]
 
 func get_npc_name_by_index(npc_index: int) -> Dictionary:
 	var total_combos = first_names.size() * middle_initials.size() * last_names.size()
