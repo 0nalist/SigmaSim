@@ -34,6 +34,7 @@ const PROGRESS_MIN_DELTA: float = 0.01
 
 const SPEECH_BUBBLE_SCENE := preload("res://components/ui/speech_bubble.tscn")
 const QUIPS_PATH := "res://data/npc_data/exfactor/eXFactorQuips.json"
+const TYPE_CHAR_DELAY: float = 0.05
 
 var _quips: Array = []
 
@@ -44,6 +45,7 @@ var last_saved_progress: float = 0.0
 var progress_save_elapsed: float = 0.0
 var pending_npc_idx: int = -1
 var breakup_preview: float = 0.0
+var _active_bubble: SpeechBubble
 
 func setup_custom(data: Dictionary) -> void:
 	npc = data.get("npc")
@@ -426,20 +428,37 @@ func _select_quip(action: String) -> String:
 		return MarkupParser.parse(line, npc)
 
 func _show_quip(action: String) -> void:
-	var text = _select_quip(action)
-	if text == "":
-			return
-	var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
-	add_child(bubble)
-	bubble.set_as_top_level(true)
-	bubble.set_text(text)
-	var rect = portrait_view.get_global_rect()
-	var pos = Vector2(
-			rect.position.x - bubble.size.x - 10,
-			rect.position.y + (rect.size.y - bubble.size.y) * 0.5,
-	)
-	bubble.global_position = pos
-	bubble.pop_and_fade()
+       if _active_bubble != null and is_instance_valid(_active_bubble):
+               return
+
+       var text = _select_quip(action)
+       if text == "":
+                       return
+       var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
+       add_child(bubble)
+       bubble.set_as_top_level(true)
+       bubble.set_text(text)
+       bubble.get_label().visible_ratio = 0.0
+       var rect = portrait_view.get_global_rect()
+       var pos = Vector2(
+                       rect.position.x - bubble.size.x - 10,
+                       rect.position.y + (rect.size.y - bubble.size.y) * 0.5,
+       )
+       bubble.global_position = pos
+       var lifetime := max(3.0, text.length() * TYPE_CHAR_DELAY + 1.0)
+       bubble.pop_and_fade(lifetime)
+       _active_bubble = bubble
+       bubble.tree_exited.connect(func(): _active_bubble = null)
+       _animate_bubble_text(bubble, text)
+
+func _animate_bubble_text(bubble: SpeechBubble, text: String, time_per_char: float = TYPE_CHAR_DELAY) -> void:
+       var total_chars: int = text.length()
+       var label: Label = bubble.get_label()
+       for i in range(total_chars):
+               if not is_instance_valid(bubble):
+                       return
+               label.visible_ratio = float(i + 1) / total_chars
+               await get_tree().create_timer(time_per_char).timeout
 
 # ---------------------------- Logic signal sinks ----------------------------
 
