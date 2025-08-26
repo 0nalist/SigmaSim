@@ -12,7 +12,7 @@ class_name SystemUpgradeUI
 @export var upgrade_ui: PackedScene
 
 var sort_mode: int = 0
-var _refresh_timer: Timer
+var _refresh_pending: bool = false
 var _rows: Dictionary = {}
 
 func _ready() -> void:
@@ -25,13 +25,7 @@ func _ready() -> void:
 	sort_option_button.add_item("Name", 2)
 	sort_option_button.item_selected.connect(_on_sort_option_selected)
 
-	_refresh_timer = Timer.new()
-	_refresh_timer.one_shot = true
-	_refresh_timer.wait_time = 0.1
-	_refresh_timer.timeout.connect(_deferred_refresh)
-	add_child(_refresh_timer)
-
-	refresh_upgrades()
+        refresh_upgrades()
 
 func _exit_tree() -> void:
 	if UpgradeManager.is_connected("upgrade_purchased", _on_upgrade_changed):
@@ -158,7 +152,10 @@ func _display_message(msg: String) -> void:
 								info_label.text = msg
 
 func _queue_refresh() -> void:
-				_refresh_timer.start()
+        if not _refresh_pending:
+                _refresh_pending = true
+                call_deferred("_deferred_refresh")
 
 func _deferred_refresh() -> void:
-				refresh_upgrades()
+        _refresh_pending = false
+        refresh_upgrades()
