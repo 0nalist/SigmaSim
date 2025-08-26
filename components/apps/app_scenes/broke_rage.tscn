@@ -52,9 +52,25 @@ script = ExtResource("2_o2yqo")
 window_title = "BrokeRage"
 window_icon = ExtResource("3_m7phi")
 default_window_size = Vector2(735, 500)
+default_position = null
+request_windowless_mode = null
+show_in_taskbar = null
+allow_multiple = null
+unique_popup_key = null
+is_popup = null
+persist_on_save = null
+window_can_close = null
+window_can_minimize = null
+window_can_maximize = null
+user_movable = null
+user_resizable = null
+stay_on_top = null
 color1 = Color(0, 0, 0, 1)
 color2 = Color(0.15, 0.15, 0.15, 1)
 color3 = Color(0.25, 0.25, 0.25, 1)
+color4 = null
+color5 = null
+color6 = null
 upgrade_pane = ExtResource("11_broker")
 
 [node name="BackgroundColorRect" type="ColorRect" parent="."]
@@ -259,7 +275,6 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 32
 
 [node name="ChartsTopBar" type="HBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView"]
 layout_mode = 2
