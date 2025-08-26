@@ -183,28 +183,13 @@ func is_leap_year(year: int) -> bool:
 
 # Historical helper retained (used elsewhere)
 func get_total_days_since_start(target_day: int, target_month: int, target_year: int) -> int:
-	var start_day := int(default_start_date_time.get("current_day", 1))
-	var start_month := int(default_start_date_time.get("current_month", 1))
-	var start_year := int(default_start_date_time.get("current_year", 2025))
-	var total_days := 0
-	# Years
-	var y := start_year
-	while y < target_year:
-		total_days += 365
-		if is_leap_year(y):
-			total_days += 1
-		y += 1
-	# Months of final year
-	var start_m := start_month
-	if start_year != target_year:
-		start_m = 1
-	var m := start_m
-	while m < target_month:
-		total_days += get_days_in_month(m, target_year)
-		m += 1
-	# Remaining days
-		total_days += target_day - start_day
-	return total_days
+        # Delegate to the internal epoch-based helper to ensure consistent day
+        # calculations. The previous implementation duplicated this logic but
+        # mis-indented the final day calculation, leading to a constant return
+        # value of 0 during the starting month and causing the weekly bill cycle
+        # to always treat every week as the first week (Rent). Using the
+        # existing helper keeps the logic centralized and correct.
+        return _days_since_epoch(target_day, target_month, target_year)
 
 func get_total_minutes_played() -> int:
 	return total_minutes_elapsed
