@@ -41,9 +41,25 @@ theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "eXFactor"
 default_window_size = Vector2(420, 640)
+default_position = null
+request_windowless_mode = null
+show_in_taskbar = null
+allow_multiple = null
+unique_popup_key = null
 is_popup = true
+persist_on_save = null
+window_can_close = null
+window_can_minimize = null
+window_can_maximize = null
+user_movable = null
+user_resizable = null
+stay_on_top = null
 color1 = Color(1, 0, 0.941176, 1)
 color2 = Color(0.463319, 0.00196373, 0.715449, 1)
+color3 = null
+color4 = null
+color5 = null
+color6 = null
 upgrade_pane = ExtResource("3_n3cpl")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -81,26 +97,23 @@ layout_mode = 2
 size_flags_horizontal = 4
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox"]
-layout_mode = 2
-
-[node name="ExclusivityLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer"]
+[node name="ExclusivityLabel" type="Label" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 6
 horizontal_alignment = 1
 
-[node name="Control5" type="Control" parent="MarginContainer/VBox/HBoxContainer"]
-custom_minimum_size = Vector2(10, 0)
-layout_mode = 2
-
-[node name="ExclusivityButton" type="Button" parent="MarginContainer/VBox/HBoxContainer"]
+[node name="ExclusivityButton" type="Button" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 6
 focus_mode = 0
 theme_override_font_sizes/font_size = 14
 text = "Toggle"
+
+[node name="Control5" type="Control" parent="MarginContainer/VBox"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
 
 [node name="Control4" type="Control" parent="MarginContainer/VBox"]
 layout_mode = 2

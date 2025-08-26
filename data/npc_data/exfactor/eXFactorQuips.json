@@ -13,7 +13,7 @@
 		"action": "gift",
 		"stage": "any",
 		"exclusivity": "any",
-		"prefix": "Wow, just ;;",
+		"prefix": "Wow, just ",
 		"core": "what I always wanted",
 		"suffix": ";;!"
 	},
