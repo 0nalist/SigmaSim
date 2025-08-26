@@ -26,6 +26,11 @@ var pride_material = preload("res://components/apps/fumble/fumble_label_pride_mo
 
 @onready var bio_text_edit: TextEdit = %BioTextEdit
 
+@onready var tag_option_button1: OptionButton = %TagOption1
+@onready var tag_option_button2: OptionButton = %TagOption2
+@onready var tag_option_button3: OptionButton = %TagOption3
+var tag_option_buttons: Array[OptionButton] = []
+
 @onready var confidence_progress_bar: StatProgressBar = %ConfidenceProgressBar
 @onready var ex_progress_bar: StatProgressBar = %ExProgressBar
 
@@ -39,7 +44,8 @@ var pride_material = preload("res://components/apps/fumble/fumble_label_pride_mo
 
 
 func _ready():
-	_setup_over_frames()
+       tag_option_buttons = [tag_option_button1, tag_option_button2, tag_option_button3]
+       _setup_over_frames()
 
 
 func _setup_over_frames() -> void:
@@ -73,18 +79,22 @@ func _setup_over_frames() -> void:
 
 	x_slider.drag_ended.connect(_on_gender_slider_drag_ended)
 	y_slider.drag_ended.connect(_on_gender_slider_drag_ended)
-	z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
-	curiosity_slider.value_changed.connect(_on_curiosity_h_slider_value_changed)
-	curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
-	fugly_slider.drag_ended.connect(_on_fugly_slider_drag_ended)
-	if Events.has_signal("fumble_fugly_filter_purchased"):
-			Events.connect("fumble_fugly_filter_purchased", _on_fugly_filter_purchased)
+        z_slider.drag_ended.connect(_on_gender_slider_drag_ended)
+        curiosity_slider.value_changed.connect(_on_curiosity_h_slider_value_changed)
+        curiosity_slider.drag_ended.connect(_on_curiosity_h_slider_drag_ended)
+        fugly_slider.drag_ended.connect(_on_fugly_slider_drag_ended)
+        if Events.has_signal("fumble_fugly_filter_purchased"):
+                        Events.connect("fumble_fugly_filter_purchased", _on_fugly_filter_purchased)
 
-	await get_tree().process_frame
+       for i in range(tag_option_buttons.size()):
+               tag_option_buttons[i].item_selected.connect(_on_tag_option_selected.bind(i))
 
-	_load_preferences()
-	bio_text_edit.text = PlayerManager.get_var("bio", "")
-	bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
+        await get_tree().process_frame
+
+       _populate_tag_dropdowns()
+       _load_preferences()
+        bio_text_edit.text = PlayerManager.get_var("bio", "")
+        bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
 
 	_update_fugly_filter_ui()
 
@@ -209,17 +219,50 @@ func _update_fugly_filter_ui() -> void:
 
 
 func _load_preferences() -> void:
-				x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
-				y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
-				z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
-				curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
-				fugly_slider.value = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_slider.value)
+       x_slider.value = PlayerManager.get_var("fumble_pref_x", x_slider.value)
+       y_slider.value = PlayerManager.get_var("fumble_pref_y", y_slider.value)
+       z_slider.value = PlayerManager.get_var("fumble_pref_z", z_slider.value)
+       curiosity_slider.value = PlayerManager.get_var("fumble_curiosity", curiosity_slider.value)
+       fugly_slider.value = PlayerManager.get_var("fumble_fugly_filter_threshold", fugly_slider.value)
 
+       var saved_tags = [
+               PlayerManager.get_var("fumble_tag1", ""),
+               PlayerManager.get_var("fumble_tag2", ""),
+               PlayerManager.get_var("fumble_tag3", ""),
+       ]
+
+       for i in range(tag_option_buttons.size()):
+               var ob = tag_option_buttons[i]
+               var tag = saved_tags[i]
+               var selected_idx = 0
+               if tag != "":
+                       for j in range(ob.get_item_count()):
+                               if ob.get_item_text(j) == tag:
+                                       selected_idx = j
+                                       break
+               ob.select(selected_idx)
+
+func _populate_tag_dropdowns() -> void:
+       var tags: Array = NPCFactory.TAG_DATA.keys()
+       tags.sort()
+       for ob in tag_option_buttons:
+               ob.clear()
+               ob.add_item("--")
+               for tag in tags:
+                       ob.add_item(tag)
+               ob.select(0)
+
+func _on_tag_option_selected(index: int, which: int) -> void:
+       var ob = tag_option_buttons[which]
+       var text = ob.get_item_text(index)
+       if text == "--":
+               text = ""
+       PlayerManager.set_var("fumble_tag%s" % [which + 1], text)
 
 func _on_resize_x_requested(pixels):
-	var window_frame = get_parent().get_parent().get_parent()
-	if window_frame.size.x < 800:
-		request_resize_x_to.emit(pixels)
+        var window_frame = get_parent().get_parent().get_parent()
+        if window_frame.size.x < 800:
+                request_resize_x_to.emit(pixels)
 
 
 func _on_resize_y_requested(pixels):
