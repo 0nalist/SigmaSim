@@ -108,20 +108,20 @@ func _setup_over_frames() -> void:
 
 	await card_stack.refresh_swipe_pool_with_gender(preferred_gender, curiosity)
 
-        visibility_changed.connect(_on_visibility_changed)
-        cancel_pride()
+	visibility_changed.connect(_on_visibility_changed)
+	cancel_pride()
 
 
 func add_npc_profile_to_top(idx: int) -> void:
-        while card_stack == null:
-                await get_tree().process_frame
-        show_swipes_tab()
-        card_stack.add_card_to_top(idx)
+		while card_stack == null:
+				await get_tree().process_frame
+		show_swipes_tab()
+		card_stack.add_card_to_top(idx)
 
 
 func _on_card_swiped_left(npc_idx):
-        NPCManager.mark_npc_inactive_in_app(npc_idx, "fumble")
-        # Add further logic if needed
+		NPCManager.mark_npc_inactive_in_app(npc_idx, "fumble")
+		# Add further logic if needed
 
 
 func _on_card_swiped_right(npc_idx):
