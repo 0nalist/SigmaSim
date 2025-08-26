@@ -24,6 +24,9 @@ func setup_custom(args) -> void:
 func setup(_stock: Stock) -> void:
 	stock = _stock
 	unique_popup_key = "stock_%s" % stock.symbol
+	
+	await ready
+	
 	HistoryManager.add_sample(stock.symbol, TimeManager.get_now_minutes(), stock.price)
 	price_chart.clear_series()
 	price_chart.add_series(stock.symbol, "Price", Color.GREEN)
