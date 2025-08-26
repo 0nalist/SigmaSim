@@ -40,16 +40,16 @@ extends PanelContainer
 # Updated: astrology_row / wealth_row don’t exist in your scene,
 # so we animate the value labels instead.
 @onready var sections: Array[Control] = [
-                                dime_status_label,
-                                name_label,
-                                type_label,
-                                job_label,
-                                likes_section,
-                                dislikes_section,
-                                tags_section,
-                                bio_panel,
-                                stats_grid,
-                                greek_panel
+								dime_status_label,
+								name_label,
+								type_label,
+								job_label,
+								likes_section,
+								dislikes_section,
+								tags_section,
+								bio_panel,
+								stats_grid,
+								greek_panel
 ]
 
 
@@ -72,9 +72,9 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 		dime_status = "🔥 %0.1f/10" % (float(npc.attractiveness) / 10.0)
 	dime_status_label.text = dime_status
 
-        name_label.text = npc.full_name
-        type_label.text = str(npc.chat_battle_type)
-        job_label.text = _safe_str(npc.occupation)
+	name_label.text = npc.full_name
+	type_label.text = str(npc.chat_battle_type)
+	job_label.text = _safe_str(npc.occupation)
 
 	_populate_likes(npc)
 	_populate_dislikes(npc)
@@ -100,11 +100,11 @@ func _apply_colors() -> void:
 
 	dime_status_label.modulate = label_color
 	name_label.modulate = label_color
-        type_label.modulate = label_color
-        job_label.modulate = label_color
-        likes_label.modulate = label_color
-        dislikes_label.modulate = label_color
-        tags_label.modulate = label_color
+	type_label.modulate = label_color
+	job_label.modulate = label_color
+	likes_label.modulate = label_color
+	dislikes_label.modulate = label_color
+	tags_label.modulate = label_color
 
 	bio_text.modulate = value_color
 	astrology_value.modulate = value_color

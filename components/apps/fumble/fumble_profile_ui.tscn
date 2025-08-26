@@ -53,7 +53,7 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 16
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="Portrait" parent="Margin/Scroll/VBox" instance=ExtResource("2")]
@@ -90,7 +90,7 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 14
 text = "Job"
 horizontal_alignment = 1
 
@@ -119,7 +119,7 @@ size_flags_vertical = 2
 [node name="DislikesSection" type="VBoxContainer" parent="Margin/Scroll/VBox/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
 theme_override_constants/separation = 4
 
 [node name="DislikesLabel" type="Label" parent="Margin/Scroll/VBox/HBoxContainer2/DislikesSection"]

@@ -4,10 +4,10 @@ class_name NPCFactory
 const TRAIT_CONFIG = {
 	"wealth": {
 		"buckets": [
-			{ "cutoff": 0.3, "range": Vector2(-1400000, 0) },          # Bottom 30%: Indebted
-			{ "cutoff": 0.7, "range": Vector2(-60000, 60000) },      # Next 40%: Middle class
-			{ "cutoff": 0.9, "range": Vector2(60000, 1100000) },     # Next 20%: Upper-middle
-			{ "cutoff": 0.99, "range": Vector2(1100000, 4000000) },   # Next 9%: Wealthy
+			{ "cutoff": 0.3, "range": Vector2(-1400000, 0) }, # Bottom 30%: Indebted
+			{ "cutoff": 0.7, "range": Vector2(-60000, 60000) },# Next 40%: Middle class
+			{ "cutoff": 0.9, "range": Vector2(60000, 1100000) },  # Next 20%: Upper-middle
+			{ "cutoff": 0.99, "range": Vector2(1100000, 4000000) },# Next 9%: Wealthy
 			{ "cutoff": 1.0, "range": Vector2(4000000, 50000000000) } # Top 1%: Ultra wealthy
 		]
 	}
@@ -38,9 +38,9 @@ static func create_npc(npc_index: int) -> NPC:
 	npc.middle_initial = name_data["middle_initial"]
 	npc.last_name = name_data["last_name"]
 	npc.gender_vector = name_data["gender_vector"]
-        npc.username = _generate_username(npc)
-       npc.occupation = generate_npc_job(full_name)
-        npc.relationship_status = "Single"
+	npc.username = _generate_username(npc)
+	npc.occupation = generate_npc_job(full_name)
+	npc.relationship_status = "Single"
 
 	# Personality/OCEAN/Greek
 	var ocean = PersonalityEngine.generate_ocean(full_name)
@@ -57,10 +57,10 @@ static func create_npc(npc_index: int) -> NPC:
 		npc.set(stat, greek[stat])
 
 	npc.mbti = PersonalityEngine.get_mbti(ocean)
-        npc.zodiac = PersonalityEngine.get_zodiac(full_name)
-        npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
+	npc.zodiac = PersonalityEngine.get_zodiac(full_name)
+	npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
 
-        npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
+	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
 	
 	# Tags/likes must be set BEFORE generating bio
 
@@ -135,11 +135,11 @@ static func create_npc_from_name(full_name: String) -> NPC:
 	npc.full_name = full_name
 	npc.first_name = first
 	npc.middle_initial = middle
-        npc.last_name = last
-        npc.gender_vector = _gender_vector_from_first(first)
-        npc.username = _generate_username(npc)
-       npc.occupation = generate_npc_job(full_name)
-        npc.relationship_status = "Single"
+	npc.last_name = last
+	npc.gender_vector = _gender_vector_from_first(first)
+	npc.username = _generate_username(npc)
+	npc.occupation = generate_npc_job(full_name)
+	npc.relationship_status = "Single"
 
 	var ocean := PersonalityEngine.generate_ocean(full_name)
 	npc.ocean = ocean
@@ -199,26 +199,26 @@ static func load_tag_data(path: String):
 			TAG_DATA[k]["excluded"] = TAG_DATA[k].get("excluded", []).filter(func(x): return x != "nan")
 
 static func load_like_data(path: String):
-        var file = FileAccess.open(path, FileAccess.READ)
-        if file:
-                LIKE_DATA = JSON.parse_string(file.get_as_text())
-                for k in LIKE_DATA.keys():
-                        LIKE_DATA[k]["correlated"] = LIKE_DATA[k].get("correlated", []).filter(func(x): return x != "nan")
-                        LIKE_DATA[k]["excluded"] = LIKE_DATA[k].get("excluded", []).filter(func(x): return x != "nan")
+		var file = FileAccess.open(path, FileAccess.READ)
+		if file:
+				LIKE_DATA = JSON.parse_string(file.get_as_text())
+				for k in LIKE_DATA.keys():
+						LIKE_DATA[k]["correlated"] = LIKE_DATA[k].get("correlated", []).filter(func(x): return x != "nan")
+						LIKE_DATA[k]["excluded"] = LIKE_DATA[k].get("excluded", []).filter(func(x): return x != "nan")
 
 static func load_fumble_bios(path: String):
-        var file = FileAccess.open(path, FileAccess.READ)
-        if file:
-                FUMBLE_BIOS = JSON.parse_string(file.get_as_text())
+		var file = FileAccess.open(path, FileAccess.READ)
+		if file:
+				FUMBLE_BIOS = JSON.parse_string(file.get_as_text())
 
 static func load_job_data(path: String):
-       var file = FileAccess.open(path, FileAccess.READ)
-       if file:
-               var parsed = JSON.parse_string(file.get_as_text())
-               if typeof(parsed) == TYPE_ARRAY:
-                       JOB_LIST.clear()
-                       for j in parsed:
-                               JOB_LIST.append(String(j))
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+			var parsed = JSON.parse_string(file.get_as_text())
+			if typeof(parsed) == TYPE_ARRAY:
+					JOB_LIST.clear()
+					for j in parsed:
+							JOB_LIST.append(String(j))
 
 
 # --- Tag generation (with correlation/exclusion) --- #
@@ -339,26 +339,26 @@ static func _is_excluded_like(like_a: String, like_b: String, like_data: Diction
 		return like_b in excl_a or like_a in excl_b
 
 static func generate_npc_dislikes(seed: String, like_data: Dictionary, existing_likes: Array, dislike_count: int = 1) -> Array:
-                var available = like_data.keys().duplicate()
-                for l in existing_likes:
-                                available.erase(l)
-                if available.size() == 0:
-                                return []
-                var rng = RandomNumberGenerator.new()
-                rng.seed = djb2(seed + "dislike")
-                var selected = []
-                while selected.size() < dislike_count and available.size() > 0:
-                                var chosen = available[rng.randi_range(0, available.size() - 1)]
-                                selected.append(chosen)
-                                available.erase(chosen)
-                return selected
+				var available = like_data.keys().duplicate()
+				for l in existing_likes:
+								available.erase(l)
+				if available.size() == 0:
+								return []
+				var rng = RandomNumberGenerator.new()
+				rng.seed = djb2(seed + "dislike")
+				var selected = []
+				while selected.size() < dislike_count and available.size() > 0:
+								var chosen = available[rng.randi_range(0, available.size() - 1)]
+								selected.append(chosen)
+								available.erase(chosen)
+				return selected
 
 static func generate_npc_job(seed: String) -> String:
-       if JOB_LIST.size() == 0:
-               return "Unemployed"
-       var rng = RandomNumberGenerator.new()
-       rng.seed = djb2(seed + "job")
-       return JOB_LIST[rng.randi_range(0, JOB_LIST.size() - 1)]
+	if JOB_LIST.size() == 0:
+			return "Unemployed"
+	var rng = RandomNumberGenerator.new()
+	rng.seed = djb2(seed + "job")
+	return JOB_LIST[rng.randi_range(0, JOB_LIST.size() - 1)]
 
 
 # Returns a random bio_dict from FUMBLE_BIOS, weighted by .weight

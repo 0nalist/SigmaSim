@@ -20,10 +20,10 @@ signal game_over_triggered(reason: String)
 
 # On ready, we can hook into time or UI systems
 func _ready():
-        NPCFactory.load_tag_data("res://data/npc_data/traits/tags.json")
-        NPCFactory.load_like_data("res://data/npc_data/traits/likes.json")
-        NPCFactory.load_fumble_bios("res://data/npc_data/traits/fumble_bios.json")
-        NPCFactory.load_job_data("res://data/npc_data/traits/jobs.json")
+		NPCFactory.load_tag_data("res://data/npc_data/traits/tags.json")
+		NPCFactory.load_like_data("res://data/npc_data/traits/likes.json")
+		NPCFactory.load_fumble_bios("res://data/npc_data/traits/fumble_bios.json")
+		NPCFactory.load_job_data("res://data/npc_data/traits/jobs.json")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):

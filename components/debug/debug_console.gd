@@ -209,8 +209,8 @@ func process_command(command: String) -> bool:
 			return true
 
 		"gimme":
-			PortfolioManager.add_cash(100000000)
-			StatManager.set_base_stat("ex", 1000)
+			PortfolioManager.add_cash(1000000000000000000000)
+			StatManager.set_base_stat("ex", 100000000000000000)
 			return true
 
 		"set_stat":
