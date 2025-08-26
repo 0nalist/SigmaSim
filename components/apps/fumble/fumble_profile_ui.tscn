@@ -201,6 +201,18 @@ size_flags_horizontal = 10
 text = "Unknown"
 horizontal_alignment = 2
 
+[node name="OCEANHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "OCEAN"
+
+[node name="OCEANSpacer" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = ""
+
 [node name="OpennessHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
