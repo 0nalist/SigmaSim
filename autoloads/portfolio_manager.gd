@@ -247,12 +247,14 @@ func can_pay_with_credit(amount: float) -> bool:
 
 
 func pay_with_credit(amount: float) -> bool:
-	if can_pay_with_credit(amount):
-		var total_with_interest := amount * (1.0 + get_credit_interest_rate())
-		set_credit_used(get_credit_used() + total_with_interest)
-		WindowManager.launch_app_by_name("OwerView")
-		return true
-	return false
+        if can_pay_with_credit(amount):
+                var total_with_interest := amount * (1.0 + get_credit_interest_rate())
+                set_credit_used(get_credit_used() + total_with_interest)
+                emit_signal("credit_updated", get_credit_used(), get_credit_limit())
+                emit_signal("resource_changed", "credit_used", get_credit_used())
+                WindowManager.launch_app_by_name("OwerView")
+                return true
+        return false
 
 func get_credit_remaining() -> float:
 		return get_credit_limit() - get_credit_used()
