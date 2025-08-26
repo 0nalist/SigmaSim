@@ -64,8 +64,10 @@ func update_gpu_label() -> void:
 
 func _on_open_upgrades(symbol: String) -> void:
 	print("Open upgrade panel for:", symbol)
-
-
+	var scene = preload("res://components/upgrade_scenes/crypto_upgrade_ui.tscn")
+	var pane: Pane = scene.instantiate()
+	pane.unique_popup_key = "crypto_upgrades_%s" % symbol
+	WindowManager.launch_pane_instance(pane, symbol)
 
 func _on_add_gpu(symbol: String) -> void:
 	if GPUManager.get_free_gpu_count() > 0:
