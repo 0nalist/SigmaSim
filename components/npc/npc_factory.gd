@@ -4,9 +4,9 @@ class_name NPCFactory
 const TRAIT_CONFIG = {
 	"wealth": {
 		"buckets": [
-			{ "cutoff": 0.3, "range": Vector2(-800000, 0) },          # Bottom 30%: Indebted
-			{ "cutoff": 0.7, "range": Vector2(-10000, 200000) },      # Next 40%: Middle class
-			{ "cutoff": 0.9, "range": Vector2(200000, 1100000) },     # Next 20%: Upper-middle
+			{ "cutoff": 0.3, "range": Vector2(-1400000, 0) },          # Bottom 30%: Indebted
+			{ "cutoff": 0.7, "range": Vector2(-60000, 60000) },      # Next 40%: Middle class
+			{ "cutoff": 0.9, "range": Vector2(60000, 1100000) },     # Next 20%: Upper-middle
 			{ "cutoff": 0.99, "range": Vector2(1100000, 4000000) },   # Next 9%: Wealthy
 			{ "cutoff": 1.0, "range": Vector2(4000000, 50000000000) } # Top 1%: Ultra wealthy
 		]

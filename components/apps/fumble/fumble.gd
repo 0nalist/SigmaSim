@@ -243,23 +243,30 @@ func _load_preferences() -> void:
 						ob.select(selected_idx)
 
 func _populate_tag_dropdowns() -> void:
-		var tags: Array = NPCFactory.TAG_DATA.keys()
-		tags.sort()
-		tag_option_button1.clear()
-		tag_option_button1.add_item("--")
-		for tag in tags:
-				tag_option_button1.add_item(tag)
-		tag_option_button1.select(0)
+	var battle_types: Array = []
+	var file := FileAccess.open("res://data/npc_data/battle/npc_battle_types.json", FileAccess.READ)
+	if file:
+		var arr = JSON.parse_string(file.get_as_text())
+		if arr is Array:
+			for entry in arr:
+				var t = str(entry.get("Type", ""))
+				if t != "":
+					battle_types.append(t)
+	battle_types.sort()
+	tag_option_button1.clear()
+	tag_option_button1.add_item("--")
+	for t in battle_types:
+		tag_option_button1.add_item(t)
+	tag_option_button1.select(0)
 
-		var likes: Array = NPCFactory.LIKE_DATA.keys()
-		likes.sort()
-		for ob in [tag_option_button2, tag_option_button3]:
-				ob.clear()
-				ob.add_item("--")
-				for like in likes:
-						ob.add_item(like)
-				ob.select(0)
-
+	var likes: Array = NPCFactory.LIKE_DATA.keys()
+	likes.sort()
+	for ob in [tag_option_button2, tag_option_button3]:
+		ob.clear()
+		ob.add_item("--")
+		for like in likes:
+			ob.add_item(like)
+		ob.select(0)
 func _on_tag_option_selected(index: int, which: int) -> void:
 		var ob = tag_option_buttons[which]
 		var text = ob.get_item_text(index)

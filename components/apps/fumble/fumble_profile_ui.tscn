@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bo7jj5gh57d4n" path="res://components/greek_stats_ui.tscn" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0w3w"]
-bg_color = Color(0.147672, 0.147672, 0.147672, 1)
+bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="1"]
 bg_color = Color(1, 1, 1, 0.05)
@@ -57,6 +57,9 @@ size_flags_horizontal = 4
 [node name="DimeStatusLabel" type="Label" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 1
 theme_override_font_sizes/font_size = 26
 text = "🔥 0.0/10"
 horizontal_alignment = 1
@@ -64,6 +67,7 @@ horizontal_alignment = 1
 [node name="NameLabel" type="Label" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "Name"
 horizontal_alignment = 1
@@ -71,6 +75,7 @@ horizontal_alignment = 1
 [node name="TypeLabel" type="Label" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Type"
 horizontal_alignment = 1
@@ -83,6 +88,7 @@ theme_override_constants/separation = 4
 [node name="LikesLabel" type="Label" parent="Margin/Scroll/VBox/LikesSection"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Likes"
 
@@ -100,6 +106,7 @@ theme_override_constants/separation = 4
 [node name="TagsLabel" type="Label" parent="Margin/Scroll/VBox/TagsSection"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Tags"
 
