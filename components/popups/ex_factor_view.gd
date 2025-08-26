@@ -72,14 +72,15 @@ func _connect_logic_signals() -> void:
 	logic.affinity_changed.connect(_on_affinity_changed)
 	logic.equilibrium_changed.connect(_on_equilibrium_changed)
 	logic.costs_changed.connect(_on_costs_changed)
-	logic.cooldown_changed.connect(_on_cooldown_changed)
-	logic.exclusivity_changed.connect(_on_exclusivity_changed)
-	logic.blocked_state_changed.connect(_on_blocked_state_changed)
-	logic.request_persist.connect(_persist_fields)
+        logic.cooldown_changed.connect(_on_cooldown_changed)
+        logic.exclusivity_changed.connect(_on_exclusivity_changed)
+        logic.blocked_state_changed.connect(_on_blocked_state_changed)
+        logic.request_persist.connect(_persist_fields)
 
-	if npc_idx != -1:
-			NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
-			NPCManager.affinity_equilibrium_changed.connect(_on_npc_equilibrium_changed)
+        if npc_idx != -1:
+                        NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
+                        NPCManager.affinity_equilibrium_changed.connect(_on_npc_equilibrium_changed)
+                        NPCManager.exclusivity_core_changed.connect(_on_npc_exclusivity_core_changed)
 
 func _finalize_setup() -> void:
 	if npc == null:
@@ -130,15 +131,19 @@ func _process(delta: float) -> void:
 			progress_save_elapsed = 0.0
 
 func _exit_tree() -> void:
+
 		if TimeManager.minute_passed.is_connected(_on_minute_passed):
 				TimeManager.minute_passed.disconnect(_on_minute_passed)
 		if npc_idx != -1:
 				if NPCManager.affinity_changed.is_connected(_on_npc_affinity_changed):
-						NPCManager.affinity_changed.disconnect(_on_npc_affinity_changed)
-				if NPCManager.affinity_equilibrium_changed.is_connected(_on_npc_equilibrium_changed):
-						NPCManager.affinity_equilibrium_changed.disconnect(_on_npc_equilibrium_changed)
-				if npc.relationship_progress != last_saved_progress:
-						_persist_fields({"relationship_progress": npc.relationship_progress})
+                        NPCManager.affinity_changed.disconnect(_on_npc_affinity_changed)
+        if NPCManager.affinity_equilibrium_changed.is_connected(_on_npc_equilibrium_changed):
+                        NPCManager.affinity_equilibrium_changed.disconnect(_on_npc_equilibrium_changed)
+        if NPCManager.exclusivity_core_changed.is_connected(_on_npc_exclusivity_core_changed):
+                        NPCManager.exclusivity_core_changed.disconnect(_on_npc_exclusivity_core_changed)
+        if npc.relationship_progress != last_saved_progress:
+                        _persist_fields({"relationship_progress": npc.relationship_progress})
+
 
 # ---------------------------- Persistence glue ----------------------------
 
@@ -525,6 +530,12 @@ func _on_npc_affinity_changed(idx: int, _value: float) -> void:
 		_update_affinity_bar()
 
 func _on_npc_equilibrium_changed(idx: int, _value: float) -> void:
-		if idx != npc_idx:
-				return
-		_update_affinity_bar()
+                if idx != npc_idx:
+                                return
+                _update_affinity_bar()
+
+func _on_npc_exclusivity_core_changed(idx: int, _old_core: int, _new_core: int) -> void:
+                if idx != npc_idx:
+                                return
+                _update_exclusivity_label()
+                _update_exclusivity_button()
