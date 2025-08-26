@@ -480,20 +480,33 @@ func return_to_monogamy(npc_idx: int) -> void:
 	
 
 func come_clean_from_cheating(npc_idx: int) -> void:
-	var npc: NPC = get_npc_by_index(npc_idx)
-	if npc.exclusivity_core != ExclusivityCore.CHEATING:
-			return
-	var old_core: int = npc.exclusivity_core
-	var old_affinity: float = npc.affinity
-	npc.exclusivity_core = ExclusivityCore.POLY
-	npc.affinity = 1.0
-	promote_to_persistent(npc_idx)
-	persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
-	persistent_npcs[npc_idx]["affinity"] = npc.affinity
-	DBManager.save_npc(npc_idx, npc)
-	emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
-	emit_signal("affinity_changed", npc_idx, npc.affinity)
-	print("NPC %d: come clean from cheating core %d -> %d affinity %.2f -> %.2f" % [npc_idx, old_core, npc.exclusivity_core, old_affinity, npc.affinity])
+        var npc: NPC = get_npc_by_index(npc_idx)
+        if npc.exclusivity_core != ExclusivityCore.CHEATING:
+                        return
+        var old_core: int = npc.exclusivity_core
+        var old_affinity: float = npc.affinity
+        npc.exclusivity_core = ExclusivityCore.POLY
+        npc.affinity = 1.0
+        promote_to_persistent(npc_idx)
+        persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
+        persistent_npcs[npc_idx]["affinity"] = npc.affinity
+        DBManager.save_npc(npc_idx, npc)
+        emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
+        emit_signal("affinity_changed", npc_idx, npc.affinity)
+        print("NPC %d: come clean from cheating core %d -> %d affinity %.2f -> %.2f" % [npc_idx, old_core, npc.exclusivity_core, old_affinity, npc.affinity])
+
+func _resolve_cheating(npc_idx: int) -> void:
+       var npc: NPC = get_npc_by_index(npc_idx)
+       if npc.exclusivity_core != ExclusivityCore.CHEATING:
+                       return
+       var old_core: int = npc.exclusivity_core
+       promote_to_persistent(npc_idx)
+       npc.exclusivity_core = ExclusivityCore.MONOG
+       persistent_npcs[npc_idx]["exclusivity_core"] = npc.exclusivity_core
+       persistent_npcs[npc_idx]["affinity"] = npc.affinity
+       DBManager.save_npc(npc_idx, npc)
+       emit_signal("exclusivity_core_changed", npc_idx, old_core, npc.exclusivity_core)
+       print("NPC %d: resolved cheating core %d -> %d affinity %.2f" % [npc_idx, old_core, npc.exclusivity_core, npc.affinity])
 
 func _mark_npc_as_cheating(npc_idx: int, other_idx: int) -> void:
 	var npc: NPC = get_npc_by_index(npc_idx)
@@ -544,8 +557,8 @@ func _check_cheating_after_breakup() -> void:
 								if other_npc.relationship_stage >= RelationshipStage.DATING and other_npc.relationship_stage <= RelationshipStage.MARRIED:
 										still_cheating = true
 										break
-						if not still_cheating:
-								come_clean_from_cheating(check_idx)
+                                               if not still_cheating:
+                                                               _resolve_cheating(check_idx)
 
 func _recheck_daterbase_exclusivity(changed_idx: int) -> void:
 		var active: Array[int] = []
@@ -571,8 +584,8 @@ func _recheck_daterbase_exclusivity(changed_idx: int) -> void:
 																		other_idx = int(ai)
 																		break
 										_mark_npc_as_cheating(npc_idx, other_idx)
-						elif npc.exclusivity_core == ExclusivityCore.CHEATING and (not npc_active or other_active_count == 0):
-										come_clean_from_cheating(npc_idx)
+                                               elif npc.exclusivity_core == ExclusivityCore.CHEATING and (not npc_active or other_active_count == 0):
+                                                                               _resolve_cheating(npc_idx)
 
 func notify_player_advanced_someone_to_dating(other_idx: int) -> void:
 		var now_msec: int = Time.get_ticks_msec()
