@@ -6,6 +6,11 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0w3w"]
 bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="1"]
 bg_color = Color(1, 1, 1, 0.05)
@@ -28,6 +33,9 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_a0w3w")
 script = ExtResource("1")
+profile_bg_color = Color(1, 1, 1, 1)
+pill_bg_color = Color(0.619188, 0.506149, 0, 0.537255)
+value_color = Color(0, 0, 0, 1)
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -80,37 +88,42 @@ theme_override_font_sizes/font_size = 18
 text = "Type"
 horizontal_alignment = 1
 
-[node name="LikesSection" type="VBoxContainer" parent="Margin/Scroll/VBox"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="LikesSection" type="VBoxContainer" parent="Margin/Scroll/VBox/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="LikesLabel" type="Label" parent="Margin/Scroll/VBox/LikesSection"]
+[node name="LikesLabel" type="Label" parent="Margin/Scroll/VBox/HBoxContainer2/LikesSection"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 14
 text = "Likes"
 
-[node name="LikesContainer" type="FlowContainer" parent="Margin/Scroll/VBox/LikesSection"]
+[node name="LikesContainer" type="FlowContainer" parent="Margin/Scroll/VBox/HBoxContainer2/LikesSection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 
-[node name="TagsSection" type="VBoxContainer" parent="Margin/Scroll/VBox"]
+[node name="TagsSection" type="VBoxContainer" parent="Margin/Scroll/VBox/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="TagsLabel" type="Label" parent="Margin/Scroll/VBox/TagsSection"]
+[node name="TagsLabel" type="Label" parent="Margin/Scroll/VBox/HBoxContainer2/TagsSection"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 14
 text = "Tags"
 
-[node name="TagsContainer" type="FlowContainer" parent="Margin/Scroll/VBox/TagsSection"]
+[node name="TagsContainer" type="FlowContainer" parent="Margin/Scroll/VBox/HBoxContainer2/TagsSection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -141,47 +154,35 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="AstrologyRow" type="HBoxContainer" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="GridContainer" type="GridContainer" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
-theme_override_constants/separation = 8
+columns = 2
 
-[node name="AstrologyHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/AstrologyRow"]
+[node name="AstrologyHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Astrology"
 
-[node name="Control" type="Control" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/AstrologyRow"]
-custom_minimum_size = Vector2(10, 0)
-layout_mode = 2
-
-[node name="AstrologyValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/AstrologyRow"]
+[node name="AstrologyValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
 text = "Unknown"
 horizontal_alignment = 2
 
-[node name="WealthRow" type="HBoxContainer" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="WealthHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="WealthHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/WealthRow"]
-layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Wealth"
 
-[node name="Control2" type="Control" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/WealthRow"]
-custom_minimum_size = Vector2(10, 0)
-layout_mode = 2
-
-[node name="WealthValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/WealthRow"]
+[node name="WealthValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 10
 text = "$0"
 horizontal_alignment = 2
 
