@@ -2,18 +2,30 @@ extends NinePatchRect
 class_name SpeechBubble
 
 @onready var speech_label: Label = %SpeechLabel
+@onready var _margin_container: MarginContainer = $MarginContainer
+
+@export var margin_left: float = 20.0
+@export var margin_top: float = 20.0
+@export var margin_right: float = 20.0
+@export var margin_bottom: float = 20.0
+
 var follow_control: Control
+@export var follow_margin: Vector2 = Vector2(20.0, 0.0)
 
 func _ready() -> void:
-	visible = false
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	z_index = 1000
+        visible = false
+        mouse_filter = Control.MOUSE_FILTER_IGNORE
+        z_index = 1000
+        _margin_container.add_theme_constant_override("margin_left", margin_left)
+        _margin_container.add_theme_constant_override("margin_top", margin_top)
+        _margin_container.add_theme_constant_override("margin_right", margin_right)
+        _margin_container.add_theme_constant_override("margin_bottom", margin_bottom)
 
 func set_text(text: String) -> void:
 	# Config
 	var max_width: float = 260.0
 	var min_width: float = 80.0
-	var padding: Vector2 = Vector2(20.0, 20.0)
+        var padding: Vector2 = Vector2(20.0, 20.0)
 
 	# Configure the label first.
 	speech_label.visible_ratio = 1.0  # Label supports this. 
@@ -61,10 +73,10 @@ func _process(_delta: float) -> void:
 func _update_follow_position() -> void:
 		if follow_control and is_instance_valid(follow_control):
 				var rect = follow_control.get_global_rect()
-				global_position = Vector2(
-						rect.position.x - size.x - 10,
-						rect.position.y + (rect.size.y - size.y) * 0.5,
-				)
+                                global_position = Vector2(
+                                                rect.position.x - size.x - follow_margin.x,
+                                                rect.position.y + (rect.size.y - size.y) * 0.5 + follow_margin.y,
+                                )
 
 # --- Helpers ---
 
