@@ -184,15 +184,15 @@ func _try_load_npc() -> void:
 # ---------------------------- UI updates ----------------------------
 
 func _refresh_all() -> void:
-        _update_relationship_bar()
-        _update_affinity_bar()
-        _update_buttons_text()
-        _update_love_button()
-        _update_dime_status_label()
-        _update_exclusivity_label()
-        _update_exclusivity_button()
-        _update_next_stage_button()
-        _update_apologize_button()
+		_update_relationship_bar()
+		_update_affinity_bar()
+		_update_buttons_text()
+		_update_love_button()
+		_update_dime_status_label()
+		_update_exclusivity_label()
+		_update_exclusivity_button()
+		_update_next_stage_button()
+		_update_apologize_button()
 	
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
@@ -290,21 +290,21 @@ func _update_exclusivity_label() -> void:
 		exclusivity_label.remove_theme_color_override("font_color")
 
 func _update_exclusivity_button() -> void:
-        var visible: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DATING and \
-                        npc.relationship_stage <= NPCManager.RelationshipStage.MARRIED
-        exclusivity_button.visible = visible
-        if not visible:
-                        return
-        match npc.exclusivity_core:
-                        NPCManager.ExclusivityCore.MONOG: exclusivity_button.text = "Go Poly"
-                        NPCManager.ExclusivityCore.POLY: exclusivity_button.text = "Go Monog"
-                        NPCManager.ExclusivityCore.CHEATING: exclusivity_button.text = "Come Clean"
-                        _: exclusivity_button.text = "Toggle"
+		var visible: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DATING and \
+						npc.relationship_stage <= NPCManager.RelationshipStage.MARRIED
+		exclusivity_button.visible = visible
+		if not visible:
+						return
+		match npc.exclusivity_core:
+						NPCManager.ExclusivityCore.MONOG: exclusivity_button.text = "Go Poly"
+						NPCManager.ExclusivityCore.POLY: exclusivity_button.text = "Go Monog"
+						NPCManager.ExclusivityCore.CHEATING: exclusivity_button.text = "Come Clean"
+						_: exclusivity_button.text = "Toggle"
 
 func _update_next_stage_button() -> void:
-        var show: bool = logic.progress_paused and npc.relationship_stage < NPCManager.RelationshipStage.DIVORCED
-        next_stage_button.visible = show
-        next_stage_button.disabled = not show
+		var show: bool = logic.progress_paused and npc.relationship_stage < NPCManager.RelationshipStage.DIVORCED
+		next_stage_button.visible = show
+		next_stage_button.disabled = not show
 
 func _update_apologize_button() -> void:
 	var has_upgrade: bool = UpgradeManager.get_level("ex_factor_talk_therapy") > 0
@@ -398,8 +398,8 @@ func _on_next_stage_confirm_alt_pressed() -> void:
 		_show_quip("next level")
 
 func _on_next_stage_confirm_no_pressed() -> void:
-        next_stage_confirm.visible = false
-        _update_next_stage_button()
+		next_stage_confirm.visible = false
+		_update_next_stage_button()
 
 func _on_exclusivity_button_pressed() -> void:
 		logic.toggle_exclusivity()
@@ -477,14 +477,14 @@ func _on_progress_changed(_p: float) -> void:
 	_update_relationship_bar()
 
 func _on_stage_gate() -> void:
-        _update_next_stage_button()
+		_update_next_stage_button()
 
 func _on_stage_changed(_stage: int) -> void:
-        _update_relationship_bar()
-        _update_love_button()
-        _update_exclusivity_label()
-        _update_exclusivity_button()
-        _update_next_stage_button()
+		_update_relationship_bar()
+		_update_love_button()
+		_update_exclusivity_label()
+		_update_exclusivity_button()
+		_update_next_stage_button()
 
 func _on_affinity_changed(_a: float) -> void:
 	_update_affinity_bar()
