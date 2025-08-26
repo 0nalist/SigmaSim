@@ -41,7 +41,7 @@ extends PanelContainer
 ]
 
 func _ready() -> void:
-        _apply_colors()
+		_apply_colors()
 
 func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	portrait.apply_config(npc.portrait_config)
@@ -69,27 +69,27 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	_populate_greek(npc)
 	_populate_wealth(npc)
 
-        _run_entrance_animation()
+	_run_entrance_animation()
 
 func _apply_colors() -> void:
-        var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-        root_style.bg_color = profile_bg_color
-        add_theme_stylebox_override("panel", root_style)
+		var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+		root_style.bg_color = profile_bg_color
+		add_theme_stylebox_override("panel", root_style)
 
-        var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-        section_style.bg_color = section_bg_color
-        bio_panel.add_theme_stylebox_override("panel", section_style)
-        greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
+		var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+		section_style.bg_color = section_bg_color
+		bio_panel.add_theme_stylebox_override("panel", section_style)
+		greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
 
-        dime_status_label.modulate = label_color
-        name_label.modulate = label_color
-        type_label.modulate = label_color
-        likes_label.modulate = label_color
-        tags_label.modulate = label_color
+		dime_status_label.modulate = label_color
+		name_label.modulate = label_color
+		type_label.modulate = label_color
+		likes_label.modulate = label_color
+		tags_label.modulate = label_color
 
-        bio_text.modulate = value_color
-        astrology_value.modulate = value_color
-        wealth_value.modulate = value_color
+		bio_text.modulate = value_color
+		astrology_value.modulate = value_color
+		wealth_value.modulate = value_color
 
 func _populate_likes(npc: NPC) -> void:
 	likes_label.text = "Likes"
@@ -100,23 +100,23 @@ func _populate_likes(npc: NPC) -> void:
 			likes_container.add_child(pill)
 	else:
 
-                var none_label: Label = Label.new()
-                none_label.text = "No likes listed"
-                none_label.modulate = none_label_color
-                likes_container.add_child(none_label)
+				var none_label: Label = Label.new()
+				none_label.text = "No likes listed"
+				none_label.modulate = none_label_color
+				likes_container.add_child(none_label)
 
 func _populate_tags(npc: NPC) -> void:
-        tags_label.text = "Tags"
-        _clear_children(tags_container)
-        if npc.tags != null and npc.tags.size() > 0:
-                for tag in npc.tags:
-                        var pill: Control = _make_like_pill(_safe_str(tag))
-                        tags_container.add_child(pill)
-        else:
-                var none_label: Label = Label.new()
-                none_label.text = "No tags listed"
-                none_label.modulate = none_label_color
-                tags_container.add_child(none_label)
+		tags_label.text = "Tags"
+		_clear_children(tags_container)
+		if npc.tags != null and npc.tags.size() > 0:
+				for tag in npc.tags:
+						var pill: Control = _make_like_pill(_safe_str(tag))
+						tags_container.add_child(pill)
+		else:
+				var none_label: Label = Label.new()
+				none_label.text = "No tags listed"
+				none_label.modulate = none_label_color
+				tags_container.add_child(none_label)
 
 
 func _populate_bio(npc: NPC) -> void:
@@ -195,25 +195,25 @@ func _clear_children(container: Node) -> void:
 		child.queue_free()
 
 func _make_like_pill(text: String) -> Control:
-        var panel: PanelContainer = PanelContainer.new()
-        var style: StyleBoxFlat = StyleBoxFlat.new()
-        style.bg_color = pill_bg_color
-        style.corner_radius_top_left = 8
-        style.corner_radius_top_right = 8
-        style.corner_radius_bottom_right = 8
-        style.corner_radius_bottom_left = 8
-        panel.add_theme_stylebox_override("panel", style)
+	var panel: PanelContainer = PanelContainer.new()
+	var style: StyleBoxFlat = StyleBoxFlat.new()
+	style.bg_color = pill_bg_color
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_right = 8
+	style.corner_radius_bottom_left = 8
+	panel.add_theme_stylebox_override("panel", style)
 	var margin: MarginContainer = MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 8)
 	margin.add_theme_constant_override("margin_top", 4)
 	margin.add_theme_constant_override("margin_right", 8)
 	margin.add_theme_constant_override("margin_bottom", 4)
-        var label: Label = Label.new()
-        label.text = text
-        label.modulate = value_color
-        margin.add_child(label)
-        panel.add_child(margin)
-        return panel
+	var label: Label = Label.new()
+	label.text = text
+	label.modulate = value_color
+	margin.add_child(label)
+	panel.add_child(margin)
+	return panel
 
 func _safe_str(v: Variant) -> String:
 	if v == null:
