@@ -23,6 +23,7 @@ class_name BrokeRage
 @onready var charts_portfolio_label: Label = %ChartsPortfolioLabel
 
 @onready var charts_content: Control = _ensure_charts_content()
+var stock_popup_scene: PackedScene = preload("res://components/popups/stock_popup_ui.tscn")
 
 func _ensure_charts_content() -> Control:
 	var existing: Node = charts_view.get_node_or_null("ChartsContent")
@@ -169,23 +170,23 @@ func _build_charts_view() -> void:
 
 	var container: Control = null
 
-	for symbol: String in MarketManager.stock_market.keys():
-		var stock: Stock = MarketManager.get_stock(symbol)
-		var chart: ChartComponent = ChartComponent.new()
-		chart.custom_minimum_size = Vector2(350, 150)
-		chart.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		chart.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		chart.add_series(symbol, stock.display_name)
+        for symbol: String in MarketManager.stock_market.keys():
+                var stock: Stock = MarketManager.get_stock(symbol)
+                var popup: StockPopupUI = stock_popup_scene.instantiate()
+                popup.custom_minimum_size = Vector2(350, 150)
+                popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
+                popup.setup(stock)
 
-		if container == null:
-			container = chart
-		else:
-			var split: VSplitContainer = VSplitContainer.new()
-			split.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			split.size_flags_vertical = Control.SIZE_EXPAND_FILL
-			split.add_child(container)
-			split.add_child(chart)
-			container = split
+                if container == null:
+                        container = popup
+                else:
+                        var split: VSplitContainer = VSplitContainer.new()
+                        split.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                        split.size_flags_vertical = Control.SIZE_EXPAND_FILL
+                        split.add_child(container)
+                        split.add_child(popup)
+                        container = split
 
 	if container != null:
 		charts_content.add_child(container)
