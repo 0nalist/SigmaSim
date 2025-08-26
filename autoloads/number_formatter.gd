@@ -9,6 +9,8 @@ const LONG_UNITS = [
 
 # Add commas: 1,234,567.89
 static func format_commas(number: float, decimals: int = 2, hide_trailing_zeroes: bool = false) -> String:
+	if abs(number) >= 1000:
+		decimals = 0
 	var s = "%.*f" % [decimals, number]
 	var int_part = s.split(".")[0]
 	var frac_part = ""
