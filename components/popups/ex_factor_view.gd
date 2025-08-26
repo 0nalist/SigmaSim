@@ -260,7 +260,7 @@ func _update_buttons_text() -> void:
 		breakup_button.disabled = true
 	else:
 		breakup_button.disabled = false
-		breakup_button.text = "Breakup & gain %.2f Ex" % breakup_preview
+		breakup_button.text = "Breakup & gain " + NumberFormatter.format_commas(breakup_preview) + " EX"
 
 func _update_love_button() -> void:
 	if npc.relationship_stage < NPCManager.RelationshipStage.DATING:
