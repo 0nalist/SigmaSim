@@ -196,17 +196,18 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 			await get_tree().process_frame
 			start_time = Time.get_ticks_msec()
 
-	var recycled_indices: Array[int] = []
-	for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
-		if not exclude.has(idx):
-			var npc = NPCManager.get_npc_by_index(idx)
-			if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
-				recycled_indices.append(idx)
-		if recycled_indices.size() >= num_recycled:
-			break
-		if Time.get_ticks_msec() - start_time > time_budget_msec:
-			await get_tree().process_frame
-			start_time = Time.get_ticks_msec()
+        var recycled_indices: Array[int] = []
+        var matched = NPCManager.matched_npcs_by_app.get(app_name, {})
+        for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
+                if not exclude.has(idx) and not matched.has(idx):
+                        var npc = NPCManager.get_npc_by_index(idx)
+                        if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
+                                recycled_indices.append(idx)
+                if recycled_indices.size() >= num_recycled:
+                        break
+                if Time.get_ticks_msec() - start_time > time_budget_msec:
+                        await get_tree().process_frame
+                        start_time = Time.get_ticks_msec()
 
 	pool += new_indices
 	pool += recycled_indices
