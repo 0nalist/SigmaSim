@@ -1,6 +1,7 @@
 extends SceneTree
 
 const NPC = preload("res://components/npc/npc.gd")
+const ExFactorLogic = preload("res://components/popups/ex_factor_logic.gd")
 
 func _ready() -> void:
     var npc_mgr = Engine.get_singleton("NPCManager")
@@ -26,8 +27,13 @@ func _ready() -> void:
     npc_mgr.persistent_npcs[npc2_idx] = {}
     npc_mgr.encountered_npcs = [npc1_idx, npc2_idx]
 
-    npc_mgr.set_relationship_stage(npc1_idx, NPCManager.RelationshipStage.DATING)
+    var logic := ExFactorLogic.new()
+    add_child(logic)
+    logic.setup(npc1, npc1_idx)
+    logic.request_next_stage_primary()
+    await get_tree().process_frame
 
+    assert(npc1.relationship_stage == NPCManager.RelationshipStage.DATING)
     assert(npc2.exclusivity_core == NPCManager.ExclusivityCore.CHEATING)
     print("dating_stage_signal_test passed")
     quit()
