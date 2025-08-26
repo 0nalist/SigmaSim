@@ -427,7 +427,7 @@ func _prepare_next_stage_confirm() -> void:
 	var current_stage: int = npc.relationship_stage
 	var current_name: String = STAGE_NAMES[current_stage]
 	var next_name: String = STAGE_NAMES[min(current_stage + 1, STAGE_NAMES.size() - 1)]
-	next_stage_confirm_label.text = "Transition to %s?" % next_name
+	next_stage_confirm_label.text = "Progress to %s?" % next_name
 	next_stage_confirm_no_button.text = "Stay %s" % current_name
 	next_stage_confirm_alt_button.visible = false
 	if current_stage == NPCManager.RelationshipStage.DATING:
@@ -437,17 +437,17 @@ func _prepare_next_stage_confirm() -> void:
 			next_stage_confirm_alt_button.text = "Get SERIOUS, Polyamorously"
 			next_stage_confirm_alt_button.visible = true
 		else:
-			next_stage_confirm_primary_button.text = "Get Serious"
+			next_stage_confirm_primary_button.text = "Get SERIOUS"
 	elif current_stage == NPCManager.RelationshipStage.SERIOUS:
 		next_stage_confirm_primary_button.text = "Propose ($%s)" % NumberFormatter.format_commas(npc.proposal_cost, 0)
 	else:
-		next_stage_confirm_primary_button.text = "Transition to %s" % next_name
+		next_stage_confirm_primary_button.text = "Progress to %s" % next_name
 
 func _on_next_stage_confirm_primary_pressed() -> void:
-		next_stage_confirm.visible = false
-		logic.request_next_stage_primary()
-		_refresh_all()
-		_show_quip("next level")
+	next_stage_confirm.visible = false
+	logic.request_next_stage_primary()
+	_refresh_all()
+	_show_quip("next level")
 
 func _on_next_stage_confirm_alt_pressed() -> void:
 		next_stage_confirm.visible = false
@@ -463,6 +463,7 @@ func _on_exclusivity_button_pressed() -> void:
 		logic.toggle_exclusivity()
 		_update_exclusivity_label()
 		_update_exclusivity_button()
+		_update_relationship_status_label()
 		_update_affinity_bar()
 
 func _load_quips() -> void:
@@ -590,7 +591,8 @@ func _on_npc_equilibrium_changed(idx: int, _value: float) -> void:
 				_update_affinity_bar()
 
 func _on_npc_exclusivity_core_changed(idx: int, _old_core: int, _new_core: int) -> void:
-				if idx != npc_idx:
-								return
-				_update_exclusivity_label()
-				_update_exclusivity_button()
+							   if idx != npc_idx:
+															   return
+							   _update_exclusivity_label()
+							   _update_exclusivity_button()
+							   _update_relationship_status_label()
