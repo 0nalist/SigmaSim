@@ -42,7 +42,7 @@
 		"exclusivity": "poly",
 		"prefix": "Awww, ",
 		"core": "thank you",
-                "suffix": "! I'll wear that when I go out with {random_first_name} tomorrow."
+				"suffix": "! I'll wear that when I go out with {random_first_name} tomorrow."
 	},
 	{
 		"type": "any",
@@ -78,7 +78,7 @@
 		"exclusivity": "poly",
 		"prefix": "",
 		"core": "That was even better than ",
-                "suffix": "{random_first_name} last night!"
+				"suffix": "{random_first_name} last night!"
 	},
 	{
 		"type": "any",
@@ -87,7 +87,7 @@
 		"exclusivity": "poly",
 		"prefix": "",
 		"core": "That was incredible",
-                "suffix": ". By the way, {random_first_name} is coming over later!"
+				"suffix": ". By the way, {random_first_name} is coming over later!"
 	},
 	{
 		"type": "any",
