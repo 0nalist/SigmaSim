@@ -23,7 +23,7 @@ class_name BrokeRage
 @onready var charts_portfolio_label: Label = %ChartsPortfolioLabel
 
 @onready var charts_content: Control = _ensure_charts_content()
-				var stock_popup_scene: PackedScene = preload("res://components/popups/stock_popup_ui.tscn")
+var stock_popup_scene: PackedScene = preload("res://components/popups/stock_popup_ui.tscn")
 
 func _ensure_charts_content() -> Control:
 		var existing: Node = charts_view.get_node_or_null("ChartsContent")
