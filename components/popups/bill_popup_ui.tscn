@@ -1,12 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8s6x0upyixn2"]
+[gd_scene load_steps=9 format=3 uid="uid://c8s6x0upyixn2"]
 
+[ext_resource type="Shader" uid="uid://cuoxqt021m23q" path="res://assets/shaders/balala_fire_shader.gdshader" id="1_2jqea"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1_38tc7"]
 [ext_resource type="Script" uid="uid://b0c08e60kmhnb" path="res://components/popups/bill_popup_ui.gd" id="2_2jqea"]
+
+[sub_resource type="Gradient" id="Gradient_2jqea"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5t0q5"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eog2v"]
+seamless = true
+color_ramp = SubResource("Gradient_2jqea")
+noise = SubResource("FastNoiseLite_5t0q5")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5t0q5"]
+shader = ExtResource("1_2jqea")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_eog2v")
+shader_parameter/bottom_color = Color(4.04298e-06, 0.52603, 0.756903, 1)
+shader_parameter/middle_color = Color(1, 0.5, 0, 1)
+shader_parameter/top_color = Color(1, 0.03, 0.001, 1)
+shader_parameter/fire_alpha = 1.0
+shader_parameter/fire_speed = Vector2(0, 0.02)
+shader_parameter/fire_aperture = 0.425
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hytj0"]
 bg_color = Color(0.223103, 0.223103, 0.223103, 1)
 
 [node name="BillPopupUI" type="Panel"]
+material = SubResource("ShaderMaterial_5t0q5")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
