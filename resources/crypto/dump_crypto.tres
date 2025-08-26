@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Cryptocurrency" load_steps=3 format=3 uid="uid://ckddbwlrwrnp3"]
+
+[ext_resource type="Script" uid="uid://llcvncktu5" path="res://resources/crypto/cryptocurrency.gd" id="1_odxas"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_odxas"]
+
+[resource]
+script = ExtResource("1_odxas")
+symbol = "DUMP"
+display_name = "Dump"
+icon = SubResource("PlaceholderTexture2D_odxas")
+price = 47.0
+volatility = 47.0
+power_required = 88
+block_size = 0.001
+block_time = 10.0
+price_history = null
+all_time_high = 1.0
+metadata/_custom_type_script = "uid://llcvncktu5"

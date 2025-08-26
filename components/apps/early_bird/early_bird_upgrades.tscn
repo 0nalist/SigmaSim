@@ -12,8 +12,8 @@ bg_color = Color(0.792189, 0.546087, 1.34766e-06, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_v2tma"]
 gradient = SubResource("Gradient_4cu37")
-fill_from = Vector2(1.228, 0.521)
-fill_to = Vector2(-0.025, -0.04)
+fill_from = Vector2(1.443, 0.521)
+fill_to = Vector2(-0.97, -0.04)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_08jf7"]
 shader = ExtResource("2_4cu37")
