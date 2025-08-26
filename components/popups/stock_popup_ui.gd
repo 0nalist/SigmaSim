@@ -36,15 +36,22 @@ func setup(_stock: Stock) -> void:
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
 func _ready() -> void:
-	super._ready()
-	buy_button.pressed.connect(_on_buy_pressed)
-	sell_button.pressed.connect(_on_sell_pressed)
+        super._ready()
+        buy_button.pressed.connect(_on_buy_pressed)
+        sell_button.pressed.connect(_on_sell_pressed)
+
+func _gui_input(event: InputEvent) -> void:
+        if event is InputEventMouseButton:
+                if event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+                        accept_event()
+        elif event is InputEventPanGesture:
+                accept_event()
 
 func _on_stock_price_updated(symbol: String, updated_stock: Stock) -> void:
-	if stock == null or updated_stock.symbol != stock.symbol:
-		return
-	stock = updated_stock
-	_update_ui()
+        if stock == null or updated_stock.symbol != stock.symbol:
+                return
+        stock = updated_stock
+        _update_ui()
 
 func _update_ui() -> void:
 	window_title = str(stock.symbol) + " " + str(stock.price)
