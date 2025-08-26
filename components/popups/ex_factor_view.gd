@@ -325,12 +325,11 @@ func _update_relationship_status_label() -> void:
 			text = ""
 	relationship_status_label.text = text
 
-	# Color the text red if cheating
+	# Color the text red if cheating, else white
 	if npc.exclusivity_core == NPCManager.ExclusivityCore.CHEATING:
 		relationship_status_label.add_theme_color_override("font_color", Color.RED)
 	else:
-		relationship_status_label.remove_theme_color_override("font_color")
-
+		relationship_status_label.add_theme_color_override("font_color", Color.WHITE)
 
 
 
@@ -628,3 +627,12 @@ func _on_cheating_detected(primary_idx: int, other_idx: int) -> void:
 	_update_exclusivity_label()
 	_update_exclusivity_button()
 	_update_affinity_bar()
+
+func _sync_from_manager() -> void:
+	if npc_idx == -1:
+		return
+	var latest: NPC = NPCManager.get_npc_by_index(npc_idx)
+	if latest != null and latest != npc:
+		npc = latest
+		# keep logic pointing at the same object:
+		logic.npc = npc

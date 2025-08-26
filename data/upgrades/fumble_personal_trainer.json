@@ -1,7 +1,7 @@
 {
   "id": "fumble_personal_trainer",
   "name": "Personal Trainer",
-  "description": "Hire a personal trainer to increase your dime status by 0.1. Repeateable every week. Max Level: 10.",
+  "description": "Hire a personal trainer to increase your dime status by 0.1. Repeateable every week.",
   "effects": [
 		{
 		  "target": "attractiveness",

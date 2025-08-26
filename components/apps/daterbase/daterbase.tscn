@@ -75,10 +75,12 @@ layout_mode = 2
 [node name="Control" type="Control" parent="MarginContainer/VBox/MainHBox/VBoxContainer"]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
+mouse_filter = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/MainHBox/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_du6fw")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/MainHBox/VBoxContainer/PanelContainer"]
