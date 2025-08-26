@@ -7,6 +7,7 @@ signal purchase_requested(upgrade_id: String)
 
 var upgrade_data: Dictionary
 var is_locked: bool = false
+var upgrade_queued: bool = false
 
 @onready var name_label: Label = %NameLabel
 @onready var desc_label: Label = %DescLabel
@@ -16,21 +17,31 @@ var is_locked: bool = false
 @onready var cooldown_label: Label = %CooldownLabel
 
 func _ready() -> void:
-	buy_button.pressed.connect(_on_buy_button_pressed)
-	TimeManager.minute_passed.connect(_on_minute_passed)
-	# Re-evaluate affordability whenever relevant stats change so the Buy
-	# button correctly enables when the player gains resources.
-	PortfolioManager.cash_updated.connect(_on_resources_changed)
-	StatManager.stat_changed.connect(_on_stat_changed)
+        buy_button.pressed.connect(_on_buy_button_pressed)
+        TimeManager.minute_passed.connect(_on_minute_passed)
+        # Re-evaluate affordability whenever relevant stats change so the Buy
+        # button correctly enables when the player gains resources.
+        PortfolioManager.cash_updated.connect(_on_resources_changed)
+        StatManager.stat_changed.connect(_on_stat_changed)
+        if upgrade_queued:
+                _apply_upgrade()
+        else:
+                set_locked(is_locked)
 
 func set_upgrade(upgrade: Dictionary) -> void:
-	upgrade_data = upgrade
-	name_label.text = upgrade.get("name", upgrade.get("id", "???"))
-	desc_label.text = upgrade.get("description", "")
-	set_level(StatManager.get_upgrade_level(upgrade["id"]))
-	_refresh_cost()
-	set_locked(UpgradeManager.is_locked(upgrade["id"]))
-	_update_cooldown()
+        upgrade_data = upgrade
+        upgrade_queued = true
+        if is_inside_tree():
+                _apply_upgrade()
+
+func _apply_upgrade() -> void:
+        upgrade_queued = false
+        name_label.text = upgrade_data.get("name", upgrade_data.get("id", "???"))
+        desc_label.text = upgrade_data.get("description", "")
+        set_level(StatManager.get_upgrade_level(upgrade_data["id"]))
+        _refresh_cost()
+        set_locked(UpgradeManager.is_locked(upgrade_data["id"]))
+        _update_cooldown()
 
 func refresh() -> void:
 	if upgrade_data.is_empty():
@@ -40,12 +51,14 @@ func refresh() -> void:
 	_update_cooldown()
 
 func set_locked(locked: bool) -> void:
-	is_locked = locked
-	buy_button.disabled = locked
-	if locked:
-		self.modulate = Color(0.6, 0.6, 0.6, 1.0) # Greyed out
-	else:
-		self.modulate = Color(1, 1, 1, 1)
+        is_locked = locked
+        if not is_inside_tree():
+                return
+        buy_button.disabled = locked
+        if locked:
+                self.modulate = Color(0.6, 0.6, 0.6, 1.0) # Greyed out
+        else:
+                self.modulate = Color(1, 1, 1, 1)
 
 func set_level(level: int) -> void:
 		var repeatable = upgrade_data.get("repeatable", true)
