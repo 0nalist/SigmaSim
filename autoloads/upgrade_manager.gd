@@ -24,6 +24,7 @@ signal levels_changed ## Emitted when levels are loaded or reset
 var upgrades: Dictionary = {}  # id -> upgrade data
 var player_levels: Dictionary = {}  # id -> purchased count
 var cooldowns: Dictionary = {}  # id -> {"start": int, "base": float}
+var next_cost_cache: Dictionary = {}  # id -> {"level": int, "cost": Dictionary}
 
 const EXPECTED_KEYS := [
 		"id", "name", "description", "effects", "systems", "dependencies",
@@ -37,11 +38,12 @@ func _ready() -> void:
 
 func load_all_upgrades() -> void:
 	upgrades.clear()
+	next_cost_cache.clear()
 	_load_dir("res://data/upgrades", false)
 	_load_dir("user://mods/upgrades", true)
 	Events.register_upgrade_signals(upgrades.keys())
 	emit_signal("levels_changed")
-
+	
 func reload_upgrades() -> void:
 	load_all_upgrades()
 
@@ -206,12 +208,17 @@ func is_repeatable(id: String) -> bool:
 		return upgrade.get("repeatable", true)
 
 func get_cost_for_next_level(id: String) -> Dictionary:
+	var next_level := get_level(id) + 1
+	var cached = next_cost_cache.get(id)
+	if cached != null and cached.get("level", 0) == next_level:
+		return cached.get("cost", {})
 	var upgrade := get_upgrade(id)
 	if upgrade == null:
 		return {}
-	var next_level := get_level(id) + 1
-	return _get_cost_for_level(upgrade, next_level)
-
+	var cost := _get_cost_for_level(upgrade, next_level)
+	next_cost_cache[id] = {"level": next_level, "cost": cost}
+	return cost
+	
 func _get_cost_for_level(upgrade: Dictionary, level: int) -> Dictionary:
 	var base_cost := _get_base_cost(upgrade, level)
 
