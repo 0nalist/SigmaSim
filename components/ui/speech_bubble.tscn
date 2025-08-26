@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://speechbubble"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/buttons/speechbubble.png" id="1"]
-[ext_resource type="Script" path="res://components/ui/speech_bubble.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://d1wp0emq6hqk6" path="res://assets/ui/buttons/speechbubble.png" id="1"]
+[ext_resource type="Script" uid="uid://yhqewk8spnbw" path="res://components/ui/speech_bubble.gd" id="2"]
 
 [node name="SpeechBubble" type="NinePatchRect"]
 unique_name_in_owner = true
@@ -15,7 +15,7 @@ axis_stretch_horizontal = 2
 script = ExtResource("2")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -28,8 +28,4 @@ theme_override_constants/margin_bottom = 2
 [node name="SpeechLabel" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 10
-text = ""
 autowrap_mode = 2

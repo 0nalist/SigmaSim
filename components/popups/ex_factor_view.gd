@@ -426,20 +426,20 @@ func _select_quip(action: String) -> String:
 		return MarkupParser.parse(line, npc)
 
 func _show_quip(action: String) -> void:
-        var text = _select_quip(action)
-        if text == "":
-                return
-        var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
-        add_child(bubble)
-        bubble.set_as_top_level(true)
-        bubble.set_text(text)
-        var rect = portrait_view.get_global_rect()
-        var pos = Vector2(
-                rect.position.x - bubble.size.x - 10,
-                rect.position.y + (rect.size.y - bubble.size.y) * 0.5,
-        )
-        bubble.global_position = pos
-        bubble.pop_and_fade()
+	var text = _select_quip(action)
+	if text == "":
+			return
+	var bubble: SpeechBubble = SPEECH_BUBBLE_SCENE.instantiate()
+	add_child(bubble)
+	bubble.set_as_top_level(true)
+	bubble.set_text(text)
+	var rect = portrait_view.get_global_rect()
+	var pos = Vector2(
+			rect.position.x - bubble.size.x - 10,
+			rect.position.y + (rect.size.y - bubble.size.y) * 0.5,
+	)
+	bubble.global_position = pos
+	bubble.pop_and_fade()
 
 # ---------------------------- Logic signal sinks ----------------------------
 
