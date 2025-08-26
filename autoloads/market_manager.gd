@@ -31,14 +31,20 @@ var CRYPTO_RESOURCES := {
 }
 
 var EVENT_RESOURCES := {
-	"HAWK_PUMP": preload("res://resources/market_events/hawk_pump_and_dump.tres"),
+        "HAWK_PUMP": preload("res://resources/market_events/hawk_pump_and_dump.tres"),
+}
+
+var DAILY_EVENT_RESOURCES := {
+        "GENERIC_SURGE": preload("res://resources/market_events/generic_asset_surge.tres"),
+        "GENERIC_CRASH": preload("res://resources/market_events/generic_asset_crash.tres"),
 }
 
 func _ready() -> void:
-	TimeManager.minute_passed.connect(_on_minute_passed)
-	if crypto_market.is_empty():
-		print("crypto market was empty")
-		_init_crypto_market()
+       TimeManager.minute_passed.connect(_on_minute_passed)
+       TimeManager.hour_passed.connect(_on_hour_passed)
+       if crypto_market.is_empty():
+               print("crypto market was empty")
+               _init_crypto_market()
 	if stock_market.is_empty():
 		_init_stock_market()
 	print("market manager ready, crypto should be initialized")
@@ -79,13 +85,17 @@ func register_crypto(crypto: Cryptocurrency) -> void:
 
 
 func _on_minute_passed(current_time_minutes: int) -> void:
-	# Alternate stock and crypto ticks every minute
-	if current_time_minutes % 2 == 0:
-		_update_stock_prices()
-		emit_signal("market_tick")
-	else:
-		_update_crypto_prices()
-		emit_signal("crypto_tick")
+        # Alternate stock and crypto ticks every minute
+        if current_time_minutes % 2 == 0:
+                _update_stock_prices()
+                emit_signal("market_tick")
+        else:
+                _update_crypto_prices()
+                emit_signal("crypto_tick")
+
+func _on_hour_passed(current_hour: int, _total_minutes: int) -> void:
+       if current_hour == 9:
+               _schedule_daily_events()
 
 func register_stock(stock: Stock) -> void:
 	stock_market[stock.symbol] = stock
@@ -158,19 +168,54 @@ func _update_stock_prices() -> void:
 
 
 func _update_crypto_prices() -> void:
-		var now: int = TimeManager.get_now_minutes()
-		for crypto: Cryptocurrency in crypto_market.values():
-				var event: MarketEvent = crypto_events.get(crypto.symbol)
-				var old_price: float = crypto.price
-				if event == null or not event.is_active():
-						crypto.update_from_market()
-				if event != null:
-						event.process(now, crypto)
-						if event.is_finished():
-								crypto_events.erase(crypto.symbol)
-				HistoryManager.add_sample(crypto.symbol, now, crypto.price)
-				if abs(crypto.price - old_price) > 0.001:
-						emit_signal("crypto_price_updated", crypto.symbol, crypto)
+                var now: int = TimeManager.get_now_minutes()
+                for crypto: Cryptocurrency in crypto_market.values():
+                                var event: MarketEvent = crypto_events.get(crypto.symbol)
+                                var old_price: float = crypto.price
+                                if event == null or not event.is_active():
+                                                crypto.update_from_market()
+                                if event != null:
+                                                event.process(now, crypto)
+                                                if event.is_finished():
+                                                                crypto_events.erase(crypto.symbol)
+                                HistoryManager.add_sample(crypto.symbol, now, crypto.price)
+                                if abs(crypto.price - old_price) > 0.001:
+                                                emit_signal("crypto_price_updated", crypto.symbol, crypto)
+
+func _schedule_daily_events() -> void:
+       var rng := RNGManager.market_manager.get_rng()
+
+       var available_crypto: Array = []
+       for symbol: String in crypto_market.keys():
+               var ev: MarketEvent = crypto_events.get(symbol)
+               if ev == null or ev.is_finished():
+                       available_crypto.append(symbol)
+       if not available_crypto.is_empty():
+               var crypto_symbol: String = available_crypto[rng.randi_range(0, available_crypto.size() - 1)]
+               var crypto_event_key: String = DAILY_EVENT_RESOURCES.keys()[rng.randi_range(0, DAILY_EVENT_RESOURCES.size() - 1)]
+               var crypto_base: Resource = DAILY_EVENT_RESOURCES[crypto_event_key]
+               if crypto_base is MarketEvent:
+                       var crypto_ev: MarketEvent = crypto_base.duplicate(true)
+                       crypto_ev.target_symbol = crypto_symbol
+                       crypto_ev.target_type = "crypto"
+                       crypto_ev.schedule(TimeManager.get_now_minutes(), rng)
+                       crypto_events[crypto_symbol] = crypto_ev
+
+       var available_stocks: Array = []
+       for symbol: String in stock_market.keys():
+               var ev: MarketEvent = stock_events.get(symbol)
+               if ev == null or ev.is_finished():
+                       available_stocks.append(symbol)
+       if not available_stocks.is_empty():
+               var stock_symbol: String = available_stocks[rng.randi_range(0, available_stocks.size() - 1)]
+               var stock_event_key: String = DAILY_EVENT_RESOURCES.keys()[rng.randi_range(0, DAILY_EVENT_RESOURCES.size() - 1)]
+               var stock_base: Resource = DAILY_EVENT_RESOURCES[stock_event_key]
+               if stock_base is MarketEvent:
+                       var stock_ev: MarketEvent = stock_base.duplicate(true)
+                       stock_ev.target_symbol = stock_symbol
+                       stock_ev.target_type = "stock"
+                       stock_ev.schedule(TimeManager.get_now_minutes(), rng)
+                       stock_events[stock_symbol] = stock_ev
 
 ## --- Initialization --- ##
 
