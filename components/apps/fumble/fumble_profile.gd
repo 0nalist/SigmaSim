@@ -4,6 +4,7 @@ extends PanelContainer
 @export var profile_bg_color: Color = Color(0.147672, 0.147672, 0.147672, 1.0)
 @export var section_bg_color: Color = Color(1, 1, 1, 0.05)
 @export var pill_bg_color: Color = Color(0, 0, 0, 0.1)
+@export var type_panel_color: Color = Color(0, 0, 0, 0.1)
 @export var none_label_color: Color = Color(1.0, 1.0, 1.0, 0.6)
 @export var label_color: Color = Color(1, 1, 1, 1)
 @export var value_color: Color = Color(1, 1, 1, 1)
@@ -46,11 +47,11 @@ extends PanelContainer
                                                                 type_panel,
                                                                 job_label,
                                                                 likes_section,
-								dislikes_section,
-								tags_section,
-								bio_panel,
-								stats_grid,
-								greek_panel
+                                                                dislikes_section,
+                                                                bio_panel,
+                                                                tags_section,
+                                                                stats_grid,
+                                                                greek_panel
 ]
 
 
@@ -77,12 +78,12 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	type_label.text = str(npc.chat_battle_type)
 	job_label.text = _safe_str(npc.occupation)
 
-	_populate_likes(npc)
-	_populate_dislikes(npc)
-	_populate_tags(npc)
-	_populate_bio(npc)
-	_populate_astrology(npc)
-	_populate_greek(npc)
+        _populate_likes(npc)
+        _populate_dislikes(npc)
+        _populate_bio(npc)
+        _populate_tags(npc)
+        _populate_astrology(npc)
+        _populate_greek(npc)
         _populate_wealth(npc)
         _populate_mbti(npc)
         _populate_ocean(npc)
@@ -100,7 +101,7 @@ func _apply_colors() -> void:
         greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
 
         var type_style: StyleBoxFlat = StyleBoxFlat.new()
-        type_style.bg_color = pill_bg_color
+        type_style.bg_color = type_panel_color
         type_style.corner_radius_top_left = 8
         type_style.corner_radius_top_right = 8
         type_style.corner_radius_bottom_right = 8
