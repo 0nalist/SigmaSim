@@ -86,14 +86,56 @@ func get_npc_name_by_index(npc_index: int) -> Dictionary:
 
 	var full_name = "%s %s. %s%s" % [gendered_first.name, middle_initial, last_name, suffix]
 
-	return {
-		"first_name": gendered_first.name,
-		"middle_initial": middle_initial,
-		"last_name": last_name,
-		"gender_vector": gendered_first.gender_vector,
-		"full_name": full_name,
-		"gendered_first": gendered_first
-	}
+        return {
+                "first_name": gendered_first.name,
+                "middle_initial": middle_initial,
+                "last_name": last_name,
+                "gender_vector": gendered_first.gender_vector,
+                "full_name": full_name,
+                "gendered_first": gendered_first
+        }
+
+func get_index_from_full_name(full_name: String) -> int:
+        var parts: PackedStringArray = full_name.strip_edges().split(" ")
+        if parts.size() < 2:
+                return -1
+        var first: String = parts[0]
+        var middle: String = ""
+        var last: String = ""
+        var suffix_num: int = 0
+        if parts.size() >= 4:
+                middle = parts[1].trim_suffix(".")
+                last = parts[2]
+                suffix_num = _roman_to_int(parts[3]) - 1
+        elif parts.size() == 3:
+                middle = parts[1].trim_suffix(".")
+                last = parts[2]
+        elif parts.size() == 2:
+                middle = middle_initials[0]
+                last = parts[1]
+        var first_idx: int = -1
+        for i in range(first_names.size()):
+                if first_names[i].name.to_lower() == first.to_lower():
+                        first_idx = i
+                        break
+        if first_idx == -1:
+                return -1
+        var middle_idx: int = middle_initials.find(middle.to_upper())
+        if middle_idx == -1:
+                return -1
+        var last_idx: int = -1
+        for i in range(last_names.size()):
+                if last_names[i].to_lower() == last.to_lower():
+                        last_idx = i
+                        break
+        if last_idx == -1:
+                return -1
+        var middle_count = middle_initials.size()
+        var last_count = last_names.size()
+        var name_index: int = first_idx * (middle_count * last_count) + middle_idx * last_count + last_idx
+        var total_combos = first_names.size() * middle_count * last_count
+        var base_index = feistel_unshuffle(name_index, total_combos, name_seed)
+        return suffix_num * total_combos + base_index
 
 
 func feistel_shuffle(idx: int, size: int, seed: int) -> int:
@@ -109,9 +151,33 @@ func feistel_shuffle(idx: int, size: int, seed: int) -> int:
 
 func djb2(s: String) -> int:
 	var hash := 5381
-	for i in s.length():
-		hash = ((hash << 5) + hash) + s.unicode_at(i)
-	return hash & 0xFFFFFFFF
+        for i in s.length():
+                hash = ((hash << 5) + hash) + s.unicode_at(i)
+        return hash & 0xFFFFFFFF
+
+func feistel_unshuffle(idx: int, size: int, seed: int) -> int:
+        var l = idx & 0xFFFF
+        var r = idx >> 16
+        for i in range(2, -1, -1):
+                var new_r = l
+                var new_l = r ^ (djb2(str(new_r) + str(seed + i)) & 0xFFFF)
+                l = new_l
+                r = new_r
+        return ((r << 16) | l) % size
+
+func _roman_to_int(s: String) -> int:
+        var values := {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+        var result := 0
+        var prev := 0
+        for i in range(s.length() - 1, -1, -1):
+                var c := s[i]
+                var val := values.get(c, 0)
+                if val < prev:
+                        result -= val
+                else:
+                        result += val
+                        prev = val
+        return result
 
 
 func int_to_roman(n: int) -> String:
