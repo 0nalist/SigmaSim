@@ -1,0 +1,79 @@
+[gd_scene load_steps=4 format=3 uid="uid://6sibrffc2ni7"]
+
+[ext_resource type="Script" uid="uid://d0sq5gmsn0mp7" path="res://components/apps/lifestylist/life_stylist.gd" id="1_80bik"]
+[ext_resource type="PackedScene" uid="uid://p3nf4gwmvex1" path="res://components/apps/lifestylist/lifestyle_row.tscn" id="2_80bik"]
+[ext_resource type="Texture2D" uid="uid://cgxywei8rjptj" path="res://assets/logos/monocle_man.png" id="4_16n21"]
+
+[node name="LifeStylist" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1_80bik")
+lifestyle_row_scene = ExtResource("2_80bik")
+window_title = "LifeStylist"
+window_icon = ExtResource("4_16n21")
+default_window_size = Vector2(815, 650)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="CategoryList" type="VBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CategoryList"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/CategoryList/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_16n21")
+
+[node name="HeaderLabel" type="Label" parent="MarginContainer/CategoryList/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 36
+text = "LifeStylist"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_constants/separation = 16
+
+[node name="WeeklyCostLabel" type="Label" parent="MarginContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 1
+text = "Weekly Cost:"
+
+[node name="Footer" type="HBoxContainer" parent="MarginContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+theme_override_constants/separation = 8
+
+[node name="DailyCostLabel" type="Label" parent="MarginContainer/VBoxContainer2/Footer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+text = "Daily Cost (rent & insurance not included):"
+
+[node name="DailyCostCountdownLabel" type="Label" parent="MarginContainer/VBoxContainer2/Footer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
