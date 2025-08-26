@@ -82,12 +82,13 @@ func _resolve_tag(tag: String, npc: Object, context: Dictionary) -> String:
 		var npc_val_lc = _get_any(npc, tag_lc)
 		if npc_val_lc != null:
 			return str(npc_val_lc)
-	# 3. Special tags: Random first/last name (use NameManager singleton)
-		var tag_flat = tag_lc.replace("_", "")
-		if tag_flat == "randomfirstname":
-				return NameManager.get_random_first_name() if NameManager.has_method("get_random_first_name") else "FirstName"
-		if tag_flat == "randomlastname":
-				return NameManager.get_random_last_name() if NameManager.has_method("get_random_last_name") else "LastName"
+
+        # 3. Special tags: Random first/last name (use NameManager singleton)
+    var tag_flat = tag_lc.replace("_", "")
+    if tag_flat == "randomfirstname":
+                return NameManager.get_random_first_name() if NameManager.has_method("get_random_first_name") else "FirstName"
+    if tag_flat == "randomlastname":
+                return NameManager.get_random_last_name() if NameManager.has_method("get_random_last_name") else "LastName"
 
 	# 4. Search global sources (PlayerManager, etc)
 	for src in _global_sources:
