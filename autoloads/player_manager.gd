@@ -87,14 +87,14 @@ var default_user_data: Dictionary = {
 	"mbti": "",
 
 # Fumble preferences
-        "fumble_pref_x": 0.0,
-        "fumble_pref_y": 0.0,
-                "fumble_pref_z": 0.0,
-                "fumble_curiosity": 50.0,
-                "fumble_fugly_filter_threshold": 0,
-           "fumble_type": "",
-           "fumble_like": "",
-           "fumble_dislike": "",
+		"fumble_pref_x": 0.0,
+		"fumble_pref_y": 0.0,
+				"fumble_pref_z": 0.0,
+				"fumble_curiosity": 50.0,
+				"fumble_fugly_filter_threshold": 0,
+		   "fumble_type": "",
+		   "fumble_like": "",
+		   "fumble_dislike": "",
 
 	# Flags and progression
 	"unlocked_perks": [],

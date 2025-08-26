@@ -1,7 +1,7 @@
 {
   "id": "fumble_leg_lengthening_surgery",
   "name": "Leg Lengthening Surgery",
-  "description": "Undergo leg lengthening surgery. Increases dime status by 1.0.",
+  "description": "Break both your legs, grow back 1.0 hotter.",
   "effects": [
 				{
 				  "target": "attractiveness",
