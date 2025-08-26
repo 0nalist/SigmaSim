@@ -107,10 +107,10 @@ func _ready() -> void:
 	next_stage_confirm_primary_button.pressed.connect(_on_next_stage_confirm_primary_pressed)
 	next_stage_confirm_alt_button.pressed.connect(_on_next_stage_confirm_alt_pressed)
 	next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
-        love_button.pressed.connect(_on_love_pressed)
-        exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
-       StatManager.stat_changed.connect(_on_stat_changed)
-       TimeManager.minute_passed.connect(_on_minute_passed)
+	love_button.pressed.connect(_on_love_pressed)
+	exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
+	StatManager.stat_changed.connect(_on_stat_changed)
+	TimeManager.minute_passed.connect(_on_minute_passed)
 
 	await get_tree().process_frame
 	if Events.has_signal("ex_factor_talk_therapy_purchased"):
@@ -130,15 +130,15 @@ func _process(delta: float) -> void:
 			progress_save_elapsed = 0.0
 
 func _exit_tree() -> void:
-        if TimeManager.minute_passed.is_connected(_on_minute_passed):
-                TimeManager.minute_passed.disconnect(_on_minute_passed)
-        if npc_idx != -1:
-                if NPCManager.affinity_changed.is_connected(_on_npc_affinity_changed):
-                        NPCManager.affinity_changed.disconnect(_on_npc_affinity_changed)
-                if NPCManager.affinity_equilibrium_changed.is_connected(_on_npc_equilibrium_changed):
-                        NPCManager.affinity_equilibrium_changed.disconnect(_on_npc_equilibrium_changed)
-                if npc.relationship_progress != last_saved_progress:
-                        _persist_fields({"relationship_progress": npc.relationship_progress})
+		if TimeManager.minute_passed.is_connected(_on_minute_passed):
+				TimeManager.minute_passed.disconnect(_on_minute_passed)
+		if npc_idx != -1:
+				if NPCManager.affinity_changed.is_connected(_on_npc_affinity_changed):
+						NPCManager.affinity_changed.disconnect(_on_npc_affinity_changed)
+				if NPCManager.affinity_equilibrium_changed.is_connected(_on_npc_equilibrium_changed):
+						NPCManager.affinity_equilibrium_changed.disconnect(_on_npc_equilibrium_changed)
+				if npc.relationship_progress != last_saved_progress:
+						_persist_fields({"relationship_progress": npc.relationship_progress})
 
 # ---------------------------- Persistence glue ----------------------------
 
@@ -489,14 +489,14 @@ func _on_costs_changed(_gift: float, _date: float) -> void:
 	_update_buttons_text()
 
 func _on_cooldown_changed(_ready_at: int) -> void:
-        _update_love_button()
+		_update_love_button()
 
 func _on_minute_passed(_m: int) -> void:
-        _update_love_button()
+		_update_love_button()
 
 func _on_exclusivity_changed(_core: int) -> void:
-        _update_exclusivity_label()
-        _update_exclusivity_button()
+		_update_exclusivity_label()
+		_update_exclusivity_button()
 
 func _on_blocked_state_changed(is_blocked: bool) -> void:
 	gift_button.disabled = is_blocked
