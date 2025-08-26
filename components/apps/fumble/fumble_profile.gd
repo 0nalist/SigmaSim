@@ -42,16 +42,16 @@ extends PanelContainer
 # Updated: astrology_row / wealth_row don’t exist in your scene,
 # so we animate the value labels instead.
 @onready var sections: Array[Control] = [
-                                                                dime_status_label,
-                                                                name_label,
-                                                                type_panel,
-                                                                job_label,
-                                                                likes_section,
-                                                                dislikes_section,
-                                                                bio_panel,
-                                                                tags_section,
-                                                                stats_grid,
-                                                                greek_panel
+																dime_status_label,
+																name_label,
+																type_panel,
+																job_label,
+																likes_section,
+																dislikes_section,
+																bio_panel,
+																tags_section,
+																stats_grid,
+																greek_panel
 ]
 
 
@@ -78,31 +78,31 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	type_label.text = str(npc.chat_battle_type)
 	job_label.text = _safe_str(npc.occupation)
 
-        _populate_likes(npc)
-        _populate_dislikes(npc)
-        _populate_bio(npc)
-        _populate_tags(npc)
-        _populate_astrology(npc)
-        _populate_greek(npc)
-        _populate_wealth(npc)
-        _populate_mbti(npc)
-        _populate_ocean(npc)
+		_populate_likes(npc)
+		_populate_dislikes(npc)
+		_populate_bio(npc)
+		_populate_tags(npc)
+		_populate_astrology(npc)
+		_populate_greek(npc)
+		_populate_wealth(npc)
+		_populate_mbti(npc)
+		_populate_ocean(npc)
 
-        call_deferred("_run_entrance_animation")
+		call_deferred("_run_entrance_animation")
 
 func _apply_colors() -> void:
 	var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
 	root_style.bg_color = profile_bg_color
 	add_theme_stylebox_override("panel", root_style)
 
-        var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-        section_style.bg_color = section_bg_color
-        bio_panel.add_theme_stylebox_override("panel", section_style)
-        greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
+		var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+		section_style.bg_color = section_bg_color
+		bio_panel.add_theme_stylebox_override("panel", section_style)
+		greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
 
-        var type_style: StyleBoxFlat = type_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-        type_style.bg_color = type_panel_color
-        type_panel.add_theme_stylebox_override("panel", type_style)
+		var type_style: StyleBoxFlat = type_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+		type_style.bg_color = type_panel_color
+		type_panel.add_theme_stylebox_override("panel", type_style)
 
 	dime_status_label.modulate = label_color
 	name_label.modulate = label_color
