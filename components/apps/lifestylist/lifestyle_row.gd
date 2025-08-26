@@ -3,6 +3,7 @@ class_name LifestyleRow
 
 @export var category_name: String
 @export var spending_options: Array = []
+@export var text_color: Color = Color.hex("e0e0e0")
 
 @onready var label: Label = %Label
 @onready var dropdown: OptionButton = %Dropdown
@@ -13,14 +14,19 @@ class_name LifestyleRow
 signal option_changed(category: String, option_index: int)
 
 func _ready():
-	var popup = %Dropdown.get_popup()
-	popup.add_theme_font_size_override("font_size", 12)
+        var popup = %Dropdown.get_popup()
+        popup.add_theme_font_size_override("font_size", 14)
 
-	label.text = category_name
-	for option in spending_options:
-		dropdown.add_item(option["name"])
+        label.add_theme_color_override("font_color", text_color)
+        dropdown.add_theme_color_override("font_color", text_color)
+        cost_label.add_theme_color_override("font_color", text_color)
+        effects_label.add_theme_color_override("font_color", text_color)
 
-	dropdown.connect("item_selected", _on_option_selected)
+        label.text = category_name
+        for option in spending_options:
+                dropdown.add_item(option["name"])
+
+        dropdown.connect("item_selected", _on_option_selected)
 
 func setup(category: String, options: Array):
 	category_name = category
