@@ -157,23 +157,9 @@ unique_name_in_owner = true
 layout_mode = 2
 columns = 2
 
-[node name="AstrologyHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 6
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
-text = "Astrology"
-
-[node name="AstrologyValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 10
-text = "Unknown"
-horizontal_alignment = 2
-
 [node name="WealthHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Wealth"
@@ -185,9 +171,23 @@ size_flags_horizontal = 10
 text = "$0"
 horizontal_alignment = 2
 
+[node name="AstrologyHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "Astrology"
+
+[node name="AstrologyValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Unknown"
+horizontal_alignment = 2
+
 [node name="MBTIHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "MBTI"
@@ -209,11 +209,10 @@ text = "OCEAN"
 [node name="OCEANSpacer" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
-text = ""
 
 [node name="OpennessHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Openness"
@@ -227,7 +226,7 @@ horizontal_alignment = 2
 
 [node name="ConscientiousnessHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Conscientiousness"
@@ -241,7 +240,7 @@ horizontal_alignment = 2
 
 [node name="ExtraversionHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Extraversion"
@@ -255,7 +254,7 @@ horizontal_alignment = 2
 
 [node name="AgreeablenessHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Agreeableness"
@@ -269,7 +268,7 @@ horizontal_alignment = 2
 
 [node name="NeuroticismHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "Neuroticism"

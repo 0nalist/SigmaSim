@@ -42,8 +42,8 @@ extends PanelContainer
 		likes_section,
 		tags_section,
 		bio_panel,
-        stats_grid,
-        greek_panel
+		stats_grid,
+		greek_panel
 ]
 
 
@@ -72,39 +72,39 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	_populate_likes(npc)
 	_populate_tags(npc)
 	_populate_bio(npc)
-        _populate_astrology(npc)
-        _populate_greek(npc)
-        _populate_wealth(npc)
-        _populate_mbti(npc)
-        _populate_ocean(npc)
+	_populate_astrology(npc)
+	_populate_greek(npc)
+	_populate_wealth(npc)
+	_populate_mbti(npc)
+	_populate_ocean(npc)
 
 	_run_entrance_animation()
 
 func _apply_colors() -> void:
-		var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-		root_style.bg_color = profile_bg_color
-		add_theme_stylebox_override("panel", root_style)
+	var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+	root_style.bg_color = profile_bg_color
+	add_theme_stylebox_override("panel", root_style)
 
-		var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-		section_style.bg_color = section_bg_color
-		bio_panel.add_theme_stylebox_override("panel", section_style)
-		greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
+	var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+	section_style.bg_color = section_bg_color
+	bio_panel.add_theme_stylebox_override("panel", section_style)
+	greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
 
-		dime_status_label.modulate = label_color
-		name_label.modulate = label_color
-		type_label.modulate = label_color
-		likes_label.modulate = label_color
-		tags_label.modulate = label_color
+	dime_status_label.modulate = label_color
+	name_label.modulate = label_color
+	type_label.modulate = label_color
+	likes_label.modulate = label_color
+	tags_label.modulate = label_color
 
-                bio_text.modulate = value_color
-                astrology_value.modulate = value_color
-                wealth_value.modulate = value_color
-                mbti_value.modulate = value_color
-                openness_value.modulate = value_color
-                conscientiousness_value.modulate = value_color
-                extraversion_value.modulate = value_color
-                agreeableness_value.modulate = value_color
-                neuroticism_value.modulate = value_color
+	bio_text.modulate = value_color
+	astrology_value.modulate = value_color
+	wealth_value.modulate = value_color
+	mbti_value.modulate = value_color
+	openness_value.modulate = value_color
+	conscientiousness_value.modulate = value_color
+	extraversion_value.modulate = value_color
+	agreeableness_value.modulate = value_color
+	neuroticism_value.modulate = value_color
 
 func _populate_likes(npc: NPC) -> void:
 	likes_label.text = "Likes"
@@ -180,26 +180,26 @@ func _populate_greek(npc: NPC) -> void:
 			bar.value = stats[key]
 
 func _populate_wealth(npc: NPC) -> void:
-        var formatted: String
-        if Engine.has_singleton("NumberFormatter") and NumberFormatter.has_method("format_commas"):
-                formatted = NumberFormatter.format_commas(npc.wealth)
-        else:
-                formatted = format_commas(npc.wealth)
-        wealth_value.text = "$" + formatted
+		var formatted: String
+		if Engine.has_singleton("NumberFormatter") and NumberFormatter.has_method("format_commas"):
+				formatted = NumberFormatter.format_commas(npc.wealth)
+		else:
+				formatted = format_commas(npc.wealth)
+		wealth_value.text = "$" + formatted
 
 func _populate_mbti(npc: NPC) -> void:
-        var mbti: String = npc.mbti
-        if mbti == null or mbti == "":
-                mbti_value.text = "Unknown"
-        else:
-                mbti_value.text = str(mbti)
+		var mbti: String = npc.mbti
+		if mbti == null or mbti == "":
+				mbti_value.text = "Unknown"
+		else:
+				mbti_value.text = str(mbti)
 
 func _populate_ocean(npc: NPC) -> void:
-        openness_value.text = "%0.1f" % npc.openness
-        conscientiousness_value.text = "%0.1f" % npc.conscientiousness
-        extraversion_value.text = "%0.1f" % npc.extraversion
-        agreeableness_value.text = "%0.1f" % npc.agreeableness
-        neuroticism_value.text = "%0.1f" % npc.neuroticism
+		openness_value.text = "%0.1f" % npc.openness
+		conscientiousness_value.text = "%0.1f" % npc.conscientiousness
+		extraversion_value.text = "%0.1f" % npc.extraversion
+		agreeableness_value.text = "%0.1f" % npc.agreeableness
+		neuroticism_value.text = "%0.1f" % npc.neuroticism
 
 
 func _run_entrance_animation() -> void:
