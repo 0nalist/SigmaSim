@@ -4,6 +4,7 @@ extends PanelContainer
 @export var profile_bg_color: Color = Color(0.147672, 0.147672, 0.147672, 1.0)
 @export var section_bg_color: Color = Color(1, 1, 1, 0.05)
 @export var pill_bg_color: Color = Color(0, 0, 0, 0.1)
+@export var type_panel_color: Color = Color(1, 1, 1, 0.05)
 @export var none_label_color: Color = Color(1.0, 1.0, 1.0, 0.6)
 @export var label_color: Color = Color(1, 1, 1, 1)
 @export var value_color: Color = Color(1, 1, 1, 1)
@@ -11,6 +12,7 @@ extends PanelContainer
 @onready var portrait: PortraitView = %Portrait
 @onready var dime_status_label: Label = %DimeStatusLabel
 @onready var name_label: Label = %NameLabel
+@onready var type_panel: PanelContainer = %TypePanel
 @onready var type_label: Label = %TypeLabel
 @onready var job_label: Label = %JobLabel
 @onready var likes_container: Control = %LikesContainer
@@ -32,24 +34,24 @@ extends PanelContainer
 
 @onready var likes_section: VBoxContainer = %LikesSection
 @onready var dislikes_section: VBoxContainer = %DislikesSection
-@onready var tags_section: VBoxContainer = %TagsSection
 @onready var bio_panel: PanelContainer = %BioPanel
+@onready var tags_section: VBoxContainer = %TagsSection
 @onready var greek_panel: PanelContainer = %GreekPanel
 @onready var stats_grid: GridContainer = %GridContainer
 
 # Updated: astrology_row / wealth_row don’t exist in your scene,
 # so we animate the value labels instead.
 @onready var sections: Array[Control] = [
-								dime_status_label,
-								name_label,
-								type_label,
-								job_label,
-								likes_section,
-								dislikes_section,
-								tags_section,
-								bio_panel,
-								stats_grid,
-								greek_panel
+                                                                dime_status_label,
+                                                                name_label,
+                                                                type_panel,
+                                                                job_label,
+                                                                likes_section,
+                                                                dislikes_section,
+                                                                bio_panel,
+                                                                tags_section,
+                                                                stats_grid,
+                                                                greek_panel
 ]
 
 
@@ -76,27 +78,31 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	type_label.text = str(npc.chat_battle_type)
 	job_label.text = _safe_str(npc.occupation)
 
-	_populate_likes(npc)
-	_populate_dislikes(npc)
-	_populate_tags(npc)
-	_populate_bio(npc)
-	_populate_astrology(npc)
-	_populate_greek(npc)
-	_populate_wealth(npc)
-	_populate_mbti(npc)
-	_populate_ocean(npc)
+        _populate_likes(npc)
+        _populate_dislikes(npc)
+        _populate_bio(npc)
+        _populate_tags(npc)
+        _populate_astrology(npc)
+        _populate_greek(npc)
+        _populate_wealth(npc)
+        _populate_mbti(npc)
+        _populate_ocean(npc)
 
-	_run_entrance_animation()
+        call_deferred("_run_entrance_animation")
 
 func _apply_colors() -> void:
 	var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
 	root_style.bg_color = profile_bg_color
 	add_theme_stylebox_override("panel", root_style)
 
-	var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-	section_style.bg_color = section_bg_color
-	bio_panel.add_theme_stylebox_override("panel", section_style)
-	greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
+        var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+        section_style.bg_color = section_bg_color
+        bio_panel.add_theme_stylebox_override("panel", section_style)
+        greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
+
+        var type_style: StyleBoxFlat = type_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+        type_style.bg_color = type_panel_color
+        type_panel.add_theme_stylebox_override("panel", type_style)
 
 	dime_status_label.modulate = label_color
 	name_label.modulate = label_color
