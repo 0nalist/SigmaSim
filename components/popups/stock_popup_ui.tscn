@@ -1,10 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://kr7m06k7j1jl"]
+[gd_scene load_steps=13 format=3 uid="uid://kr7m06k7j1jl"]
 
 [ext_resource type="Script" uid="uid://cbhnd41c3mysn" path="res://components/popups/stock_popup_ui.gd" id="1_ba7qw"]
 [ext_resource type="PackedScene" uid="uid://defhlwtmryxw4" path="res://components/ui/chart_component_ui.tscn" id="2_jvfw0"]
+[ext_resource type="Texture2D" uid="uid://cpph6qmmgf2p3" path="res://assets/ui/buttons/greenbuttonpressed.png" id="3_xplrg"]
+[ext_resource type="Texture2D" uid="uid://ctlorutr8vm1m" path="res://assets/ui/buttons/greenbutton.png" id="4_gw71h"]
+[ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/buttons/redbuttonpressed.png" id="5_egwyj"]
+[ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/buttons/redbutton.png" id="6_4tcoc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6hvw1"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_211iv"]
+texture = ExtResource("3_xplrg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sepyu"]
+texture = ExtResource("3_xplrg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mgfj3"]
+texture = ExtResource("4_gw71h")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ymay2"]
+texture = ExtResource("5_egwyj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_67og2"]
+texture = ExtResource("6_4tcoc")
 
 [node name="StockPopupUI" type="Panel"]
 anchors_preset = 15
@@ -137,11 +156,21 @@ layout_mode = 2
 [node name="BuyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 8
+size_flags_stretch_ratio = 0.25
 focus_mode = 0
-text = "Buy"
+mouse_filter = 1
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_211iv")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_sepyu")
+theme_override_styles/normal = SubResource("StyleBoxTexture_mgfj3")
+text = " BUY "
 
 [node name="SellButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_stretch_ratio = 0.25
 focus_mode = 0
-text = "Sell"
+mouse_filter = 1
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ymay2")
+theme_override_styles/normal = SubResource("StyleBoxTexture_67og2")
+text = " SELL "
