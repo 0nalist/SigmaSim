@@ -78,7 +78,19 @@ theme_override_font_sizes/font_size = 24
 text = "Name"
 horizontal_alignment = 1
 
-[node name="TypeLabel" type="Label" parent="Margin/Scroll/VBox"]
+[node name="TypePanel" type="PanelContainer" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TypeMargin" type="MarginContainer" parent="Margin/Scroll/VBox/TypePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="TypeLabel" type="Label" parent="Margin/Scroll/VBox/TypePanel/TypeMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
