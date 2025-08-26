@@ -13,6 +13,7 @@ class_name SystemUpgradeUI
 
 var sort_mode: int = 0
 var _refresh_timer: Timer
+var _rows: Dictionary = {}
 
 func _ready() -> void:
 	UpgradeManager.connect("upgrade_purchased", _on_upgrade_changed)
@@ -41,9 +42,6 @@ func _exit_tree() -> void:
 			StatManager.stat_changed.disconnect(_on_stat_changed)
 
 func refresh_upgrades() -> void:
-	for child in upgrades_list.get_children():
-		child.queue_free()
-
 	var upgrades = UpgradeManager.get_upgrades_for_system(system_name, show_locked)
 
 	match sort_mode:
@@ -54,14 +52,33 @@ func refresh_upgrades() -> void:
 		_:
 			upgrades.sort_custom(_sort_by_unlock_then_id)
 
+	var to_remove: Array = _rows.keys().duplicate()
+	var index: int = 0
 	for upgrade in upgrades:
-		var row = upgrade_ui.instantiate()
-		upgrades_list.add_child(row)
+		var id: String = upgrade["id"]
+		to_remove.erase(id)
 
-		row.set_upgrade(upgrade)
-		row.set_locked(UpgradeManager.is_locked(upgrade["id"]))
-		row.set_level(StatManager.get_upgrade_level(upgrade["id"]))
-		row.connect("purchase_requested", _on_purchase_requested)
+		var row
+		if _rows.has(id):
+			row = _rows[id]
+			row.set_locked(UpgradeManager.is_locked(id))
+			row.refresh()
+		else:
+			row = upgrade_ui.instantiate()
+			_rows[id] = row
+			row.set_upgrade(upgrade)
+			row.set_locked(UpgradeManager.is_locked(id))
+			row.connect("purchase_requested", _on_purchase_requested)
+			upgrades_list.add_child(row)
+
+		if row.get_index() != index:
+			upgrades_list.move_child(row, index)
+		index += 1
+
+	for id in to_remove:
+		var row = _rows[id]
+		row.queue_free()
+		_rows.erase(id)
 
 func _sort_by_unlock_then_id(a, b):
 	var a_locked = UpgradeManager.is_locked(a["id"])
