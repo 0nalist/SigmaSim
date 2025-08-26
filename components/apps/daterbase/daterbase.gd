@@ -17,6 +17,7 @@ class_name Daterbase
 @onready var hh_create_button: Button = %HHCreateButton
 @onready var hh_portrait_holder: VBoxContainer = %HHPortraitHolder
 @onready var hh_stats_container: VBoxContainer = %HHStatsContainer
+@onready var hh_open_fumble_button: Button = %HHOpenFumbleButton
 
 # --- Grid control ---
 var results_tree: Tree
@@ -49,6 +50,8 @@ var _portrait_views_by_npc: Dictionary = {}
 var _affinity_labels_by_npc: Dictionary = {}
 var _exclusivity_labels_by_npc: Dictionary = {}
 
+var hh_current_npc: NPC = null
+
 const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
 const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
 const STAGE_NAMES: Array[String] = ["STRANGER", "TALKING", "DATING", "SERIOUS", "ENGAGED", "MARRIED", "DIVORCED", "EX"]
@@ -67,9 +70,12 @@ func _ready() -> void:
 	show_all_button.pressed.connect(_on_show_all_pressed)
 	daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
 	sql_tab_button.pressed.connect(_on_sql_tab_pressed)
-	headhunters_tab_button.pressed.connect(_on_headhunters_tab_pressed)
-	hh_create_button.pressed.connect(_on_hh_create_pressed)
-	hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
+        headhunters_tab_button.pressed.connect(_on_headhunters_tab_pressed)
+        hh_create_button.pressed.connect(_on_hh_create_pressed)
+        hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
+        hh_open_fumble_button.pressed.connect(_on_hh_open_fumble_button_pressed)
+
+        hh_open_fumble_button.disabled = true
 
 	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
 	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
@@ -216,8 +222,10 @@ func _display_headhunter_npc(full_name: String) -> void:
 				child.queue_free()
 		for child in hh_stats_container.get_children():
 				child.queue_free()
-		var npc: NPC = NPCFactory.create_npc_from_name(full_name)
-		var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
+                var npc: NPC = NPCFactory.create_npc_from_name(full_name)
+                hh_current_npc = npc
+                hh_open_fumble_button.disabled = false
+                var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
 		portrait.portrait_creator_enabled = false
 		portrait.custom_minimum_size = Vector2(132, 132)
 		portrait.size = Vector2(132, 132)
@@ -234,7 +242,19 @@ func _display_headhunter_npc(full_name: String) -> void:
 						lbl.text = "%s: %s" % [key, JSON.stringify(val)]
 				else:
 						lbl.text = "%s: %s" % [key, str(val)]
-				hh_stats_container.add_child(lbl)
+                                hh_stats_container.add_child(lbl)
+
+func _on_hh_open_fumble_button_pressed() -> void:
+        if hh_current_npc == null:
+                return
+        var idx = NPCManager.get_batch_of_new_npc_indices("fumble", 1)[0]
+        NPCManager.npcs[idx] = hh_current_npc
+        WindowManager.launch_app_by_name("Fumble")
+        await get_tree().process_frame
+        var win = WindowManager.find_window_by_app("Fumble")
+        if win and win.pane is FumbleUI:
+                var pane: FumbleUI = win.pane
+                pane.add_npc_profile_to_top(idx)
 
 # =========================================
 # Safety

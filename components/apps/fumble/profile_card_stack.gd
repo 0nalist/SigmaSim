@@ -36,21 +36,25 @@ func load_initial_cards() -> void:
 
 
 func _add_card_at_top(idx: int) -> void:
-	var card = profile_card_scene.instantiate()
-	card.set("npc_idx", idx)
-	var npc = NPCManager.get_npc_by_index(idx)
-	add_child(card)
-	card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	card.call_deferred("load_npc", npc)
-	cards.append(card)
-	npc_indices.append(idx)
-	_update_card_positions()
+        var card = profile_card_scene.instantiate()
+        card.set("npc_idx", idx)
+        var npc = NPCManager.get_npc_by_index(idx)
+        add_child(card)
+        card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+        card.call_deferred("load_npc", npc)
+        cards.append(card)
+        npc_indices.append(idx)
+        _update_card_positions()
+
+
+func add_card_to_top(idx: int) -> void:
+        _add_card_at_top(idx)
 
 
 func _add_card_at_bottom(idx: int) -> void:
-	var card = profile_card_scene.instantiate()
-	card.set("npc_idx", idx)
-	var npc = NPCManager.get_npc_by_index(idx)
+        var card = profile_card_scene.instantiate()
+        card.set("npc_idx", idx)
+        var npc = NPCManager.get_npc_by_index(idx)
 	add_child(card)
 	card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	card.call_deferred("load_npc", npc)
