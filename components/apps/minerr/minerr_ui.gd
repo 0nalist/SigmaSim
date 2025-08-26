@@ -40,8 +40,7 @@ func refresh_cards_from_market() -> void:
 		# Connect card signals to Minerr handlers so buttons work.
 		card.add_gpu.connect(_on_add_gpu)
 		card.remove_gpu.connect(_on_remove_gpu)
-		card.overclock_toggled.connect(_on_toggle_overclock)
-		card.open_upgrades.connect(_on_open_upgrades)
+                card.overclock_toggled.connect(_on_toggle_overclock)
 		crypto_cards[crypto.symbol] = card
 	debug_dump_cards()
 func update_gpu_label() -> void:
@@ -61,13 +60,6 @@ func update_gpu_label() -> void:
 
 
 
-
-func _on_open_upgrades(symbol: String) -> void:
-	print("Open upgrade panel for:", symbol)
-	var scene = preload("res://components/upgrade_scenes/crypto_upgrade_ui.tscn")
-	var pane: Pane = scene.instantiate()
-	pane.unique_popup_key = "crypto_upgrades_%s" % symbol
-	WindowManager.launch_pane_instance(pane, symbol)
 
 func _on_add_gpu(symbol: String) -> void:
 	if GPUManager.get_free_gpu_count() > 0:

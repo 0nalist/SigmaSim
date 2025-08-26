@@ -4,7 +4,6 @@ class_name CryptoCard
 signal add_gpu(symbol: String)
 signal remove_gpu(symbol: String)
 signal overclock_toggled(symbol: String)
-signal open_upgrades(symbol: String)
 signal selected(symbol: String)
 
 @onready var symbol_label: Label = %SymbolLabel
@@ -55,8 +54,8 @@ func setup(crypto_data: Cryptocurrency) -> void:
 
 	add_gpu_button.pressed.connect(_emit_add_gpu)
 	remove_gpu_button.pressed.connect(_emit_remove_gpu)
-	overclock_button.pressed.connect(_emit_overclock_toggled)
-	upgrade_button.pressed.connect(_emit_open_upgrades)
+        overclock_button.pressed.connect(_emit_overclock_toggled)
+        upgrade_button.pressed.connect(_on_upgrade_button_pressed)
 	gui_input.connect(_on_card_gui_input)
 	sell_button.pressed.connect(_on_sell_pressed)
 
@@ -90,10 +89,13 @@ func _emit_overclock_toggled() -> void:
 		return
 	emit_signal("overclock_toggled", crypto.symbol)
 
-func _emit_open_upgrades() -> void:
-	if crypto == null:
-		return
-	emit_signal("open_upgrades", crypto.symbol)
+func _on_upgrade_button_pressed() -> void:
+        if crypto == null:
+                return
+        var scene = preload("res://components/upgrade_scenes/crypto_upgrade_ui.tscn")
+        var pane: Pane = scene.instantiate()
+        pane.unique_popup_key = "crypto_upgrades_%s" % crypto.symbol
+        WindowManager.launch_pane_instance(pane, crypto.symbol)
 
 func _on_card_gui_input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.pressed:
