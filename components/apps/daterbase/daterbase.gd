@@ -15,7 +15,6 @@ class_name Daterbase
 @onready var results_container_sql: VBoxContainer = %ResultsContainer_SQL
 @onready var hh_name_edit: LineEdit = %HHNameEdit
 @onready var hh_create_button: Button = %HHCreateButton
-@onready var hh_add_button: Button = %HHAddButton
 @onready var hh_portrait_holder: VBoxContainer = %HHPortraitHolder
 @onready var hh_stats_container: VBoxContainer = %HHStatsContainer
 
@@ -49,7 +48,6 @@ var _ran_initial_show_all: bool = false
 var _portrait_views_by_npc: Dictionary = {}
 var _affinity_labels_by_npc: Dictionary = {}
 var _exclusivity_labels_by_npc: Dictionary = {}
-var _current_hh_full_name: String = ""
 
 const PORTRAIT_SCENE: PackedScene = preload("res://components/portrait/portrait_view.tscn")
 const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
@@ -70,9 +68,8 @@ func _ready() -> void:
 	daterbase_tab_button.pressed.connect(_on_daterbase_tab_pressed)
 	sql_tab_button.pressed.connect(_on_sql_tab_pressed)
 	headhunters_tab_button.pressed.connect(_on_headhunters_tab_pressed)
-        hh_create_button.pressed.connect(_on_hh_create_pressed)
-        hh_add_button.pressed.connect(_on_hh_add_pressed)
-        hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
+	hh_create_button.pressed.connect(_on_hh_create_pressed)
+	hh_name_edit.text_submitted.connect(_on_hh_name_submitted)
 
 	NPCManager.portrait_changed.connect(_on_npc_portrait_changed)
 	NPCManager.affinity_changed.connect(_on_npc_affinity_changed)
@@ -212,22 +209,14 @@ func _on_hh_create_pressed() -> void:
 		_display_headhunter_npc(name)
 
 func _on_hh_name_submitted(_text: String) -> void:
-        _on_hh_create_pressed()
-
-func _on_hh_add_pressed() -> void:
-        if _current_hh_full_name == "":
-                return
-        var idx: int = NameManager.get_index_from_full_name(_current_hh_full_name)
-        if idx >= 0:
-                NPCManager.add_daterbase_npc(idx)
-                hh_add_button.disabled = true
+		_on_hh_create_pressed()
 
 func _display_headhunter_npc(full_name: String) -> void:
-        for child in hh_portrait_holder.get_children():
-                child.queue_free()
-        for child in hh_stats_container.get_children():
-                child.queue_free()
-        var npc: NPC = NPCFactory.create_npc_from_name(full_name)
+		for child in hh_portrait_holder.get_children():
+				child.queue_free()
+		for child in hh_stats_container.get_children():
+				child.queue_free()
+		var npc: NPC = NPCFactory.create_npc_from_name(full_name)
 		var portrait: PortraitView = PORTRAIT_SCENE.instantiate()
 		portrait.portrait_creator_enabled = false
 		portrait.custom_minimum_size = Vector2(132, 132)
@@ -238,16 +227,14 @@ func _display_headhunter_npc(full_name: String) -> void:
 		var stats: Dictionary = npc.to_dict()
 		var keys := stats.keys()
 		keys.sort()
-        for key in keys:
-                var val = stats[key]
-                var lbl := Label.new()
-                if typeof(val) in [TYPE_DICTIONARY, TYPE_ARRAY]:
-                        lbl.text = "%s: %s" % [key, JSON.stringify(val)]
-                else:
-                        lbl.text = "%s: %s" % [key, str(val)]
-                hh_stats_container.add_child(lbl)
-        _current_hh_full_name = full_name
-        hh_add_button.disabled = false
+		for key in keys:
+				var val = stats[key]
+				var lbl := Label.new()
+				if typeof(val) in [TYPE_DICTIONARY, TYPE_ARRAY]:
+						lbl.text = "%s: %s" % [key, JSON.stringify(val)]
+				else:
+						lbl.text = "%s: %s" % [key, str(val)]
+				hh_stats_container.add_child(lbl)
 
 # =========================================
 # Safety
