@@ -26,17 +26,17 @@ class_name BrokeRage
 var stock_popup_scene: PackedScene = preload("res://components/popups/stock_popup_ui.tscn")
 
 func _ensure_charts_content() -> Control:
-        var existing: Node = charts_view.get_node_or_null("ChartsContent")
-        if existing != null and existing is Control:
-                return existing as Control
+		var existing: Node = charts_view.get_node_or_null("ChartsContent")
+		if existing != null and existing is Control:
+				return existing as Control
 
-        var content: VBoxContainer = VBoxContainer.new()
-        content.name = "ChartsContent"
-        content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-        content.add_theme_constant_override("separation", 16)
-        charts_view.add_child(content)
-        return content
+		var content: VBoxContainer = VBoxContainer.new()
+		content.name = "ChartsContent"
+		content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		content.add_theme_constant_override("separation", 16)
+		charts_view.add_child(content)
+		return content
 
 
 
@@ -165,15 +165,15 @@ func _on_charts_tab_pressed() -> void:
 
 
 func _build_charts_view() -> void:
-        # Only clear dynamic chart content, not the tab buttons or labels.
-        for child: Node in charts_content.get_children():
-                child.queue_free()
+		# Only clear dynamic chart content, not the tab buttons or labels.
+		for child: Node in charts_content.get_children():
+				child.queue_free()
 
-        for symbol: String in MarketManager.stock_market.keys():
-                var stock: Stock = MarketManager.get_stock(symbol)
-                var popup: StockPopupUI = stock_popup_scene.instantiate()
-                popup.custom_minimum_size = Vector2(350, 150)
-                popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-                popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
-                popup.setup(stock)
-                charts_content.add_child(popup)
+		for symbol: String in MarketManager.stock_market.keys():
+				var stock: Stock = MarketManager.get_stock(symbol)
+				var popup: StockPopupUI = stock_popup_scene.instantiate()
+				popup.custom_minimum_size = Vector2(350, 150)
+				popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
+				popup.setup(stock)
+				charts_content.add_child(popup)

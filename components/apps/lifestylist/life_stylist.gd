@@ -79,8 +79,15 @@ func _on_minute_passed(current_minutes: int) -> void:
 
 func _apply_theme() -> void:
 	var style: StyleBoxFlat = StyleBoxFlat.new()
+	
+	#await ready
+	
 	style.bg_color = background_color
-	style.corner_radius_all = 8
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+
 	# Godot 4: use add_theme_stylebox_override
 	add_theme_stylebox_override("panel", style)
 
@@ -88,6 +95,7 @@ func _apply_theme() -> void:
 	weekly_cost_label.add_theme_color_override("font_color", text_color)
 	daily_cost_label.add_theme_color_override("font_color", text_color)
 	daily_countdown_label.add_theme_color_override("font_color", accent_color)
+
 
 
 func _get_row_by_category(category_name: String) -> LifestyleRow:
