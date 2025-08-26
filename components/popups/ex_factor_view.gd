@@ -520,7 +520,6 @@ func _select_quip(action: String) -> String:
 		var core = _pick_variant(chosen.get("core", ""), rng)
 		var suffix = _pick_variant(chosen.get("suffix", ""), rng)
 		var line = prefix + core + suffix
-		line = line.replace("{random first_name}", "{random_first_name}")
 		return MarkupParser.parse(line, npc)
 
 func _show_quip(action: String) -> void:
