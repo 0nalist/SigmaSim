@@ -92,9 +92,12 @@ var default_user_data: Dictionary = {
 				"fumble_pref_z": 0.0,
 				"fumble_curiosity": 50.0,
 				"fumble_fugly_filter_threshold": 0,
-		   "fumble_type": "",
-		   "fumble_like": "",
-		   "fumble_dislike": "",
+                   "fumble_type": "",
+                   "fumble_like": "",
+                   "fumble_dislike": "",
+                   "fumble_type_cd": 0,
+                   "fumble_like_cd": 0,
+                   "fumble_dislike_cd": 0,
 
 	# Flags and progression
 	"unlocked_perks": [],
