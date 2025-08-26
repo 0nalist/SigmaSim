@@ -262,6 +262,20 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	icon_button.focus_mode = Control.FOCUS_NONE
 	icon_button.theme = get_tree().root.theme
 
+	var wm := self
+	icon_button.gui_input.connect(func(event):
+		if event is InputEventMouseButton:
+			var mb: InputEventMouseButton = event
+			if mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
+				var action_close: ContextAction = ContextAction.new()
+				action_close.id = 0
+				action_close.label = "Close"
+				action_close.method = "close_window"
+				action_close.args = [window]
+				ContextMenuManager.open_for(wm, mb.global_position, [action_close])
+				icon_button.accept_event()
+	)
+
 	icon_button.pressed.connect(func():
 		if window.visible and focused_window == window:
 			var center = icon_button.get_global_position() + icon_button.size / 2
