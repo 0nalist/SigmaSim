@@ -169,6 +169,10 @@ unique_name_in_owner = true
 layout_mode = 2
 fit_content = true
 
+[node name="Control2" type="Control" parent="Margin/Scroll/VBox"]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+
 [node name="TagsSection" type="VBoxContainer" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2

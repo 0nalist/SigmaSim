@@ -11,7 +11,6 @@ extends PanelContainer
 @onready var portrait: PortraitView = %Portrait
 @onready var dime_status_label: Label = %DimeStatusLabel
 @onready var name_label: Label = %NameLabel
-@onready var type_panel: PanelContainer = %TypePanel
 @onready var type_label: Label = %TypeLabel
 @onready var job_label: Label = %JobLabel
 @onready var likes_container: Control = %LikesContainer
@@ -42,10 +41,10 @@ extends PanelContainer
 # so we animate the value labels instead.
 @onready var sections: Array[Control] = [
 								dime_status_label,
-                                                                name_label,
-                                                                type_panel,
-                                                                job_label,
-                                                                likes_section,
+								name_label,
+								type_label,
+								job_label,
+								likes_section,
 								dislikes_section,
 								tags_section,
 								bio_panel,
@@ -83,37 +82,29 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	_populate_bio(npc)
 	_populate_astrology(npc)
 	_populate_greek(npc)
-        _populate_wealth(npc)
-        _populate_mbti(npc)
-        _populate_ocean(npc)
+	_populate_wealth(npc)
+	_populate_mbti(npc)
+	_populate_ocean(npc)
 
-        call_deferred("_run_entrance_animation")
+	_run_entrance_animation()
 
 func _apply_colors() -> void:
 	var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
 	root_style.bg_color = profile_bg_color
 	add_theme_stylebox_override("panel", root_style)
 
-        var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-        section_style.bg_color = section_bg_color
-        bio_panel.add_theme_stylebox_override("panel", section_style)
-        greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
+	var section_style: StyleBoxFlat = bio_panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
+	section_style.bg_color = section_bg_color
+	bio_panel.add_theme_stylebox_override("panel", section_style)
+	greek_panel.add_theme_stylebox_override("panel", section_style.duplicate())
 
-        var type_style: StyleBoxFlat = StyleBoxFlat.new()
-        type_style.bg_color = pill_bg_color
-        type_style.corner_radius_top_left = 8
-        type_style.corner_radius_top_right = 8
-        type_style.corner_radius_bottom_right = 8
-        type_style.corner_radius_bottom_left = 8
-        type_panel.add_theme_stylebox_override("panel", type_style)
-
-        dime_status_label.modulate = label_color
-        name_label.modulate = label_color
-        type_label.modulate = value_color
-        job_label.modulate = label_color
-        likes_label.modulate = label_color
-        dislikes_label.modulate = label_color
-        tags_label.modulate = label_color
+	dime_status_label.modulate = label_color
+	name_label.modulate = label_color
+	type_label.modulate = label_color
+	job_label.modulate = label_color
+	likes_label.modulate = label_color
+	dislikes_label.modulate = label_color
+	tags_label.modulate = label_color
 
 	bio_text.modulate = value_color
 	astrology_value.modulate = value_color
@@ -211,12 +202,12 @@ func _populate_greek(npc: NPC) -> void:
 			bar.value = stats[key]
 
 func _populate_wealth(npc: NPC) -> void:
-		var formatted: String
-		if Engine.has_singleton("NumberFormatter") and NumberFormatter.has_method("format_commas"):
-				formatted = NumberFormatter.format_commas(npc.wealth)
-		else:
-				formatted = format_commas(npc.wealth)
-		wealth_value.text = "$" + formatted
+	var formatted: String
+	if Engine.has_singleton("NumberFormatter") and NumberFormatter.has_method("format_commas"):
+			formatted = NumberFormatter.format_commas(npc.wealth)
+	else:
+			formatted = format_commas(npc.wealth)
+	wealth_value.text = "$" + formatted
 
 func _populate_mbti(npc: NPC) -> void:
 		var mbti: String = npc.mbti
