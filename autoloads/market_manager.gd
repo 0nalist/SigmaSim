@@ -318,15 +318,15 @@ func load_from_data(data: Dictionary) -> void:
 	emit_signal("crypto_market_ready")
 
 func debug_dump_crypto(context: String) -> void:
-        print("-- crypto dump ", context, " --")
-        for symbol: String in crypto_market.keys():
-                var c: Cryptocurrency = crypto_market[symbol]
-                print(symbol, ",", c.display_name, ", price=", c.price, ", power=", c.power_required, ", id=", str(c.get_instance_id()))
+	print("-- crypto dump ", context, " --")
+	for symbol: String in crypto_market.keys():
+			var c: Cryptocurrency = crypto_market[symbol]
+			print(symbol, ",", c.display_name, ", price=", c.price, ", power=", c.power_required, ", id=", str(c.get_instance_id()))
 
 func reset() -> void:
-        stock_market.clear()
-        crypto_market.clear()
-        stock_events.clear()
-        crypto_events.clear()
-        _init_stock_market()
-        _init_crypto_market()
+	stock_market.clear()
+	crypto_market.clear()
+	stock_events.clear()
+	crypto_events.clear()
+	_init_stock_market()
+	_init_crypto_market()
