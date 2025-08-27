@@ -26,36 +26,46 @@ theme_override_constants/margin_bottom = 10
 [node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Debt"
 
-[node name="AmountLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="AmountLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "$0"
 
-[node name="InterestLabel" type="Label" parent="MarginContainer/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Interest: 0%"
-
-[node name="CompoundLabel" type="Label" parent="MarginContainer/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Compounds: Monthly"
-
-[node name="DueLabel" type="Label" parent="MarginContainer/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Due in: 0 days"
-
-[node name="LimitLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="LimitLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Limit: $0"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBox/HBoxContainer"]
+layout_mode = 2
+
+[node name="InterestLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Interest: 0%"
+
+[node name="CompoundLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Compounds: Monthly"
+
+[node name="DueLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Due in: 0 days"
 
 [node name="LimitBar" type="ProgressBar" parent="MarginContainer/VBox"]
 unique_name_in_owner = true

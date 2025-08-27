@@ -297,14 +297,14 @@ func get_daily_lifestyle_cost() -> int:
 
 
 func add_debt_resource(resource: Dictionary) -> void:
-        if not resource.has("interest_rate"):
-                resource["interest_rate"] = 0.0
-        if not resource.has("compound_period"):
-                resource["compound_period"] = "Monthly"
-        if not resource.has("days_until_due"):
-                resource["days_until_due"] = 30
-        debt_resources.append(resource)
-        debt_resources_changed.emit()
+	if not resource.has("interest_rate"):
+			resource["interest_rate"] = 0.0
+	if not resource.has("compound_period"):
+			resource["compound_period"] = "Monthly"
+	if not resource.has("days_until_due"):
+			resource["days_until_due"] = 30
+	debt_resources.append(resource)
+	debt_resources_changed.emit()
 
 func get_debt_resources() -> Array[Dictionary]:
 		return debt_resources
@@ -352,17 +352,17 @@ func _get_debt_resource(name: String) -> Dictionary:
 	return {}
 
 func _set_credit_card_balance(used: float, limit: float) -> void:
-        for res in debt_resources:
-                if res.get("name", "") == "Credit Card":
-                        res["balance"] = used
-                        res["credit_limit"] = limit
-                        res["interest_rate"] = PortfolioManager.credit_interest_rate
-                        if not res.has("compound_period"):
-                                res["compound_period"] = "Monthly"
-                        if not res.has("days_until_due"):
-                                res["days_until_due"] = 30
-                        debt_resources_changed.emit()
-                        return
+		for res in debt_resources:
+				if res.get("name", "") == "Credit Card":
+						res["balance"] = used
+						res["credit_limit"] = limit
+						res["interest_rate"] = PortfolioManager.credit_interest_rate
+						if not res.has("compound_period"):
+								res["compound_period"] = "Monthly"
+						if not res.has("days_until_due"):
+								res["days_until_due"] = 30
+						debt_resources_changed.emit()
+						return
 
 func _set_student_loan_balance(amount: float) -> void:
 	for res in debt_resources:
