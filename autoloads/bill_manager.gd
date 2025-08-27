@@ -107,12 +107,13 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 			continue
 
 		# Queue bill popup for display
-		pending_bill_data[today_key].append({
-			"bill_name": bill_name,
-			"amount": amount
-		})
+                pending_bill_data[today_key].append({
+                        "bill_name": bill_name,
+                        "amount": amount
+                })
 
-	show_due_popups()
+        apply_debt_interest()
+        show_due_popups()
 
 
 
@@ -299,7 +300,7 @@ func add_debt_resource(resource: Dictionary) -> void:
 	debt_resources_changed.emit()
 
 func get_debt_resources() -> Array[Dictionary]:
-	return debt_resources
+        return debt_resources
 
 func pay_debt(name: String, amount: float) -> void:
 	match name:
@@ -314,8 +315,28 @@ func pay_debt(name: String, amount: float) -> void:
 			if PortfolioManager.pay_with_cash(amount):
 				var res: Dictionary = _get_debt_resource(name)
 				if not res.is_empty():
-					res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
-					debt_resources_changed.emit()
+                                        res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
+                                        debt_resources_changed.emit()
+
+func take_payday_loan(amount: float) -> void:
+        var res: Dictionary = _get_debt_resource("Payday Loan")
+        if res.is_empty():
+                return
+        res["balance"] = res.get("balance", 0.0) + amount
+        debt_resources_changed.emit()
+        PortfolioManager.add_cash(amount)
+
+func apply_debt_interest() -> void:
+        var changed := false
+        for res in debt_resources:
+                var rate: float = float(res.get("interest_rate", 0.0))
+                if rate != 0.0:
+                        var bal: float = float(res.get("balance", 0.0))
+                        if bal > 0.0:
+                                res["balance"] = bal * (1.0 + rate)
+                                changed = true
+        if changed:
+                debt_resources_changed.emit()
 
 func _get_debt_resource(name: String) -> Dictionary:
 	for res in debt_resources:
