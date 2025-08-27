@@ -231,6 +231,9 @@ func _populate_ocean(npc: NPC) -> void:
 
 
 func _run_entrance_animation() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
 	portrait.modulate.a = 0.0
 	var p_tween: Tween = create_tween()
 	var py: float = portrait.position.y
