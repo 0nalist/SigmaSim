@@ -63,6 +63,7 @@ func update_slider() -> void:
 	if pay_slider.value > max_pay:
 		pay_slider.value = max_pay
 	slider_label.text = "$%.2f" % pay_slider.value
+	pay_button.disabled = max_pay <= 0.0
 
 func _on_slider_changed(value: float) -> void:
 	if not _is_ready:
@@ -73,5 +74,7 @@ func _on_pay_pressed() -> void:
 	if not _is_ready:
 		return
 	var amount: float = float(pay_slider.value)
+	if amount <= 0.0:
+		return
 	BillManager.pay_debt(String(resource_data.get("name", "")), amount)
 	update_display()
