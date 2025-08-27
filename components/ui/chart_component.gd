@@ -2,6 +2,7 @@ extends Control
 class_name ChartComponent
 
 const DEBUG_HISTORY := false
+const AXIS_FONT_SIZE := 11
 
 @export_category("Appearance")
 @export var margins: Vector4 = Vector4(40, 20, 20, 40) # left, top, right, bottom
@@ -39,6 +40,7 @@ var _poll_accum: float = 0.0
 var _poll_interval: float = 0.05
 var _last_user_input_time: float = 0.0
 var _last_now_seen: int = -1
+var _computed_left_margin: float = margins.x
 
 func _ready() -> void:
 	var now: int = TimeManager.get_now_minutes()
@@ -252,12 +254,12 @@ func _mark_user_activity() -> void:
 # ---- Window math ----
 
 func _plot_rect() -> Rect2:
-	return Rect2(
-		margins.x,
-		margins.y,
-		max(1.0, size.x - margins.x - margins.z),
-		max(1.0, size.y - margins.y - margins.w)
-	)
+        return Rect2(
+                _computed_left_margin,
+                margins.y,
+                max(1.0, size.x - _computed_left_margin - margins.z),
+                max(1.0, size.y - margins.y - margins.w)
+        )
 
 func _time_from_x(x: float, plot: Rect2) -> int:
 	var span: int = max(1, window_end_min - window_start_min)
@@ -429,23 +431,35 @@ func _compute_y_bounds() -> Vector2:
 	if max_y <= min_y:
 		max_y = min_y + 1.0
 
-	var padding: float = (max_y - min_y) * 0.1
-	return Vector2(min_y, max_y + padding)
+        var padding: float = (max_y - min_y) * 0.1
+        return Vector2(min_y, max_y + padding)
+
+func _compute_left_margin(min_y: float, max_y: float) -> float:
+        var gy: int = grid_line_counts.y
+        var max_w: float = 0.0
+        for j in range(gy + 1):
+                var v: float = max_y - float(j) * (max_y - min_y) / float(gy)
+                var text: String = String.num(v, 2)
+                var ts: Vector2 = ThemeDB.fallback_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, AXIS_FONT_SIZE)
+                if ts.x > max_w:
+                        max_w = ts.x
+        return max(margins.x, max_w + 4.0)
 
 # ---- Rendering ----
 
 func _draw() -> void:
-	var plot: Rect2 = _plot_rect()
-	var span: int = max(1, window_end_min - window_start_min)
+        var span: int = max(1, window_end_min - window_start_min)
 
-	var bounds: Vector2 = _compute_y_bounds()
-	var min_y: float = bounds.x
-	var max_y: float = bounds.y
-	var y_span: float = max_y - min_y
+        var bounds: Vector2 = _compute_y_bounds()
+        var min_y: float = bounds.x
+        var max_y: float = bounds.y
+        _computed_left_margin = _compute_left_margin(min_y, max_y)
+        var plot: Rect2 = _plot_rect()
+        var y_span: float = max_y - min_y
 
-	_draw_grid(plot, min_y, max_y, span)
-	_draw_series(plot, min_y, max_y, y_span, span)
-	_draw_legend(plot)
+        _draw_grid(plot, min_y, max_y, span)
+        _draw_series(plot, min_y, max_y, y_span, span)
+        _draw_legend(plot)
 
 func _draw_grid(plot: Rect2, min_y: float, max_y: float, span: int) -> void:
 	var gx: int = grid_line_counts.x
@@ -455,17 +469,17 @@ func _draw_grid(plot: Rect2, min_y: float, max_y: float, span: int) -> void:
 		var x: float = plot.position.x + float(i) * plot.size.x / float(gx)
 		draw_line(Vector2(x, plot.position.y), Vector2(x, plot.position.y + plot.size.y), Color(0.2, 0.2, 0.2))
 		var t: int = window_start_min + int(round(float(i) * float(span) / float(gx)))
-		var label: String = str(t) + "m"
-		var size_px: Vector2 = ThemeDB.fallback_font.get_string_size(label)
-		draw_string(ThemeDB.fallback_font, Vector2(x - size_px.x / 2.0, plot.position.y + plot.size.y + size_px.y + 2.0), label)
+                var label: String = str(t) + "m"
+                var size_px: Vector2 = ThemeDB.fallback_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, AXIS_FONT_SIZE)
+                draw_string(ThemeDB.fallback_font, Vector2(x - size_px.x / 2.0, plot.position.y + plot.size.y + size_px.y + 2.0), label, HORIZONTAL_ALIGNMENT_LEFT, -1, AXIS_FONT_SIZE)
 
 	for j in range(gy + 1):
 		var y: float = plot.position.y + float(j) * plot.size.y / float(gy)
 		draw_line(Vector2(plot.position.x, y), Vector2(plot.position.x + plot.size.x, y), Color(0.2, 0.2, 0.2))
 		var v: float = max_y - float(j) * (max_y - min_y) / float(gy)
-		var text: String = String.num(v, 2)
-		var ts: Vector2 = ThemeDB.fallback_font.get_string_size(text)
-		draw_string(ThemeDB.fallback_font, Vector2(plot.position.x - ts.x - 4.0, y + ts.y / 2.0), text)
+                var text: String = String.num(v, 2)
+                var ts: Vector2 = ThemeDB.fallback_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, AXIS_FONT_SIZE)
+                draw_string(ThemeDB.fallback_font, Vector2(plot.position.x - ts.x - 4.0, y + ts.y / 2.0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, AXIS_FONT_SIZE)
 
 func _draw_series(plot: Rect2, min_y: float, max_y: float, y_span: float, span: int) -> void:
 	for id in _series.keys():
