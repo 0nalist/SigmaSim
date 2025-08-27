@@ -244,7 +244,7 @@ func pay_with_cash(amount: float) -> bool:
 
 ## --- Credit functions
 func can_pay_with_credit(amount: float) -> bool:
-	return get_credit_used() + amount * (1.0 + get_credit_interest_rate()) <= get_credit_limit()
+	return get_credit_used() + amount <= get_credit_limit()
 
 
 func pay_with_credit(amount: float) -> bool:
