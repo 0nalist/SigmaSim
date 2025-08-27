@@ -492,7 +492,7 @@ func do_move(move_type: String) -> void:
 		player_chat.set_reaction(
 			REACTION_EMOJI["cry_laugh"],
 			get_reaction_tooltip("cry_laugh"),
-			false,
+			true,
 			"cry_laugh"
 		)
 		if player_chat.chatlog_index >= 0 and player_chat.chatlog_index < chatlog.size():
@@ -520,7 +520,7 @@ func do_move(move_type: String) -> void:
 		player_chat.set_reaction(
 			REACTION_EMOJI["heart"],
 			get_reaction_tooltip("heart"),
-			false,
+			true,
 			"heart"
 		)
 		if player_chat.chatlog_index >= 0 and player_chat.chatlog_index < chatlog.size():
@@ -532,7 +532,7 @@ func do_move(move_type: String) -> void:
 		player_chat.set_reaction(
 			REACTION_EMOJI["thumbs_down"],
 			get_reaction_tooltip("thumbs_down"),
-			false,
+			true,
 			"thumbs_down"
 		)
 		if player_chat.chatlog_index >= 0 and player_chat.chatlog_index < chatlog.size():
