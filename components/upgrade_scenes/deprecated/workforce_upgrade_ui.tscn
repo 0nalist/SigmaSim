@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b6d1kl4tiarf2"]
 
-[ext_resource type="PackedScene" uid="uid://b3u00a845kbu4" path="res://components/upgrade_scenes/upgrade_tree_ui.tscn" id="1_lq7ey"]
+[ext_resource type="PackedScene" uid="uid://b3u00a845kbu4" path="res://components/upgrade_scenes/deprecated/upgrade_tree_ui.tscn" id="1_lq7ey"]
 
 [node name="UpgradeTreeUI" instance=ExtResource("1_lq7ey")]
 tree_title = "Upgrade Your WorkForce"

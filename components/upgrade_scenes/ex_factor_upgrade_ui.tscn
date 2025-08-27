@@ -1,7 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://fna5puejflgh"]
+[gd_scene load_steps=7 format=3 uid="uid://fna5puejflgh"]
 
 [ext_resource type="Script" uid="uid://ile11wqv14rl" path="res://components/upgrade_scenes/ex_factor_upgrade_ui.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2"]
+[ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="2_scbkx"]
+
+[sub_resource type="Gradient" id="Gradient_aagrg"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pbccw"]
+gradient = SubResource("Gradient_aagrg")
+fill_from = Vector2(1.443, 0.521)
+fill_to = Vector2(-0.97, -0.04)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uishd"]
+shader = ExtResource("2_scbkx")
+shader_parameter/gradient = SubResource("GradientTexture2D_pbccw")
+shader_parameter/circle_color = Color(0.0434701, 0.0126, 0.63, 1)
+shader_parameter/circle_multiplier = 10.0
+shader_parameter/speed = 0.7
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [node name="ExFactorUpgradeUI" type="PanelContainer"]
 anchors_preset = 15
@@ -15,6 +32,15 @@ mouse_filter = 1
 script = ExtResource("1")
 window_title = "eXFactor Upgrades"
 default_window_size = Vector2(480, 480)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+use_parent_material = true
+layout_mode = 2
+color = Color(0.579775, 0.140606, 0.0938816, 1)
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_uishd")
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

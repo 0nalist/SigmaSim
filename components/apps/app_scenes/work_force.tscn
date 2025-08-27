@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dqadp0a03aco3" path="res://components/apps/work_force.gd" id="2_bq8vs"]
 [ext_resource type="PackedScene" uid="uid://dovku0me4jq4o" path="res://components/ui/hire_popup.tscn" id="2_ngx45"]
 [ext_resource type="Texture2D" uid="uid://mkfj0qa2lgbr" path="res://assets/logos/finger_point.png" id="3_bq8vs"]
-[ext_resource type="PackedScene" uid="uid://b6d1kl4tiarf2" path="res://components/upgrade_scenes/workforce_upgrade_ui.tscn" id="4_bq8vs"]
+[ext_resource type="PackedScene" uid="uid://b6d1kl4tiarf2" path="res://components/upgrade_scenes/deprecated/workforce_upgrade_ui.tscn" id="4_bq8vs"]
 [ext_resource type="Script" uid="uid://d1n71inu575u" path="res://components/ui/active_tasks_bar.gd" id="4_yfqmq"]
 [ext_resource type="PackedScene" uid="uid://kpqwebu0bb67" path="res://components/popups/gig_popup.tscn" id="7_bq8vs"]
 [ext_resource type="PackedScene" uid="uid://bqc77qqsonskv" path="res://components/ui/task_card.tscn" id="7_ngx45"]

@@ -4,6 +4,12 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y5aud"]
 bg_color = Color(0.249486, 0.607444, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 4
+shadow_offset = Vector2(2, 3)
 
 [node name="DebtCardUI" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 120)

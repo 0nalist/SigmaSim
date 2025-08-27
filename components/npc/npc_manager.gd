@@ -85,19 +85,19 @@ func load_fumble_relationship_cache() -> void:
 # === MAIN API ===
 
 func get_npc_by_index(idx: int) -> NPC:
-        if npcs.has(idx):
-                return npcs[idx]
+	if npcs.has(idx):
+			return npcs[idx]
 
-        var npc: NPC
-       if encountered_npcs.has(idx):
-               npc = _load_npc_from_db(idx)
-       else:
-               npc = NPCFactory.create_npc(idx)
-               encountered_npcs.append(idx)
+	var npc: NPC
+	if encountered_npcs.has(idx):
+		npc = _load_npc_from_db(idx)
+	else:
+		npc = NPCFactory.create_npc(idx)
+		encountered_npcs.append(idx)
 
-        # Apply persistent or override data without clobbering existing fields
-        var data: Dictionary = persistent_npcs.get(idx, npc_overrides.get(idx, {}))
-        _merge_npc_data(npc, data)
+	# Apply persistent or override data without clobbering existing fields
+	var data: Dictionary = persistent_npcs.get(idx, npc_overrides.get(idx, {}))
+	_merge_npc_data(npc, data)
 
 	if npc.portrait_config == null:
 		npc.portrait_config = PortraitFactory.ensure_config_for_npc(idx, npc.full_name)
