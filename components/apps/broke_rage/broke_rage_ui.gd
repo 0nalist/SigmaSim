@@ -8,7 +8,7 @@ class_name BrokeRage
 @onready var invested_label: Label = %InvestedLabel
 @onready var debt_label: Label = %DebtLabel
 
-@onready var cash_chart: ChartComponent = %CashChart
+@onready var net_worth_chart: ChartComponent = %NetWorthChart
 
 @onready var passive_income_label: Label = %PassiveIncomeLabel
 
@@ -44,6 +44,10 @@ var last_invested: float = 0.0
 var _active_tab: StringName = &"Summary"
 
 
+func _add_net_worth_sample() -> void:
+        HistoryManager.add_sample("net_worth", Time.get_ticks_msec() / 1000.0, PortfolioManager.get_balance())
+
+
 func _ready() -> void:
 	#app_title = "BrokeRage"
 	#app_icon = preload("res://assets/AlphaOnline.png")
@@ -54,7 +58,7 @@ func _ready() -> void:
 	PortfolioManager.resource_changed.connect(_on_resource_changed)
 	PortfolioManager.investments_updated.connect(_on_investments_updated)
 
-	cash_chart.add_series("cash", "Cash")
+        net_worth_chart.add_series("net_worth", "Net Worth")
 
 	summary_tab_button.pressed.connect(_on_summary_tab_pressed)
 	charts_tab_button.pressed.connect(_on_charts_tab_pressed)
@@ -78,7 +82,8 @@ func _on_cash_updated(_cash: float) -> void:
 	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(balance))
 	charts_cash_label.text = "Cash: $" + NumberFormatter.format_number(cash)
 
-	HistoryManager.add_sample("cash", Time.get_ticks_msec() / 1000.0, cash)
+        HistoryManager.add_sample("cash", Time.get_ticks_msec() / 1000.0, cash)
+        _add_net_worth_sample()
 
 	await get_tree().process_frame
 	#emit_signal("title_updated", "BrokeRage - $%.2f" % cash) # Not currently working
@@ -92,15 +97,16 @@ func _on_investments_updated(amount: float):
 	var delta = amount - last_invested
 	last_invested = amount
 
-	invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
-	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
-	charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
+        invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
+        balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
+        charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
 	#TODO: ^Fix: Invalid assignment of property or key 'text' with value of type 'String' on a base object of type 'previously freed'.
 	
-	if delta > 0.01:
-		flash_invested_label(Color.GREEN)
-	elif delta < -0.01:
-		flash_invested_label(Color.RED)
+        if delta > 0.01:
+                flash_invested_label(Color.GREEN)
+        elif delta < -0.01:
+                flash_invested_label(Color.RED)
+        _add_net_worth_sample()
 
 func flash_invested_label(color: Color) -> void:
 	invested_label.add_theme_color_override("font_color", color)
@@ -117,7 +123,8 @@ func _on_resource_changed(resource: String, _value: float) -> void:
 		_on_debt_updated()
 
 func _on_debt_updated() -> void:
-	debt_label.text = "Debt: $" + NumberFormatter.format_number(PortfolioManager.get_total_debt())
+        debt_label.text = "Debt: $" + NumberFormatter.format_number(PortfolioManager.get_total_debt())
+        _add_net_worth_sample()
 
 
 func _on_wallet_button_pressed() -> void:
