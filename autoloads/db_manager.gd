@@ -170,7 +170,7 @@ func load_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> NPC:
 	row["ocean"] = _safe_from_json(row.get("ocean", null), "{}")
 	row["wall_posts"] = _safe_from_json(row.get("wall_posts", null), "[]")
 	row["portrait_config"] = _safe_from_json(row.get("portrait_config", null), "{}")
-return NPC.from_dict(row)
+	return NPC.from_dict(row)
 
 func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
 	var raw_rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["*"])
@@ -186,14 +186,14 @@ func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
 		row["wall_posts"] = _safe_from_json(row.get("wall_posts", null), "[]")
 		row["portrait_config"] = _safe_from_json(row.get("portrait_config", null), "{}")
 		out.append(NPC.from_dict(row))
-return out
+	return out
 
 func get_all_npc_ids(slot_id: int = SaveManager.current_slot_id) -> Array[int]:
-		var rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["id"])
-		var ids: Array[int] = []
-		for r in rows:
-				ids.append(int(r.id))
-return ids
+	var rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["id"])
+	var ids: Array[int] = []
+	for r in rows:
+		ids.append(int(r.id))
+	return ids
 
 
 # -- DB Snapshots --
@@ -208,9 +208,9 @@ func snapshot_slot_data(slot_id: int) -> void:
 func restore_slot_data(slot_id: int) -> void:
 	var path = _snapshot_path(slot_id)
 	if not FileAccess.file_exists(path):
-	return
+		return
 	if db != null and db.has_method("close_db"):
-	db.close_db()
+		db.close_db()
 	DirAccess.copy_absolute(path, DB_PATH)
 	db = SQLite.new()
 	db.path = DB_PATH
