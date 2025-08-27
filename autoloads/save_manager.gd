@@ -168,7 +168,8 @@ func save_to_slot(slot_id: int) -> void:
 	metadata[slot_key]["cash"] = PortfolioManager.cash
 
 	save_slot_metadata(metadata)
-
+	if DBManager != null:
+		DBManager.snapshot_slot_data(slot_id)
 
 func load_from_slot(slot_id: int) -> void:
 	if slot_id <= 0:
@@ -179,9 +180,11 @@ func load_from_slot(slot_id: int) -> void:
 	if not FileAccess.file_exists(path):
 		return
 
-	# Flush NPC save queue so dynamic fields aren't lost when switching slots.
+# Flush NPC save queue so dynamic fields aren't lost when switching slots.
 	if NPCManager != null:
-			NPCManager._flush_save_queue()
+		NPCManager._flush_save_queue()
+	if DBManager != null:
+		DBManager.restore_slot_data(slot_id)
 
 	reset_managers()
 	BillManager.is_loading = true
