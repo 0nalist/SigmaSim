@@ -230,7 +230,7 @@ func _index_persistent_npc(idx: int) -> void:
 func _load_npc_from_db(idx: int) -> NPC:
 	var npc: NPC = DBManager.load_npc(idx)
 	if npc == null:
-		push_error("Tried to load NPC index %d but not found in DB!" % idx)
+		# If no saved data exists yet, generate a fresh NPC without raising an error.
 		return NPCFactory.create_npc(idx)
 	return npc
 
