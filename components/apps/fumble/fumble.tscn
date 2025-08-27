@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://cj2jq0j8tj4f3"]
+[gd_scene load_steps=18 format=3 uid="uid://cj2jq0j8tj4f3"]
 
 [ext_resource type="Script" uid="uid://4lb6ihu7fppi" path="res://components/apps/fumble/fumble.gd" id="1_v4fb6"]
+[ext_resource type="Texture2D" uid="uid://d2ee0524bg0x3" path="res://assets/logos/FU.png" id="2_5uoqt"]
 [ext_resource type="PackedScene" uid="uid://dptnj8nxnr760" path="res://components/apps/fumble/fumble_special_offers.tscn" id="2_hf3uq"]
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="3_qj1tn"]
 [ext_resource type="PackedScene" uid="uid://duberm11i2cqq" path="res://components/npc/profile_card_stack.tscn" id="3_vq0mq"]
@@ -70,6 +71,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ye860")
 script = ExtResource("1_v4fb6")
 window_title = "Fumble"
+window_icon = ExtResource("2_5uoqt")
 default_window_size = Vector2(660, 720)
 color1 = Color(0.05, 0.1, 0.05, 1)
 color2 = Color(0.1, 0.4, 0.15, 1)

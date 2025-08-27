@@ -45,7 +45,7 @@ var _active_tab: StringName = &"Summary"
 
 
 func _add_net_worth_sample() -> void:
-		HistoryManager.add_sample("net_worth", Time.get_ticks_msec() / 1000.0, PortfolioManager.get_balance())
+	HistoryManager.add_sample("net_worth", TimeManager.get_now_minutes(), PortfolioManager.get_balance())
 
 
 func _ready() -> void:
@@ -82,7 +82,7 @@ func _on_cash_updated(_cash: float) -> void:
 	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(balance))
 	charts_cash_label.text = "Cash: $" + NumberFormatter.format_number(cash)
 
-	HistoryManager.add_sample("cash", Time.get_ticks_msec() / 1000.0, cash)
+	HistoryManager.add_sample("cash", TimeManager.get_now_minutes() / 1000.0, cash)
 	_add_net_worth_sample()
 
 	await get_tree().process_frame

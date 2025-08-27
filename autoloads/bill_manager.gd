@@ -9,13 +9,13 @@ signal student_loan_changed()
 
 var _autopay_enabled: bool = false
 var autopay_enabled: bool:
-				get:
-								return _autopay_enabled
-				set(value):
-								if _autopay_enabled == value:
-												return
-								_autopay_enabled = value
-								autopay_changed.emit(value)
+	get:
+		return _autopay_enabled
+	set(value):
+		if _autopay_enabled == value:
+			return
+		_autopay_enabled = value
+		autopay_changed.emit(value)
 var active_bills: Dictionary = {}
 var pending_bill_data: Dictionary = {}  # date_key: Array[Dictionary]
 var paid_bills: Dictionary = {}  # date_key: Array[String]

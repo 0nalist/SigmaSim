@@ -55,13 +55,20 @@ func _on_pay_now_button_pressed() -> void:
 				print("❌ Not enough cash")
 
 func _on_pay_by_credit_button_pressed() -> void:
-				if PortfolioManager.pay_with_credit(amount):
-								BillManager.mark_bill_paid(bill_name, date_key)
-								close()
-				else:
-								print("❌ Not enough credit")
-								WindowManager.focus_window(get_parent().get_parent().get_parent())
-								WindowManager.launch_app_by_name("OwerView")
+	var required_score = PortfolioManager.CREDIT_REQUIREMENTS.get("bills", 0)
+	if PortfolioManager.credit_score < required_score:
+		print("❌ Credit score too low")
+		WindowManager.focus_window(get_parent().get_parent().get_parent())
+		WindowManager.launch_app_by_name("OwerView")
+		return
+
+	if PortfolioManager.pay_with_credit(amount):
+		BillManager.mark_bill_paid(bill_name, date_key)
+		close()
+	else:
+		print("❌ Not enough credit")
+		WindowManager.focus_window(get_parent().get_parent().get_parent())
+		WindowManager.launch_app_by_name("OwerView")
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
 		BillManager.autopay_enabled = toggled_on

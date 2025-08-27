@@ -50,8 +50,11 @@ func _on_death() -> void:
 	print("bird died")
 	if is_alive:
 		is_alive = false
-		TraumaManager.hit_pane(trauma_target, 1.8)
 		emit_signal("died")
+		TraumaManager.hit_pane(trauma_target, 1.8)
+		await get_tree().create_timer(.1).timeout
+		TraumaManager.hit_pane(trauma_target, 1.8)
+
 
 
 

@@ -42,16 +42,17 @@ var credit_interest_rate: float:
 var credit_score: int = 700
 
 const CREDIT_REQUIREMENTS := {
-		# purchase_type : required_credit_score
-		"gpu": 700,
-		"pay_down_credit": 8000,
-		"stock": 800,
-		"gift": 500,
-		"date": 600,
-		"proposal": 800,
-		"EarlyBird": 550,
-		"upgrades": 750,
-		
+	# purchase_type : required_credit_score
+	"gpu": 700,
+	"pay_down_credit": 8000,
+	"stock": 800,
+	"gift": 500,
+	"date": 600,
+	"proposal": 800,
+	"bills": 450,
+	"EarlyBird": 550,
+	"upgrades": 750,
+
 }
 # attempt_spend without credit argument:
 # components/ui/hire_popup.gd -> worker hire in _populate_hire_tab
