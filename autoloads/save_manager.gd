@@ -91,28 +91,36 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	var starting_credit_limit = user_data.get("starting_credit_limit", 0.0)
 	PortfolioManager.set_credit_limit(starting_credit_limit)
 
-	BillManager.add_debt_resource({
-			"name": "Credit Card",
-			"balance": 0.0,
-			"has_credit_limit": true,
-			"credit_limit": starting_credit_limit
-	})
-	BillManager.add_debt_resource({
-			"name": "Payday Loan",
-			"balance": 0.0,
-			"has_credit_limit": false,
-			"credit_limit": 0.0,
-			"interest_rate": 2.0,
-			"can_borrow": true,
-			"borrow_limit": 1000.0
-	})
-	if starting_debt > 0.0:
-			BillManager.add_debt_resource({
-							"name": "Student Loan",
-							"balance": starting_debt,
-							"has_credit_limit": false,
-							"credit_limit": 0.0
-			})
+        BillManager.add_debt_resource({
+                        "name": "Credit Card",
+                        "balance": 0.0,
+                        "has_credit_limit": true,
+                        "credit_limit": starting_credit_limit,
+                        "interest_rate": PortfolioManager.credit_interest_rate,
+                        "compound_period": "Monthly",
+                        "days_until_due": 30
+        })
+        BillManager.add_debt_resource({
+                        "name": "Payday Loan",
+                        "balance": 0.0,
+                        "has_credit_limit": false,
+                        "credit_limit": 0.0,
+                        "interest_rate": 2.0,
+                        "compound_period": "Daily",
+                        "days_until_due": 14,
+                        "can_borrow": true,
+                        "borrow_limit": 1000.0
+        })
+        if starting_debt > 0.0:
+                        BillManager.add_debt_resource({
+                                                        "name": "Student Loan",
+                                                        "balance": starting_debt,
+                                                        "has_credit_limit": false,
+                                                        "credit_limit": 0.0,
+                                                        "interest_rate": 0.0,
+                                                        "compound_period": "Monthly",
+                                                        "days_until_due": 30
+                        })
 
 	MarketManager.init_new_save_events()
 	save_to_slot(slot_id)

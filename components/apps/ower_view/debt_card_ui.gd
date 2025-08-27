@@ -5,6 +5,9 @@ class_name DebtCardUI
 @onready var amount_label: Label = %AmountLabel
 @onready var limit_label: Label = %LimitLabel
 @onready var limit_bar: ProgressBar = %LimitBar
+@onready var interest_label: Label = %InterestLabel
+@onready var compound_label: Label = %CompoundLabel
+@onready var due_label: Label = %DueLabel
 @onready var pay_slider: HSlider = %PaySlider
 @onready var slider_label: Label = %SliderLabel
 @onready var pay_button: Button = %PayButton
@@ -42,6 +45,15 @@ func update_display() -> void:
 	name_label.text = resource_data.get("name", "")
 	var balance: float = float(resource_data.get("balance", 0.0))
 	amount_label.text = "$" + NumberFormatter.format_commas(balance)
+
+	var rate: float = float(resource_data.get("interest_rate", 0.0)) * 100.0
+	interest_label.text = "Interest: %.2f%%" % rate
+
+	var period: String = String(resource_data.get("compound_period", "Monthly"))
+	compound_label.text = "Compounds: %s" % period
+
+	var due_days: int = int(resource_data.get("days_until_due", 0))
+	due_label.text = "Due in: %d days" % due_days
 
 	var credit_limit = resource_data.get("credit_limit")
 	var has_limit = credit_limit != null and float(credit_limit) > 0.0
