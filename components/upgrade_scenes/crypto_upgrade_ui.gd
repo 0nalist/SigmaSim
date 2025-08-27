@@ -10,6 +10,8 @@ func setup_custom(symbol: String) -> void:
     unique_popup_key = "crypto_upgrades_%s" % symbol
     window_title = "%s Upgrades" % symbol
     _ensure_upgrades()
+    if not is_node_ready():
+        await ready
     system_ui.system_name = _get_system_name()
     system_ui.refresh_upgrades()
 
