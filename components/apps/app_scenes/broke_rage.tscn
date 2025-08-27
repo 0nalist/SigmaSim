@@ -126,7 +126,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="CashChart" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary"]
+[node name="NetWorthChart" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
@@ -138,6 +138,7 @@ default_window_minutes = 90
 min_window_minutes = 10
 max_points_per_series = 513
 lock_x_min = true
+lock_y_min = false
 poll_hz = 17
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary"]
