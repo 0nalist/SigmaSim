@@ -69,6 +69,8 @@ size_flags_vertical = 4
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 36
 text = "Due Today!"
 
@@ -76,6 +78,8 @@ text = "Due Today!"
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 text = "MUST pay by 11:59 PM"
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
@@ -88,6 +92,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 36
 text = "Rent: $0,000"
 horizontal_alignment = 1
@@ -128,6 +134,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 text = "*Paying by credit imposes a 30% fee"
 horizontal_alignment = 1
 autowrap_mode = 3

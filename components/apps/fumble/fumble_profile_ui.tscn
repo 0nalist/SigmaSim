@@ -37,32 +37,37 @@ profile_bg_color = Color(1, 1, 1, 1)
 pill_bg_color = Color(0.619188, 0.506149, 0, 0.537255)
 value_color = Color(0, 0, 0, 1)
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Scroll" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Margin" type="MarginContainer" parent="Scroll/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="Scroll" type="ScrollContainer" parent="Margin"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBox" type="VBoxContainer" parent="Margin/Scroll"]
+[node name="VBox" type="VBoxContainer" parent="Scroll/VBoxContainer/Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Portrait" parent="Margin/Scroll/VBox" instance=ExtResource("2")]
+[node name="Portrait" parent="Scroll/VBoxContainer/Margin/VBox" instance=ExtResource("2")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="DimeStatusLabel" type="Label" parent="Margin/Scroll/VBox"]
+[node name="DimeStatusLabel" type="Label" parent="Scroll/VBoxContainer/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -70,7 +75,7 @@ theme_override_font_sizes/font_size = 26
 text = "🔥 0.0/10"
 horizontal_alignment = 1
 
-[node name="NameLabel" type="Label" parent="Margin/Scroll/VBox"]
+[node name="NameLabel" type="Label" parent="Scroll/VBoxContainer/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -78,19 +83,19 @@ theme_override_font_sizes/font_size = 24
 text = "Name"
 horizontal_alignment = 1
 
-[node name="TypePanel" type="PanelContainer" parent="Margin/Scroll/VBox"]
+[node name="TypePanel" type="PanelContainer" parent="Scroll/VBoxContainer/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="TypeMargin" type="MarginContainer" parent="Margin/Scroll/VBox/TypePanel"]
+[node name="TypeMargin" type="MarginContainer" parent="Scroll/VBoxContainer/Margin/VBox/TypePanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 4
 
-[node name="TypeLabel" type="Label" parent="Margin/Scroll/VBox/TypePanel/TypeMargin"]
+[node name="TypeLabel" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/TypePanel/TypeMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -98,7 +103,7 @@ theme_override_font_sizes/font_size = 18
 text = "Type"
 horizontal_alignment = 1
 
-[node name="JobLabel" type="Label" parent="Margin/Scroll/VBox"]
+[node name="JobLabel" type="Label" parent="Scroll/VBoxContainer/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -106,147 +111,147 @@ theme_override_font_sizes/font_size = 14
 text = "Job"
 horizontal_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Margin/Scroll/VBox"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Scroll/VBoxContainer/Margin/VBox"]
 layout_mode = 2
 
-[node name="LikesSection" type="VBoxContainer" parent="Margin/Scroll/VBox/HBoxContainer2"]
+[node name="LikesSection" type="VBoxContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="LikesLabel" type="Label" parent="Margin/Scroll/VBox/HBoxContainer2/LikesSection"]
+[node name="LikesLabel" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer2/LikesSection"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
 text = "Likes"
 
-[node name="LikesContainer" type="FlowContainer" parent="Margin/Scroll/VBox/HBoxContainer2/LikesSection"]
+[node name="LikesContainer" type="FlowContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer2/LikesSection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 
-[node name="DislikesSection" type="VBoxContainer" parent="Margin/Scroll/VBox/HBoxContainer2"]
+[node name="DislikesSection" type="VBoxContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/separation = 4
 
-[node name="DislikesLabel" type="Label" parent="Margin/Scroll/VBox/HBoxContainer2/DislikesSection"]
+[node name="DislikesLabel" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer2/DislikesSection"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
 text = "Dislikes"
 
-[node name="DislikesContainer" type="FlowContainer" parent="Margin/Scroll/VBox/HBoxContainer2/DislikesSection"]
+[node name="DislikesContainer" type="FlowContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer2/DislikesSection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 
-[node name="Control" type="Control" parent="Margin/Scroll/VBox/HBoxContainer2"]
+[node name="Control" type="Control" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer2"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="BioPanel" type="PanelContainer" parent="Margin/Scroll/VBox"]
+[node name="BioPanel" type="PanelContainer" parent="Scroll/VBoxContainer/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("1")
 
-[node name="BioMargin" type="MarginContainer" parent="Margin/Scroll/VBox/BioPanel"]
+[node name="BioMargin" type="MarginContainer" parent="Scroll/VBoxContainer/Margin/VBox/BioPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="BioText" type="RichTextLabel" parent="Margin/Scroll/VBox/BioPanel/BioMargin"]
+[node name="BioText" type="RichTextLabel" parent="Scroll/VBoxContainer/Margin/VBox/BioPanel/BioMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 fit_content = true
 
-[node name="Control2" type="Control" parent="Margin/Scroll/VBox"]
+[node name="Control2" type="Control" parent="Scroll/VBoxContainer/Margin/VBox"]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 
-[node name="TagsSection" type="VBoxContainer" parent="Margin/Scroll/VBox"]
+[node name="TagsSection" type="VBoxContainer" parent="Scroll/VBoxContainer/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="TagsLabel" type="Label" parent="Margin/Scroll/VBox/TagsSection"]
+[node name="TagsLabel" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/TagsSection"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
 text = "Tags"
 
-[node name="TagsContainer" type="FlowContainer" parent="Margin/Scroll/VBox/TagsSection"]
+[node name="TagsContainer" type="FlowContainer" parent="Scroll/VBoxContainer/Margin/VBox/TagsSection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Scroll/VBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Scroll/VBoxContainer/Margin/VBox"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Margin/Scroll/VBox/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="GridContainer" type="GridContainer" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 columns = 2
 
-[node name="WealthHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="WealthHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Wealth"
 
-[node name="WealthValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="WealthValue" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "$0"
 horizontal_alignment = 2
 
-[node name="AstrologyHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="AstrologyHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Astrology"
 
-[node name="AstrologyValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="AstrologyValue" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Unknown"
 horizontal_alignment = 2
 
-[node name="MBTIHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="MBTIHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "MBTI"
 
-[node name="MBTIValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="MBTIValue" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Unknown"
 horizontal_alignment = 2
 
-[node name="OCEANHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="OCEANHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 6
@@ -254,93 +259,94 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "OCEAN"
 
-[node name="OCEANSpacer" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="OCEANSpacer" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 10
 
-[node name="OpennessHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="OpennessHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Openness"
 
-[node name="OpennessValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="OpennessValue" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "0"
 horizontal_alignment = 2
 
-[node name="ConscientiousnessHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="ConscientiousnessHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Conscientiousness"
 
-[node name="ConscientiousnessValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="ConscientiousnessValue" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "0"
 horizontal_alignment = 2
 
-[node name="ExtraversionHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="ExtraversionHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Extraversion"
 
-[node name="ExtraversionValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="ExtraversionValue" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "0"
 horizontal_alignment = 2
 
-[node name="AgreeablenessHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="AgreeablenessHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Agreeableness"
 
-[node name="AgreeablenessValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="AgreeablenessValue" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "0"
 horizontal_alignment = 2
 
-[node name="NeuroticismHeader" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="NeuroticismHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Neuroticism"
 
-[node name="NeuroticismValue" type="Label" parent="Margin/Scroll/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="NeuroticismValue" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "0"
 horizontal_alignment = 2
 
-[node name="GreekPanel" type="PanelContainer" parent="Margin/Scroll/VBox/HBoxContainer"]
+[node name="GreekPanel" type="PanelContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 96)
 layout_mode = 2
 size_flags_horizontal = 6
 theme_override_styles/panel = SubResource("1")
 
-[node name="GreekStatsUI" parent="Margin/Scroll/VBox/HBoxContainer/GreekPanel" instance=ExtResource("3")]
+[node name="GreekStatsUI" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/GreekPanel" instance=ExtResource("3")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(185, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="Margin/Scroll/VBox"]
+[node name="Control" type="Control" parent="Scroll/VBoxContainer/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
