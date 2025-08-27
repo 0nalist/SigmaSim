@@ -107,13 +107,13 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 			continue
 
 		# Queue bill popup for display
-                pending_bill_data[today_key].append({
-                        "bill_name": bill_name,
-                        "amount": amount
-                })
+		pending_bill_data[today_key].append({
+				"bill_name": bill_name,
+				"amount": amount
+		})
 
-        apply_debt_interest()
-        show_due_popups()
+		apply_debt_interest()
+		show_due_popups()
 
 
 
@@ -132,12 +132,12 @@ func _on_resource_changed(name: String, value: float) -> void:
 
 
 func center_bill_window(win: WindowFrame) -> void:
-        var screen_size = get_viewport().get_visible_rect().size
-        var rng: RandomNumberGenerator = RNGManager.get_rng()
-        var max_pos := screen_size - win.default_size
-        var rand_x := rng.randf_range(0.0, max(0.0, max_pos.x))
-        var rand_y := rng.randf_range(0.0, max(0.0, max_pos.y))
-        win.position = Vector2(rand_x, rand_y)
+		var screen_size = get_viewport().get_visible_rect().size
+		var rng: RandomNumberGenerator = RNGManager.get_rng()
+		var max_pos = screen_size - win.default_size
+		var rand_x := rng.randf_range(0.0, max(0.0, max_pos.x))
+		var rand_y := rng.randf_range(0.0, max(0.0, max_pos.y))
+		win.position = Vector2(rand_x, rand_y)
 
 
 func attempt_to_autopay(bill_name: String) -> bool:
@@ -152,8 +152,9 @@ func attempt_to_autopay(bill_name: String) -> bool:
 		return true
 	else:
 		print("❌ Autopay failed for %s" % bill_name)
-				#Siggy.activate("bill_unpayable")
+		# Siggy.activate("bill_unpayable")
 		return false
+
 
 
 func mark_bill_paid(bill_name: String, date_key: String) -> void:
@@ -300,7 +301,7 @@ func add_debt_resource(resource: Dictionary) -> void:
 	debt_resources_changed.emit()
 
 func get_debt_resources() -> Array[Dictionary]:
-        return debt_resources
+		return debt_resources
 
 func pay_debt(name: String, amount: float) -> void:
 	match name:
@@ -315,28 +316,28 @@ func pay_debt(name: String, amount: float) -> void:
 			if PortfolioManager.pay_with_cash(amount):
 				var res: Dictionary = _get_debt_resource(name)
 				if not res.is_empty():
-                                        res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
-                                        debt_resources_changed.emit()
+										res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
+										debt_resources_changed.emit()
 
 func take_payday_loan(amount: float) -> void:
-        var res: Dictionary = _get_debt_resource("Payday Loan")
-        if res.is_empty():
-                return
-        res["balance"] = res.get("balance", 0.0) + amount
-        debt_resources_changed.emit()
-        PortfolioManager.add_cash(amount)
+		var res: Dictionary = _get_debt_resource("Payday Loan")
+		if res.is_empty():
+				return
+		res["balance"] = res.get("balance", 0.0) + amount
+		debt_resources_changed.emit()
+		PortfolioManager.add_cash(amount)
 
 func apply_debt_interest() -> void:
-        var changed := false
-        for res in debt_resources:
-                var rate: float = float(res.get("interest_rate", 0.0))
-                if rate != 0.0:
-                        var bal: float = float(res.get("balance", 0.0))
-                        if bal > 0.0:
-                                res["balance"] = bal * (1.0 + rate)
-                                changed = true
-        if changed:
-                debt_resources_changed.emit()
+		var changed := false
+		for res in debt_resources:
+				var rate: float = float(res.get("interest_rate", 0.0))
+				if rate != 0.0:
+						var bal: float = float(res.get("balance", 0.0))
+						if bal > 0.0:
+								res["balance"] = bal * (1.0 + rate)
+								changed = true
+		if changed:
+				debt_resources_changed.emit()
 
 func _get_debt_resource(name: String) -> Dictionary:
 	for res in debt_resources:
@@ -361,22 +362,24 @@ func _set_student_loan_balance(amount: float) -> void:
 
 
 func reset() -> void:
-				autopay_enabled = false
-				active_bills.clear()
-				pending_bill_data.clear()
-				paid_bills.clear()
-				debt_resources.clear()
-				_initialize_default_lifestyle()
+	autopay_enabled = false
+	active_bills.clear()
+	pending_bill_data.clear()
+	paid_bills.clear()
+	debt_resources.clear()
+	_initialize_default_lifestyle()
+
 
 
 func get_save_data() -> Dictionary:
-		return {
-						"autopay_enabled": autopay_enabled,
-						"lifestyle_categories": lifestyle_categories.duplicate(),
-						"lifestyle_indices": lifestyle_indices.duplicate(),
-						"debt_resources": debt_resources.duplicate(true),
-						"paid_bills": paid_bills.duplicate(true)
-		}
+	return {
+		"autopay_enabled": autopay_enabled,
+		"lifestyle_categories": lifestyle_categories.duplicate(),
+		"lifestyle_indices": lifestyle_indices.duplicate(),
+		"debt_resources": debt_resources.duplicate(true),
+		"paid_bills": paid_bills.duplicate(true)
+	}
+
 
 func load_from_data(data: Dictionary) -> void:
 	autopay_enabled = data.get("autopay_enabled", false)
