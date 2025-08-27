@@ -34,10 +34,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_a0w3w")
 script = ExtResource("1")
 profile_bg_color = Color(1, 1, 1, 1)
-section_bg_color = null
 pill_bg_color = Color(0.619188, 0.506149, 0, 0.537255)
-none_label_color = null
-label_color = null
 value_color = Color(0, 0, 0, 1)
 
 [node name="Margin" type="MarginContainer" parent="."]
