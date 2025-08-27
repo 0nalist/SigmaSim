@@ -131,8 +131,12 @@ func _on_resource_changed(name: String, value: float) -> void:
 
 
 func center_bill_window(win: WindowFrame) -> void:
-	var screen_size = get_viewport().get_visible_rect().size
-	win.position = (screen_size - win.default_size) / 2
+        var screen_size = get_viewport().get_visible_rect().size
+        var rng: RandomNumberGenerator = RNGManager.get_rng()
+        var max_pos := screen_size - win.default_size
+        var rand_x := rng.randf_range(0.0, max(0.0, max_pos.x))
+        var rand_y := rng.randf_range(0.0, max(0.0, max_pos.y))
+        win.position = Vector2(rand_x, rand_y)
 
 
 func attempt_to_autopay(bill_name: String) -> bool:
