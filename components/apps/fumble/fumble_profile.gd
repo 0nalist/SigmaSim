@@ -42,16 +42,16 @@ extends PanelContainer
 # Updated: astrology_row / wealth_row don’t exist in your scene,
 # so we animate the value labels instead.
 @onready var sections: Array[Control] = [
-																dime_status_label,
-																name_label,
-																type_panel,
-																job_label,
-																likes_section,
-																dislikes_section,
-																bio_panel,
-																tags_section,
-																stats_grid,
-																greek_panel
+	dime_status_label,
+	name_label,
+	type_panel,
+	job_label,
+	likes_section,
+	dislikes_section,
+	bio_panel,
+	tags_section,
+	stats_grid,
+	greek_panel
 ]
 
 
