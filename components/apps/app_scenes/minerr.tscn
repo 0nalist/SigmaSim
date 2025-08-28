@@ -115,6 +115,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="BuyUsedGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer/VBoxContainer2"]
