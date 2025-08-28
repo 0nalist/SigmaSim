@@ -96,7 +96,11 @@ func _on_mouse_exited() -> void:
 func _on_show_password_button_toggled(toggled_on: bool) -> void:
 	password_line_edit.secret = not toggled_on
 
-	show_password_button.text = toggled_on ? "hide" : "show"
+	if toggled_on:
+		show_password_button.text = "hide"
+	else:
+		show_password_button.text = "show"
+
 
 
 func _generate_rainbow_password() -> String:
@@ -114,7 +118,6 @@ func _generate_rainbow_password() -> String:
 	rng.randomize()
 	var bbcode := ""
 	for c in text:
-		var color := colors[rng.randi_range(0, colors.size() - 1)]
+		var color = colors[rng.randi_range(0, colors.size() - 1)]
 		bbcode += "[color=%s]%s[/color]" % [color.to_html(), c]
 	return bbcode
-
