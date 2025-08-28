@@ -8,6 +8,8 @@ func _ready():
     bm.add_debt_resource({
         "name": "Credit Card",
         "balance": 0.0,
+        "compound_interval": 7 * 1440,
+        "compounds_in": 7 * 1440,
     })
     var res = bm.get_debt_resources()[0]
     assert(res.get("compound_interval") == 7 * 1440)

@@ -8,7 +8,9 @@ func _ready():
         pm.add_cash(100.0)
         bm.add_debt_resource({
                 "name": "Test Debt",
-                "balance": 100.0
+                "balance": 100.0,
+                "compound_interval": 0,
+                "compounds_in": 0,
         })
         var card = DebtCardUI.new()
         get_root().add_child(card)

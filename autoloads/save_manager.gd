@@ -102,8 +102,8 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 		"has_credit_limit": true,
 		"credit_limit": starting_credit_limit,
 		"interest_rate": PortfolioManager.credit_interest_rate,
-		"compound_period": "Monthly",
-		"days_until_due": 30
+		"compound_interval": 7 * 1440,
+		"compounds_in": 7 * 1440
 	})
 	BillManager.add_debt_resource({
 		"name": "Payday Loan",
@@ -111,8 +111,8 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 		"has_credit_limit": false,
 		"credit_limit": 0.0,
 		"interest_rate": 0.8,
-		"compound_period": "Daily",
-		"days_until_due": 14,
+		"compound_interval": 1440,
+		"compounds_in": 1440,
 		"can_borrow": true,
 		"borrow_limit": 1000.0
 	})
@@ -123,8 +123,8 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 			"has_credit_limit": false,
 			"credit_limit": 0.0,
 			"interest_rate": 0.0,
-			"compound_period": "Monthly",
-			"days_until_due": 30
+			"compound_interval": TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440,
+			"compounds_in": TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440
 		})
 
 	MarketManager.init_new_save_events()
@@ -273,6 +273,8 @@ func load_from_slot(slot_id: int) -> void:
 							"has_credit_limit": false,
 							"credit_limit": 0.0,
 							"interest_rate": 0.8,
+							"compound_interval": 1440,
+							"compounds_in": 1440,
 							"can_borrow": true,
 							"borrow_limit": 1000.0
 					})
