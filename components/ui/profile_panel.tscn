@@ -83,19 +83,20 @@ secret_character = "●"
 
 [node name="ShowPasswordButton" type="Button" parent="MarginContainer/VBoxContainer/PasswordHBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 focus_mode = 0
+theme_override_font_sizes/font_size = 9
 toggle_mode = true
-text = "show"
+text = "👁️"
 
 [node name="RainbowPasswordLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PasswordHBox"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-bbcode_enabled = true
 size_flags_horizontal = 3
-focus_mode = 0
+bbcode_enabled = true
 
 [node name="LogInButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

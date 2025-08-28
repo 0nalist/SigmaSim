@@ -285,7 +285,7 @@ func process_command(command: String) -> bool:
 		"stress_test":
 			var wm := get_tree().root.get_node("WindowManager")
 			if wm:
-				var registry := wm.get("app_registry")
+				var registry = wm.get("app_registry")
 				if registry is Dictionary:
 					for app_name in registry.keys():
 						wm.call("launch_app_by_name", app_name)

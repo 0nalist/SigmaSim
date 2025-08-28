@@ -71,21 +71,24 @@ func set_level(level: int) -> void:
 
 func _refresh_cost() -> void:
 	var cost = UpgradeManager.get_cost_for_next_level(upgrade_data["id"])
-	var cost_strs = []
+	var cost_strs: Array[String] = []
 	for currency in cost.keys():
-		var amount = float(cost[currency])
+		var amount: float = float(cost[currency])
 		if currency == "cash":
-			var formatted = NumberFormatter.format_commas(amount, 2)
-			# Handle negative values for cash
+			var formatted: String = NumberFormatter.format_commas(amount, 2)
 			if amount < 0:
 				cost_strs.append("-$" + formatted.substr(1)) # Remove extra '-'
 			else:
 				cost_strs.append("$" + formatted)
 		else:
-			# Default to 2 decimals and capitalized currency name
-			var currency_display = currency.upper() if currency == "ex" else currency.capitalize()
+			var currency_display: String
+			if currency == "ex":
+				currency_display = currency.to_upper()
+			else:
+				currency_display = currency.capitalize()
 			cost_strs.append("%s: %s" % [currency_display, NumberFormatter.format_commas(amount, 2)])
 	cost_label.text = "Cost: " + " / ".join(cost_strs)
+
 
 func _on_buy_button_pressed() -> void:
 		emit_signal("purchase_requested", upgrade_data["id"])

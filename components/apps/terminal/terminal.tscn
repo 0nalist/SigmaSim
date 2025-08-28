@@ -6,28 +6,16 @@
 bg_color = Color(0, 0, 0, 1)
 
 [node name="Terminal" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_ekq6y")
 window_title = "Terminal"
-default_window_size = null
-default_position = null
-request_windowless_mode = null
 show_in_taskbar = false
-allow_multiple = null
-unique_popup_key = null
-is_popup = null
-persist_on_save = null
-window_can_close = null
-window_can_minimize = null
-window_can_maximize = null
-user_movable = null
-user_resizable = null
-stay_on_top = null
-color1 = null
-color2 = null
-color3 = null
-color4 = null
-color5 = null
-color6 = null
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -46,6 +34,7 @@ theme_override_constants/margin_bottom = 25
 layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Terminal"
 horizontal_alignment = 1
@@ -76,7 +65,8 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+[node name="CommandLogLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+visible = false
 layout_mode = 2
 text = "Command Log
 "
