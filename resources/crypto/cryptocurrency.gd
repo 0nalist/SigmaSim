@@ -7,6 +7,7 @@ class_name Cryptocurrency
 @export var icon: Texture2D
 @export var price: float = 1.0
 @export var volatility: float = 1.0
+@export var intrinsic_value: float = price
 @export var power_required: int = 100
 @export var block_size: float = 1.0
 @export var block_time: float = 10.0
@@ -30,6 +31,14 @@ func update_from_market(volatility_scale: float = 1.0) -> void:
 	var noise: float = rng.randf_range(-0.5, 0.5)
 	var max_percent_change: float = volatility / 100.0 * volatility_scale
 	var delta: float = price * max_percent_change * noise
+
+	# Mean reversion toward intrinsic value
+	var reversion_strength: float = 0.05
+	delta += (intrinsic_value - price) * reversion_strength
+
+	# Slow upward drift of intrinsic value to simulate ecosystem growth
+	intrinsic_value *= 1.0001
+
 	update_price(delta)
 	#update_power_required(price)
 
@@ -54,6 +63,7 @@ func to_dict() -> Dictionary:
 		"display_name": display_name,
 		"price": price,
 		"volatility": volatility,
+		"intrinsic_value": intrinsic_value,
 		"power_required": power_required,
 		"block_size": block_size,
 		"price_history": price_history.duplicate() as Array[float],
@@ -66,6 +76,7 @@ func from_dict(data: Dictionary) -> void:
 	display_name = data.get("display_name", display_name)
 	price = data.get("price", price)
 	volatility = data.get("volatility", volatility)
+	intrinsic_value = data.get("intrinsic_value", price)
 	power_required = data.get("power_required", power_required)
 	block_size = data.get("block_size", block_size)
 	var raw_history = data.get("price_history", price_history)
