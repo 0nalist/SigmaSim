@@ -329,7 +329,9 @@ func take_payday_loan(amount: float) -> void:
 		var res: Dictionary = _get_debt_resource("Payday Loan")
 		if res.is_empty():
 				return
-		res["balance"] = res.get("balance", 0.0) + amount
+		var rate: float = float(res.get("interest_rate", 0.0))
+		var total := amount * (1.0 + rate)
+		res["balance"] = res.get("balance", 0.0) + total
 		debt_resources_changed.emit()
 		PortfolioManager.add_cash(amount)
 
