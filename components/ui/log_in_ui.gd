@@ -180,10 +180,12 @@ func _on_settings_button_pressed() -> void:
 
 
 func _on_power_button_pressed() -> void:
-	get_tree().quit()
+        get_tree().quit()
 
 func _on_card_selected(card: UserLoginCardUI) -> void:
-	if selected_card and selected_card != card:
-		selected_card.collapse()
+	# Collapse any other expanded login cards so only one is open at a time.
+	for child in profile_row.get_children():
+		if child is UserLoginCardUI and child != card:
+			child.collapse()
 	selected_card = card
 	selected_card.expand()
