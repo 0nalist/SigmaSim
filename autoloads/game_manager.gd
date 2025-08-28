@@ -70,10 +70,10 @@ func reset_managers() -> void:
 	# Add more as systems grow
 
 func _on_reload_save():
-        # Avoid errors if there's no active save slot to reload
-        if SaveManager.current_slot_id <= 0:
-                return
-        SaveManager.load_from_slot(SaveManager.current_slot_id)
+	# Avoid errors if there's no active save slot to reload
+	if SaveManager.current_slot_id <= 0:
+			return
+	SaveManager.load_from_slot(SaveManager.current_slot_id)
 
 	# Close Game Over screen
 	for child in get_tree().get_root().get_children():
