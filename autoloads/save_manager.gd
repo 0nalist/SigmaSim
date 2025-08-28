@@ -110,7 +110,7 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 		"balance": 0.0,
 		"has_credit_limit": false,
 		"credit_limit": 0.0,
-		"interest_rate": 2.0,
+		"interest_rate": 0.8,
 		"compound_period": "Daily",
 		"days_until_due": 14,
 		"can_borrow": true,
@@ -270,7 +270,7 @@ func load_from_slot(slot_id: int) -> void:
 							"balance": 0.0,
 							"has_credit_limit": false,
 							"credit_limit": 0.0,
-							"interest_rate": 2.0,
+							"interest_rate": 0.8,
 							"can_borrow": true,
 							"borrow_limit": 1000.0
 					})
