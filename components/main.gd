@@ -7,11 +7,11 @@ var current_screen: Node
 var start_screen: Control
 
 func _ready() -> void:
-        show_login_ui()
-        current_screen.visible = false
-        start_screen = start_scene.instantiate()
-        add_child(start_screen)
-        start_screen.continue_pressed.connect(_on_start_screen_continue)
+		show_login_ui()
+		current_screen.visible = false
+		start_screen = start_scene.instantiate()
+		add_child(start_screen)
+		start_screen.continue_pressed.connect(_on_start_screen_continue)
 
 func show_login_ui() -> void:
 	_switch_screen(login_scene.instantiate())
@@ -23,11 +23,11 @@ func show_desktop_env(slot_id: int = SaveManager.current_slot_id) -> void:
 	GameManager.in_game = true
 
 func _switch_screen(screen: Node) -> void:
-        if current_screen and is_instance_valid(current_screen):
-                current_screen.queue_free()
-        current_screen = screen
-        add_child(current_screen)
+		if current_screen and is_instance_valid(current_screen):
+				current_screen.queue_free()
+		current_screen = screen
+		add_child(current_screen)
 
 func _on_start_screen_continue() -> void:
-        if current_screen:
-                current_screen.visible = true
+		if current_screen:
+				current_screen.visible = true

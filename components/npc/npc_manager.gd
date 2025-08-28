@@ -753,11 +753,16 @@ func is_fumble_battle_active(npc_idx: int) -> bool:
 
 
 func restore_encountered_from_db() -> void:
-		encountered_npcs.clear()
-		for idx in DBManager.get_all_npc_ids():
-				var id: int = int(idx)
-				if not encountered_npcs.has(id):
-						encountered_npcs.append(id)
+	encountered_npcs.clear()
+	for idx in DBManager.get_all_npc_ids():
+		var id: int = int(idx)
+		if not encountered_npcs.has(id):
+			encountered_npcs.append(id)
+	# Set encounter_count to next unused ID
+	if encountered_npcs.is_empty():
+		encounter_count = 0
+	else:
+		encounter_count = int(encountered_npcs.max()) + 1
 
 
 func reset() -> void:
