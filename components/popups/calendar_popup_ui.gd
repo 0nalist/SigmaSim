@@ -46,8 +46,9 @@ func populate_calendar(month: int, year: int) -> void:
 	var today = TimeManager.get_today()
 	var due_bills = BillManager.get_due_bills_for_month(month, year)  # {day: Array[String]}
 
-        for child in grid_container.get_children():
-                child.queue_free()
+	# Clear all previous panels
+	for child in grid_container.get_children():
+		child.queue_free()
 
 	var day_number := 1
 

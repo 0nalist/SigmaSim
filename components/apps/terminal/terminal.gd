@@ -1,6 +1,7 @@
 extends Pane
 class_name Terminal
 
+#@onready var panel: PanelContainer = $PanelContainer
 @onready var command_line: LineEdit = %CommandLine
 @onready var enter_button: Button = %EnterButton
 @onready var feedback_label: Label = %FeedbackLabel
@@ -64,17 +65,12 @@ func _ready() -> void:
 	sb.bg_color = Color.BLACK
 	add_theme_stylebox_override("panel", sb)
 
-        # Monospaced, high‑contrast terminal look
-        var term_font := load("res://assets/fonts/Chicago.ttf")
-        var term_theme := Theme.new()
-        term_theme.default_font = term_font
-        var term_color := Color(0.8, 1.0, 0.8)
-        term_theme.set_color("font_color", "Label", term_color)
-        term_theme.set_color("font_color", "Button", term_color)
-        term_theme.set_color("font_color", "LineEdit", term_color)
-        theme = term_theme
-        command_line.add_theme_color_override("font_color", term_color)
-        command_line.add_theme_color_override("caret_color", term_color)
+	# Monospaced, high‑contrast terminal look
+	var term_font := load("res://assets/fonts/Chicago.ttf")
+	add_theme_font_override("font", term_font)
+	add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
+	command_line.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
+	command_line.add_theme_color_override("caret_color", Color(0.8, 1.0, 0.8))
 
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	visible = false
