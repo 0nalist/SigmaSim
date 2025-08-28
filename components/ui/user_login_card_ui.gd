@@ -1,3 +1,4 @@
+extends PanelContainer
 class_name UserLoginCardUI
 
 signal login_requested(slot_id: int)
@@ -13,14 +14,14 @@ signal card_selected(card: UserLoginCardUI)
 @onready var rainbow_password_label: RichTextLabel = %RainbowPasswordLabel
 @onready var log_in_button: Button = %LogInButton
 
-var pending_data: Dictionary
+var pending_data: Dictionary = {}
 var pending_slot_id: int = -1
 var slot_id: int = -1
 
-var expanded_height := 260.0
-var collapsed_height := 190.0
-var tween: Tween
-var expanded := false
+var expanded_height: float = 260.0
+var collapsed_height: float = 190.0
+var tween: Tween = null
+var expanded: bool = false
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(180, collapsed_height)
@@ -28,7 +29,7 @@ func _ready() -> void:
 	net_worth_label.hide()
 	password_hbox.hide()
 	show_password_button.toggled.connect(_on_show_password_button_toggled)
-	if pending_data:
+	if not pending_data.is_empty():
 		_apply_profile_data()
 
 func _gui_input(event: InputEvent) -> void:
@@ -45,13 +46,13 @@ func _apply_profile_data() -> void:
 	name_label.text = pending_data.get("name", "Unnamed")
 	username_label.text = "@%s" % pending_data.get("username", "user")
 
-	var net := pending_data.get("net_worth", 0.0)
+	var net: float = float(pending_data.get("net_worth", 0.0))
 	if Engine.has_singleton("NumberFormatter"):
 		net_worth_label.text = "$" + NumberFormatter.format_commas(net, 2, true)
 	else:
 		net_worth_label.text = "$%s" % str(net)
 
-	var using_random_seed = pending_data.get("using_random_seed", false)
+	var using_random_seed: bool = bool(pending_data.get("using_random_seed", false))
 	if using_random_seed:
 		password_line_edit.text = ""
 		password_line_edit.hide()
@@ -64,17 +65,17 @@ func _apply_profile_data() -> void:
 		password_line_edit.show()
 		show_password_button.show()
 		rainbow_password_label.hide()
-		password_line_edit.text = pending_data.get("password", "")
+		password_line_edit.text = String(pending_data.get("password", ""))
 		password_line_edit.secret = true
 		show_password_button.button_pressed = false
 		show_password_button.text = "show"
 
-	var cfg_dict = pending_data.get("portrait_config", {})
+	var cfg_dict: Dictionary = pending_data.get("portrait_config", {})
 	if cfg_dict is Dictionary:
-		var cfg = PortraitConfig.from_dict(cfg_dict)
+		var cfg: PortraitConfig = PortraitConfig.from_dict(cfg_dict)
 		profile_pic.apply_config(cfg)
 		profile_pic.custom_minimum_size = Vector2(128, 128)
-		profile_pic.set_size(Vector2(128, 128))
+		profile_pic.size = Vector2(128, 128)
 		profile_pic.size_flags_horizontal = Control.SIZE_FILL
 		profile_pic.size_flags_vertical = Control.SIZE_FILL
 
@@ -87,7 +88,7 @@ func expand() -> void:
 	net_worth_label.show()
 	password_hbox.show()
 	log_in_button.show()
-	if tween:
+	if tween != null:
 		tween.kill()
 	tween = create_tween()
 	tween.tween_property(self, "custom_minimum_size:y", expanded_height, 0.25)
@@ -98,13 +99,13 @@ func collapse() -> void:
 	if not expanded:
 		return
 	expanded = false
-	if tween:
+	if tween != null:
 		tween.kill()
 	tween = create_tween()
 	tween.tween_property(self, "custom_minimum_size:y", collapsed_height, 0.25)
 	tween.parallel().tween_property(net_worth_label, "modulate:a", 0.0, 0.25)
 	tween.parallel().tween_property(password_hbox, "modulate:a", 0.0, 0.25)
-	tween.finished.connect(func():
+	tween.finished.connect(func() -> void:
 		net_worth_label.hide()
 		password_hbox.hide()
 		log_in_button.hide()
@@ -121,8 +122,8 @@ func _on_show_password_button_toggled(toggled_on: bool) -> void:
 		show_password_button.text = "show"
 
 func _generate_rainbow_password() -> String:
-	var text := "password"
-	var colors := [
+	var text: String = "password"
+	var colors: Array[Color] = [
 		Color(1, 0, 0),
 		Color(1, 0.5, 0),
 		Color(1, 1, 0),
@@ -131,11 +132,11 @@ func _generate_rainbow_password() -> String:
 		Color(0.29, 0, 0.51),
 		Color(0.56, 0, 1),
 	]
-	var rng := RandomNumberGenerator.new()
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.randomize()
-	var bbcode := ""
-	for c in text:
-		var color = colors[rng.randi_range(0, colors.size() - 1)]
-		bbcode += "[color=%s]%s[/color]" % [color.to_html(), c]
+	var bbcode: String = ""
+	for i in text.length():
+		var ch: String = text.substr(i, 1)
+		var color: Color = colors[rng.randi_range(0, colors.size() - 1)]
+		bbcode += "[color=%s]%s[/color]" % [color.to_html(), ch]
 	return bbcode
-

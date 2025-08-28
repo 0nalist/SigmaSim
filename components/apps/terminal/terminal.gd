@@ -12,18 +12,6 @@ class_name Terminal
 
 
 var commands := {
-	"gimme": {
-		"args": "",
-		"description": "Adds a buncha stuff",
-	},
-	"add_cash": {
-		"args": "<amount>",
-		"description": "Adds the given amount of cash to your portfolio.",
-	},
-	"help": {
-		"args": "",
-		"description": "Displays or hides the list of available debug commands.",
-	},
 	"set_stat": {
 		"args": "<stat_name> <value>",
 		"description": "Sets the specified player stat to the given value.",
@@ -40,10 +28,22 @@ var commands := {
 			"args": "",
 			"description": "Opens every app in the app registry at once.",
 	},
+	"add_cash": {
+		"args": "<amount>",
+		"description": "Adds the given amount of cash to your portfolio.",
+	},
 	"upgrademax": {
 			"args": "",
 			"description": "Purchases all upgrades ignoring costs.",
 	 },
+	"gimme": {
+		"args": "",
+		"description": "Adds a buncha stuff",
+	},
+	"help": {
+		"args": "",
+		"description": "Displays or hides the list of available debug commands.",
+	},
 }
 
 
