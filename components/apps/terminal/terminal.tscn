@@ -5,15 +5,21 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xw1n"]
 bg_color = Color(0, 0, 0, 1)
 
-
 [node name="Terminal" type="Pane"]
-
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 script = ExtResource("1_ekq6y")
 window_title = "Terminal"
 show_in_taskbar = false
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0xw1n")
