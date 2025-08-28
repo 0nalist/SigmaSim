@@ -122,18 +122,23 @@ func try_gift() -> bool:
 	return true
 
 func try_date() -> bool:
-	if npc == null:
-		return false
-	var ok: bool = PortfolioManager.attempt_spend(npc.date_cost, PortfolioManager.CREDIT_REQUIREMENTS["date"])
-	if not ok:
-		return false
-	npc.date_count += 1
-	_recalc_costs()
+        if npc == null:
+                return false
+        var ok: bool = PortfolioManager.attempt_spend(npc.date_cost, PortfolioManager.CREDIT_REQUIREMENTS["date"])
+        if not ok:
+                return false
+        npc.date_count += 1
+        _recalc_costs()
 
-	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
-	var boost: float = npc.date_cost / 10.0
-	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED:
-			npc.relationship_progress = min(npc.relationship_progress + boost, bounds.y)
+        # Resume relationship progression after the required date is paid for.
+        # Progress may be paused by stage gates that require dates; spending on a
+        # date should clear that pause so the state machine can continue.
+        progress_paused = false
+
+        var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
+        var boost: float = npc.date_cost / 10.0
+        if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED:
+                        npc.relationship_progress = min(npc.relationship_progress + boost, bounds.y)
 	else:
 			npc.relationship_progress += boost
 
