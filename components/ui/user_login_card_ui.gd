@@ -55,7 +55,7 @@ func _apply_profile_data() -> void:
 		password_line_edit.text = ""
 		password_line_edit.hide()
 		show_password_button.button_pressed = false
-		show_password_button.text = "show"
+		#show_password_button.text = "show"
 		show_password_button.hide()
 		rainbow_password_label.bbcode_text = _generate_rainbow_password()
 		rainbow_password_label.show()
@@ -66,7 +66,7 @@ func _apply_profile_data() -> void:
 		password_line_edit.text = String(pending_data.get("password", ""))
 		password_line_edit.secret = true
 		show_password_button.button_pressed = false
-		show_password_button.text = "show"
+		#show_password_button.text = "show"
 
 	var cfg_dict: Dictionary = pending_data.get("portrait_config", {})
 	if cfg_dict is Dictionary:
@@ -116,10 +116,10 @@ func _on_log_in_button_pressed() -> void:
 
 func _on_show_password_button_toggled(toggled_on: bool) -> void:
 	password_line_edit.secret = not toggled_on
-	if toggled_on:
-		show_password_button.text = "hide"
-	else:
-		show_password_button.text = "show"
+	#if toggled_on:
+	#	show_password_button.text = "hide"
+	#else:
+	#	show_password_button.text = "show"
 
 func _generate_rainbow_password() -> String:
 	var text: String = "password"
