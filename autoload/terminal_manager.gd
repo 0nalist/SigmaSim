@@ -7,32 +7,32 @@ var terminal: Terminal
 const TOGGLE_ACTION := "toggle_terminal"
 
 func _ready() -> void:
-        _ensure_toggle_action()
+		_ensure_toggle_action()
 
-        terminal_scene = load("res://components/apps/terminal/terminal.tscn")
-        terminal = terminal_scene.instantiate() as Terminal
-        terminal.hide()
+		terminal_scene = load("res://components/apps/terminal/terminal.tscn")
+		terminal = terminal_scene.instantiate() as Terminal
+		terminal.hide()
 
-        # Defer adding to root to avoid "Parent node is busy setting up children"
-        get_tree().root.call_deferred("add_child", terminal)
+		# Defer adding to root to avoid "Parent node is busy setting up children"
+		get_tree().root.call_deferred("add_child", terminal)
 
 func _input(event: InputEvent) -> void:
-        if event.is_action_pressed(TOGGLE_ACTION):
-                if is_instance_valid(terminal):
-                        terminal.toggle()
-                        get_viewport().set_input_as_handled()
+		if event.is_action_pressed(TOGGLE_ACTION):
+				if is_instance_valid(terminal):
+						terminal.toggle()
+						get_viewport().set_input_as_handled()
 
 func open() -> void:
-        if is_instance_valid(terminal):
-                terminal.open()
+		if is_instance_valid(terminal):
+				terminal.open()
 
 func close() -> void:
-        if is_instance_valid(terminal):
-                terminal.close()
+		if is_instance_valid(terminal):
+				terminal.close()
 
 func toggle() -> void:
-        if is_instance_valid(terminal):
-                terminal.toggle()
+		if is_instance_valid(terminal):
+				terminal.toggle()
 
 func _ensure_toggle_action() -> void:
 	if not InputMap.has_action(TOGGLE_ACTION):

@@ -8,6 +8,7 @@ bg_color = Color(0, 0, 0, 1)
 [node name="Terminal" type="CanvasLayer"]
 layer = 100
 script = ExtResource("1_ekq6y")
+window_title = "Terminal"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15

@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Pane
 class_name Terminal
 
 @onready var panel: PanelContainer = $PanelContainer
@@ -55,35 +55,35 @@ func _ready() -> void:
 	panel.offset_right = 0
 	panel.offset_bottom = 0
 
-        # Background style mimics a classic terminal window
-        var sb := StyleBoxFlat.new()
-        sb.bg_color = Color.BLACK
-        panel.add_theme_stylebox_override("panel", sb)
+	# Background style mimics a classic terminal window
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color.BLACK
+	panel.add_theme_stylebox_override("panel", sb)
 
-        # Monospaced, high‑contrast terminal look
-        var term_font := load("res://assets/fonts/Chicago.ttf")
-        panel.add_theme_font_override("font", term_font)
-        panel.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
-        command_line.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
-        command_line.add_theme_color_override("caret_color", Color(0.8, 1.0, 0.8))
+	# Monospaced, high‑contrast terminal look
+	var term_font := load("res://assets/fonts/Chicago.ttf")
+	panel.add_theme_font_override("font", term_font)
+	panel.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
+	command_line.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
+	command_line.add_theme_color_override("caret_color", Color(0.8, 1.0, 0.8))
 
-        panel.mouse_filter = Control.MOUSE_FILTER_STOP
-        panel.visible = false
+	panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	panel.visible = false
 
-        enter_button.pressed.connect(_on_enter_pressed)
-        command_line.text_submitted.connect(_on_text_submitted)
-        enter_button.focus_mode = Control.FOCUS_NONE
+	enter_button.pressed.connect(_on_enter_pressed)
+	command_line.text_submitted.connect(_on_text_submitted)
+	enter_button.focus_mode = Control.FOCUS_NONE
 
-        _populate_command_list()
-        #command_list_container.visible = false
-        command_list_parent_container.visible = false
+	_populate_command_list()
+	#command_list_container.visible = false
+	command_list_parent_container.visible = false
 	
 
 func open() -> void:
-        print("opening terminal")
-        visible = true
-        panel.visible = true
-        call_deferred("_focus_line")
+		print("opening terminal")
+		visible = true
+		panel.visible = true
+		call_deferred("_focus_line")
 
 func close() -> void:
 	panel.visible = false

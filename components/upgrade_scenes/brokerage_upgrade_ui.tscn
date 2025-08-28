@@ -14,7 +14,7 @@ fill_to = Vector2(-0.97, -0.04)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wnpyb"]
 shader = ExtResource("2_8c4ro")
 shader_parameter/gradient = SubResource("GradientTexture2D_8c4ro")
-shader_parameter/circle_color = Color(0, 0.678541, 0.312962, 1)
+shader_parameter/circle_color = Color(0.2, 1, 0.2, 1)
 shader_parameter/circle_multiplier = 10.0
 shader_parameter/speed = 0.7
 shader_parameter/direction = Vector2(1, 1)
