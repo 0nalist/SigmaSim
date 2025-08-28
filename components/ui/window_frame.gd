@@ -179,6 +179,7 @@ func _set_windowless_mode(enabled: bool) -> void:
 	close_button.visible = not enabled and window_can_close
 
 	# Adjust content margins/padding
+	#content_panel.margin_top = 0 if enabled else DEFAULT_MARGIN
 
 func _setup_windowless_drag():
 	if not pane or not pane.has_method("get_drag_handle"):
