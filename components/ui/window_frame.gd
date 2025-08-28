@@ -276,17 +276,17 @@ func _apply_default_window_size_and_position():
 		call_deferred("_clamp_to_screen")
 
 func _clamp_to_screen() -> void:
-        await get_tree().process_frame
-        var screen_size = get_viewport().get_visible_rect().size
+		await get_tree().process_frame
+		var screen_size = get_viewport().get_visible_rect().size
 
-        var taskbar_height = 0
-        if WindowManager and WindowManager.has_method("get_taskbar_height"):
-                taskbar_height = WindowManager.get_taskbar_height()
+		var taskbar_height = 0
+		if WindowManager and WindowManager.has_method("get_taskbar_height"):
+				taskbar_height = WindowManager.get_taskbar_height()
 
-        var min_position = Vector2(SNAP_MARGIN - size.x, SNAP_MARGIN - size.y)
-        var max_position = Vector2(screen_size.x - SNAP_MARGIN, screen_size.y - taskbar_height - SNAP_MARGIN)
+		var min_position = Vector2(SNAP_MARGIN - size.x, SNAP_MARGIN - size.y)
+		var max_position = Vector2(screen_size.x - SNAP_MARGIN, screen_size.y - taskbar_height - SNAP_MARGIN)
 
-        position = position.clamp(min_position, max_position)
+		position = position.clamp(min_position, max_position)
 
 
 func _process(_delta: float) -> void:

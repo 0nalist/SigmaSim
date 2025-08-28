@@ -80,39 +80,39 @@ func _apply_profile_data() -> void:
 	slot_id = pending_slot_id
 
 func expand() -> void:
-        if expanded:
-                return
-        expanded = true
-        size_flags_vertical = Control.SIZE_EXPAND_FILL
-        net_worth_label.text = "$" + NumberFormatter.format_commas(float(pending_data.get("net_worth", 0.0)), 2, true)
-        net_worth_label.show()
-        password_hbox.show()
-        log_in_button.show()
-        if tween != null:
-                tween.kill()
-        tween = create_tween()
-        tween.tween_property(self, "custom_minimum_size:y", expanded_height, 0.25)
-        tween.parallel().tween_property(self, "size:y", expanded_height, 0.25)
-        tween.parallel().tween_property(net_worth_label, "modulate:a", 1.0, 0.25).from(0.0)
-        tween.parallel().tween_property(password_hbox, "modulate:a", 1.0, 0.25).from(0.0)
+		if expanded:
+				return
+		expanded = true
+		size_flags_vertical = Control.SIZE_EXPAND_FILL
+		net_worth_label.text = "$" + NumberFormatter.format_commas(float(pending_data.get("net_worth", 0.0)), 2, true)
+		net_worth_label.show()
+		password_hbox.show()
+		log_in_button.show()
+		if tween != null:
+				tween.kill()
+		tween = create_tween()
+		tween.tween_property(self, "custom_minimum_size:y", expanded_height, 0.25)
+		tween.parallel().tween_property(self, "size:y", expanded_height, 0.25)
+		tween.parallel().tween_property(net_worth_label, "modulate:a", 1.0, 0.25).from(0.0)
+		tween.parallel().tween_property(password_hbox, "modulate:a", 1.0, 0.25).from(0.0)
 
 func collapse() -> void:
-        if not expanded:
-                return
-        expanded = false
-        size_flags_vertical = Control.SIZE_SHRINK_CENTER
-        if tween != null:
-                tween.kill()
-        tween = create_tween()
-        tween.tween_property(self, "custom_minimum_size:y", collapsed_height, 0.25)
-        tween.parallel().tween_property(self, "size:y", collapsed_height, 0.25)
-        tween.parallel().tween_property(net_worth_label, "modulate:a", 0.0, 0.25)
-        tween.parallel().tween_property(password_hbox, "modulate:a", 0.0, 0.25)
-        tween.finished.connect(func() -> void:
-                net_worth_label.hide()
-                password_hbox.hide()
-                log_in_button.hide()
-        )
+		if not expanded:
+				return
+		expanded = false
+		size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		if tween != null:
+				tween.kill()
+		tween = create_tween()
+		tween.tween_property(self, "custom_minimum_size:y", collapsed_height, 0.25)
+		tween.parallel().tween_property(self, "size:y", collapsed_height, 0.25)
+		tween.parallel().tween_property(net_worth_label, "modulate:a", 0.0, 0.25)
+		tween.parallel().tween_property(password_hbox, "modulate:a", 0.0, 0.25)
+		tween.finished.connect(func() -> void:
+				net_worth_label.hide()
+				password_hbox.hide()
+				log_in_button.hide()
+		)
 
 func _on_log_in_button_pressed() -> void:
 	emit_signal("login_requested", slot_id)
