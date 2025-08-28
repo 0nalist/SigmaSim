@@ -107,13 +107,13 @@ func _on_borrow_slider_changed(value: float) -> void:
 		borrow_label.text = "$%.2f" % value
 
 func _on_pay_pressed() -> void:
-	if not _is_ready:
-		return
-	var amount: float = float(pay_slider.value)
-	if amount <= 0.0:
-		return
-		BillManager.pay_debt(String(resource_data.get("name", "")), amount)
-		update_display()
+        if not _is_ready:
+                return
+        var amount: float = float(pay_slider.value)
+        if amount <= 0.0:
+                return
+        BillManager.pay_debt(String(resource_data.get("name", "")), amount)
+        update_display()
 
 func _on_borrow_pressed() -> void:
 		if not _is_ready:
