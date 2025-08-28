@@ -14,6 +14,7 @@ signal selected(symbol: String)
 @onready var block_size_label: Label = %BlockSizeLabel
 @onready var owned_label: Label = %OwnedLabel
 @onready var sell_button: Button = %SellButton
+@onready var sell_amount_option: OptionButton = %SellAmountOption
 @onready var miner_sprite: TextureRect = %MinerSprite
 @onready var gpus_label: Label = %GPUsLabel
 @onready var add_gpu_button: Button = %AddGPUButton
@@ -33,14 +34,18 @@ var displayed_chance: float = 0.0
 var lerp_speed: float = 5.0
 
 func _ready() -> void:
-	# Start disabled; enable in setup() when crypto is assigned.
-	set_process(false)
-	# Safe default UI so labels don't show nonsense before setup.
-	_reset_ui_placeholders()
-	# Optional: connect hover/cursor signals that don't need crypto.
-	# Guard against double-connecting if this node re-enters the tree.
-	if not block_sprite.gui_input.is_connected(_on_block_sprite_gui_input):
-			block_sprite.gui_input.connect(_on_block_sprite_gui_input)
+        # Start disabled; enable in setup() when crypto is assigned.
+        set_process(false)
+        # Safe default UI so labels don't show nonsense before setup.
+        _reset_ui_placeholders()
+        # Populate sell amount options
+        for amount in ["0.01", "0.1", "1", "10", "100", "ALL"]:
+                sell_amount_option.add_item(amount)
+        sell_amount_option.selected = 2
+        # Optional: connect hover/cursor signals that don't need crypto.
+        # Guard against double-connecting if this node re-enters the tree.
+        if not block_sprite.gui_input.is_connected(_on_block_sprite_gui_input):
+                        block_sprite.gui_input.connect(_on_block_sprite_gui_input)
 	if not block_sprite.mouse_entered.is_connected(_on_block_sprite_mouse_entered):
 			block_sprite.mouse_entered.connect(_on_block_sprite_mouse_entered)
 	if not block_sprite.mouse_exited.is_connected(_on_block_sprite_mouse_exited):
@@ -185,12 +190,17 @@ func _on_click_boost() -> void:
 func _on_sell_pressed() -> void:
 	if crypto == null:
 		return
+	var sel_text: String = sell_amount_option.get_item_text(sell_amount_option.get_selected_id())
+	var amount: float
+	if sel_text == "ALL":
+		amount = PortfolioManager.get_crypto_amount(crypto.symbol)
+	else:
+		amount = float(sel_text)
 	var statpop_pos: Vector2 = sell_button.global_position
-	var success: bool = PortfolioManager.sell_crypto(crypto.symbol, 1.0)
+	var success: bool = PortfolioManager.sell_crypto(crypto.symbol, amount)
 	if success:
-		StatpopManager.spawn("+$" + NumberFormatter.format_commas(crypto.price, 0), statpop_pos, "click", Color.GREEN)
-	#else:
-	#	StatpopManager.spawn("DECLINED", statpop_pos, "click", Color.RED)
+		var total := crypto.price * amount
+		StatpopManager.spawn("+$" + NumberFormatter.format_commas(total, 2), statpop_pos, "click", Color.GREEN)
 	update_display()
 
 func _on_price_updated(symbol: String, _crypto: Cryptocurrency) -> void:
