@@ -74,27 +74,37 @@ text = " Minerr"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GPUVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="LeftColumnVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.0
 
-[node name="SortHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer"]
+[node name="SortHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="SortPropertyOption" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/SortHBoxContainer"]
+[node name="SortPropertyOption" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/SortHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SortDirectionButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/SortHBoxContainer"]
+[node name="SortDirectionButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/SortHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = " "
 
-[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -104,35 +114,36 @@ Free/Owned:
 0/0"
 horizontal_alignment = 1
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 
-[node name="BuGPUsVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer"]
+[node name="BuGPUsVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.35
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer"]
 layout_mode = 2
 
-[node name="BuyNewGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer/VBoxContainer"]
+[node name="BuyNewGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
 focus_mode = 0
 text = "Buy New GPU"
 
-[node name="NewGPUPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer/VBoxContainer"]
+[node name="NewGPUPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="BuyUsedGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer/VBoxContainer2"]
+[node name="BuyUsedGPUButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -140,7 +151,7 @@ tooltip_text = "Used GPUs have a chance of burning out"
 focus_mode = 0
 text = "Buy Used GPU"
 
-[node name="UsedGPUPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer/VBoxContainer2"]
+[node name="UsedGPUPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -156,5 +167,5 @@ size_flags_horizontal = 6
 size_flags_vertical = 3
 theme = ExtResource("9_0t4uf")
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer/VBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/BuGPUsVBoxContainer/VBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]
