@@ -37,20 +37,19 @@ func load_initial_cards() -> void:
 
 
 func _add_card_at_top(idx: int) -> void:
-	var card = profile_card_scene.instantiate()
-	card.set("npc_idx", idx)
-	var npc = NPCManager.get_npc_by_index(idx)
-	add_child(card)
-	card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	await card.ready
-	card.load_npc(npc)
-	cards.append(card)
-	npc_indices.append(idx)
-	_update_card_positions()
+		var card = profile_card_scene.instantiate()
+		card.set("npc_idx", idx)
+		var npc = NPCManager.get_npc_by_index(idx)
+		add_child(card)
+		card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		card.call_deferred("load_npc", npc)
+		cards.append(card)
+		npc_indices.append(idx)
+		_update_card_positions()
 
 
 func add_card_to_top(idx: int) -> void:
-	await _add_card_at_top(idx)
+		_add_card_at_top(idx)
 
 
 func _add_card_at_bottom(idx: int) -> void:
@@ -59,8 +58,7 @@ func _add_card_at_bottom(idx: int) -> void:
 	var npc = NPCManager.get_npc_by_index(idx)
 	add_child(card)
 	card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	await card.ready
-	card.load_npc(npc)
+	card.call_deferred("load_npc", npc)
 	cards.insert(0, card)
 	npc_indices.insert(0, idx)
 	_update_card_positions()
@@ -115,7 +113,7 @@ func _after_swipe() -> void:
 		await _refill_swipe_pool_async()
 	var idx: int = await _fetch_next_index_from_pool()
 	if idx != -1:
-		await _add_card_at_bottom(idx)
+		_add_card_at_bottom(idx)
 
 
 func clear_cards() -> void:
@@ -168,10 +166,10 @@ func _populate_cards_over_frames(count: int, add_at_top: bool = true) -> void:
 		if idx == -1:
 			break
 		if add_at_top:
-			await _add_card_at_top(idx)
+			_add_card_at_top(idx)
 		else:
-			await _add_card_at_bottom(idx)
-		await get_tree().process_frame	# Spread out the work
+			_add_card_at_bottom(idx)
+		await get_tree().process_frame  # Spread out the work
 
 func _ensure_card_count_async(add_at_top: bool = true) -> void:
 	while cards.size() < CARD_VISIBLE_COUNT:
@@ -180,9 +178,9 @@ func _ensure_card_count_async(add_at_top: bool = true) -> void:
 			await get_tree().process_frame
 			continue
 		if add_at_top:
-			await _add_card_at_top(idx)
+			_add_card_at_top(idx)
 		else:
-			await _add_card_at_bottom(idx)
+			_add_card_at_bottom(idx)
 		await get_tree().process_frame
 
 
