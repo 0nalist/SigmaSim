@@ -34,18 +34,18 @@ var displayed_chance: float = 0.0
 var lerp_speed: float = 5.0
 
 func _ready() -> void:
-        # Start disabled; enable in setup() when crypto is assigned.
-        set_process(false)
-        # Safe default UI so labels don't show nonsense before setup.
-        _reset_ui_placeholders()
-        # Populate sell amount options
-        for amount in ["0.01", "0.1", "1", "10", "100", "ALL"]:
-                sell_amount_option.add_item(amount)
-        sell_amount_option.selected = 2
-        # Optional: connect hover/cursor signals that don't need crypto.
-        # Guard against double-connecting if this node re-enters the tree.
-        if not block_sprite.gui_input.is_connected(_on_block_sprite_gui_input):
-                        block_sprite.gui_input.connect(_on_block_sprite_gui_input)
+	# Start disabled; enable in setup() when crypto is assigned.
+	set_process(false)
+	# Safe default UI so labels don't show nonsense before setup.
+	_reset_ui_placeholders()
+	# Populate sell amount options
+	for amount in ["0.01", "0.1", "1", "10", "100", "ALL"]:
+			sell_amount_option.add_item(amount)
+	sell_amount_option.selected = 2
+	# Optional: connect hover/cursor signals that don't need crypto.
+	# Guard against double-connecting if this node re-enters the tree.
+	if not block_sprite.gui_input.is_connected(_on_block_sprite_gui_input):
+					block_sprite.gui_input.connect(_on_block_sprite_gui_input)
 	if not block_sprite.mouse_entered.is_connected(_on_block_sprite_mouse_entered):
 			block_sprite.mouse_entered.connect(_on_block_sprite_mouse_entered)
 	if not block_sprite.mouse_exited.is_connected(_on_block_sprite_mouse_exited):

@@ -386,13 +386,6 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="NPCProfileButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-text = "?"
-
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 4
@@ -575,6 +568,14 @@ size_flags_vertical = 3
 texture = ExtResource("12_mq0jq")
 expand_mode = 2
 
+[node name="NPCProfileButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_mode = 0
+text = "?"
+
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -686,13 +687,13 @@ horizontal_alignment = 1
 
 [node name="ProfileCenterContainer" type="CenterContainer" parent="."]
 unique_name_in_owner = true
-visible = false
+custom_minimum_size = Vector2(500, 400)
 layout_mode = 2
 mouse_filter = 2
 
 [node name="FumbleProfile" parent="ProfileCenterContainer" instance=ExtResource("6_g0e31")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(320, 420)
+custom_minimum_size = Vector2(550, 400)
 layout_mode = 2
 
 [node name="CloseFumbleProfileButton" type="Button" parent="ProfileCenterContainer/FumbleProfile"]
