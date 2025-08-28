@@ -80,19 +80,20 @@ func _apply_profile_data() -> void:
 	slot_id = pending_slot_id
 
 func expand() -> void:
-		if expanded:
-				return
-		expanded = true
-		net_worth_label.show()
-		password_hbox.show()
-		log_in_button.show()
-		if tween != null:
-				tween.kill()
-		tween = create_tween()
-		tween.tween_property(self, "custom_minimum_size:y", expanded_height, 0.25)
-		tween.parallel().tween_property(self, "size:y", expanded_height, 0.25)
-		tween.parallel().tween_property(net_worth_label, "modulate:a", 1.0, 0.25).from(0.0)
-		tween.parallel().tween_property(password_hbox, "modulate:a", 1.0, 0.25).from(0.0)
+	if expanded:
+		return
+	expanded = true
+	net_worth_label.text = "$" + NumberFormatter.format_commas(float(pending_data.get("net_worth", 0.0)), 2, true)
+	net_worth_label.show()
+	password_hbox.show()
+	log_in_button.show()
+	if tween != null:
+		tween.kill()
+	tween = create_tween()
+	tween.tween_property(self, "custom_minimum_size:y", expanded_height, 0.25)
+	tween.parallel().tween_property(self, "size:y", expanded_height, 0.25)
+	tween.parallel().tween_property(net_worth_label, "modulate:a", 1.0, 0.25).from(0.0)
+	tween.parallel().tween_property(password_hbox, "modulate:a", 1.0, 0.25).from(0.0)
 
 func collapse() -> void:
 		if not expanded:

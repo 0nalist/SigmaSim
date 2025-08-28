@@ -27,12 +27,12 @@ func _generate_gradient_texture() -> void:
 	var img := Image.create(1, h, false, Image.FORMAT_RGBA8)
 
 	for y in range(h):
-		var t: float = 1.0 - (float(y) / float(h))  # bottom=0, top=1
-		var col: Color
-		if t < 0.5:
-			col = Color.RED.lerp(Color.YELLOW, t / 0.5)
-		else:
-			col = Color.YELLOW.lerp(Color.GREEN, (t - 0.5) / 0.5)
+			var t: float = 1.0 - (float(y) / float(h))  # bottom=0, top=1
+			var col: Color
+			if t < 0.5:
+					col = Color.RED.lerp(Color.YELLOW, t / 0.5)
+			else:
+					col = Color.YELLOW.lerp(Color.GREEN, (t - 0.5) / 0.5)
 			img.set_pixel(0, y, col)
 
 	# Convert to texture
@@ -70,9 +70,10 @@ func _draw() -> void:
 
 		var fill_height: float = bar_rect.size.y * ratio
 		if fill_height > 0.0:
-				var fill_rect := Rect2(bar_rect.position + Vector2(0, bar_rect.size.y - fill_height), Vector2(bar_rect.size.x, fill_height))
-				draw_texture_rect(gradient_tex, fill_rect, true)
-
+			var fill_rect := Rect2(bar_rect.position + Vector2(0, bar_rect.size.y - fill_height), Vector2(bar_rect.size.x, fill_height))
+			var tex_h: float = float(gradient_tex.get_height())
+			var region_rect := Rect2(0, tex_h - fill_height, gradient_tex.get_width(), fill_height)
+			draw_texture_rect_region(gradient_tex, fill_rect, region_rect)
 	# --- Labels and Lines ---
 	var font: Font = ThemeDB.fallback_font
 	var font_size: int = 12

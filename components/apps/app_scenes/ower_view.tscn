@@ -66,5 +66,4 @@ theme_override_constants/margin_bottom = 15
 [node name="CreditScoreBar" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
-size_flags_vertical = 3
 script = ExtResource("3")

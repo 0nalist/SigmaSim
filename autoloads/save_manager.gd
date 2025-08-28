@@ -180,6 +180,7 @@ func save_to_slot(slot_id: int) -> void:
 	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
 	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
 	metadata[slot_key]["cash"] = PortfolioManager.cash
+	metadata[slot_key]["net_worth"] = PortfolioManager.get_balance()
 
 	save_slot_metadata(metadata)
 	if DBManager != null:

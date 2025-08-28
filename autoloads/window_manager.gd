@@ -265,6 +265,7 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	icon_button.toggle_mode = true
 	icon_button.focus_mode = Control.FOCUS_NONE
 	icon_button.theme = get_tree().root.theme
+	icon_button.add_theme_font_size_override("font_size", 14)
 
 	var wm := self
 	icon_button.gui_input.connect(func(event):

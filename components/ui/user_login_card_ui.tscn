@@ -32,11 +32,11 @@ size_flags_horizontal = 4
 
 [node name="NetWorthLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 mouse_filter = 1
 text = "$0"
 horizontal_alignment = 1
+autowrap_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(128, 128)
@@ -97,7 +97,9 @@ size_flags_vertical = 4
 focus_mode = 0
 theme_override_font_sizes/font_size = 9
 toggle_mode = true
-text = "👁️"
+text = " 👁️"
+icon_alignment = 1
+vertical_icon_alignment = 2
 
 [node name="RainbowPasswordLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PasswordHBox"]
 unique_name_in_owner = true
