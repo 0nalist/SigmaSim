@@ -19,11 +19,13 @@ var slot_id: int = -1
 
 
 func _ready() -> void:
+
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	log_in_button.hide()
 	show_password_button.toggled.connect(_on_show_password_button_toggled)
 	if pending_data:
 		_apply_profile_data()
+
 
 
 func set_profile_data(data: Dictionary, id: int) -> void:
@@ -39,6 +41,7 @@ func _apply_profile_data() -> void:
 
 	var using_random_seed = pending_data.get("using_random_seed", false)
 	if using_random_seed:
+
 		password_line_edit.text = ""
 		password_line_edit.hide()
 		show_password_button.button_pressed = false
@@ -57,6 +60,7 @@ func _apply_profile_data() -> void:
 		show_password_button.text = "show"
 		password_hbox.show()
 
+
 	var cfg_dict = pending_data.get("portrait_config", {})
 	if cfg_dict is Dictionary:
 		var cfg = PortraitConfig.from_dict(cfg_dict)
@@ -72,8 +76,10 @@ func _apply_profile_data() -> void:
 
 
 func _on_mouse_entered() -> void:
+
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	log_in_button.show()
+
 	#size = Vector2(180,270)
 
 
@@ -86,8 +92,10 @@ func _on_mouse_exited() -> void:
 	log_in_button.hide()
 
 
+
 func _on_show_password_button_toggled(toggled_on: bool) -> void:
 	password_line_edit.secret = not toggled_on
+
 	show_password_button.text = toggled_on ? "hide" : "show"
 
 
@@ -109,3 +117,4 @@ func _generate_rainbow_password() -> String:
 		var color := colors[rng.randi_range(0, colors.size() - 1)]
 		bbcode += "[color=%s]%s[/color]" % [color.to_html(), c]
 	return bbcode
+

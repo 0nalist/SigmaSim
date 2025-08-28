@@ -75,19 +75,19 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 1
 editable = false
 secret = true
 secret_character = "●"
-size_flags_horizontal = 3
 
 [node name="ShowPasswordButton" type="Button" parent="MarginContainer/VBoxContainer/PasswordHBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 focus_mode = 0
-text = "show"
 toggle_mode = true
-custom_minimum_size = Vector2(40, 0)
+text = "show"
 
 [node name="RainbowPasswordLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PasswordHBox"]
 unique_name_in_owner = true
