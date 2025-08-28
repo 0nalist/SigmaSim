@@ -49,6 +49,12 @@ var start_apps := {
 }
 
 
+func get_registered_app_names() -> Array:
+	return app_registry.keys()
+
+func get_app_scene(app_name: String) -> PackedScene:
+	return app_registry.get(app_name)
+
 func _ready() -> void:
 	print("✅ Registered apps:", app_registry.keys())
 
