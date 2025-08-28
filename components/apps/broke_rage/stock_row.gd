@@ -1,12 +1,13 @@
 extends GridContainer
 class_name StockRow
 
-signal buy_pressed(stock_symbol: String)
-signal sell_pressed(stock_symbol: String)
+signal buy_pressed(stock_symbol: String, quantity: int)
+signal sell_pressed(stock_symbol: String, quantity: int)
 
 @onready var stock_label: Label = %StockLabel
 @onready var buy_button: Button = $BuyButton
 @onready var sell_button: Button = $SellButton
+@onready var quantity_spinbox: SpinBox = $QuantitySpinBox
 @onready var owned_label: Label = $OwnedLabel
 @onready var arrow = $SentimentArrow
 
@@ -19,18 +20,20 @@ func setup(_stock: Stock) -> void:
 	last_price = stock.price
 	update_display(stock)
 
-	buy_button.pressed.connect(func():
-		var price := stock.price
-		if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
+		buy_button.pressed.connect(func():
+			var quantity := int(quantity_spinbox.value)
+			var price := stock.price * quantity
+			if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
 				print("Credit purchase requires Pattern Day Trader upgrade")
 				return
-		emit_signal("buy_pressed", stock.symbol)
-		update_display(stock)
+			emit_signal("buy_pressed", stock.symbol, quantity)
+			update_display(stock)
 		)
-	sell_button.pressed.connect(func():
-		emit_signal("sell_pressed", stock.symbol)
-		update_display(stock)
-	)
+		sell_button.pressed.connect(func():
+			var quantity := int(quantity_spinbox.value)
+			emit_signal("sell_pressed", stock.symbol, quantity)
+			update_display(stock)
+		)
 	
 
 func update_display(updated_stock: Stock) -> void:
