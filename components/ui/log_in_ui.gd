@@ -14,7 +14,8 @@ extends Control
 @onready var quick_new_button: Button = $Panel/ProfilesContainer/ProfileRow/QuickNewButton
 
 
-var profile_panel_scene := preload("res://components/ui/profile_panel.tscn")
+const UserLoginCardUI = preload("res://components/ui/user_login_card_ui.gd")
+var user_login_card_scene := preload("res://components/ui/user_login_card_ui.tscn")
 const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd")
 
 
@@ -29,7 +30,7 @@ func _ready() -> void:
 
 func load_and_display_saved_profiles():
 	for child in %ProfileRow.get_children():
-		if child is ProfilePanel:
+		if child is UserLoginCardUI:
 			child.queue_free()
 
 	var metadata = SaveManager.load_slot_metadata()
@@ -41,14 +42,17 @@ func load_and_display_saved_profiles():
 			print("⚠️ Skipping invalid profile slot:", slot_id)
 			continue  # skip malformed or empty profiles
 
-		var panel = profile_panel_scene.instantiate()
+		var panel = user_login_card_scene.instantiate()
 		profile_row.add_child(panel)
 		panel.login_requested.connect(_on_profile_login_requested)
+		panel.card_selected.connect(_on_card_selected)
 		panel.set_profile_data(data, slot_id)
 
 
 
 var dot_time = .1
+
+var selected_card: UserLoginCardUI
 
 func _on_profile_login_requested(slot_id: int) -> void:
 	SaveManager.current_slot_id = slot_id
@@ -177,3 +181,9 @@ func _on_settings_button_pressed() -> void:
 
 func _on_power_button_pressed() -> void:
 	get_tree().quit()
+
+func _on_card_selected(card: UserLoginCardUI) -> void:
+	if selected_card and selected_card != card:
+		selected_card.collapse()
+	selected_card = card
+	selected_card.expand()
