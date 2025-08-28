@@ -47,10 +47,9 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if listening_for_clicks and event is InputEventMouseButton and event.pressed:
-		# Check if the click is outside the StartPanel bounds
-		if not Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position()):
-			hide()
-			listening_for_clicks = false
+                if not Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position()):
+                        hide()
+                        listening_for_clicks = false
 
 func toggle_start_panel() -> void:
 	if visible:

@@ -27,9 +27,8 @@ func _ready() -> void:
 	#SaveManager.save_to_slot(PlayerManager.get_slot_id())
 	
 	GameManager.in_game = true
-	#hide_all_windows_and_panels()
-	WindowManager.taskbar_container = taskbar
-	WindowManager.start_panel = start_panel
+        WindowManager.taskbar_container = taskbar
+        WindowManager.start_panel = start_panel
 	DesktopLayoutManager.items_loaded.connect(_on_items_loaded)
 	DesktopLayoutManager.item_created.connect(_on_item_created)
 	DesktopLayoutManager.item_deleted.connect(_on_item_deleted)
@@ -127,7 +126,6 @@ func _apply_shader_settings() -> void:
 func hide_all_windows_and_panels() -> void:
 	start_panel.hide()
 	trash_window.hide()
-	# All apps should now open dynamically via StartPanel
 
 # ----------------------------- #
 # Taskbar / Start Menu Buttons #

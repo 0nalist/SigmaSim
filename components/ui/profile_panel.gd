@@ -3,7 +3,6 @@ class_name ProfilePanel
 
 signal login_requested(slot_id: int)
 
-#@onready var profile_panel: Panel = %ProfilePanel
 @onready var profile_pic: PortraitView = %ProfilePic
 @onready var name_label: Label = %NameLabel
 @onready var username_label: Label = %UsernameLabel
