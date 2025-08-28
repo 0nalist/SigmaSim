@@ -1,5 +1,6 @@
 class_name FumbleProfileUI
 extends PanelContainer
+signal profile_loaded
 
 @export var profile_bg_color: Color = Color(0.147672, 0.147672, 0.147672, 1.0)
 @export var section_bg_color: Color = Color(1, 1, 1, 0.05)
@@ -59,6 +60,7 @@ func _ready() -> void:
 		_apply_colors()
 
 func load_npc(npc: NPC, npc_idx: int = -1) -> void:
+	visible = false
 	portrait.apply_config(npc.portrait_config)
 	portrait.portrait_creator_enabled = true
 	portrait.subject_npc_idx = npc_idx
@@ -88,7 +90,10 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	_populate_mbti(npc)
 	_populate_ocean(npc)
 
-	call_deferred("_run_entrance_animation")
+	await _await_layout_ready()
+	visible = true
+	profile_loaded.emit()
+	_run_entrance_animation()
 
 func _apply_colors() -> void:
 	var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
@@ -231,14 +236,12 @@ func _populate_ocean(npc: NPC) -> void:
 
 
 func _run_entrance_animation() -> void:
-	await _await_layout_ready()
-
 	portrait.modulate.a = 0.0
 	var p_tween: Tween = create_tween()
 	var py: float = portrait.position.y
 	p_tween.tween_property(portrait, "modulate:a", 1.0, 0.25)
 	p_tween.parallel().tween_property(portrait, "position:y", py, 0.25).from(py - 20.0)
-
+	
 	var root_tween: Tween = create_tween()
 	var delay_step: float = 0.06
 	var index: int = 0

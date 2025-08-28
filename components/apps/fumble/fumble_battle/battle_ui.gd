@@ -743,9 +743,9 @@ func animate_success_or_fail(success: bool):
 
 
 
-func _on_npc_profile_button_pressed():
-		profile_center_container.show()
-		fumble_profile.load_npc(npc, npc_idx)
+func _on_npc_profile_button_pressed() -> void:
+	await fumble_profile.load_npc(npc, npc_idx)
+	profile_center_container.show()
 
 
 func _on_close_fumble_profile_button_pressed():
