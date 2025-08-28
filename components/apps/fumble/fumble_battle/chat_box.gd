@@ -202,47 +202,47 @@ func _create_stat_icon(effect_name: String, delta: int) -> VBoxContainer:
 
 
 func set_stat_effects(effects: Dictionary, stat_order := ["chemistry", "self_esteem", "apprehension", "confidence"], animate := true):
-        self.effects = effects.duplicate()
-        var icons_to_animate: Array = []
+		self.effects = effects.duplicate()
+		var icons_to_animate: Array = []
 
-        if is_npc_message:
-                for child in left_effect_icons_hbox.get_children():
-                        child.queue_free()
-                for effect_name in stat_order:
-                        if effect_name == "confidence" and effects.has(effect_name):
-                                var delta = int(effects[effect_name])
-                                if abs(delta) < 1:
-                                        continue
-                                var vbox = _create_stat_icon(effect_name, delta)
-                                vbox.add_theme_constant_override("separation", -1)
-                                if vbox != null:
-                                        left_effect_icons_hbox.add_child(vbox)
-                                        icons_to_animate.append(vbox.get_child(0))
-                if icons_to_animate.size() > 0:
-                        if animate:
-                                await _animate_icons(icons_to_animate, true)
-                        else:
-                                _animate_icons(icons_to_animate, false)
-                return
+		if is_npc_message:
+				for child in left_effect_icons_hbox.get_children():
+						child.queue_free()
+				for effect_name in stat_order:
+						if effect_name == "confidence" and effects.has(effect_name):
+								var delta = int(effects[effect_name])
+								if abs(delta) < 1:
+										continue
+								var vbox = _create_stat_icon(effect_name, delta)
+								vbox.add_theme_constant_override("separation", -1)
+								if vbox != null:
+										left_effect_icons_hbox.add_child(vbox)
+										icons_to_animate.append(vbox.get_child(0))
+				if icons_to_animate.size() > 0:
+						if animate:
+								await _animate_icons(icons_to_animate, true)
+						else:
+								_animate_icons(icons_to_animate, false)
+				return
 
-        # For player: show only non-confidence effects
-        for child in effect_icons_hbox.get_children():
-                child.queue_free()
-        for effect_name in stat_order:
-                if effect_name != "confidence" and effects.has(effect_name):
-                        var delta = int(effects[effect_name])
-                        if abs(delta) < 1:
-                                continue
-                        var vbox = _create_stat_icon(effect_name, delta)
-                        vbox.add_theme_constant_override("separation", -1)
-                        if vbox != null:
-                                effect_icons_hbox.add_child(vbox)
-                                icons_to_animate.append(vbox.get_child(0))
-        if icons_to_animate.size() > 0:
-                if animate:
-                        await _animate_icons(icons_to_animate, true)
-                else:
-                        _animate_icons(icons_to_animate, false)
+		# For player: show only non-confidence effects
+		for child in effect_icons_hbox.get_children():
+				child.queue_free()
+		for effect_name in stat_order:
+				if effect_name != "confidence" and effects.has(effect_name):
+						var delta = int(effects[effect_name])
+						if abs(delta) < 1:
+								continue
+						var vbox = _create_stat_icon(effect_name, delta)
+						vbox.add_theme_constant_override("separation", -1)
+						if vbox != null:
+								effect_icons_hbox.add_child(vbox)
+								icons_to_animate.append(vbox.get_child(0))
+		if icons_to_animate.size() > 0:
+				if animate:
+						await _animate_icons(icons_to_animate, true)
+				else:
+						_animate_icons(icons_to_animate, false)
 
 
 func _animate_icons(icons: Array, animate := true) -> void:
