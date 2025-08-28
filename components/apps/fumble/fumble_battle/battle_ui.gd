@@ -771,21 +771,30 @@ func process_npc_response(move_type, response_id, success: bool) -> ChatBox:
 		key = "TRUE"
 
 	var entry = null
-	if response_id and RizzBattleData.npc_responses.has(response_id):
-		var pool = RizzBattleData.npc_responses[response_id][key]
-		if pool.size() > 0:
-			entry = pool[rng.randi() % pool.size()]
-			var has_alt: bool = false
-			for p in pool:
-				if str(p.response_line) != last_npc_core_line:
-					has_alt = true
-					break
-			if has_alt:
-				var attempts: int = 0
-				while str(entry.response_line) == last_npc_core_line and attempts < 10:
-					entry = pool[rng.randi() % pool.size()]
-					attempts += 1
-			core = str(entry.response_line)
+        if response_id and RizzBattleData.npc_responses.has(response_id):
+                var pool = RizzBattleData.npc_responses[response_id][key]
+                if pool.size() > 0:
+                        entry = pool[rng.randi() % pool.size()]
+                        var has_alt: bool = false
+                        for p in pool:
+                                if str(p.response_line) != last_npc_core_line:
+                                        has_alt = true
+                                        break
+                        if has_alt:
+                                var attempts: int = 0
+                                while str(entry.response_line) == last_npc_core_line and attempts < 10:
+                                        entry = pool[rng.randi() % pool.size()]
+                                        attempts += 1
+                        core = str(entry.response_line)
+                        var prefix: String = ""
+                        var suffix: String = ""
+                        if entry.has("response_prefix") and entry.response_prefix is Array and entry.response_prefix.size() > 0:
+                                var pref_pool = entry.response_prefix
+                                prefix = pref_pool[rng.randi() % pref_pool.size()]
+                        if entry.has("response_suffix") and entry.response_suffix is Array and entry.response_suffix.size() > 0:
+                                var suf_pool = entry.response_suffix
+                                suffix = suf_pool[rng.randi() % suf_pool.size()]
+                        response_text = str(prefix) + core + str(suffix)
 
 	elif RizzBattleData.npc_generic_responses.has(move_type):
 		var pool = RizzBattleData.npc_generic_responses[move_type][key]
