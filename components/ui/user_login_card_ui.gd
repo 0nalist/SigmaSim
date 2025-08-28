@@ -48,10 +48,7 @@ func _apply_profile_data() -> void:
 	username_label.text = "@%s" % pending_data.get("username", "user")
 
 	var net: float = float(pending_data.get("net_worth", 0.0))
-	if Engine.has_singleton("NumberFormatter"):
-		net_worth_label.text = "$" + NumberFormatter.format_commas(net, 2, true)
-	else:
-		net_worth_label.text = "$%s" % str(net)
+	net_worth_label.text = "$" + NumberFormatter.format_commas(net, 2, true)
 
 	var using_random_seed: bool = bool(pending_data.get("using_random_seed", false))
 	if using_random_seed:
