@@ -84,7 +84,7 @@ func _build_card_shell() -> void:
 	_title_label = Label.new()
 	_title_label.name = "Title"
 	_title_label.text = card_title
-	_title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_title_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_title_label.add_theme_font_size_override("font_size", 18)

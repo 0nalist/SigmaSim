@@ -204,8 +204,11 @@ func launch_pane_instance(pane: Pane, setup_args: Variant = null) -> void:
 	var window := WindowFrame.instantiate_for_pane(pane)
 	register_window(window, pane.show_in_taskbar)
 
-	if setup_args != null and pane.has_method("setup_custom"):
-		pane.call_deferred("setup_custom", setup_args)
+	if setup_args != null:
+		if pane.has_method("setup_custom"):
+			pane.call_deferred("setup_custom", setup_args)
+		elif pane.has_method("setup"):
+			pane.call_deferred("setup", setup_args)
 
 	call_deferred("autoposition_window", window)
 

@@ -80,8 +80,8 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 	var already_paid: Array = paid_bills.get(today_key, [])
 
 	for bill_name in bills_today:
-				    if bill_name in already_paid:
-				                    continue
+			if bill_name in already_paid:
+							continue
 
 			# 🧠 Check if this bill popup already exists or is pending for today
 			var already_open: bool = false
@@ -108,10 +108,10 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 					continue
 
 			# Queue bill popup for display
-				    pending_bill_data[today_key].append({
-				                                    "bill_name": bill_name,
-				                                    "amount": amount
-				    })
+					pending_bill_data[today_key].append({
+													"bill_name": bill_name,
+													"amount": amount
+					})
 
 	_update_debt_due_dates()
 	apply_debt_interest()
@@ -364,39 +364,60 @@ func _get_debt_resource(name: String) -> Dictionary:
 
 func _set_credit_card_balance(used: float, limit: float) -> void:
 			for res in debt_resources:
-				            if res.get("name", "") == "Credit Card":
-				                            res["balance"] = used
-				                            res["credit_limit"] = limit
-				                            res["interest_rate"] = PortfolioManager.credit_interest_rate
-				                            if not res.has("compound_period"):
-				                                            res["compound_period"] = "Monthly"
-				                            _update_credit_card_due_date()
-				                            debt_resources_changed.emit()
-				                            return
+							if res.get("name", "") == "Credit Card":
+											res["balance"] = used
+											res["credit_limit"] = limit
+											res["interest_rate"] = PortfolioManager.credit_interest_rate
+											if not res.has("compound_period"):
+															res["compound_period"] = "Monthly"
+											_update_credit_card_due_date()
+											debt_resources_changed.emit()
+											return
 
 func _set_student_loan_balance(amount: float) -> void:
 	for res in debt_resources:
 			if res.get("name", "") == "Student Loan":
-				    res["balance"] = amount
-				    debt_resources_changed.emit()
+					res["balance"] = amount
+					debt_resources_changed.emit()
 			return
+
+
+
 func _find_next_bill_date(bill_name: String) -> Dictionary:
 	var day: int = TimeManager.current_day
 	var month: int = TimeManager.current_month
 	var year: int = TimeManager.current_year
-	var days_ahead := 0
-	while true:
-			var bills = get_due_bills_for_date(day, month, year)
-			if bill_name in bills:
-				    return {"day": day, "month": month, "year": year, "days_ahead": days_ahead}
-			day += 1
-			if day > TimeManager.get_days_in_month(month, year):
-				    day = 1
-				    month += 1
-				    if month > 12:
-				            month = 1
-				            year += 1
-			days_ahead += 1
+	var days_ahead: int = 0
+
+	# Safety guard: prevent infinite loops if bill not found
+	var max_iterations: int = 365 * 5  # 5 years into the future
+
+	for i in range(max_iterations):
+		var bills: Array = get_due_bills_for_date(day, month, year)
+		if bill_name in bills:
+			return {
+				"day": day,
+				"month": month,
+				"year": year,
+				"days_ahead": days_ahead
+			}
+
+		# Advance one day
+		day += 1
+		if day > TimeManager.get_days_in_month(month, year):
+			day = 1
+			month += 1
+			if month > 12:
+				month = 1
+				year += 1
+
+		days_ahead += 1
+
+	# If bill never found in horizon, still return something
+	push_error("Bill not found within %d days: %s" % [max_iterations, bill_name])
+	return {}
+
+
 
 func _update_credit_card_due_date() -> void:
 	var info = _find_next_bill_date("Credit Card")
@@ -422,7 +443,7 @@ func _update_debt_due_dates() -> void:
 				res["days_until_due"] = credit_days
 				changed = true
 		else:
-			var new_minutes := max(minutes - 1440, 0)
+			var new_minutes = max(minutes - 1440, 0)
 			if new_minutes != minutes:
 				res["minutes_until_due"] = new_minutes
 				res["days_until_due"] = int(new_minutes / 1440)
@@ -750,8 +771,8 @@ func get_credit_summary() -> Dictionary:
 			out["next_due"] = ""
 			out["autopay"] = false
 			if Engine.has_singleton("PortfolioManager"):
-				            out["balance"] = float(PortfolioManager.credit_used)
-				            out["limit"] = float(PortfolioManager.credit_limit)
+							out["balance"] = float(PortfolioManager.credit_used)
+							out["limit"] = float(PortfolioManager.credit_limit)
 			var info = _find_next_bill_date("Credit Card")
 			var day = int(info.get("day", 0))
 			var month = int(info.get("month", 0))
