@@ -7,7 +7,6 @@ class_name DebtCardUI
 @onready var limit_bar: ProgressBar = %LimitBar
 @onready var interest_label: Label = %InterestLabel
 @onready var compound_label: Label = %CompoundLabel
-@onready var due_label: Label = %DueLabel
 @onready var pay_slider: HSlider = %PaySlider
 @onready var slider_label: Label = %SliderLabel
 @onready var pay_button: Button = %PayButton
@@ -49,16 +48,13 @@ func update_display() -> void:
 	var rate: float = float(resource_data.get("interest_rate", 0.0)) * 100.0
 	interest_label.text = "Interest: %.2f%%" % rate
 
-	var period: String = String(resource_data.get("compound_period", "Monthly"))
-	compound_label.text = "Compounds: %s" % period
-
-	var minutes_left: int = int(resource_data.get("minutes_until_due", 0))
+	var minutes_left: int = int(resource_data.get("compounds_in", 0))
 	if minutes_left >= 1440:
-		due_label.text = "Due in: %d days" % int(minutes_left / 1440)
+		compound_label.text = "Compounds in: %d days" % int(minutes_left / 1440)
 	elif minutes_left >= 60:
-		due_label.text = "Due in: %d hours" % int(minutes_left / 60)
+		compound_label.text = "Compounds in: %d hours" % int(minutes_left / 60)
 	else:
-		due_label.text = "Due in: %d minutes" % minutes_left
+		compound_label.text = "Compounds in: %d minutes" % minutes_left
 
 	var credit_limit = resource_data.get("credit_limit")
 	var has_limit = credit_limit != null and float(credit_limit) > 0.0
