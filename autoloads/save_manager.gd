@@ -62,19 +62,23 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 		# djb2 hash. Only fall back to the current Unix time when a password is
 		# unavailable. This avoids overwriting the deterministic seed generated
 		# during profile creation.
-	var seed_val: int = user_data.get("global_rng_seed", 0)
-	print("initialize_new_profile: existing seed", seed_val)
-	if seed_val == 0:
-		var password = user_data.get("password", "")
-		if password != "":
-			seed_val = PlayerManager.djb2(password)
-			print("Derived seed from password", password, "->", seed_val)
-		else:
-			seed_val = int(Time.get_unix_time_from_system())
-			print("No password; using unix time seed", seed_val)
-		user_data["global_rng_seed"] = seed_val
-	else:
-		print("Using provided global_rng_seed", seed_val)
+        var seed_val: int = user_data.get("global_rng_seed", 0)
+        print("initialize_new_profile: existing seed", seed_val)
+        if seed_val == 0:
+                var password = user_data.get("password", "")
+                if password != "":
+                        seed_val = PlayerManager.djb2(password)
+                       user_data["using_random_seed"] = false
+                       print("Derived seed from password", password, "->", seed_val)
+                else:
+                       var rng = RandomNumberGenerator.new()
+                       rng.randomize()
+                       seed_val = rng.randi()
+                       user_data["using_random_seed"] = true
+                       print("No password; generated random seed", seed_val)
+               user_data["global_rng_seed"] = seed_val
+        else:
+                print("Using provided global_rng_seed", seed_val)
 
 	RNGManager.init_seed(int(seed_val))
 	print("RNGManager initialized in new profile with seed", seed_val)
@@ -212,18 +216,22 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("player"):
 		PlayerManager.load_from_data(data["player"])
 		var seed_val: int = PlayerManager.user_data.get("global_rng_seed", 0)
-		print("load_from_slot: stored seed", seed_val)
-		if seed_val == 0:
-			var password = PlayerManager.user_data.get("password", "")
-			if password != "":
-				seed_val = PlayerManager.djb2(password)
-				print("Derived seed from password", password, "->", seed_val)
-			else:
-				seed_val = int(Time.get_unix_time_from_system())
-				print("No seed or password; using unix time seed", seed_val)
-			PlayerManager.user_data["global_rng_seed"] = seed_val
-		else:
-			print("Using saved global_rng_seed", seed_val)
+                print("load_from_slot: stored seed", seed_val)
+                if seed_val == 0:
+                        var password = PlayerManager.user_data.get("password", "")
+                        if password != "":
+                                seed_val = PlayerManager.djb2(password)
+                               PlayerManager.user_data["using_random_seed"] = false
+                               print("Derived seed from password", password, "->", seed_val)
+                        else:
+                               var rng = RandomNumberGenerator.new()
+                               rng.randomize()
+                               seed_val = rng.randi()
+                               PlayerManager.user_data["using_random_seed"] = true
+                               print("No seed or password; generated random seed", seed_val)
+                       PlayerManager.user_data["global_rng_seed"] = seed_val
+                else:
+                        print("Using saved global_rng_seed", seed_val)
 		RNGManager.init_seed(seed_val)
 		print("RNGManager initialized from save with seed", seed_val)
 
