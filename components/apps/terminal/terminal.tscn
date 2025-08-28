@@ -5,17 +5,12 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xw1n"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="Terminal" type="CanvasLayer"]
-layer = 100
+[node name="Terminal" type="PanelContainer"]
 script = ExtResource("1_ekq6y")
 window_title = "Terminal"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0xw1n")
