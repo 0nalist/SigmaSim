@@ -13,6 +13,8 @@ extends Control
 @onready var settings_button: Button = %SettingsButton
 @onready var quick_new_button: Button = $Panel/ProfilesContainer/ProfileRow/QuickNewButton
 
+@onready var omegaverse_label: Label = %OmegaverseLabel
+
 
 const UserLoginCardUI = preload("res://components/ui/user_login_card_ui.gd")
 var user_login_card_scene := preload("res://components/ui/user_login_card_ui.tscn")
@@ -20,7 +22,8 @@ const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd")
 
 
 func _ready() -> void:
-	TimeManager.stop_time()
+        omegaverse_label.material.set_shader_parameter("letter_count", omegaverse_label.text.length())
+        TimeManager.stop_time()
 	logging_in_panel.hide()
 	profile_v_box_container.show()
 	quick_new_button.visible = show_quick_new_button
