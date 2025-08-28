@@ -199,7 +199,8 @@ layout_mode = 2
 text = "Enter the"
 horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="AOLLogoHolder/MarginContainer2/VBoxContainer"]
+[node name="OmegaverseLabel" type="Label" parent="AOLLogoHolder/MarginContainer2/VBoxContainer"]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_yke0b")
 layout_mode = 2
 size_flags_vertical = 2
