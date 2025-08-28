@@ -1,7 +1,7 @@
 extends Pane
 class_name Terminal
 
-@onready var panel: PanelContainer = $PanelContainer
+#@onready var panel: PanelContainer = $PanelContainer
 @onready var command_line: LineEdit = %CommandLine
 @onready var enter_button: Button = %EnterButton
 @onready var feedback_label: Label = %FeedbackLabel
@@ -49,26 +49,31 @@ var commands := {
 
 func _ready() -> void:
 	# Fullscreen anchor
-	panel.anchors_preset = Control.PRESET_FULL_RECT
-	panel.offset_left = 0
-	panel.offset_top = 0
-	panel.offset_right = 0
-	panel.offset_bottom = 0
+	#
+	anchors_preset = Control.PRESET_FULL_RECT
+	#
+	offset_left = 0
+	#
+	offset_top = 0
+	#
+	offset_right = 0
+	#
+	offset_bottom = 0
 
 	# Background style mimics a classic terminal window
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color.BLACK
-	panel.add_theme_stylebox_override("panel", sb)
+	add_theme_stylebox_override("panel", sb)
 
 	# Monospaced, high‑contrast terminal look
 	var term_font := load("res://assets/fonts/Chicago.ttf")
-	panel.add_theme_font_override("font", term_font)
-	panel.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
+	add_theme_font_override("font", term_font)
+	add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
 	command_line.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
 	command_line.add_theme_color_override("caret_color", Color(0.8, 1.0, 0.8))
 
-	panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	panel.visible = false
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	visible = false
 
 	enter_button.pressed.connect(_on_enter_pressed)
 	command_line.text_submitted.connect(_on_text_submitted)
@@ -82,14 +87,14 @@ func _ready() -> void:
 func open() -> void:
 		print("opening terminal")
 		visible = true
-		panel.visible = true
+		visible = true
 		call_deferred("_focus_line")
 
 func close() -> void:
-	panel.visible = false
+	visible = false
 
 func toggle() -> void:
-	if panel.visible:
+	if visible:
 		close()
 	else:
 		open()
@@ -116,7 +121,7 @@ func _on_text_submitted(_text: String) -> void:
 	_submit_command()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not panel.visible:
+	if not visible:
 		return
 	if event.is_action_pressed("ui_accept"):
 		_submit_command()
