@@ -19,17 +19,17 @@ class_name StockPopupUI
 var stock: Stock
 
 func setup_custom(args) -> void:
-				var s: Stock = null
-				if args is Stock:
-								s = args
-				elif typeof(args) == TYPE_STRING:
-								s = MarketManager.get_stock(args)
-                                if s:
-                                                if is_inside_tree():
-                                                                setup(s)
-                                                else:
-                                                                await ready
-                                                                setup(s)
+	var s: Stock = null
+	if args is Stock:
+		s = args
+	elif typeof(args) == TYPE_STRING:
+		s = MarketManager.get_stock(args)
+		if s:
+			if is_inside_tree():
+				setup(s)
+			else:
+				await ready
+				setup(s)
 
 func setup(_stock: Stock) -> void:
 	stock = _stock
@@ -99,11 +99,11 @@ func get_custom_save_data() -> Dictionary:
 
 func load_custom_save_data(data: Dictionary) -> void:
 	var symbol: String = data.get("symbol", "")
-        if symbol != "":
-                                var s: Stock = MarketManager.get_stock(symbol)
-                                if s:
-                                                if is_inside_tree():
-                                                                setup(s)
-                                                else:
-                                                                await ready
-                                                                setup(s)
+	if symbol != "":
+		var s: Stock = MarketManager.get_stock(symbol)
+		if s:
+			if is_inside_tree():
+				setup(s)
+			else:
+				await ready
+				setup(s)

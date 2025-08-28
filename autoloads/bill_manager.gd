@@ -323,17 +323,17 @@ func pay_debt(name: String, amount: float) -> void:
 		"Credit Card":
 			PortfolioManager.pay_down_credit(amount)
 			_set_credit_card_balance(PortfolioManager.credit_used, PortfolioManager.credit_limit)
-                "Student Loan":
-                        if PortfolioManager.pay_with_cash(amount):
-                                PortfolioManager.set_student_loans(max(PortfolioManager.get_student_loans() - amount, 0.0))
-                                _set_student_loan_balance(PortfolioManager.get_student_loans())
-                                student_loan_changed.emit()
-                _:
-                        if PortfolioManager.pay_with_cash(amount):
-                                var res: Dictionary = _get_debt_resource(name)
-                                if not res.is_empty():
-                                        res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
-										debt_resources_changed.emit()
+		"Student Loan":
+				if PortfolioManager.pay_with_cash(amount):
+						PortfolioManager.set_student_loans(max(PortfolioManager.get_student_loans() - amount, 0.0))
+						_set_student_loan_balance(PortfolioManager.get_student_loans())
+						student_loan_changed.emit()
+		_:
+				if PortfolioManager.pay_with_cash(amount):
+						var res: Dictionary = _get_debt_resource(name)
+						if not res.is_empty():
+								res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
+								debt_resources_changed.emit()
 
 func take_payday_loan(amount: float) -> void:
 		var res: Dictionary = _get_debt_resource("Payday Loan")
@@ -811,8 +811,8 @@ func get_student_loan_summary() -> Dictionary:
 		return out
 
 func pay_student_loan(amount: float) -> void:
-                pay_debt("Student Loan", amount)
-                Events.focus_wallet_card("student_loan")
+				pay_debt("Student Loan", amount)
+				Events.focus_wallet_card("student_loan")
 
 func set_student_loan_autopay(_enabled: bool) -> void:
 		student_loan_changed.emit()
