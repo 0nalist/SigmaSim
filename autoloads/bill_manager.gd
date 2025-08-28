@@ -104,14 +104,14 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 					continue
 
 			if autopay_enabled and attempt_to_autopay(bill_name):
-					mark_bill_paid(bill_name, today_key)
-					continue
+				mark_bill_paid(bill_name, today_key)
+				continue
 
 			# Queue bill popup for display
-					pending_bill_data[today_key].append({
-													"bill_name": bill_name,
-													"amount": amount
-					})
+			pending_bill_data[today_key].append({
+					"bill_name": bill_name,
+					"amount": amount
+			})
 
 	_update_debt_due_dates()
 	apply_debt_interest()
