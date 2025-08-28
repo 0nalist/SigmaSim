@@ -24,8 +24,12 @@ func setup_custom(args) -> void:
 								s = args
 				elif typeof(args) == TYPE_STRING:
 								s = MarketManager.get_stock(args)
-				if s:
-								call_deferred("setup", s)
+                                if s:
+                                                if is_inside_tree():
+                                                                setup(s)
+                                                else:
+                                                                await ready
+                                                                setup(s)
 
 func setup(_stock: Stock) -> void:
 	stock = _stock
@@ -95,7 +99,11 @@ func get_custom_save_data() -> Dictionary:
 
 func load_custom_save_data(data: Dictionary) -> void:
 	var symbol: String = data.get("symbol", "")
-	if symbol != "":
-				var s: Stock = MarketManager.get_stock(symbol)
-				if s:
-						call_deferred("setup", s)
+        if symbol != "":
+                                var s: Stock = MarketManager.get_stock(symbol)
+                                if s:
+                                                if is_inside_tree():
+                                                                setup(s)
+                                                else:
+                                                                await ready
+                                                                setup(s)
