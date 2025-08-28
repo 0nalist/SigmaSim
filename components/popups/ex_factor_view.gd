@@ -537,9 +537,9 @@ func _show_quip(action: String) -> void:
 	bubble.tree_exited.connect(func(): _active_speech_bubble = null)
 	var label: Label = bubble.get_label()
 	label.visible_ratio = 0.0
-        var lifetime: float = text.length() * QUIP_CHAR_DELAY + 4.0
-        bubble.pop_and_fade(lifetime)
-        await get_tree().create_timer(0.35).timeout
+	var lifetime: float = text.length() * QUIP_CHAR_DELAY + 4.0
+	bubble.pop_and_fade(lifetime)
+	await get_tree().create_timer(0.35).timeout
 	for i in range(text.length()):
 		label.visible_ratio = float(i + 1) / text.length()
 		await get_tree().create_timer(QUIP_CHAR_DELAY).timeout

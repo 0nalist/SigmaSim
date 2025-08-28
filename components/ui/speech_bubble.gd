@@ -48,16 +48,16 @@ func set_text(text: String) -> void:
 	pivot_offset = target_size
 
 func pop_and_fade(hold_time: float = 4.0) -> void:
-        scale = Vector2.ZERO
-        modulate.a = 0.0
-        visible = true
-        var tween: Tween = create_tween()
-        tween.tween_property(self, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-        tween.parallel().tween_property(self, "modulate:a", 1.0, 0.2)
-        var fade: Tween = create_tween()
-        fade.tween_interval(0.35 + hold_time)
-        fade.tween_property(self, "modulate:a", 0.0, 0.2)
-        fade.tween_callback(queue_free)
+		scale = Vector2.ZERO
+		modulate.a = 0.0
+		visible = true
+		var tween: Tween = create_tween()
+		tween.tween_property(self, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tween.parallel().tween_property(self, "modulate:a", 1.0, 0.2)
+		var fade: Tween = create_tween()
+		fade.tween_interval(0.35 + hold_time)
+		fade.tween_property(self, "modulate:a", 0.0, 0.2)
+		fade.tween_callback(queue_free)
 
 func get_label() -> Label:
 		return speech_label
