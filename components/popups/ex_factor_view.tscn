@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dim0nwjmfwi3g"]
+[gd_scene load_steps=11 format=3 uid="uid://dim0nwjmfwi3g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/ex_factor_view.gd" id="2"]
 [ext_resource type="Script" uid="uid://dq20ffib6tocu" path="res://components/popups/affinity_bar.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://cxturbhaoa6eh" path="res://assets/logos/ex (1).png" id="3_41or5"]
 [ext_resource type="PackedScene" uid="uid://fna5puejflgh" path="res://components/upgrade_scenes/ex_factor_upgrade_ui.tscn" id="3_n3cpl"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_vl6ok"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="4"]
@@ -40,6 +41,7 @@ mouse_filter = 1
 theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "eXFactor"
+window_icon = ExtResource("3_41or5")
 default_window_size = Vector2(420, 640)
 is_popup = true
 color1 = Color(1, 0, 0.941176, 1)
