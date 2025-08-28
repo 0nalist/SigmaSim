@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=14 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="4_hcclx"]
 [ext_resource type="FontFile" uid="uid://deimmaj7ejh4l" path="res://assets/fonts/CapitalisTypOasis.ttf" id="5_hcclx"]
 [ext_resource type="Shader" uid="uid://dw5y8ehkp7c1r" path="res://assets/shaders/pink_warp.gdshader" id="5_wmdi4"]
+[ext_resource type="Shader" uid="uid://b3lch55daabv3" path="res://assets/shaders/wavy_walk_shader.gdshader" id="6_s425x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
 bg_color = Color(0, 0.435981, 0.736537, 1)
@@ -37,6 +38,14 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yke0b"]
+shader = ExtResource("6_s425x")
+shader_parameter/progress = 0.362
+shader_parameter/speed = 0.2
+shader_parameter/meltness = 1.74
+shader_parameter/how_low = 0.897
+shader_parameter/wave_frequency = 30.0
 
 [node name="LogInUI" type="Control"]
 layout_mode = 3
@@ -138,9 +147,11 @@ custom_minimum_size = Vector2(70, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 0
 text = " New Profile "
 
 [node name="QuickNewButton" type="Button" parent="Panel/ProfilesContainer/ProfileRow"]
+visible = false
 custom_minimum_size = Vector2(70, 60)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -166,7 +177,39 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="MarginContainer2" type="MarginContainer" parent="AOLLogoHolder"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 250
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AOLLogoHolder/MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label2" type="Label" parent="AOLLogoHolder/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Enter the"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="AOLLogoHolder/MarginContainer2/VBoxContainer"]
+material = SubResource("ShaderMaterial_yke0b")
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 88
+text = "OMEGAVERSE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="TextureRect" type="TextureRect" parent="AOLLogoHolder"]
+visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -179,6 +222,7 @@ grow_horizontal = 2
 texture = ExtResource("4_6fwkw")
 
 [node name="Label" type="Label" parent="AOLLogoHolder"]
+visible = false
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -201,8 +245,8 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -136.0
-offset_top = -136.0
+offset_left = -560.0
+offset_top = -187.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_constants/margin_left = 50
@@ -230,6 +274,7 @@ text = "power"
 
 [node name="CreditsButton" type="Button" parent="AOLLogoHolder/MarginContainer/HBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "Credits"
 
 [connection signal="pressed" from="Panel/ProfilesContainer/ProfileRow/NewProfileButton" to="." method="_on_new_profile_button_pressed"]

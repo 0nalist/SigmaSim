@@ -375,10 +375,12 @@ size_flags_horizontal = 3
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4"]
 layout_mode = 2
 size_flags_vertical = 6
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_nhbld")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/NPCMarginContainer/VBoxContainer4/PanelContainer2"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
