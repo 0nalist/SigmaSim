@@ -241,9 +241,9 @@ func load_from_data(data: Dictionary) -> void:
 
 	autosave_hour_counter = 0
 	# Emit signals to let listeners refresh
-	emit_signal("minute_passed", in_game_minutes)
-	emit_signal("hour_passed", current_hour, total_minutes_elapsed)
-	emit_signal("day_passed", current_day, current_month, current_year)
+        emit_signal("minute_passed", in_game_minutes)
+        emit_signal("hour_passed", current_hour, total_minutes_elapsed)
+        emit_signal("day_passed", current_day, current_month, current_year, total_minutes_elapsed)
 
 func reset() -> void:
 		_rebuild_total_minutes_from_defaults()
@@ -290,9 +290,9 @@ func _advance_time(minutes_to_add: int) -> void:
 				SaveManager.save_to_slot(SaveManager.current_slot_id)
 				print("Autosaving on slot " + str(SaveManager.current_slot_id))
 
-		# Day rollover detection via date change
-		if current_day != prev_day or current_month != prev_month or current_year != prev_year:
-			emit_signal("day_passed", current_day, current_month, current_year)
+                # Day rollover detection via date change
+                if current_day != prev_day or current_month != prev_month or current_year != prev_year:
+                        emit_signal("day_passed", current_day, current_month, current_year, total_minutes_elapsed)
 
 		# Mirror compatibility field after loop
 		total_minutes_elapsed = _total_minutes_elapsed - _start_total_minutes
