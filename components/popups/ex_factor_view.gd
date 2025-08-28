@@ -375,9 +375,15 @@ func _update_exclusivity_button() -> void:
 						_: exclusivity_button.text = "Toggle"
 
 func _update_next_stage_button() -> void:
-		var show: bool = logic.progress_paused and npc.relationship_stage < NPCManager.RelationshipStage.DIVORCED
-		next_stage_button.visible = show
-		next_stage_button.disabled = not show
+                var show: bool = false
+                if npc.relationship_stage < NPCManager.RelationshipStage.DIVORCED:
+                                var bounds: Vector2 = ExFactorLogic.get_stage_bounds(
+                                                npc.relationship_stage, npc.relationship_progress
+                                )
+                                var at_stage_end: bool = npc.relationship_progress >= bounds.y
+                                show = logic.progress_paused and at_stage_end
+                next_stage_button.visible = show
+                next_stage_button.disabled = not show
 
 func _update_apologize_button() -> void:
 	var has_upgrade: bool = UpgradeManager.get_level("ex_factor_talk_therapy") > 0
@@ -399,10 +405,11 @@ func _on_gift_pressed() -> void:
 				_show_quip("gift")
 
 func _on_date_pressed() -> void:
-		if logic.try_date():
-				_update_relationship_bar()
-				_update_buttons_text()
-				_show_quip("date")
+                if logic.try_date():
+                                _update_relationship_bar()
+                                _update_buttons_text()
+                                _update_next_stage_button()
+                                _show_quip("date")
 
 func _on_love_pressed() -> void:
 		var now_m: int = TimeManager.get_now_minutes()
