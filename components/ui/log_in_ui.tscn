@@ -46,8 +46,6 @@ shader_parameter/speed = 0.2
 shader_parameter/meltness = 1.74
 shader_parameter/how_low = 0.897
 shader_parameter/wave_frequency = 30.0
-shader_parameter/letter_count = 10.0
-shader_parameter/color_speed = 0.1
 
 [node name="LogInUI" type="Control"]
 layout_mode = 3
