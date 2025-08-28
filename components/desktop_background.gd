@@ -68,10 +68,10 @@ func _ctx_new_note(pos: Vector2) -> void:
 				WindowManager.launch_app_by_name("Notepad", id)
 
 func _ctx_change_background() -> void:
-		var scene: PackedScene = WindowManager.app_registry.get("Settings")
-		if scene:
-				var pane: Pane = scene.instantiate()
-				WindowManager.launch_pane_instance(pane, "Backgrounds")
+        var scene: PackedScene = WindowManager.get_app_scene("Settings")
+        if scene:
+                var pane: Pane = scene.instantiate()
+                WindowManager.launch_pane_instance(pane, "Backgrounds")
 
 func _on_desktop_background_toggled(name: String, visible_state: bool) -> void:
 	if name == background_name:

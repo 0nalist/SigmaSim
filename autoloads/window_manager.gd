@@ -50,7 +50,17 @@ var start_apps := {
 
 
 func _ready() -> void:
-	print("✅ Registered apps:", app_registry.keys())
+print("✅ Registered apps:", app_registry.keys())
+
+func get_app_names() -> Array:
+    return app_registry.keys()
+
+func get_app_scene(app_name: String) -> PackedScene:
+    return app_registry.get(app_name)
+
+func launch_all_apps() -> void:
+    for app_name in app_registry.keys():
+        launch_app_by_name(app_name)
 
 # --- Main window functions --- #
 

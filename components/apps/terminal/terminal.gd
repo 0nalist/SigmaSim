@@ -282,10 +282,9 @@ func process_command(command: String) -> bool:
 			return true
 		
 		
-		"stress_test":
-			for app_name in WindowManager.app_registry.keys():
-				WindowManager.launch_app_by_name(app_name)
-			return true
+               "stress_test":
+                       WindowManager.launch_all_apps()
+                       return true
 		
 		
 		"upgrademax":
