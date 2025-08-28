@@ -295,10 +295,10 @@ func _deduct_currency(currency: String, amount: float) -> bool:
 			return false
 		StatManager.set_base_stat("ex", StatManager.get_stat("ex") - amount)
 		StatpopManager.spawn(
-			"-%s Ex" % NumberFormatter.format_number(amount),
+			"-%s EX" % NumberFormatter.format_number(amount),
 			get_viewport().get_mouse_position(),
 			"click",
-			Color.YELLOW
+			Color.YELLOW,
 		)
 		return true
 	if PortfolioManager.get_crypto_amount(currency) < amount:
