@@ -60,34 +60,34 @@ func get_active_id() -> String:
 	return _card_ids[_active_index]
 
 func _gui_input(event: InputEvent) -> void:
-                if not mouse_scroll_enabled:
-                                return
-                if not _hovering:
-                                return
-                if event is InputEventMouseButton:
-                                var ev: InputEventMouseButton = event as InputEventMouseButton
-                                if ev.button_index == MOUSE_BUTTON_WHEEL_UP and ev.pressed:
-                                                _prev()
-                                elif ev.button_index == MOUSE_BUTTON_WHEEL_DOWN and ev.pressed:
-                                                _next()
+				if not mouse_scroll_enabled:
+								return
+				if not _hovering:
+								return
+				if event is InputEventMouseButton:
+								var ev: InputEventMouseButton = event as InputEventMouseButton
+								if ev.button_index == MOUSE_BUTTON_WHEEL_UP and ev.pressed:
+												_prev()
+								elif ev.button_index == MOUSE_BUTTON_WHEEL_DOWN and ev.pressed:
+												_next()
 
 func _unhandled_input(event: InputEvent) -> void:
-       # Support keyboard and gamepad navigation when the wallet UI is active.
-       if event.is_action_pressed("ui_down") or event.is_action_pressed("ui_right"):
-               _next()
-               get_viewport().set_input_as_handled()
-       elif event.is_action_pressed("ui_up") or event.is_action_pressed("ui_left"):
-               _prev()
-               get_viewport().set_input_as_handled()
-       elif event is InputEventJoypadMotion:
-               var jm: InputEventJoypadMotion = event
-               if jm.axis in [JOY_AXIS_LEFT_Y, JOY_AXIS_RIGHT_Y, JOY_AXIS_LEFT_X, JOY_AXIS_RIGHT_X]:
-                       if jm.axis_value > 0.5:
-                               _next()
-                               get_viewport().set_input_as_handled()
-                       elif jm.axis_value < -0.5:
-                               _prev()
-                               get_viewport().set_input_as_handled()
+	# Support keyboard and gamepad navigation when the wallet UI is active.
+	if event.is_action_pressed("ui_down") or event.is_action_pressed("ui_right"):
+			_next()
+			get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_up") or event.is_action_pressed("ui_left"):
+			_prev()
+			get_viewport().set_input_as_handled()
+	elif event is InputEventJoypadMotion:
+			var jm: InputEventJoypadMotion = event
+			if jm.axis in [JOY_AXIS_LEFT_Y, JOY_AXIS_RIGHT_Y, JOY_AXIS_LEFT_X, JOY_AXIS_RIGHT_X]:
+					if jm.axis_value > 0.5:
+							_next()
+							get_viewport().set_input_as_handled()
+					elif jm.axis_value < -0.5:
+							_prev()
+							get_viewport().set_input_as_handled()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_MOUSE_ENTER:
