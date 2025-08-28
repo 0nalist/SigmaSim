@@ -11,6 +11,7 @@ display_name = "Dump"
 icon = SubResource("PlaceholderTexture2D_odxas")
 price = 47.0
 volatility = 47.0
+intrinsic_value = null
 power_required = 88
 block_size = 0.001
 block_time = 10.0

@@ -100,6 +100,7 @@ size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox"]
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 3
 
 [node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer"]
@@ -115,10 +116,11 @@ horizontal_alignment = 1
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="BuGPUsVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftColumnVBox/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.35
 

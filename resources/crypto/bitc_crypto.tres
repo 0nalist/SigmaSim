@@ -10,6 +10,7 @@ display_name = "Bitcoin"
 icon = ExtResource("1_cweql")
 price = 100000.0
 volatility = 10.0
+intrinsic_value = null
 power_required = 10000
 block_size = 1.0
 block_time = 10.0

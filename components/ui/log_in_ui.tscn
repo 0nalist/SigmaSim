@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=15 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
@@ -9,6 +9,7 @@
 [ext_resource type="FontFile" uid="uid://deimmaj7ejh4l" path="res://assets/fonts/CapitalisTypOasis.ttf" id="5_hcclx"]
 [ext_resource type="Shader" uid="uid://dw5y8ehkp7c1r" path="res://assets/shaders/pink_warp.gdshader" id="5_wmdi4"]
 [ext_resource type="Shader" uid="uid://b3lch55daabv3" path="res://assets/shaders/wavy_walk_shader.gdshader" id="6_s425x"]
+[ext_resource type="Texture2D" uid="uid://bowu041csi5ai" path="res://assets/icons/power_icon.png" id="10_yke0b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
 bg_color = Color(0, 0.435981, 0.736537, 1)
@@ -41,11 +42,13 @@ corner_radius_bottom_left = 8
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yke0b"]
 shader = ExtResource("6_s425x")
-shader_parameter/progress = 0.362
+shader_parameter/progress = 0.0
 shader_parameter/speed = 0.2
-shader_parameter/meltness = 1.74
-shader_parameter/how_low = 0.897
+shader_parameter/meltness = 1.267
+shader_parameter/how_low = 0.76
 shader_parameter/wave_frequency = 30.0
+shader_parameter/letter_count = 64.0
+shader_parameter/color_speed = 0.1
 
 [node name="LogInUI" type="Control"]
 layout_mode = 3
@@ -270,10 +273,12 @@ icon_alignment = 1
 
 [node name="PowerButton" type="Button" parent="AOLLogoHolder/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 8
 focus_mode = 0
-text = "power"
+icon = ExtResource("10_yke0b")
 
 [node name="CreditsButton" type="Button" parent="AOLLogoHolder/MarginContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "Credits"

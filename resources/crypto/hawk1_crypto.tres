@@ -10,6 +10,7 @@ display_name = "HAWK1A"
 icon = ExtResource("1_ubfbx")
 price = 4.2
 volatility = 10.0
+intrinsic_value = null
 power_required = 1000
 block_size = 1.0
 block_time = 9.0

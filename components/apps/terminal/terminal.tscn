@@ -22,6 +22,7 @@ show_in_taskbar = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0xw1n")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
@@ -47,7 +48,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Type \"help\" for a list of available commands"
+placeholder_text = "Ayuda me"
 
 [node name="EnterButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true

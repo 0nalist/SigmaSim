@@ -364,22 +364,22 @@ func _get_debt_resource(name: String) -> Dictionary:
 	return {}
 
 func _set_credit_card_balance(used: float, limit: float) -> void:
-			for res in debt_resources:
-							if res.get("name", "") == "Credit Card":
-											res["balance"] = used
-											res["credit_limit"] = limit
-											res["interest_rate"] = PortfolioManager.credit_interest_rate
-											if not res.has("compound_period"):
-															res["compound_period"] = "Monthly"
-											_update_credit_card_due_date()
-											debt_resources_changed.emit()
-											return
+	for res in debt_resources:
+		if res.get("name", "") == "Credit Card":
+			res["balance"] = used
+			res["credit_limit"] = limit
+			res["interest_rate"] = PortfolioManager.credit_interest_rate
+			if not res.has("compound_period"):
+				res["compound_period"] = "Monthly"
+			_update_credit_card_due_date()
+			debt_resources_changed.emit()
+			return
 
 func _set_student_loan_balance(amount: float) -> void:
 	for res in debt_resources:
-			if res.get("name", "") == "Student Loan":
-					res["balance"] = amount
-					debt_resources_changed.emit()
+		if res.get("name", "") == "Student Loan":
+			res["balance"] = amount
+			debt_resources_changed.emit()
 			return
 
 
