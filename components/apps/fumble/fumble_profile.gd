@@ -231,32 +231,32 @@ func _populate_ocean(npc: NPC) -> void:
 
 
 func _run_entrance_animation() -> void:
-        await _await_layout_ready()
+	await _await_layout_ready()
 
-        portrait.modulate.a = 0.0
-        var p_tween: Tween = create_tween()
-        var py: float = portrait.position.y
-        p_tween.tween_property(portrait, "modulate:a", 1.0, 0.25)
-        p_tween.parallel().tween_property(portrait, "position:y", py, 0.25).from(py - 20.0)
+	portrait.modulate.a = 0.0
+	var p_tween: Tween = create_tween()
+	var py: float = portrait.position.y
+	p_tween.tween_property(portrait, "modulate:a", 1.0, 0.25)
+	p_tween.parallel().tween_property(portrait, "position:y", py, 0.25).from(py - 20.0)
 
-        var root_tween: Tween = create_tween()
-        var delay_step: float = 0.06
-        var index: int = 0
-        for node in sections:
-                node.modulate.a = 0.0
-                var delay: float = float(index) * delay_step
-                root_tween.parallel().tween_property(node, "modulate:a", 1.0, 0.25).set_delay(delay)
-                root_tween.parallel().tween_property(node, "position:y", 0.0, 0.25).from(10.0).as_relative().set_delay(delay)
-                index += 1
+	var root_tween: Tween = create_tween()
+	var delay_step: float = 0.06
+	var index: int = 0
+	for node in sections:
+		node.modulate.a = 0.0
+		var delay: float = float(index) * delay_step
+		root_tween.parallel().tween_property(node, "modulate:a", 1.0, 0.25).set_delay(delay)
+		root_tween.parallel().tween_property(node, "position:y", 0.0, 0.25).from(10.0).as_relative().set_delay(delay)
+		index += 1
 
 
 func _await_layout_ready() -> void:
-        await get_tree().process_frame
-        await get_tree().process_frame
-        var attempts := 0
-        while stats_grid.position.y == 0 and attempts < 10:
-                await get_tree().process_frame
-                attempts += 1
+		await get_tree().process_frame
+		await get_tree().process_frame
+		var attempts := 0
+		while stats_grid.position.y == 0 and attempts < 10:
+				await get_tree().process_frame
+				attempts += 1
 
 
 func _clear_children(container: Node) -> void:

@@ -37,15 +37,25 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 8
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/CategoryList/HBoxContainer"]
+visible = false
 layout_mode = 2
 texture = ExtResource("4_16n21")
 
-[node name="HeaderLabel" type="Label" parent="MarginContainer/CategoryList/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CategoryList/HBoxContainer"]
+layout_mode = 2
+
+[node name="HeaderLabel" type="Label" parent="MarginContainer/CategoryList/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 36
 text = "LifeStylist"
+
+[node name="Label" type="Label" parent="MarginContainer/CategoryList/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "This app doesn't do anything except cost you more money every day!
+It will be deleted once it is replaced with a better system."
+horizontal_alignment = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
