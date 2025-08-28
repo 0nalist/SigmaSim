@@ -124,10 +124,10 @@ func _setup_over_frames() -> void:
 
 
 func add_npc_profile_to_top(idx: int) -> void:
-		while card_stack == null:
-				await get_tree().process_frame
-		show_swipes_tab()
-		card_stack.add_card_to_top(idx)
+	while card_stack == null:
+		await get_tree().process_frame
+	show_swipes_tab()
+	await card_stack.add_card_to_top(idx)
 
 
 func _on_card_swiped_left(npc_idx):
