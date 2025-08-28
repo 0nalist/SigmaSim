@@ -226,14 +226,14 @@ func _create_or_update_apps_folder() -> void:
 	for entry in DesktopLayoutManager.get_children_of(folder_id):
 		if entry.get("type", "") == "app":
 			existing[entry.get("app_name", "")] = true
-	for app_name in WindowManager.app_registry.keys():
+	for app_name in WindowManager.get_registered_app_names():
 		if existing.has(app_name):
 			continue
 		var meta: Dictionary = _get_app_meta(app_name)
 		DesktopLayoutManager.create_app_shortcut(app_name, meta.get("title", app_name), meta.get("icon_path", ""), Vector2.ZERO, folder_id)
 
 func _get_app_meta(app_name: String) -> Dictionary:
-	var scene: PackedScene = WindowManager.app_registry.get(app_name)
+	var scene: PackedScene = WindowManager.get_app_scene(app_name)
 	var title: String = app_name
 	var icon_path: String = ""
 	if scene:

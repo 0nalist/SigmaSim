@@ -37,9 +37,10 @@ var commands := {
 		"description": "Clears the command log window.",
 	},
 	"stress_test": {
-			"args": "",
-			"description": "Opens every app in the app registry at once.",
-	},
+			var app_names := WindowManager.get_registered_app_names()
+			for app_name in app_names:
+				WindowManager.launch_app_by_name(app_name)
+			return true
 	"upgrademax": {
 			"args": "",
 			"description": "Purchases all upgrades ignoring costs.",
@@ -283,7 +284,8 @@ func process_command(command: String) -> bool:
 		
 		
 		"stress_test":
-			for app_name in WindowManager.app_registry.keys():
+			var app_names := WindowManager.get_registered_app_names()
+			for app_name in app_names:
 				WindowManager.launch_app_by_name(app_name)
 			return true
 		
