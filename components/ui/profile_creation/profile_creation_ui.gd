@@ -51,21 +51,25 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func _finish_profile_creation():
-	var password = user_data.get("password", "")
-	var seed_val: int
-	if password != "":
-		seed_val = PlayerManager.djb2(password)
-		print("Profile creation password:", password, " -> seed:", seed_val)
-	else:
-		seed_val = int(Time.get_unix_time_from_system())
-		print("Profile creation no password; using unix time seed:", seed_val)
-	user_data["global_rng_seed"] = seed_val
-	RNGManager.init_seed(seed_val)
-	var slot_id = SaveManager.get_next_available_slot()
-	print("Finalizing profile in slot", slot_id, "with seed", seed_val)
-	SaveManager.initialize_new_profile(slot_id, user_data)
-	emit_signal("profile_created", slot_id)
-	queue_free()
+        var password = user_data.get("password", "")
+        var seed_val: int
+        if password != "":
+               seed_val = PlayerManager.djb2(password)
+               user_data["using_random_seed"] = false
+               print("Profile creation password:", password, " -> seed:", seed_val)
+        else:
+               var rng = RandomNumberGenerator.new()
+               rng.randomize()
+               seed_val = rng.randi()
+               user_data["using_random_seed"] = true
+               print("Profile creation no password; generated random seed:", seed_val)
+        user_data["global_rng_seed"] = seed_val
+        RNGManager.init_seed(seed_val)
+        var slot_id = SaveManager.get_next_available_slot()
+        print("Finalizing profile in slot", slot_id, "with seed", seed_val)
+        SaveManager.initialize_new_profile(slot_id, user_data)
+        emit_signal("profile_created", slot_id)
+        queue_free()
 
 
 
