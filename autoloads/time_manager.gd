@@ -216,13 +216,13 @@ func load_from_data(data: Dictionary) -> void:
 	# Restore canonical minutes if provided; otherwise reconstruct from provided date/time
 	var has_total := data.has("total_minutes_elapsed")
 	if has_total:
-			_total_minutes_elapsed = int(data.get("total_minutes_elapsed", 0))
+		_total_minutes_elapsed = int(data.get("total_minutes_elapsed", 0))
 	else:
-			var restored_day := int(data.get("current_day", 1))
-			var restored_month := int(data.get("current_month", 1))
-			var restored_year := int(data.get("current_year", 2025))
-			var minutes_since_midnight := int(data.get("in_game_minutes", 0))
-			_total_minutes_elapsed = _days_since_epoch(restored_day, restored_month, restored_year) * 1440 + minutes_since_midnight
+		var restored_day := int(data.get("current_day", 1))
+		var restored_month := int(data.get("current_month", 1))
+		var restored_year := int(data.get("current_year", 2025))
+		var minutes_since_midnight := int(data.get("in_game_minutes", 0))
+		_total_minutes_elapsed = _days_since_epoch(restored_day, restored_month, restored_year) * 1440 + minutes_since_midnight
 
 	_start_total_minutes = int(data.get("start_total_minutes", 0))
 
@@ -233,17 +233,17 @@ func load_from_data(data: Dictionary) -> void:
 		is_fast_forwarding = true
 		fast_forward_minutes_left = int(data.get("fast_forward_minutes_left", 0))
 
-		autosave_enabled = bool(data.get("autosave_enabled", autosave_enabled))
-		save_autosave_setting()
+	autosave_enabled = bool(data.get("autosave_enabled", autosave_enabled))
+	save_autosave_setting()
 
 	# Recompute and mirror compatibility fields
-		_recompute_from_total_minutes()
+	_recompute_from_total_minutes()
 
-		autosave_hour_counter = 0
-		# Emit signals to let listeners refresh
-		emit_signal("minute_passed", in_game_minutes)
-		emit_signal("hour_passed", current_hour, total_minutes_elapsed)
-		emit_signal("day_passed", current_day, current_month, current_year)
+	autosave_hour_counter = 0
+	# Emit signals to let listeners refresh
+	emit_signal("minute_passed", in_game_minutes)
+	emit_signal("hour_passed", current_hour, total_minutes_elapsed)
+	emit_signal("day_passed", current_day, current_month, current_year)
 
 func reset() -> void:
 		_rebuild_total_minutes_from_defaults()
