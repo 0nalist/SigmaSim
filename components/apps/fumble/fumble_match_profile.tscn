@@ -7,13 +7,6 @@
 [ext_resource type="FontFile" uid="uid://c7qyq2f5dk3iy" path="res://assets/fonts/Monoton-Regular.ttf" id="4_cted4"]
 [ext_resource type="Texture2D" uid="uid://dgbuedoo1sjgn" path="res://assets/ui/buttons/redbutton.png" id="4_fee1p"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_545u1"]
-shader = ExtResource("3_wiqbq")
-shader_parameter/line_thickness = 1.0
-shader_parameter/sin_frequency = 0.1
-shader_parameter/sin_offset = 0.0
-shader_parameter/light_offset = 0.5
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wiqbq"]
 texture = ExtResource("3_0t11s")
 texture_margin_left = 2.0
@@ -35,6 +28,13 @@ texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_545u1"]
+shader = ExtResource("3_wiqbq")
+shader_parameter/line_thickness = 1.0
+shader_parameter/sin_frequency = 0.1
+shader_parameter/sin_offset = 0.0
+shader_parameter/light_offset = 0.5
+
 [node name="FumbleMatchProfile" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -42,33 +42,52 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 script = ExtResource("1_ddbow")
 
 [node name="FumbleProfile" parent="." instance=ExtResource("2_eqlwe")]
 unique_name_in_owner = true
 layout_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="FumbleProfile"]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 25
 
-[node name="VBoxContainer" type="VBoxContainer" parent="FumbleProfile/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="FumbleProfile/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="FumbleProfile/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="CloseFumbleProfileButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_wiqbq")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_cted4")
+theme_override_styles/normal = SubResource("StyleBoxTexture_545u1")
+text = "x"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+mouse_filter = 2
 
-[node name="BlockButton" type="Button" parent="FumbleProfile/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="BlockButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
@@ -76,7 +95,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 text = " CHAT "
 
-[node name="ChatButton" type="Button" parent="FumbleProfile/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="ChatButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_545u1")
 custom_minimum_size = Vector2(0, 32)
@@ -87,15 +106,5 @@ theme_override_fonts/font = ExtResource("4_cted4")
 theme_override_font_sizes/font_size = 48
 text = " CHAT "
 
-[node name="CloseFumbleProfileButton" type="Button" parent="FumbleProfile"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_wiqbq")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_cted4")
-theme_override_styles/normal = SubResource("StyleBoxTexture_545u1")
-text = "x"
-
-[connection signal="pressed" from="FumbleProfile/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ChatButton" to="." method="_on_chat_button_pressed"]
-[connection signal="pressed" from="FumbleProfile/CloseFumbleProfileButton" to="." method="_on_close_fumble_profile_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/CloseFumbleProfileButton" to="." method="_on_close_fumble_profile_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/ChatButton" to="." method="_on_chat_button_pressed"]
