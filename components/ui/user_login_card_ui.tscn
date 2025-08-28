@@ -15,6 +15,7 @@ custom_minimum_size = Vector2(180, 190)
 offset_right = 181.0
 offset_bottom = 190.0
 size_flags_horizontal = 3
+size_flags_vertical = 4
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_6fwkw")
 script = ExtResource("1_k4nqg")
