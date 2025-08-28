@@ -60,10 +60,11 @@ func _ready() -> void:
 		_apply_colors()
 
 func load_npc(npc: NPC, npc_idx: int = -1) -> void:
-	visible = false
-	portrait.apply_config(npc.portrait_config)
-	portrait.portrait_creator_enabled = true
-	portrait.subject_npc_idx = npc_idx
+        # Keep the root visible so layout calculations can occur, but hide visually
+        modulate.a = 0.0
+        portrait.apply_config(npc.portrait_config)
+        portrait.portrait_creator_enabled = true
+        portrait.subject_npc_idx = npc_idx
 
 	var dime_status: String
 	if Engine.has_singleton("NPCManager"):
@@ -87,13 +88,14 @@ func load_npc(npc: NPC, npc_idx: int = -1) -> void:
 	_populate_astrology(npc)
 	_populate_greek(npc)
 	_populate_wealth(npc)
-	_populate_mbti(npc)
-	_populate_ocean(npc)
+        _populate_mbti(npc)
+        _populate_ocean(npc)
 
-	await _await_layout_ready()
-	visible = true
-	profile_loaded.emit()
-	_run_entrance_animation()
+        visible = true
+        await _await_layout_ready()
+        modulate.a = 1.0
+        profile_loaded.emit()
+        _run_entrance_animation()
 
 func _apply_colors() -> void:
 	var root_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate() as StyleBoxFlat
