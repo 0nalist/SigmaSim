@@ -8,11 +8,12 @@ func _ready():
     bm.add_debt_resource({
         "name": "Test Debt",
         "balance": 0.0,
-        "days_until_due": 5
+        "compounds_in": 5 * 1440,
+        "compound_interval": 5 * 1440,
     })
     tm._advance_time(1440)
     var res = bm.get_debt_resources()[0]
-    assert(res.get("days_until_due") == 4)
+    assert(res.get("compounds_in") == 4 * 1440)
     print("debt_days_tickdown_test passed")
     quit()
 

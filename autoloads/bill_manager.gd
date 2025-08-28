@@ -113,7 +113,7 @@ func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
 					"amount": amount
 			})
 
-	_update_debt_due_dates()
+	_tick_down_compound_timers(1440)
 	apply_debt_interest()
 	show_due_popups()
 
@@ -301,20 +301,21 @@ func get_daily_lifestyle_cost() -> int:
 func add_debt_resource(resource: Dictionary) -> void:
 	if not resource.has("interest_rate"):
 		resource["interest_rate"] = 0.0
-	if not resource.has("compound_period"):
-		resource["compound_period"] = "Monthly"
-	if resource.has("minutes_until_due"):
-		resource["minutes_until_due"] = int(resource.get("minutes_until_due", 0))
-		resource["days_until_due"] = int(resource["minutes_until_due"] / 1440)
-	else:
-		var days := int(resource.get("days_until_due", 30))
-		resource["days_until_due"] = days
-		resource["minutes_until_due"] = days * 1440
+	var name := String(resource.get("name", ""))
+	var interval := 0
+	match name:
+		"Credit Card":
+			interval = 7 * 1440
+		"Student Loan":
+			interval = TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440
+		"Payday Loan":
+			interval = 1 * 1440
+		_:
+			interval = int(resource.get("compound_interval", 0))
+	resource["compound_interval"] = interval
+	resource["compounds_in"] = int(resource.get("compounds_in", interval))
 	debt_resources.append(resource)
-	if resource.get("name", "") == "Credit Card":
-		_update_credit_card_due_date()
 	debt_resources_changed.emit()
-
 func get_debt_resources() -> Array[Dictionary]:
 		return debt_resources
 
@@ -346,17 +347,24 @@ func take_payday_loan(amount: float) -> void:
 		PortfolioManager.add_cash(amount)
 
 func apply_debt_interest() -> void:
-		var changed := false
-		for res in debt_resources:
-				var rate: float = float(res.get("interest_rate", 0.0))
-				if rate != 0.0:
-						var bal: float = float(res.get("balance", 0.0))
-						if bal > 0.0:
-								res["balance"] = bal * (1.0 + rate)
-								changed = true
-		if changed:
-				debt_resources_changed.emit()
-
+	var changed := false
+	for res in debt_resources:
+		var minutes := int(res.get("compounds_in", 0))
+		if minutes > 0:
+			continue
+		var rate: float = float(res.get("interest_rate", 0.0))
+		var bal: float = float(res.get("balance", 0.0))
+		if rate != 0.0 and bal > 0.0:
+			res["balance"] = bal * (1.0 + rate)
+			changed = true
+		if res.get("name", "") == "Student Loan":
+			res["compound_interval"] = TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440
+		var interval := int(res.get("compound_interval", 0))
+		if res.get("compounds_in", 0) != interval:
+			res["compounds_in"] = interval
+			changed = true
+	if changed:
+		debt_resources_changed.emit()
 func _get_debt_resource(name: String) -> Dictionary:
 	for res in debt_resources:
 		if res.get("name", "") == name:
@@ -369,12 +377,8 @@ func _set_credit_card_balance(used: float, limit: float) -> void:
 			res["balance"] = used
 			res["credit_limit"] = limit
 			res["interest_rate"] = PortfolioManager.credit_interest_rate
-			if not res.has("compound_period"):
-				res["compound_period"] = "Monthly"
-			_update_credit_card_due_date()
 			debt_resources_changed.emit()
 			return
-
 func _set_student_loan_balance(amount: float) -> void:
 	for res in debt_resources:
 		if res.get("name", "") == "Student Loan":
@@ -420,63 +424,28 @@ func _find_next_bill_date(bill_name: String) -> Dictionary:
 
 
 
-func _update_credit_card_due_date() -> void:
-	var info = _find_next_bill_date("Credit Card")
-	var days_left = int(info.get("days_ahead", 0))
-	var minutes = days_left * 1440
-	for res in debt_resources:
-		if res.get("name", "") == "Credit Card":
-			res["days_until_due"] = days_left
-			res["minutes_until_due"] = minutes
-			break
-
-func _update_debt_due_dates() -> void:
-	var changed := false
-	var info = _find_next_bill_date("Credit Card")
-	var credit_days := int(info.get("days_ahead", 0))
-	var credit_minutes := credit_days * 1440
-	for res in debt_resources:
-		var name = String(res.get("name", ""))
-		var minutes := int(res.get("minutes_until_due", res.get("days_until_due", 0) * 1440))
-		if name == "Credit Card":
-			if minutes != credit_minutes:
-				res["minutes_until_due"] = credit_minutes
-				res["days_until_due"] = credit_days
-				changed = true
-		else:
-			var new_minutes = max(minutes - 1440, 0)
-			if new_minutes != minutes:
-				res["minutes_until_due"] = new_minutes
-				res["days_until_due"] = int(new_minutes / 1440)
-				changed = true
-	if changed:
-		debt_resources_changed.emit()
-
 func _on_hour_passed(_hour: int, _total: int) -> void:
-	_tick_down_debt_timers(60)
-
+	_tick_down_compound_timers(60)
+	apply_debt_interest()
 func _on_minute_passed(_total: int) -> void:
-	_tick_down_debt_timers(1)
-
-func _tick_down_debt_timers(delta: int) -> void:
+	_tick_down_compound_timers(1)
+	apply_debt_interest()
+func _tick_down_compound_timers(delta: int) -> void:
 	var changed := false
 	for res in debt_resources:
-		var minutes := int(res.get("minutes_until_due", 0))
+		var minutes := int(res.get("compounds_in", 0))
 		if minutes <= 0:
 			continue
 		if delta == 60 and minutes >= 1440:
 			continue
 		if delta == 1 and minutes >= 60:
 			continue
-		minutes = max(minutes - delta, 0)
-		res["minutes_until_due"] = minutes
-		var days := int(minutes / 1440)
-		if int(res.get("days_until_due", 0)) != days:
-			res["days_until_due"] = days
-		changed = true
+		var new_minutes := max(minutes - delta, 0)
+		if new_minutes != minutes:
+			res["compounds_in"] = new_minutes
+			changed = true
 	if changed:
 		debt_resources_changed.emit()
-
 func reset() -> void:
 	autopay_enabled = false
 	active_bills.clear()
@@ -509,19 +478,20 @@ func load_from_data(data: Dictionary) -> void:
 	for entry in temp:
 		if typeof(entry) == TYPE_DICTIONARY:
 			var res: Dictionary = entry as Dictionary
-			if res.has("minutes_until_due"):
-				res["minutes_until_due"] = int(res.get("minutes_until_due", 0))
-				res["days_until_due"] = int(res["minutes_until_due"] / 1440)
+			if res.has("compounds_in") or res.has("compound_interval"):
+				res["compound_interval"] = int(res.get("compound_interval", 0))
+				res["compounds_in"] = int(res.get("compounds_in", res["compound_interval"]))
 			else:
-				var days := int(res.get("days_until_due", 0))
-				res["days_until_due"] = days
-				res["minutes_until_due"] = days * 1440
+				var minutes := int(res.get("minutes_until_due", res.get("days_until_due", 0) * 1440))
+				res["compound_interval"] = minutes
+				res["compounds_in"] = minutes
+			res.erase("minutes_until_due")
+			res.erase("days_until_due")
+			res.erase("compound_period")
 			debt_resources.append(res)
 
 	emit_signal("lifestyle_updated")
 	debt_resources_changed.emit()
-
-
 func register_popup(popup: BillPopupUI, date_key: String) -> void:
 	if not active_bills.has(date_key):
 		active_bills[date_key] = []
