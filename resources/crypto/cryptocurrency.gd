@@ -37,7 +37,7 @@ func update_from_market(volatility_scale: float = 1.0) -> void:
 	delta += (intrinsic_value - price) * reversion_strength
 
 	# Slow upward drift of intrinsic value to simulate ecosystem growth
-	intrinsic_value *= 1.0001
+	intrinsic_value *= 1.000001
 
 	update_price(delta)
 	#update_power_required(price)

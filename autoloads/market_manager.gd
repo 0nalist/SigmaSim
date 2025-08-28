@@ -140,7 +140,7 @@ func _update_stock_prices() -> void:
 		var old_price: float = stock.price
 
 		if event == null or not event.is_active():
-			stock.intrinsic_value += rng.randf_range(0.0001, 0.001)
+			stock.intrinsic_value += rng.randf_range(0.000001, 0.0001)
 
 			stock.momentum -= 1
 			if stock.momentum <= 0:

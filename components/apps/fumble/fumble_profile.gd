@@ -251,18 +251,18 @@ func _run_entrance_animation() -> void:
 
 
 func _await_layout_ready() -> void:
-                await get_tree().process_frame
-                await get_tree().process_frame
-                var attempts := 0
-                while stats_grid.position.y == 0 and attempts < 10:
-                                # Force the parent containers to recalculate their
-                                # layout so the profile sections aren't stacked at
-                                # the top when first loaded.
-                                var parent_container := stats_grid.get_parent()
-                                if parent_container is Control:
-                                                parent_container.queue_sort()
-                                await get_tree().process_frame
-                                attempts += 1
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var attempts := 0
+	while stats_grid.position.y == 0 and attempts < 10:
+		# Force the parent containers to recalculate their
+		# layout so the profile sections aren't stacked at
+		# the top when first loaded.
+		var parent_container := stats_grid.get_parent()
+		if parent_container is Control:
+						parent_container.queue_sort()
+		await get_tree().process_frame
+		attempts += 1
 
 
 func _clear_children(container: Node) -> void:
