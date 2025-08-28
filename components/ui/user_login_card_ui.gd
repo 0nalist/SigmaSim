@@ -135,11 +135,9 @@ func _generate_rainbow_password() -> String:
 		Color(0.29, 0, 0.51),
 		Color(0.56, 0, 1),
 	]
-	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-	rng.randomize()
 	var bbcode: String = ""
 	for i in text.length():
-		var ch: String = text.substr(i, 1)
-		var color: Color = colors[rng.randi_range(0, colors.size() - 1)]
-		bbcode += "[color=%s]%s[/color]" % [color.to_html(), ch]
+			var ch: String = text.substr(i, 1)
+			var color: Color = colors[i % colors.size()]
+			bbcode += "[color=%s]%s[/color]" % [color.to_html(), ch]
 	return bbcode

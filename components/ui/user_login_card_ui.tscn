@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bvd5242ybqyuc"]
 
-[ext_resource type="Script" uid="uid://cehj7u7slfiqb" path="res://components/ui/user_login_card_ui.gd" id="1_k4nqg"]
+[ext_resource type="Script" uid="uid://bu6lvufapl0xb" path="res://components/ui/user_login_card_ui.gd" id="1_k4nqg"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="2_pv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fwkw"]
@@ -36,8 +36,8 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 mouse_filter = 1
-horizontal_alignment = 1
 text = "$0"
+horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(128, 128)
@@ -102,10 +102,11 @@ text = "👁️"
 
 [node name="RainbowPasswordLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PasswordHBox"]
 unique_name_in_owner = true
-visible = false
+custom_minimum_size = Vector2(128, 18)
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
+text = "password"
 
 [node name="LogInButton" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
