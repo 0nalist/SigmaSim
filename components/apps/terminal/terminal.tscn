@@ -5,10 +5,10 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xw1n"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="Terminal" type="CanvasLayer"]
-layer = 100
+[node name="Terminal" type="Pane"]
 script = ExtResource("1_ekq6y")
 window_title = "Terminal"
+show_in_taskbar = false
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 15

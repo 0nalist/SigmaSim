@@ -26,8 +26,9 @@ var app_registry := {
 	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
 	"NewYou": preload("res://components/apps/new_you/new_you.tscn"),
-	"Wallet": preload("res://components/apps/wallet/wallet_ui.tscn"),
+        "Wallet": preload("res://components/apps/wallet/wallet_ui.tscn"),
   "Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
+        "Terminal": preload("res://components/apps/terminal/terminal.tscn"),
 
 }
 
