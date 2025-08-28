@@ -15,6 +15,7 @@ class_name CryptoPopupUI
 @onready var price_chart: ChartComponent = %PriceChart
 @onready var buy_button: Button = %BuyButton
 @onready var sell_button: Button = %SellButton
+@onready var quantity_spinbox: SpinBox = %QuantitySpinBox
 
 var crypto: Cryptocurrency
 
@@ -56,12 +57,16 @@ func _update_ui() -> void:
 	label_owned.text = "%.4f" % PortfolioManager.get_crypto_amount(crypto.symbol)
 
 func _on_buy_pressed() -> void:
-	if crypto and PortfolioManager.attempt_spend(crypto.price):
-		PortfolioManager.add_crypto(crypto.symbol, 1.0)
-		_update_ui()
+	if crypto:
+		var amount := quantity_spinbox.value
+		if PortfolioManager.attempt_spend(crypto.price * amount):
+			PortfolioManager.add_crypto(crypto.symbol, amount)
+			_update_ui()
 
 func _on_sell_pressed() -> void:
-	if crypto and PortfolioManager.sell_crypto(crypto.symbol, 1.0):
+	if crypto:
+		var amount := quantity_spinbox.value
+		if PortfolioManager.sell_crypto(crypto.symbol, amount):
 			_update_ui()
 
 

@@ -14,6 +14,7 @@ class_name StockPopupUI
 @onready var price_chart: ChartComponent = %PriceChart
 @onready var buy_button: Button = %BuyButton
 @onready var sell_button: Button = %SellButton
+@onready var quantity_spinbox: SpinBox = %QuantitySpinBox
 
 var stock: Stock
 
@@ -65,18 +66,21 @@ func _update_ui() -> void:
 	label_owned.text = str(PortfolioManager.stocks_owned.get(stock.symbol, 0))
 
 func _on_buy_pressed() -> void:
-		if not stock:
-				return
-		var price := stock.price
-		if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
-				print("Credit purchase requires Pattern Day Trader upgrade")
-				return
-		if PortfolioManager.buy_stock(stock.symbol):
-				_update_ui()
+	if not stock:
+		return
+	var quantity := int(quantity_spinbox.value)
+	var price := stock.price * quantity
+	if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
+		print("Credit purchase requires Pattern Day Trader upgrade")
+		return
+	if PortfolioManager.buy_stock(stock.symbol, quantity):
+		_update_ui()
 
 func _on_sell_pressed() -> void:
-	if stock and PortfolioManager.sell_stock(stock.symbol):
-		_update_ui()
+	if stock:
+		var quantity := int(quantity_spinbox.value)
+		if PortfolioManager.sell_stock(stock.symbol, quantity):
+			_update_ui()
 
 
 func get_custom_save_data() -> Dictionary:
