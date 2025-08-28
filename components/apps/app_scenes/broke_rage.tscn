@@ -290,6 +290,10 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Stocks: $"
 
+[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
 [connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/OwerViewButton" to="." method="_on_ower_view_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/ChartsTopBar/SummaryTabButtonCharts" to="." method="_on_summary_tab_pressed"]
 [connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/ChartsTopBar/ChartsTabButtonCharts" to="." method="_on_charts_tab_pressed"]

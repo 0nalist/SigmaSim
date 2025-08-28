@@ -19,13 +19,13 @@ class_name StockPopupUI
 var stock: Stock
 
 func setup_custom(args) -> void:
-        var s: Stock = null
-        if args is Stock:
-                s = args
-        elif typeof(args) == TYPE_STRING:
-                s = MarketManager.get_stock(args)
-        if s:
-                setup(s)
+		var s: Stock = null
+		if args is Stock:
+				s = args
+		elif typeof(args) == TYPE_STRING:
+				s = MarketManager.get_stock(args)
+		if s:
+				setup(s)
 
 func setup(_stock: Stock) -> void:
 	stock = _stock
