@@ -267,6 +267,11 @@ func _create_taskbar_icon(window: WindowFrame) -> Button:
 	icon_button.theme = get_tree().root.theme
 	icon_button.add_theme_font_size_override("font_size", 14)
 
+	if window.pane:
+			window.pane.window_title_changed.connect(func(new_title: String):
+					icon_button.text = new_title
+			)
+
 	var wm := self
 	icon_button.gui_input.connect(func(event):
 		if event is InputEventMouseButton:
