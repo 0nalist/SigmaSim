@@ -11,6 +11,8 @@ func _ready():
         "has_credit_limit": false,
         "credit_limit": 0.0,
         "interest_rate": 0.8,
+        "compound_interval": 1440,
+        "compounds_in": 1440,
         "can_borrow": true,
         "borrow_limit": 1000.0
     })

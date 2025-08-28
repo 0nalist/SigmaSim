@@ -9,7 +9,9 @@ func _ready():
         pm.set_student_loans(100.0)
         bm.add_debt_resource({
                 "name": "Student Loan",
-                "balance": 100.0
+                "balance": 100.0,
+                "compound_interval": TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440,
+                "compounds_in": TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440,
         })
         var card = DebtCardUI.new()
         get_root().add_child(card)

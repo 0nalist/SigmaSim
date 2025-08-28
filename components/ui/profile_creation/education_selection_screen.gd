@@ -91,6 +91,8 @@ func save_data() -> void:
 			"balance": 0.0,
 			"has_credit_limit": true,
 			"credit_limit": selected_credit_limit,
+			"compound_interval": 7 * 1440,
+			"compounds_in": 7 * 1440,
 	})
 
 	if selected_student_debt > 0.0:
@@ -99,6 +101,8 @@ func save_data() -> void:
 					"balance": selected_student_debt,
 					"has_credit_limit": false,
 					"credit_limit": 0.0,
+					"compound_interval": TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440,
+					"compounds_in": TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440,
 			})
 
 	PortfolioManager.set_credit_limit(selected_credit_limit)
