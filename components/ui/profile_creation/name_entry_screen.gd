@@ -17,9 +17,8 @@ func _ready():
 
 func _check_validity(_text) -> void:
 	var is_valid : bool = (
-		name_line_edit.text.strip_edges() != "" and
-		username_line_edit.text.strip_edges() != "" and
-		password_line_edit.text.strip_edges() != ""
+		   name_line_edit.text.strip_edges() != "" and
+		   username_line_edit.text.strip_edges() != ""
 	)
 	
 	emit_signal("step_valid", is_valid)
