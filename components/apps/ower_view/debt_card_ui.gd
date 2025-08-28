@@ -52,8 +52,13 @@ func update_display() -> void:
 	var period: String = String(resource_data.get("compound_period", "Monthly"))
 	compound_label.text = "Compounds: %s" % period
 
-	var due_days: int = int(resource_data.get("days_until_due", 0))
-	due_label.text = "Due in: %d days" % due_days
+	var minutes_left: int = int(resource_data.get("minutes_until_due", 0))
+	if minutes_left >= 1440:
+		due_label.text = "Due in: %d days" % int(minutes_left / 1440)
+	elif minutes_left >= 60:
+		due_label.text = "Due in: %d hours" % int(minutes_left / 60)
+	else:
+		due_label.text = "Due in: %d minutes" % minutes_left
 
 	var credit_limit = resource_data.get("credit_limit")
 	var has_limit = credit_limit != null and float(credit_limit) > 0.0
