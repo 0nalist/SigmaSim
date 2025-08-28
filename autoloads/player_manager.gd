@@ -103,12 +103,13 @@ var default_user_data: Dictionary = {
 		"hh_open_fumble_cost": 10,
 
 		# Flags and progression
-		"unlocked_perks": [],
-		"seen_dialogue_ids": [],
-		"global_rng_seed": 0,
-	# Background shader settings
-	"background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
-	}
+               "unlocked_perks": [],
+               "seen_dialogue_ids": [],
+               "global_rng_seed": 0,
+               "using_random_seed": false,
+        # Background shader settings
+        "background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
+        }
 
 var user_data: Dictionary = default_user_data.duplicate(true)
 
