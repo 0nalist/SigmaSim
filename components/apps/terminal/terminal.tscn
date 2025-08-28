@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://degmpql6com4w"]
 
-[ext_resource type="Script" uid="uid://b8ga46epirsny" path="res://components/debug/debug_console.gd" id="1_ekq6y"]
+[ext_resource type="Script" uid="uid://b8ga46epirsny" path="res://components/apps/terminal/terminal.gd" id="1_ekq6y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xw1n"]
-bg_color = Color(0, 0, 0, 0.7)
+bg_color = Color(0, 0, 0, 1)
 
-[node name="DebugConsole" type="CanvasLayer"]
+[node name="Terminal" type="CanvasLayer"]
 layer = 100
 script = ExtResource("1_ekq6y")
 
@@ -31,7 +31,7 @@ layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Developer Console"
+text = "Terminal"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
