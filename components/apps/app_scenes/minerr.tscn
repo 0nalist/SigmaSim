@@ -80,6 +80,20 @@ size_flags_horizontal = 6
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.0
 
+[node name="SortHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SortPropertyOption" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/SortHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SortDirectionButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer/SortHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "\u2191"
+
 [node name="GPUsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/GPUVBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
