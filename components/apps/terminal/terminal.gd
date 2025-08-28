@@ -72,23 +72,24 @@ func _ready() -> void:
 	command_line.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
 	command_line.add_theme_color_override("caret_color", Color(0.8, 1.0, 0.8))
 
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	visible = false
+        mouse_filter = Control.MOUSE_FILTER_STOP
 
-	enter_button.pressed.connect(_on_enter_pressed)
-	command_line.text_submitted.connect(_on_text_submitted)
-	enter_button.focus_mode = Control.FOCUS_NONE
+        enter_button.pressed.connect(_on_enter_pressed)
+        command_line.text_submitted.connect(_on_text_submitted)
+        enter_button.focus_mode = Control.FOCUS_NONE
 
-	_populate_command_list()
-	#command_list_container.visible = false
-	command_list_parent_container.visible = false
+        _populate_command_list()
+        #command_list_container.visible = false
+        command_list_parent_container.visible = false
+
+        # Ensure the terminal UI is visible when the app launches
+        call_deferred("open")
 	
 
 func open() -> void:
-		print("opening terminal")
-		visible = true
-		visible = true
-		call_deferred("_focus_line")
+                print("opening terminal")
+                visible = true
+                call_deferred("_focus_line")
 
 func close() -> void:
 	visible = false
