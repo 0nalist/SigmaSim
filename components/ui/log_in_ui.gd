@@ -180,7 +180,7 @@ func _on_settings_button_pressed() -> void:
 
 
 func _on_power_button_pressed() -> void:
-        get_tree().quit()
+		get_tree().quit()
 
 func _on_card_selected(card: UserLoginCardUI) -> void:
 	# Collapse any other expanded login cards so only one is open at a time.
