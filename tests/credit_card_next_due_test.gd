@@ -7,13 +7,14 @@ func _ready():
     tm.reset()
     bm.add_debt_resource({
         "name": "Credit Card",
-        "balance": 0.0
+        "balance": 0.0,
     })
     var res = bm.get_debt_resources()[0]
+    assert(res.get("compound_interval") == 7 * 1440)
+    assert(res.get("compounds_in") == 7 * 1440)
     var day = tm.current_day
     var month = tm.current_month
     var year = tm.current_year
-    var days_ahead = 0
     var expected := ""
     while true:
         var bills = bm.get_due_bills_for_date(day, month, year)
@@ -28,8 +29,6 @@ func _ready():
             if month > 12:
                 month = 1
                 year += 1
-        days_ahead += 1
-    assert(res.get("days_until_due") == days_ahead)
     var summary = bm.get_credit_summary()
     assert(summary.get("next_due") == expected)
     print("credit_card_next_due_test passed")
