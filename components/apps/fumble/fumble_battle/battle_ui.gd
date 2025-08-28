@@ -213,7 +213,7 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 
 	if victorious:
 		ex_award = npc.attractiveness / 10.0
-		victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+		victory_ex_label.text = "You earned " + str(ex_award) + " EX"
 		end_battle_screen_container.show()
 		_disable_all_action_buttons()
 	elif blocked:
@@ -635,7 +635,7 @@ var confidence_award: float = 25.0
 func show_victory_screen():
 		_reset_auto_checkboxes()
 		ex_award = npc.attractiveness / 100.0
-		victory_ex_label.text = "You earned " + str(ex_award) + " Ex"
+		victory_ex_label.text = "You earned " + str(ex_award) + " EX"
 		victory_confidence_label.text = "Confidence +" + str(confidence_award)
 		victory_name_label.text = npc.first_name + " has been added to"
 		end_battle_screen_container.show()

@@ -83,7 +83,8 @@ func _refresh_cost() -> void:
 				cost_strs.append("$" + formatted)
 		else:
 			# Default to 2 decimals and capitalized currency name
-			cost_strs.append("%s: %s" % [currency.capitalize(), NumberFormatter.format_commas(amount, 2)])
+			var currency_display = currency.upper() if currency == "ex" else currency.capitalize()
+			cost_strs.append("%s: %s" % [currency_display, NumberFormatter.format_commas(amount, 2)])
 	cost_label.text = "Cost: " + " / ".join(cost_strs)
 
 func _on_buy_button_pressed() -> void:
