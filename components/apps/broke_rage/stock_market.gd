@@ -32,7 +32,7 @@ func refresh_rows_from_market():
 
 func _on_buy_button_pressed(symbol: String, quantity: int) -> void:
 	var stock = PortfolioManager.stock_data.get(symbol)
-	var total_price := stock.price * quantity if stock else 0.0
+	var total_price = stock.price * quantity if stock else 0.0
 	if stock and PortfolioManager.get_cash() < total_price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
 		print("Credit purchase requires Pattern Day Trader upgrade")
 		return
