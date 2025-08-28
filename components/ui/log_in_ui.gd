@@ -14,7 +14,8 @@ extends Control
 @onready var quick_new_button: Button = $Panel/ProfilesContainer/ProfileRow/QuickNewButton
 
 
-var profile_panel_scene := preload("res://components/ui/profile_panel.tscn")
+const UserLoginCardUI = preload("res://components/ui/user_login_card_ui.gd")
+var user_login_card_scene := preload("res://components/ui/user_login_card_ui.tscn")
 const PortraitFactory = preload("res://resources/portraits/portrait_factory.gd")
 
 
@@ -28,9 +29,9 @@ func _ready() -> void:
 
 
 func load_and_display_saved_profiles():
-	for child in %ProfileRow.get_children():
-		if child is ProfilePanel:
-			child.queue_free()
+        for child in %ProfileRow.get_children():
+                if child is UserLoginCardUI:
+                        child.queue_free()
 
 	var metadata = SaveManager.load_slot_metadata()
 	for key in metadata.keys():
@@ -41,14 +42,17 @@ func load_and_display_saved_profiles():
 			print("⚠️ Skipping invalid profile slot:", slot_id)
 			continue  # skip malformed or empty profiles
 
-		var panel = profile_panel_scene.instantiate()
-		profile_row.add_child(panel)
-		panel.login_requested.connect(_on_profile_login_requested)
-		panel.set_profile_data(data, slot_id)
+                var panel = user_login_card_scene.instantiate()
+                profile_row.add_child(panel)
+                panel.login_requested.connect(_on_profile_login_requested)
+                panel.card_selected.connect(_on_card_selected)
+                panel.set_profile_data(data, slot_id)
 
 
 
 var dot_time = .1
+
+var selected_card: UserLoginCardUI
 
 func _on_profile_login_requested(slot_id: int) -> void:
 	SaveManager.current_slot_id = slot_id
@@ -62,11 +66,11 @@ func _on_profile_login_requested(slot_id: int) -> void:
 	logging_in_label.text = "Locking in."
 	await get_tree().create_timer(dot_time).timeout
 	logging_in_label.text = "Locking in.."
-	await get_tree().create_timer(dot_time).timeout
-	logging_in_label.text = "Locking in..."
-	await get_tree().create_timer(dot_time).timeout
-	# Launch desktop environment
-	GameManager.load_desktop_env(slot_id)
+        await get_tree().create_timer(dot_time).timeout
+        logging_in_label.text = "Locking in..."
+        await get_tree().create_timer(dot_time).timeout
+        # Launch desktop environment
+        GameManager.load_desktop_env(slot_id)
 	#SaveManager.save_to_slot(PlayerManager.get_slot_id())
 	#queue_free()
 
@@ -151,11 +155,11 @@ func _on_quick_new_button_pressed() -> void:
 	user_data["background_path"] = ""
 
 	var portrait_cfg = PortraitFactory.generate_config_for_name(full_name)
-	user_data["portrait_config"] = portrait_cfg.to_dict()
+        user_data["portrait_config"] = portrait_cfg.to_dict()
 
 	var slot_id = SaveManager.get_next_available_slot()
 	SaveManager.initialize_new_profile(slot_id, user_data)
-	await _on_profile_login_requested(slot_id)
+        await _on_profile_login_requested(slot_id)
 
 func _on_new_profile_created(slot_id):
 	print("new profile created in slot " + str(slot_id))
@@ -164,9 +168,9 @@ func _on_new_profile_created(slot_id):
 	load_and_display_saved_profiles()
 
 func _on_new_profile_abandoned():
-	load_and_display_saved_profiles()
-	%AOLLogoHolder.show()
-	%ProfilesContainer.show()
+        load_and_display_saved_profiles()
+        %AOLLogoHolder.show()
+        %ProfilesContainer.show()
 
 
 func _on_settings_button_pressed() -> void:
@@ -176,4 +180,10 @@ func _on_settings_button_pressed() -> void:
 
 
 func _on_power_button_pressed() -> void:
-	get_tree().quit()
+        get_tree().quit()
+
+func _on_card_selected(card: UserLoginCardUI) -> void:
+        if selected_card and selected_card != card:
+                selected_card.collapse()
+        selected_card = card
+        selected_card.expand()
