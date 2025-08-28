@@ -3,7 +3,7 @@ extends Node
 
 var stock_market: Dictionary = {}  # symbol: Stock
 var crypto_market: Dictionary = {}  # symbol: Crypto
-var stock_events: Dictionary = {}# symbol: MarketEvent
+var stock_events: Dictionary = {}  # symbol: MarketEvent
 var crypto_events: Dictionary = {}  # symbol: MarketEvent
 
 signal crypto_market_ready
@@ -31,12 +31,17 @@ var CRYPTO_RESOURCES := {
 }
 
 var EVENT_RESOURCES := {
-		"HAWK_PUMP": preload("res://resources/market_events/hawk_pump_and_dump.tres"),
+	"HAWK_PUMP": preload("res://resources/market_events/hawk_pump_and_dump.tres"),
 }
 
 var DAILY_EVENT_RESOURCES := {
-		"GENERIC_SURGE": preload("res://resources/market_events/generic_asset_surge.tres"),
-		"GENERIC_CRASH": preload("res://resources/market_events/generic_asset_crash.tres"),
+	"GENERIC_SURGE": preload("res://resources/market_events/generic_asset_surge.tres"),
+	"GENERIC_CRASH": preload("res://resources/market_events/generic_asset_crash.tres"),
+}
+
+var MAJOR_EVENT_RESOURCES := {
+	"MAJOR_SURGE": preload("res://resources/market_events/major_market_surge.tres"),
+	"MAJOR_CRASH": preload("res://resources/market_events/major_market_crash.tres"),
 }
 
 func _ready() -> void:
@@ -67,10 +72,10 @@ func register_crypto(crypto: Cryptocurrency) -> void:
 		script_name = str(crypto.get_script())
 	var obj_id: int = crypto.get_instance_id()
 	print("register_crypto: id=", str(obj_id),
-		", type=", crypto.get_class(),
-		", script=", script_name,
-		", resource_name=", str(crypto.resource_name),
-		", symbol='", str(crypto.symbol), "'")
+	", type=", crypto.get_class(),
+	", script=", script_name,
+	", resource_name=", str(crypto.resource_name),
+	", symbol='", str(crypto.symbol), "'")
 
 	if str(crypto.symbol).is_empty():
 		push_warning("register_crypto: resource had empty 'symbol'; skipping insert")
@@ -216,6 +221,43 @@ func _schedule_daily_events() -> void:
 					stock_ev.target_type = "stock"
 					stock_ev.schedule(TimeManager.get_now_minutes(), rng)
 					stock_events[stock_symbol] = stock_ev
+	# --- Major market events ---
+	if rng.randf() < 0.1:
+	       var is_surge := rng.randf() < 0.6
+	       var major_key := is_surge ? "MAJOR_SURGE" : "MAJOR_CRASH"
+	       var base_res: Resource = MAJOR_EVENT_RESOURCES[major_key]
+	       var weekday := TimeManager.day_of_week # 0 = Monday
+
+	       var allow_stock := weekday <= 4
+	       if weekday > 4 and not is_surge:
+		       allow_stock = true
+	       if allow_stock:
+		       var major_stocks: Array = []
+		       for symbol: String in stock_market.keys():
+			       var ev: MarketEvent = stock_events.get(symbol)
+			       if ev == null or ev.is_finished():
+				       major_stocks.append(symbol)
+		       if not major_stocks.is_empty():
+			       var sym := major_stocks[rng.randi_range(0, major_stocks.size() - 1)]
+			       var ev_res: MarketEvent = base_res.duplicate(true)
+			       ev_res.target_symbol = sym
+			       ev_res.target_type = "stock"
+			       ev_res.schedule(TimeManager.get_now_minutes(), rng)
+			       stock_events[sym] = ev_res
+
+	       if rng.randf() < 0.8:
+		       var major_crypto: Array = []
+		       for symbol: String in crypto_market.keys():
+			       var ev: MarketEvent = crypto_events.get(symbol)
+			       if ev == null or ev.is_finished():
+				       major_crypto.append(symbol)
+		       if not major_crypto.is_empty():
+			       var sym := major_crypto[rng.randi_range(0, major_crypto.size() - 1)]
+			       var ev_res: MarketEvent = base_res.duplicate(true)
+			       ev_res.target_symbol = sym
+			       ev_res.target_type = "crypto"
+			       ev_res.schedule(TimeManager.get_now_minutes(), rng)
+			       crypto_events[sym] = ev_res
 
 ## --- Initialization --- ##
 
@@ -264,7 +306,7 @@ func _init_crypto_market() -> void:
 	emit_signal("crypto_market_ready")
 	print("crypto market initialized; inserted count=", str(inserted_count))
 	print("crypto market keys: " + str(crypto_market.keys()))
-	print("crypto market state: " + JSON.stringify(crypto_market, "  "))
+	print("crypto market state: " + JSON.stringify(crypto_market, "	 "))
 
 func _init_stock_market() -> void:
 	for symbol: String in STOCK_RESOURCES.keys():
@@ -308,8 +350,8 @@ func get_save_data() -> Dictionary:
 		crypto_data[symbol] = crypto_market[symbol].to_dict()
 
 	return {
-		"stock_market": stock_data,
-		"crypto_market": crypto_data
+	"stock_market": stock_data,
+	"crypto_market": crypto_data
 	}
 
 func load_from_data(data: Dictionary) -> void:

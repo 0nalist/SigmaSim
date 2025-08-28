@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MarketEvent" load_steps=2 format=3 uid="uid://v989j5mzdfc0r"]
+
+[ext_resource type="Script" uid="uid://tfwk2nll7534" path="res://resources/market_events/market_event.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+target_symbol = ""
+target_type = "stock"
+start_min_minutes = 0
+start_max_minutes = 0
+pump_duration_min = 60
+pump_duration_max = 240
+pump_multiplier_min = 2.0
+pump_multiplier_max = 2.0
+dump_duration_min = 0
+dump_duration_max = 0
+dump_multiplier_min = 1.0
+dump_multiplier_max = 1.0
