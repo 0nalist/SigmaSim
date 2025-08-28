@@ -223,41 +223,46 @@ func _schedule_daily_events() -> void:
 					stock_events[stock_symbol] = stock_ev
 	# --- Major market events ---
 	if rng.randf() < 0.1:
-	       var is_surge := rng.randf() < 0.6
-	       var major_key := is_surge ? "MAJOR_SURGE" : "MAJOR_CRASH"
-	       var base_res: Resource = MAJOR_EVENT_RESOURCES[major_key]
-	       var weekday := TimeManager.day_of_week # 0 = Monday
+		var is_surge := rng.randf() < 0.6
+		var major_key: String
+		if is_surge:
+			major_key = "MAJOR_SURGE"
+		else:
+			major_key = "MAJOR_CRASH"
 
-	       var allow_stock := weekday <= 4
-	       if weekday > 4 and not is_surge:
-		       allow_stock = true
-	       if allow_stock:
-		       var major_stocks: Array = []
-		       for symbol: String in stock_market.keys():
-			       var ev: MarketEvent = stock_events.get(symbol)
-			       if ev == null or ev.is_finished():
-				       major_stocks.append(symbol)
-		       if not major_stocks.is_empty():
-			       var sym := major_stocks[rng.randi_range(0, major_stocks.size() - 1)]
-			       var ev_res: MarketEvent = base_res.duplicate(true)
-			       ev_res.target_symbol = sym
-			       ev_res.target_type = "stock"
-			       ev_res.schedule(TimeManager.get_now_minutes(), rng)
-			       stock_events[sym] = ev_res
+		var base_res: Resource = MAJOR_EVENT_RESOURCES[major_key]
+		var weekday := TimeManager.day_of_week # 0 = Monday
 
-	       if rng.randf() < 0.8:
-		       var major_crypto: Array = []
-		       for symbol: String in crypto_market.keys():
-			       var ev: MarketEvent = crypto_events.get(symbol)
-			       if ev == null or ev.is_finished():
-				       major_crypto.append(symbol)
-		       if not major_crypto.is_empty():
-			       var sym := major_crypto[rng.randi_range(0, major_crypto.size() - 1)]
-			       var ev_res: MarketEvent = base_res.duplicate(true)
-			       ev_res.target_symbol = sym
-			       ev_res.target_type = "crypto"
-			       ev_res.schedule(TimeManager.get_now_minutes(), rng)
-			       crypto_events[sym] = ev_res
+		var allow_stock := weekday <= 4
+		if weekday > 4 and not is_surge:
+			allow_stock = true
+		if allow_stock:
+			var major_stocks: Array = []
+			for symbol: String in stock_market.keys():
+				var ev: MarketEvent = stock_events.get(symbol)
+				if ev == null or ev.is_finished():
+					major_stocks.append(symbol)
+			if not major_stocks.is_empty():
+				var sym = major_stocks[rng.randi_range(0, major_stocks.size() - 1)]
+				var ev_res: MarketEvent = base_res.duplicate(true)
+				ev_res.target_symbol = sym
+				ev_res.target_type = "stock"
+				ev_res.schedule(TimeManager.get_now_minutes(), rng)
+				stock_events[sym] = ev_res
+
+		if rng.randf() < 0.8:
+			var major_crypto: Array = []
+			for symbol: String in crypto_market.keys():
+				var ev: MarketEvent = crypto_events.get(symbol)
+				if ev == null or ev.is_finished():
+					major_crypto.append(symbol)
+			if not major_crypto.is_empty():
+				var sym = major_crypto[rng.randi_range(0, major_crypto.size() - 1)]
+				var ev_res: MarketEvent = base_res.duplicate(true)
+				ev_res.target_symbol = sym
+				ev_res.target_type = "crypto"
+				ev_res.schedule(TimeManager.get_now_minutes(), rng)
+				crypto_events[sym] = ev_res
 
 ## --- Initialization --- ##
 

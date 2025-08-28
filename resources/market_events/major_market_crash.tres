@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MarketEvent" load_steps=2 format=3 uid="uid://7rftn0zdb6tyo"]
+[gd_resource type="Resource" script_class="MarketEvent" load_steps=2 format=3 uid="uid://bt5uxkncsktwk"]
 
 [ext_resource type="Script" uid="uid://tfwk2nll7534" path="res://resources/market_events/market_event.gd" id="1"]
 
