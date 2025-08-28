@@ -32,10 +32,10 @@ func _d(msg: String) -> void:
 		print("[Wallet] " + msg)
 
 func _ready() -> void:
-	   # Allow mouse events (like wheel scrolling) to bubble up to the
-	   # WalletStack for card navigation.
-	   mouse_filter = Control.MOUSE_FILTER_PASS
-	   _ensure_shell()
+	# Allow mouse events (like wheel scrolling) to bubble up to the
+	# WalletStack for card navigation.
+	mouse_filter = Control.MOUSE_FILTER_PASS
+	_ensure_shell()
 
 func _ensure_shell() -> void:
 	if _shell_built:

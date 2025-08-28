@@ -19,27 +19,27 @@ class_name StockPopupUI
 var stock: Stock
 
 func setup_custom(args) -> void:
-        var s: Stock = null
-        if args is Stock:
-                s = args
-        elif typeof(args) == TYPE_STRING:
-                s = MarketManager.get_stock(args)
-        if s:
-                setup(s)
+		var s: Stock = null
+		if args is Stock:
+				s = args
+		elif typeof(args) == TYPE_STRING:
+				s = MarketManager.get_stock(args)
+		if s:
+				setup(s)
 
 func setup(_stock: Stock) -> void:
-        stock = _stock
-        unique_popup_key = "stock_%s" % stock.symbol
-        if not is_node_ready():
-                await ready
+		stock = _stock
+		unique_popup_key = "stock_%s" % stock.symbol
+		if not is_node_ready():
+				await ready
 
-        HistoryManager.add_sample(stock.symbol, TimeManager.get_now_minutes(), stock.price)
-        price_chart.clear_series()
-        price_chart.add_series(stock.symbol, "Price", Color.GREEN)
-        _update_ui()
-        window_title = str(stock.symbol) + " " + str(stock.price)
-        # Connect signal
-        MarketManager.stock_price_updated.connect(_on_stock_price_updated)
+		HistoryManager.add_sample(stock.symbol, TimeManager.get_now_minutes(), stock.price)
+		price_chart.clear_series()
+		price_chart.add_series(stock.symbol, "Price", Color.GREEN)
+		_update_ui()
+		window_title = str(stock.symbol) + " " + str(stock.price)
+		# Connect signal
+		MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
 func _ready() -> void:
 		super._ready()
@@ -94,10 +94,10 @@ func get_custom_save_data() -> Dictionary:
 	return {}
 
 func load_custom_save_data(data: Dictionary) -> void:
-        var symbol: String = data.get("symbol", "")
-        if symbol != "":
-                var s: Stock = MarketManager.get_stock(symbol)
-                if s:
-                        if not is_node_ready():
-                                await ready
-                        setup(s)
+		var symbol: String = data.get("symbol", "")
+		if symbol != "":
+				var s: Stock = MarketManager.get_stock(symbol)
+				if s:
+						if not is_node_ready():
+								await ready
+						setup(s)
