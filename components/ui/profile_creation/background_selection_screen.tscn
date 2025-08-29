@@ -20,9 +20,9 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.29
-shader_parameter/color_low = Color(0.02, 0.05, 0.1, 1)
-shader_parameter/color_mid = Color(0.1, 0.3, 0.55, 1)
-shader_parameter/color_high = Color(0.3, 0.6, 0.85, 1)
+shader_parameter/color_low = Color(0.108111, 3.85046e-07, 0.853649, 1)
+shader_parameter/color_mid = Color(0.210371, 0.477062, 0.818721, 1)
+shader_parameter/color_high = Color(0.634892, 0.805327, 0.960079, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_Waves"]
 shader = ExtResource("9_waves")
@@ -67,6 +67,7 @@ theme_override_constants/margin_bottom = 25
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 10
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
@@ -177,14 +178,24 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 5
 
-[node name="Panel" type="ColorRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.129412, 0.258824, 1, 1)
+
+[node name="Panel" type="ColorRect" parent="MarginContainer/VBoxContainer/DemoBackgrounds/ColorRect"]
 material = SubResource("ShaderMaterial_BlueWarp")
 custom_minimum_size = Vector2(192, 108)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 tooltip_text = "Start with a crisp $20 bill"
 
-[node name="GrandmasButton" type="Button" parent="MarginContainer/VBoxContainer/DemoBackgrounds/Panel"]
+[node name="GrandmasButton" type="Button" parent="MarginContainer/VBoxContainer/DemoBackgrounds/ColorRect"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 1
@@ -193,9 +204,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -75.0
+offset_left = -108.0
 offset_top = -29.0
-offset_right = 75.0
+offset_right = 108.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
@@ -390,7 +401,7 @@ autowrap_mode = 3
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel/DropoutButton" to="." method="_on_dropout_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel2/BurnoutButton" to="." method="_on_burnout_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Panel3/GamerButton" to="." method="_on_gamer_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/DemoBackgrounds/Panel/GrandmasButton" to="." method="_on_grandmas_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/DemoBackgrounds/ColorRect/GrandmasButton" to="." method="_on_grandmas_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/DemoBackgrounds/Panel2/PrettyButton" to="." method="_on_pretty_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/DemoBackgrounds/Panel3/Gamer2Button" to="." method="_on_gamer_2_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Panel/ManagerButton" to="." method="_on_manager_button_pressed"]

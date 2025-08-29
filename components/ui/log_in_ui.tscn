@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=19 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
@@ -8,7 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="4_hcclx"]
 [ext_resource type="FontFile" uid="uid://deimmaj7ejh4l" path="res://assets/fonts/CapitalisTypOasis.ttf" id="5_hcclx"]
 [ext_resource type="Shader" uid="uid://dw5y8ehkp7c1r" path="res://assets/shaders/pink_warp.gdshader" id="5_wmdi4"]
+[ext_resource type="Shader" uid="uid://c3n5nkf3qs03p" path="res://assets/shaders/spiral_portal_shader.gdshader" id="6_hu4fx"]
 [ext_resource type="Shader" uid="uid://b3lch55daabv3" path="res://assets/shaders/wavy_walk_shader.gdshader" id="6_s425x"]
+[ext_resource type="Shader" uid="uid://d1b6le8xdh7hg" path="res://assets/shaders/spiral_domain_mapping_shader.gdshader" id="7_sjnvm"]
 [ext_resource type="Texture2D" uid="uid://bowu041csi5ai" path="res://assets/icons/power_icon.png" id="10_yke0b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
@@ -19,6 +21,16 @@ border_width_right = 8
 border_width_bottom = 8
 border_color = Color(0, 0.616993, 0.765051, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sjnvm"]
+shader = ExtResource("6_hu4fx")
+shader_parameter/resolution = Vector2(600, 400)
+shader_parameter/spiral_color = Color(0, 0.787671, 0.469833, 1)
+shader_parameter/frequency = 8.0
+shader_parameter/speed = 1.0
+shader_parameter/brightness = 5.0
+shader_parameter/balance = 0.5
+shader_parameter/octaves = 4.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s425x"]
 shader = ExtResource("5_wmdi4")
 shader_parameter/stretch = 0.8
@@ -27,6 +39,9 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.03
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o21b0"]
+shader = ExtResource("7_sjnvm")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmwu1"]
 bg_color = Color(0, 0.670588, 0.968627, 1)
@@ -73,8 +88,26 @@ grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_nfsrt")
 
+[node name="ColorRect2" type="ColorRect" parent="Panel"]
+material = SubResource("ShaderMaterial_sjnvm")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="ColorRect" type="ColorRect" parent="Panel"]
 material = SubResource("ShaderMaterial_s425x")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect3" type="ColorRect" parent="Panel"]
+material = SubResource("ShaderMaterial_o21b0")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
