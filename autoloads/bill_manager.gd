@@ -154,17 +154,14 @@ func attempt_to_autopay(bill_name: String) -> bool:
                        print("❌ Autopay failed for %s" % bill_name)
                        return false
 
-       if PortfolioManager.pay_with_cash(amount):
-               print("✅ Autopaid %s with cash" % bill_name)
+       var required_score := PortfolioManager.CREDIT_REQUIREMENTS.get("bills", 0)
+       if PortfolioManager.attempt_spend(amount, required_score, true):
+               print("✅ Autopaid %s with available funds" % bill_name)
                return true
-       elif PortfolioManager.can_pay_with_credit(amount):
-               PortfolioManager.pay_with_credit(amount)
-               print("✅ Autopaid %s with credit" % bill_name)
-               return true
-       else:
-               print("❌ Autopay failed for %s" % bill_name)
-               # Siggy.activate("bill_unpayable")
-               return false
+
+       print("❌ Autopay failed for %s" % bill_name)
+       # Siggy.activate("bill_unpayable")
+       return false
 
 
 
@@ -229,13 +226,8 @@ func auto_resolve_bills_for_date(date_str: String) -> void:
                                        GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
                                continue
 
-                       if PortfolioManager.pay_with_cash(popup.amount):
-                                       print("✅ Autopaid %s with cash" % popup.amount)
-                                       mark_bill_paid(popup.bill_name, date_str)
-                                       popup.close()
-                                       return
-                       elif PortfolioManager.can_pay_with_credit(popup.amount):
-                                       PortfolioManager.pay_with_credit(popup.amount)
+                       var required_score := PortfolioManager.CREDIT_REQUIREMENTS.get("bills", 0)
+                       if PortfolioManager.attempt_spend(popup.amount, required_score, true):
                                        mark_bill_paid(popup.bill_name, date_str)
                                        popup.close()
                        else:
