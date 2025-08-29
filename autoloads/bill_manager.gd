@@ -143,19 +143,28 @@ func center_bill_window(win: WindowFrame) -> void:
 
 
 func attempt_to_autopay(bill_name: String) -> bool:
-	var amount := get_bill_amount(bill_name)
+       var amount := get_bill_amount(bill_name)
 
-	if PortfolioManager.pay_with_cash(amount):
-		print("✅ Autopaid %s with cash" % bill_name)
-		return true
-	elif PortfolioManager.can_pay_with_credit(amount):
-		PortfolioManager.pay_with_credit(amount)
-		print("✅ Autopaid %s with credit" % bill_name)
-		return true
-	else:
-		print("❌ Autopay failed for %s" % bill_name)
-		# Siggy.activate("bill_unpayable")
-		return false
+       if bill_name == "Credit Card":
+               if PortfolioManager.pay_down_credit(amount):
+                       _set_credit_card_balance(PortfolioManager.credit_used, PortfolioManager.credit_limit)
+                       print("✅ Autopaid %s with cash" % bill_name)
+                       return true
+               else:
+                       print("❌ Autopay failed for %s" % bill_name)
+                       return false
+
+       if PortfolioManager.pay_with_cash(amount):
+               print("✅ Autopaid %s with cash" % bill_name)
+               return true
+       elif PortfolioManager.can_pay_with_credit(amount):
+               PortfolioManager.pay_with_credit(amount)
+               print("✅ Autopaid %s with credit" % bill_name)
+               return true
+       else:
+               print("❌ Autopay failed for %s" % bill_name)
+               # Siggy.activate("bill_unpayable")
+               return false
 
 
 
@@ -208,21 +217,30 @@ func get_due_bills_for_month(month: int, year: int) -> Dictionary:
 
 
 func auto_resolve_bills_for_date(date_str: String) -> void:
-	
-	for popup in active_bills.get(date_str, []):
-		if popup and popup.visible:
-			if PortfolioManager.pay_with_cash(popup.amount):
-					print("✅ Autopaid %s with cash" % popup.amount)
-					mark_bill_paid(popup.bill_name, date_str)
-					popup.close()
-					return
-			elif PortfolioManager.can_pay_with_credit(popup.amount):
-					PortfolioManager.pay_with_credit(popup.amount)
-					mark_bill_paid(popup.bill_name, date_str)
-					popup.close()
-			else:
-					GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
-					#GameManager.trigger_game_over("Unpaid bill: %s" % popup.bill_name)
+
+       for popup in active_bills.get(date_str, []):
+               if popup and popup.visible:
+                       if popup.bill_name == "Credit Card":
+                               if PortfolioManager.pay_down_credit(popup.amount):
+                                       _set_credit_card_balance(PortfolioManager.credit_used, PortfolioManager.credit_limit)
+                                       mark_bill_paid(popup.bill_name, date_str)
+                                       popup.close()
+                               else:
+                                       GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
+                               continue
+
+                       if PortfolioManager.pay_with_cash(popup.amount):
+                                       print("✅ Autopaid %s with cash" % popup.amount)
+                                       mark_bill_paid(popup.bill_name, date_str)
+                                       popup.close()
+                                       return
+                       elif PortfolioManager.can_pay_with_credit(popup.amount):
+                                       PortfolioManager.pay_with_credit(popup.amount)
+                                       mark_bill_paid(popup.bill_name, date_str)
+                                       popup.close()
+                       else:
+                                       GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
+                                       #GameManager.trigger_game_over("Unpaid bill: %s" % popup.bill_name)
 			
 
 func get_bill_color(bill_name: String) -> Color:
