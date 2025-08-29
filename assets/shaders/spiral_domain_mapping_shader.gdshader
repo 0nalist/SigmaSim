@@ -1,141 +1,114 @@
 shader_type canvas_item;
 
-//const float PI = 3.141592654;
-//const float TAU = (2.0*PI);
+//const float PI  = 3.141592653589793;
+//const float TAU = 6.283185307179586;
 
-float mod1(inout float p, float size) {
-  float halfsize = size*0.5;
-  float c = floor((p + halfsize)/size);
-  p = mod(p + halfsize, size) - halfsize;
-  return c;
+uniform float sigma_thickness : hint_range(0.02, 0.30) = 0.12; // stroke thickness of the ∑
+
+/* ---------------- Helpers (unchanged) ---------------- */
+float mod1(inout float p, float size){
+	float halfsize = size*0.5;
+	float c = floor((p + halfsize)/size);
+	p = mod(p + halfsize, size) - halfsize;
+	return c;
 }
 
-float spiralLength(float b, float a) {
-  return 0.5*b*(a*sqrt(1.0+a*a)+log(a+sqrt(1.0+a*a)));
+float spiralLength(float b, float a){
+	return 0.5*b*(a*sqrt(1.0+a*a)+log(a+sqrt(1.0+a*a)));
 }
 
-void spiralMod(inout vec2 p, float a) {
-  vec2 op     = p;
-  float b     = a/TAU;
-  float  rr   = length(op);
-  float  aa   = atan(op.y, op.x);
-  rr         -= aa*b;
-  float nn    = mod1(rr, a);
-  float sa    = aa + TAU*nn;
-  float sl    = spiralLength(b, sa);
-  p           = vec2(sl, rr);
+void spiralMod(inout vec2 p, float a){
+	vec2 op = p;
+	float b = a/TAU;
+	float rr = length(op);
+	float aa = atan(op.y, op.x);
+	rr -= aa*b;
+	float nn = mod1(rr, a);
+	float sa = aa + TAU*nn;
+	float sl = spiralLength(b, sa);
+	p = vec2(sl, rr);
 }
 
-float sRGB1(float t) { return mix(1.055*pow(t, 1./2.4) - 0.055, 12.92*t, step(t, 0.0031308)); }
+float sRGB1(float t){ return mix(1.055*pow(t, 1.0/2.4)-0.055, 12.92*t, step(t, 0.0031308)); }
+vec3  sRGB(vec3 c){ return vec3(sRGB1(c.x), sRGB1(c.y), sRGB1(c.z)); }
+float hash(float co){ return fract(sin(co*12.9898)*13758.5453); }
 
-vec3 sRGB(in vec3 c) { return vec3 (sRGB1(c.x), sRGB1(c.y), sRGB1(c.z)); }
-
-float hash(float co) {
-  return fract(sin(co*12.9898) * 13758.5453);
+/* ------- Distance to a line segment (for stroked paths) ------- */
+float sdSegment(vec2 p, vec2 a, vec2 b){
+	vec2 pa = p - a, ba = b - a;
+	float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+	return length(pa - ba*h);
 }
 
-vec2 toPolar(vec2 p) {
-  return vec2(length(p), atan(p.y, p.x));
+/* ---------------- Proper ∑ glyph (three strokes) ----------------
+   Coordinate box ~[-0.9,0.9] horizontally, [-0.7,0.7] vertically.
+   Segments:
+     1) Top bar:     left -> right
+     2) Left diagonal: top-left -> bottom-left (slanted)
+     3) Bottom bar:  left -> right
+------------------------------------------------------------------*/
+float sigma_sum_sdf(vec2 p, float stroke){
+	// Control points (tweakable)
+	float top_y =  0.60;
+	float bot_y = -0.60;
+	float right_x =  0.85;
+	float left_x  = -0.55;
+
+	// Slight slant of the left “spine” to look like a real ∑
+	vec2 tl = vec2(left_x, top_y);                 // top-left
+	vec2 bl = vec2(left_x + 0.08, bot_y);          // bottom-left shifted right a bit
+	vec2 tr = vec2(right_x, top_y);                // top-right
+	vec2 br = vec2(right_x, bot_y);                // bottom-right
+
+	// Distances to the three strokes
+	float d_top = sdSegment(p, tl, tr);
+	float d_dia = sdSegment(p, tl, bl);
+	float d_bot = sdSegment(p, bl, br);
+
+	// Union of strokes, then subtract half stroke for sign
+	float d = min(min(d_top, d_dia), d_bot) - stroke*0.5;
+
+	// Soften the inside corners a hair to avoid pinholes when scaled
+	float join_top = length(p - tl) - stroke*0.55;
+	float join_bot = length(p - bl) - stroke*0.55;
+	d = min(d, min(join_top, join_bot));
+
+	return d;
 }
 
-float circle(vec2 p, float r) {
-  return length(p) - r;
-}
+/* ---------------- Main (kept from your original) ---------------- */
+void fragment(){
+	vec2 q = FRAGCOORD.xy / (1.0 / SCREEN_PIXEL_SIZE).xy;
+	vec2 p = -1.0 + 2.0 * q;
+	p.x *= (1.0 / SCREEN_PIXEL_SIZE).x / (1.0 / SCREEN_PIXEL_SIZE).y;
 
-// https://iquilezles.org/articles/distfunctions2d
-float vesica(vec2 p, float r, float d) {
-  p = abs(p);
-  float b = sqrt(r*r-d*d);
-  return ((p.y-b)*d>p.x*b) ? length(p-vec2(0.0,b))
-                           : length(p-vec2(-d,0.0))-r;
-}
+	float aa = 2.0 / (1.0 / SCREEN_PIXEL_SIZE).y; // pixel AA
+	vec3  col = vec3(1.0);
 
-// https://iquilezles.org/articles/smin
-float pmin(float a, float b, float k) {
-  float h = clamp( 0.5+0.5*(b-a)/k, 0.0, 1.0 );
-  return mix( b, a, h ) - k*h*(1.0-h);
-}
+	float a = 0.25;
 
-float pmax(float a, float b, float k) {
-  return -pmin(-a, -b, k);
-}
+	vec2 sp = p;
+	spiralMod(sp, a);
+	sp.x += -TIME * 0.2;
+	vec2 msp = sp;
+	float nsp = mod1(msp.x, a);
 
-float eye(vec2 p, float h) {
-  float a  = mix(0.0, 0.85, smoothstep(0.995, 1.0, cos(TAU*(TIME+h)/5.0)));
-  const float b = 4.0;
-  float rr = mix(1.6, b, a);
-  float dd = mix(1.12, b, a);
-  
-  vec2 p0 = p;
-  p0 = p0.yx;
-  float d0 =  vesica(p0, rr, dd);
-  float d5 = d0;
+	float z = a * 0.4;
 
-  vec2 p1 = p;
-  p1.y -= 0.28;
-  float d1 = circle(p1, 0.622);
-  d1 = max(d1,d0);
+	float _dd = length(msp) - z; // ribbon pos (kept for style)
+	float _h  = hash(nsp + 123.4);
 
-  vec2 p2 = p;
-  p2 -= vec2(-0.155, 0.35);
-  float d2 = circle(p2, 0.065);
+	// --- ∑ instead of eyes ---
+	// Map the local coords to glyph space (sigma_sum_sdf expects ~unit box)
+	float de = sigma_sum_sdf(msp / z, sigma_thickness) * z;
 
-  vec2 p3 = p;
-  p3.y -= 0.28;
-  p3 = toPolar(p3);
-  float n3 = mod1(p3.x, 0.05);
-  float d3 = abs(p3.x)-0.0125*(1.0-length(p1));
+	// Sharpen edges slightly
+	de -= 0.25 * aa;
 
-  vec2 p4 = p;
-  p4.y -= 0.28;
-  float d4 = circle(p4, 0.285);
+	// Your original band/color logic
+	col = mix(vec3(1.0 - abs(2.0 * sp.y / a)), vec3(0.0), smoothstep(aa, -aa, de));
+	col *= smoothstep(0.0, 0.4, length(p));
 
-  d3 = max(d3,-d4);
-
-  d1 = pmax(d1,-d2, 0.0125);
-  d1 = max(d1,-d3);
-
-  float t0 = abs(0.9*p.x);
-  t0 *= t0;
-  t0 *= t0;
-  t0 *= t0;
-  t0 = clamp(t0, 0.0, 1.0);
-  d0 = abs(d0)-mix(0.0125, -0.0025, t0);
-
-
-  float d = d0;
-  d = pmin(d, d1, 0.0125);
-  return d;
-}
-
-void fragment() {
-  vec2 q = FRAGCOORD.xy/(1.0 / SCREEN_PIXEL_SIZE).xy;
-  vec2 p = -1. + 2. * q;
-  p.x *= (1.0 / SCREEN_PIXEL_SIZE).x/(1.0 / SCREEN_PIXEL_SIZE).y;
-  
-  float aa = 2.0/(1.0 / SCREEN_PIXEL_SIZE).y;
-  vec3 col = vec3(1.0);
-
-  float a = 0.25;
-  
-  vec2 sp = p;
-  spiralMod(sp, a);
-  sp.x += -TIME*0.2;
-  vec2 msp = sp;
-  float nsp = mod1(msp.x, a);
-  
-  float z = a*0.4;
-  
-  float dd = length(msp)-z;
-  
-  float h = hash(nsp+123.4);
-  
-  float de = eye(msp/z,h)*z;
-  de -= 0.25*aa;
-  
-  col = mix(vec3(1.0-abs(2.0*sp.y/a)), vec3(0.0), smoothstep(aa, -aa, de));
-  col *= smoothstep(0.0, 0.4, length(p));
-  
-  col = sRGB(col);
-  COLOR = vec4(col, 1.0);
+	col = sRGB(col);
+	COLOR = vec4(col, 1.0);
 }
