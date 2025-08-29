@@ -13,31 +13,63 @@ var crypto_cards: Dictionary = {}
 @onready var new_gpu_price_label: Label = %NewGPUPriceLabel
 @onready var used_gpu_price_label: Label = %UsedGPUPriceLabel
 
+@onready var mine_tab_button: Button = %MineTabButton
+@onready var charts_tab_button: Button = %ChartsTabButton
+@onready var mine_view: VBoxContainer = %MineView
+@onready var charts_view: VBoxContainer = %ChartsView
+@onready var charts_mine_tab_button: Button = %MineTabButtonCharts
+@onready var charts_charts_tab_button: Button = %ChartsTabButtonCharts
+@onready var charts_cash_label: Label = %ChartsCashLabel
+@onready var charts_crypto_label: Label = %ChartsCryptoLabel
+@onready var charts_content: Control = _ensure_charts_content()
+var crypto_popup_scene: PackedScene = preload("res://components/popups/crypto_popup_ui.tscn")
+
+func _ensure_charts_content() -> Control:
+        var existing: Node = charts_view.get_node_or_null("ChartsContent")
+        if existing != null and existing is Control:
+                return existing as Control
+        var content: VBoxContainer = VBoxContainer.new()
+        content.name = "ChartsContent"
+        content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+        content.add_theme_constant_override("separation", 16)
+        charts_view.add_child(content)
+        return content
+
 
 var sort_property: String = "name"
 var sort_ascending: bool = true
+var _active_tab: StringName = &"Mine"
 
 
 func _ready() -> void:
-		MarketManager.crypto_market_ready.connect(refresh_cards_from_market)
-		if not MarketManager.crypto_market.is_empty():
-				refresh_cards_from_market()
+        MarketManager.crypto_market_ready.connect(refresh_cards_from_market)
+        if not MarketManager.crypto_market.is_empty():
+                refresh_cards_from_market()
 
-		MarketManager.crypto_price_updated.connect(_on_crypto_updated)
-		PortfolioManager.resource_changed.connect(_on_resource_changed)
-		GPUManager.gpus_changed.connect(update_gpu_label)
-		#GPUManager.crypto_mined.connect(_on_crypto_mined)
-		GPUManager.gpu_prices_changed.connect(_on_gpu_prices_changed)
-		sort_property_option.add_item("Name")
-		sort_property_option.add_item("Price")
-		sort_property_option.add_item("Power Required")
-		sort_property_option.add_item("GPUs")
-		sort_property_option.add_item("Chance")
-		sort_property_option.add_item("Owned")
-		sort_property_option.item_selected.connect(_on_sort_property_selected)
-		sort_direction_button.pressed.connect(_on_sort_direction_button_pressed)
-		sort_direction_button.text = "\u2191"
-		update_gpu_label()
+        MarketManager.crypto_price_updated.connect(_on_crypto_updated)
+        PortfolioManager.resource_changed.connect(_on_resource_changed)
+        PortfolioManager.cash_updated.connect(_on_cash_updated)
+        GPUManager.gpus_changed.connect(update_gpu_label)
+        #GPUManager.crypto_mined.connect(_on_crypto_mined)
+        GPUManager.gpu_prices_changed.connect(_on_gpu_prices_changed)
+        sort_property_option.add_item("Name")
+        sort_property_option.add_item("Price")
+        sort_property_option.add_item("Power Required")
+        sort_property_option.add_item("GPUs")
+        sort_property_option.add_item("Chance")
+        sort_property_option.add_item("Owned")
+        sort_property_option.item_selected.connect(_on_sort_property_selected)
+        sort_direction_button.pressed.connect(_on_sort_direction_button_pressed)
+        mine_tab_button.pressed.connect(_on_mine_tab_pressed)
+        charts_tab_button.pressed.connect(_on_charts_tab_pressed)
+        charts_mine_tab_button.pressed.connect(_on_mine_tab_pressed)
+        charts_charts_tab_button.pressed.connect(_on_charts_tab_pressed)
+        sort_direction_button.text = "\u2191"
+        update_gpu_label()
+        _build_charts_view()
+        _update_charts_labels()
+        _activate_tab(&"Mine")
 
 func refresh_cards_from_market() -> void:
 	# Clear out any old cards
@@ -111,15 +143,17 @@ func _update_gpu_prices() -> void:
 
 
 func _on_resource_changed(resource_name: String, _value: float) -> void:
-		if crypto_cards.has(resource_name):
-				crypto_cards[resource_name].update_display()
-				_sort_cards()
+        if crypto_cards.has(resource_name):
+                crypto_cards[resource_name].update_display()
+                _sort_cards()
+        _update_charts_labels()
 
 
 func _on_crypto_updated(symbol: String, _crypto: Cryptocurrency) -> void:
-		if crypto_cards.has(symbol):
-				crypto_cards[symbol].update_display()
-				_sort_cards()
+        if crypto_cards.has(symbol):
+                crypto_cards[symbol].update_display()
+                _sort_cards()
+        _update_charts_labels()
 
 
 
@@ -200,11 +234,67 @@ func _compare_cards(a: CryptoCard, b: CryptoCard) -> bool:
 				return val_a > val_b
 
 func debug_dump_cards() -> void:
-	print("-- Minerr cards --")
-	for symbol in crypto_cards.keys():
-		var card: CryptoCard = crypto_cards[symbol]
-		if card.crypto != null:
-			var c: Cryptocurrency = card.crypto
-			print(symbol, ",", c.display_name, ", price=", c.price, ", id=", str(c.get_instance_id()))
-		else:
-			print(symbol, ", card without crypto, id=", str(card.get_instance_id()))
+        print("-- Minerr cards --")
+        for symbol in crypto_cards.keys():
+                var card: CryptoCard = crypto_cards[symbol]
+                if card.crypto != null:
+                        var c: Cryptocurrency = card.crypto
+                        print(symbol, ",", c.display_name, ", price=", c.price, ", id=", str(c.get_instance_id()))
+                else:
+                        print(symbol, ", card without crypto, id=", str(card.get_instance_id()))
+
+func _on_cash_updated(_cash: float) -> void:
+        _update_charts_labels()
+
+func _update_charts_labels() -> void:
+        charts_cash_label.text = "Cash: $" + NumberFormatter.format_number(PortfolioManager.cash)
+        charts_crypto_label.text = "Crypto: $" + NumberFormatter.format_number(PortfolioManager.get_crypto_total())
+
+func _activate_tab(tab_name: StringName) -> void:
+        if tab_name == &"Mine":
+                if is_instance_valid(mine_tab_button):
+                        mine_tab_button.set_pressed(true)
+                if is_instance_valid(charts_tab_button):
+                        charts_tab_button.set_pressed(false)
+                if is_instance_valid(charts_mine_tab_button):
+                        charts_mine_tab_button.set_pressed(true)
+                if is_instance_valid(charts_charts_tab_button):
+                        charts_charts_tab_button.set_pressed(false)
+                mine_view.visible = true
+                charts_view.visible = false
+        else:
+                if is_instance_valid(mine_tab_button):
+                        mine_tab_button.set_pressed(false)
+                if is_instance_valid(charts_tab_button):
+                        charts_tab_button.set_pressed(true)
+                if is_instance_valid(charts_mine_tab_button):
+                        charts_mine_tab_button.set_pressed(false)
+                if is_instance_valid(charts_charts_tab_button):
+                        charts_charts_tab_button.set_pressed(true)
+                mine_view.visible = false
+                charts_view.visible = true
+        _active_tab = tab_name
+
+func _on_mine_tab_pressed() -> void:
+        _activate_tab(&"Mine")
+
+func _on_charts_tab_pressed() -> void:
+        _activate_tab(&"Charts")
+
+func _build_charts_view() -> void:
+        for child: Node in charts_content.get_children():
+                child.queue_free()
+        var symbols := MarketManager.crypto_market.keys()
+        for i in range(symbols.size()):
+                var symbol: String = symbols[i]
+                var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
+                var popup: CryptoPopupUI = crypto_popup_scene.instantiate()
+                popup.custom_minimum_size = Vector2(350, 150)
+                popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+                popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
+                popup.setup(crypto)
+                charts_content.add_child(popup)
+                if i < symbols.size() - 1:
+                        var spacer: Control = Control.new()
+                        spacer.custom_minimum_size = Vector2(0, 12)
+                        charts_content.add_child(spacer)
