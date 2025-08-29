@@ -59,6 +59,13 @@ func _on_delete_save():
 
 	load_login_screen()
 
+	# Close Game Over screen
+	for child in get_tree().get_root().get_children():
+		if child is GameOverPopup:
+			child.queue_free()
+			break
+
+
 func reset_managers() -> void:
 	StatManager.reset()
 	PortfolioManager.reset()
