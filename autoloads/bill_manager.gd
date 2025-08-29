@@ -209,21 +209,22 @@ func get_due_bills_for_month(month: int, year: int) -> Dictionary:
 
 func auto_resolve_bills_for_date(date_str: String) -> void:
 	
-		for popup in active_bills.get(date_str, []):
-				if popup and popup.visible:
-						if PortfolioManager.pay_with_cash(popup.amount):
-								print("✅ Autopaid %s with cash" % popup.amount)
-								mark_bill_paid(popup.bill_name, date_str)
-								popup.close()
-								return
-						elif PortfolioManager.can_pay_with_credit(popup.amount):
-								PortfolioManager.pay_with_credit(popup.amount)
-								mark_bill_paid(popup.bill_name, date_str)
-								popup.close()
-						else:
-								GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
-								#GameManager.trigger_game_over("Unpaid bill: %s" % popup.bill_name)
-			
+	for popup in active_bills.get(date_str, []):
+		if popup and popup.visible:
+			if PortfolioManager.pay_with_cash(popup.amount):
+				print("✅ Autopaid %s with cash" % popup.amount)
+				mark_bill_paid(popup.bill_name, date_str)
+				popup.close()
+				return
+			elif autopay_enabled and PortfolioManager.can_pay_with_credit(popup.amount):
+				# Only resolve with credit when autopay is enabled to
+				# avoid silently increasing debt on reload.
+				PortfolioManager.pay_with_credit(popup.amount)
+				mark_bill_paid(popup.bill_name, date_str)
+				popup.close()
+			else:
+				GameManager.trigger_game_over("Could not pay bill " + str(popup.bill_name))
+				#GameManager.trigger_game_over("Unpaid bill: %s" % popup.bill_name)
 
 func get_bill_color(bill_name: String) -> Color:
 	if bill_name == "Lifestyle Spending":
@@ -365,6 +366,8 @@ func apply_debt_interest() -> void:
 			changed = true
 	if changed:
 		debt_resources_changed.emit()
+
+
 func _get_debt_resource(name: String) -> Dictionary:
 	for res in debt_resources:
 		if res.get("name", "") == name:
@@ -440,7 +443,7 @@ func _tick_down_compound_timers(delta: int) -> void:
 			continue
 		if delta == 1 and minutes >= 60:
 			continue
-		var new_minutes := max(minutes - delta, 0)
+		var new_minutes = max(minutes - delta, 0)
 		if new_minutes != minutes:
 			res["compounds_in"] = new_minutes
 			changed = true

@@ -234,9 +234,9 @@ text = "Crypto: $"
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/MineTopBar/MineTabButton" to="." method="_on_mine_tab_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/MineTopBar/ChartsTabButton" to="." method="_on_charts_tab_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ChartsView/ChartsTopBar/MineTabButtonCharts" to="." method="_on_mine_tab_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ChartsView/ChartsTopBar/ChartsTabButtonCharts" to="." method="_on_charts_tab_pressed"]

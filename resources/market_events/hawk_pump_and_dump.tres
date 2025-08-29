@@ -13,6 +13,6 @@ pump_duration_max = 240
 pump_multiplier_min = 20.0
 pump_multiplier_max = 300.0
 dump_duration_min = 30
-dump_duration_max = 180
+dump_duration_max = 90
 dump_multiplier_min = 0.01
 dump_multiplier_max = 0.9
