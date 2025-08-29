@@ -61,10 +61,14 @@ func _ready() -> void:
 		sort_property_option.add_item("Owned")
 		sort_property_option.item_selected.connect(_on_sort_property_selected)
 		sort_direction_button.pressed.connect(_on_sort_direction_button_pressed)
-		mine_tab_button.pressed.connect(_on_mine_tab_pressed)
-		charts_tab_button.pressed.connect(_on_charts_tab_pressed)
-		charts_mine_tab_button.pressed.connect(_on_mine_tab_pressed)
-		charts_charts_tab_button.pressed.connect(_on_charts_tab_pressed)
+		if not mine_tab_button.pressed.is_connected(_on_mine_tab_pressed):
+				mine_tab_button.pressed.connect(_on_mine_tab_pressed)
+		if not charts_tab_button.pressed.is_connected(_on_charts_tab_pressed):
+				charts_tab_button.pressed.connect(_on_charts_tab_pressed)
+		if not charts_mine_tab_button.pressed.is_connected(_on_mine_tab_pressed):
+				charts_mine_tab_button.pressed.connect(_on_mine_tab_pressed)
+		if not charts_charts_tab_button.pressed.is_connected(_on_charts_tab_pressed):
+				charts_charts_tab_button.pressed.connect(_on_charts_tab_pressed)
 		sort_direction_button.text = "\u2191"
 		update_gpu_label()
 		_build_charts_view()
