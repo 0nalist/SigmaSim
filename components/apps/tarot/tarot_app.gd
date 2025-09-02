@@ -30,7 +30,7 @@ func _build_collection_view() -> void:
 	for card in TarotManager.get_all_cards_ordered():
 		var id: String = card.get("id", "")
 		var count: int = TarotManager.get_card_count(id)
-		var view: TarotCardView = TarotManager.instantiate_card_view(id, count)
+               var view: TarotCardView = TarotManager.instantiate_card_view(id, count)
 		collection_grid.add_child(view)
 		card_views[id] = view
 
@@ -46,7 +46,7 @@ func _on_draw_button_pressed() -> void:
 	for child in draw_result.get_children():
 		child.queue_free()
 	var id = card.get("id", "")
-	var view = TarotManager.instantiate_card_view(id, TarotManager.get_card_count(id))
+       var view = TarotManager.instantiate_card_view(id, TarotManager.get_card_count(id), true)
 	draw_result.add_child(view)
 	_update_cooldown_label()
 
