@@ -21,11 +21,23 @@ func _ready():
 	_update_selector()
 
 func _update_selector():
-	profile_selector.clear()
-	for key in slot_metadata.keys():
-		var slot_id = int(key.trim_prefix("slot_"))
-		var name = slot_metadata[key].get("name", "Unnamed")
-		profile_selector.add_item("Slot %d: %s" % [slot_id, name], slot_id)
+       profile_selector.clear()
+       var entries: Array = []
+       for key in slot_metadata.keys():
+               var slot_id = int(key.trim_prefix("slot_"))
+               var data = slot_metadata[key]
+               var created_at := int(data.get("created_at", 0))
+               var last_played_str: String = data.get("last_played", "")
+               var last_played := last_played_str == "" ? 0 : Time.get_unix_time_from_datetime_string(last_played_str)
+               var sort_time = created_at != 0 ? created_at : last_played
+               entries.append({
+                       "slot_id": slot_id,
+                       "name": data.get("name", "Unnamed"),
+                       "sort_time": sort_time,
+               })
+       entries.sort_custom(func(a, b): return a.sort_time < b.sort_time)
+       for entry in entries:
+               profile_selector.add_item("Slot %d: %s" % [entry.slot_id, entry.name], entry.slot_id)
 
 func _on_delete_pressed():
 	var slot_id = profile_selector.get_selected_id()
