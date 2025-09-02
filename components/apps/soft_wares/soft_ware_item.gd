@@ -17,7 +17,7 @@ class_name SoftWareItem
 @onready var feedback_label: Label = %FeedbackLabel
 
 func _ready() -> void:
-	icon_rect.texture = app_icon
+	_setup_icon()
 	title_label.text = app_title
 	description_label.text = app_description
 	cost_label.text = "$" + str(app_cost)
@@ -27,6 +27,18 @@ func _ready() -> void:
 	upgrades_button.pressed.connect(_on_upgrades_button_pressed)
 	WindowManager.app_unlocked.connect(_on_app_unlocked)
 
+func _setup_icon() -> void:
+	if app_icon:
+		var image := app_icon.get_image()
+		if image.get_width() != 64 or image.get_height() != 64:
+			image.resize(64, 64)
+			icon_rect.texture = ImageTexture.create_from_image(image)
+		else:
+			icon_rect.texture = app_icon
+	icon_rect.custom_minimum_size = Vector2(64, 64)
+	icon_rect.size = Vector2(64, 64)
+	icon_rect.texture_repeat = CanvasItem.TEXTURE_REPEAT_DISABLED
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 func _update_action_button() -> void:
 	if WindowManager.is_app_unlocked(app_id):
 		action_button.text = "Launch"
