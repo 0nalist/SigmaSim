@@ -45,15 +45,18 @@ theme_override_constants/separation = 8
 [node name="DrawResult" type="HBoxContainer" parent="VBox/DrawView"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="DrawButton" type="Button" parent="VBox/DrawView"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Daily Draw"
+size_flags_horizontal = 4
+text = "  Daily Draw  "
 
 [node name="CooldownLabel" type="Label" parent="VBox/DrawView"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="CollectionView" type="ScrollContainer" parent="VBox"]
 unique_name_in_owner = true

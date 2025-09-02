@@ -36,22 +36,22 @@ func _ready() -> void:
 	_populate_items()
 
 func _populate_items() -> void:
-                var used_icons: Dictionary = {}
-                for app_id in soft_wares_registry.keys():
-                                var data: Dictionary = soft_wares_registry[app_id]
-                                var icon: Texture2D = data["icon"]
-                                var icon_path: String = icon.resource_path
-                                if used_icons.has(icon_path):
-                                                continue
-                                used_icons[icon_path] = true
-                                var item: SoftWareItem = SOFTWARE_ITEM_SCENE.instantiate() as SoftWareItem
-                                item.app_icon = icon
-                                item.app_title = data["title"]
-                                item.app_description = data["description"]
-                                item.app_cost = int(data["cost"])
-                                item.app_id = app_id
-                                item.upgrade_scene = _get_upgrade_scene(app_id)
-                                items_container.add_child(item)
+				var used_icons: Dictionary = {}
+				for app_id in soft_wares_registry.keys():
+								var data: Dictionary = soft_wares_registry[app_id]
+								var icon: Texture2D = data["icon"]
+								var icon_path: String = icon.resource_path
+								if used_icons.has(icon_path):
+												continue
+								used_icons[icon_path] = true
+								var item: SoftWareItem = SOFTWARE_ITEM_SCENE.instantiate() as SoftWareItem
+								item.app_icon = icon
+								item.app_title = data["title"]
+								item.app_description = data["description"]
+								item.app_cost = int(data["cost"])
+								item.app_id = app_id
+								item.upgrade_scene = _get_upgrade_scene(app_id)
+								items_container.add_child(item)
 
 func _get_upgrade_scene(app_id: String) -> PackedScene:
 
