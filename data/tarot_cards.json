@@ -1,0 +1,626 @@
+[
+  {
+    "id": "major_0",
+    "name": "The Fool",
+    "suit": "major",
+    "number": 0,
+    "rarity": 5,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_0.png"
+  },
+  {
+    "id": "major_1",
+    "name": "The Magician",
+    "suit": "major",
+    "number": 1,
+    "rarity": 4,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_1.png"
+  },
+  {
+    "id": "major_2",
+    "name": "The High Priestess",
+    "suit": "major",
+    "number": 2,
+    "rarity": 4,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_2.png"
+  },
+  {
+    "id": "major_3",
+    "name": "The Empress",
+    "suit": "major",
+    "number": 3,
+    "rarity": 3,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_3.png"
+  },
+  {
+    "id": "major_4",
+    "name": "The Emperor",
+    "suit": "major",
+    "number": 4,
+    "rarity": 3,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_4.png"
+  },
+  {
+    "id": "major_5",
+    "name": "The Hierophant",
+    "suit": "major",
+    "number": 5,
+    "rarity": 3,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_5.png"
+  },
+  {
+    "id": "major_6",
+    "name": "The Lovers",
+    "suit": "major",
+    "number": 6,
+    "rarity": 3,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_6.png"
+  },
+  {
+    "id": "major_7",
+    "name": "The Chariot",
+    "suit": "major",
+    "number": 7,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_7.png"
+  },
+  {
+    "id": "major_8",
+    "name": "Strength",
+    "suit": "major",
+    "number": 8,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_8.png"
+  },
+  {
+    "id": "major_9",
+    "name": "The Hermit",
+    "suit": "major",
+    "number": 9,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_9.png"
+  },
+  {
+    "id": "major_10",
+    "name": "Wheel of Fortune",
+    "suit": "major",
+    "number": 10,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_10.png"
+  },
+  {
+    "id": "major_11",
+    "name": "Justice",
+    "suit": "major",
+    "number": 11,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_11.png"
+  },
+  {
+    "id": "major_12",
+    "name": "The Hanged Man",
+    "suit": "major",
+    "number": 12,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_12.png"
+  },
+  {
+    "id": "major_13",
+    "name": "Death",
+    "suit": "major",
+    "number": 13,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_13.png"
+  },
+  {
+    "id": "major_14",
+    "name": "Temperance",
+    "suit": "major",
+    "number": 14,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_14.png"
+  },
+  {
+    "id": "major_15",
+    "name": "The Devil",
+    "suit": "major",
+    "number": 15,
+    "rarity": 2,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_15.png"
+  },
+  {
+    "id": "major_16",
+    "name": "The Tower",
+    "suit": "major",
+    "number": 16,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_16.png"
+  },
+  {
+    "id": "major_17",
+    "name": "The Star",
+    "suit": "major",
+    "number": 17,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_17.png"
+  },
+  {
+    "id": "major_18",
+    "name": "The Moon",
+    "suit": "major",
+    "number": 18,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_18.png"
+  },
+  {
+    "id": "major_19",
+    "name": "The Sun",
+    "suit": "major",
+    "number": 19,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_19.png"
+  },
+  {
+    "id": "major_20",
+    "name": "Judgement",
+    "suit": "major",
+    "number": 20,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_20.png"
+  },
+  {
+    "id": "major_21",
+    "name": "The World",
+    "suit": "major",
+    "number": 21,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/major_21.png"
+  },
+  {
+    "id": "wands_1",
+    "name": "Ace of Wands",
+    "suit": "wands",
+    "number": 1,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_1.png"
+  },
+  {
+    "id": "wands_2",
+    "name": "Two of Wands",
+    "suit": "wands",
+    "number": 2,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_2.png"
+  },
+  {
+    "id": "wands_3",
+    "name": "Three of Wands",
+    "suit": "wands",
+    "number": 3,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_3.png"
+  },
+  {
+    "id": "wands_4",
+    "name": "Four of Wands",
+    "suit": "wands",
+    "number": 4,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_4.png"
+  },
+  {
+    "id": "wands_5",
+    "name": "Five of Wands",
+    "suit": "wands",
+    "number": 5,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_5.png"
+  },
+  {
+    "id": "wands_6",
+    "name": "Six of Wands",
+    "suit": "wands",
+    "number": 6,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_6.png"
+  },
+  {
+    "id": "wands_7",
+    "name": "Seven of Wands",
+    "suit": "wands",
+    "number": 7,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_7.png"
+  },
+  {
+    "id": "wands_8",
+    "name": "Eight of Wands",
+    "suit": "wands",
+    "number": 8,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_8.png"
+  },
+  {
+    "id": "wands_9",
+    "name": "Nine of Wands",
+    "suit": "wands",
+    "number": 9,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_9.png"
+  },
+  {
+    "id": "wands_10",
+    "name": "Ten of Wands",
+    "suit": "wands",
+    "number": 10,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_10.png"
+  },
+  {
+    "id": "wands_11",
+    "name": "Page of Wands",
+    "suit": "wands",
+    "number": 11,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_11.png"
+  },
+  {
+    "id": "wands_12",
+    "name": "Knight of Wands",
+    "suit": "wands",
+    "number": 12,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_12.png"
+  },
+  {
+    "id": "wands_13",
+    "name": "Queen of Wands",
+    "suit": "wands",
+    "number": 13,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_13.png"
+  },
+  {
+    "id": "wands_14",
+    "name": "King of Wands",
+    "suit": "wands",
+    "number": 14,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/wands_14.png"
+  },
+  {
+    "id": "cups_1",
+    "name": "Ace of Cups",
+    "suit": "cups",
+    "number": 1,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_1.png"
+  },
+  {
+    "id": "cups_2",
+    "name": "Two of Cups",
+    "suit": "cups",
+    "number": 2,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_2.png"
+  },
+  {
+    "id": "cups_3",
+    "name": "Three of Cups",
+    "suit": "cups",
+    "number": 3,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_3.png"
+  },
+  {
+    "id": "cups_4",
+    "name": "Four of Cups",
+    "suit": "cups",
+    "number": 4,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_4.png"
+  },
+  {
+    "id": "cups_5",
+    "name": "Five of Cups",
+    "suit": "cups",
+    "number": 5,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_5.png"
+  },
+  {
+    "id": "cups_6",
+    "name": "Six of Cups",
+    "suit": "cups",
+    "number": 6,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_6.png"
+  },
+  {
+    "id": "cups_7",
+    "name": "Seven of Cups",
+    "suit": "cups",
+    "number": 7,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_7.png"
+  },
+  {
+    "id": "cups_8",
+    "name": "Eight of Cups",
+    "suit": "cups",
+    "number": 8,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_8.png"
+  },
+  {
+    "id": "cups_9",
+    "name": "Nine of Cups",
+    "suit": "cups",
+    "number": 9,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_9.png"
+  },
+  {
+    "id": "cups_10",
+    "name": "Ten of Cups",
+    "suit": "cups",
+    "number": 10,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_10.png"
+  },
+  {
+    "id": "cups_11",
+    "name": "Page of Cups",
+    "suit": "cups",
+    "number": 11,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_11.png"
+  },
+  {
+    "id": "cups_12",
+    "name": "Knight of Cups",
+    "suit": "cups",
+    "number": 12,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_12.png"
+  },
+  {
+    "id": "cups_13",
+    "name": "Queen of Cups",
+    "suit": "cups",
+    "number": 13,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_13.png"
+  },
+  {
+    "id": "cups_14",
+    "name": "King of Cups",
+    "suit": "cups",
+    "number": 14,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/cups_14.png"
+  },
+  {
+    "id": "swords_1",
+    "name": "Ace of Swords",
+    "suit": "swords",
+    "number": 1,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_1.png"
+  },
+  {
+    "id": "swords_2",
+    "name": "Two of Swords",
+    "suit": "swords",
+    "number": 2,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_2.png"
+  },
+  {
+    "id": "swords_3",
+    "name": "Three of Swords",
+    "suit": "swords",
+    "number": 3,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_3.png"
+  },
+  {
+    "id": "swords_4",
+    "name": "Four of Swords",
+    "suit": "swords",
+    "number": 4,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_4.png"
+  },
+  {
+    "id": "swords_5",
+    "name": "Five of Swords",
+    "suit": "swords",
+    "number": 5,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_5.png"
+  },
+  {
+    "id": "swords_6",
+    "name": "Six of Swords",
+    "suit": "swords",
+    "number": 6,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_6.png"
+  },
+  {
+    "id": "swords_7",
+    "name": "Seven of Swords",
+    "suit": "swords",
+    "number": 7,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_7.png"
+  },
+  {
+    "id": "swords_8",
+    "name": "Eight of Swords",
+    "suit": "swords",
+    "number": 8,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_8.png"
+  },
+  {
+    "id": "swords_9",
+    "name": "Nine of Swords",
+    "suit": "swords",
+    "number": 9,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_9.png"
+  },
+  {
+    "id": "swords_10",
+    "name": "Ten of Swords",
+    "suit": "swords",
+    "number": 10,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_10.png"
+  },
+  {
+    "id": "swords_11",
+    "name": "Page of Swords",
+    "suit": "swords",
+    "number": 11,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_11.png"
+  },
+  {
+    "id": "swords_12",
+    "name": "Knight of Swords",
+    "suit": "swords",
+    "number": 12,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_12.png"
+  },
+  {
+    "id": "swords_13",
+    "name": "Queen of Swords",
+    "suit": "swords",
+    "number": 13,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_13.png"
+  },
+  {
+    "id": "swords_14",
+    "name": "King of Swords",
+    "suit": "swords",
+    "number": 14,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/swords_14.png"
+  },
+  {
+    "id": "pentacles_1",
+    "name": "Ace of Pentacles",
+    "suit": "pentacles",
+    "number": 1,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_1.png"
+  },
+  {
+    "id": "pentacles_2",
+    "name": "Two of Pentacles",
+    "suit": "pentacles",
+    "number": 2,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_2.png"
+  },
+  {
+    "id": "pentacles_3",
+    "name": "Three of Pentacles",
+    "suit": "pentacles",
+    "number": 3,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_3.png"
+  },
+  {
+    "id": "pentacles_4",
+    "name": "Four of Pentacles",
+    "suit": "pentacles",
+    "number": 4,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_4.png"
+  },
+  {
+    "id": "pentacles_5",
+    "name": "Five of Pentacles",
+    "suit": "pentacles",
+    "number": 5,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_5.png"
+  },
+  {
+    "id": "pentacles_6",
+    "name": "Six of Pentacles",
+    "suit": "pentacles",
+    "number": 6,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_6.png"
+  },
+  {
+    "id": "pentacles_7",
+    "name": "Seven of Pentacles",
+    "suit": "pentacles",
+    "number": 7,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_7.png"
+  },
+  {
+    "id": "pentacles_8",
+    "name": "Eight of Pentacles",
+    "suit": "pentacles",
+    "number": 8,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_8.png"
+  },
+  {
+    "id": "pentacles_9",
+    "name": "Nine of Pentacles",
+    "suit": "pentacles",
+    "number": 9,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_9.png"
+  },
+  {
+    "id": "pentacles_10",
+    "name": "Ten of Pentacles",
+    "suit": "pentacles",
+    "number": 10,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_10.png"
+  },
+  {
+    "id": "pentacles_11",
+    "name": "Page of Pentacles",
+    "suit": "pentacles",
+    "number": 11,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_11.png"
+  },
+  {
+    "id": "pentacles_12",
+    "name": "Knight of Pentacles",
+    "suit": "pentacles",
+    "number": 12,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_12.png"
+  },
+  {
+    "id": "pentacles_13",
+    "name": "Queen of Pentacles",
+    "suit": "pentacles",
+    "number": 13,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_13.png"
+  },
+  {
+    "id": "pentacles_14",
+    "name": "King of Pentacles",
+    "suit": "pentacles",
+    "number": 14,
+    "rarity": 1,
+    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/pentacles_14.png"
+  }
+]

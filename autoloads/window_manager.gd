@@ -35,10 +35,12 @@ var app_registry := {
 	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
 	"NewYou": preload("res://components/apps/new_you/new_you.tscn"),
+
 		"Wallet": preload("res://components/apps/wallet/wallet_ui.tscn"),
 		"Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
 		"Terminal": preload("res://components/apps/terminal/terminal.tscn"),
 		"SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
+    "TarotApp": preload("res://components/apps/app_scenes/tarot_app.tscn"),
 
 }
 
@@ -57,6 +59,8 @@ var start_apps := {
 		"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 		"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
 		"SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
+    "TarotApp": preload("res://components/apps/app_scenes/tarot_app.tscn"),
+
 }
 
 

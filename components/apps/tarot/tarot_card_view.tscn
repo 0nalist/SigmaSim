@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
+[ext_resource type="Script" uid="uid://eb104edcb043" path="res://components/apps/tarot/tarot_card_view.gd" id="2"]
+
+[node name="TarotCardView" type="VBoxContainer"]
+theme = ExtResource("1")
+script = ExtResource("2")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 350)
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+horizontal_alignment = 1
+
+[node name="CountLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+horizontal_alignment = 1
+
+[node name="SellButton" type="Button" parent="."]
+unique_name_in_owner = true
+text = "Sell"
+visible = false
