@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cbg1lx9h31ou3"]
+[gd_scene load_steps=2 format=3 uid="uid://cbg1lyah31ou3"]
 
 [ext_resource type="Script" uid="uid://e7y2k1vhw03d" path="res://components/apps/tarot/tarot_upgrades.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2"]
