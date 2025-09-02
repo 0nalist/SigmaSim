@@ -20,8 +20,13 @@ class_name CryptoPopupUI
 var crypto: Cryptocurrency
 
 func setup_custom(args) -> void:
+	var c: Cryptocurrency = null
 	if args is Cryptocurrency:
-		await setup(args)
+		c = args
+	elif typeof(args) == TYPE_STRING:
+		c = MarketManager.crypto_market.get(args)
+	if c:
+		await setup(c)
 
 func setup(_crypto: Cryptocurrency) -> void:
 	crypto = _crypto
@@ -83,5 +88,5 @@ func load_custom_save_data(data: Dictionary) -> void:
 	if symbol != "":
 		var c: Cryptocurrency = MarketManager.crypto_market.get(symbol)
 		if c:
-			await ready   # or call_deferred("setup", c)
+			await ready# or call_deferred("setup", c)
 			setup(c)
