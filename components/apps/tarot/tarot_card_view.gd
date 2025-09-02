@@ -57,19 +57,24 @@ func setup(data: Dictionary, owned: int) -> void:
 		sell_button.pressed.connect(_on_sell_pressed)
 
 func update_count(new_count: int) -> void:
-		count = new_count
-		count_label.visible = count > 0 and (count > 1 or show_single_count)
-		count_label.text = "x%d" % count
-		sell_button.visible = count > 0
-		texture_rect.modulate = Color(1,1,1,1) if count > 0 else Color(0.5,0.5,0.5,1)
-		if count > 0:
-				sell_button.disabled = false
-				sell_button.text = "Sell for $%d" % int(sell_price)
+                count = new_count
+                count_label.visible = count > 0 and (count > 1 or show_single_count)
+                count_label.text = "x%d" % count
+                sell_button.visible = count > 0
+                texture_rect.modulate = Color(1,1,1,1) if count > 0 else Color(0.5,0.5,0.5,1)
+                if count > 0:
+                                sell_button.disabled = false
+                                sell_button.text = "Sell for $%d" % int(sell_price)
+
+func set_rarity_label_visible(is_visible: bool) -> void:
+                if not is_node_ready():
+                                await ready
+                rarity_label.visible = is_visible
 
 func _on_sell_pressed() -> void:
-		TarotManager.sell_card(card_id, rarity)
-		var new_count = TarotManager.get_card_rarity_count(card_id, rarity)
-		update_count(new_count)
+                TarotManager.sell_card(card_id, rarity)
+                var new_count = TarotManager.get_card_rarity_count(card_id, rarity)
+                update_count(new_count)
 		if mark_sold_on_sell:
 				sell_button.text = "SOLD"
 				sell_button.disabled = true
