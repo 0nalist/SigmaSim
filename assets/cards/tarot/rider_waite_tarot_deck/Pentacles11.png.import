@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2ee0524bg0x3"
-path="res://.godot/imported/FU.png-8815b80b503bb3af1e05204a5d916f47.ctex"
+uid="uid://0cabwtjey8i"
+path="res://.godot/imported/Pentacles11.png-e0438e5b800b93bd52647a22d79a51f6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/logos/FU.png"
-dest_files=["res://.godot/imported/FU.png-8815b80b503bb3af1e05204a5d916f47.ctex"]
+source_file="res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles11.png"
+dest_files=["res://.godot/imported/Pentacles11.png-e0438e5b800b93bd52647a22d79a51f6.ctex"]
 
 [params]
 
