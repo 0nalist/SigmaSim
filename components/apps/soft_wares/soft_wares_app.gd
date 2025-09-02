@@ -49,26 +49,25 @@ func _populate_items() -> void:
 
 func _get_upgrade_scene(app_id: String) -> PackedScene:
 
-        var mapping: Dictionary = {
-                "minerr": "Minerr",
-                "brokerage": "BrokeRage",
-                "fumble": "Fumble",
-                "earlybird": "EarlyBird"
-        }
-       var app_name: String = mapping.get(app_id, app_id)
-       var scene: PackedScene = null
+	var mapping: Dictionary = {
+			"minerr": "Minerr",
+			"brokerage": "BrokeRage",
+			"fumble": "Fumble",
+			"earlybird": "EarlyBird"
+	}
+	var app_name: String = mapping.get(app_id, app_id)
+	var scene: PackedScene = null
 
-       var wm := get_tree().root.get_node("WindowManager")
-       if wm:
-               var registry = wm.get("app_registry")
-               if registry is Dictionary:
-                       scene = registry.get(app_name)
+	var wm := get_tree().root.get_node("WindowManager")
+	if wm:
+			var registry = wm.get("app_registry")
+			if registry is Dictionary:
+					scene = registry.get(app_name)
 
-       if scene:
-               var pane := scene.instantiate() as Pane
-               if pane:
-                       var upgrade_scene: PackedScene = pane.upgrade_pane
-                       pane.queue_free()
-                       return upgrade_scene
-       return null
-
+	if scene:
+			var pane := scene.instantiate() as Pane
+			if pane:
+					var upgrade_scene: PackedScene = pane.upgrade_pane
+					pane.queue_free()
+					return upgrade_scene
+	return null
