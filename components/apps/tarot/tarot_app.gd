@@ -84,14 +84,17 @@ func _show_last_drawn_card() -> void:
 
 func _show_reading_cards(cards: Array) -> void:
 	for child in reading_result.get_children():
-			child.queue_free()
+		if child != reading_button:
+				child.queue_free()
 	for c in cards:
-			var id: String = c.get("id", "")
-			var rarity: int = int(c.get("rarity", 1))
-			var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
-			var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-			view.show_single_count = true
-			reading_result.add_child(view)
+		var id: String = c.get("id", "")
+		var rarity: int = int(c.get("rarity", 1))
+		var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
+		var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+		view.show_single_count = true
+		reading_result.add_child(view)
+	if is_instance_valid(reading_button):
+		reading_result.move_child(reading_button, reading_result.get_child_count() - 1)
 
 func _update_cooldown_label() -> void:
 	var remaining = TarotManager.time_until_next_draw()
