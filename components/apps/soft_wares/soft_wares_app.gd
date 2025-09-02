@@ -4,34 +4,30 @@ class_name SoftWaresApp
 const SOFTWARE_ITEM_SCENE: PackedScene = preload("res://components/apps/soft_wares/soft_ware_item.tscn")
 
 var soft_wares_registry: Dictionary = {
-	"minerr": {
-		"title": "Minerr",
-		"description": "Mine and trade cryptocurrencies.",
-		"icon": preload("res://assets/cursors/pickaxe.png"),
-		"cost": 100,
-		"has_upgrades": true
-	},
-	"brokerage": {
-		"title": "BrokeRage",
-		"description": "Buy and sell stocks in a chaotic market.",
-		"icon": preload("res://assets/logos/brokerage.png"),
-		"cost": 250,
-		"has_upgrades": true
-	},
-	"fumble": {
-		"title": "Fumble",
-		"description": "Date, swipe, and battle for love.",
-		"icon": preload("res://assets/logos/fumble.png"),
-		"cost": 300,
-		"has_upgrades": false
-	},
-	"earlybird": {
-		"title": "EarlyBird",
-		"description": "Rise early and get that worm.",
-		"icon": preload("res://assets/early_bird/worm1.png"),
-		"cost": 150,
-		"has_upgrades": false
-	}
+        "minerr": {
+                "title": "Minerr",
+                "description": "Mine and trade cryptocurrencies.",
+                "icon": preload("res://assets/cursors/pickaxe.png"),
+                "cost": 100
+        },
+        "brokerage": {
+                "title": "BrokeRage",
+                "description": "Buy and sell stocks in a chaotic market.",
+                "icon": preload("res://assets/logos/brokerage.png"),
+                "cost": 250
+        },
+        "fumble": {
+                "title": "Fumble",
+                "description": "Date, swipe, and battle for love.",
+                "icon": preload("res://assets/logos/fumble.png"),
+                "cost": 300
+        },
+        "earlybird": {
+                "title": "EarlyBird",
+                "description": "Rise early and get that worm.",
+                "icon": preload("res://assets/early_bird/worm1.png"),
+                "cost": 150
+        }
 }
 
 @onready var items_container: VBoxContainer = %ItemsContainer
@@ -47,7 +43,23 @@ func _populate_items() -> void:
                 item.app_title = data["title"]
                 item.app_description = data["description"]
                 item.app_cost = int(data["cost"])
-                item.has_upgrades = bool(data["has_upgrades"])
                 item.app_id = app_id
+                item.upgrade_scene = _get_upgrade_scene(app_id)
                 items_container.add_child(item)
-		
+
+func _get_upgrade_scene(app_id: String) -> PackedScene:
+        var mapping: Dictionary = {
+                "minerr": "Minerr",
+                "brokerage": "BrokeRage",
+                "fumble": "Fumble",
+                "earlybird": "EarlyBird"
+        }
+        var app_name: String = mapping.get(app_id, app_id)
+        var scene: PackedScene = WindowManager.app_registry.get(app_name)
+        if scene:
+                var pane := scene.instantiate() as Pane
+                if pane:
+                        var upgrade_scene: PackedScene = pane.upgrade_pane
+                        pane.queue_free()
+                        return upgrade_scene
+        return null
