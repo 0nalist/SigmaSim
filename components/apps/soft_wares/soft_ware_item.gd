@@ -17,6 +17,7 @@ var upgrade_scene: PackedScene = null
 @onready var feedback_label: Label = %FeedbackLabel
 
 func _ready() -> void:
+
                 icon_rect.texture = _prepare_icon(app_icon)
                 icon_rect.stretch_mode = TextureRect.STRETCH_SCALE
                 icon_rect.texture_repeat = CanvasItem.TEXTURE_REPEAT_DISABLED
@@ -28,13 +29,14 @@ func _ready() -> void:
                 upgrades_button.pressed.connect(_on_upgrades_button_pressed)
                 WindowManager.app_unlocked.connect(_on_app_unlocked)
 
+
 func _prepare_icon(source: Texture2D) -> Texture2D:
-        if source == null:
-                return null
-        var img: Image = source.get_image()
-        if img.get_width() != 64 or img.get_height() != 64:
-                img.resize(64, 64, Image.INTERPOLATE_LANCZOS)
-        return ImageTexture.create_from_image(img)
+		if source == null:
+				return null
+		var img: Image = source.get_image()
+		if img.get_width() != 64 or img.get_height() != 64:
+				img.resize(64, 64, Image.INTERPOLATE_LANCZOS)
+		return ImageTexture.create_from_image(img)
 
 func _update_action_button() -> void:
         if WindowManager.is_app_unlocked(app_id):
