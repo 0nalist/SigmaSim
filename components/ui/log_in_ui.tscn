@@ -108,6 +108,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ColorRect3" type="ColorRect" parent="Panel"]
+visible = false
 material = SubResource("ShaderMaterial_o21b0")
 layout_mode = 1
 anchors_preset = 15
