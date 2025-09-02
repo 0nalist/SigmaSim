@@ -148,4 +148,4 @@ func _on_collection_tab_pressed() -> void:
 
 func _on_upgrade_purchased(id: String, _new_level: int) -> void:
 	if id == "tarot_extra_card":
-			_update_reading_cost_label()
+		_update_reading_cost_label()
