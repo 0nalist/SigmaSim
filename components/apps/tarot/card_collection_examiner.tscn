@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/apps/tarot/card_collection_examiner.gd" id="1"]
+
+[node name="CardCollectionExaminer" type="CenterContainer"]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("1")
+
+[node name="Panel" type="PanelContainer" parent="."]
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+
+[node name="CardHolder" type="HBoxContainer" parent="Panel/VBox"]
+unique_name_in_owner = true
+
+[node name="CloseButton" type="Button" parent="Panel/VBox"]
+unique_name_in_owner = true
+text = "Close"
