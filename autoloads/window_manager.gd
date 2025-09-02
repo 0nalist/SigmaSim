@@ -39,6 +39,7 @@ var app_registry := {
         "Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
         "Terminal": preload("res://components/apps/terminal/terminal.tscn"),
         "SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
+        "TarotApp": preload("res://components/apps/app_scenes/tarot_app.tscn"),
 
 }
 
@@ -57,6 +58,7 @@ var start_apps := {
         "Fumble": preload("res://components/apps/fumble/fumble.tscn"),
         "Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
         "SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
+        "TarotApp": preload("res://components/apps/app_scenes/tarot_app.tscn"),
 }
 
 
