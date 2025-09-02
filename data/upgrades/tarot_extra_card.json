@@ -4,15 +4,15 @@
   "description": "Adds one additional card to each Tarot Reading.",
   "effects": [],
   "systems": [
-    "tarot"
+	"tarot"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "cash": 5
+	"ex": 1000
   },
   "scale_by_formula": true,
   "cost_formula": {
-    "cash": "base_cost[\"cash\"] * pow(1.5, level-1)"
+	"cash": "base_cost[\"ex\"] * pow(1.5, level-1)"
   },
   "repeatable": true
 }

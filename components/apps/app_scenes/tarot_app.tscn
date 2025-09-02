@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://ba3fd3816f1fd"]
+[gd_scene load_steps=10 format=3 uid="uid://ba3fd3816f1fd"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://cvgwn14oqkvd5" path="res://components/apps/tarot/tarot_app.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="3"]
 [ext_resource type="PackedScene" uid="uid://b07dutwaw54gq" path="res://components/apps/tarot/card_collection_examiner.tscn" id="4"]
 [ext_resource type="Shader" uid="uid://dp2anhkkaegyq" path="res://assets/shaders/constellation_shader.gdshader" id="4_8tbyh"]
+[ext_resource type="PackedScene" uid="uid://cbg1lyah31ou3" path="res://components/apps/tarot/tarot_upgrades.tscn" id="4_ye0rw"]
 [ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="5_6i816"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6i816"]
@@ -34,6 +35,7 @@ script = ExtResource("2")
 window_title = "Tarot"
 window_icon = ExtResource("3")
 default_window_size = Vector2(600, 600)
+upgrade_pane = ExtResource("4_ye0rw")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 material = SubResource("ShaderMaterial_6i816")
@@ -67,6 +69,12 @@ unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Daily Draw"
+
+[node name="ReadingsTabButton" type="Button" parent="MarginContainer/VBox/TabButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Readings"
 
 [node name="CollectionTabButton" type="Button" parent="MarginContainer/VBox/TabButtons"]
 unique_name_in_owner = true
@@ -110,6 +118,29 @@ focus_mode = 0
 text = "  Daily Draw  "
 
 [node name="CooldownLabel" type="Label" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ReadingsView" type="VBoxContainer" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ReadingResult" type="HBoxContainer" parent="MarginContainer/VBox/ReadingsView"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="ReadingButton" type="Button" parent="MarginContainer/VBox/ReadingsView/ReadingResult"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "  Paid Reading  "
+
+[node name="ReadingCostLabel" type="Label" parent="MarginContainer/VBox/ReadingsView/ReadingResult"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
