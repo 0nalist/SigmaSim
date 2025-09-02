@@ -96,6 +96,7 @@ var businesses: Dictionary = {}
 ## --- Signals
 signal cash_updated(new_cash: float)
 signal credit_updated(used: float, limit: float)
+signal credit_score_updated(new_score: int)
 signal stock_updated(symbol: String, new_stock: Stock)
 signal resource_changed(name: String, value: float)
 signal investments_updated(amount: float)
@@ -297,10 +298,16 @@ func _recalculate_credit_score():
 		base_score -= 20
 
 	# Optional: reward low debt
-		if get_student_loans() == 0:
-				base_score += 20
+	if get_student_loans() == 0:
+		base_score += 20
 
-	credit_score = clamp(base_score, 300, 850)
+	var new_score: int = clamp(base_score, 300, 850)
+	if new_score != credit_score:
+		credit_score = new_score
+		emit_signal("credit_score_updated", credit_score)
+		emit_signal("resource_changed", "credit_score", credit_score)
+	else:
+		credit_score = new_score
 
 func pay_down_credit(amount: float) -> bool:
 	if attempt_spend(amount, CREDIT_REQUIREMENTS["pay_down_credit"]):
