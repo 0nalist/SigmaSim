@@ -9,13 +9,13 @@ var current_score: int = min_score
 var gradient_tex: ImageTexture = null
 
 func _ready() -> void:
-	PortfolioManager.credit_updated.connect(_on_credit_changed)
-	_on_credit_changed(0.0, 0.0)
+	PortfolioManager.credit_score_updated.connect(_on_credit_score_changed)
+	_on_credit_score_changed(PortfolioManager.get_credit_score())
 	_generate_gradient_texture()
 	_update_size()
 
-func _on_credit_changed(_used: float, _limit: float) -> void:
-	current_score = PortfolioManager.get_credit_score()
+func _on_credit_score_changed(new_score: int) -> void:
+	current_score = new_score
 	queue_redraw()
 
 func _generate_gradient_texture() -> void:
