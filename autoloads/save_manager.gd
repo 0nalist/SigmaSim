@@ -157,11 +157,11 @@ func save_to_slot(slot_id: int) -> void:
 		"bills": BillManager.get_save_data(),
 		"gpus": GPUManager.get_save_data(),
 		"upgrades": UpgradeManager.get_save_data(),
-               "history": HistoryManager.get_save_data(),
-               "tarot": TarotManager.get_save_data(),
-               "windows": WindowManager.get_save_data(),
-               "desktop": DesktopLayoutManager.get_save_data(),
-               }
+			   "history": HistoryManager.get_save_data(),
+			   "tarot": TarotManager.get_save_data(),
+			   "windows": WindowManager.get_save_data(),
+			   "desktop": DesktopLayoutManager.get_save_data(),
+			   }
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
@@ -255,11 +255,11 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("market"):
 		MarketManager.load_from_data(data["market"])
 
-        if data.has("history"):
-                HistoryManager.load_from_data(data["history"])
+	if data.has("history"):
+			HistoryManager.load_from_data(data["history"])
 
-        if data.has("tarot"):
-                TarotManager.load_from_data(data["tarot"])
+	if data.has("tarot"):
+			TarotManager.load_from_data(data["tarot"])
 
 	if data.has("workers"):
 		WorkerManager.load_from_data(data["workers"])
@@ -306,11 +306,11 @@ func reset_game_state() -> void:
 	UpgradeManager.reset()
 	WorkerManager.reset()
 	MarketManager.reset()
-        GPUManager.reset()
-        BillManager.reset()
-        NPCManager.reset()
-        DesktopLayoutManager.reset()
-        TarotManager.reset()
+	GPUManager.reset()
+	BillManager.reset()
+	NPCManager.reset()
+	DesktopLayoutManager.reset()
+	TarotManager.reset()
 
 func reset_managers():
 	PlayerManager.reset()
@@ -322,11 +322,11 @@ func reset_managers():
 	WorkerManager.reset()
 	TaskManager.reset()
 	UpgradeManager.reset()
-        GPUManager.reset()
-        BillManager.reset()
-        NPCManager.reset()
-        DesktopLayoutManager.reset()
-        TarotManager.reset()
+	GPUManager.reset()
+	BillManager.reset()
+	NPCManager.reset()
+	DesktopLayoutManager.reset()
+	TarotManager.reset()
 
 func delete_save(slot_id: int) -> void:
 	if slot_id == current_slot_id:
