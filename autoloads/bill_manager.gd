@@ -357,31 +357,31 @@ func take_payday_loan(amount: float) -> void:
 	PortfolioManager.add_cash(amount)
 
 func apply_debt_interest() -> void:
-        var changed := false
-        for res in debt_resources:
-                var minutes := int(res.get("compounds_in", 0))
-                if minutes > 0:
-                        continue
-                var rate: float = float(res.get("interest_rate", 0.0))
-                var bal: float = float(res.get("balance", 0.0))
-                var name := String(res.get("name", ""))
-                if rate != 0.0 and bal > 0.0:
-                                var new_balance := bal * (1.0 + rate)
-                                if name == "Credit Card":
-                                                PortfolioManager.set_credit_used(new_balance)
-                                else:
-                                                res["balance"] = new_balance
-                                                changed = true
-                                if name == "Payday Loan" and new_balance > 0.0:
-                                                _schedule_payday_loan_bill(new_balance)
-                elif name == "Payday Loan" and bal > 0.0:
-                                _schedule_payday_loan_bill(bal)
-                if name == "Student Loan":
-                        res["compound_interval"] = TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440
-                var interval := int(res.get("compound_interval", 0))
-                if res.get("compounds_in", 0) != interval:
-                        res["compounds_in"] = interval
-                        changed = true
+	var changed := false
+	for res in debt_resources:
+			var minutes := int(res.get("compounds_in", 0))
+			if minutes > 0:
+					continue
+			var rate: float = float(res.get("interest_rate", 0.0))
+			var bal: float = float(res.get("balance", 0.0))
+			var name := String(res.get("name", ""))
+			if rate != 0.0 and bal > 0.0:
+							var new_balance := bal * (1.0 + rate)
+							if name == "Credit Card":
+											PortfolioManager.set_credit_used(new_balance)
+							else:
+											res["balance"] = new_balance
+											changed = true
+							if name == "Payday Loan" and new_balance > 0.0:
+											_schedule_payday_loan_bill(new_balance)
+			elif name == "Payday Loan" and bal > 0.0:
+							_schedule_payday_loan_bill(bal)
+			if name == "Student Loan":
+					res["compound_interval"] = TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440
+			var interval := int(res.get("compound_interval", 0))
+			if res.get("compounds_in", 0) != interval:
+					res["compounds_in"] = interval
+					changed = true
 	if changed:
 		debt_resources_changed.emit()
 
@@ -401,34 +401,34 @@ func _set_credit_card_balance(used: float, limit: float) -> void:
 			debt_resources_changed.emit()
 			return
 func _set_student_loan_balance(amount: float) -> void:
-        for res in debt_resources:
-                if res.get("name", "") == "Student Loan":
-                        res["balance"] = amount
-                        debt_resources_changed.emit()
-                        return
+		for res in debt_resources:
+				if res.get("name", "") == "Student Loan":
+						res["balance"] = amount
+						debt_resources_changed.emit()
+						return
 
 func reduce_debt_balance(name: String, amount: float) -> void:
-        var res: Dictionary = _get_debt_resource(name)
-        if res.is_empty():
-                return
-        res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
-        debt_resources_changed.emit()
+		var res: Dictionary = _get_debt_resource(name)
+		if res.is_empty():
+				return
+		res["balance"] = max(res.get("balance", 0.0) - amount, 0.0)
+		debt_resources_changed.emit()
 
 func _schedule_payday_loan_bill(amount: float) -> void:
-        var today = TimeManager.get_today()
-        var date_key = _format_date_key(today)
-        static_bill_amounts["Payday Loan"] = amount
-        if autopay_enabled and attempt_to_autopay("Payday Loan"):
-                reduce_debt_balance("Payday Loan", amount)
-                mark_bill_paid("Payday Loan", date_key)
-        else:
-                if not pending_bill_data.has(date_key):
-                        pending_bill_data[date_key] = []
-                pending_bill_data[date_key].append({
-                        "bill_name": "Payday Loan",
-                        "amount": amount
-                })
-                show_due_popups()
+		var today = TimeManager.get_today()
+		var date_key = _format_date_key(today)
+		static_bill_amounts["Payday Loan"] = amount
+		if autopay_enabled and attempt_to_autopay("Payday Loan"):
+				reduce_debt_balance("Payday Loan", amount)
+				mark_bill_paid("Payday Loan", date_key)
+		else:
+				if not pending_bill_data.has(date_key):
+						pending_bill_data[date_key] = []
+				pending_bill_data[date_key].append({
+						"bill_name": "Payday Loan",
+						"amount": amount
+				})
+				show_due_popups()
 
 
 

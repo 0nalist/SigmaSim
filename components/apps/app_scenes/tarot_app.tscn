@@ -74,3 +74,4 @@ size_flags_vertical = 3
 columns = 6
 
 [node name="CardCollectionExaminer" parent="." instance=ExtResource("4")]
+layout_mode = 2
