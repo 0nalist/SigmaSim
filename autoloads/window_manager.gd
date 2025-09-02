@@ -1,5 +1,7 @@
 extends Node
 
+signal app_unlocked(app_id: String)
+
 var open_windows: Dictionary = {} # key: WindowFrame, value: taskbar Button
 var popup_registry: Dictionary = {}
 
@@ -7,6 +9,13 @@ var taskbar_container: Control = null
 var start_panel = null
 
 var focused_window: WindowFrame = null
+
+var app_unlock_state: Dictionary = {
+        "minerr": false,
+        "earlybird": false,
+        "fumble": false,
+        "brokerage": false
+}
 
 # Preloaded apps
 var app_registry := {
@@ -26,9 +35,10 @@ var app_registry := {
 	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
 	"NewYou": preload("res://components/apps/new_you/new_you.tscn"),
-	"Wallet": preload("res://components/apps/wallet/wallet_ui.tscn"),
-	"Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
-	"Terminal": preload("res://components/apps/terminal/terminal.tscn"),
+        "Wallet": preload("res://components/apps/wallet/wallet_ui.tscn"),
+        "Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
+        "Terminal": preload("res://components/apps/terminal/terminal.tscn"),
+        "SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
 
 }
 
@@ -43,14 +53,22 @@ var start_apps := {
 	#"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
 	#"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	#"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
-	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
-	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
-	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
+        "EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
+        "Fumble": preload("res://components/apps/fumble/fumble.tscn"),
+        "Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
+        "SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
 }
 
 
 func _ready() -> void:
-	print("✅ Registered apps:", app_registry.keys())
+        print("✅ Registered apps:", app_registry.keys())
+
+func is_app_unlocked(app_id: String) -> bool:
+        return app_unlock_state.get(app_id, true)
+
+func unlock_app(app_id: String) -> void:
+        app_unlock_state[app_id] = true
+        app_unlocked.emit(app_id)
 
 # --- Main window functions --- #
 
@@ -152,9 +170,19 @@ func close_window(window: WindowFrame) -> void:
 
 # --- Launchers --- #
 
+func launch_app(app_id: String) -> void:
+        var mapping: Dictionary = {
+                "minerr": "Minerr",
+                "brokerage": "BrokeRage",
+                "fumble": "Fumble",
+                "earlybird": "EarlyBird"
+        }
+        var app_name: String = mapping.get(app_id, app_id)
+        launch_app_by_name(app_name)
+
 func launch_app_by_name(app_name: String, setup_args: Variant = null) -> void:
-		var scene: PackedScene = app_registry.get(app_name)
-		if scene:
+                var scene: PackedScene = app_registry.get(app_name)
+                if scene:
 				if setup_args != null:
 						var pane := scene.instantiate() as Pane
 						if not pane:
