@@ -9,6 +9,7 @@ class_name TarotApp
 @onready var draw_view: VBoxContainer = %DrawView
 @onready var collection_view: ScrollContainer = %CollectionView
 @onready var collection_grid: GridContainer = %CollectionGrid
+@onready var card_collection_examiner: CardCollectionExaminer = %CardCollectionExaminer
 
 var card_views: Dictionary = {}
 var _active_tab: StringName = &"Draw"
@@ -31,10 +32,11 @@ func _build_collection_view() -> void:
 		var id: String = card.get("id", "")
 		var count: int = TarotManager.get_card_count(id)
                var view: TarotCardView = TarotManager.instantiate_card_view(id, count)
-		collection_grid.add_child(view)
-		view.texture_rect.custom_minimum_size = Vector2(32, 56)
-		
-		card_views[id] = view
+                collection_grid.add_child(view)
+                view.texture_rect.custom_minimum_size = Vector2(32, 56)
+                view.card_pressed.connect(card_collection_examiner.show_card)
+
+                card_views[id] = view
 
 func _on_collection_changed(card_id: String, count: int) -> void:
 	var view = card_views.get(card_id)
@@ -49,8 +51,11 @@ func _on_draw_button_pressed() -> void:
 	for child in draw_result.get_children():
 		child.queue_free()
 	var id = card.get("id", "")
-       var view = TarotManager.instantiate_card_view(id, TarotManager.get_card_count(id), true)
-	draw_result.add_child(view)
+       var rarity = int(card.get("rarity", 1))
+       var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
+       var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+       view.show_single_count = true
+        draw_result.add_child(view)
 	_update_cooldown_label()
 
 func _update_cooldown_label() -> void:

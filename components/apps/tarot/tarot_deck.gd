@@ -31,8 +31,10 @@ func load_from_file(path: String) -> void:
 func get_card(id: String) -> Dictionary:
     return card_map.get(id, {})
 
-func instantiate_card_view(id: String, count: int = 0, mark_sold_on_sell: bool = false) -> TarotCardView:
-    var data = get_card(id)
+func instantiate_card_view(id: String, count: int = 0, mark_sold_on_sell: bool = false, rarity: int = -1) -> TarotCardView:
+    var data = get_card(id).duplicate()
+    if rarity > 0:
+        data["rarity"] = rarity
     var view: TarotCardView = CARD_VIEW_SCENE.instantiate()
     view.mark_sold_on_sell = mark_sold_on_sell
     view.setup(data, count)
