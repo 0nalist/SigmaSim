@@ -7,7 +7,7 @@ signal sell_pressed(stock_symbol: String, quantity: int)
 @onready var stock_label: Label = %StockLabel
 @onready var buy_button: Button = $BuyButton
 @onready var sell_button: Button = $SellButton
-@onready var quantity_spinbox: SpinBox = $QuantitySpinBox
+@onready var quantity_option: OptionButton = $QuantityOption
 @onready var owned_label: Label = $OwnedLabel
 @onready var arrow = $SentimentArrow
 
@@ -15,26 +15,47 @@ var stock: Stock
 
 var last_price: float = 0.0
 
+func _ready() -> void:
+        for amount in ["1", "10", "100", "MAX"]:
+                quantity_option.add_item(amount)
+        quantity_option.selected = 0
+
 func setup(_stock: Stock) -> void:
 	stock = _stock
 	last_price = stock.price
 	update_display(stock)
 
-	buy_button.pressed.connect(func():
-		var quantity := int(quantity_spinbox.value)
-		var price := stock.price * quantity
-		if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
-			print("Credit purchase requires Pattern Day Trader upgrade")
-			return
-		emit_signal("buy_pressed", stock.symbol, quantity)
-		update_display(stock)
-	)
-	sell_button.pressed.connect(func():
-		var quantity := int(quantity_spinbox.value)
-		emit_signal("sell_pressed", stock.symbol, quantity)
-		update_display(stock)
-	)
-	
+        buy_button.pressed.connect(func():
+                var quantity := _get_buy_quantity()
+                if quantity <= 0:
+                        return
+                var price := stock.price * quantity
+                if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
+                        print("Credit purchase requires Pattern Day Trader upgrade")
+                        return
+                emit_signal("buy_pressed", stock.symbol, quantity)
+                update_display(stock)
+        )
+        sell_button.pressed.connect(func():
+                var quantity := _get_sell_quantity()
+                if quantity <= 0:
+                        return
+                emit_signal("sell_pressed", stock.symbol, quantity)
+                update_display(stock)
+        )
+
+func _get_buy_quantity() -> int:
+        var text := quantity_option.get_item_text(quantity_option.get_selected_id())
+        if text == "MAX":
+                return int(floor(PortfolioManager.get_cash() / stock.price))
+        return int(text)
+
+func _get_sell_quantity() -> int:
+        var text := quantity_option.get_item_text(quantity_option.get_selected_id())
+        if text == "MAX":
+                return PortfolioManager.stocks_owned.get(stock.symbol, 0)
+        return int(text)
+
 
 func update_display(updated_stock: Stock) -> void:
 	var previous_price = last_price

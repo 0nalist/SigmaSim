@@ -69,10 +69,11 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_8c4aw")
 theme_override_styles/normal = SubResource("StyleBoxTexture_lqo4w")
 text = " SELL "
 
-[node name="QuantitySpinBox" type="SpinBox" parent="."]
+[node name="QuantityOption" type="OptionButton" parent="."]
 layout_mode = 2
-min_value = 1.0
-value = 1.0
+size_flags_horizontal = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 10
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2
