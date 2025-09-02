@@ -74,7 +74,7 @@ horizontal_alignment = 1
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
 size_flags_vertical = 0
-mouse_filter = 1
+mouse_filter = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tabbar")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/PanelContainer"]
