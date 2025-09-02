@@ -166,21 +166,23 @@ func save_to_slot(slot_id: int) -> void:
 	file.store_string(JSON.stringify(data, "\t"))
 	file.close()
 
-	var metadata = load_slot_metadata()
-	var slot_key = "slot_%d" % slot_id
-	if not metadata.has(slot_key):
-		metadata[slot_key] = {}
+        var metadata = load_slot_metadata()
+        var slot_key = "slot_%d" % slot_id
+        if not metadata.has(slot_key):
+                metadata[slot_key] = {}
 
 	var player_data = PlayerManager.get_save_data()
 	metadata[slot_key]["name"] = player_data.get("name", "Unnamed")
 	metadata[slot_key]["username"] = player_data.get("username", "user")
 	metadata[slot_key]["password"] = player_data.get("password", "")
 	metadata[slot_key]["using_random_seed"] = player_data.get("using_random_seed", false)
-	metadata[slot_key]["portrait_config"] = player_data.get("portrait_config", {})
-	metadata[slot_key]["background_path"] = player_data.get("background_path", "")
-	metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
-	metadata[slot_key]["cash"] = PortfolioManager.cash
-	metadata[slot_key]["net_worth"] = PortfolioManager.get_balance()
+        metadata[slot_key]["portrait_config"] = player_data.get("portrait_config", {})
+        metadata[slot_key]["background_path"] = player_data.get("background_path", "")
+        if not metadata[slot_key].has("created_at"):
+                metadata[slot_key]["created_at"] = Time.get_unix_time_from_system()
+        metadata[slot_key]["last_played"] = Time.get_datetime_string_from_system()
+        metadata[slot_key]["cash"] = PortfolioManager.cash
+        metadata[slot_key]["net_worth"] = PortfolioManager.get_balance()
 
 	save_slot_metadata(metadata)
 	if DBManager != null:
