@@ -53,9 +53,9 @@ func _populate() -> void:
 func _set_icon(node: Control, entry: Dictionary) -> void:
 	var icon_path: String = entry.get("icon_path", "")
 	if icon_path != "":
-			var tex: Texture2D = load(icon_path)
-			if tex != null:
-					node.icon = tex
+		var tex: Texture2D = load(icon_path)
+		if tex != null:
+				node.icon = tex
 
 func _update_grid_columns() -> void:
 		if not is_node_ready():
