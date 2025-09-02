@@ -50,11 +50,11 @@ func _on_option_pressed(button: Button) -> void:
 			btn.set_pressed_no_signal(false)
 
 	# Update selection state
-        match button:
-                none_button:
-                        selected_level = "None"
-                        selected_student_debt = 0.0
-                        selected_credit_limit = 0.0
+	match button:
+		none_button:
+				selected_level = "None"
+				selected_student_debt = 0.0
+				selected_credit_limit = 0.0
 		high_school_button:
 			selected_level = "High School / GED"
 			selected_student_debt = 0.0
@@ -71,39 +71,39 @@ func _on_option_pressed(button: Button) -> void:
 			selected_level = "Master's Degree"
 			selected_student_debt = 250000.0
 			selected_credit_limit = 25000.0
-                doctorate_button:
-                        selected_level = "Doctorate"
-                        selected_student_debt = 1200000.0
-                        selected_credit_limit = 100000.0
+		doctorate_button:
+				selected_level = "Doctorate"
+				selected_student_debt = 1200000.0
+				selected_credit_limit = 100000.0
 
-        show_tooltip_from_button(button)
+	show_tooltip_from_button(button)
 
-        emit_signal("step_valid", true)
+	emit_signal("step_valid", true)
 
 
 
 func show_tooltip_from_button(button: Button) -> void:
-        var tooltip_text = button.tooltip_text
-        if tooltip_text == "":
-                return
+		var tooltip_text = button.tooltip_text
+		if tooltip_text == "":
+				return
 
-        tooltip_label.text = tooltip_text
-        tooltip_popup.visible = true
-        tooltip_popup.modulate.a = 1.0
+		tooltip_label.text = tooltip_text
+		tooltip_popup.visible = true
+		tooltip_popup.modulate.a = 1.0
 
-        await get_tree().process_frame
+		await get_tree().process_frame
 
-        var button_global_rect = button.get_global_rect()
-        var button_right_center = button_global_rect.position + Vector2(button_global_rect.size.x, button_global_rect.size.y / 2)
-        var local_pos = tooltip_popup.get_parent().get_global_transform_with_canvas().affine_inverse() * button_right_center
-        var tooltip_size = tooltip_popup.size
-        tooltip_popup.position = local_pos + Vector2(10, -tooltip_size.y / 2)
+		var button_global_rect = button.get_global_rect()
+		var button_right_center = button_global_rect.position + Vector2(button_global_rect.size.x, button_global_rect.size.y / 2)
+		var local_pos = tooltip_popup.get_parent().get_global_transform_with_canvas().affine_inverse() * button_right_center
+		var tooltip_size = tooltip_popup.size
+		tooltip_popup.position = local_pos + Vector2(10, -tooltip_size.y / 2)
 
-        if tooltip_tween and tooltip_tween.is_valid():
-                tooltip_tween.kill()
+		if tooltip_tween and tooltip_tween.is_valid():
+				tooltip_tween.kill()
 
-        tooltip_tween = get_tree().create_tween()
-        tooltip_tween.tween_property(tooltip_popup, "position:y", tooltip_popup.position.y - 30, 0.4)
+		tooltip_tween = get_tree().create_tween()
+		tooltip_tween.tween_property(tooltip_popup, "position:y", tooltip_popup.position.y - 30, 0.4)
 
 
 func save_data() -> void:
