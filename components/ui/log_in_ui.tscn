@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=21 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
@@ -11,6 +11,7 @@
 [ext_resource type="Shader" uid="uid://c3n5nkf3qs03p" path="res://assets/shaders/spiral_portal_shader.gdshader" id="6_hu4fx"]
 [ext_resource type="Shader" uid="uid://b3lch55daabv3" path="res://assets/shaders/wavy_walk_shader.gdshader" id="6_s425x"]
 [ext_resource type="Shader" uid="uid://d1b6le8xdh7hg" path="res://assets/shaders/spiral_domain_mapping_shader.gdshader" id="7_sjnvm"]
+[ext_resource type="Shader" uid="uid://bskyywxubgk54" path="res://assets/shaders/beyond_jupiter_shader.gdshader" id="8_o21b0"]
 [ext_resource type="Texture2D" uid="uid://bowu041csi5ai" path="res://assets/icons/power_icon.png" id="10_yke0b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
@@ -43,6 +44,9 @@ shader_parameter/speed = 0.03
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o21b0"]
 shader = ExtResource("7_sjnvm")
 shader_parameter/sigma_thickness = 0.12
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pxemu"]
+shader = ExtResource("8_o21b0")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmwu1"]
 bg_color = Color(0, 0.670588, 0.968627, 1)
@@ -90,6 +94,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_nfsrt")
 
 [node name="ColorRect2" type="ColorRect" parent="Panel"]
+visible = false
 material = SubResource("ShaderMaterial_sjnvm")
 layout_mode = 1
 anchors_preset = 15
@@ -110,6 +115,15 @@ grow_vertical = 2
 [node name="ColorRect3" type="ColorRect" parent="Panel"]
 visible = false
 material = SubResource("ShaderMaterial_o21b0")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect4" type="ColorRect" parent="Panel"]
+material = SubResource("ShaderMaterial_pxemu")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

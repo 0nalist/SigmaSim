@@ -1,9 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://ba3fd3816f1fd"]
+[gd_scene load_steps=7 format=3 uid="uid://ba3fd3816f1fd"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://cvgwn14oqkvd5" path="res://components/apps/tarot/tarot_app.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="3"]
-[ext_resource type="PackedScene" path="res://components/apps/tarot/card_collection_examiner.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://b07dutwaw54gq" path="res://components/apps/tarot/card_collection_examiner.tscn" id="4"]
+[ext_resource type="Shader" uid="uid://dp2anhkkaegyq" path="res://assets/shaders/constellation_shader.gdshader" id="4_8tbyh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6i816"]
+shader = ExtResource("4_8tbyh")
+shader_parameter/num_layers = 3
+shader_parameter/iMouse = Vector2(0, 0)
+shader_parameter/speed = 0.25
+shader_parameter/cycle_colors = false
 
 [node name="TarotApp" type="MarginContainer"]
 anchors_preset = 15
@@ -18,6 +26,10 @@ script = ExtResource("2")
 window_title = "Tarot"
 window_icon = ExtResource("3")
 default_window_size = Vector2(600, 600)
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_6i816")
+layout_mode = 2
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
