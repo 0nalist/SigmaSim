@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://ba3fd3816f1fd"]
+[gd_scene load_steps=9 format=3 uid="uid://ba3fd3816f1fd"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://cvgwn14oqkvd5" path="res://components/apps/tarot/tarot_app.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="3"]
 [ext_resource type="PackedScene" uid="uid://b07dutwaw54gq" path="res://components/apps/tarot/card_collection_examiner.tscn" id="4"]
 [ext_resource type="Shader" uid="uid://dp2anhkkaegyq" path="res://assets/shaders/constellation_shader.gdshader" id="4_8tbyh"]
+[ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="5_6i816"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6i816"]
 shader = ExtResource("4_8tbyh")
@@ -12,6 +13,13 @@ shader_parameter/num_layers = 3
 shader_parameter/iMouse = Vector2(0, 0)
 shader_parameter/speed = 0.25
 shader_parameter/cycle_colors = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8tbyh"]
+bg_color = Color(0, 0, 0, 0.94902)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="TarotApp" type="MarginContainer"]
 anchors_preset = 15
@@ -31,59 +39,93 @@ default_window_size = Vector2(600, 600)
 material = SubResource("ShaderMaterial_6i816")
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TabButtons" type="HBoxContainer" parent="VBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
-size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("5_6i816")
+theme_override_font_sizes/font_size = 36
+text = "Tarot"
+horizontal_alignment = 1
+
+[node name="TabButtons" type="VBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_horizontal = 0
 theme_override_constants/separation = 4
 
-[node name="DrawTabButton" type="Button" parent="VBox/TabButtons"]
+[node name="DrawTabButton" type="Button" parent="MarginContainer/VBox/TabButtons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Draw"
+focus_mode = 0
+text = "Daily Draw"
 
-[node name="CollectionTabButton" type="Button" parent="VBox/TabButtons"]
+[node name="CollectionTabButton" type="Button" parent="MarginContainer/VBox/TabButtons"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Collection"
+focus_mode = 0
+text = " Collection "
 
-[node name="DrawView" type="VBoxContainer" parent="VBox"]
+[node name="DrawView" type="VBoxContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="DrawResult" type="HBoxContainer" parent="VBox/DrawView"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/DrawView"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_8tbyh")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/DrawView/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DrawResult" type="HBoxContainer" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="DrawButton" type="Button" parent="VBox/DrawView"]
+[node name="DrawButton" type="Button" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 text = "  Daily Draw  "
 
-[node name="CooldownLabel" type="Label" parent="VBox/DrawView"]
+[node name="CooldownLabel" type="Label" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="CollectionView" type="ScrollContainer" parent="VBox"]
+[node name="CollectionView" type="ScrollContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CollectionGrid" type="GridContainer" parent="VBox/CollectionView"]
+[node name="CollectionGrid" type="GridContainer" parent="MarginContainer/VBox/CollectionView"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 6
 
-[node name="CardCollectionExaminer" parent="." instance=ExtResource("4")]
+[node name="CardCollectionExaminer" parent="MarginContainer" instance=ExtResource("4")]
 layout_mode = 2
