@@ -5,7 +5,7 @@
     "suit": "major",
     "number": 0,
     "rarity": 5,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/00-TheFool.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/00-TheFool.png"
   },
   {
     "id": "major_1",
@@ -13,7 +13,7 @@
     "suit": "major",
     "number": 1,
     "rarity": 4,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/01-TheMagician.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/01-TheMagician.png"
   },
   {
     "id": "major_2",
@@ -21,7 +21,7 @@
     "suit": "major",
     "number": 2,
     "rarity": 4,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/02-TheHighPriestess.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/02-TheHighPriestess.png"
   },
   {
     "id": "major_3",
@@ -29,7 +29,7 @@
     "suit": "major",
     "number": 3,
     "rarity": 3,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/03-TheEmpress.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/03-TheEmpress.png"
   },
   {
     "id": "major_4",
@@ -37,7 +37,7 @@
     "suit": "major",
     "number": 4,
     "rarity": 3,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/04-TheEmperor.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/04-TheEmperor.png"
   },
   {
     "id": "major_5",
@@ -45,7 +45,7 @@
     "suit": "major",
     "number": 5,
     "rarity": 3,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/05-TheHierophant.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/05-TheHierophant.png"
   },
   {
     "id": "major_6",
@@ -53,7 +53,7 @@
     "suit": "major",
     "number": 6,
     "rarity": 3,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/06-TheLovers.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/06-TheLovers.png"
   },
   {
     "id": "major_7",
@@ -61,7 +61,7 @@
     "suit": "major",
     "number": 7,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/07-TheChariot.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/07-TheChariot.png"
   },
   {
     "id": "major_8",
@@ -69,7 +69,7 @@
     "suit": "major",
     "number": 8,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/08-Strength.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/08-Strength.png"
   },
   {
     "id": "major_9",
@@ -77,7 +77,7 @@
     "suit": "major",
     "number": 9,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/09-TheHermit.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/09-TheHermit.png"
   },
   {
     "id": "major_10",
@@ -85,7 +85,7 @@
     "suit": "major",
     "number": 10,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/10-WheelOfFortune.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/10-WheelOfFortune.png"
   },
   {
     "id": "major_11",
@@ -93,7 +93,7 @@
     "suit": "major",
     "number": 11,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/11-Justice.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/11-Justice.png"
   },
   {
     "id": "major_12",
@@ -101,7 +101,7 @@
     "suit": "major",
     "number": 12,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/12-TheHangedMan.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/12-TheHangedMan.png"
   },
   {
     "id": "major_13",
@@ -109,7 +109,7 @@
     "suit": "major",
     "number": 13,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/13-Death.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/13-Death.png"
   },
   {
     "id": "major_14",
@@ -117,7 +117,7 @@
     "suit": "major",
     "number": 14,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/14-Temperance.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/14-Temperance.png"
   },
   {
     "id": "major_15",
@@ -125,7 +125,7 @@
     "suit": "major",
     "number": 15,
     "rarity": 2,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/15-TheDevil.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/15-TheDevil.png"
   },
   {
     "id": "major_16",
@@ -133,7 +133,7 @@
     "suit": "major",
     "number": 16,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/16-TheTower.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/16-TheTower.png"
   },
   {
     "id": "major_17",
@@ -141,7 +141,7 @@
     "suit": "major",
     "number": 17,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/17-TheStar.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/17-TheStar.png"
   },
   {
     "id": "major_18",
@@ -149,7 +149,7 @@
     "suit": "major",
     "number": 18,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/18-TheMoon.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/18-TheMoon.png"
   },
   {
     "id": "major_19",
@@ -157,7 +157,7 @@
     "suit": "major",
     "number": 19,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/19-TheSun.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/19-TheSun.png"
   },
   {
     "id": "major_20",
@@ -165,7 +165,7 @@
     "suit": "major",
     "number": 20,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/20-Judgement.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/20-Judgement.png"
   },
   {
     "id": "major_21",
@@ -173,7 +173,7 @@
     "suit": "major",
     "number": 21,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/21-TheWorld.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/21-TheWorld.png"
   },
   {
     "id": "wands_1",
@@ -181,7 +181,7 @@
     "suit": "wands",
     "number": 1,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands01.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands01.png"
   },
   {
     "id": "wands_2",
@@ -189,7 +189,7 @@
     "suit": "wands",
     "number": 2,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands02.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands02.png"
   },
   {
     "id": "wands_3",
@@ -197,7 +197,7 @@
     "suit": "wands",
     "number": 3,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands03.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands03.png"
   },
   {
     "id": "wands_4",
@@ -205,7 +205,7 @@
     "suit": "wands",
     "number": 4,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands04.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands04.png"
   },
   {
     "id": "wands_5",
@@ -213,7 +213,7 @@
     "suit": "wands",
     "number": 5,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands05.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands05.png"
   },
   {
     "id": "wands_6",
@@ -221,7 +221,7 @@
     "suit": "wands",
     "number": 6,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands06.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands06.png"
   },
   {
     "id": "wands_7",
@@ -229,7 +229,7 @@
     "suit": "wands",
     "number": 7,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands07.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands07.png"
   },
   {
     "id": "wands_8",
@@ -237,7 +237,7 @@
     "suit": "wands",
     "number": 8,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands08.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands08.png"
   },
   {
     "id": "wands_9",
@@ -245,7 +245,7 @@
     "suit": "wands",
     "number": 9,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands09.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands09.png"
   },
   {
     "id": "wands_10",
@@ -253,7 +253,7 @@
     "suit": "wands",
     "number": 10,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands10.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands10.png"
   },
   {
     "id": "wands_11",
@@ -261,7 +261,7 @@
     "suit": "wands",
     "number": 11,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands11.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands11.png"
   },
   {
     "id": "wands_12",
@@ -269,7 +269,7 @@
     "suit": "wands",
     "number": 12,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands12.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands12.png"
   },
   {
     "id": "wands_13",
@@ -277,7 +277,7 @@
     "suit": "wands",
     "number": 13,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands13.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands13.png"
   },
   {
     "id": "wands_14",
@@ -285,7 +285,7 @@
     "suit": "wands",
     "number": 14,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Wands14.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Wands14.png"
   },
   {
     "id": "cups_1",
@@ -293,7 +293,7 @@
     "suit": "cups",
     "number": 1,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups01.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups01.png"
   },
   {
     "id": "cups_2",
@@ -301,7 +301,7 @@
     "suit": "cups",
     "number": 2,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups02.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups02.png"
   },
   {
     "id": "cups_3",
@@ -309,7 +309,7 @@
     "suit": "cups",
     "number": 3,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups03.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups03.png"
   },
   {
     "id": "cups_4",
@@ -317,7 +317,7 @@
     "suit": "cups",
     "number": 4,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups04.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups04.png"
   },
   {
     "id": "cups_5",
@@ -325,7 +325,7 @@
     "suit": "cups",
     "number": 5,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups05.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups05.png"
   },
   {
     "id": "cups_6",
@@ -333,7 +333,7 @@
     "suit": "cups",
     "number": 6,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups06.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups06.png"
   },
   {
     "id": "cups_7",
@@ -341,7 +341,7 @@
     "suit": "cups",
     "number": 7,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups07.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups07.png"
   },
   {
     "id": "cups_8",
@@ -349,7 +349,7 @@
     "suit": "cups",
     "number": 8,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups08.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups08.png"
   },
   {
     "id": "cups_9",
@@ -357,7 +357,7 @@
     "suit": "cups",
     "number": 9,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups09.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups09.png"
   },
   {
     "id": "cups_10",
@@ -365,7 +365,7 @@
     "suit": "cups",
     "number": 10,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups10.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups10.png"
   },
   {
     "id": "cups_11",
@@ -373,7 +373,7 @@
     "suit": "cups",
     "number": 11,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups11.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups11.png"
   },
   {
     "id": "cups_12",
@@ -381,7 +381,7 @@
     "suit": "cups",
     "number": 12,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups12.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups12.png"
   },
   {
     "id": "cups_13",
@@ -389,7 +389,7 @@
     "suit": "cups",
     "number": 13,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups13.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups13.png"
   },
   {
     "id": "cups_14",
@@ -397,7 +397,7 @@
     "suit": "cups",
     "number": 14,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Cups14.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Cups14.png"
   },
   {
     "id": "swords_1",
@@ -405,7 +405,7 @@
     "suit": "swords",
     "number": 1,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords01.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords01.png"
   },
   {
     "id": "swords_2",
@@ -413,7 +413,7 @@
     "suit": "swords",
     "number": 2,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords02.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords02.png"
   },
   {
     "id": "swords_3",
@@ -421,7 +421,7 @@
     "suit": "swords",
     "number": 3,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords03.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords03.png"
   },
   {
     "id": "swords_4",
@@ -429,7 +429,7 @@
     "suit": "swords",
     "number": 4,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords04.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords04.png"
   },
   {
     "id": "swords_5",
@@ -437,7 +437,7 @@
     "suit": "swords",
     "number": 5,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords05.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords05.png"
   },
   {
     "id": "swords_6",
@@ -445,7 +445,7 @@
     "suit": "swords",
     "number": 6,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords06.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords06.png"
   },
   {
     "id": "swords_7",
@@ -453,7 +453,7 @@
     "suit": "swords",
     "number": 7,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords07.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords07.png"
   },
   {
     "id": "swords_8",
@@ -461,7 +461,7 @@
     "suit": "swords",
     "number": 8,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords08.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords08.png"
   },
   {
     "id": "swords_9",
@@ -469,7 +469,7 @@
     "suit": "swords",
     "number": 9,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords09.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords09.png"
   },
   {
     "id": "swords_10",
@@ -477,7 +477,7 @@
     "suit": "swords",
     "number": 10,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords10.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords10.png"
   },
   {
     "id": "swords_11",
@@ -485,7 +485,7 @@
     "suit": "swords",
     "number": 11,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords11.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords11.png"
   },
   {
     "id": "swords_12",
@@ -493,7 +493,7 @@
     "suit": "swords",
     "number": 12,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords12.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords12.png"
   },
   {
     "id": "swords_13",
@@ -501,7 +501,7 @@
     "suit": "swords",
     "number": 13,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords13.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords13.png"
   },
   {
     "id": "swords_14",
@@ -509,7 +509,7 @@
     "suit": "swords",
     "number": 14,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Swords14.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Swords14.png"
   },
   {
     "id": "pentacles_1",
@@ -517,7 +517,7 @@
     "suit": "pentacles",
     "number": 1,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles01.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles01.png"
   },
   {
     "id": "pentacles_2",
@@ -525,7 +525,7 @@
     "suit": "pentacles",
     "number": 2,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles02.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles02.png"
   },
   {
     "id": "pentacles_3",
@@ -533,7 +533,7 @@
     "suit": "pentacles",
     "number": 3,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles03.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles03.png"
   },
   {
     "id": "pentacles_4",
@@ -541,7 +541,7 @@
     "suit": "pentacles",
     "number": 4,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles04.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles04.png"
   },
   {
     "id": "pentacles_5",
@@ -549,7 +549,7 @@
     "suit": "pentacles",
     "number": 5,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles05.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles05.png"
   },
   {
     "id": "pentacles_6",
@@ -557,7 +557,7 @@
     "suit": "pentacles",
     "number": 6,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles06.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles06.png"
   },
   {
     "id": "pentacles_7",
@@ -565,7 +565,7 @@
     "suit": "pentacles",
     "number": 7,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles07.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles07.png"
   },
   {
     "id": "pentacles_8",
@@ -573,7 +573,7 @@
     "suit": "pentacles",
     "number": 8,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles08.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles08.png"
   },
   {
     "id": "pentacles_9",
@@ -581,7 +581,7 @@
     "suit": "pentacles",
     "number": 9,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles09.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles09.png"
   },
   {
     "id": "pentacles_10",
@@ -589,7 +589,7 @@
     "suit": "pentacles",
     "number": 10,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles10.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles10.png"
   },
   {
     "id": "pentacles_11",
@@ -597,7 +597,7 @@
     "suit": "pentacles",
     "number": 11,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles11.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles11.png"
   },
   {
     "id": "pentacles_12",
@@ -605,7 +605,7 @@
     "suit": "pentacles",
     "number": 12,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles12.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles12.png"
   },
   {
     "id": "pentacles_13",
@@ -613,7 +613,7 @@
     "suit": "pentacles",
     "number": 13,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles13.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles13.png"
   },
   {
     "id": "pentacles_14",
@@ -621,6 +621,6 @@
     "suit": "pentacles",
     "number": 14,
     "rarity": 1,
-    "texture_path": "res://cards/tarot/rider_waite_tarot_deck/Pentacles14.png"
+    "texture_path": "res://assets/cards/tarot/rider_waite_tarot_deck/Pentacles14.png"
   }
 ]
