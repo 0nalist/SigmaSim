@@ -39,8 +39,8 @@ func get_card_count(id: String) -> int:
 func get_all_cards_ordered() -> Array:
 	return deck.get_all_cards_ordered()
 
-func instantiate_card_view(id: String, count: int = 0) -> TarotCardView:
-	return deck.instantiate_card_view(id, count)
+func instantiate_card_view(id: String, count: int = 0, mark_sold_on_sell: bool = false) -> TarotCardView:
+        return deck.instantiate_card_view(id, count, mark_sold_on_sell)
 
 func time_until_next_draw() -> int:
 	var now = TimeManager.get_now_minutes()
