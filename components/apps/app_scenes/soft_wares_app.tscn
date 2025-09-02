@@ -15,6 +15,26 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_8w5uy")
 script = ExtResource("1")
 window_title = "Soft Wares"
+default_window_size = null
+default_position = null
+request_windowless_mode = null
+show_in_taskbar = null
+allow_multiple = null
+unique_popup_key = null
+is_popup = null
+persist_on_save = null
+window_can_close = null
+window_can_minimize = null
+window_can_maximize = null
+user_movable = null
+user_resizable = null
+stay_on_top = null
+color1 = null
+color2 = null
+color3 = null
+color4 = null
+color5 = null
+color6 = null
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

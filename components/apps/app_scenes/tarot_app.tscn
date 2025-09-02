@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ba3fd3816f1fd"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
-[ext_resource type="Script" uid="uid://7511226d6221" path="res://components/apps/tarot/tarot_app.gd" id="2"]
+[ext_resource type="Script" uid="uid://cvgwn14oqkvd5" path="res://components/apps/tarot/tarot_app.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="3"]
 
 [node name="TarotApp" type="MarginContainer"]
@@ -10,6 +10,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Tarot"
@@ -22,14 +24,17 @@ theme_override_constants/separation = 8
 
 [node name="TabButtons" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_constants/separation = 4
 
 [node name="DrawTabButton" type="Button" parent="VBox/TabButtons"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Draw"
 
 [node name="CollectionTabButton" type="Button" parent="VBox/TabButtons"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Collection"
 
 [node name="DrawView" type="VBoxContainer" parent="VBox"]
@@ -37,23 +42,28 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
+[node name="DrawResult" type="HBoxContainer" parent="VBox/DrawView"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="DrawButton" type="Button" parent="VBox/DrawView"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Daily Draw"
 
 [node name="CooldownLabel" type="Label" parent="VBox/DrawView"]
-unique_name_in_owner = true
-text = ""
-
-[node name="DrawResult" type="HBoxContainer" parent="VBox/DrawView"]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="CollectionView" type="ScrollContainer" parent="VBox"]
 unique_name_in_owner = true
-layout_mode = 2
 visible = false
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="CollectionGrid" type="GridContainer" parent="VBox/CollectionView"]
 unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 columns = 6

@@ -233,14 +233,15 @@ horizontal_alignment = 2
 [node name="AstrologyHeader" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
+size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 16
 text = "Zodiac"
 
-[node name="AstrologyContainer" type="HBoxContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
+[node name="AstrologyContainer" type="VBoxContainer" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 4
 theme_override_constants/separation = 4
 
 [node name="AstrologySun" type="Label" parent="Scroll/VBoxContainer/Margin/VBox/HBoxContainer/VBoxContainer/GridContainer/AstrologyContainer"]

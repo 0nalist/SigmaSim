@@ -11,7 +11,7 @@ var count: int = 0
 @onready var sell_button: Button = %SellButton
 
 func setup(data: Dictionary, owned: int) -> void:
-	if not ready:
+	if not is_node_ready():
 		await ready
 	
 	card_id = data.get("id", "")
