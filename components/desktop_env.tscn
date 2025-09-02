@@ -715,7 +715,8 @@ size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxTexture_vxmwr")
 
 [node name="StartPanel" parent="TaskbarLayer/TaskbarWrapper" instance=ExtResource("23_dik0q")]
-unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TaskbarWrapper"]
 layout_mode = 1
@@ -823,8 +824,8 @@ day_panel_scene = ExtResource("20_vxmwr")
 
 [connection signal="pressed" from="ColorRect/VBoxContainer/Button" to="ColorRect" method="_on_button_pressed"]
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]
-[connection signal="save_pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel" to="." method="_on_save_button_pressed"]
 [connection signal="load_pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel" to="." method="_on_load_button_pressed"]
+[connection signal="save_pressed" from="TaskbarLayer/TaskbarWrapper/StartPanel" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/ScrollContainer/Taskbar/SettingsButton2" to="TaskbarLayer/TaskbarWrapper/StartPanel" method="_on_settings_button_pressed"]
 [connection signal="gui_input" from="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel" to="TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/TimePanel" method="_on_gui_input"]
