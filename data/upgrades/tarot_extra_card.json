@@ -1,0 +1,18 @@
+{
+  "id": "tarot_extra_card",
+  "name": "Deeper Reading",
+  "description": "Adds one additional card to each Tarot Reading.",
+  "effects": [],
+  "systems": [
+    "tarot"
+  ],
+  "dependencies": [],
+  "cost_per_level": {
+    "cash": 5
+  },
+  "scale_by_formula": true,
+  "cost_formula": {
+    "cash": "base_cost[\"cash\"] * pow(1.5, level-1)"
+  },
+  "repeatable": true
+}

@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbg1lx9h31ou3"]
+
+[ext_resource type="Script" uid="uid://e7y2k1vhw03d" path="res://components/apps/tarot/tarot_upgrades.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2"]
+
+[node name="TarotUpgrades" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1")
+window_title = "Tarot Upgrades"
+default_window_size = Vector2(480, 480)
+
+[node name="SystemUpgradeUI" parent="." instance=ExtResource("2")]
+system_name = "tarot"
+layout_mode = 2
+size_flags_vertical = 3
