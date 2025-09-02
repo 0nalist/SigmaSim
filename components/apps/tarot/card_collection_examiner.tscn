@@ -4,6 +4,10 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcd6e"]
 bg_color = Color(0.0605303, 0.0605304, 0.0605303, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="CardCollectionExaminer" type="CenterContainer"]
 unique_name_in_owner = true
@@ -16,14 +20,21 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_kcd6e")
 
-[node name="VBox" type="VBoxContainer" parent="Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBox" type="VBoxContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
 
-[node name="CardHolder" type="HBoxContainer" parent="Panel/VBox"]
+[node name="CardHolder" type="HBoxContainer" parent="Panel/MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="CloseButton" type="Button" parent="Panel/VBox"]
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Close"
