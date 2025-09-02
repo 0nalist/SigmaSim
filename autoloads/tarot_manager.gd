@@ -35,21 +35,21 @@ func load_from_data(data: Dictionary) -> void:
 	deck.load_from_file(DATA_PATH)
 
 func get_card_count(id: String) -> int:
-        var rarities: Dictionary = collection.get(id, {})
-        var total := 0
-        for r in rarities.values():
-                total += int(r)
-        return total
+		var rarities: Dictionary = collection.get(id, {})
+		var total := 0
+		for r in rarities.values():
+				total += int(r)
+		return total
 
 func get_card_rarity_count(id: String, rarity: int) -> int:
-        var rarities: Dictionary = collection.get(id, {})
-        return int(rarities.get(rarity, 0))
+		var rarities: Dictionary = collection.get(id, {})
+		return int(rarities.get(rarity, 0))
 
 func get_all_cards_ordered() -> Array:
 	return deck.get_all_cards_ordered()
 
 func instantiate_card_view(id: String, count: int = 0, mark_sold_on_sell: bool = false, rarity: int = -1) -> TarotCardView:
-        return deck.instantiate_card_view(id, count, mark_sold_on_sell, rarity)
+		return deck.instantiate_card_view(id, count, mark_sold_on_sell, rarity)
 
 func time_until_next_draw() -> int:
 	var now = TimeManager.get_now_minutes()
@@ -79,29 +79,29 @@ func draw_card() -> Dictionary:
 	if pool.is_empty():
 		return {}
 	var card: Dictionary = pool[rng.randi_range(0, pool.size() - 1)]
-        var id: String = card.get("id", "")
-        var rarities: Dictionary = collection.get(id, {})
-        rarities[rarity] = int(rarities.get(rarity, 0)) + 1
-        collection[id] = rarities
-        last_draw_minutes = TimeManager.get_now_minutes()
-        collection_changed.emit(id, get_card_count(id))
-        return card
+	var id: String = card.get("id", "")
+	var rarities: Dictionary = collection.get(id, {})
+	rarities[rarity] = int(rarities.get(rarity, 0)) + 1
+	collection[id] = rarities
+	last_draw_minutes = TimeManager.get_now_minutes()
+	collection_changed.emit(id, get_card_count(id))
+	return card
 
 func sell_card(card_id: String, rarity: int) -> void:
-        var rarities: Dictionary = collection.get(card_id, {})
-        var count := int(rarities.get(rarity, 0))
-        if count <= 0:
-                return
-        rarities[rarity] = count - 1
-        if rarities[rarity] <= 0:
-                rarities.erase(rarity)
-        if rarities.is_empty():
-                collection.erase(card_id)
-        else:
-                collection[card_id] = rarities
-        var price := get_sell_price(rarity)
-        PortfolioManager.add_cash(price)
-        collection_changed.emit(card_id, get_card_count(card_id))
+		var rarities: Dictionary = collection.get(card_id, {})
+		var count := int(rarities.get(rarity, 0))
+		if count <= 0:
+				return
+		rarities[rarity] = count - 1
+		if rarities[rarity] <= 0:
+				rarities.erase(rarity)
+		if rarities.is_empty():
+				collection.erase(card_id)
+		else:
+				collection[card_id] = rarities
+		var price := get_sell_price(rarity)
+		PortfolioManager.add_cash(price)
+		collection_changed.emit(card_id, get_card_count(card_id))
 
 func get_sell_price(rarity: int) -> float:
-        return RARITY_SELL_VALUES.get(rarity, 1.0)
+		return RARITY_SELL_VALUES.get(rarity, 1.0)
