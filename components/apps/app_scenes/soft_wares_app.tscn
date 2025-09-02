@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/apps/soft_wares/soft_wares_app.gd" id="1"]
+
+[node name="SoftWaresApp" type="Pane"]
+script = ExtResource("1")
+window_title = "Soft Wares"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+text = "Soft Wares"
+alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ItemsContainer" type="VBoxContainer" parent="Scroll"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
