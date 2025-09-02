@@ -32,6 +32,8 @@ func _build_collection_view() -> void:
 		var count: int = TarotManager.get_card_count(id)
 		var view: TarotCardView = TarotManager.instantiate_card_view(id, count)
 		collection_grid.add_child(view)
+		view.texture_rect.custom_minimum_size = Vector2(32, 56)
+		
 		card_views[id] = view
 
 func _on_collection_changed(card_id: String, count: int) -> void:
@@ -42,6 +44,7 @@ func _on_collection_changed(card_id: String, count: int) -> void:
 func _on_draw_button_pressed() -> void:
 	var card = TarotManager.draw_card()
 	if card.is_empty():
+		print("tarot card is empty")
 		return
 	for child in draw_result.get_children():
 		child.queue_free()
