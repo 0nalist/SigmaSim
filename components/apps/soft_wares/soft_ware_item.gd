@@ -18,15 +18,15 @@ var upgrade_scene: PackedScene = null
 @onready var feedback_label: Label = %FeedbackLabel
 
 func _ready() -> void:
-        icon_rect.texture = app_icon
-        title_label.text = app_title
-        description_label.text = app_description
-        cost_label.text = "$" + str(app_cost)
-        upgrades_button.visible = upgrade_scene != null
-        _update_action_button()
-        action_button.pressed.connect(_on_action_button_pressed)
-        upgrades_button.pressed.connect(_on_upgrades_button_pressed)
-        WindowManager.app_unlocked.connect(_on_app_unlocked)
+		icon_rect.texture = app_icon
+		title_label.text = app_title
+		description_label.text = app_description
+		cost_label.text = "$" + str(app_cost)
+		upgrades_button.visible = upgrade_scene != null
+		_update_action_button()
+		action_button.pressed.connect(_on_action_button_pressed)
+		upgrades_button.pressed.connect(_on_upgrades_button_pressed)
+		WindowManager.app_unlocked.connect(_on_app_unlocked)
 
 func _update_action_button() -> void:
 	if WindowManager.is_app_unlocked(app_id):
@@ -35,22 +35,22 @@ func _update_action_button() -> void:
 		action_button.text = "Unlock"
 
 func _on_action_button_pressed() -> void:
-        feedback_label.text = ""
-        feedback_label.remove_theme_color_override("font_color")
-        if WindowManager.is_app_unlocked(app_id):
-                WindowManager.launch_app(app_id)
-                return
-        var required_score: int = PortfolioManager.CREDIT_REQUIREMENTS.get(app_title, 0)
-        if PortfolioManager.attempt_spend(float(app_cost), required_score):
-                WindowManager.unlock_app(app_id)
-                _update_action_button()
-        else:
-                feedback_label.text = "Not enough funds!"
-                feedback_label.add_theme_color_override("font_color", Color.RED)
+		feedback_label.text = ""
+		feedback_label.remove_theme_color_override("font_color")
+		if WindowManager.is_app_unlocked(app_id):
+				WindowManager.launch_app(app_id)
+				return
+		var required_score: int = PortfolioManager.CREDIT_REQUIREMENTS.get(app_title, 0)
+		if PortfolioManager.attempt_spend(float(app_cost), required_score):
+				WindowManager.unlock_app(app_id)
+				_update_action_button()
+		else:
+				feedback_label.text = "Not enough funds!"
+				feedback_label.add_theme_color_override("font_color", Color.RED)
 
 func _on_upgrades_button_pressed() -> void:
-        if upgrade_scene:
-                WindowManager.launch_popup(upgrade_scene, app_title + "::upgrade")
+		if upgrade_scene:
+				WindowManager.launch_popup(upgrade_scene, app_title + "::upgrade")
 
 func _on_app_unlocked(unlocked_id: String) -> void:
 	if unlocked_id == app_id:
