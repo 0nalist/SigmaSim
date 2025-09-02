@@ -60,14 +60,21 @@ func setup(id: String, title: String, subtitle: String = "") -> void:
 
 func _apply_pending_setup() -> void:
 	if not _pending_setup:
-		return
+			return
 	card_id = _pending_id
 	card_title = _pending_title
 	card_subtitle = _pending_subtitle
 	if _title_label != null:
-		_title_label.text = card_title
+			_title_label.text = card_title
 	if _subtitle_label != null:
-		_subtitle_label.text = card_subtitle
+			_subtitle_label.text = card_subtitle
+
+func _set_mouse_filter_recursive(node: Node) -> void:
+	if node is Control:
+			var ctrl: Control = node
+			ctrl.mouse_filter = Control.MOUSE_FILTER_PASS
+	for child in node.get_children():
+			_set_mouse_filter_recursive(child)
 
 func _build_card_shell() -> void:
 	_root = VBoxContainer.new()
@@ -116,6 +123,8 @@ func _build_card_shell() -> void:
 	_footer_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_footer_box.add_theme_constant_override("separation", 8)
 	_root.add_child(_footer_box)
+
+	_set_mouse_filter_recursive(self)
 
 func _apply_default_theme() -> void:
 	var sb: StyleBoxFlat = StyleBoxFlat.new()

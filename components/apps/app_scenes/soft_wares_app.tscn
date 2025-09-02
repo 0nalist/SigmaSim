@@ -1,8 +1,35 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0xeuau7ippj0"]
+[gd_scene load_steps=9 format=3 uid="uid://c0xeuau7ippj0"]
 
 [ext_resource type="Script" uid="uid://c5g1pmvyktyx6" path="res://components/apps/soft_wares/soft_wares_app.gd" id="1"]
+[ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="2_0ke3q"]
+[ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="3_krt0r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8w5uy"]
+
+[sub_resource type="Gradient" id="Gradient_krt0r"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4cu37"]
+gradient = SubResource("Gradient_krt0r")
+fill_from = Vector2(1.443, 0.521)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_urirl"]
+shader = ExtResource("2_0ke3q")
+shader_parameter/gradient = SubResource("GradientTexture2D_4cu37")
+shader_parameter/circle_color = Color(0.548959, 0.000217166, 0.548955, 1)
+shader_parameter/circle_multiplier = 1.79
+shader_parameter/speed = 0.7
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k7x7x"]
+shader = ExtResource("2_0ke3q")
+shader_parameter/gradient = SubResource("GradientTexture2D_4cu37")
+shader_parameter/circle_color = Color(0.945098, 0.0313726, 0.32549, 1)
+shader_parameter/circle_multiplier = 1.79
+shader_parameter/speed = 0.55
+shader_parameter/direction = Vector2(-0.585, 1)
+shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [node name="SoftWaresApp" type="PanelContainer"]
 anchors_preset = 15
@@ -36,6 +63,19 @@ color4 = null
 color5 = null
 color6 = null
 
+[node name="ColorRect2" type="ColorRect" parent="."]
+use_parent_material = true
+layout_mode = 2
+color = Color(0.850806, 0.52514, 0.0790076, 1)
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_urirl")
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_k7x7x")
+layout_mode = 2
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 25
@@ -52,6 +92,8 @@ theme_override_constants/separation = 10
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_krt0r")
+theme_override_font_sizes/font_size = 36
 text = "Soft Wares"
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
