@@ -5,8 +5,9 @@ class_name SoftWareItem
 @export var app_title: String = ""
 @export var app_description: String = ""
 @export var app_cost: int = 0
-@export var has_upgrades: bool = false
 @export var app_id: String = ""
+
+var upgrade_scene: PackedScene = null
 
 @onready var icon_rect: TextureRect = %Icon
 @onready var title_label: Label = %TitleLabel
@@ -17,15 +18,15 @@ class_name SoftWareItem
 @onready var feedback_label: Label = %FeedbackLabel
 
 func _ready() -> void:
-	icon_rect.texture = app_icon
-	title_label.text = app_title
-	description_label.text = app_description
-	cost_label.text = "$" + str(app_cost)
-	upgrades_button.visible = has_upgrades
-	_update_action_button()
-	action_button.pressed.connect(_on_action_button_pressed)
-	upgrades_button.pressed.connect(_on_upgrades_button_pressed)
-	WindowManager.app_unlocked.connect(_on_app_unlocked)
+        icon_rect.texture = app_icon
+        title_label.text = app_title
+        description_label.text = app_description
+        cost_label.text = "$" + str(app_cost)
+        upgrades_button.visible = upgrade_scene != null
+        _update_action_button()
+        action_button.pressed.connect(_on_action_button_pressed)
+        upgrades_button.pressed.connect(_on_upgrades_button_pressed)
+        WindowManager.app_unlocked.connect(_on_app_unlocked)
 
 func _update_action_button() -> void:
 	if WindowManager.is_app_unlocked(app_id):
@@ -48,7 +49,8 @@ func _on_action_button_pressed() -> void:
                 feedback_label.add_theme_color_override("font_color", Color.RED)
 
 func _on_upgrades_button_pressed() -> void:
-	UpgradeManager.open_upgrade_pane(app_id)
+        if upgrade_scene:
+                WindowManager.launch_popup(upgrade_scene, app_title + "::upgrade")
 
 func _on_app_unlocked(unlocked_id: String) -> void:
 	if unlocked_id == app_id:
