@@ -33,11 +33,6 @@ layout_mode = 2
 text = "Description"
 autowrap_mode = 3
 
-[node name="CostLabel" type="Label" parent="InfoContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "$0"
-
 [node name="FeedbackLabel" type="Label" parent="InfoContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -52,7 +47,7 @@ theme_override_constants/separation = 4
 [node name="ActionButton" type="Button" parent="ButtonsContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Unlock"
+text = "Buy App for $0"
 
 [node name="UpgradesButton" type="Button" parent="ButtonsContainer"]
 unique_name_in_owner = true

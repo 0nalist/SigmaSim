@@ -4,30 +4,30 @@ class_name SoftWaresApp
 const SOFTWARE_ITEM_SCENE: PackedScene = preload("res://components/apps/soft_wares/soft_ware_item.tscn")
 
 var soft_wares_registry: Dictionary = {
-		"minerr": {
-				"title": "Minerr",
-				"description": "Mine and trade cryptocurrencies.",
-				"icon": preload("res://assets/cursors/pickaxe.png"),
-				"cost": 100
-		},
-		"brokerage": {
-				"title": "BrokeRage",
-				"description": "Buy and sell stocks in a chaotic market.",
-				"icon": preload("res://assets/logos/brokerage.png"),
-				"cost": 250
-		},
-		"fumble": {
-				"title": "Fumble",
-				"description": "Date, swipe, and battle for love.",
-				"icon": preload("res://assets/logos/fumble.png"),
-				"cost": 300
-		},
-		"earlybird": {
-				"title": "EarlyBird",
-				"description": "Rise early and get that worm.",
-				"icon": preload("res://assets/early_bird/worm1.png"),
-				"cost": 150
-		}
+                "minerr": {
+                                "title": "Minerr",
+                                "description": "Mine and trade cryptocurrencies.",
+                                "icon": preload("res://assets/cursors/pickaxe.png"),
+                                "cost": 5
+                },
+                "brokerage": {
+                                "title": "BrokeRage",
+                                "description": "Buy and sell stocks in a chaotic market.",
+                                "icon": preload("res://assets/logos/brokerage.png"),
+                                "cost": 5
+                },
+                "fumble": {
+                                "title": "Fumble",
+                                "description": "Date, swipe, and battle for love.",
+                                "icon": preload("res://assets/logos/fumble.png"),
+                                "cost": 5
+                },
+                "earlybird": {
+                                "title": "EarlyBird",
+                                "description": "Rise early and get that worm.",
+                                "icon": preload("res://assets/early_bird/worm1.png"),
+                                "cost": 5
+                }
 }
 
 @onready var items_container: VBoxContainer = %ItemsContainer

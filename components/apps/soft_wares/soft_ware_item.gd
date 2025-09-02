@@ -12,7 +12,6 @@ var upgrade_scene: PackedScene = null
 @onready var icon_rect: TextureRect = %Icon
 @onready var title_label: Label = %TitleLabel
 @onready var description_label: Label = %DescriptionLabel
-@onready var cost_label: Label = %CostLabel
 @onready var action_button: Button = %ActionButton
 @onready var upgrades_button: Button = %UpgradesButton
 @onready var feedback_label: Label = %FeedbackLabel
@@ -23,7 +22,6 @@ func _ready() -> void:
                 icon_rect.texture_repeat = CanvasItem.TEXTURE_REPEAT_DISABLED
                 title_label.text = app_title
                 description_label.text = app_description
-                cost_label.text = "$" + str(app_cost)
                 upgrades_button.visible = upgrade_scene != null
                 _update_action_button()
                 action_button.pressed.connect(_on_action_button_pressed)
@@ -39,10 +37,10 @@ func _prepare_icon(source: Texture2D) -> Texture2D:
         return ImageTexture.create_from_image(img)
 
 func _update_action_button() -> void:
-	if WindowManager.is_app_unlocked(app_id):
-		action_button.text = "Launch"
-	else:
-		action_button.text = "Unlock"
+        if WindowManager.is_app_unlocked(app_id):
+                action_button.text = "Launch"
+        else:
+                action_button.text = "Buy App for $" + str(app_cost)
 
 func _on_action_button_pressed() -> void:
 		feedback_label.text = ""
