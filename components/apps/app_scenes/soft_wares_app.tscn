@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0xeuau7ippj0"]
+[gd_scene load_steps=3 format=3 uid="uid://c0xeuau7ippj0"]
 
 [ext_resource type="Script" uid="uid://c5g1pmvyktyx6" path="res://components/apps/soft_wares/soft_wares_app.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8w5uy"]
 
 [node name="SoftWaresApp" type="PanelContainer"]
 anchors_preset = 15
@@ -10,6 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_8w5uy")
 script = ExtResource("1")
 window_title = "Soft Wares"
 
@@ -31,12 +34,16 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Soft Wares"
 
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+
 [node name="Scroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ItemsContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="ItemsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Scroll"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
