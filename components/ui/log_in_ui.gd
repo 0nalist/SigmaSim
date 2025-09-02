@@ -25,34 +25,44 @@ func _ready() -> void:
 
 
 func load_and_display_saved_profiles():
-        for child in %ProfileRow.get_children():
-                if child is UserLoginCardUI:
-                        child.queue_free()
+		for child in %ProfileRow.get_children():
+				if child is UserLoginCardUI:
+						child.queue_free()
 
-        var metadata = SaveManager.load_slot_metadata()
-        var entries: Array = []
-        for key in metadata.keys():
-                var slot_id := int(key.trim_prefix("slot_"))
-                var data = metadata[key]
+		var metadata = SaveManager.load_slot_metadata()
+		var entries: Array = []
+		for key in metadata.keys():
+				var slot_id := int(key.trim_prefix("slot_"))
+				var data = metadata[key]
 
-                if typeof(data) != TYPE_DICTIONARY or data.is_empty():
-                        print("⚠️ Skipping invalid profile slot:", slot_id)
-                        continue  # skip malformed or empty profiles
+				if typeof(data) != TYPE_DICTIONARY or data.is_empty():
+						print("⚠️ Skipping invalid profile slot:", slot_id)
+						continue  # skip malformed or empty profiles
 
-                var created_at := int(data.get("created_at", 0))
-                var last_played_str: String = data.get("last_played", "")
-                var last_played := last_played_str == "" ? 0 : Time.get_unix_time_from_datetime_string(last_played_str)
-                var sort_time = created_at != 0 ? created_at : last_played
-                entries.append({"slot_id": slot_id, "data": data, "sort_time": sort_time})
+				var created_at := int(data.get("created_at", 0))
+				var last_played_str: String = data.get("last_played", "")
+				var last_played: int
+				if last_played_str == "":
+					last_played = 0
+				else:
+					last_played = Time.get_unix_time_from_datetime_string(last_played_str)
 
-        entries.sort_custom(func(a, b): return a.sort_time < b.sort_time)
+				var sort_time: int
+				if created_at != 0:
+					sort_time = created_at
+				else:
+					sort_time = last_played
 
-        for entry in entries:
-                var panel = user_login_card_scene.instantiate()
-                profile_row.add_child(panel)
-                panel.login_requested.connect(_on_profile_login_requested)
-                panel.card_selected.connect(_on_card_selected)
-                panel.set_profile_data(entry.data, entry.slot_id)
+				entries.append({"slot_id": slot_id, "data": data, "sort_time": sort_time})
+
+		entries.sort_custom(func(a, b): return a.sort_time < b.sort_time)
+
+		for entry in entries:
+				var panel = user_login_card_scene.instantiate()
+				profile_row.add_child(panel)
+				panel.login_requested.connect(_on_profile_login_requested)
+				panel.card_selected.connect(_on_card_selected)
+				panel.set_profile_data(entry.data, entry.slot_id)
 
 
 
