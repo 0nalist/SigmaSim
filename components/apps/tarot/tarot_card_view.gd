@@ -12,21 +12,46 @@ signal card_pressed(card_id: String)
 
 @onready var texture_rect: TextureRect = %TextureRect
 @onready var name_label: Label = %NameLabel
+@onready var rarity_label: Label = %RarityLabel
 @onready var count_label: Label = %CountLabel
 @onready var sell_button: Button = %SellButton
 
+const RARITY_NAMES := {
+        1: "Paper",
+        2: "Bronze",
+        3: "Silver",
+        4: "Gold",
+        5: "Divine"
+}
+
+const RARITY_COLORS := {
+        1: Color("6e6e6e"), # dull grey
+        2: Color("cd7f32"), # bronze brown
+        3: Color("e0e0e0"), # silvery white
+        4: Color("ffd700")  # golden yellow
+}
+
+const RAINBOW_MATERIAL := preload("res://components/apps/fumble/fumble_label_pride_month_material.tres")
+
 func setup(data: Dictionary, owned: int) -> void:
-	if not is_node_ready():
-		await ready
-	
-		card_id = data.get("id", "")
-		name_label.text = data.get("name", "")
-		rarity = int(data.get("rarity", 1))
-		sell_price = TarotManager.get_sell_price(rarity)
-		var tex_path: String = data.get("texture_path", "")
-		var tex = load(tex_path)
-		if tex:
-				texture_rect.texture = tex
+        if not is_node_ready():
+                await ready
+
+                card_id = data.get("id", "")
+                name_label.text = data.get("name", "")
+                rarity = int(data.get("rarity", 1))
+                rarity_label.text = RARITY_NAMES.get(rarity, "")
+                if rarity == 5:
+                        rarity_label.material = RAINBOW_MATERIAL
+                        rarity_label.add_theme_color_override("font_color", Color.WHITE)
+                else:
+                        rarity_label.material = null
+                        rarity_label.add_theme_color_override("font_color", RARITY_COLORS.get(rarity, Color.WHITE))
+                sell_price = TarotManager.get_sell_price(rarity)
+                var tex_path: String = data.get("texture_path", "")
+                var tex = load(tex_path)
+                if tex:
+                                texture_rect.texture = tex
 		update_count(owned)
 		sell_button.text = "Sell for $%d" % int(sell_price)
 		sell_button.pressed.connect(_on_sell_pressed)
@@ -51,9 +76,10 @@ func _on_sell_pressed() -> void:
 				sell_button.visible = true
 
 func _ready() -> void:
-		texture_rect.mouse_filter = Control.MOUSE_FILTER_PASS
-		name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-		count_label.mouse_filter = Control.MOUSE_FILTER_PASS
+                texture_rect.mouse_filter = Control.MOUSE_FILTER_PASS
+                name_label.mouse_filter = Control.MOUSE_FILTER_PASS
+                rarity_label.mouse_filter = Control.MOUSE_FILTER_PASS
+                count_label.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _gui_input(event: InputEvent) -> void:
 		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
