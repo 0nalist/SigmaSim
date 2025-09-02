@@ -46,7 +46,7 @@ theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Tarot"
 window_icon = ExtResource("3")
-default_window_size = Vector2(600, 650)
+default_window_size = Vector2(635, 740)
 upgrade_pane = ExtResource("4_ye0rw")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
@@ -69,7 +69,7 @@ size_flags_vertical = 3
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/ContentHBox"]
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 3
+size_flags_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tabbar")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ContentHBox/PanelContainer"]
@@ -109,10 +109,10 @@ layout_mode = 2
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer/ContentHBox"]
 layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 8
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 8
 
 [node name="Label" type="Label" parent="MarginContainer/ContentHBox/VBox"]
 layout_mode = 2
