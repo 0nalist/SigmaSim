@@ -5,6 +5,9 @@ class_name StartPanelWindow
 
 @export var siggy_scene: PackedScene
 
+signal save_pressed
+signal load_pressed
+
 var listening_for_clicks := false
 
 
@@ -86,10 +89,18 @@ func _on_sleep_button_2_pressed() -> void:
 
 
 func _on_siggy_button_pressed() -> void:
-	var siggy = siggy_scene.instantiate()
-	
-	get_tree().get_root().add_child(siggy)
+        var siggy = siggy_scene.instantiate()
+
+        get_tree().get_root().add_child(siggy)
 
 
 func _on_logout_button_pressed() -> void:
-	GameManager._on_pause_logout()
+        GameManager._on_pause_logout()
+
+
+func _on_save_button_pressed() -> void:
+        save_pressed.emit()
+
+
+func _on_load_button_pressed() -> void:
+        load_pressed.emit()
