@@ -30,12 +30,13 @@ func _build_collection_view() -> void:
 		child.queue_free()
 	card_views.clear()
 	for card in TarotManager.get_all_cards_ordered():
-		var id: String = card.get("id", "")
-		var count: int = TarotManager.get_card_count(id)
-		var view: TarotCardView = TarotManager.instantiate_card_view(id, count)
-		collection_grid.add_child(view)
-		view.texture_rect.custom_minimum_size = Vector2(32, 56)
-		view.card_pressed.connect(card_collection_examiner.show_card)
+                var id: String = card.get("id", "")
+                var count: int = TarotManager.get_card_count(id)
+                var view: TarotCardView = TarotManager.instantiate_card_view(id, count)
+                collection_grid.add_child(view)
+                view.set_rarity_label_visible(false)
+                view.texture_rect.custom_minimum_size = Vector2(32, 56)
+                view.card_pressed.connect(card_collection_examiner.show_card)
 
 		card_views[id] = view
 
