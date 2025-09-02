@@ -33,13 +33,15 @@ func setup(_crypto: Cryptocurrency) -> void:
 	unique_popup_key = "crypto_%s" % crypto.symbol
 	HistoryManager.add_sample(crypto.symbol, TimeManager.get_now_minutes(), crypto.price)
 	
-	await ready
-	
+	if not is_node_ready():
+			await ready
+
 	price_chart.clear_series()
 	price_chart.add_series(crypto.symbol, "Price", Color(1, 0.6, 0.2))
 	_update_ui()
 	window_title = str(crypto.symbol) + " " + str(crypto.price)
 	MarketManager.crypto_price_updated.connect(_on_crypto_price_updated)
+
 
 func _ready() -> void:
 	super._ready()
