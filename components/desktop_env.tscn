@@ -716,7 +716,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_vxmwr")
 
 [node name="StartPanel" parent="TaskbarLayer/TaskbarWrapper" instance=ExtResource("23_dik0q")]
 layout_mode = 0
-anchors_preset = 0
+grow_vertical = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TaskbarWrapper"]
 layout_mode = 1

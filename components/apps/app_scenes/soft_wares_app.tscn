@@ -1,29 +1,44 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://c0xeuau7ippj0"]
 
-[ext_resource type="Script" path="res://components/apps/soft_wares/soft_wares_app.gd" id="1"]
+[ext_resource type="Script" uid="uid://c5g1pmvyktyx6" path="res://components/apps/soft_wares/soft_wares_app.gd" id="1"]
 
-[node name="SoftWaresApp" type="Pane"]
+[node name="SoftWaresApp" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1")
 window_title = "Soft Wares"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
 text = "Soft Wares"
-alignment = 1
 
-[node name="Scroll" type="ScrollContainer" parent="VBoxContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Scroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ItemsContainer" type="VBoxContainer" parent="Scroll"]
+[node name="ItemsContainer" type="VBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
