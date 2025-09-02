@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://b07dutwaw54gq"]
+[gd_scene load_steps=3 format=3 uid="uid://b07dutwaw54gq"]
 
 [ext_resource type="Script" uid="uid://duie32scaa8wd" path="res://components/apps/tarot/card_collection_examiner.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcd6e"]
+bg_color = Color(0.0605303, 0.0605304, 0.0605303, 1)
 
 [node name="CardCollectionExaminer" type="CenterContainer"]
 unique_name_in_owner = true
@@ -11,6 +14,7 @@ script = ExtResource("1")
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2
 mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_kcd6e")
 
 [node name="VBox" type="VBoxContainer" parent="Panel"]
 layout_mode = 2
