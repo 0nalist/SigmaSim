@@ -55,10 +55,12 @@ const SCHEMA: Dictionary = {
 		"extraversion": {"data_type": "real"},
 		"agreeableness": {"data_type": "real"},
 		"neuroticism": {"data_type": "real"},
-		"mbti": {"data_type": "text"},
-		"zodiac": {"data_type": "text"},
-		"wall_posts": {"data_type": "text"},
-		"portrait_config": {"data_type": "text"}
+                "mbti": {"data_type": "text"},
+                "zodiac_sun": {"data_type": "text"},
+                "zodiac_moon": {"data_type": "text"},
+                "zodiac_rising": {"data_type": "text"},
+                "wall_posts": {"data_type": "text"},
+                "portrait_config": {"data_type": "text"}
 },
 	"fumble_relationships": {
 		"npc_id": {"data_type": "int", "primary_key": true},
