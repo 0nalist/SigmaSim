@@ -15,14 +15,15 @@ var card_views: Dictionary = {}
 var _active_tab: StringName = &"Draw"
 
 func _ready() -> void:
-	draw_button.pressed.connect(_on_draw_button_pressed)
-	draw_tab_button.pressed.connect(_on_draw_tab_pressed)
-	collection_tab_button.pressed.connect(_on_collection_tab_pressed)
-	TarotManager.collection_changed.connect(_on_collection_changed)
-	TimeManager.minute_passed.connect(_on_minute_passed)
-	_build_collection_view()
-	_update_cooldown_label()
-	_activate_tab(&"Draw")
+        draw_button.pressed.connect(_on_draw_button_pressed)
+        draw_tab_button.pressed.connect(_on_draw_tab_pressed)
+        collection_tab_button.pressed.connect(_on_collection_tab_pressed)
+        TarotManager.collection_changed.connect(_on_collection_changed)
+        TimeManager.minute_passed.connect(_on_minute_passed)
+        _build_collection_view()
+        _update_cooldown_label()
+       _show_last_drawn_card()
+       _activate_tab(&"Draw")
 
 func _build_collection_view() -> void:
 	for child in collection_grid.get_children():
@@ -44,19 +45,24 @@ func _on_collection_changed(card_id: String, count: int) -> void:
 		view.update_count(count)
 
 func _on_draw_button_pressed() -> void:
-	var card = TarotManager.draw_card()
-	if card.is_empty():
-		print("tarot card is empty")
-		return
-	for child in draw_result.get_children():
-		child.queue_free()
-	var id = card.get("id", "")
-	var rarity = int(card.get("rarity", 1))
-	var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
-	var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-	view.show_single_count = true
-	draw_result.add_child(view)
-	_update_cooldown_label()
+       var card = TarotManager.draw_card()
+       if card.is_empty():
+               print("tarot card is empty")
+               return
+       _show_last_drawn_card()
+       _update_cooldown_label()
+
+func _show_last_drawn_card() -> void:
+       for child in draw_result.get_children():
+               child.queue_free()
+       var id := TarotManager.last_card_id
+       var rarity := TarotManager.last_card_rarity
+       if id == "" or rarity <= 0:
+               return
+       var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
+       var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+       view.show_single_count = true
+       draw_result.add_child(view)
 
 func _update_cooldown_label() -> void:
 	var remaining = TarotManager.time_until_next_draw()
