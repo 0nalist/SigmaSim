@@ -56,12 +56,12 @@ static func create_npc(npc_index: int) -> NPC:
 	for stat in greek.keys():
 		npc.set(stat, greek[stat])
 
-        npc.mbti = PersonalityEngine.get_mbti(ocean)
-        var zodiacs = PersonalityEngine.get_zodiacs(full_name)
-        npc.zodiac_sun = zodiacs.sun
-        npc.zodiac_moon = zodiacs.moon
-        npc.zodiac_rising = zodiacs.rising
-        npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
+		npc.mbti = PersonalityEngine.get_mbti(ocean)
+		var zodiacs = PersonalityEngine.get_zodiacs(full_name)
+		npc.zodiac_sun = zodiacs.sun
+		npc.zodiac_moon = zodiacs.moon
+		npc.zodiac_rising = zodiacs.rising
+		npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
 
 	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
 	
@@ -158,12 +158,12 @@ static func create_npc_from_name(full_name: String) -> NPC:
 	for stat in greek.keys():
 			npc.set(stat, greek[stat])
 
-        npc.mbti = PersonalityEngine.get_mbti(ocean)
-        var zodiacs = PersonalityEngine.get_zodiacs(full_name)
-        npc.zodiac_sun = zodiacs.sun
-        npc.zodiac_moon = zodiacs.moon
-        npc.zodiac_rising = zodiacs.rising
-        npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
+	npc.mbti = PersonalityEngine.get_mbti(ocean)
+	var zodiacs = PersonalityEngine.get_zodiacs(full_name)
+	npc.zodiac_sun = zodiacs.sun
+	npc.zodiac_moon = zodiacs.moon
+	npc.zodiac_rising = zodiacs.rising
+	npc.chat_battle_type = PersonalityEngine.get_chat_battle_type(ocean, full_name)
 
 	npc.wealth = generate_multi_bucket_trait(full_name, "wealth")
 

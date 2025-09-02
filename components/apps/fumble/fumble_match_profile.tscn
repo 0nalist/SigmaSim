@@ -48,6 +48,10 @@ script = ExtResource("1_ddbow")
 [node name="FumbleProfile" parent="." instance=ExtResource("2_eqlwe")]
 unique_name_in_owner = true
 layout_mode = 1
+section_bg_color = null
+type_panel_color = null
+none_label_color = null
+label_color = null
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

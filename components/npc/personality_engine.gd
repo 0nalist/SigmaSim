@@ -75,14 +75,14 @@ static func get_mbti(ocean: Dictionary) -> String:
 	return mbti
 
 static func get_zodiacs(full_name: String) -> Dictionary:
-        return {
-                "sun": ZODIAC_SIGNS[djb2(full_name + "zodiac_sun") % ZODIAC_SIGNS.size()],
-                "moon": ZODIAC_SIGNS[djb2(full_name + "zodiac_moon") % ZODIAC_SIGNS.size()],
-                "rising": ZODIAC_SIGNS[djb2(full_name + "zodiac_rising") % ZODIAC_SIGNS.size()],
-        }
+		return {
+				"sun": ZODIAC_SIGNS[djb2(full_name + "zodiac_sun") % ZODIAC_SIGNS.size()],
+				"moon": ZODIAC_SIGNS[djb2(full_name + "zodiac_moon") % ZODIAC_SIGNS.size()],
+				"rising": ZODIAC_SIGNS[djb2(full_name + "zodiac_rising") % ZODIAC_SIGNS.size()],
+		}
 
 static func get_zodiac(full_name: String) -> String:
-        return get_zodiacs(full_name)["sun"]
+		return get_zodiacs(full_name)["sun"]
 
 static func get_chat_battle_type(ocean: Dictionary, seed: String) -> String:
 	var rng := RandomNumberGenerator.new()

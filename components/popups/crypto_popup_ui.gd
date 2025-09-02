@@ -20,8 +20,8 @@ class_name CryptoPopupUI
 var crypto: Cryptocurrency
 
 func setup_custom(args) -> void:
-		if args is Cryptocurrency:
-				setup(args)
+	if args is Cryptocurrency:
+		await setup(args)
 
 func setup(_crypto: Cryptocurrency) -> void:
 	crypto = _crypto

@@ -122,9 +122,9 @@ func _apply_colors() -> void:
 	tags_label.modulate = label_color
 
 	bio_text.modulate = value_color
-        astrology_sun.modulate = value_color
-        astrology_moon.modulate = value_color
-        astrology_rising.modulate = value_color
+	astrology_sun.modulate = value_color
+	astrology_moon.modulate = value_color
+	astrology_rising.modulate = value_color
 	wealth_value.modulate = value_color
 	mbti_value.modulate = value_color
 	openness_value.modulate = value_color
@@ -188,20 +188,20 @@ func _populate_bio(npc: NPC) -> void:
 	bio_text.text = "\n\n".join(lines)
 
 func _populate_astrology(npc: NPC) -> void:
-        var sun: Variant = npc.get("zodiac_sun")
-        var moon: Variant = npc.get("zodiac_moon")
-        var rising: Variant = npc.get("zodiac_rising")
-        if (sun == null or sun == ""):
-                sun = npc.get("zodiac")
-        if sun == null or sun == "":
-                sun = "Unknown"
-        if moon == null or moon == "":
-                moon = "Unknown"
-        if rising == null or rising == "":
-                rising = "Unknown"
-        astrology_sun.text = "☉ %s" % sun
-        astrology_moon.text = "☾ %s" % moon
-        astrology_rising.text = "↗ %s" % rising
+		var sun: Variant = npc.get("zodiac_sun")
+		var moon: Variant = npc.get("zodiac_moon")
+		var rising: Variant = npc.get("zodiac_rising")
+		if (sun == null or sun == ""):
+				sun = npc.get("zodiac")
+		if sun == null or sun == "":
+				sun = "Unknown"
+		if moon == null or moon == "":
+				moon = "Unknown"
+		if rising == null or rising == "":
+				rising = "Unknown"
+		astrology_sun.text = "☉ %s" % sun
+		astrology_moon.text = "☾ %s" % moon
+		astrology_rising.text = "↗ %s" % rising
 
 func _populate_greek(npc: NPC) -> void:
 	var stats: Dictionary = {

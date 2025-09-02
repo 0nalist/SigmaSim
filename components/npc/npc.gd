@@ -205,12 +205,12 @@ func to_dict() -> Dictionary:
 		"extraversion": extraversion,
 		"agreeableness": agreeableness,
 		"neuroticism": neuroticism,
-                "mbti": mbti,
-                "zodiac_sun": zodiac_sun,
-                "zodiac_moon": zodiac_moon,
-                "zodiac_rising": zodiac_rising,
-                "wall_posts": wall_posts.duplicate(),
-                "portrait_config": portrait_config.to_dict() if portrait_config != null else null,
+				"mbti": mbti,
+				"zodiac_sun": zodiac_sun,
+				"zodiac_moon": zodiac_moon,
+				"zodiac_rising": zodiac_rising,
+				"wall_posts": wall_posts.duplicate(),
+				"portrait_config": portrait_config.to_dict() if portrait_config != null else null,
 }
 
 static func from_dict(data: Dictionary) -> NPC:
@@ -311,10 +311,10 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.extraversion= _safe_float(data.get("extraversion"))
 	npc.agreeableness  = _safe_float(data.get("agreeableness"))
 	npc.neuroticism = _safe_float(data.get("neuroticism"))
-        npc.mbti  = _safe_string(data.get("mbti"))
-        npc.zodiac_sun = _safe_string(data.get("zodiac_sun"))
-        npc.zodiac_moon = _safe_string(data.get("zodiac_moon"))
-        npc.zodiac_rising = _safe_string(data.get("zodiac_rising"))
+	npc.mbti  = _safe_string(data.get("mbti"))
+	npc.zodiac_sun = _safe_string(data.get("zodiac_sun"))
+	npc.zodiac_moon = _safe_string(data.get("zodiac_moon"))
+	npc.zodiac_rising = _safe_string(data.get("zodiac_rising"))
 	var pc_src = data.get("portrait_config")
 	if typeof(pc_src) == TYPE_DICTIONARY and pc_src.size() > 0:
 		npc.portrait_config = PortraitConfig.from_dict(pc_src)

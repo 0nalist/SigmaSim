@@ -695,6 +695,10 @@ mouse_filter = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(550, 400)
 layout_mode = 2
+section_bg_color = null
+type_panel_color = null
+none_label_color = null
+label_color = null
 
 [node name="CloseFumbleProfileButton" type="Button" parent="ProfileCenterContainer/FumbleProfile"]
 unique_name_in_owner = true
