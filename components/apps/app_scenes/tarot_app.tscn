@@ -22,6 +22,18 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tabbar"]
+bg_color = Color(0.385493, 0.385493, 0.385492, 0.109804)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.435294)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="TarotApp" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,28 +71,46 @@ theme_override_font_sizes/font_size = 36
 text = "Tarot"
 horizontal_alignment = 1
 
-[node name="TabButtons" type="VBoxContainer" parent="MarginContainer/VBox"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
-size_flags_horizontal = 0
-theme_override_constants/separation = 4
+size_flags_vertical = 0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_tabbar")
 
-[node name="DrawTabButton" type="Button" parent="MarginContainer/VBox/TabButtons"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="DrawTabButton" type="Button" parent="MarginContainer/VBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+toggle_mode = true
 text = "Daily Draw"
 
-[node name="ReadingsTabButton" type="Button" parent="MarginContainer/VBox/TabButtons"]
+[node name="ReadingsTabButton" type="Button" parent="MarginContainer/VBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+toggle_mode = true
 text = "Readings"
 
-[node name="CollectionTabButton" type="Button" parent="MarginContainer/VBox/TabButtons"]
+[node name="CollectionTabButton" type="Button" parent="MarginContainer/VBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+toggle_mode = true
 text = " Collection "
+
+[node name="Control" type="Control" parent="MarginContainer/VBox/PanelContainer/MarginContainer/TabBar"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
 
 [node name="DrawView" type="VBoxContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
