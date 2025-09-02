@@ -94,11 +94,14 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
 
 [node name="BorrowLabel" type="Label" parent="MarginContainer/VBox/BorrowHBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "$0.00"
+horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="BorrowButton" type="Button" parent="MarginContainer/VBox/BorrowHBox"]
