@@ -4,18 +4,29 @@ extends Control
 @export var max_score: int = 850
 @export var step: int = 50
 @export var bar_width: float = 40.0
+@export var duration: float = 0.3
+@export var transition := Tween.TRANS_CUBIC
+@export var easing := Tween.EASE_OUT
 
-var current_score: int = min_score
+var current_score: float = min_score
 var gradient_tex: ImageTexture = null
+var _tween: Tween = null
 
 func _ready() -> void:
+	current_score = PortfolioManager.get_credit_score()
 	PortfolioManager.credit_score_updated.connect(_on_credit_score_changed)
-	_on_credit_score_changed(PortfolioManager.get_credit_score())
 	_generate_gradient_texture()
 	_update_size()
+	queue_redraw()
 
 func _on_credit_score_changed(new_score: int) -> void:
-	current_score = new_score
+	if _tween:
+		_tween.kill()
+	_tween = get_tree().create_tween()
+	_tween.tween_method(Callable(self, "_set_display_score"), current_score, new_score, duration).set_trans(transition).set_ease(easing)
+
+func _set_display_score(val: float) -> void:
+	current_score = val
 	queue_redraw()
 
 func _generate_gradient_texture() -> void:
