@@ -3,6 +3,7 @@ extends Control
 @onready var start_panel: StartPanelWindow = %StartPanel
 @onready var taskbar: Control = %Taskbar
 @onready var trash_window: Pane = %TrashWindow
+@onready var start_button: Button = $TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/StartButton
 
 @onready var icons_layer: Control = self
 const APP_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/app_shortcut.tscn")
@@ -134,7 +135,10 @@ func hide_all_windows_and_panels() -> void:
 # ----------------------------- #
 
 func _on_start_button_pressed() -> void:
-	start_panel.toggle_start_panel()
+        var button_pos: Vector2 = start_button.global_position
+        var panel_height: float = start_panel.size.y * start_panel.scale.y
+        start_panel.global_position = button_pos - Vector2(0, panel_height)
+        start_panel.toggle_start_panel()
 
 func _on_trash_button_pressed() -> void:
 	open_trash_folder()
