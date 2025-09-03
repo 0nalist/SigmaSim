@@ -48,13 +48,13 @@ func close() -> void:
 	WindowManager.close_window(get_parent().get_parent().get_parent())
 
 func _on_pay_now_button_pressed() -> void:
-				if PortfolioManager.pay_with_cash(amount):
-								if bill_name == "Payday Loan":
-												BillManager.reduce_debt_balance("Payday Loan", amount)
-								BillManager.mark_bill_paid(bill_name, date_key)
-								close()
-				else:
-								print("❌ Not enough cash")
+	if PortfolioManager.pay_with_cash(amount):
+		if bill_name == "Payday Loan":
+			BillManager.reduce_debt_balance("Payday Loan", amount)
+		BillManager.mark_bill_paid(bill_name, date_key)
+		close()
+	else:
+		print("❌ Not enough cash")
 
 func _on_pay_by_credit_button_pressed() -> void:
 	var required_score = PortfolioManager.CREDIT_REQUIREMENTS.get("bills", 0)
@@ -102,6 +102,6 @@ func load_custom_save_data(data: Dictionary) -> void:
 	await ready
 	var window = get_parent().get_parent().get_parent() as WindowFrame
 	if window:
-			window.window_can_close = false
-			window.refresh_window_controls()
-			window.set_size(Vector2(400,480))
+		window.window_can_close = false
+		window.refresh_window_controls()
+		window.set_size(Vector2(400,480))

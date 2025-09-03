@@ -57,6 +57,7 @@ var drag_offset := Vector2.ZERO
 
 
 func _ready() -> void:
+	#set_process_input(true)
 	refresh_window_controls()
 
 	upgrade_button.visible = false
@@ -81,7 +82,17 @@ func _ready() -> void:
 	call_deferred("_apply_default_window_size_and_position")
 	call_deferred("_finalize_window_size")
 	if windowless_mode:
-		call_deferred("_setup_windowless_drag")
+			call_deferred("_setup_windowless_drag")
+
+#TODO: Fix this to only pull focus of frames clicked on, not all frames underneath mouse
+''' ATTEMPTED TO SOLVE FILTER = STOP preventing focus being pulled to windowpanes
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		var local_pos: Vector2 = get_local_mouse_position()
+		if Rect2(Vector2.ZERO, size).has_point(local_pos):
+			if WindowManager and WindowManager.has_method("focus_window"):
+				WindowManager.focus_window(self)
+'''
 
 func _unhandled_input(event: InputEvent) -> void:
 	if WindowManager == null or WindowManager.focused_window != self:
