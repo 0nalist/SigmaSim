@@ -84,8 +84,8 @@ func _show_last_drawn_card() -> void:
 
 func _show_reading_cards(cards: Array) -> void:
 	for child in reading_result.get_children():
-		if child != reading_button:
-				child.queue_free()
+		if child != reading_button and child != reading_cost_label and child != reading_button:
+			child.queue_free()
 	for c in cards:
 		var id: String = c.get("id", "")
 		var rarity: int = int(c.get("rarity", 1))
