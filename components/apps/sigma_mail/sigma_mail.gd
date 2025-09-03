@@ -96,12 +96,12 @@ func _open_email(email: EmailResource) -> void:
 	var key = "email_%s" % email.get_instance_id()
 	WindowManager.launch_popup(popup_scene, key, email)
 
-func _on_email_action(action: Dictionary) -> void:
+func _on_email_action(action: Dictionary, credit_only: bool = false) -> void:
 	for stat in action.get("stat_changes", {}).keys():
 		var amt = action["stat_changes"][stat]
 		StatManager.set_base_stat(stat, StatManager.get_stat(stat) + amt)
 	for upgrade_id in action.get("upgrade_ids", []):
-		UpgradeManager.purchase(upgrade_id)
+		UpgradeManager.purchase(upgrade_id, credit_only)
 	var app_name: String = action.get("app_name", "")
 	if app_name != "":
 		WindowManager.launch_app_by_name(app_name)

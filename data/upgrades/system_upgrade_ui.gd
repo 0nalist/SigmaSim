@@ -131,8 +131,8 @@ func _on_sort_option_selected(index: int) -> void:
 		sort_mode = index
 		_queue_refresh()
 
-func _on_purchase_requested(upgrade_id: String):
-	if UpgradeManager.purchase(upgrade_id):
+func _on_purchase_requested(upgrade_id: String, credit_only: bool = false):
+	if UpgradeManager.purchase(upgrade_id, credit_only):
 		_display_message("Upgrade purchased: %s" % upgrade_id)
 		# UpgradeManager emits an `upgrade_purchased` signal on success
 		# which is already connected to `_on_upgrade_changed`. That

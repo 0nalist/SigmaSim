@@ -59,6 +59,7 @@ func _ready() -> void:
 	StatManager.connect_to_stat("cash_per_score", self, "_on_cash_per_score_changed")
 	autopilot_cost = StatManager.get_stat("autopilot_cost", 1.0)
 	UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
+	autopilot_button.gui_input.connect(_on_autopilot_button_gui_input)
 	_update_autopilot_button_text()
 	_update_disable_flaps_visibility()
 	start_game()
@@ -190,6 +191,31 @@ func _on_autopilot_button_pressed() -> void:
 		return
 	autopilot.enabled = false
 	_update_autopilot_button_text()
+
+func _on_autopilot_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if autopilot == null:
+			event.accept()
+			return
+		var cost := _get_autopilot_cost()
+		if not autopilot.enabled:
+			if cost > 0.0 and not PortfolioManager.attempt_spend(cost, PortfolioManager.CREDIT_REQUIREMENTS["EarlyBird"], false, true):
+				autopilot_button.button_pressed = false
+				event.accept()
+				return
+			autopilot.enabled = true
+			if cost > 0.0:
+				autopilot_cost = snapped(autopilot_cost + 0.01, 0.01)
+			StatManager.set_base_stat("autopilot_cost", autopilot_cost)
+			_update_autopilot_button_text()
+			autopilot_button.disabled = true
+			await get_tree().create_timer(2.0).timeout
+			autopilot_button.disabled = false
+			event.accept()
+			return
+		autopilot.enabled = false
+		_update_autopilot_button_text()
+		event.accept()
 
 func _get_autopilot_cost() -> float:
 		if UpgradeManager.get_level("earlybird_autopilot_free") > 0:

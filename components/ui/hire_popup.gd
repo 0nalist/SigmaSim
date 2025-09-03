@@ -33,10 +33,10 @@ func _populate_hire_tab() -> void:
 		card.show_status = false
 		card.button_label = "Hire"
 		card.setup(worker)
-		card.action_pressed.connect(func(w):
+		card.action_pressed.connect(func(w, credit_only):
 			var cost = w.get_hire_cost()
 			print("worker costs: " + str(cost))
-			if PortfolioManager.attempt_spend(cost):
+			if PortfolioManager.attempt_spend(cost, 0, false, credit_only):
 				WorkerManager.hire_worker(w)
 				WorkerManager.available_workers.erase(w)
 				_populate_hire_tab()

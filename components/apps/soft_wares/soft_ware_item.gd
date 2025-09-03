@@ -26,6 +26,7 @@ func _ready() -> void:
 	upgrades_button.visible = upgrade_scene != null
 	_update_action_button()
 	action_button.pressed.connect(_on_action_button_pressed)
+	action_button.gui_input.connect(_on_action_button_gui_input)
 	upgrades_button.pressed.connect(_on_upgrades_button_pressed)
 	WindowManager.app_unlocked.connect(_on_app_unlocked)
 
@@ -61,6 +62,27 @@ func _on_action_button_pressed() -> void:
 	else:
 					feedback_label.text = "Not enough funds!"
 					feedback_label.add_theme_color_override("font_color", Color.RED)
+
+func _on_action_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		feedback_label.text = ""
+		feedback_label.remove_theme_color_override("font_color")
+		if WindowManager.is_app_unlocked(app_id):
+			WindowManager.launch_app(app_id)
+			event.accept()
+			return
+		var required_score: int = PortfolioManager.CREDIT_REQUIREMENTS.get(app_title, 0)
+		if PortfolioManager.attempt_spend(float(app_cost), required_score, false, true):
+			var data = {
+				"app_id": app_id,
+				"app_title": app_title,
+				"app_icon": app_icon,
+			}
+			WindowManager.launch_app_by_name("Installer", data)
+		else:
+			feedback_label.text = "Not enough credit!"
+			feedback_label.add_theme_color_override("font_color", Color.RED)
+		event.accept()
 
 func _on_upgrades_button_pressed() -> void:
 		if upgrade_scene:

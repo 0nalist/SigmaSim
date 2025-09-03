@@ -22,6 +22,7 @@ var crypto_cards: Dictionary = {}
 @onready var charts_cash_label: Label = %ChartsCashLabel
 @onready var charts_crypto_label: Label = %ChartsCryptoLabel
 @onready var charts_content: Control = _ensure_charts_content()
+@onready var buy_new_gpu_button: Button = %BuyNewGPUButton
 var crypto_popup_scene: PackedScene = preload("res://components/popups/crypto_popup_ui.tscn")
 
 func _ensure_charts_content() -> Control:
@@ -74,6 +75,7 @@ func _ready() -> void:
 		_build_charts_view()
 		_update_charts_labels()
 		_activate_tab(&"Mine")
+		buy_new_gpu_button.gui_input.connect(_on_buy_new_gpu_button_gui_input)
 
 func refresh_cards_from_market() -> void:
 	# Clear out any old cards
@@ -174,6 +176,14 @@ func _on_buy_new_gpu_button_pressed() -> void:
 				update_gpu_label()
 		else:
 				print("Could not purchase GPU (insufficient funds).")
+
+func _on_buy_new_gpu_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if GPUManager.buy_gpu(true):
+			update_gpu_label()
+		else:
+			print("Could not purchase GPU (insufficient credit).")
+		event.accept()
 
 func _on_sort_property_selected(index: int) -> void:
 		match index:

@@ -90,8 +90,8 @@ func add_gpu(crypto_symbol: String, overclocked := false) -> void:
 
 	emit_signal("gpus_changed")
 
-func buy_gpu() -> bool:
-	if PortfolioManager.attempt_spend(current_gpu_price, PortfolioManager.CREDIT_REQUIREMENTS["gpu"]):
+func buy_gpu(credit_only := false) -> bool:
+	if PortfolioManager.attempt_spend(current_gpu_price, PortfolioManager.CREDIT_REQUIREMENTS["gpu"], false, credit_only):
 		add_gpu("")  # Add a free GPU (unassigned)
 		current_gpu_price *= gpu_price_growth
 		emit_signal("gpus_changed")
