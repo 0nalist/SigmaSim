@@ -284,10 +284,10 @@ size_flags_horizontal = 6
 text = "X"
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/HBoxContainer99"]
-focus_mode = 0
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
+focus_mode = 0
 
 [node name="XHContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer"]
 layout_mode = 2
@@ -489,10 +489,10 @@ theme_override_font_sizes/font_size = 20
 text = "+ 1.0 🔥to your dime status. "
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
-focus_mode = 0
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+focus_mode = 0
 text = " BUY NOW 
   $25,000"
 
@@ -622,10 +622,10 @@ layout_mode = 2
 size_flags_horizontal = 6
 
 [node name="SelfButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/h_separation = 8
@@ -633,10 +633,10 @@ text = " You "
 flat = true
 
 [node name="SwipesButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/h_separation = 8
@@ -644,10 +644,10 @@ text = " Swipe "
 flat = true
 
 [node name="ChatsButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/h_separation = 8

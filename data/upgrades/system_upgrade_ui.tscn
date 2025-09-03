@@ -36,9 +36,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="SortOptionButton" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 
 [node name="InfoLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true

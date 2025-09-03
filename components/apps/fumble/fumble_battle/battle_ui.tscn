@@ -701,11 +701,11 @@ none_label_color = null
 label_color = null
 
 [node name="CloseFumbleProfileButton" type="Button" parent="ProfileCenterContainer/FumbleProfile"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+focus_mode = 0
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_fmmgg")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_i8wc4")
 theme_override_styles/normal = SubResource("StyleBoxTexture_5wc8t")
