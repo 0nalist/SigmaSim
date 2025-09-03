@@ -18,16 +18,16 @@ shader = ExtResource("2_0ke3q")
 shader_parameter/gradient = SubResource("GradientTexture2D_4cu37")
 shader_parameter/circle_color = Color(0.548959, 0.000217166, 0.548955, 1)
 shader_parameter/circle_multiplier = 1.79
-shader_parameter/speed = 0.7
+shader_parameter/speed = 0.57
 shader_parameter/direction = Vector2(1, 1)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k7x7x"]
 shader = ExtResource("2_0ke3q")
 shader_parameter/gradient = SubResource("GradientTexture2D_4cu37")
-shader_parameter/circle_color = Color(0.945098, 0.0313726, 0.32549, 1)
+shader_parameter/circle_color = Color(0.811765, 0.0156863, 0.27451, 0.909804)
 shader_parameter/circle_multiplier = 1.79
-shader_parameter/speed = 0.55
+shader_parameter/speed = 0.305
 shader_parameter/direction = Vector2(-0.585, 1)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
