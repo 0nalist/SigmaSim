@@ -14,28 +14,31 @@ var current_page: int = 0
 var emails_per_page: int = 12
 
 func _ready() -> void:
-		_generate_dummy_emails()
-		limit_option.add_item("12", 12)
-		limit_option.add_item("24", 24)
-		limit_option.add_item("48", 48)
-		limit_option.select(0)
-		search_bar.text_changed.connect(_on_search_changed)
-		limit_option.item_selected.connect(_on_limit_selected)
-		prev_button.pressed.connect(_on_prev_page)
-		next_button.pressed.connect(_on_next_page)
-		_apply_filter()
+        _generate_initial_email()
+        limit_option.add_item("12", 12)
+        limit_option.add_item("24", 24)
+        limit_option.add_item("48", 48)
+        limit_option.select(0)
+        search_bar.text_changed.connect(_on_search_changed)
+        limit_option.item_selected.connect(_on_limit_selected)
+        prev_button.pressed.connect(_on_prev_page)
+        next_button.pressed.connect(_on_next_page)
+        _apply_filter()
 
-func _generate_dummy_emails() -> void:
-	emails.clear()
-	var dummy: EmailResource = ResourceLoader.load("res://resources/emails/dummy_email.tres") as EmailResource
-	if dummy != null:
-		emails.append(dummy)
-	for i in range(1, 50):
-		var e := EmailResource.new()
-		e.from = "user%d@example.com" % i
-		e.subject = "Subject %d" % i
-		e.body = "Body %d" % i
-		emails.append(e)
+func _generate_initial_email() -> void:
+        emails.clear()
+        var template: EmailResource = ResourceLoader.load("res://resources/emails/earlybird_email.tres") as EmailResource
+        if template != null:
+                var email: EmailResource = template.duplicate()
+                var idx := int(PlayerManager.get_var("friend1_npc_index", -1))
+                var first := "Friend"
+                if idx != -1:
+                        var npc = NPCManager.get_npc_by_index(idx)
+                        if npc != null:
+                                first = npc.first_name
+                email.from = first
+                email.body = email.body.format({"friend1_first_name": first})
+                emails.append(email)
 
 func _on_search_changed(_new_text: String) -> void:
 		_apply_filter()

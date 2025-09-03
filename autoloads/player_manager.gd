@@ -56,14 +56,15 @@ var default_user_data: Dictionary = {
 	"portrait_config": {},
 	"background_path": "",
 	"education_level": "",
-	"starting_student_debt": 0.0,
-	"starting_credit_limit": 0.0,
-	"bio": "",
+        "starting_student_debt": 0.0,
+        "starting_credit_limit": 0.0,
+        "bio": "",
+        "friend1_npc_index": -1,
 
-	# Core Stats
-	"alpha": 0.0,
-	"beta": 0.0,
-	"delta": 0.0,
+        # Core Stats
+        "alpha": 0.0,
+        "beta": 0.0,
+        "delta": 0.0,
 	"gamma": 0.0,
 	"omega": 0.0,
 	"sigma": 0.0,
@@ -182,23 +183,32 @@ func reset():
 
 
 func ensure_default_stats() -> void:
-	for key in default_user_data.keys():
-		if not user_data.has(key):
-			user_data[key] = default_user_data[key]
-		elif key == "background_shaders":
+        for key in default_user_data.keys():
+                if not user_data.has(key):
+                        user_data[key] = default_user_data[key]
+                elif key == "background_shaders":
 			for shader in default_user_data["background_shaders"].keys():
 				if not user_data[key].has(shader):
 					user_data[key][shader] = default_user_data["background_shaders"][shader].duplicate(true)
 				else:
 					for param in default_user_data["background_shaders"][shader].keys():
-						if not user_data[key][shader].has(param):
-							user_data[key][shader][param] = default_user_data["background_shaders"][shader][param]
+                                                if not user_data[key][shader].has(param):
+                                                        user_data[key][shader][param] = default_user_data["background_shaders"][shader][param]
+        ensure_friend1()
 
+func generate_friend1() -> void:
+        var idx = RNGManager.npc_manager.get_rng().randi()
+        user_data["friend1_npc_index"] = idx
+        NPCManager.get_npc_by_index(idx)
+
+func ensure_friend1() -> void:
+        if int(user_data.get("friend1_npc_index", -1)) == -1:
+                generate_friend1()
 
 func djb2(s: String) -> int:
-		var hash := 5381
-		for i in s.length():
-				hash = ((hash << 5) + hash) + s.unicode_at(i)
+                var hash := 5381
+                for i in s.length():
+                                hash = ((hash << 5) + hash) + s.unicode_at(i)
 		return hash & 0xFFFFFFFF
 
 
