@@ -42,7 +42,7 @@ func _build_collection_view() -> void:
 	for card in TarotManager.get_all_cards_ordered():
 		var id: String = card.get("id", "")
 		var count: int = TarotManager.get_card_count(id)
-		var rarity := TarotManager.get_highest_owned_rarity(id)
+		var rarity = TarotManager.get_highest_owned_rarity(id)
 		var view: TarotCardView = TarotManager.instantiate_card_view(id, count, false, rarity)
 		collection_grid.add_child(view)
 		view.set_rarity_label_visible(false)
@@ -52,11 +52,11 @@ func _build_collection_view() -> void:
 		card_views[id] = view
 
 func _on_collection_changed(card_id: String, count: int) -> void:
-		var view = card_views.get(card_id)
-		if view:
-				var rarity := TarotManager.get_highest_owned_rarity(card_id)
-				view.update_rarity(rarity)
-				view.update_count(count)
+	var view = card_views.get(card_id)
+	if view:
+		var rarity = TarotManager.get_highest_owned_rarity(card_id)
+		view.update_rarity(rarity)
+		view.update_count(count)
 
 func _on_draw_button_pressed() -> void:
 	var card = TarotManager.draw_card()
@@ -74,37 +74,37 @@ func _on_reading_button_pressed() -> void:
 	_show_reading_cards(cards)
 
 func _show_last_drawn_card() -> void:
-        for child in draw_result.get_children():
-                child.queue_free()
+	for child in draw_result.get_children():
+			child.queue_free()
 	var id = TarotManager.last_card_id
 	var rarity = TarotManager.last_card_rarity
 	if id == "" or rarity <= 0:
 		return
 	var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
-       var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-       view.set_upside_down(RNGManager.tarot_orientation.get_rng().randf() < 0.5)
-       view.show_single_count = true
-       view.modulate.a = 0.0
-       draw_result.add_child(view)
-       create_tween().tween_property(view, "modulate:a", 1.0, 0.3)
+	var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+	view.set_upside_down(RNGManager.tarot_orientation.get_rng().randf() < 0.5)
+	view.show_single_count = true
+	view.modulate.a = 0.0
+	draw_result.add_child(view)
+	create_tween().tween_property(view, "modulate:a", 1.0, 0.3)
 
 func _show_reading_cards(cards: Array) -> void:
-        for child in reading_result.get_children():
-                if child != reading_button and child != reading_cost_label and child != reading_button:
-                        child.queue_free()
-        var index := 0
-       var flip_rng := RNGManager.tarot_orientation.get_rng()
-       for c in cards:
-               var id: String = c.get("id", "")
-               var rarity: int = int(c.get("rarity", 1))
-               var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
-               var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-               view.set_upside_down(flip_rng.randf() < 0.5)
-               view.show_single_count = true
-               view.modulate.a = 0.0
-               reading_result.add_child(view)
-               create_tween().tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
-               index += 1
+	for child in reading_result.get_children():
+			if child != reading_button and child != reading_cost_label and child != reading_button:
+					child.queue_free()
+	var index := 0
+	var flip_rng = RNGManager.tarot_orientation.get_rng()
+	for c in cards:
+			var id: String = c.get("id", "")
+			var rarity: int = int(c.get("rarity", 1))
+			var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
+			var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+			view.set_upside_down(flip_rng.randf() < 0.5)
+			view.show_single_count = true
+			view.modulate.a = 0.0
+			reading_result.add_child(view)
+			create_tween().tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
+			index += 1
 
 
 func _update_cooldown_label() -> void:
