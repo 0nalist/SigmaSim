@@ -10,9 +10,10 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if _started:
-			return
+		return
 	if event.is_pressed():
 		_started = true
+		%Subtitle.hide()
 		emit_signal("continue_pressed")
 		var tween = create_tween()
 		tween.tween_property(self, "modulate:a", 0.0, 1.5)

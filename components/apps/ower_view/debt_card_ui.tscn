@@ -74,27 +74,30 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
 
 [node name="SliderLabel" type="Label" parent="MarginContainer/VBox/HBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 text = "$0.00"
+vertical_alignment = 2
 
-[node name="PayButton" type="Button" parent="MarginContainer/VBox"]
+[node name="PayButton" type="Button" parent="MarginContainer/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "Pay Off Debt"
 
 [node name="BorrowHBox" type="HBoxContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="BorrowSlider" type="HSlider" parent="MarginContainer/VBox/BorrowHBox"]
+[node name="BorrowButton" type="Button" parent="MarginContainer/VBox/BorrowHBox"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
+theme_override_font_sizes/font_size = 14
+text = "Borrow"
 
 [node name="BorrowLabel" type="Label" parent="MarginContainer/VBox/BorrowHBox"]
 unique_name_in_owner = true
@@ -104,7 +107,8 @@ text = "$0.00"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="BorrowButton" type="Button" parent="MarginContainer/VBox/BorrowHBox"]
+[node name="BorrowSlider" type="HSlider" parent="MarginContainer/VBox/BorrowHBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Borrow"
+size_flags_horizontal = 3
+size_flags_vertical = 4
