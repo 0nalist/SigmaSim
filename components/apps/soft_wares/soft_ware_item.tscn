@@ -1,60 +1,80 @@
-[gd_scene load_steps=2 format=3 uid="uid://c11p84yyhjlkg"]
+[gd_scene load_steps=3 format=3 uid="uid://c11p84yyhjlkg"]
 
 [ext_resource type="Script" uid="uid://dfkb3gxulmxys" path="res://components/apps/soft_wares/soft_ware_item.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkqde"]
+bg_color = Color(0, 0, 0, 0.694118)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="SoftWareItem" type="PanelContainer"]
 custom_minimum_size = Vector2(450, 0)
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkqde")
 script = ExtResource("1")
 
-[node name="Content" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Content" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="Icon" type="TextureRect" parent="Content"]
+[node name="Icon" type="TextureRect" parent="MarginContainer/Content"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 1
 
-[node name="InfoContainer" type="VBoxContainer" parent="Content"]
+[node name="InfoContainer" type="VBoxContainer" parent="MarginContainer/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 theme_override_constants/separation = 4
 
-[node name="TitleLabel" type="Label" parent="InfoContainer"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/Content/InfoContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Title"
 
-[node name="DescriptionLabel" type="Label" parent="InfoContainer"]
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/Content/InfoContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Description"
 autowrap_mode = 3
 
-[node name="FeedbackLabel" type="Label" parent="InfoContainer"]
+[node name="FeedbackLabel" type="Label" parent="MarginContainer/Content/InfoContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ButtonsContainer" type="VBoxContainer" parent="Content"]
+[node name="ButtonsContainer" type="VBoxContainer" parent="MarginContainer/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/separation = 4
 
-[node name="ActionButton" type="Button" parent="ButtonsContainer"]
+[node name="ActionButton" type="Button" parent="MarginContainer/Content/ButtonsContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Buy App for $0"
 
-[node name="UpgradesButton" type="Button" parent="ButtonsContainer"]
+[node name="UpgradesButton" type="Button" parent="MarginContainer/Content/ButtonsContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
