@@ -31,7 +31,7 @@ func _on_install_button_pressed() -> void:
 	var tween := get_tree().create_tween()
 	tween.tween_property(progress_bar, "value", 99.0, 3.0)
 	tween.tween_interval(4.0)
-	tween.tween_property(progress_bar, "value", 100.0, 0.01)
+	tween.tween_property(progress_bar, "value", 100.0, 0.2)
 	tween.tween_callback(Callable(self, "_complete_install"))
 
 func _complete_install() -> void:
