@@ -57,14 +57,26 @@ func setup(data: Dictionary, owned: int) -> void:
 		sell_button.pressed.connect(_on_sell_pressed)
 
 func update_count(new_count: int) -> void:
-				count = new_count
-				count_label.visible = count > 0 and (count > 1 or show_single_count)
-				count_label.text = "x%d" % count
-				sell_button.visible = count > 0
-				texture_rect.modulate = Color(1,1,1,1) if count > 0 else Color(0.5,0.5,0.5,1)
-				if count > 0:
-								sell_button.disabled = false
-								sell_button.text = "Sell for $%d" % int(sell_price)
+        count = new_count
+        count_label.visible = count > 0 and (count > 1 or show_single_count)
+        count_label.text = "x%d" % count
+        sell_button.visible = count > 0
+        texture_rect.modulate = Color(1,1,1,1) if count > 0 else Color(0.5,0.5,0.5,1)
+        if count > 0:
+                        sell_button.disabled = false
+                        sell_button.text = "Sell for $%d" % int(sell_price)
+
+func update_rarity(new_rarity: int) -> void:
+        rarity = new_rarity
+        rarity_label.text = RARITY_NAMES.get(rarity, "")
+        if rarity == 5:
+                        rarity_label.material = RAINBOW_MATERIAL
+                        rarity_label.add_theme_color_override("font_color", Color.WHITE)
+        else:
+                        rarity_label.material = null
+                        rarity_label.add_theme_color_override("font_color", RARITY_COLORS.get(rarity, Color.WHITE))
+        sell_price = TarotManager.get_sell_price(rarity)
+        sell_button.text = "Sell for $%d" % int(sell_price)
 
 func set_rarity_label_visible(is_visible: bool) -> void:
 				if not is_node_ready():
