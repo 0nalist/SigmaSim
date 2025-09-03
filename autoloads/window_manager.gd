@@ -39,9 +39,9 @@ var app_registry := {
 		"Wallet": preload("res://components/apps/wallet/wallet_ui.tscn"),
 		"Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
 		"Terminal": preload("res://components/apps/terminal/terminal.tscn"),
-                "SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
-        "TarotApp": preload("res://components/apps/app_scenes/tarot_app.tscn"),
-        "Installer": preload("res://components/apps/app_scenes/installer.tscn"),
+				"SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
+		"TarotApp": preload("res://components/apps/app_scenes/tarot_app.tscn"),
+		"Installer": preload("res://components/apps/app_scenes/installer.tscn"),
 
 }
 
