@@ -52,6 +52,9 @@ func _build_collection_view() -> void:
 
 		card_views[id] = view
 
+		await get_tree().process_frame
+
+
 func _on_collection_changed(card_id: String, count: int) -> void:
 	var view = card_views.get(card_id)
 	if view:

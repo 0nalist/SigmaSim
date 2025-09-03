@@ -1,18 +1,18 @@
 {
   "id": "earlybird_autoworm",
   "name": "Autoworm",
-  "description": "Automatically clicks the worm every 10 seconds while visible. Each level reduces the interval by 1 second.",
+  "description": "Automatically clicks the worm every 10 seconds. Each level reduces the interval by 1 second.",
   "effects": [],
   "systems": [
-    "earlybird"
+	"earlybird"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "ex": 100
+	"ex": 100
   },
   "scale_by_formula": true,
   "cost_formula": {
-    "ex": "base_cost[\"ex\"] * pow(2, level-1)"
+	"ex": "base_cost[\"ex\"] * pow(2, level-1)"
   },
   "max_level": 10,
   "repeatable": true
