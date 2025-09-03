@@ -91,7 +91,7 @@ theme_override_constants/margin_bottom = 25
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 24
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -99,10 +99,6 @@ size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("3_krt0r")
 theme_override_font_sizes/font_size = 36
 text = "Soft Wares"
-
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
 
 [node name="Scroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
