@@ -36,14 +36,18 @@ var commands := {
 			"args": "",
 			"description": "Purchases all upgrades ignoring costs.",
 	 },
-	"gimme": {
-		"args": "",
-		"description": "Adds a buncha stuff",
-	},
-	"help": {
-		"args": "",
-		"description": "Displays or hides the list of available debug commands.",
-	},
+        "gimme": {
+                "args": "",
+                "description": "Adds a buncha stuff",
+        },
+       "runtests": {
+               "args": "",
+               "description": "Runs all test scripts",
+       },
+        "help": {
+                "args": "",
+                "description": "Displays or hides the list of available debug commands.",
+        },
 }
 
 
@@ -298,6 +302,9 @@ func process_command(command: String) -> bool:
 			return true
 		
 		
+		"runtests":
+			return _run_tests()
+
 		"upgrademax":
 			_purchase_all_upgrades()
 			return true
@@ -328,5 +335,47 @@ func _parse_number(s: String) -> Variant:
 
 
 func _clear_command_log() -> void:
-	for child in command_log_container.get_children():
-		child.queue_free()
+       for child in command_log_container.get_children():
+               child.queue_free()
+
+
+func _run_tests() -> bool:
+       var dir := DirAccess.open("res://tests")
+       if dir == null:
+               var label := Label.new()
+               label.text = "Failed to open tests directory"
+               command_log_container.add_child(label)
+               return false
+       var passed := 0
+       var failed := 0
+       dir.list_dir_begin()
+       while true:
+               var file_name = dir.get_next()
+               if file_name == "":
+                       break
+               if dir.current_is_dir():
+                       continue
+               if file_name.ends_with("_test.gd"):
+                       var script_path = "res://tests/%s" % file_name
+                       var label := Label.new()
+                       var ok := true
+                       var err_msg := ""
+                       @GDScript.try:
+                               var script = load(script_path)
+                               var inst = script.new()
+                               inst.quit = func(_code := 0): pass
+                       @GDScript.catch(e):
+                               ok = false
+                               err_msg = str(e)
+                       if ok:
+                               label.text = "%s: PASS" % file_name
+                               passed += 1
+                       else:
+                               label.text = "%s: FAIL - %s" % [file_name, err_msg]
+                               failed += 1
+                       command_log_container.add_child(label)
+       dir.list_dir_end()
+       var summary := Label.new()
+       summary.text = "%d passed, %d failed" % [passed, failed]
+       command_log_container.add_child(summary)
+       return failed == 0
