@@ -127,15 +127,15 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 			"compounds_in": TimeManager.get_days_in_month(TimeManager.current_month, TimeManager.current_year) * 1440
 		})
 
-	MarketManager.init_new_save_events()
-	save_to_slot(slot_id)
-	BillManager.is_loading = false
+        MarketManager.init_new_save_events()
+        save_to_slot(slot_id, false)
+        BillManager.is_loading = false
 
 	NPCManager.load_daterbase_cache()
 
 
 # --- Save/Load Full Game State ---
-func save_to_slot(slot_id: int) -> void:
+func save_to_slot(slot_id: int, include_rng_state := true) -> void:
 	if slot_id <= 0:
 		push_error("❌ Invalid slot_id: %d" % slot_id)
 		return
@@ -146,22 +146,23 @@ func save_to_slot(slot_id: int) -> void:
 			NPCManager._flush_save_queue()
 
 
-	var data := {
-		"stats": StatManager.get_save_data(),
-		"portfolio": PortfolioManager.get_save_data(),
-		"time": TimeManager.get_save_data(),
-		"market": MarketManager.get_save_data(),
-		"tasks": TaskManager.get_save_data(),
-		"player": PlayerManager.get_save_data(),
-		"workers": WorkerManager.get_save_data(),
-		"bills": BillManager.get_save_data(),
-		"gpus": GPUManager.get_save_data(),
-		"upgrades": UpgradeManager.get_save_data(),
-			   "history": HistoryManager.get_save_data(),
-			   "tarot": TarotManager.get_save_data(),
-			   "windows": WindowManager.get_save_data(),
-			   "desktop": DesktopLayoutManager.get_save_data(),
-			   }
+        var data := {
+                "stats": StatManager.get_save_data(),
+                "portfolio": PortfolioManager.get_save_data(),
+                "time": TimeManager.get_save_data(),
+                "market": MarketManager.get_save_data(),
+                "tasks": TaskManager.get_save_data(),
+                "player": PlayerManager.get_save_data(),
+                "workers": WorkerManager.get_save_data(),
+                "bills": BillManager.get_save_data(),
+                "gpus": GPUManager.get_save_data(),
+                "upgrades": UpgradeManager.get_save_data(),
+                           "history": HistoryManager.get_save_data(),
+                           "tarot": TarotManager.get_save_data(),
+                           "windows": WindowManager.get_save_data(),
+                           "desktop": DesktopLayoutManager.get_save_data(),
+                           "rng": include_rng_state ? RNGManager.get_save_data() : {},
+                           }
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
@@ -238,8 +239,9 @@ func load_from_slot(slot_id: int) -> void:
 				PlayerManager.user_data["global_rng_seed"] = seed_val
 		else:
 				print("Using saved global_rng_seed", seed_val)
-		RNGManager.init_seed(seed_val)
-		print("RNGManager initialized from save with seed", seed_val)
+                RNGManager.init_seed(seed_val)
+                RNGManager.load_from_data(data.get("rng", {}))
+                print("RNGManager initialized from save with seed", seed_val)
 
 	if data.has("stats"):
 			StatManager.load_from_data(data["stats"])
