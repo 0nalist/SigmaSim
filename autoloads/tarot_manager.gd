@@ -19,12 +19,14 @@ var reading_cost: float = 1.0
 
 func _ready() -> void:
 	deck.load_from_file(DATA_PATH)
+	TimeManager.hour_passed.connect(_on_hour_passed)
 
 func reset() -> void:
 		collection.clear()
 		last_draw_minutes = -COOLDOWN_MINUTES
 		last_card_id = ""
 		last_card_rarity = 0
+		reading_cost = 1.0
 		deck.load_from_file(DATA_PATH)
 
 func get_save_data() -> Dictionary:
@@ -32,7 +34,8 @@ func get_save_data() -> Dictionary:
 				"collection": collection,
 			"last_draw": last_draw_minutes,
 			"last_card_id": last_card_id,
-			"last_card_rarity": last_card_rarity
+			"last_card_rarity": last_card_rarity,
+		"reading_cost": reading_cost
 		}
 
 func load_from_data(data: Dictionary) -> void:
@@ -49,6 +52,7 @@ func load_from_data(data: Dictionary) -> void:
 	last_draw_minutes = int(data.get("last_draw", -COOLDOWN_MINUTES))
 	last_card_id = data.get("last_card_id", "")
 	last_card_rarity = int(data.get("last_card_rarity", 0))
+	reading_cost = float(data.get("reading_cost", 1.0))
 	deck.load_from_file(DATA_PATH)
 
 func get_card_count(id: String) -> int:
@@ -116,8 +120,12 @@ func draw_card() -> Dictionary:
 
 func draw_reading(count: int) -> Array:
 	var total_cost := reading_cost * count
-	if total_cost > 0.0 and not PortfolioManager.try_spend_cash(total_cost):
-		return []
+	if total_cost > 0.0:
+		var current_ex := StatManager.get_stat("ex", 0.0)
+		if current_ex < total_cost:
+			return []
+		StatManager.set_base_stat("ex", current_ex - total_cost)
+		reading_cost *= 2.0
 	var card_rng := RNGManager.tarot_card.get_rng()
 	var rarity_rng := RNGManager.tarot_rarity.get_rng()
 	var results: Array = []
@@ -136,6 +144,9 @@ func draw_reading(count: int) -> Array:
 			collection_changed.emit(id, get_card_count(id))
 			results.append({"id": id, "rarity": rarity})
 	return results
+
+func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
+	reading_cost = max(1.0, reading_cost - 1.0)
 
 func sell_card(card_id: String, rarity: int) -> void:
 	var rarities: Dictionary = collection.get(card_id, {})
