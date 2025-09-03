@@ -43,8 +43,9 @@ func _setup_layers() -> void:
 		var label := Label.new()
 		label.text = "Hair2" if layer == "hair_back" else layer.capitalize()
 		col.add_child(label)
-		var index_btn := OptionButton.new()
-		index_btn.name = "Index"
+                var index_btn := OptionButton.new()
+                index_btn.name = "Index"
+                index_btn.focus_mode = Control.FOCUS_NONE
 		var tex_arr: Array = info.get("textures", [])
 		if layer != "face":
 			index_btn.add_item("0", 0)
@@ -52,14 +53,16 @@ func _setup_layers() -> void:
 			index_btn.add_item(str(i + 1), i + 1)
 		index_btn.item_selected.connect(_on_index_changed.bind(layer))
 		col.add_child(index_btn)
-		var color_btn := ColorPickerButton.new()
-		color_btn.name = "Color"
+                var color_btn := ColorPickerButton.new()
+                color_btn.name = "Color"
+                color_btn.focus_mode = Control.FOCUS_NONE
 		color_btn.custom_minimum_size = Vector2(15, 15)
 		color_btn.color_changed.connect(_on_color_changed.bind(layer))
 		col.add_child(color_btn)
 		if layer == "hair" or layer == "hair_back":
-			var sync_chk := CheckBox.new()
-			sync_chk.name = "Sync"
+                        var sync_chk := CheckBox.new()
+                        sync_chk.name = "Sync"
+                        sync_chk.focus_mode = Control.FOCUS_NONE
 			sync_chk.text = "Sync"
 			sync_chk.add_theme_font_size_override("font_size", 14)
 			sync_chk.button_pressed = hair_color_sync

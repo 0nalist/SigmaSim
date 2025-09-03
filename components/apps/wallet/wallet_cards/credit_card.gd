@@ -53,10 +53,11 @@ func _build() -> void:
 	controls.add_theme_constant_override("separation", 8)
 	controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	_autopay_check = CheckBox.new()
-	_autopay_check.text = "Autopay"
-	_autopay_check.button_pressed = _autopay
-	_autopay_check.toggled.connect(_on_autopay_toggled)
+        _autopay_check = CheckBox.new()
+        _autopay_check.text = "Autopay"
+        _autopay_check.button_pressed = _autopay
+        _autopay_check.focus_mode = Control.FOCUS_NONE
+        _autopay_check.toggled.connect(_on_autopay_toggled)
 	controls.add_child(_autopay_check)
 
 	_pay_slider = HSlider.new()
@@ -71,9 +72,10 @@ func _build() -> void:
 	_pay_label.text = "$" + String.num(_pay_slider.value, 2)
 	controls.add_child(_pay_label)
 
-	_pay_button = Button.new()
-	_pay_button.text = "Pay"
-	_pay_button.pressed.connect(_on_pay_pressed)
+        _pay_button = Button.new()
+        _pay_button.text = "Pay"
+        _pay_button.focus_mode = Control.FOCUS_NONE
+        _pay_button.pressed.connect(_on_pay_pressed)
 	controls.add_child(_pay_button)
 
 	_content.add_child(controls)

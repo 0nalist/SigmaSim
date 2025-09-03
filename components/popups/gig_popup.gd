@@ -136,8 +136,9 @@ func _refresh_workers():
 		var row = HBoxContainer.new()
 		var name = Label.new()
 		name.text = worker.name
-		var remove_button = Button.new()
-		remove_button.text = "Unassign"
+                var remove_button = Button.new()
+                remove_button.text = "Unassign"
+                remove_button.focus_mode = Control.FOCUS_NONE
 		remove_button.pressed.connect(func():
 			gig.assigned_workers.erase(worker)
 			WorkerManager.unassign_worker(worker)

@@ -87,6 +87,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Confidence Boost: $10"
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/SpecialOfferUI/MarginContainer"]
+focus_mode = 0
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 10

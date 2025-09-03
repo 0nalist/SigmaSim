@@ -284,6 +284,7 @@ size_flags_horizontal = 6
 text = "X"
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/HBoxContainer99"]
+focus_mode = 0
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
@@ -488,6 +489,7 @@ theme_override_font_sizes/font_size = 20
 text = "+ 1.0 🔥to your dime status. "
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/FumbleShopContainer/MarginContainer/ScrollContainer/VBoxContainer/TurkishHairSurgery/MarginContainer/VBoxContainer"]
+focus_mode = 0
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -620,6 +622,7 @@ layout_mode = 2
 size_flags_horizontal = 6
 
 [node name="SelfButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -630,6 +633,7 @@ text = " You "
 flat = true
 
 [node name="SwipesButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -640,6 +644,7 @@ text = " Swipe "
 flat = true
 
 [node name="ChatsButton" type="Button" parent="MarginContainer/VBoxContainer/MenuTabContainer/HBoxContainer"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
