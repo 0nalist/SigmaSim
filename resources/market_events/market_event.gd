@@ -95,15 +95,15 @@ func process(now_minutes: int, asset) -> void:
 		var target_price: float = _starting_price * _pump_multiplier
 		var t: float = float(now_minutes - _start_time) / max(1.0, float(_pump_end_time - _start_time))
 		t = clamp(t, 0.0, 1.0)
-               var new_price: float = lerp(_starting_price, target_price, t)
-               var prev: float = asset.price
-               asset.price = max(snapped(new_price, 0.01), 0.01)
-               asset.last_price = prev
-               if asset.price_history.size() > 0:
-                       asset.price_history[asset.price_history.size() - 1] = asset.price
-               else:
-                       asset.price_history.append(asset.price)
-               asset.all_time_high = max(asset.all_time_high, asset.price)
+			   var new_price: float = lerp(_starting_price, target_price, t)
+			   var prev: float = asset.price
+			   asset.price = max(snapped(new_price, 0.01), 0.01)
+			   asset.last_price = prev
+			   if asset.price_history.size() > 0:
+					   asset.price_history[asset.price_history.size() - 1] = asset.price
+			   else:
+					   asset.price_history.append(asset.price)
+			   asset.all_time_high = max(asset.all_time_high, asset.price)
 
 		print("market event pumping:",
 			" symbol=", target_symbol,
@@ -128,15 +128,15 @@ func process(now_minutes: int, asset) -> void:
 		var target_price: float = _starting_price * _dump_multiplier
 		var t: float = float(now_minutes - _pump_end_time) / max(1.0, float(_dump_end_time - _pump_end_time))
 		t = clamp(t, 0.0, 1.0)
-               var new_price: float = lerp(pump_price, target_price, t)
-               var prev: float = asset.price
-               asset.price = max(snapped(new_price, 0.01), 0.01)
-               asset.last_price = prev
-               if asset.price_history.size() > 0:
-                       asset.price_history[asset.price_history.size() - 1] = asset.price
-               else:
-                       asset.price_history.append(asset.price)
-               asset.all_time_high = max(asset.all_time_high, asset.price)
+			   var new_price: float = lerp(pump_price, target_price, t)
+			   var prev: float = asset.price
+			   asset.price = max(snapped(new_price, 0.01), 0.01)
+			   asset.last_price = prev
+			   if asset.price_history.size() > 0:
+					   asset.price_history[asset.price_history.size() - 1] = asset.price
+			   else:
+					   asset.price_history.append(asset.price)
+			   asset.all_time_high = max(asset.all_time_high, asset.price)
 
 		print("market event dumping:",
 			" symbol=", target_symbol,

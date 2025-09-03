@@ -18,8 +18,8 @@
 [ext_resource type="Shader" uid="uid://dpkrwbqp1ct8w" path="res://assets/shaders/pixel_perfect.gdshader" id="12_35jdd"]
 [ext_resource type="Script" uid="uid://cvkmxe30l4wqr" path="res://components/apps/early_bird/worm.gd" id="12_im8xc"]
 [ext_resource type="Texture2D" uid="uid://bfrkf7nmil0hd" path="res://assets/early_bird/worm1.png" id="13_8hmpk"]
-[ext_resource type="Shader" uid="uid://cwc7cvxrtied6" path="res://components/apps/fumble/rainbow_outline.gdshader" id="16_hew32"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="17_5sugq"]
+[ext_resource type="Shader" uid="uid://b3lch55daabv3" path="res://assets/shaders/wavy_walk_shader.gdshader" id="18_gnrao"]
 [ext_resource type="Shader" uid="uid://cn4kauxg0sbo4" path="res://components/apps/early_bird/random_displacement_shader.gdshader" id="20_tgvyg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bx04g"]
@@ -64,12 +64,15 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tgvyg"]
-shader = ExtResource("16_hew32")
-shader_parameter/line_thickness = 1.0
-shader_parameter/sin_frequency = 0.1
-shader_parameter/sin_offset = 0.0
-shader_parameter/light_offset = 0.5
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nxclg"]
+shader = ExtResource("18_gnrao")
+shader_parameter/progress = 0.0
+shader_parameter/speed = 0.281
+shader_parameter/meltness = 1.0
+shader_parameter/how_low = 1.0
+shader_parameter/wave_frequency = 20.0
+shader_parameter/letter_count = 1.0
+shader_parameter/color_speed = 0.016
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y10ql"]
 radius = 23.0
@@ -95,6 +98,7 @@ mouse_filter = 1
 script = ExtResource("1_ye6sa")
 window_title = "EarlyBird"
 window_icon = ExtResource("13_8hmpk")
+app_description = "Rise & grind & get that worm"
 default_window_size = Vector2(440, 960)
 window_can_maximize = false
 user_resizable = false
@@ -325,7 +329,7 @@ size_flags_vertical = 4
 
 [node name="GameLabel" type="Label" parent="HUD/MarginContainer/GameMenuContainer"]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_tgvyg")
+material = SubResource("ShaderMaterial_nxclg")
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("17_5sugq")

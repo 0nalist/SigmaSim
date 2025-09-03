@@ -64,7 +64,7 @@ func _ready() -> void:
 				action_shortcut.args = [app_name, title, icon_path]
 				actions.append(action_shortcut)
 				ContextMenuManager.open_for(self, event.global_position, actions)
-				event.accept()
+				event.accept_event()
 		)
 
 		app_list_container.add_child(button)
@@ -116,7 +116,7 @@ func add_app_button(app_name: String) -> void:
 			action_shortcut.args = [app_name, title, icon_path]
 			actions.append(action_shortcut)
 			ContextMenuManager.open_for(self, event.global_position, actions)
-			event.accept()
+			event.accept_event()
 	)
 	app_list_container.add_child(button)
 	preview.queue_free()
