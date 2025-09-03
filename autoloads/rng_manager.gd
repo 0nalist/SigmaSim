@@ -76,7 +76,10 @@ class TarotCardRNG extends RNGStream:
 	pass
 
 class TarotRarityRNG extends RNGStream:
-	pass
+        pass
+
+class TarotOrientationRNG extends RNGStream:
+        pass
 
 var global := GlobalRNG.new()
 var gpu := GPURNG.new()
@@ -97,6 +100,7 @@ var task_manager := TaskManagerRNG.new()
 var npc_manager := NPCManagerRNG.new()
 var tarot_card := TarotCardRNG.new()
 var tarot_rarity := TarotRarityRNG.new()
+var tarot_orientation := TarotOrientationRNG.new()
 
 func _derive_seed(name: String) -> int:
 	return hash(str(seed) + ":" + name)
@@ -121,11 +125,12 @@ func init_seed(seed_value: int) -> void:
 	locked_in.init_seed(_derive_seed("locked_in"))
 	fumble_battle_logic.init_seed(_derive_seed("fumble_battle_logic"))
 	task_manager.init_seed(_derive_seed("task_manager"))
-	npc_manager.init_seed(_derive_seed("npc_manager"))
-	tarot_card.init_seed(_derive_seed("tarot_card"))
-	tarot_rarity.init_seed(_derive_seed("tarot_rarity"))
-	if OS.is_debug_build():
-		print("Global RNG Seed: ", seed)
+        npc_manager.init_seed(_derive_seed("npc_manager"))
+        tarot_card.init_seed(_derive_seed("tarot_card"))
+        tarot_rarity.init_seed(_derive_seed("tarot_rarity"))
+        tarot_orientation.init_seed(_derive_seed("tarot_orientation"))
+        if OS.is_debug_build():
+                print("Global RNG Seed: ", seed)
 
 func get_rng() -> RandomNumberGenerator:
 	return global.get_rng()
