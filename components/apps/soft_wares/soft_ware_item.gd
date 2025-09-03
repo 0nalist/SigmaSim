@@ -1,4 +1,4 @@
-extends HBoxContainer
+extends PanelContainer
 class_name SoftWareItem
 
 @export var app_icon: Texture2D
