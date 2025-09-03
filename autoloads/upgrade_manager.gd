@@ -287,9 +287,9 @@ func _get_currency_amount(currency: String) -> float:
 		return StatManager.get_stat("ex")
 	return PortfolioManager.get_crypto_amount(currency)
 
-func _deduct_currency(currency: String, amount: float) -> bool:
+func _deduct_currency(currency: String, amount: float, credit_only: bool = false) -> bool:
 	if currency == "cash":
-			return PortfolioManager.attempt_spend(amount, PortfolioManager.CREDIT_REQUIREMENTS["upgrades"])
+			return PortfolioManager.attempt_spend(amount, PortfolioManager.CREDIT_REQUIREMENTS["upgrades"], false, credit_only)
 	if currency == "ex":
 		if StatManager.get_stat("ex") < amount:
 			return false
@@ -345,7 +345,7 @@ func can_purchase(id: String) -> bool:
 				return false
 	return true
 
-func purchase(id: String) -> bool:
+func purchase(id: String, credit_only: bool = false) -> bool:
 	if not can_purchase(id):
 		return false
 	var upgrade := get_upgrade(id)
@@ -353,7 +353,7 @@ func purchase(id: String) -> bool:
 		return false
 	var cost: Dictionary = get_cost_for_next_level(id)
 	for currency in cost.keys():
-			if not _deduct_currency(currency, cost[currency]):
+			if not _deduct_currency(currency, cost[currency], credit_only):
 					return false
 	var level: int = get_level(id) + 1
 	player_levels[id] = level

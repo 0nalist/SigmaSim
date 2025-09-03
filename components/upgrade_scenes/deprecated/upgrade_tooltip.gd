@@ -13,6 +13,7 @@ var current_upgrade: Dictionary = {}
 func _ready() -> void:
 		hide_tooltip()
 		TimeManager.minute_passed.connect(_on_minute_passed)
+		buy_button.gui_input.connect(_on_buy_button_gui_input)
 
 func show_tooltip(upgrade: Dictionary):
 		current_upgrade = upgrade
@@ -67,6 +68,14 @@ func _on_buy_button_pressed():
 		if id != "" and UpgradeManager.can_purchase(id):
 				UpgradeManager.purchase(id)
 				_update_display()
+
+func _on_buy_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		var id = current_upgrade.get("id", "")
+		if id != "" and UpgradeManager.can_purchase(id):
+			UpgradeManager.purchase(id, true)
+			_update_display()
+		event.accept()
 
 func format_cost(upgrade: Dictionary) -> String:
 		var cost = UpgradeManager.get_cost_for_next_level(upgrade.get("id"))

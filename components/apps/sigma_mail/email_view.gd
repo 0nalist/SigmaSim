@@ -23,14 +23,19 @@ func setup(email_res: EmailResource) -> void:
 		btn.text = action.get("text", "Action")
 		btn.focus_mode = Control.FOCUS_NONE
 		btn.pressed.connect(func(): _on_email_action(action))
+		btn.gui_input.connect(func(event):
+			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+				_on_email_action(action, true)
+				event.accept()
+		)
 		button_container.add_child(btn)
 
-func _on_email_action(action: Dictionary) -> void:
+func _on_email_action(action: Dictionary, credit_only: bool = false) -> void:
 	for stat in action.get("stat_changes", {}).keys():
 		var amt = action["stat_changes"][stat]
 		StatManager.set_base_stat(stat, StatManager.get_stat(stat) + amt)
 	for upgrade_id in action.get("upgrade_ids", []):
-		UpgradeManager.purchase(upgrade_id)
+		UpgradeManager.purchase(upgrade_id, credit_only)
 	var app_name: String = action.get("app_name", "")
 	if app_name != "":
 		WindowManager.launch_app_by_name(app_name)

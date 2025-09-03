@@ -2,7 +2,7 @@ extends PanelContainer
 class_name UpgradeUI
 
 #signal buy_requested(upgrade_id: String)
-signal purchase_requested(upgrade_id: String)
+signal purchase_requested(upgrade_id: String, credit_only: bool = false)
 
 
 var upgrade_data: Dictionary
@@ -18,6 +18,7 @@ var upgrade_queued: bool = false
 
 func _ready() -> void:
 		buy_button.pressed.connect(_on_buy_button_pressed)
+		buy_button.gui_input.connect(_on_buy_button_gui_input)
 		TimeManager.minute_passed.connect(_on_minute_passed)
 		# Re-evaluate affordability whenever relevant stats change so the Buy
 		# button correctly enables when the player gains resources.
@@ -91,7 +92,12 @@ func _refresh_cost() -> void:
 
 
 func _on_buy_button_pressed() -> void:
-		emit_signal("purchase_requested", upgrade_data["id"])
+		emit_signal("purchase_requested", upgrade_data["id"], false)
+
+func _on_buy_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		emit_signal("purchase_requested", upgrade_data["id"], true)
+		event.accept()
 
 func _on_PurchaseButton_pressed() -> void:
 		emit_signal("buy_requested", upgrade_data["id"])

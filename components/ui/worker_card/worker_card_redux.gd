@@ -1,7 +1,7 @@
 extends PanelContainer
 #class_name WorkerCardRedux
 
-signal action_pressed(worker: Worker)
+signal action_pressed(worker: Worker, credit_only: bool = false)
 
 @export var show_cost: bool = false
 @export var show_status: bool = true
@@ -50,7 +50,12 @@ func setup(worker_ref: Worker) -> void:
 
 	action_button.text = button_label
 	action_button.pressed.connect(func():
-		emit_signal("action_pressed", worker)
+		emit_signal("action_pressed", worker, false)
+	)
+	action_button.gui_input.connect(func(event):
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			emit_signal("action_pressed", worker, true)
+			event.accept()
 	)
 	##TODO : connect to assignment_target_changed from TaskManager, toggle select button accordingly
 	update_all()

@@ -100,13 +100,16 @@ func _finalize_setup() -> void:
 
 func _ready() -> void:
 	gift_button.pressed.connect(_on_gift_pressed)
+	gift_button.gui_input.connect(_on_gift_button_gui_input)
 	date_button.pressed.connect(_on_date_pressed)
+	date_button.gui_input.connect(_on_date_button_gui_input)
 	breakup_button.pressed.connect(_on_breakup_pressed)
 	apologize_button.pressed.connect(_on_apologize_pressed)
 	next_stage_button.pressed.connect(_on_next_stage_pressed)
 	breakup_confirm_yes_button.pressed.connect(_on_breakup_confirm_yes_pressed)
 	breakup_confirm_no_button.pressed.connect(_on_breakup_confirm_no_pressed)
 	next_stage_confirm_primary_button.pressed.connect(_on_next_stage_confirm_primary_pressed)
+	next_stage_confirm_primary_button.gui_input.connect(_on_next_stage_confirm_primary_gui_input)
 	next_stage_confirm_alt_button.pressed.connect(_on_next_stage_confirm_alt_pressed)
 	next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
 	love_button.pressed.connect(_on_love_pressed)
@@ -406,6 +409,14 @@ func _on_gift_pressed() -> void:
 				_update_buttons_text()
 				_show_quip("gift")
 
+func _on_gift_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if logic.try_gift(true):
+			_update_affinity_bar()
+			_update_buttons_text()
+			_show_quip("gift")
+		event.accept()
+
 func _on_date_pressed() -> void:
 
 		if logic.try_date():
@@ -413,6 +424,15 @@ func _on_date_pressed() -> void:
 				_update_buttons_text()
 				_update_next_stage_button()
 				_show_quip("date")
+
+func _on_date_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		if logic.try_date(true):
+			_update_relationship_bar()
+			_update_buttons_text()
+			_update_next_stage_button()
+			_show_quip("date")
+		event.accept()
 
 
 func _on_love_pressed() -> void:
@@ -474,6 +494,14 @@ func _on_next_stage_confirm_primary_pressed() -> void:
 	logic.request_next_stage_primary()
 	_refresh_all()
 	_show_quip("next level")
+
+func _on_next_stage_confirm_primary_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		next_stage_confirm.visible = false
+		logic.request_next_stage_primary(true)
+		_refresh_all()
+		_show_quip("next level")
+		event.accept()
 
 func _on_next_stage_confirm_alt_pressed() -> void:
 	next_stage_confirm.visible = false

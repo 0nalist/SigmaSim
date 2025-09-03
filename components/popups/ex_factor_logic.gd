@@ -107,10 +107,10 @@ func process(delta: float) -> void:
 
 # ---------------------------- User actions ----------------------------
 
-func try_gift() -> bool:
+func try_gift(credit_only: bool = false) -> bool:
 	if npc == null:
 		return false
-	var ok: bool = PortfolioManager.attempt_spend(npc.gift_cost, PortfolioManager.CREDIT_REQUIREMENTS["gift"])
+	var ok: bool = PortfolioManager.attempt_spend(npc.gift_cost, PortfolioManager.CREDIT_REQUIREMENTS["gift"], false, credit_only)
 	if not ok:
 		return false
 	npc.affinity = min(npc.affinity + 5.0, 100.0)
@@ -121,12 +121,12 @@ func try_gift() -> bool:
 	emit_signal("request_persist", {"affinity": npc.affinity, "gift_count": npc.gift_count})
 	return true
 
-func try_date() -> bool:
+func try_date(credit_only: bool = false) -> bool:
 	if npc == null:
-			return false
-	var ok: bool = PortfolioManager.attempt_spend(npc.date_cost, PortfolioManager.CREDIT_REQUIREMENTS["date"])
+		return false
+	var ok: bool = PortfolioManager.attempt_spend(npc.date_cost, PortfolioManager.CREDIT_REQUIREMENTS["date"], false, credit_only)
 	if not ok:
-			return false
+		return false
 	npc.date_count += 1
 	_recalc_costs()
 
@@ -255,11 +255,11 @@ func apologize_try() -> bool:
 func get_apologize_cost() -> int:
 	return APOLOGIZE_COST
 
-func request_next_stage_primary() -> void:
+func request_next_stage_primary(credit_only: bool = false) -> void:
 	if npc.relationship_stage == NPCManager.RelationshipStage.DATING:
 		_transition_dating_to_serious_monog()
 	elif npc.relationship_stage == NPCManager.RelationshipStage.SERIOUS:
-		var ok: bool = PortfolioManager.attempt_spend(npc.proposal_cost, PortfolioManager.CREDIT_REQUIREMENTS["proposal"])
+		var ok: bool = PortfolioManager.attempt_spend(npc.proposal_cost, PortfolioManager.CREDIT_REQUIREMENTS["proposal"], false, credit_only)
 		if ok:
 			_advance_one_stage()
 	else:

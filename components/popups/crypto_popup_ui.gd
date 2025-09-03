@@ -46,6 +46,7 @@ func setup(_crypto: Cryptocurrency) -> void:
 func _ready() -> void:
 	super._ready()
 	buy_button.pressed.connect(_on_buy_pressed)
+	buy_button.gui_input.connect(_on_buy_button_gui_input)
 	sell_button.pressed.connect(_on_sell_pressed)
 	for amount in ["0.01", "0.1", "1", "10", "100", "MAX"]:
 			quantity_option.add_item(amount)
@@ -91,6 +92,19 @@ func _on_sell_pressed() -> void:
 			amount = float(sel_text)
 		if PortfolioManager.sell_crypto(crypto.symbol, amount):
 			_update_ui()
+
+func _on_buy_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and crypto:
+		var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
+		var amount: float
+		if sel_text == "MAX":
+			amount = PortfolioManager.get_cash() / crypto.price
+		else:
+			amount = float(sel_text)
+		if PortfolioManager.attempt_spend(crypto.price * amount, 0, false, true):
+			PortfolioManager.add_crypto(crypto.symbol, amount)
+			_update_ui()
+		event.accept()
 
 
 func get_custom_save_data() -> Dictionary:
