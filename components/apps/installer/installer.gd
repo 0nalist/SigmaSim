@@ -35,13 +35,13 @@ func _on_install_button_pressed() -> void:
 	tween.tween_callback(Callable(self, "_complete_install"))
 
 func _complete_install() -> void:
-    if app_id != "":
-        WindowManager.unlock_app(app_id)
-    WindowManager.register_start_app(app_title)
-    if shortcut_checkbox.button_pressed:
-        DesktopLayoutManager.create_app_shortcut(app_title, app_title, icon_path, Vector2.ZERO)
-    var window = get_parent().get_parent().get_parent()
-    if WindowManager:
-        WindowManager.close_window(window)
-    else:
-        window.queue_free()
+	if app_id != "":
+		WindowManager.unlock_app(app_id)
+	WindowManager.register_start_app(app_title)
+	if shortcut_checkbox.button_pressed:
+		DesktopLayoutManager.create_app_shortcut(app_title, app_title, icon_path, Vector2.ZERO)
+	var window = get_parent().get_parent().get_parent()
+	if WindowManager:
+		WindowManager.close_window(window)
+	else:
+		window.queue_free()

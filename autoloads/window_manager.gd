@@ -72,15 +72,15 @@ func is_app_unlocked(app_id: String) -> bool:
 		return app_unlock_state.get(app_id, true)
 
 func unlock_app(app_id: String) -> void:
-                app_unlock_state[app_id] = true
-                app_unlocked.emit(app_id)
+				app_unlock_state[app_id] = true
+				app_unlocked.emit(app_id)
 
 func register_start_app(app_name: String) -> void:
-                var scene: PackedScene = app_registry.get(app_name)
-                if scene and not start_apps.has(app_name):
-                                start_apps[app_name] = scene
-                                if start_panel and start_panel.has_method("add_app_button"):
-                                                start_panel.add_app_button(app_name)
+				var scene: PackedScene = app_registry.get(app_name)
+				if scene and not start_apps.has(app_name):
+								start_apps[app_name] = scene
+								if start_panel and start_panel.has_method("add_app_button"):
+												start_panel.add_app_button(app_name)
 
 # --- Main window functions --- #
 
