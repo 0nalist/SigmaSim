@@ -9,9 +9,11 @@ signal window_icon_changed(new_icon)
 		window_title = value
 		window_title_changed.emit(value)
 @export var window_icon: Texture :
-	set(value):
-		window_icon = value
-		window_icon_changed.emit(value)
+        set(value):
+                window_icon = value
+                window_icon_changed.emit(value)
+@export var app_description: String = ""
+@export var app_cost: int = 0
 @export var default_window_size: Vector2 = Vector2(400, 480)
 @export_enum("left", "center", "right") var default_position: String = "center"
 

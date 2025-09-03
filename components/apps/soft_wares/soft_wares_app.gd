@@ -27,12 +27,12 @@ func _populate_items() -> void:
 			pane.queue_free()
 			continue
 		used_icons[icon_path] = true
-		var item: SoftWareItem = SOFTWARE_ITEM_SCENE.instantiate() as SoftWareItem
-		item.app_icon = icon
-		item.app_title = pane.window_title
-		item.app_description = ""
-		item.app_cost = 5
-		item.app_id = app_name.to_lower()
-		item.upgrade_scene = pane.upgrade_pane
-		items_container.add_child(item)
-		pane.queue_free()
+                var item: SoftWareItem = SOFTWARE_ITEM_SCENE.instantiate() as SoftWareItem
+                item.app_icon = icon
+                item.app_title = pane.window_title
+                item.app_description = pane.app_description
+                item.app_cost = pane.app_cost
+                item.app_id = app_name.to_lower()
+                item.upgrade_scene = pane.upgrade_pane
+                items_container.add_child(item)
+                pane.queue_free()
