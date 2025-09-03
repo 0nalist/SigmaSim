@@ -42,9 +42,9 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="InstallButton" type="Button" parent="MarginContainer/VBox"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Install"
 
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBox"]
