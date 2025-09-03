@@ -59,8 +59,17 @@ func get_card_count(id: String) -> int:
 		return total
 
 func get_card_rarity_count(id: String, rarity: int) -> int:
-		var rarities: Dictionary = collection.get(id, {})
-		return int(rarities.get(rarity, 0))
+        var rarities: Dictionary = collection.get(id, {})
+        return int(rarities.get(rarity, 0))
+
+func get_highest_owned_rarity(id: String) -> int:
+        var rarities: Dictionary = collection.get(id, {})
+        var highest := 1
+        for r in rarities.keys():
+                var r_int := int(r)
+                if r_int > highest and int(rarities[r]) > 0:
+                        highest = r_int
+        return highest
 
 func get_all_cards_ordered() -> Array:
 	return deck.get_all_cards_ordered()

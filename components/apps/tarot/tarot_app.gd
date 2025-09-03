@@ -36,24 +36,27 @@ func _ready() -> void:
 
 
 func _build_collection_view() -> void:
-	for child in collection_grid.get_children():
-		child.queue_free()
-	card_views.clear()
-	for card in TarotManager.get_all_cards_ordered():
-		var id: String = card.get("id", "")
-		var count: int = TarotManager.get_card_count(id)
-		var view: TarotCardView = TarotManager.instantiate_card_view(id, count)
-		collection_grid.add_child(view)
-		view.set_rarity_label_visible(false)
-		view.texture_rect.custom_minimum_size = Vector2(32, 56)
-		view.card_pressed.connect(card_collection_examiner.show_card)
+        for child in collection_grid.get_children():
+                child.queue_free()
+        card_views.clear()
+        for card in TarotManager.get_all_cards_ordered():
+                var id: String = card.get("id", "")
+                var count: int = TarotManager.get_card_count(id)
+                var rarity := TarotManager.get_highest_owned_rarity(id)
+                var view: TarotCardView = TarotManager.instantiate_card_view(id, count, false, rarity)
+                collection_grid.add_child(view)
+                view.set_rarity_label_visible(false)
+                view.texture_rect.custom_minimum_size = Vector2(32, 56)
+                view.card_pressed.connect(card_collection_examiner.show_card)
 
-		card_views[id] = view
+                card_views[id] = view
 
 func _on_collection_changed(card_id: String, count: int) -> void:
-	var view = card_views.get(card_id)
-	if view:
-		view.update_count(count)
+        var view = card_views.get(card_id)
+        if view:
+                var rarity := TarotManager.get_highest_owned_rarity(card_id)
+                view.update_rarity(rarity)
+                view.update_count(count)
 
 func _on_draw_button_pressed() -> void:
 	var card = TarotManager.draw_card()
