@@ -69,29 +69,37 @@ func set_time_paused(paused: bool) -> void:
 	time_ticking = not paused
 
 func sleep_for(minutes: int) -> void:
-	if minutes <= 0:
-		return
-	is_fast_forwarding = true
-	fast_forward_minutes_left = minutes
+        if minutes <= 0:
+                return
+        is_fast_forwarding = true
+        fast_forward_minutes_left = minutes
+
+func sleep_forever() -> void:
+        is_fast_forwarding = true
+        fast_forward_minutes_left = -1
+
+func awake() -> void:
+        is_fast_forwarding = false
+        fast_forward_minutes_left = 0
 
 func on_logout() -> void:
 	set_time_paused(true)
 
 # -------- Process loop --------
 func _process(delta: float) -> void:
-	if not time_ticking:
-		return
-	if is_fast_forwarding:
-		if fast_forward_minutes_left > 0:
-			_advance_time(1)
-			fast_forward_minutes_left -= 1
-		else:
-			is_fast_forwarding = false
-	else:
+        if not time_ticking:
+                return
+        if is_fast_forwarding:
+                _advance_time(1)
+                if fast_forward_minutes_left > 0:
+                        fast_forward_minutes_left -= 1
+                elif fast_forward_minutes_left == 0:
+                        is_fast_forwarding = false
+        else:
  # 1 real second -> 1 in-game minute, unchanged behavior
-		time_accumulator += delta
-		if time_accumulator >= 1.0:
-			time_accumulator -= 1.0
+                time_accumulator += delta
+                if time_accumulator >= 1.0:
+                        time_accumulator -= 1.0
 			_advance_time(1)
 
 # -------- Canonical getters (new + compatibility) --------
