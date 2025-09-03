@@ -36,8 +36,8 @@ func setup(_stock: Stock) -> void:
 	HistoryManager.add_sample(stock.symbol, TimeManager.get_now_minutes(), stock.price)
 	price_chart.clear_series()
 	price_chart.add_series(stock.symbol, "Price", Color.GREEN)
-	_update_ui()
-	window_title = str(stock.symbol) + " " + str(stock.price)
+        _update_ui()
+	window_title = "%s %s" % [stock.symbol, NumberFormatter.format_commas(stock.price)]
 	# Connect signal
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
@@ -63,7 +63,7 @@ func _on_stock_price_updated(symbol: String, updated_stock: Stock) -> void:
 	_update_ui()
 
 func _update_ui() -> void:
-	window_title = str(stock.symbol) + " " + str(stock.price)
+	window_title = "%s %s" % [stock.symbol, NumberFormatter.format_commas(stock.price)]
 	label_symbol.text = stock.symbol
 	label_price.text = "$%.2f" % stock.price
 	label_intrinsic.text = "$%.2f" % stock.intrinsic_value
