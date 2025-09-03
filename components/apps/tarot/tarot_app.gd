@@ -27,6 +27,7 @@ func _ready() -> void:
 	collection_tab_button.pressed.connect(_on_collection_tab_pressed)
 	TarotManager.collection_changed.connect(_on_collection_changed)
 	TimeManager.minute_passed.connect(_on_minute_passed)
+        TimeManager.hour_passed.connect(_on_hour_passed)
 	UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
 	_build_collection_view()
 	_update_cooldown_label()
@@ -72,6 +73,7 @@ func _on_reading_button_pressed() -> void:
 	if cards.is_empty():
 			return
 	_show_reading_cards(cards)
+        _update_reading_cost_label()
 
 func _show_last_drawn_card() -> void:
 	for child in draw_result.get_children():
@@ -122,10 +124,13 @@ func _update_reading_cost_label() -> void:
 	var extra := UpgradeManager.get_level("tarot_extra_card")
 	var count := 1 + extra
 	var cost = TarotManager.reading_cost * count
-	reading_cost_label.text = "$" + str(cost) + " for %d card(s)" % count
+	reading_cost_label.text = "%d EX for %d card(s)" % [int(cost), count]
 
 func _on_minute_passed(_total_minutes: int) -> void:
 	_update_cooldown_label()
+
+func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
+	_update_reading_cost_label()
 
 func _activate_tab(tab_name: StringName) -> void:
 	if tab_name == &"Draw":
