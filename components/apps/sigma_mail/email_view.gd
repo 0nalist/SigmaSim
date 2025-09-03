@@ -19,11 +19,11 @@ func setup(email_res: EmailResource) -> void:
 	for child in button_container.get_children():
 		child.queue_free()
 	for action in email.buttons:
-                var btn := Button.new()
-                btn.text = action.get("text", "Action")
-                btn.focus_mode = Control.FOCUS_NONE
-                btn.pressed.connect(func(): _on_email_action(action))
-                button_container.add_child(btn)
+		var btn := Button.new()
+		btn.text = action.get("text", "Action")
+		btn.focus_mode = Control.FOCUS_NONE
+		btn.pressed.connect(func(): _on_email_action(action))
+		button_container.add_child(btn)
 
 func _on_email_action(action: Dictionary) -> void:
 	for stat in action.get("stat_changes", {}).keys():

@@ -77,14 +77,14 @@ func _render_emails() -> void:
 		var box := VBoxContainer.new()
 		inbox.add_child(box)
 
-                var btn := Button.new()
-                btn.flat = true
-                btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-                btn.add_theme_font_size_override("14", 14)
-                btn.text = "From: %s  Subject: %s" % [email.from, email.subject]
-                btn.focus_mode = Control.FOCUS_NONE
-                btn.pressed.connect(func(): _open_email(email))
-                box.add_child(btn)
+		var btn := Button.new()
+		btn.flat = true
+		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		btn.add_theme_font_size_override("14", 14)
+		btn.text = "From: %s  Subject: %s" % [email.from, email.subject]
+		btn.focus_mode = Control.FOCUS_NONE
+		btn.pressed.connect(func(): _open_email(email))
+		box.add_child(btn)
 
 	var total_pages = max(1, int(ceil(filtered_emails.size() / float(emails_per_page))))
 	page_label.text = "Page %d/%d" % [current_page + 1, total_pages]
