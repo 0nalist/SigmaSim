@@ -197,9 +197,12 @@ func ensure_default_stats() -> void:
 	ensure_friend1()
 
 func generate_friend1() -> void:
-		var idx = RNGManager.npc_manager.get_rng().randi()
-		user_data["friend1_npc_index"] = idx
-		NPCManager.get_npc_by_index(idx)
+        var total: int = NameManager.get_unique_name_count()
+        var idx: int = 0
+        if total > 0:
+                idx = RNGManager.npc_manager.get_rng().randi_range(0, total - 1)
+        user_data["friend1_npc_index"] = idx
+        NPCManager.get_npc_by_index(idx)
 
 func ensure_friend1() -> void:
 		if int(user_data.get("friend1_npc_index", -1)) == -1:
