@@ -51,6 +51,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_tcm1f")
 script = ExtResource("2_o2yqo")
 window_title = "BrokeRage"
 window_icon = ExtResource("3_m7phi")
+app_description = "Buy & Sell stocks in a chaotic market."
 default_window_size = Vector2(735, 500)
 color1 = Color(0, 0, 0, 1)
 color2 = Color(0.15, 0.15, 0.15, 1)

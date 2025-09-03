@@ -36,6 +36,7 @@ script = ExtResource("2_0t4uf")
 crypto_card_scene = ExtResource("3_ykms3")
 window_title = "Minerr"
 window_icon = ExtResource("4_23boj")
+app_description = "Mine & Trade cryptocurrencies"
 default_window_size = Vector2(630, 500)
 color1 = Color(0.03, 0.02, 0.02, 1)
 color2 = Color(0.12, 0.08, 0.05, 1)
