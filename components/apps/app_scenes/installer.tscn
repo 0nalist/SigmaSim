@@ -9,7 +9,7 @@ size_flags_vertical = 3
 script = ExtResource("1")
 window_title = "Installer "
 window_icon = ExtResource("2_idbhh")
-default_window_size = Vector2(350, 200)
+default_window_size = Vector2(350, 220)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

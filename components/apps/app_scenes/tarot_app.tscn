@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://cvgwn14oqkvd5" path="res://components/apps/tarot/tarot_app.gd" id="2"]
-[ext_resource type="Texture2D" uid="uid://b8cd5rom7n7tl" path="res://assets/sigma.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://ci1v86h2eh04u" path="res://assets/logos/myfool_64x.png" id="3_ye0rw"]
 [ext_resource type="PackedScene" uid="uid://b07dutwaw54gq" path="res://components/apps/tarot/card_collection_examiner.tscn" id="4"]
 [ext_resource type="Shader" uid="uid://dp2anhkkaegyq" path="res://assets/shaders/constellation_shader.gdshader" id="4_8tbyh"]
 [ext_resource type="PackedScene" uid="uid://cbg1lyah31ou3" path="res://components/apps/tarot/tarot_upgrades.tscn" id="4_ye0rw"]
@@ -45,7 +45,9 @@ size_flags_vertical = 3
 theme = ExtResource("1")
 script = ExtResource("2")
 window_title = "Tarot"
-window_icon = ExtResource("3")
+window_icon = ExtResource("3_ye0rw")
+app_description = "Free Daily Draw. Paid Readings. Complete your collection, or flip rare cards for their resale value."
+app_cost = 25
 default_window_size = Vector2(635, 740)
 upgrade_pane = ExtResource("4_ye0rw")
 
