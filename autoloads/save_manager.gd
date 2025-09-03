@@ -298,8 +298,9 @@ func load_from_slot(slot_id: int) -> void:
 
 
 func reset_game_state() -> void:
-	# Reset all relevant managers to blank state
-	PlayerManager.reset()
+        # Reset all relevant managers to blank state
+        RNGManager.reset()
+        PlayerManager.reset()
 	StatManager.reset()
 	PortfolioManager.reset()
 	WindowManager.reset()
@@ -316,7 +317,8 @@ func reset_game_state() -> void:
 	TarotManager.reset()
 
 func reset_managers():
-	PlayerManager.reset()
+        RNGManager.reset()
+        PlayerManager.reset()
 	StatManager.reset()
 	PortfolioManager.reset()
 	WindowManager.reset()
