@@ -72,6 +72,12 @@ class TaskManagerRNG extends RNGStream:
 class NPCManagerRNG extends RNGStream:
 	pass
 
+class TarotCardRNG extends RNGStream:
+	pass
+
+class TarotRarityRNG extends RNGStream:
+	pass
+
 var global := GlobalRNG.new()
 var gpu := GPURNG.new()
 var rizz_battle_data := RizzBattleDataRNG.new()
@@ -89,6 +95,8 @@ var locked_in := LockedInRNG.new()
 var fumble_battle_logic := FumbleBattleLogicRNG.new()
 var task_manager := TaskManagerRNG.new()
 var npc_manager := NPCManagerRNG.new()
+var tarot_card := TarotCardRNG.new()
+var tarot_rarity := TarotRarityRNG.new()
 
 func _derive_seed(name: String) -> int:
 	return hash(str(seed) + ":" + name)
@@ -114,6 +122,8 @@ func init_seed(seed_value: int) -> void:
 	fumble_battle_logic.init_seed(_derive_seed("fumble_battle_logic"))
 	task_manager.init_seed(_derive_seed("task_manager"))
 	npc_manager.init_seed(_derive_seed("npc_manager"))
+	tarot_card.init_seed(_derive_seed("tarot_card"))
+	tarot_rarity.init_seed(_derive_seed("tarot_rarity"))
 	if OS.is_debug_build():
 		print("Global RNG Seed: ", seed)
 
