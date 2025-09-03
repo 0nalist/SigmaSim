@@ -1,7 +1,7 @@
 {
   "id": "daterbase_unlock_sql",
   "name": "Unlock SQL",
-  "description": "Unlock the SQL tab in Daterbase.",
+  "description": "Unlock the SQL tab in Daterbase. (Just for fun)",
   "effects": [],
   "systems": [
 	"daterbase"

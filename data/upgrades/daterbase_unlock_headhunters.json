@@ -1,14 +1,14 @@
 {
   "id": "daterbase_unlock_headhunters",
   "name": "Unlock Headhunters",
-  "description": "Unlock the Headhunters tab in Daterbase.",
+  "description": "Unlock the Headhunters tab in Daterbase. Find anyone by their name.",
   "effects": [],
   "systems": [
-    "daterbase"
+	"daterbase"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "cash": 1
+	"cash": 1
   },
   "max_level": 1,
   "repeatable": false
