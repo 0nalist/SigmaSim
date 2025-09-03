@@ -129,18 +129,18 @@ var streams := {
 	"npc_manager": npc_manager,
 	"tarot_card": tarot_card,
 	"tarot_rarity": tarot_rarity,
-        "tarot_orientation": tarot_orientation,
+		"tarot_orientation": tarot_orientation,
 }
 
 func reset() -> void:
-        seed = 0
-        for name in streams.keys():
-                var stream_class = streams[name].get_script()
-                streams[name] = stream_class.new()
-                set(name, streams[name])
+	seed = 0
+	for name in streams.keys():
+			var stream_class = streams[name].get_script()
+			streams[name] = stream_class.new()
+			set(name, streams[name])
 
 func _derive_seed(name: String) -> int:
-        return hash(str(seed) + ":" + name)
+		return hash(str(seed) + ":" + name)
 
 func init_seed(seed_value: int) -> void:
 	print("RNGManager.init_seed:", seed_value)
