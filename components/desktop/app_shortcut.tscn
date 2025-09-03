@@ -26,3 +26,6 @@ offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 87.0
 horizontal_alignment = 1
+
+[node name="ContextMenu" type="PopupMenu" parent="."]
+unique_name_in_owner = true

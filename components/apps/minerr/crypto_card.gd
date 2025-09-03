@@ -39,7 +39,7 @@ func _ready() -> void:
 	# Safe default UI so labels don't show nonsense before setup.
 	_reset_ui_placeholders()
 	# Populate sell amount options
-	for amount in ["0.01", "0.1", "1", "10", "100", "ALL"]:
+	for amount in ["0.01", "0.1", "1", "10", "100", "MAX"]:
 			sell_amount_option.add_item(amount)
 	sell_amount_option.selected = 2
 	# Optional: connect hover/cursor signals that don't need crypto.
@@ -192,7 +192,7 @@ func _on_sell_pressed() -> void:
 		return
 	var sel_text: String = sell_amount_option.get_item_text(sell_amount_option.get_selected_id())
 	var amount: float
-	if sel_text == "ALL":
+	if sel_text == "MAX":
 		amount = PortfolioManager.get_crypto_amount(crypto.symbol)
 	else:
 		amount = float(sel_text)

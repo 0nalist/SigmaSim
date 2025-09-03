@@ -3,12 +3,14 @@ class_name SoftWaresApp
 
 const SOFTWARE_ITEM_SCENE: PackedScene = preload("res://components/apps/soft_wares/soft_ware_item.tscn")
 
+
 @onready var items_container: VBoxContainer = %ItemsContainer
 
 func _ready() -> void:
 	_populate_items()
 
 func _populate_items() -> void:
+
                                 var used_icons: Dictionary = {}
                                 var exclude := ["SoftWares", "OwerView", "SigmaMail", "Installer"]
                                 for app_name in WindowManager.app_registry.keys():
@@ -34,4 +36,5 @@ func _populate_items() -> void:
                                                 item.upgrade_scene = pane.upgrade_pane
                                                 items_container.add_child(item)
                                                 pane.queue_free()
+
 
