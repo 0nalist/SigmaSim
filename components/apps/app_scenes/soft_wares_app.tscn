@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://c0xeuau7ippj0"]
+[gd_scene load_steps=10 format=3 uid="uid://c0xeuau7ippj0"]
 
 [ext_resource type="Script" uid="uid://c5g1pmvyktyx6" path="res://components/apps/soft_wares/soft_wares_app.gd" id="1"]
 [ext_resource type="Shader" uid="uid://c5g35g3kpk01d" path="res://assets/shaders/moving_circle_gradient.gdshader" id="2_0ke3q"]
+[ext_resource type="Texture2D" uid="uid://c2kamfww0rjnx" path="res://assets/logos/SW.png" id="2_urirl"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="3_krt0r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8w5uy"]
@@ -43,6 +44,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_8w5uy")
 script = ExtResource("1")
 window_title = "Soft Wares"
+window_icon = ExtResource("2_urirl")
 default_window_size = Vector2(550, 420)
 
 [node name="ColorRect2" type="ColorRect" parent="."]

@@ -36,8 +36,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-expand_mode = 1
-stretch_mode = 1
+stretch_mode = 3
 
 [node name="InfoContainer" type="VBoxContainer" parent="MarginContainer/Content"]
 unique_name_in_owner = true
@@ -48,18 +47,23 @@ theme_override_constants/separation = 4
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/Content/InfoContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Title"
+autowrap_mode = 3
 
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/Content/InfoContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Description"
 autowrap_mode = 3
 
 [node name="FeedbackLabel" type="Label" parent="MarginContainer/Content/InfoContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+autowrap_mode = 3
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="MarginContainer/Content"]
 unique_name_in_owner = true
