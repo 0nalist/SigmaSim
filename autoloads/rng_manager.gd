@@ -14,6 +14,13 @@ class RNGStream:
 	func get_rng() -> RandomNumberGenerator:
 		return rng
 
+	func get_state() -> int:
+		return rng.state
+
+	func set_state(state: int) -> void:
+		rng.state = state
+
+
 	func shuffle(arr: Array) -> void:
 		for i in range(arr.size() - 1, 0, -1):
 			var j = rng.randi_range(0, i)
@@ -102,6 +109,29 @@ var tarot_card := TarotCardRNG.new()
 var tarot_rarity := TarotRarityRNG.new()
 var tarot_orientation := TarotOrientationRNG.new()
 
+var streams := {
+	"global": global,
+	"gpu": gpu,
+	"rizz_battle_data": rizz_battle_data,
+	"fumble_manager": fumble_manager,
+	"fumble_profile_stack": fumble_profile_stack,
+	"worker_manager": worker_manager,
+	"market_manager": market_manager,
+	"siggy": siggy,
+	"ticker": ticker,
+	"early_bird": early_bird,
+	"crypto": crypto,
+	"portrait_creator": portrait_creator,
+	"fumble_battle_ui": fumble_battle_ui,
+	"locked_in": locked_in,
+	"fumble_battle_logic": fumble_battle_logic,
+	"task_manager": task_manager,
+	"npc_manager": npc_manager,
+	"tarot_card": tarot_card,
+	"tarot_rarity": tarot_rarity,
+	"tarot_orientation": tarot_orientation,
+}
+
 func _derive_seed(name: String) -> int:
 	return hash(str(seed) + ":" + name)
 
@@ -141,3 +171,15 @@ func reseed_with_unix_time() -> void:
 
 func shuffle(arr: Array) -> void:
 	global.shuffle(arr)
+
+
+func get_save_data() -> Dictionary:
+	var data := {}
+	for stream_name in streams.keys():
+		data[stream_name] = streams[stream_name].get_state()
+	return data
+
+func load_from_data(data: Dictionary) -> void:
+	for stream_name in streams.keys():
+		var stream: RNGStream = streams[stream_name]
+		stream.set_state(data.get(stream_name, stream.seed))
