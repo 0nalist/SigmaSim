@@ -40,6 +40,14 @@ var commands := {
 				"args": "",
 				"description": "Adds a buncha stuff",
 		},
+	"sleep_forever": {
+			"args": "",
+			"description": "Fast-forwards time indefinitely.",
+	},
+	"awake": {
+			"args": "",
+			"description": "Stops fast-forwarding time.",
+	},
 	"runtests": {
 			"args": "",
 			"description": "Runs all test scripts",
@@ -228,6 +236,14 @@ func process_command(command: String) -> bool:
 		"gimme":
 			PortfolioManager.add_cash(10000000000000)
 			StatManager.set_base_stat("ex", 1000000000000)
+			return true
+
+		"sleep_forever":
+			TimeManager.sleep_forever()
+			return true
+
+		"awake":
+			TimeManager.awake()
 			return true
 
 		"set_stat":
