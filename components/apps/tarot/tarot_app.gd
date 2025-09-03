@@ -31,15 +31,21 @@ func _ready() -> void:
 	_build_collection_view()
 	_update_cooldown_label()
 	_update_reading_cost_label()
-	_show_last_drawn_card()
-	_activate_tab(&"Draw")
+        _show_last_drawn_card()
+        _activate_tab(&"Draw")
+        call_deferred("_update_collection_grid_columns")
+
+
+func _notification(what: int) -> void:
+        if what == NOTIFICATION_RESIZED:
+                _update_collection_grid_columns()
 
 
 func _build_collection_view() -> void:
-	for child in collection_grid.get_children():
-			child.queue_free()
-	card_views.clear()
-	for card in TarotManager.get_all_cards_ordered():
+        for child in collection_grid.get_children():
+                        child.queue_free()
+        card_views.clear()
+        for card in TarotManager.get_all_cards_ordered():
 		var id: String = card.get("id", "")
 		var count: int = TarotManager.get_card_count(id)
 		var rarity := TarotManager.get_highest_owned_rarity(id)
@@ -47,9 +53,18 @@ func _build_collection_view() -> void:
 		collection_grid.add_child(view)
 		view.set_rarity_label_visible(false)
 		view.texture_rect.custom_minimum_size = Vector2(32, 56)
-		view.card_pressed.connect(card_collection_examiner.show_card)
+                view.card_pressed.connect(card_collection_examiner.show_card)
 
-		card_views[id] = view
+                card_views[id] = view
+        _update_collection_grid_columns()
+
+func _update_collection_grid_columns() -> void:
+        if not is_node_ready():
+                return
+        var available_width: float = collection_view.size.x
+        var cols: int = max(1, int(available_width / 48.0))
+        collection_grid.columns = cols
+        collection_grid.custom_minimum_size = Vector2(available_width, 0)
 
 func _on_collection_changed(card_id: String, count: int) -> void:
 		var view = card_views.get(card_id)
