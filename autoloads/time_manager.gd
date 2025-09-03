@@ -114,8 +114,8 @@ func get_formatted_time() -> String:
 	return "%s %d:%02d %s" % [day_names[day_of_week], hour_12, minute, am_pm]
 
 func get_formatted_date() -> String:
-        var weekday := get_weekday_for_date(current_day, current_month, current_year)
-        return "%s %d/%d/%d" % [day_names[weekday], current_day, current_month, current_year]
+	var weekday := get_weekday_for_date(current_day, current_month, current_year)
+	return "%s %d/%d/%d" % [day_names[weekday], current_day, current_month, current_year]
 
 func get_today() -> Dictionary:
 	return {"day": current_day, "month": current_month, "year": current_year}
