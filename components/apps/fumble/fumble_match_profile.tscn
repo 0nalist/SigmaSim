@@ -76,11 +76,11 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="CloseFumbleProfileButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+focus_mode = 0
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_wiqbq")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_cted4")
 theme_override_styles/normal = SubResource("StyleBoxTexture_545u1")
@@ -93,22 +93,22 @@ size_flags_vertical = 8
 mouse_filter = 2
 
 [node name="BlockButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-focus_mode = 0
 visible = false
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+focus_mode = 0
 text = " CHAT "
 
 [node name="ChatButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_545u1")
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+focus_mode = 0
 theme_override_fonts/font = ExtResource("4_cted4")
 theme_override_font_sizes/font_size = 48
 text = " CHAT "

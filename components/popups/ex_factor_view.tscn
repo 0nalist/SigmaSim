@@ -112,10 +112,10 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="NextStageButton" type="Button" parent="MarginContainer/VBox"]
-focus_mode = 0
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+focus_mode = 0
 theme_override_font_sizes/font_size = 16
 text = "Take this relationship to the next stage"
 autowrap_mode = 3
@@ -303,17 +303,17 @@ size_flags_vertical = 8
 theme_override_constants/separation = 8
 
 [node name="BreakupConfirmYesButton" type="Button" parent="BreakupConfirm/Panel/MarginContainer/VBox/Buttons"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 text = "Yes"
 
 [node name="BreakupConfirmNoButton" type="Button" parent="BreakupConfirm/Panel/MarginContainer/VBox/Buttons"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 text = " No "
 
 [node name="NextStageConfirm" type="CenterContainer" parent="."]
@@ -352,23 +352,23 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="NextStageConfirmPrimaryButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/VBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 text = "Transition"
 
 [node name="NextStageConfirmAltButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/VBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 text = "Alt"
 
 [node name="NextStageConfirmNoButton" type="Button" parent="NextStageConfirm/Panel/MarginContainer/VBox/VBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 text = "Stay"

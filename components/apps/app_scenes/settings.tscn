@@ -143,10 +143,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CheckButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/VBoxContainer2"]
-focus_mode = 0
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 text = "Popups Break Fourth Wall"
 
 [node name="SiggyButton" type="CheckButton" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/VBoxContainer2"]
@@ -158,9 +158,9 @@ focus_mode = 0
 text = "Siggy?"
 
 [node name="CreateAppsFolderButton" type="Button" parent="Panel/MarginContainer/TabContainer/General/HBoxContainer/VBoxContainer/VBoxContainer2"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "(WIP)"
 
 [node name="Backgrounds" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
@@ -229,10 +229,10 @@ layout_mode = 2
 text = "Low"
 
 [node name="BlueWarpColorLowPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowLow"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+focus_mode = 0
 
 [node name="ColorRowMid" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -242,10 +242,10 @@ layout_mode = 2
 text = "Mid"
 
 [node name="BlueWarpColorMidPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowMid"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+focus_mode = 0
 
 [node name="ColorRowHigh" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -255,10 +255,10 @@ layout_mode = 2
 text = "High"
 
 [node name="BlueWarpColorHighPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowHigh"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+focus_mode = 0
 
 [node name="ColorRowFlat" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -268,10 +268,10 @@ layout_mode = 2
 text = "Flat"
 
 [node name="BlueWarpFlatColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+focus_mode = 0
 color = Color(0, 0, 0.2, 1)
 
 [node name="BlueWarpFlatToggle" type="CheckButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer/ColorRowFlat"]
@@ -357,8 +357,8 @@ step = 0.001
 value = 0.03
 
 [node name="BlueWarpResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/BlueWarpContainer/MarginContainer/VBoxContainer"]
-focus_mode = 0
 layout_mode = 2
+focus_mode = 0
 text = "Reset"
 
 [node name="WavesContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -390,16 +390,16 @@ text = "   Waves"
 layout_mode = 2
 
 [node name="BottomColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+focus_mode = 0
 
 [node name="TopColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+focus_mode = 0
 color = Color(0.868811, 5.77569e-07, 0.459911, 1)
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
@@ -464,8 +464,8 @@ min_value = 2.0
 value = 6.0
 
 [node name="WavesResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/WavesContainer/MarginContainer/VBoxContainer"]
-focus_mode = 0
 layout_mode = 2
+focus_mode = 0
 text = "Reset"
 
 [node name="ElectricContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -497,16 +497,16 @@ text = "   Electric"
 layout_mode = 2
 
 [node name="ElectricBGColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+focus_mode = 0
 
 [node name="ElectricLineColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+focus_mode = 0
 color = Color(0, 1, 1, 1)
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
@@ -587,8 +587,8 @@ step = 0.01
 value = 15.43
 
 [node name="ElectricResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer/ElectricContainer/MarginContainer/VBoxContainer"]
-focus_mode = 0
 layout_mode = 2
+focus_mode = 0
 text = "Reset"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer"]
@@ -627,10 +627,10 @@ layout_mode = 2
 text = "Color"
 
 [node name="ComicDots1ColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+focus_mode = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
 layout_mode = 2
@@ -663,9 +663,9 @@ step = 0.01
 value = 0.1
 
 [node name="ComicDots1ResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Reset"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4"]
@@ -686,10 +686,10 @@ layout_mode = 2
 text = "Color"
 
 [node name="ComicDots2ColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+focus_mode = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
 layout_mode = 2
@@ -722,9 +722,9 @@ step = 0.01
 value = 0.1
 
 [node name="ComicDots2ResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/ComicDotsContainer/MarginContainer/HBoxContainer4/VBoxContainer2"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Reset"
 
 [node name="FlatColorContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2"]
@@ -763,14 +763,14 @@ text = "   Flat"
 layout_mode = 2
 
 [node name="FlatColorPicker" type="ColorPickerButton" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/FlatColorContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+focus_mode = 0
 
 [node name="FlatColorResetButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/FlatColorContainer/MarginContainer/VBoxContainer"]
-focus_mode = 0
 layout_mode = 2
+focus_mode = 0
 text = "Reset"
 
 [node name="BackgroundContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2"]
@@ -803,9 +803,9 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_dij2h")
 text = "   Image"
 
 [node name="BackgroundSelectImageButton" type="Button" parent="Panel/MarginContainer/TabContainer/Backgrounds/MarginContainer/VBoxContainer/HBoxContainer2/BackgroundContainer/MarginContainer/VBoxContainer"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "Select Image"
 
 [node name="BackgroundFileDialog" type="FileDialog" parent="."]

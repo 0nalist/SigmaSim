@@ -136,11 +136,11 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="QuestionButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 0
 theme = ExtResource("1_t2cd2")
 theme_override_font_sizes/font_size = 10
 text = "Why do you need to know?"
