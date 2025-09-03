@@ -15,7 +15,7 @@ class_name CryptoPopupUI
 @onready var price_chart: ChartComponent = %PriceChart
 @onready var buy_button: Button = %BuyButton
 @onready var sell_button: Button = %SellButton
-@onready var quantity_spinbox: SpinBox = %QuantitySpinBox
+@onready var quantity_option: OptionButton = %QuantityOption
 
 var crypto: Cryptocurrency
 
@@ -44,9 +44,12 @@ func setup(_crypto: Cryptocurrency) -> void:
 
 
 func _ready() -> void:
-	super._ready()
-	buy_button.pressed.connect(_on_buy_pressed)
-	sell_button.pressed.connect(_on_sell_pressed)
+        super._ready()
+        buy_button.pressed.connect(_on_buy_pressed)
+        sell_button.pressed.connect(_on_sell_pressed)
+        for amount in ["0.01", "0.1", "1", "10", "100", "ALL"]:
+                quantity_option.add_item(amount)
+        quantity_option.selected = 2
 
 func _on_crypto_price_updated(symbol: String, updated_crypto: Cryptocurrency) -> void:
 	if crypto == null or updated_crypto.symbol != crypto.symbol:
@@ -67,17 +70,27 @@ func _update_ui() -> void:
 	label_owned.text = "%.4f" % PortfolioManager.get_crypto_amount(crypto.symbol)
 
 func _on_buy_pressed() -> void:
-	if crypto:
-		var amount := quantity_spinbox.value
-		if PortfolioManager.attempt_spend(crypto.price * amount):
-			PortfolioManager.add_crypto(crypto.symbol, amount)
-			_update_ui()
+        if crypto:
+                var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
+                var amount: float
+                if sel_text == "ALL":
+                        amount = PortfolioManager.get_cash() / crypto.price
+                else:
+                        amount = float(sel_text)
+                if PortfolioManager.attempt_spend(crypto.price * amount):
+                        PortfolioManager.add_crypto(crypto.symbol, amount)
+                        _update_ui()
 
 func _on_sell_pressed() -> void:
-	if crypto:
-		var amount := quantity_spinbox.value
-		if PortfolioManager.sell_crypto(crypto.symbol, amount):
-			_update_ui()
+        if crypto:
+                var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
+                var amount: float
+                if sel_text == "ALL":
+                        amount = PortfolioManager.get_crypto_amount(crypto.symbol)
+                else:
+                        amount = float(sel_text)
+                if PortfolioManager.sell_crypto(crypto.symbol, amount):
+                        _update_ui()
 
 
 func get_custom_save_data() -> Dictionary:

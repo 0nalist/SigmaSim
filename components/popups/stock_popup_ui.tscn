@@ -176,8 +176,6 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_ymay2")
 theme_override_styles/normal = SubResource("StyleBoxTexture_67og2")
 text = " SELL "
 
-[node name="QuantitySpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
+[node name="QuantityOption" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer/InfoVBox/ButtonBox"]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = 1.0
-value = 1.0

@@ -14,7 +14,7 @@ class_name StockPopupUI
 @onready var price_chart: ChartComponent = %PriceChart
 @onready var buy_button: Button = %BuyButton
 @onready var sell_button: Button = %SellButton
-@onready var quantity_spinbox: SpinBox = %QuantitySpinBox
+@onready var quantity_option: OptionButton = %QuantityOption
 
 var stock: Stock
 
@@ -42,9 +42,12 @@ func setup(_stock: Stock) -> void:
 		MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
 func _ready() -> void:
-		super._ready()
-		buy_button.pressed.connect(_on_buy_pressed)
-		sell_button.pressed.connect(_on_sell_pressed)
+                super._ready()
+                buy_button.pressed.connect(_on_buy_pressed)
+                sell_button.pressed.connect(_on_sell_pressed)
+                for amount in ["1", "10", "100", "MAX"]:
+                                quantity_option.add_item(amount)
+                quantity_option.selected = 0
 
 func _gui_input(event: InputEvent) -> void:
 		if event is InputEventMouseButton:
@@ -71,21 +74,31 @@ func _update_ui() -> void:
 	label_owned.text = str(PortfolioManager.stocks_owned.get(stock.symbol, 0))
 
 func _on_buy_pressed() -> void:
-	if not stock:
-		return
-	var quantity := int(quantity_spinbox.value)
-	var price := stock.price * quantity
-	if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
-		print("Credit purchase requires Pattern Day Trader upgrade")
-		return
-	if PortfolioManager.buy_stock(stock.symbol, quantity):
-		_update_ui()
+        if not stock:
+                return
+        var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
+        var quantity: int
+        if sel_text == "MAX":
+                quantity = int(floor(PortfolioManager.get_cash() / stock.price))
+        else:
+                quantity = int(sel_text)
+        var price := stock.price * quantity
+        if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
+                print("Credit purchase requires Pattern Day Trader upgrade")
+                return
+        if PortfolioManager.buy_stock(stock.symbol, quantity):
+                _update_ui()
 
 func _on_sell_pressed() -> void:
-	if stock:
-		var quantity := int(quantity_spinbox.value)
-		if PortfolioManager.sell_stock(stock.symbol, quantity):
-			_update_ui()
+        if stock:
+                var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
+                var quantity: int
+                if sel_text == "MAX":
+                                quantity = PortfolioManager.stocks_owned.get(stock.symbol, 0)
+                else:
+                                quantity = int(sel_text)
+                if PortfolioManager.sell_stock(stock.symbol, quantity):
+                        _update_ui()
 
 
 func get_custom_save_data() -> Dictionary:
