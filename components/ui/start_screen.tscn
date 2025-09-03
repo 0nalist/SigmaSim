@@ -38,6 +38,7 @@ text = "SIGMA SIM"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="CenterContainer/VBox"]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_qapis")
 layout_mode = 2
 theme_override_font_sizes/font_size = 24

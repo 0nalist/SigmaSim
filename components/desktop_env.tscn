@@ -28,7 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://c6q0iyjglvflr" path="res://assets/ui/buttons/dodger_blue_down_gray.png" id="14_xcmse"]
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
-[ext_resource type="PackedScene" path="res://components/start_panel_window.tscn" id="23_dik0q"]
+[ext_resource type="PackedScene" uid="uid://bkl8rjfijy6mf" path="res://components/start_panel_window.tscn" id="23_dik0q"]
 [ext_resource type="Script" uid="uid://c7t01yq8wloqf" path="res://components/desktop_background.gd" id="24_jkb4t"]
 [ext_resource type="Shader" uid="uid://biinvb18hl7lc" path="res://assets/shaders/flat_color_background.gdshader" id="25_flat"]
 
