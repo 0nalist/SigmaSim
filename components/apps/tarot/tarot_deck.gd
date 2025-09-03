@@ -17,10 +17,10 @@ func load_from_file(path: String) -> void:
 	var data = JSON.parse_string(text)
 	if typeof(data) != TYPE_ARRAY:
 		return
-		cards = data
-		for card in cards:
-				var id: String = card.get("id", "")
-				card_map[id] = card
+	cards = data
+	for card in cards:
+			var id: String = card.get("id", "")
+			card_map[id] = card
 
 func get_card(id: String) -> Dictionary:
 	return card_map.get(id, {})
