@@ -68,16 +68,31 @@ func get_random_first_name() -> String:
 	return first_names[idx].name
 
 func get_random_last_name() -> String:
-	if last_names.size() == 0:
-		return "LastName"
-	var idx: int = _rng.randi_range(0, last_names.size() - 1)
-	return last_names[idx]
+        if last_names.size() == 0:
+                return "LastName"
+        var idx: int = _rng.randi_range(0, last_names.size() - 1)
+        return last_names[idx]
 
 func get_npc_name_by_index(npc_index: int) -> Dictionary:
-	var total_combos: int = first_names.size() * middle_initials.size() * last_names.size()
-	var suffix_num: int = npc_index / total_combos
-	var base_index: int = npc_index % total_combos
-	var name_index: int = feistel_shuffle(base_index, total_combos, name_seed)
+        # Ensure name pools are initialised. When starting a fresh game
+        # `get_npc_name_by_index` may be invoked before this node's `_ready()`
+        # runs, leaving the arrays empty and causing division-by-zero below.
+        if first_names.is_empty():
+                _load_first_names()
+        if last_names.is_empty():
+                _load_last_names()
+        if middle_initials.is_empty():
+                for ascii in range(65, 91):
+                        middle_initials.append(String.chr(ascii))
+
+        var total_combos: int = first_names.size() * middle_initials.size() * last_names.size()
+        var suffix_num: int = 0
+        if total_combos > 0:
+                suffix_num = npc_index / total_combos
+        var base_index: int = 0
+        if total_combos > 0:
+                base_index = npc_index % total_combos
+        var name_index: int = feistel_shuffle(base_index, max(total_combos, 1), name_seed)
 
 	var first_count: int = first_names.size()
 	var middle_count: int = middle_initials.size()
