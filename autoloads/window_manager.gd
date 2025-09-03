@@ -201,6 +201,15 @@ func launch_app_by_name(app_name: String, setup_args: Variant = null) -> void:
 			if not pane:
 				push_error("Scene does not extend Pane!")
 				return
+			# ð· Prevent duplicate installer popups for the same app
+			if pane is Installer and setup_args is Dictionary:
+				var app_title: String = setup_args.get("app_title", "")
+				var app_id: String = setup_args.get("app_id", "")
+				if app_title != "":
+					pane.window_title = "Installing " + app_title
+				if app_id != "":
+					pane.unique_popup_key = "installer_%s" % app_id
+
 			if not pane.allow_multiple:
 				var existing = find_window_by_app(pane.window_title)
 				if existing:
