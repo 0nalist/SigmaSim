@@ -11,10 +11,6 @@ var in_game: bool = false
 
 var pause_screen_instance: PauseScreen = null
 
-#Deprecated
-const _ForceRegisterWorker := preload("res://resources/workers/worker.gd")
-const _force_worker_card := preload("res://components/ui/worker_card/worker_card_redux.gd")
-
 # Signals for communicating with other parts of the game
 signal game_over_triggered(reason: String)
 

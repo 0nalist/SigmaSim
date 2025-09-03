@@ -52,6 +52,7 @@ func _on_action_button_pressed() -> void:
 	var required_score: int = PortfolioManager.CREDIT_REQUIREMENTS.get(app_title, 0)
 	if PortfolioManager.attempt_spend(float(app_cost), required_score):
 		WindowManager.unlock_app(app_id, app_title)
+
 		var data = {
 			"app_id": app_id,
 			"app_title": app_title,

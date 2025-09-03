@@ -211,11 +211,11 @@ func _on_autopilot_button_gui_input(event: InputEvent) -> void:
 			autopilot_button.disabled = true
 			await get_tree().create_timer(2.0).timeout
 			autopilot_button.disabled = false
-			event.accept()
+			autopilot_button.accept_event()
 			return
 		autopilot.enabled = false
 		_update_autopilot_button_text()
-		event.accept()
+		autopilot_button.accept_event()
 
 func _get_autopilot_cost() -> float:
 		if UpgradeManager.get_level("earlybird_autopilot_free") > 0:
