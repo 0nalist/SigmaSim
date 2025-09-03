@@ -99,5 +99,11 @@ func _ready() -> void:
 				count_label.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _gui_input(event: InputEvent) -> void:
-		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-				card_pressed.emit(card_id)
+                if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+                                card_pressed.emit(card_id)
+
+func set_upside_down(is_upside_down: bool) -> void:
+                if not is_node_ready():
+                                await ready
+                texture_rect.pivot_offset = texture_rect.size * 0.5
+                texture_rect.rotation_degrees = 180 if is_upside_down else 0
