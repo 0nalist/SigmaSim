@@ -63,9 +63,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MatchesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox"]
 custom_minimum_size = Vector2(0, 156)
@@ -101,9 +101,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ChatBattlesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox"]
-focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox"]
 layout_mode = 2
