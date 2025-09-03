@@ -8,6 +8,8 @@ class_name SigmaMail
 @onready var prev_button: Button = %PrevButton
 @onready var next_button: Button = %NextButton
 
+const EARLYBIRD_EMAIL_TEMPLATE: EmailResource = preload("res://resources/emails/earlybird_email.tres")
+
 var emails: Array = []
 var filtered_emails: Array = []
 var current_page: int = 0
@@ -26,19 +28,17 @@ func _ready() -> void:
 		_apply_filter()
 
 func _generate_initial_email() -> void:
-		emails.clear()
-		var template: EmailResource = ResourceLoader.load("res://resources/emails/earlybird_email.tres") as EmailResource
-		if template != null:
-				var email: EmailResource = template.duplicate()
-				var idx := int(PlayerManager.get_var("friend1_npc_index", -1))
-				var first := "Friend"
-				if idx != -1:
-						var npc = NPCManager.get_npc_by_index(idx)
-						if npc != null:
-								first = npc.first_name
-				email.from = first
-				email.body = email.body.format({"friend1_first_name": first})
-				emails.append(email)
+                emails.clear()
+                var email: EmailResource = EARLYBIRD_EMAIL_TEMPLATE.duplicate()
+                var idx := int(PlayerManager.get_var("friend1_npc_index", -1))
+                var first := "Friend"
+                if idx != -1:
+                                var npc = NPCManager.get_npc_by_index(idx)
+                                if npc != null:
+                                                first = npc.first_name
+                email.from = first
+                email.body = email.body.format({"friend1_first_name": first})
+                emails.append(email)
 
 func _on_search_changed(_new_text: String) -> void:
 		_apply_filter()
