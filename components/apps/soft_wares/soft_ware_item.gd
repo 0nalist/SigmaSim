@@ -18,16 +18,16 @@ var upgrade_scene: PackedScene = null
 
 func _ready() -> void:
 
-				icon_rect.texture = _prepare_icon(app_icon)
-				icon_rect.stretch_mode = TextureRect.STRETCH_SCALE
-				icon_rect.texture_repeat = CanvasItem.TEXTURE_REPEAT_DISABLED
-				title_label.text = app_title
-				description_label.text = app_description
-				upgrades_button.visible = upgrade_scene != null
-				_update_action_button()
-				action_button.pressed.connect(_on_action_button_pressed)
-				upgrades_button.pressed.connect(_on_upgrades_button_pressed)
-				WindowManager.app_unlocked.connect(_on_app_unlocked)
+	icon_rect.texture = _prepare_icon(app_icon)
+	#icon_rect.stretch_mode = TextureRect.STRETCH_SCALE
+	icon_rect.texture_repeat = CanvasItem.TEXTURE_REPEAT_DISABLED
+	title_label.text = app_title
+	description_label.text = app_description
+	upgrades_button.visible = upgrade_scene != null
+	_update_action_button()
+	action_button.pressed.connect(_on_action_button_pressed)
+	upgrades_button.pressed.connect(_on_upgrades_button_pressed)
+	WindowManager.app_unlocked.connect(_on_app_unlocked)
 
 
 func _prepare_icon(source: Texture2D) -> Texture2D:

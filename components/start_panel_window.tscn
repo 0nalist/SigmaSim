@@ -1,10 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://bkl8rjfijy6mf"]
 
-[ext_resource type="Theme" path="res://assets/themes/windows_95_theme.tres" id="1"]
-[ext_resource type="FontFile" path="res://assets/fonts/Chicago.ttf" id="2"]
-[ext_resource type="Texture2D" path="res://assets/logos/mycog.png" id="3"]
-[ext_resource type="PackedScene" path="res://components/siggy/siggy.tscn" id="4"]
-[ext_resource type="Script" path="res://components/start_panel_window.gd" id="5"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
+[ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="2"]
+[ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="3"]
+[ext_resource type="PackedScene" uid="uid://5euld8tsq4yj" path="res://components/siggy/siggy.tscn" id="4"]
+[ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="5"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
 bg_color = Color(0.0705882, 0, 0.407843, 0.815686)
@@ -20,10 +20,6 @@ border_color = Color(0, 0, 0, 1)
 [node name="StartPanel" type="Panel"]
 unique_name_in_owner = true
 visible = false
-anchors_preset = 0
-anchor_top = 0.0
-anchor_bottom = 0.0
-offset_top = 0.0
 offset_right = 328.0
 offset_bottom = 340.0
 grow_vertical = 0
@@ -33,7 +29,7 @@ script = ExtResource("5")
 siggy_scene = ExtResource("4")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
