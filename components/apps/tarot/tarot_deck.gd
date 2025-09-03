@@ -5,28 +5,22 @@ const CARD_VIEW_SCENE = preload("res://components/apps/tarot/tarot_card_view.tsc
 
 var cards: Array = []
 var card_map: Dictionary = {}
-var cards_by_rarity: Dictionary = {}
 
 func load_from_file(path: String) -> void:
-	cards.clear()
-	card_map.clear()
-	cards_by_rarity.clear()
-	if not FileAccess.file_exists(path):
-		return
-	var file := FileAccess.open(path, FileAccess.READ)
-	var text := file.get_as_text()
-	file.close()
+        cards.clear()
+        card_map.clear()
+        if not FileAccess.file_exists(path):
+                return
+        var file := FileAccess.open(path, FileAccess.READ)
+        var text := file.get_as_text()
+        file.close()
 	var data = JSON.parse_string(text)
 	if typeof(data) != TYPE_ARRAY:
 		return
-	cards = data
-	for card in cards:
-		var id: String = card.get("id", "")
-		card_map[id] = card
-		var rarity: int = int(card.get("rarity", 1))
-		if not cards_by_rarity.has(rarity):
-			cards_by_rarity[rarity] = []
-		cards_by_rarity[rarity].append(card)
+        cards = data
+        for card in cards:
+                var id: String = card.get("id", "")
+                card_map[id] = card
 
 func get_card(id: String) -> Dictionary:
 	return card_map.get(id, {})
