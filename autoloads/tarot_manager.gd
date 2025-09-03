@@ -121,7 +121,7 @@ func draw_card() -> Dictionary:
 func draw_reading(count: int) -> Array:
 	var total_cost := reading_cost * count
 	if total_cost > 0.0:
-		var current_ex := StatManager.get_stat("ex", 0.0)
+		var current_ex = StatManager.get_stat("ex", 0.0)
 		if current_ex < total_cost:
 			return []
 		StatManager.set_base_stat("ex", current_ex - total_cost)

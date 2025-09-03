@@ -27,7 +27,7 @@ func _ready() -> void:
 	collection_tab_button.pressed.connect(_on_collection_tab_pressed)
 	TarotManager.collection_changed.connect(_on_collection_changed)
 	TimeManager.minute_passed.connect(_on_minute_passed)
-        TimeManager.hour_passed.connect(_on_hour_passed)
+	TimeManager.hour_passed.connect(_on_hour_passed)
 	UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
 	_build_collection_view()
 	_update_cooldown_label()
@@ -73,7 +73,7 @@ func _on_reading_button_pressed() -> void:
 	if cards.is_empty():
 			return
 	_show_reading_cards(cards)
-        _update_reading_cost_label()
+	_update_reading_cost_label()
 
 func _show_last_drawn_card() -> void:
 	for child in draw_result.get_children():
