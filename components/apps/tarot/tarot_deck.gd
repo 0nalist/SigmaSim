@@ -7,20 +7,20 @@ var cards: Array = []
 var card_map: Dictionary = {}
 
 func load_from_file(path: String) -> void:
-        cards.clear()
-        card_map.clear()
-        if not FileAccess.file_exists(path):
-                return
-        var file := FileAccess.open(path, FileAccess.READ)
-        var text := file.get_as_text()
-        file.close()
+	cards.clear()
+	card_map.clear()
+	if not FileAccess.file_exists(path):
+			return
+	var file := FileAccess.open(path, FileAccess.READ)
+	var text := file.get_as_text()
+	file.close()
 	var data = JSON.parse_string(text)
 	if typeof(data) != TYPE_ARRAY:
 		return
-        cards = data
-        for card in cards:
-                var id: String = card.get("id", "")
-                card_map[id] = card
+		cards = data
+		for card in cards:
+				var id: String = card.get("id", "")
+				card_map[id] = card
 
 func get_card(id: String) -> Dictionary:
 	return card_map.get(id, {})
