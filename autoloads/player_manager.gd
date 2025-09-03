@@ -103,15 +103,15 @@ var default_user_data: Dictionary = {
 		# Daterbase Headhunters
 		"hh_open_fumble_cost": 10,
 
-                # Flags and progression
-                           "unlocked_perks": [],
-                           "seen_dialogue_ids": [],
-                           "owned_apps": ["SoftWares", "OwerView", "SigmaMail"],
-                           "global_rng_seed": 0,
-                           "using_random_seed": false,
-                # Background shader settings
-                "background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
-                }
+				# Flags and progression
+						   "unlocked_perks": [],
+						   "seen_dialogue_ids": [],
+						   "owned_apps": ["SoftWares", "OwerView", "SigmaMail"],
+						   "global_rng_seed": 0,
+						   "using_random_seed": false,
+				# Background shader settings
+				"background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
+				}
 
 var user_data: Dictionary = default_user_data.duplicate(true)
 

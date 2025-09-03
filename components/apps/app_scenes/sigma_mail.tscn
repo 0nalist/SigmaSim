@@ -23,7 +23,7 @@ theme_override_constants/margin_bottom = 10
 script = ExtResource("2_wwi5a")
 window_title = "Σ-Mail"
 window_icon = ExtResource("3_wwi5a")
-default_window_size = Vector2(650, 480)
+default_window_size = Vector2(800, 480)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

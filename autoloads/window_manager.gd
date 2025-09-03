@@ -44,40 +44,40 @@ var start_apps := {}
 
 
 func _ready() -> void:
-               _load_owned_apps()
-               print("✅ Registered apps:", app_registry.keys())
+			_load_owned_apps()
+			print("✅ Registered apps:", app_registry.keys())
 
 func _load_owned_apps() -> void:
-               app_unlock_state.clear()
-               start_apps.clear()
-               var owned: Array = PlayerManager.get_var("owned_apps", [])
-               for title in owned:
-                               var scene: PackedScene = app_registry.get(title)
-                               if scene:
-                                               start_apps[title] = scene
-                               var app_id := title.to_lower()
-                               app_unlock_state[app_id] = true
-               if start_panel and start_panel.has_method("rebuild"):
-                               start_panel.rebuild()
+	app_unlock_state.clear()
+	start_apps.clear()
+	var owned: Array = PlayerManager.get_var("owned_apps", [])
+	for title in owned:
+		var scene: PackedScene = app_registry.get(title)
+		if scene:
+			start_apps[title] = scene
+		var app_id = title.to_lower()
+		app_unlock_state[app_id] = true
+	if start_panel and start_panel.has_method("rebuild"):
+		start_panel.rebuild()
 
 func is_app_unlocked(app_id: String) -> bool:
-               return app_unlock_state.get(app_id, false)
+			return app_unlock_state.get(app_id, false)
 
 func unlock_app(app_id: String, app_title: String = "") -> void:
-                               app_unlock_state[app_id] = true
-                               if app_title == "":
-                                               for title in app_registry.keys():
-                                                               if title.to_lower() == app_id:
-                                                                               app_title = title
-                                                                               break
-                               if app_title == "":
-                                               app_title = app_id.capitalize()
-                               var owned: Array = PlayerManager.get_var("owned_apps", [])
-                               if not owned.has(app_title):
-                                               owned.append(app_title)
-                                               PlayerManager.set_var("owned_apps", owned)
-                                               register_start_app(app_title)
-                               app_unlocked.emit(app_id)
+	app_unlock_state[app_id] = true
+	if app_title == "":
+					for title in app_registry.keys():
+									if title.to_lower() == app_id:
+													app_title = title
+													break
+	if app_title == "":
+					app_title = app_id.capitalize()
+	var owned: Array = PlayerManager.get_var("owned_apps", [])
+	if not owned.has(app_title):
+					owned.append(app_title)
+					PlayerManager.set_var("owned_apps", owned)
+					register_start_app(app_title)
+	app_unlocked.emit(app_id)
 
 func register_start_app(app_name: String) -> void:
 				var scene: PackedScene = app_registry.get(app_name)
@@ -187,14 +187,14 @@ func close_window(window: WindowFrame) -> void:
 # --- Launchers --- #
 
 func launch_app(app_id: String) -> void:
-               var app_name := ""
-               for title in app_registry.keys():
-                               if title.to_lower() == app_id:
-                                               app_name = title
-                                               break
-               if app_name == "":
-                               app_name = app_id
-               launch_app_by_name(app_name)
+			var app_name := ""
+			for title in app_registry.keys():
+							if title.to_lower() == app_id:
+											app_name = title
+											break
+			if app_name == "":
+							app_name = app_id
+			launch_app_by_name(app_name)
 
 func launch_app_by_name(app_name: String, setup_args: Variant = null) -> void:
 	var scene: PackedScene = app_registry.get(app_name)
@@ -401,11 +401,11 @@ func close_all_popups() -> void:
 			close_window(win)
 
 func reset() -> void:
-        close_all_windows()
-        open_windows.clear()
-        popup_registry.clear()
-        focused_window = null
-        _load_owned_apps()
+		close_all_windows()
+		open_windows.clear()
+		popup_registry.clear()
+		focused_window = null
+		_load_owned_apps()
 
 
 # --- Save / Load ---

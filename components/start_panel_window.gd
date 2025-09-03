@@ -45,7 +45,7 @@ func _ready() -> void:
 			)
 
 		app_list_container.add_child(button)
-                preview.queue_free()
+		preview.queue_free()
 
 func add_app_button(app_name: String) -> void:
 	if not WindowManager.start_apps.has(app_name):
@@ -73,14 +73,14 @@ func add_app_button(app_name: String) -> void:
 	button.pressed.connect(func():
 			launch_app(app_name)
 	)
-        app_list_container.add_child(button)
-        preview.queue_free()
+	app_list_container.add_child(button)
+	preview.queue_free()
 
 func rebuild() -> void:
-        for child in app_list_container.get_children():
-                child.queue_free()
-        for app_name in WindowManager.start_apps.keys():
-                add_app_button(app_name)
+		for child in app_list_container.get_children():
+				child.queue_free()
+		for app_name in WindowManager.start_apps.keys():
+				add_app_button(app_name)
 
 
 func _input(event: InputEvent) -> void:
