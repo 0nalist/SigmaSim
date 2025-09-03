@@ -51,12 +51,16 @@ func _on_action_button_pressed() -> void:
 			WindowManager.launch_app(app_id)
 			return
 	var required_score: int = PortfolioManager.CREDIT_REQUIREMENTS.get(app_title, 0)
-	if PortfolioManager.attempt_spend(float(app_cost), required_score):
-			WindowManager.unlock_app(app_id)
-			_update_action_button()
-	else:
-			feedback_label.text = "Not enough funds!"
-			feedback_label.add_theme_color_override("font_color", Color.RED)
+       if PortfolioManager.attempt_spend(float(app_cost), required_score):
+                       var data = {
+                               "app_id": app_id,
+                               "app_title": app_title,
+                               "app_icon": app_icon,
+                       }
+                       WindowManager.launch_app_by_name("Installer", data)
+       else:
+                       feedback_label.text = "Not enough funds!"
+                       feedback_label.add_theme_color_override("font_color", Color.RED)
 
 func _on_upgrades_button_pressed() -> void:
 		if upgrade_scene:
