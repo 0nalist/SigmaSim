@@ -10,12 +10,7 @@ var start_panel = null
 
 var focused_window: WindowFrame = null
 
-var app_unlock_state: Dictionary = {
-		"minerr": false,
-		"earlybird": false,
-		"fumble": false,
-		"brokerage": false
-}
+var app_unlock_state: Dictionary = {}
 
 # Preloaded apps
 var app_registry := {
@@ -45,35 +40,44 @@ var app_registry := {
 
 }
 
-var start_apps := {
-	#"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
-	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
-	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
-	#"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"),
-	#"WorkForce": preload("res://workforce.tscn"),
-	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
-	#"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
-	#"LockedIn": preload("res://components/apps/app_scenes/locked_in.tscn"),
-	#"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
-	#"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
-		"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
-		"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
-		"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
-		"SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
-	"TarotApp": preload("res://components/apps/app_scenes/tarot_app.tscn"),
-
-}
+var start_apps := {}
 
 
 func _ready() -> void:
-		print("✅ Registered apps:", app_registry.keys())
+               _load_owned_apps()
+               print("✅ Registered apps:", app_registry.keys())
+
+func _load_owned_apps() -> void:
+               app_unlock_state.clear()
+               start_apps.clear()
+               var owned: Array = PlayerManager.get_var("owned_apps", [])
+               for title in owned:
+                               var scene: PackedScene = app_registry.get(title)
+                               if scene:
+                                               start_apps[title] = scene
+                               var app_id := title.to_lower()
+                               app_unlock_state[app_id] = true
+               if start_panel and start_panel.has_method("rebuild"):
+                               start_panel.rebuild()
 
 func is_app_unlocked(app_id: String) -> bool:
-		return app_unlock_state.get(app_id, true)
+               return app_unlock_state.get(app_id, false)
 
-func unlock_app(app_id: String) -> void:
-				app_unlock_state[app_id] = true
-				app_unlocked.emit(app_id)
+func unlock_app(app_id: String, app_title: String = "") -> void:
+                               app_unlock_state[app_id] = true
+                               if app_title == "":
+                                               for title in app_registry.keys():
+                                                               if title.to_lower() == app_id:
+                                                                               app_title = title
+                                                                               break
+                               if app_title == "":
+                                               app_title = app_id.capitalize()
+                               var owned: Array = PlayerManager.get_var("owned_apps", [])
+                               if not owned.has(app_title):
+                                               owned.append(app_title)
+                                               PlayerManager.set_var("owned_apps", owned)
+                                               register_start_app(app_title)
+                               app_unlocked.emit(app_id)
 
 func register_start_app(app_name: String) -> void:
 				var scene: PackedScene = app_registry.get(app_name)
@@ -183,14 +187,14 @@ func close_window(window: WindowFrame) -> void:
 # --- Launchers --- #
 
 func launch_app(app_id: String) -> void:
-		var mapping: Dictionary = {
-				"minerr": "Minerr",
-				"brokerage": "BrokeRage",
-				"fumble": "Fumble",
-				"earlybird": "EarlyBird"
-		}
-		var app_name: String = mapping.get(app_id, app_id)
-		launch_app_by_name(app_name)
+               var app_name := ""
+               for title in app_registry.keys():
+                               if title.to_lower() == app_id:
+                                               app_name = title
+                                               break
+               if app_name == "":
+                               app_name = app_id
+               launch_app_by_name(app_name)
 
 func launch_app_by_name(app_name: String, setup_args: Variant = null) -> void:
 	var scene: PackedScene = app_registry.get(app_name)
@@ -397,10 +401,11 @@ func close_all_popups() -> void:
 			close_window(win)
 
 func reset() -> void:
-	close_all_windows()
-	open_windows.clear()
-	popup_registry.clear()
-	focused_window = null
+        close_all_windows()
+        open_windows.clear()
+        popup_registry.clear()
+        focused_window = null
+        _load_owned_apps()
 
 
 # --- Save / Load ---
