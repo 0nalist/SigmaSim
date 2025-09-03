@@ -38,8 +38,8 @@ func setup(_crypto: Cryptocurrency) -> void:
 
 	price_chart.clear_series()
 	price_chart.add_series(crypto.symbol, "Price", Color(1, 0.6, 0.2))
-	_update_ui()
-	window_title = str(crypto.symbol) + " " + str(crypto.price)
+        _update_ui()
+	window_title = "%s %s" % [crypto.symbol, NumberFormatter.format_commas(crypto.price)]
 	MarketManager.crypto_price_updated.connect(_on_crypto_price_updated)
 
 
@@ -59,7 +59,7 @@ func _on_crypto_price_updated(symbol: String, updated_crypto: Cryptocurrency) ->
 	_update_ui()
 
 func _update_ui() -> void:
-	window_title = str(crypto.symbol) + " " + str(crypto.price)
+	window_title = "%s %s" % [crypto.symbol, NumberFormatter.format_commas(crypto.price)]
 	label_symbol.text = crypto.symbol
 	label_name.text = crypto.display_name
 	label_price.text = "$%.2f" % crypto.price
