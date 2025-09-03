@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="3_dvkw6"]
 
 [node name="MatchButton" type="Button"]
+focus_mode = 0
 custom_minimum_size = Vector2(128, 128)
 icon = ExtResource("1_jare7")
 icon_alignment = 1

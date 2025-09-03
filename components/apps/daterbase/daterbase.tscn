@@ -198,6 +198,7 @@ size_flags_vertical = 3
 placeholder_text = "Enter a SELECT query, like \"SELECT * FROM npc\""
 
 [node name="RunQueryButton" type="Button" parent="MarginContainer/VBox/MainHBox/ContentArea/SQLView/QueryHBox"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 text = " Run "
@@ -234,6 +235,7 @@ size_flags_horizontal = 3
 placeholder_text = "Enter full name"
 
 [node name="HHCreateButton" type="Button" parent="MarginContainer/VBox/MainHBox/ContentArea/HeadhuntersView/HHInputHBox"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 text = "Find"
@@ -260,6 +262,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HHOpenFumbleButton" type="Button" parent="MarginContainer/VBox/MainHBox/ContentArea/HeadhuntersView"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 text = "Open in Fumble"

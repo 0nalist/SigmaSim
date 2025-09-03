@@ -184,6 +184,7 @@ theme_override_font_sizes/font_size = 12
 text = "Cost"
 
 [node name="ActionButton" type="Button" parent="MarginContainer/WorkerCard"]
+focus_mode = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 20)
 layout_mode = 2

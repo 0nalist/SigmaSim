@@ -39,6 +39,7 @@ func _build() -> void:
 	_autopay_check = CheckBox.new()
 	_autopay_check.text = "Autopay"
 	_autopay_check.button_pressed = _autopay
+	_autopay_check.focus_mode = Control.FOCUS_NONE
 	_autopay_check.toggled.connect(_on_autopay_toggled)
 	controls.add_child(_autopay_check)
 
@@ -56,6 +57,7 @@ func _build() -> void:
 
 	_pay_button = Button.new()
 	_pay_button.text = "Pay Early"
+	_pay_button.focus_mode = Control.FOCUS_NONE
 	_pay_button.pressed.connect(_on_pay_pressed)
 	controls.add_child(_pay_button)
 

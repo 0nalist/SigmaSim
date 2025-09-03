@@ -111,6 +111,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="BuyButton" type="Button" parent="MarginContainer/UpgradeTooltip/HBoxContainer/MarginContainer/VBoxContainer"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -128,6 +129,7 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 
 [node name="CloseButton" type="Button" parent="MarginContainer/UpgradeTooltip/HBoxContainer/MarginContainer2"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8

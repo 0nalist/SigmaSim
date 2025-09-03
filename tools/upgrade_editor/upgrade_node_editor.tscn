@@ -99,6 +99,7 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="DeleteButton" type="Button" parent="HBoxContainer"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -107,6 +108,7 @@ theme_override_font_sizes/font_size = 10
 text = "X"
 
 [node name="ClearDepsButton" type="Button" parent="HBoxContainer"]
+focus_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

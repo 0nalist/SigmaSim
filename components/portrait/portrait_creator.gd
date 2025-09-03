@@ -45,6 +45,7 @@ func _setup_layers() -> void:
 		col.add_child(label)
 		var index_btn := OptionButton.new()
 		index_btn.name = "Index"
+		index_btn.focus_mode = Control.FOCUS_NONE
 		var tex_arr: Array = info.get("textures", [])
 		if layer != "face":
 			index_btn.add_item("0", 0)
@@ -54,12 +55,14 @@ func _setup_layers() -> void:
 		col.add_child(index_btn)
 		var color_btn := ColorPickerButton.new()
 		color_btn.name = "Color"
+		color_btn.focus_mode = Control.FOCUS_NONE
 		color_btn.custom_minimum_size = Vector2(15, 15)
 		color_btn.color_changed.connect(_on_color_changed.bind(layer))
 		col.add_child(color_btn)
 		if layer == "hair" or layer == "hair_back":
 			var sync_chk := CheckBox.new()
 			sync_chk.name = "Sync"
+			sync_chk.focus_mode = Control.FOCUS_NONE
 			sync_chk.text = "Sync"
 			sync_chk.add_theme_font_size_override("font_size", 14)
 			sync_chk.button_pressed = hair_color_sync

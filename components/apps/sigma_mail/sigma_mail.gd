@@ -82,6 +82,7 @@ func _render_emails() -> void:
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		btn.add_theme_font_size_override("14", 14)
 		btn.text = "From: %s  Subject: %s" % [email.from, email.subject]
+		btn.focus_mode = Control.FOCUS_NONE
 		btn.pressed.connect(func(): _open_email(email))
 		box.add_child(btn)
 
