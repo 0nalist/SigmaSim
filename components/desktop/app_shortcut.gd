@@ -36,6 +36,7 @@ func _on_gui_input(event: InputEvent) -> void:
 					DesktopLayoutManager.move_item(item_id, global_position)
 		elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
 			context_menu.position = mb.global_position
+			context_menu.reset_size()
 			context_menu.popup()
 	elif event is InputEventMouseMotion:
 		if is_dragging:
