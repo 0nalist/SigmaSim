@@ -1,8 +1,6 @@
 extends Pane
 class_name StockPopupUI
 
-
-
 @onready var label_symbol = %LabelSymbol
 @onready var label_price = %LabelPrice
 @onready var label_intrinsic = %LabelIntrinsic
@@ -36,9 +34,9 @@ func setup(_stock: Stock) -> void:
 	HistoryManager.add_sample(stock.symbol, TimeManager.get_now_minutes(), stock.price)
 	price_chart.clear_series()
 	price_chart.add_series(stock.symbol, "Price", Color.GREEN)
-        _update_ui()
+	_update_ui()
 	window_title = "%s %s" % [stock.symbol, NumberFormatter.format_commas(stock.price)]
-	# Connect signal
+
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 
 func _ready() -> void:

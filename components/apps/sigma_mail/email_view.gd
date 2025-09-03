@@ -26,7 +26,7 @@ func setup(email_res: EmailResource) -> void:
 		btn.gui_input.connect(func(event):
 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 				_on_email_action(action, true)
-				event.accept()
+				#event.accept()
 		)
 		button_container.add_child(btn)
 

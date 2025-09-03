@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Sigma"
+config/name="SigmaSim"
 run/main_scene="uid://uminah6hxj5y"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0.16283, 0.24604, 1, 1)

@@ -415,7 +415,7 @@ func _on_gift_button_gui_input(event: InputEvent) -> void:
 			_update_affinity_bar()
 			_update_buttons_text()
 			_show_quip("gift")
-		event.accept()
+		#event.accept()
 
 func _on_date_pressed() -> void:
 
@@ -432,7 +432,7 @@ func _on_date_button_gui_input(event: InputEvent) -> void:
 			_update_buttons_text()
 			_update_next_stage_button()
 			_show_quip("date")
-		event.accept()
+		#event.accept()
 
 
 func _on_love_pressed() -> void:
@@ -501,7 +501,7 @@ func _on_next_stage_confirm_primary_gui_input(event: InputEvent) -> void:
 		logic.request_next_stage_primary(true)
 		_refresh_all()
 		_show_quip("next level")
-		event.accept()
+		#event.accept()
 
 func _on_next_stage_confirm_alt_pressed() -> void:
 	next_stage_confirm.visible = false

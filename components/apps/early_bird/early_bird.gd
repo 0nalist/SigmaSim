@@ -195,13 +195,11 @@ func _on_autopilot_button_pressed() -> void:
 func _on_autopilot_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if autopilot == null:
-			event.accept()
 			return
 		var cost := _get_autopilot_cost()
 		if not autopilot.enabled:
 			if cost > 0.0 and not PortfolioManager.attempt_spend(cost, PortfolioManager.CREDIT_REQUIREMENTS["EarlyBird"], false, true):
 				autopilot_button.button_pressed = false
-				event.accept()
 				return
 			autopilot.enabled = true
 			if cost > 0.0:

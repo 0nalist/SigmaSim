@@ -69,7 +69,7 @@ func _on_action_button_gui_input(event: InputEvent) -> void:
 		feedback_label.remove_theme_color_override("font_color")
 		if WindowManager.is_app_unlocked(app_id):
 			WindowManager.launch_app(app_id)
-			event.accept()
+			action_button.accept_event()
 			return
 		var required_score: int = PortfolioManager.CREDIT_REQUIREMENTS.get(app_title, 0)
 		if PortfolioManager.attempt_spend(float(app_cost), required_score, false, true):
@@ -84,7 +84,7 @@ func _on_action_button_gui_input(event: InputEvent) -> void:
 		else:
 			feedback_label.text = "Not enough credit!"
 			feedback_label.add_theme_color_override("font_color", Color.RED)
-		event.accept()
+		action_button.accept_event()
 
 func _on_upgrades_button_pressed() -> void:
 	if upgrade_scene:

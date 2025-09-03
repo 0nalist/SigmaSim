@@ -17,23 +17,23 @@ var upgrade_queued: bool = false
 @onready var cooldown_label: Label = %CooldownLabel
 
 func _ready() -> void:
-		buy_button.pressed.connect(_on_buy_button_pressed)
-		buy_button.gui_input.connect(_on_buy_button_gui_input)
-		TimeManager.minute_passed.connect(_on_minute_passed)
-		# Re-evaluate affordability whenever relevant stats change so the Buy
-		# button correctly enables when the player gains resources.
-		PortfolioManager.cash_updated.connect(_on_resources_changed)
-		StatManager.stat_changed.connect(_on_stat_changed)
-		if upgrade_queued:
-				_apply_upgrade()
-		else:
-				set_locked(is_locked)
+	buy_button.pressed.connect(_on_buy_button_pressed)
+	buy_button.gui_input.connect(_on_buy_button_gui_input)
+	TimeManager.minute_passed.connect(_on_minute_passed)
+	# Re-evaluate affordability whenever relevant stats change so the Buy
+	# button correctly enables when the player gains resources.
+	PortfolioManager.cash_updated.connect(_on_resources_changed)
+	StatManager.stat_changed.connect(_on_stat_changed)
+	if upgrade_queued:
+		_apply_upgrade()
+	else:
+		set_locked(is_locked)
 
 func set_upgrade(upgrade: Dictionary) -> void:
-		upgrade_data = upgrade
-		upgrade_queued = true
-		if is_inside_tree():
-				_apply_upgrade()
+	upgrade_data = upgrade
+	upgrade_queued = true
+	if is_inside_tree():
+		_apply_upgrade()
 
 func _apply_upgrade() -> void:
 		upgrade_queued = false
@@ -52,23 +52,23 @@ func refresh() -> void:
 	_update_cooldown()
 
 func set_locked(locked: bool) -> void:
-		is_locked = locked
-		if not is_inside_tree():
-				return
-		buy_button.disabled = locked
-		if locked:
-				self.modulate = Color(0.6, 0.6, 0.6, 1.0) # Greyed out
-		else:
-				self.modulate = Color(1, 1, 1, 1)
+	is_locked = locked
+	if not is_inside_tree():
+		return
+	buy_button.disabled = locked
+	if locked:
+		self.modulate = Color(0.6, 0.6, 0.6, 1.0) # Greyed out
+	else:
+		self.modulate = Color(1, 1, 1, 1)
 
 func set_level(level: int) -> void:
-		var repeatable = upgrade_data.get("repeatable", true)
-		if repeatable:
-				level_label.text = "Level: %d" % level
-		else:
-				level_label.text = "PURCHASED" if level > 0 else ""
-				buy_button.disabled = is_locked or not UpgradeManager.can_purchase(upgrade_data.get("id", ""))
-		_update_cooldown()
+	var repeatable = upgrade_data.get("repeatable", true)
+	if repeatable:
+		level_label.text = "Level: %d" % level
+	else:
+		level_label.text = "PURCHASED" if level > 0 else ""
+		buy_button.disabled = is_locked or not UpgradeManager.can_purchase(upgrade_data.get("id", ""))
+	_update_cooldown()
 
 func _refresh_cost() -> void:
 	var cost = UpgradeManager.get_cost_for_next_level(upgrade_data["id"])
@@ -97,7 +97,7 @@ func _on_buy_button_pressed() -> void:
 func _on_buy_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		emit_signal("purchase_requested", upgrade_data["id"], true)
-		event.accept()
+		#event.accept()
 
 func _on_PurchaseButton_pressed() -> void:
 		emit_signal("buy_requested", upgrade_data["id"])
@@ -112,39 +112,39 @@ func _on_stat_changed(stat: String, _value) -> void:
 	# Some upgrades use non-cash currencies stored in StatManager (e.g. ex).
 	# If the changed stat is part of the cost, refresh the button state.
 	if upgrade_data.is_empty():
-			return
+		return
 	var cost = UpgradeManager.get_cost_for_next_level(upgrade_data.get("id"))
 	if stat in cost.keys():
-			_update_cooldown()
+		_update_cooldown()
 
 func _update_cooldown() -> void:
-		if upgrade_data.is_empty():
-				cooldown_label.text = ""
-				return
-		var remaining = ceil(UpgradeManager.get_cooldown_remaining(upgrade_data.get("id", "")))
-		if remaining > 0:
-				cooldown_label.text = "Ready in %s" % _format_minutes(int(remaining))
-		else:
-				cooldown_label.text = ""
-		buy_button.disabled = is_locked or not UpgradeManager.can_purchase(upgrade_data.get("id", ""))
+	if upgrade_data.is_empty():
+		cooldown_label.text = ""
+		return
+	var remaining = ceil(UpgradeManager.get_cooldown_remaining(upgrade_data.get("id", "")))
+	if remaining > 0:
+		cooldown_label.text = "Ready in %s" % _format_minutes(int(remaining))
+	else:
+		cooldown_label.text = ""
+	buy_button.disabled = is_locked or not UpgradeManager.can_purchase(upgrade_data.get("id", ""))
 
 func _format_minutes(minutes: int) -> String:
-		var days = minutes / (24 * 60)
-		var hours = (minutes % (24 * 60)) / 60
-		var mins = minutes % 60
-		var parts: Array[String] = []
-		if days > 0:
-				parts.append("%dd" % days)
-		if hours > 0:
-				parts.append("%dh" % hours)
-		if mins > 0 or parts.is_empty():
-				parts.append("%dm" % mins)
-		return " ".join(parts)
+	var days = minutes / (24 * 60)
+	var hours = (minutes % (24 * 60)) / 60
+	var mins = minutes % 60
+	var parts: Array[String] = []
+	if days > 0:
+		parts.append("%dd" % days)
+	if hours > 0:
+		parts.append("%dh" % hours)
+	if mins > 0 or parts.is_empty():
+		parts.append("%dm" % mins)
+	return " ".join(parts)
 
 func _exit_tree() -> void:
-			if TimeManager.minute_passed.is_connected(_on_minute_passed):
-							TimeManager.minute_passed.disconnect(_on_minute_passed)
-			if PortfolioManager.cash_updated.is_connected(_on_resources_changed):
-							PortfolioManager.cash_updated.disconnect(_on_resources_changed)
-			if StatManager.stat_changed.is_connected(_on_stat_changed):
-							StatManager.stat_changed.disconnect(_on_stat_changed)
+	if TimeManager.minute_passed.is_connected(_on_minute_passed):
+		TimeManager.minute_passed.disconnect(_on_minute_passed)
+	if PortfolioManager.cash_updated.is_connected(_on_resources_changed):
+		PortfolioManager.cash_updated.disconnect(_on_resources_changed)
+	if StatManager.stat_changed.is_connected(_on_stat_changed):
+		StatManager.stat_changed.disconnect(_on_stat_changed)

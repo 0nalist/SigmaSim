@@ -18,6 +18,7 @@ script = ExtResource("1_ekq6y")
 window_title = "Terminal"
 default_window_size = Vector2(550, 500)
 show_in_taskbar = false
+stay_on_top = true
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2

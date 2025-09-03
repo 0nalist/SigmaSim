@@ -75,7 +75,7 @@ func _on_buy_button_gui_input(event: InputEvent) -> void:
 		if id != "" and UpgradeManager.can_purchase(id):
 			UpgradeManager.purchase(id, true)
 			_update_display()
-		event.accept()
+		#event.accept()
 
 func format_cost(upgrade: Dictionary) -> String:
 		var cost = UpgradeManager.get_cost_for_next_level(upgrade.get("id"))

@@ -38,7 +38,7 @@ func setup(_crypto: Cryptocurrency) -> void:
 
 	price_chart.clear_series()
 	price_chart.add_series(crypto.symbol, "Price", Color(1, 0.6, 0.2))
-        _update_ui()
+	_update_ui()
 	window_title = "%s %s" % [crypto.symbol, NumberFormatter.format_commas(crypto.price)]
 	MarketManager.crypto_price_updated.connect(_on_crypto_price_updated)
 
@@ -104,7 +104,7 @@ func _on_buy_button_gui_input(event: InputEvent) -> void:
 		if PortfolioManager.attempt_spend(crypto.price * amount, 0, false, true):
 			PortfolioManager.add_crypto(crypto.symbol, amount)
 			_update_ui()
-		event.accept()
+		buy_button.accept_event()
 
 
 func get_custom_save_data() -> Dictionary:

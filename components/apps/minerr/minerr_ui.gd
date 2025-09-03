@@ -183,7 +183,6 @@ func _on_buy_new_gpu_button_gui_input(event: InputEvent) -> void:
 			update_gpu_label()
 		else:
 			print("Could not purchase GPU (insufficient credit).")
-		event.accept()
 
 func _on_sort_property_selected(index: int) -> void:
 		match index:

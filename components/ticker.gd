@@ -16,10 +16,10 @@ var ticker_entries: Array = [
 		"text": "Your crypto portfolio is worth {crypto_total}",
 		"condition": func() -> bool: return PortfolioManager.get_crypto_total() > 0
 	},
-	{
-		"text": "It is {day}, do you know what you're doing with your life?",
-		"condition": null
-	},
+	#{
+	#	"text": "It is {day}, do you know what you're doing with your life?",
+	#	"condition": null
+	#},
 	{
 		"text": "Did you know that pets have souls?",
 		"condition": null

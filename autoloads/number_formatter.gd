@@ -8,7 +8,7 @@ const LONG_UNITS = [
 ]
 
 # Add commas: 1,234,567.89
-static func format_commas(number: float, decimals: int = 2, hide_trailing_zeroes: bool = false) -> String:
+func format_commas(number: float, decimals: int = 2, hide_trailing_zeroes: bool = false) -> String:
 	if abs(number) >= 1000:
 		decimals = 0
 	var s = "%.*f" % [decimals, number]
@@ -73,7 +73,7 @@ static func format_sci(number: float, decimals: int = 2) -> String:
 	return "%s%.*fe%d" % [sign, decimals, mantissa, exponent]
 
 # Main interface
-static func format_number(number: float, style: String = "commas", decimals: int = 2) -> String:
+func format_number(number: float, style: String = "commas", decimals: int = 2) -> String:
 	match style:
 		"commas":
 			return format_commas(number, decimals)
