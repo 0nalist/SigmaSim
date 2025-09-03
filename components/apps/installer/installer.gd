@@ -4,6 +4,7 @@ class_name Installer
 @onready var shortcut_checkbox: CheckBox = %ShortcutCheckBox
 @onready var progress_bar: ProgressBar = %ProgressBar
 @onready var install_button: Button = %InstallButton
+@onready var app_logo: TextureRect = %AppLogo
 
 var app_id: String = ""
 var app_title: String = ""
@@ -17,13 +18,24 @@ func _ready() -> void:
 	install_button.pressed.connect(_on_install_button_pressed)
 
 func setup_custom(data: Dictionary) -> void:
-	app_id = data.get("app_id", "")
-	app_title = data.get("app_title", "")
-	app_icon = data.get("app_icon", null)
-	if app_icon:
-		icon_path = app_icon.resource_path
-	if app_title != "":
-		window_title = "Installing " + app_title
+        app_id = data.get("app_id", "")
+        app_title = data.get("app_title", "")
+        app_icon = data.get("app_icon", null)
+        if app_icon:
+                icon_path = app_icon.resource_path
+                app_logo.texture = _prepare_icon(app_icon)
+                app_logo.stretch_mode = TextureRect.STRETCH_SCALE
+                app_logo.custom_minimum_size = Vector2(64, 64)
+        if app_title != "":
+                window_title = "Installing " + app_title
+
+func _prepare_icon(source: Texture2D) -> Texture2D:
+        if source == null:
+                return null
+        var img: Image = source.get_image()
+        if img.get_width() != 64 or img.get_height() != 64:
+                img.resize(64, 64, Image.INTERPOLATE_LANCZOS)
+        return ImageTexture.create_from_image(img)
 
 func _on_install_button_pressed() -> void:
 	install_button.disabled = true
