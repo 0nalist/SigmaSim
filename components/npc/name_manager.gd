@@ -73,6 +73,20 @@ func get_random_last_name() -> String:
         var idx: int = _rng.randi_range(0, last_names.size() - 1)
         return last_names[idx]
 
+func get_unique_name_count() -> int:
+        # Ensure the name pools are initialised before calculating the
+        # total number of unique combinations. When a new profile is
+        # created, this function may be called before the node's `_ready()`
+        # executes, so we lazily load the data as needed.
+        if first_names.is_empty():
+                _load_first_names()
+        if last_names.is_empty():
+                _load_last_names()
+        if middle_initials.is_empty():
+                for ascii in range(65, 91):
+                        middle_initials.append(String.chr(ascii))
+        return first_names.size() * middle_initials.size() * last_names.size()
+
 func get_npc_name_by_index(npc_index: int) -> Dictionary:
         # Ensure name pools are initialised. When starting a fresh game
         # `get_npc_name_by_index` may be invoked before this node's `_ready()`
