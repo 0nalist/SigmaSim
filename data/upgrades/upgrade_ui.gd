@@ -2,7 +2,7 @@ extends PanelContainer
 class_name UpgradeUI
 
 #signal buy_requested(upgrade_id: String)
-signal purchase_requested(upgrade_id: String, credit_only: bool = false)
+signal purchase_requested(upgrade_id: String, credit_only: bool)
 
 
 var upgrade_data: Dictionary
