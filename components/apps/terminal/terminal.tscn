@@ -16,6 +16,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_ekq6y")
 window_title = "Terminal"
+default_window_size = Vector2(550, 500)
 show_in_taskbar = false
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
