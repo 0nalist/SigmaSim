@@ -2,8 +2,7 @@ extends Control
 
 @onready var start_panel: StartPanelWindow = %StartPanel
 @onready var taskbar: Control = %Taskbar
-@onready var trash_window: Pane = %TrashWindow
-@onready var start_button: Button = $TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/StartButton
+@onready var start_button: Button = %StartButton
 
 @onready var icons_layer: Control = self
 const APP_SHORTCUT_SCENE: PackedScene = preload("res://components/desktop/app_shortcut.tscn")
@@ -127,7 +126,6 @@ func _apply_shader_settings() -> void:
 
 func hide_all_windows_and_panels() -> void:
 	start_panel.hide()
-	trash_window.hide()
 	# All apps should now open dynamically via StartPanel
 
 # ----------------------------- #
@@ -140,12 +138,7 @@ func _on_start_button_pressed() -> void:
 		start_panel.global_position = button_pos - Vector2(0, panel_height)
 		start_panel.toggle_start_panel()
 
-func _on_trash_button_pressed() -> void:
-	open_trash_folder()
 
-func open_trash_folder() -> void:
-	trash_window.show()
-	trash_window.grab_focus()
 
 
 func _on_save_button_pressed() -> void:
@@ -249,7 +242,7 @@ func _get_app_meta(app_name: String) -> Dictionary:
 		preview.queue_free()
 	return {"title": title, "icon_path": icon_path}
 
-'''
+''' TRAUMA TEST
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		var ev: InputEventKey = event as InputEventKey
