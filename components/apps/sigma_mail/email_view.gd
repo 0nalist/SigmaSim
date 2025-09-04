@@ -14,7 +14,9 @@ func setup(email_res: EmailResource) -> void:
 	window_title = email.subject
 	from_label.text = "From: %s" % email.from
 	subject_label.text = "Subject: %s" % email.subject
-	body_label.text = email.body
+	body_label.bbcode_enabled = true
+	body_label.parse_bbcode(email.body)
+	body_label.meta_clicked.connect(_on_body_meta_clicked)
 
 	for child in button_container.get_children():
 		child.queue_free()
@@ -29,6 +31,14 @@ func setup(email_res: EmailResource) -> void:
 				#event.accept()
 		)
 		button_container.add_child(btn)
+
+func _on_body_meta_clicked(meta: Variant) -> void:
+	var meta_str := str(meta)
+	for action in email.buttons:
+		if action.get("id", "") == meta_str:
+			_on_email_action(action)
+			return
+	_on_email_action({"app_name": meta_str})
 
 func _on_email_action(action: Dictionary, credit_only: bool = false) -> void:
 	for stat in action.get("stat_changes", {}).keys():
