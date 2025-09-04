@@ -6,6 +6,7 @@ var open_windows: Dictionary = {} # key: WindowFrame, value: taskbar Button
 var popup_registry: Dictionary = {}
 
 var taskbar_container: Control = null
+var topbar_container: Control = null
 var start_panel = null
 
 var focused_window: WindowFrame = null
@@ -367,7 +368,10 @@ func get_taskbar_icon_center(window: WindowFrame) -> Vector2:
 	return window.global_position
 
 func get_taskbar_height() -> int:
-	return taskbar_container.size.y if is_instance_valid(taskbar_container) else 0
+        return taskbar_container.size.y if is_instance_valid(taskbar_container) else 0
+
+func get_topbar_height() -> int:
+        return topbar_container.size.y if is_instance_valid(topbar_container) else 0
 
 func find_window_by_app(title: String) -> WindowFrame:
 	for win in open_windows.keys():
