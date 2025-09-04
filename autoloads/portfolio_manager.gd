@@ -57,6 +57,7 @@ const CREDIT_REQUIREMENTS := {
 
 
 
+
 var student_loans: float:
 	get:
 		return get_student_loans()

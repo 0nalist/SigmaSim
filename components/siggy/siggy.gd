@@ -14,13 +14,39 @@ func _ready():
 	await get_tree().create_timer(1).timeout
 	call_deferred("slide_in_from_right")
 
-func slide_out_from_behind(window: WindowFrame): ## TODO
+func slide_out_from_behind(window: WindowFrame):
 	show()
 	z_index = window.z_index - 1
-	position = window.position
-	## decide which end to slide out from based on where the screen is (move towards most free space)
-	## find position that is siggy's size plus margin to the direction determined above
-	## tween there
+
+	# Start hidden behind the window's center
+	var siggy_size = size
+	if siggy_size == Vector2.ZERO:
+		siggy_size = get_minimum_size()
+		if siggy_size == Vector2.ZERO:
+			siggy_size = Vector2(200, 200)
+	var win_pos = window.position
+	var win_size = window.size
+	position = win_pos + win_size / 2 - siggy_size / 2
+
+	# Determine which direction has the most free space on screen
+	var screen_size = get_viewport_rect().size
+	var margin := 20
+	var left_space = win_pos.x
+	var right_space = screen_size.x - (win_pos.x + win_size.x)
+	var top_space = win_pos.y
+	var bottom_space = screen_size.y - (win_pos.y + win_size.y)
+
+	var target_pos = position
+	if left_space >= right_space and left_space >= top_space and left_space >= bottom_space:
+		target_pos = Vector2(win_pos.x - siggy_size.x - margin, win_pos.y + win_size.y / 2 - siggy_size.y / 2)
+	elif right_space >= top_space and right_space >= bottom_space:
+		target_pos = Vector2(win_pos.x + win_size.x + margin, win_pos.y + win_size.y / 2 - siggy_size.y / 2)
+	elif top_space >= bottom_space:
+		target_pos = Vector2(win_pos.x + win_size.x / 2 - siggy_size.x / 2, win_pos.y - siggy_size.y - margin)
+	else:
+		target_pos = Vector2(win_pos.x + win_size.x / 2 - siggy_size.x / 2, win_pos.y + win_size.y + margin)
+
+	create_tween().tween_property(self, "position", target_pos, slide_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func slide_in_from_bottom_right():
 	var screen_size = get_viewport_rect().size
@@ -29,9 +55,9 @@ func slide_in_from_bottom_right():
 	if siggy_size == Vector2.ZERO:
 		siggy_size = get_minimum_size()
 		if siggy_size == Vector2.ZERO:
-			siggy_size = Vector2(200, 200)  # Failsafe default
+			siggy_size = Vector2(200, 200)	# Failsafe default
 
-	var target_pos = screen_size - siggy_size + Vector2(-600, -80)  # Optional offset for margin
+	var target_pos = screen_size - siggy_size + Vector2(-600, -80)	# Optional offset for margin
 	var start_pos = Vector2(target_pos.x, screen_size.y + siggy_size.y)
 
 	position = start_pos
@@ -46,7 +72,7 @@ func slide_in_from_right():
 	if siggy_size == Vector2.ZERO:
 		siggy_size = get_minimum_size()
 		if siggy_size == Vector2.ZERO:
-			siggy_size = Vector2(200, 200)  # Fallback default
+			siggy_size = Vector2(200, 200)	# Fallback default
 
 	# Target position: halfway down screen, 75% across (right quarter)
 	var target_pos = Vector2(
