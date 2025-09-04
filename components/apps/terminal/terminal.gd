@@ -25,37 +25,37 @@ var commands := {
 		"description": "Clears the command log window.",
 	},
 	"stress_test": {
-			"args": "",
-			"description": "Opens every app in the app registry at once.",
+		"args": "",
+		"description": "Opens every app in the app registry at once.",
 	},
 	"add_cash": {
 		"args": "<amount>",
 		"description": "Adds the given amount of cash to your portfolio.",
 	},
-	"upgrademax": {
-			"args": "",
-			"description": "Purchases all upgrades ignoring costs.",
-	 },
-		"gimme": {
-				"args": "",
-				"description": "Adds a buncha stuff",
-		},
+	"upgrade_max": {
+		"args": "",
+		"description": "Purchases all upgrades ignoring costs.",
+	},
+	"gimme": {
+		"args": "",
+		"description": "Adds a buncha stuff",
+	},
 	"sleep_forever": {
-			"args": "",
-			"description": "Fast-forwards time indefinitely.",
+		"args": "",
+		"description": "Fast-forwards time indefinitely.",
 	},
 	"awake": {
-			"args": "",
-			"description": "Stops fast-forwarding time.",
+		"args": "",
+		"description": "Stops fast-forwarding time.",
 	},
-	"runtests": {
-			"args": "",
-			"description": "Runs all test scripts",
+	"run_tests": {
+		"args": "",
+		"description": "Runs all test scripts",
 	},
-		"help": {
-				"args": "",
-				"description": "Displays or hides the list of available debug commands.",
-		},
+	"help": {
+		"args": "",
+		"description": "Displays or hides the list of available debug commands.",
+	},
 }
 
 
@@ -99,9 +99,9 @@ func _ready() -> void:
 	
 
 func open() -> void:
-				print("opening terminal")
-				visible = true
-				call_deferred("_focus_line")
+	print("opening terminal")
+	visible = true
+	call_deferred("_focus_line")
 
 func close() -> void:
 	visible = false
@@ -199,12 +199,19 @@ func _populate_command_list() -> void:
 		command_list_container.add_child(label)
 
 
+func _canonical_command(name: String) -> String:
+        var stripped := name.to_lower().replace("_", "")
+        for key in commands.keys():
+                if key.replace("_", "") == stripped:
+                        return key
+        return stripped
+
 func process_command(command: String) -> bool:
 	var parts := command.split(" ", false)
 	if parts.size() == 0:
 		return false
 
-	var cmd := parts[0].to_lower()
+	var cmd := _canonical_command(parts[0])
 
 	match cmd:
 		"help":
@@ -318,10 +325,10 @@ func process_command(command: String) -> bool:
 			return true
 		
 		
-		"runtests":
+		"run_tests":
 			return _run_tests()
 
-		"upgrademax":
+		"upgrade_max":
 			_purchase_all_upgrades()
 			return true
 
@@ -352,7 +359,7 @@ func _parse_number(s: String) -> Variant:
 
 func _clear_command_log() -> void:
 	for child in command_log_container.get_children():
-			child.queue_free()
+		child.queue_free()
 
 
 func _run_tests() -> bool:
