@@ -145,8 +145,17 @@ func promote_to_persistent(idx: int) -> void:
 		_index_persistent_npc(idx)
 		# Ensure dynamic counts are persisted immediately so they survive reloads
 		persistent_npcs[idx]["gift_count"] = npc.gift_count
-		persistent_npcs[idx]["date_count"] = npc.date_count
-		DBManager.save_npc(idx, npc)
+                persistent_npcs[idx]["date_count"] = npc.date_count
+                DBManager.save_npc(idx, npc)
+
+# Returns NPC indices of NPCs locked in connection
+func get_locked_in_connection_ids() -> PackedInt32Array:
+        var locked: PackedInt32Array = PackedInt32Array()
+        for idx in npcs.keys():
+                var npc: NPC = npcs[idx]
+                if npc.locked_in_connection:
+                        locked.append(int(idx))
+        return locked
 
 # Returns NPC indices matching a dot product similarity threshold with preferred_gender
 func get_npcs_by_gender_dot(app_name: String, preferred_gender: Vector3, min_similarity: float, count: int, exclude: Array[int]=[]) -> Array[int]:
