@@ -33,6 +33,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			else:
 				if is_dragging:
 					is_dragging = false
+					global_position = _clamp_to_desktop(global_position)
 					DesktopLayoutManager.move_item(item_id, global_position)
 		elif mb.button_index == MOUSE_BUTTON_RIGHT and mb.pressed:
 			context_menu.position = mb.global_position
@@ -40,7 +41,8 @@ func _on_gui_input(event: InputEvent) -> void:
 			context_menu.popup()
 	elif event is InputEventMouseMotion:
 		if is_dragging:
-			global_position = get_global_mouse_position() - drag_offset
+			var new_pos = get_global_mouse_position() - drag_offset
+			global_position = _clamp_to_desktop(new_pos)
 
 func _open_app() -> void:
 	var item := DesktopLayoutManager.get_item(item_id)
@@ -56,3 +58,11 @@ func _on_context_menu_id_pressed(id: int) -> void:
 			_open_app()
 		1:
 			DesktopLayoutManager.delete_item(item_id)
+
+func _clamp_to_desktop(pos: Vector2) -> Vector2:
+	var viewport_size = get_viewport().get_visible_rect().size
+	var topbar_height = WindowManager.get_topbar_height() if WindowManager and WindowManager.has_method("get_topbar_height") else 0
+	var taskbar_height = WindowManager.get_taskbar_height() if WindowManager and WindowManager.has_method("get_taskbar_height") else 0
+	var min_pos = Vector2(0, topbar_height)
+	var max_pos = Vector2(viewport_size.x - size.x, viewport_size.y - taskbar_height - size.y)
+	return pos.clamp(min_pos, max_pos)
