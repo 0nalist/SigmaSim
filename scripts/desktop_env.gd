@@ -2,6 +2,7 @@ extends Control
 
 @onready var start_panel: StartPanelWindow = %StartPanel
 @onready var taskbar: Control = %Taskbar
+@onready var top_bar: Control = %TopBar
 @onready var start_button: Button = %StartButton
 
 @onready var icons_layer: Control = self
