@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://c08ykcx6tagdr"]
 
-[ext_resource type="Script" path="res://components/apps/alpha_instant_messenger/aim_chat_ui.gd" id="1"]
-[ext_resource type="PackedScene" path="res://components/portrait/portrait_view.tscn" id="2"]
-[ext_resource type="Theme" path="res://assets/themes/windows_95_theme.tres" id="3"]
+[ext_resource type="Script" uid="uid://bv7alettjmjdi" path="res://components/apps/alpha_instant_messenger/aim_chat_ui.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="2"]
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_14t81"]
+bg_color = Color(0.964742, 0.964742, 0.964742, 1)
 
 [node name="AimChatUI" type="PanelContainer"]
 anchors_preset = 15
@@ -11,6 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3")
+theme_override_styles/panel = SubResource("StyleBoxFlat_14t81")
 script = ExtResource("1")
 window_title = "Chat"
 
@@ -28,19 +32,19 @@ size_flags_vertical = 3
 [node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 1
 
 [node name="Portrait" parent="MarginContainer/VBoxContainer/HeaderHBox" instance=ExtResource("2")]
 unique_name_in_owner = true
-mouse_filter = 2
-portrait_creator_enabled = false
-portrait_scale = 1.0
 custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 2
+portrait_scale = 1.0
+portrait_creator_enabled = false
 
 [node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderHBox"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "@username"
-mouse_filter = 2
 vertical_alignment = 1
 
 [node name="MessagesScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
@@ -64,16 +68,20 @@ columns = 2
 
 [node name="GreetButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGrid"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Greet"
 
 [node name="GiftButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGrid"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Gift"
 
 [node name="DateButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGrid"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Date"
 
 [node name="RelationshipButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGrid"]
 unique_name_in_owner = true
+layout_mode = 2
 text = "Discuss Relationship"

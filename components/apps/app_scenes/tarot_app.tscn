@@ -7,7 +7,7 @@
 [ext_resource type="Shader" uid="uid://dp2anhkkaegyq" path="res://assets/shaders/constellation_shader.gdshader" id="4_8tbyh"]
 [ext_resource type="PackedScene" uid="uid://cbg1lyah31ou3" path="res://components/apps/tarot/tarot_upgrades.tscn" id="4_ye0rw"]
 [ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="5_6i816"]
-[ext_resource type="Script" path="res://components/ui/pane_nav_bar.gd" id="6"]
+[ext_resource type="Script" uid="uid://bkxfxbb443cnq" path="res://components/ui/pane_nav_bar.gd" id="6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6i816"]
 shader = ExtResource("4_8tbyh")

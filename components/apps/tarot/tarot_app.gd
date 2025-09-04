@@ -18,21 +18,21 @@ var card_views: Dictionary = {}
 var _active_tab: String = "Draw"
 
 func _ready() -> void:
-        draw_button.pressed.connect(_on_draw_button_pressed)
-        reading_button.pressed.connect(_on_reading_button_pressed)
-        nav_bar.add_nav_button("Draw", "Draw")
-        nav_bar.add_nav_button("Readings", "Readings")
-        nav_bar.add_nav_button("Collection", "Collection")
-        nav_bar.tab_selected.connect(func(tab_id: String): _activate_tab(tab_id))
-        TarotManager.collection_changed.connect(_on_collection_changed)
-        TimeManager.minute_passed.connect(_on_minute_passed)
-        TimeManager.hour_passed.connect(_on_hour_passed)
-        UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
-        _build_collection_view()
-        _update_cooldown_label()
-        _update_reading_cost_label()
-        _show_last_drawn_card()
-        nav_bar.set_active("Draw")
+		draw_button.pressed.connect(_on_draw_button_pressed)
+		reading_button.pressed.connect(_on_reading_button_pressed)
+		nav_bar.add_nav_button("Draw", "Draw")
+		nav_bar.add_nav_button("Readings", "Readings")
+		nav_bar.add_nav_button("Collection", "Collection")
+		nav_bar.tab_selected.connect(func(tab_id: String): _activate_tab(tab_id))
+		TarotManager.collection_changed.connect(_on_collection_changed)
+		TimeManager.minute_passed.connect(_on_minute_passed)
+		TimeManager.hour_passed.connect(_on_hour_passed)
+		UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
+		_build_collection_view()
+		_update_cooldown_label()
+		_update_reading_cost_label()
+		_show_last_drawn_card()
+		nav_bar.set_active("Draw")
 
 
 func _build_collection_view() -> void:
@@ -135,19 +135,19 @@ func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
 	_update_reading_cost_label()
 
 func _activate_tab(tab_name: String) -> void:
-        if tab_name == "Draw":
-                        draw_view.visible = true
-                        readings_view.visible = false
-                        collection_view.visible = false
-        elif tab_name == "Readings":
-                        draw_view.visible = false
-                        readings_view.visible = true
-                        collection_view.visible = false
-        else:
-                        draw_view.visible = false
-                        readings_view.visible = false
-                        collection_view.visible = true
-        _active_tab = tab_name
+		if tab_name == "Draw":
+						draw_view.visible = true
+						readings_view.visible = false
+						collection_view.visible = false
+		elif tab_name == "Readings":
+						draw_view.visible = false
+						readings_view.visible = true
+						collection_view.visible = false
+		else:
+						draw_view.visible = false
+						readings_view.visible = false
+						collection_view.visible = true
+		_active_tab = tab_name
 
 func _on_upgrade_purchased(id: String, _new_level: int) -> void:
 	if id == "tarot_extra_card":
