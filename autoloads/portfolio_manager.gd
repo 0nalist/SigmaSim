@@ -307,15 +307,17 @@ func _recalculate_credit_score():
 
 	# Penalize high utilization
 	if usage_ratio > 0.9:
-		base_score -= 100
+		base_score -= 120
 	elif usage_ratio > 0.75:
-		base_score -= 50
+		base_score -= 60
 	elif usage_ratio > 0.5:
-		base_score -= 20
+		base_score -= 25
 
 	# Optional: reward low debt
-	if get_student_loans() == 0:
-		base_score += 20
+	#if get_student_loans() == 0:
+	#	base_score += 20
+	
+	#TODO: Lower score when payday loans are taken
 
 	var new_score: int = clamp(base_score, 300, 850)
 	if new_score != credit_score:
