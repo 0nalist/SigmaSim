@@ -41,6 +41,7 @@ static func create_npc(npc_index: int) -> NPC:
 	npc.username = _generate_username(npc)
 	npc.occupation = generate_npc_job(full_name)
 	npc.relationship_status = "Single"
+	npc.locked_in_connection = true
 
 	# Personality/OCEAN/Greek
 	var ocean = PersonalityEngine.generate_ocean(full_name)
@@ -143,6 +144,7 @@ static func create_npc_from_name(full_name: String) -> NPC:
 	npc.username = _generate_username(npc)
 	npc.occupation = generate_npc_job(full_name)
 	npc.relationship_status = "Single"
+	npc.locked_in_connection = true
 
 	var ocean := PersonalityEngine.generate_ocean(full_name)
 	npc.ocean = ocean

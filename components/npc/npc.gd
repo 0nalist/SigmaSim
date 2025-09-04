@@ -22,6 +22,8 @@ const BASE_DATE_COST: float = 10.0
 @export var occupation: String = "Funemployed"
 @export var relationship_status: String = "Single"
 
+@export var locked_in_connection: bool = false
+
 @export var relationship_stage: int = NPCManager.RelationshipStage.STRANGER
 @export_range(0, 1000000000, 1) var relationship_progress: float = 0.0
 
@@ -163,6 +165,7 @@ func to_dict() -> Dictionary:
 		"username": username,
 		"occupation": occupation,
 		"relationship_status": relationship_status,
+		"locked_in_connection": locked_in_connection,
 		"relationship_stage": relationship_stage,
 		"relationship_progress": relationship_progress,
 		"exclusivity_core": exclusivity_core,
@@ -229,6 +232,7 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.username = _safe_string(data.get("username"))
 	npc.occupation  = _safe_string(data.get("occupation"), "Funemployed")
 	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
+	npc.locked_in_connection = _safe_int(data.get("locked_in_connection"), 0) != 0
 	npc.relationship_stage = _safe_int(data.get("relationship_stage"), NPCManager.RelationshipStage.STRANGER)
 	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
 	npc.exclusivity_core = _safe_int(data.get("exclusivity_core"), NPCManager.ExclusivityCore.POLY)

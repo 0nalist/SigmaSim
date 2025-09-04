@@ -18,6 +18,7 @@ const SCHEMA: Dictionary = {
 		"username": {"data_type": "text"},
 		"occupation": {"data_type": "text"},
 		"relationship_status": {"data_type": "text"},
+		"locked_in_connection": {"data_type": "int"},
 		"relationship_stage": {"data_type": "int"},
 		"relationship_progress": {"data_type": "real"},
 		"exclusivity_core": {"data_type": "int"},
@@ -119,6 +120,8 @@ func _migrate_table(table_name: String, fields: Dictionary):
 		if not existing.has(cname):
 			print("DBManager: Adding missing column %s to table %s" % [cname, table_name])
 			db.query("ALTER TABLE %s ADD COLUMN %s %s" % [table_name, cname, column_defs[cname]])
+			if table_name == "npc" and cname == "locked_in_connection":
+				db.query("UPDATE npc SET locked_in_connection = 1")
 
 # -- NPCs --
 
@@ -134,6 +137,10 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 		dict["claimed_serious_monog_boost"] = 1
 	else:
 		dict["claimed_serious_monog_boost"] = 0
+	if npc.locked_in_connection:
+		dict["locked_in_connection"] = 1
+	else:
+		dict["locked_in_connection"] = 0
 	# Serialize all complex fields as JSON
 	dict["gender_vector"] = to_json(dict.get("gender_vector", {"x":0,"y":0,"z":1}))
 	dict["tags"] = to_json(dict.get("tags", []))
