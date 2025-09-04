@@ -440,10 +440,11 @@ func toggle_maximize() -> void:
 			normal_size = size
 
 		var viewport_size = get_viewport().get_visible_rect().size
-		var taskbar_height = WindowManager.get_taskbar_height() + 14 if WindowManager and WindowManager.has_method("get_taskbar_height") else 0
+		var taskbar_height = WindowManager.get_taskbar_height() if WindowManager and WindowManager.has_method("get_taskbar_height") else 0
+		var topbar_height = WindowManager.get_topbar_height() if WindowManager and WindowManager.has_method("get_topbar_height") else 0
 
-		global_position = Vector2.ZERO
-		size = Vector2(viewport_size.x, viewport_size.y - taskbar_height)
+		global_position = Vector2(0, topbar_height)
+		size = Vector2(viewport_size.x, viewport_size.y - taskbar_height - topbar_height)
 		window_state = WindowState.MAXIMIZED
 
 func restore() -> void:
@@ -456,8 +457,11 @@ func restore() -> void:
 		global_position = normal_position
 		size = normal_size
 	elif previous_state == WindowState.MAXIMIZED:
-		global_position = Vector2.ZERO
-		size = get_viewport().get_visible_rect().size
+		var viewport_size = get_viewport().get_visible_rect().size
+		var taskbar_height = WindowManager.get_taskbar_height() if WindowManager and WindowManager.has_method("get_taskbar_height") else 0
+		var topbar_height = WindowManager.get_topbar_height() if WindowManager and WindowManager.has_method("get_topbar_height") else 0
+		global_position = Vector2(0, topbar_height)
+		size = Vector2(viewport_size.x, viewport_size.y - taskbar_height - topbar_height)
 
 	_clamp_to_screen()
 

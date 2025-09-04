@@ -2,6 +2,7 @@ extends Control
 
 @onready var start_panel: StartPanelWindow = %StartPanel
 @onready var taskbar: Control = %Taskbar
+@onready var top_bar: Control = %TopBar
 @onready var trash_window: Pane = %TrashWindow
 @onready var start_button: Button = $TaskbarLayer/TaskbarWrapper/MarginContainer/TaskbarRow/StartButton
 
@@ -30,6 +31,7 @@ func _ready() -> void:
 	GameManager.in_game = true
 	#hide_all_windows_and_panels()
 	WindowManager.taskbar_container = taskbar
+	WindowManager.topbar_container = top_bar
 	WindowManager.start_panel = start_panel
 	DesktopLayoutManager.items_loaded.connect(_on_items_loaded)
 	DesktopLayoutManager.item_created.connect(_on_item_created)
