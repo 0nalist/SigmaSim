@@ -1,16 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://bcmpq5qvib2fb"]
+[gd_scene load_steps=5 format=3 uid="uid://bvitmailfuoe8"]
 
-[ext_resource type="Script" uid="uid://by1inpio3n67j" path="res://components/apps/locked_in/locked_in_profile_ui.gd" id="1_4nn1u"]
+[ext_resource type="Script" uid="uid://d4fcpf0e0ksc8" path="res://components/apps/locked_in/profile_ui.gd" id="1_4nn1u"]
 [ext_resource type="PackedScene" uid="uid://bo7jj5gh57d4n" path="res://components/greek_stats_ui.tscn" id="2_0c1jh"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="3_pv"]
-[ext_resource type="PackedScene" path="res://components/apps/locked_in/locked_in_wall_ui.tscn" id="4_jg1uy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4nn1u"]
 
 [node name="LockedInProfile" type="PanelContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 552.0
+offset_bottom = 667.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -36,7 +39,6 @@ size_flags_stretch_ratio = 0.0
 
 [node name="ProfilePic" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_pv")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 subject_is_player = true
 
@@ -110,7 +112,7 @@ size_flags_vertical = 6
 text = "Name McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnerships"
 autowrap_mode = 3
 
-[node name="LockedInWallUI" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_jg1uy")]
+[node name="WallVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3

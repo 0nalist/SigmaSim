@@ -1,8 +1,13 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://cvfnvh6tdmmnp"]
 
-[ext_resource type="Script" path="res://components/apps/locked_in/locked_in_wall_ui.gd" id="1"]
-[ext_resource type="PackedScene" path="res://components/apps/locked_in/locked_in_wall_post_ui.tscn" id="2"]
+[ext_resource type="Script" uid="uid://d3sm55clhrrbi" path="res://components/apps/locked_in/locked_in_wall_ui.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bpdpmhrmvjjna" path="res://components/apps/locked_in/locked_in_wall_post_ui.tscn" id="2"]
 
 [node name="LockedInWallUI" type="VBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1")
 wall_post_scene = ExtResource("2")
