@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cci5lph7o8fg5"]
+[gd_scene load_steps=10 format=3 uid="uid://cci5lph7o8fg5"]
 
 [ext_resource type="Script" uid="uid://c2u2e7rvja8k" path="res://components/apps/minerr/minerr_ui.gd" id="2_0t4uf"]
 [ext_resource type="PackedScene" uid="uid://cd6b75613o34u" path="res://components/apps/minerr/crypto_card.tscn" id="3_ykms3"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="5_23boj"]
 [ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="8_x88rl"]
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="9_0t4uf"]
+[ext_resource type="Script" uid="uid://bkxfxbb443cnq" path="res://components/ui/pane_nav_bar.gd" id="10_navbar"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wupxk"]
 resource_local_to_scene = true
@@ -71,29 +72,16 @@ theme_override_fonts/font = ExtResource("8_x88rl")
 theme_override_font_sizes/font_size = 36
 text = " Minerr"
 
+[node name="PaneNavBar" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("10_navbar")
+
 [node name="MineView" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 8
-
-[node name="MineTopBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MineView"]
-layout_mode = 2
-
-[node name="MineTabButton" type="Button" parent="MarginContainer/VBoxContainer/MineView/MineTopBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Mine"
-
-[node name="ChartsTabButton" type="Button" parent="MarginContainer/VBoxContainer/MineView/MineTopBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Charts"
-
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/MineView"]
 custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
@@ -208,21 +196,6 @@ theme_override_constants/separation = 8
 [node name="ChartsTopBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ChartsView"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="MineTabButtonCharts" type="Button" parent="MarginContainer/VBoxContainer/ChartsView/ChartsTopBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Mine"
-
-[node name="ChartsTabButtonCharts" type="Button" parent="MarginContainer/VBoxContainer/ChartsView/ChartsTopBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Charts"
-
 [node name="ChartsCashLabel" type="Label" parent="MarginContainer/VBoxContainer/ChartsView/ChartsTopBar"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -237,9 +210,5 @@ text = "Crypto: $"
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/MineTopBar/MineTabButton" to="." method="_on_mine_tab_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/MineTopBar/ChartsTabButton" to="." method="_on_charts_tab_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer/BuyNewGPUButton" to="." method="_on_buy_new_gpu_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox/VBoxContainer/BuGPUsVBoxContainer/VBoxContainer2/BuyUsedGPUButton" to="." method="_on_buy_used_gpu_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ChartsView/ChartsTopBar/MineTabButtonCharts" to="." method="_on_mine_tab_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ChartsView/ChartsTopBar/ChartsTabButtonCharts" to="." method="_on_charts_tab_pressed"]
