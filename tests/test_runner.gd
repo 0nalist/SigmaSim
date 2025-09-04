@@ -21,16 +21,7 @@ func _ready():
 			var script_path = "res://tests/%s" % file_name
 			print("Running %s" % script_path)
 			var script = load(script_path)
-			var success := true
-			if script != null:
-				try:
-					script.new()
-				catch err:
-					success = false
-			if success:
-				print("%s: PASS" % file_name)
-			else:
-				print("%s: FAIL" % file_name)
+			script.new()
 	dir.list_dir_end()
 	print("Finished running tests")
 	get_tree().quit()

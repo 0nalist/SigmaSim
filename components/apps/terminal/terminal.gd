@@ -387,13 +387,8 @@ func _run_tests() -> bool:
 
 			var ok: bool = false
 			if script != null:
-				var inst: Object = null
-				var success: bool = true
-				try:
-					inst = script.new()
-				catch err:
-					success = false
-				if success and inst != null:
+				var inst: Object = script.new()
+				if inst != null:
 					ok = true
 
 			if ok:
