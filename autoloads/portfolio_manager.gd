@@ -69,12 +69,6 @@ const STUDENT_LOAN_INTEREST_DAILY := 0.001  # 0.1% per day
 const STUDENT_LOAN_MIN_PAYMENT_PERCENT := 0.01  # 1% per 4 weeks
 
 ## --- Income sources
-var employee_income: float:
-	get:
-		return get_employee_income()
-	set(value):
-		set_employee_income(value)
-
 var passive_income: float:
 	get:
 		return get_passive_income_stat()
@@ -136,12 +130,6 @@ func get_credit_interest_rate() -> float:
 
 func set_credit_interest_rate(value: float) -> void:
 	StatManager.set_base_stat("credit_interest_rate", value)
-
-func get_employee_income() -> float:
-	return StatManager.get_stat("employee_income")
-
-func set_employee_income(value: float) -> void:
-	StatManager.set_base_stat("employee_income", value)
 
 func get_passive_income_stat() -> float:
 	return StatManager.get_stat("passive_income")
@@ -372,9 +360,6 @@ func _on_student_loans_changed(_value: float) -> void:
 func get_balance() -> float:
 		return snapped(get_cash() + get_total_investments() - get_total_debt(), 0.01)
 
-func get_passive_income() -> float:
-		return snapped(get_rent() + get_employee_income() + get_interest() / 365.0 / 24.0 / 60.0 / 60.0, 0.01)
-
 func halve_assets() -> void:
 	set_cash(get_cash() / 2.0)
 	for symbol in stocks_owned.keys():
@@ -521,7 +506,6 @@ func reset():
 	set_credit_used(0.0)
 	set_credit_interest_rate(0.3)
 	set_student_loans(0.0)
-	set_employee_income(0.0)
 	set_passive_income(0.0)
 	credit_score = 700
 	student_loan_min_payment = 0.0
