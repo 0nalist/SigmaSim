@@ -78,6 +78,31 @@ size_flags_horizontal = 3
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tabbar")
 
+[node name="DrawTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PaneNavBar/MarginContainer/TabBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Daily Draw"
+
+[node name="ReadingsTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PaneNavBar/MarginContainer/TabBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Readings"
+
+[node name="CollectionTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PaneNavBar/MarginContainer/TabBar"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = " Collection "
+
+[node name="Control" type="Control" parent="MarginContainer/VBox/ContentHBox/PaneNavBar/MarginContainer/TabBar"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+
 [node name="Label" type="Label" parent="MarginContainer/VBox/ContentHBox"]
 layout_mode = 2
 size_flags_horizontal = 6

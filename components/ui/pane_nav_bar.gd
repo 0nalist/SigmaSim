@@ -25,6 +25,6 @@ func _on_root_resized() -> void:
 	custom_minimum_size.x = min(full_width, root_width * width_ratio)
 
 func add_tab(button: Button, id: StringName) -> void:
-	tabs[id] = button
-	button.toggle_mode = true
-	button.button_group = _button_group
+        tabs[id] = button
+        button.toggle_mode = true
+        button.button_group = _button_group
