@@ -63,138 +63,142 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="ContentHBox" type="HBoxContainer" parent="MarginContainer"]
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 8
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/ContentHBox"]
+[node name="ContentHBox" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/ContentHBox"]
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 2
+size_flags_stretch_ratio = 0.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tabbar")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ContentHBox/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/ContentHBox/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="TabBar" type="VBoxContainer" parent="MarginContainer/ContentHBox/PanelContainer/MarginContainer"]
+[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="DrawTabButton" type="Button" parent="MarginContainer/ContentHBox/PanelContainer/MarginContainer/TabBar"]
+[node name="DrawTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "Daily Draw"
 
-[node name="ReadingsTabButton" type="Button" parent="MarginContainer/ContentHBox/PanelContainer/MarginContainer/TabBar"]
+[node name="ReadingsTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "Readings"
 
-[node name="CollectionTabButton" type="Button" parent="MarginContainer/ContentHBox/PanelContainer/MarginContainer/TabBar"]
+[node name="CollectionTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = " Collection "
 
-[node name="Control" type="Control" parent="MarginContainer/ContentHBox/PanelContainer/MarginContainer/TabBar"]
+[node name="Control" type="Control" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer/TabBar"]
 custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/ContentHBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/ContentHBox"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_filter = 2
-theme_override_constants/separation = 8
-
-[node name="Label" type="Label" parent="MarginContainer/ContentHBox/VBox"]
-layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 6
 theme_override_fonts/font = ExtResource("5_6i816")
 theme_override_font_sizes/font_size = 36
 text = "Tarot"
 horizontal_alignment = 1
 
-[node name="DrawView" type="VBoxContainer" parent="MarginContainer/ContentHBox/VBox"]
+[node name="Control" type="Control" parent="MarginContainer/VBox/ContentHBox"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+
+[node name="DrawView" type="VBoxContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/ContentHBox/VBox/DrawView"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/DrawView"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_8tbyh")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ContentHBox/VBox/DrawView/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/DrawView/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ContentHBox/VBox/DrawView/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="DrawResult" type="HBoxContainer" parent="MarginContainer/ContentHBox/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="DrawResult" type="HBoxContainer" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="DrawButton" type="Button" parent="MarginContainer/ContentHBox/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="DrawButton" type="Button" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 text = "  Daily Draw  "
 
-[node name="CooldownLabel" type="Label" parent="MarginContainer/ContentHBox/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CooldownLabel" type="Label" parent="MarginContainer/VBox/DrawView/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="ReadingsView" type="VBoxContainer" parent="MarginContainer/ContentHBox/VBox"]
+[node name="ReadingsView" type="VBoxContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ReadingResult" type="HBoxContainer" parent="MarginContainer/ContentHBox/VBox/ReadingsView"]
+[node name="ReadingResult" type="HBoxContainer" parent="MarginContainer/VBox/ReadingsView"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="ReadingCostLabel" type="Label" parent="MarginContainer/ContentHBox/VBox/ReadingsView"]
+[node name="ReadingCostLabel" type="Label" parent="MarginContainer/VBox/ReadingsView"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="ReadingButton" type="Button" parent="MarginContainer/ContentHBox/VBox/ReadingsView"]
+[node name="ReadingButton" type="Button" parent="MarginContainer/VBox/ReadingsView"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 text = "  Paid Reading  "
 
-[node name="CollectionView" type="ScrollContainer" parent="MarginContainer/ContentHBox/VBox"]
+[node name="CollectionView" type="ScrollContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CollectionGrid" type="GridContainer" parent="MarginContainer/ContentHBox/VBox/CollectionView"]
+[node name="CollectionGrid" type="GridContainer" parent="MarginContainer/VBox/CollectionView"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -202,4 +206,5 @@ size_flags_vertical = 3
 columns = 6
 
 [node name="CardCollectionExaminer" parent="MarginContainer" instance=ExtResource("4")]
+visible = true
 layout_mode = 2

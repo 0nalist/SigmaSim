@@ -485,23 +485,25 @@ anchor_right = 1.0
 grow_horizontal = 2
 theme = ExtResource("1_0utxc")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TaskbarLayer/TopBar"]
+[node name="TopBarContainer" type="VBoxContainer" parent="TaskbarLayer/TopBar"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 55.0
+offset_top = -2.0
+offset_bottom = 57.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = -1
 
-[node name="Ticker" type="Panel" parent="TaskbarLayer/TopBar/VBoxContainer"]
+[node name="Ticker" type="Panel" parent="TaskbarLayer/TopBar/TopBarContainer"]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_m483i")
 script = ExtResource("5_g75lf")
 
-[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker"]
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TopBar/TopBarContainer/Ticker"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -511,30 +513,30 @@ grow_vertical = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TopBar/TopBarContainer/Ticker/MarginContainer"]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker/MarginContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="TaskbarLayer/TopBar/TopBarContainer/Ticker/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(25, 5)
 layout_mode = 2
 theme = ExtResource("6_bnui0")
 
-[node name="TickerTextLabel" type="RichTextLabel" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker/MarginContainer/HBoxContainer"]
+[node name="TickerTextLabel" type="RichTextLabel" parent="TaskbarLayer/TopBar/TopBarContainer/Ticker/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "ticker text ticker text ticker text"
 vertical_alignment = 1
 
-[node name="TickerTimer" type="Timer" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker"]
+[node name="TickerTimer" type="Timer" parent="TaskbarLayer/TopBar/TopBarContainer/Ticker"]
 
-[node name="Panel" type="Panel" parent="TaskbarLayer/TopBar/VBoxContainer"]
+[node name="Panel" type="Panel" parent="TaskbarLayer/TopBar/TopBarContainer"]
 custom_minimum_size = Vector2(50, 24)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_bnui0")
 
-[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TopBar/VBoxContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TopBar/TopBarContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -544,15 +546,15 @@ grow_vertical = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TopBar/VBoxContainer/Panel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TopBar/TopBarContainer/Panel/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TaskbarLayer/TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="TaskbarLayer/TopBar/TopBarContainer/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Cash:"
 
-[node name="CashLabel" type="Label" parent="TaskbarLayer/TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+[node name="CashLabel" type="Label" parent="TaskbarLayer/TopBar/TopBarContainer/Panel/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_dag3j")
 layout_mode = 2
@@ -690,6 +692,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBox" type="VBoxContainer" parent="SIGMA SIM title (for screenshots)"]
 layout_mode = 2
