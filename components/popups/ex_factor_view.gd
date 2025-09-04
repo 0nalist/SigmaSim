@@ -32,6 +32,7 @@ const PROGRESS_MIN_DELTA: float = 0.01
 @onready var relationship_status_label: Label = %RelationshipStatusLabel
 @onready var exclusivity_label: Label = %ExclusivityLabel
 @onready var exclusivity_button: Button = %ExclusivityButton
+@onready var locked_in_button: Button = %LockedInButton
 
 const SPEECH_BUBBLE_SCENE := preload("res://components/ui/speech_bubble.tscn")
 const QUIPS_PATH := "res://data/npc_data/exfactor/eXFactorQuips.json"
@@ -111,11 +112,12 @@ func _ready() -> void:
 	next_stage_confirm_primary_button.pressed.connect(_on_next_stage_confirm_primary_pressed)
 	next_stage_confirm_primary_button.gui_input.connect(_on_next_stage_confirm_primary_gui_input)
 	next_stage_confirm_alt_button.pressed.connect(_on_next_stage_confirm_alt_pressed)
-	next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
-	love_button.pressed.connect(_on_love_pressed)
-	exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
-	StatManager.stat_changed.connect(_on_stat_changed)
-	TimeManager.minute_passed.connect(_on_minute_passed)
+        next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
+        love_button.pressed.connect(_on_love_pressed)
+        exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
+        locked_in_button.pressed.connect(_on_locked_in_button_pressed)
+        StatManager.stat_changed.connect(_on_stat_changed)
+        TimeManager.minute_passed.connect(_on_minute_passed)
 
 	await get_tree().process_frame
 	if Events.has_signal("ex_factor_talk_therapy_purchased"):
@@ -206,10 +208,11 @@ func _refresh_all() -> void:
 	_update_love_button()
 	_update_dime_status_label()
 	_update_relationship_status_label()
-	_update_exclusivity_label()
-	_update_exclusivity_button()
-	_update_next_stage_button()
-	_update_apologize_button()
+        _update_exclusivity_label()
+        _update_exclusivity_button()
+        _update_next_stage_button()
+        _update_apologize_button()
+        _update_locked_in_button()
 	
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
@@ -391,14 +394,20 @@ func _update_next_stage_button() -> void:
 
 
 func _update_apologize_button() -> void:
-	var has_upgrade: bool = UpgradeManager.get_level("ex_factor_talk_therapy") > 0
-	var in_ex_stage: bool = npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX
-	apologize_button.visible = has_upgrade and in_ex_stage
-	if not apologize_button.visible:
-		return
-	var cost: int = logic.get_apologize_cost()
-	apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_number(cost)
-	apologize_button.disabled = StatManager.get_stat("ex", 0.0) < float(cost)
+        var has_upgrade: bool = UpgradeManager.get_level("ex_factor_talk_therapy") > 0
+        var in_ex_stage: bool = npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX
+        apologize_button.visible = has_upgrade and in_ex_stage
+        if not apologize_button.visible:
+                return
+        var cost: int = logic.get_apologize_cost()
+        apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_number(cost)
+        apologize_button.disabled = StatManager.get_stat("ex", 0.0) < float(cost)
+
+func _update_locked_in_button() -> void:
+        if not is_instance_valid(locked_in_button):
+                return
+        if npc.locked_in_connection:
+                locked_in_button.queue_free()
 
 
 # ---------------------------- Button handlers ----------------------------
@@ -514,11 +523,17 @@ func _on_next_stage_confirm_no_pressed() -> void:
 		_update_next_stage_button()
 
 func _on_exclusivity_button_pressed() -> void:
-		logic.toggle_exclusivity()
-		_update_exclusivity_label()
-		_update_exclusivity_button()
-		_update_relationship_status_label()
-		_update_affinity_bar()
+                logic.toggle_exclusivity()
+                _update_exclusivity_label()
+                _update_exclusivity_button()
+                _update_relationship_status_label()
+                _update_affinity_bar()
+
+func _on_locked_in_button_pressed() -> void:
+        npc.locked_in_connection = true
+        _persist_fields({"locked_in_connection": npc.locked_in_connection})
+        if is_instance_valid(locked_in_button):
+                locked_in_button.queue_free()
 
 func _load_quips() -> void:
 		if _quips.size() == 0:
