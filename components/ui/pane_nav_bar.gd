@@ -17,7 +17,7 @@ func _ready() -> void:
 	while _root_control.get_parent() is Control:
 		_root_control = _root_control.get_parent()
 	if _root_control:
-		_root_control.size_changed.connect(_on_root_resized)
+		_root_control.resized.connect(_on_root_resized)
 		_on_root_resized()
 
 func _on_root_resized() -> void:
