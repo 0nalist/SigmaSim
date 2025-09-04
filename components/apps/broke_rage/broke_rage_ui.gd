@@ -66,7 +66,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	# Initial UI update
 	_on_cash_updated(PortfolioManager.cash)
-	_on_passive_income_updated(PortfolioManager.get_passive_income())
+	_on_passive_income_updated(PortfolioManager.passive_income)
 	_on_investments_updated(PortfolioManager.get_total_investments())
 	_on_debt_updated()
 	MarketManager.refresh_prices()
@@ -91,7 +91,7 @@ func _on_cash_updated(_cash: float) -> void:
 
 
 func _on_passive_income_updated(_amount: float) -> void:
-	passive_income_label.text = "Passive Income: $%.2f" % PortfolioManager.get_passive_income()
+	passive_income_label.text = "Passive Income: $%.2f" % PortfolioManager.passive_income
 
 func _on_investments_updated(amount: float):
 	var delta = amount - last_invested
@@ -118,7 +118,7 @@ func _on_resource_changed(resource: String, _value: float) -> void:
 	if resource == "cash":
 		_on_cash_updated(PortfolioManager.cash)
 	elif resource == "passive_income":
-		_on_passive_income_updated(PortfolioManager.get_passive_income())
+		_on_passive_income_updated(PortfolioManager.passive_income)
 	elif resource == "debt":
 		_on_debt_updated()
 

@@ -73,7 +73,6 @@ var default_user_data: Dictionary = {
 	"productivity_per_click": 1.0,
 	"power_per_click": 1.0,
 	"gpu_power": 1.0,
-	"worker_productivity": 100,
 	
 	# Chat Battle Stats
 	"attractiveness": 50,
