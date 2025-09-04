@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://dkhodakv1x0h7"]
+[gd_scene load_steps=48 format=3 uid="uid://dkhodakv1x0h7"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_0utxc"]
 [ext_resource type="Script" uid="uid://x031tiyraogl" path="res://scripts/desktop_env.gd" id="1_lpqk7"]
@@ -20,17 +20,15 @@
 [ext_resource type="Script" uid="uid://cjdts5fq6uj04" path="res://components/clock.gd" id="9_dc0b5"]
 [ext_resource type="Texture2D" uid="uid://ca7daiywemk7p" path="res://assets/ui/buttons/dodger_blue_normal.png" id="9_m483i"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="10_0utxc"]
-[ext_resource type="Texture2D" uid="uid://dyx0l0aa6l0at" path="res://assets/logos/folder.png" id="10_4e5iv"]
-[ext_resource type="Texture2D" uid="uid://mpip7wcjjyrr" path="res://assets/logos/pdficon.png" id="11_6x3lq"]
 [ext_resource type="Texture2D" uid="uid://hi7ldhid6blr" path="res://assets/ui/buttons/tangelo_down_white.png" id="13_bnui0"]
 [ext_resource type="Texture2D" uid="uid://bu12v0yfad1ai" path="res://assets/ui/buttons/lilac_normal.png" id="13_m483i"]
-[ext_resource type="Script" uid="uid://jj0g0vk3lpc2" path="res://components/trash.gd" id="14_m483i"]
 [ext_resource type="Texture2D" uid="uid://c6q0iyjglvflr" path="res://assets/ui/buttons/dodger_blue_down_gray.png" id="14_xcmse"]
 [ext_resource type="PackedScene" uid="uid://674hnm8vwbpn" path="res://components/popups/calendar_popup_ui.tscn" id="16_g75lf"]
 [ext_resource type="PackedScene" uid="uid://bxbwmaa2wwr33" path="res://components/calendar/calendar_day_panel.tscn" id="20_vxmwr"]
 [ext_resource type="PackedScene" uid="uid://bkl8rjfijy6mf" path="res://components/start_panel_window.tscn" id="23_dik0q"]
 [ext_resource type="Script" uid="uid://c7t01yq8wloqf" path="res://components/desktop_background.gd" id="24_jkb4t"]
 [ext_resource type="Shader" uid="uid://biinvb18hl7lc" path="res://assets/shaders/flat_color_background.gdshader" id="25_flat"]
+[ext_resource type="Shader" uid="uid://kgtfwt6kawx4" path="res://assets/shaders/fade_in_out_shader.gdshader" id="32_oaahw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_flat"]
 shader = ExtResource("25_flat")
@@ -146,6 +144,8 @@ shader_parameter/speed = 0.1
 shader_parameter/direction = Vector2(1, 1)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m483i"]
 texture = ExtResource("9_m483i")
 texture_margin_left = 2.0
@@ -162,22 +162,6 @@ shader_parameter/line_thickness = 1.0
 shader_parameter/sin_frequency = 0.1
 shader_parameter/sin_offset = 0.0
 shader_parameter/light_offset = 0.5
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4e5iv"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4e5iv"]
-bg_color = Color(0.6, 0.6, 0.6, 0.427451)
-border_width_top = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5k3ml"]
-bg_color = Color(0.6, 0.6, 0.6, 0.627451)
-border_width_top = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3uyqq"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_bottom = 1
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vxmwr"]
 texture = ExtResource("9_m483i")
@@ -206,6 +190,10 @@ texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
 texture_margin_bottom = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r681a"]
+shader = ExtResource("32_oaahw")
+shader_parameter/speed = 1.0
 
 [node name="DesktopEnv" type="Control"]
 layout_mode = 3
@@ -439,88 +427,6 @@ grow_vertical = 2
 script = ExtResource("24_jkb4t")
 background_name = "ComicDots2"
 
-[node name="TopBar" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-grow_horizontal = 2
-theme = ExtResource("1_0utxc")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TopBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = 55.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = -1
-
-[node name="Ticker" type="Panel" parent="TopBar/VBoxContainer"]
-custom_minimum_size = Vector2(0, 36)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_m483i")
-script = ExtResource("5_g75lf")
-
-[node name="MarginContainer" type="MarginContainer" parent="TopBar/VBoxContainer/Ticker"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_right = 20
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/VBoxContainer/Ticker/MarginContainer"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="TopBar/VBoxContainer/Ticker/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(25, 5)
-layout_mode = 2
-theme = ExtResource("6_bnui0")
-
-[node name="TickerTextLabel" type="RichTextLabel" parent="TopBar/VBoxContainer/Ticker/MarginContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "ticker text ticker text ticker text"
-vertical_alignment = 1
-
-[node name="TickerTimer" type="Timer" parent="TopBar/VBoxContainer/Ticker"]
-
-[node name="Panel" type="Panel" parent="TopBar/VBoxContainer"]
-custom_minimum_size = Vector2(50, 24)
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_bnui0")
-
-[node name="MarginContainer" type="MarginContainer" parent="TopBar/VBoxContainer/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_right = 25
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/VBoxContainer/Panel/MarginContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Cash:"
-
-[node name="CashLabel" type="Label" parent="TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_dag3j")
-layout_mode = 2
-size_flags_horizontal = 2
-theme_override_font_sizes/font_size = 24
-text = "$"
-
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -568,138 +474,90 @@ theme_override_fonts/font = ExtResource("1_lx1wk")
 text = "Trash"
 horizontal_alignment = 1
 
-[node name="TrashWindow" type="Panel" parent="."]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("1_0utxc")
-script = ExtResource("14_m483i")
-metadata/_custom_type_script = "uid://c1qvasiiw126v"
-
-[node name="MarginContainer" type="MarginContainer" parent="TrashWindow"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="ScrollContainer" type="ScrollContainer" parent="TrashWindow/MarginContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TrashWindow/MarginContainer/ScrollContainer"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "beta_memes_for_betas"
-icon = ExtResource("10_4e5iv")
-alignment = 0
-
-[node name="Button2" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "the_wolf_ecology_and_behavior.pdf"
-icon = ExtResource("11_6x3lq")
-alignment = 0
-
-[node name="Button3" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "the_game.pdf"
-icon = ExtResource("11_6x3lq")
-alignment = 0
-
-[node name="Button4" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "the_will_to_power.pdf"
-icon = ExtResource("11_6x3lq")
-alignment = 0
-
-[node name="Button5" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "12_rules_for_life.pdf"
-icon = ExtResource("11_6x3lq")
-alignment = 0
-
-[node name="Button7" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "homework"
-icon = ExtResource("10_4e5iv")
-alignment = 0
-
-[node name="Button6" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "how_to_win_friends_and_influence_people.pdf"
-icon = ExtResource("11_6x3lq")
-alignment = 0
-
-[node name="Button9" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "the_fountainhead.pdf"
-icon = ExtResource("11_6x3lq")
-alignment = 0
-
-[node name="Button8" type="Button" parent="TrashWindow/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 10
-theme_override_styles/hover = SubResource("StyleBoxFlat_4e5iv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5k3ml")
-theme_override_styles/normal = SubResource("StyleBoxFlat_3uyqq")
-text = "mrs_incredible_rule_34"
-icon = ExtResource("10_4e5iv")
-alignment = 0
-
 [node name="TaskbarLayer" type="CanvasLayer" parent="."]
 layer = 10
+
+[node name="TopBar" type="Control" parent="TaskbarLayer"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme = ExtResource("1_0utxc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TaskbarLayer/TopBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -1
+
+[node name="Ticker" type="Panel" parent="TaskbarLayer/TopBar/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_m483i")
+script = ExtResource("5_g75lf")
+
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker/MarginContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 5)
+layout_mode = 2
+theme = ExtResource("6_bnui0")
+
+[node name="TickerTextLabel" type="RichTextLabel" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ticker text ticker text ticker text"
+vertical_alignment = 1
+
+[node name="TickerTimer" type="Timer" parent="TaskbarLayer/TopBar/VBoxContainer/Ticker"]
+
+[node name="Panel" type="Panel" parent="TaskbarLayer/TopBar/VBoxContainer"]
+custom_minimum_size = Vector2(50, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_bnui0")
+
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TopBar/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TopBar/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TaskbarLayer/TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Cash:"
+
+[node name="CashLabel" type="Label" parent="TaskbarLayer/TopBar/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_dag3j")
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "$"
 
 [node name="TaskbarWrapper" type="Panel" parent="TaskbarLayer"]
 z_index = 1024
@@ -822,6 +680,38 @@ grow_horizontal = 0
 grow_vertical = 0
 pivot_offset = Vector2(36, 36)
 day_panel_scene = ExtResource("20_vxmwr")
+
+[node name="SIGMA SIM title (for screenshots)" type="CenterContainer" parent="."]
+visible = false
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBox" type="VBoxContainer" parent="SIGMA SIM title (for screenshots)"]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="SIGMA SIM title (for screenshots)/VBox"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 6
+theme_override_font_sizes/font_size = 256
+text = "SIGMA SIM"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="SIGMA SIM title (for screenshots)/VBox"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_r681a")
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "press any key to continue"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="ColorRect/VBoxContainer/Button" to="ColorRect" method="_on_button_pressed"]
 [connection signal="pressed" from="MarginContainer/GridContainer/TrashButton" to="." method="_on_trash_button_pressed"]

@@ -200,11 +200,11 @@ func _populate_command_list() -> void:
 
 
 func _canonical_command(name: String) -> String:
-        var stripped := name.to_lower().replace("_", "")
-        for key in commands.keys():
-                if key.replace("_", "") == stripped:
-                        return key
-        return stripped
+		var stripped := name.to_lower().replace("_", "")
+		for key in commands.keys():
+				if key.replace("_", "") == stripped:
+						return key
+		return stripped
 
 func process_command(command: String) -> bool:
 	var parts := command.split(" ", false)

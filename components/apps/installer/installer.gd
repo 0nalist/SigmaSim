@@ -49,11 +49,11 @@ func _on_install_button_pressed() -> void:
 
 func _complete_install() -> void:
 	if app_id != "":
-			WindowManager.unlock_app(app_id)
-			if open_checkbox.button_pressed:
-				WindowManager.launch_app(app_id)
-	if shortcut_checkbox.button_pressed:
-		DesktopLayoutManager.create_app_shortcut(app_title, app_title, icon_path, Vector2.ZERO)
+		WindowManager.unlock_app(app_id)
+		if open_checkbox.button_pressed:
+			WindowManager.launch_app(app_id)
+		if shortcut_checkbox.button_pressed:
+			DesktopLayoutManager.create_app_shortcut(app_title, app_title, icon_path, Vector2.ZERO)
 	var window = get_parent().get_parent().get_parent()
 	if WindowManager:
 		WindowManager.close_window(window)

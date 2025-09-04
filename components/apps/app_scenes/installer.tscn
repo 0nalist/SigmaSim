@@ -9,7 +9,7 @@ size_flags_vertical = 3
 script = ExtResource("1")
 window_title = "Installer "
 window_icon = ExtResource("2_idbhh")
-default_window_size = Vector2(350, 240)
+default_window_size = Vector2(390, 300)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -28,27 +28,35 @@ custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HBox"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/MarginContainer"]
 layout_mode = 2
-text = "create desktop shortcut"
 
-[node name="ShortcutCheckBox" type="CheckBox" parent="MarginContainer/VBox/HBox"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/MarginContainer/VBoxContainer/HBox"]
+layout_mode = 2
+text = "Create desktop shortcut"
+
+[node name="ShortcutCheckBox" type="CheckBox" parent="MarginContainer/VBox/MarginContainer/VBoxContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBox2" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HBox2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Open when done"
+text = "Open when finished"
 
-[node name="OpenCheckBox" type="CheckBox" parent="MarginContainer/VBox/HBox2"]
+[node name="OpenCheckBox" type="CheckBox" parent="MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 

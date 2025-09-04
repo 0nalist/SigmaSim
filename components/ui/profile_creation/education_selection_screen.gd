@@ -87,11 +87,13 @@ func show_tooltip_from_button(button: Button) -> void:
 		if tooltip_text == "":
 				return
 
+		tooltip_popup.size = tooltip_popup.custom_minimum_size
 		tooltip_label.text = tooltip_text
 		tooltip_popup.visible = true
 		tooltip_popup.modulate.a = 1.0
 
 		await get_tree().process_frame
+		tooltip_popup.reset_size()
 
 		var button_global_rect = button.get_global_rect()
 		var button_right_center = button_global_rect.position + Vector2(button_global_rect.size.x, button_global_rect.size.y / 2)

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dw5hnnc0fsan4" path="res://components/apps/daterbase/daterbase.gd" id="2"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="3_du6fw"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="3_kc04p"]
-[ext_resource type="Texture2D" uid="uid://cjid1o5l4ibqf" path="res://assets/logos/DB_daterbase_logo.png" id="3_vuxcm"]
+[ext_resource type="Texture2D" uid="uid://ceu5lu4sd3jsl" path="res://assets/logos/DB_daterbase_logo_whitebkgd.png" id="3_vuxcm"]
 [ext_resource type="PackedScene" uid="uid://b27d8ea1c6d6" path="res://components/apps/daterbase/daterbase_upgrades.tscn" id="4_74p60"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j8wav"]

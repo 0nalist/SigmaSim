@@ -45,7 +45,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8w5uy")
 script = ExtResource("1")
 window_title = "Soft Wares"
 window_icon = ExtResource("2_urirl")
-default_window_size = Vector2(550, 420)
+default_window_size = Vector2(660, 580)
 
 [node name="ColorRect2" type="ColorRect" parent="."]
 use_parent_material = true

@@ -5,10 +5,17 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fwkw"]
 bg_color = Color(0, 0.669403, 0.96699, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
+shadow_size = 4
+shadow_offset = Vector2(2, 3)
 
 [node name="UserLoginCardUI" type="PanelContainer"]
 custom_minimum_size = Vector2(180, 190)

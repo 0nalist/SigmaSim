@@ -4,8 +4,8 @@ extends Resource
 
 signal player_broke_up
 
-const BASE_GIFT_COST: float = 10.0
-const BASE_DATE_COST: float = 100.0
+const BASE_GIFT_COST: float = 1.0
+const BASE_DATE_COST: float = 10.0
 
 
 
@@ -273,7 +273,7 @@ static func from_dict(data: Dictionary) -> NPC:
 	if npc.gift_count < 0:
 			npc.gift_count = int(log(max(saved_gift_cost, BASE_GIFT_COST) / BASE_GIFT_COST) / log(2.0))
 	npc.gift_cost = (float(npc.attractiveness) / 10.0) * BASE_GIFT_COST * pow(2.0, npc.gift_count)
-	npc.date_cost = (float(npc.attractiveness) / 10.0) * BASE_DATE_COST * pow(2.0, npc.date_count)
+	npc.date_cost = (float(npc.attractiveness) / 10.0) * BASE_DATE_COST * pow(2.0, npc.date_count) ##TODO: Make this easier to tweak
 
 	# Older saves stored the absolute game-minute when the cooldown ended.
 	# Newer saves store only the remaining minutes. Detect which format was
