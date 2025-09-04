@@ -66,7 +66,9 @@ var student_loans: float:
 		set_student_loans(value)
 
 var student_loan_min_payment: float = 0.0
-const STUDENT_LOAN_INTEREST_DAILY := 0.001  # 0.1% per day
+## Daily interest rate used to accrue student loan debt.
+## 10% annual interest divided by 365 to apply interest each day.
+const STUDENT_LOAN_INTEREST_DAILY := 0.10 / 365.0
 const STUDENT_LOAN_MIN_PAYMENT_PERCENT := 0.01  # 1% per 4 weeks
 
 ## --- Income sources
