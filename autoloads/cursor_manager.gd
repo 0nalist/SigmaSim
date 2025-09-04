@@ -16,12 +16,13 @@ func _ready():
 	call_deferred("_initialize_cursor_scene")
 
 func _initialize_cursor_scene():
-	cursor_layer = preload("res://components/ui/fake_cursor.tscn").instantiate()
-	cursor_layer.name = "FakeCursorLayer"
-	get_tree().get_root().add_child(cursor_layer)
-	cursor = cursor_layer.get_node("FakeCursor")
-	set_process(true)
-	set_enabled(true) # Start enabled
+        cursor_layer = preload("res://components/ui/fake_cursor.tscn").instantiate()
+        cursor_layer.name = "FakeCursorLayer"
+        cursor_layer.layer = 999
+        get_tree().root.get_popup_overlay().add_child(cursor_layer)
+        cursor = cursor_layer.get_node("FakeCursor")
+        set_process(true)
+        set_enabled(true) # Start enabled
 
 func set_enabled(value: bool):
 	enabled = value
