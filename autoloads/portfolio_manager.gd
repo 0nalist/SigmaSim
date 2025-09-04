@@ -47,7 +47,7 @@ const CREDIT_REQUIREMENTS := {
 	"pay_down_credit": 8000,
 	"stock": 800,
 	"gift": 500,
-	"date": 600,
+	"date": 650,
 	"proposal": 800,
 	"bills": 450,
 	"EarlyBird": 550,

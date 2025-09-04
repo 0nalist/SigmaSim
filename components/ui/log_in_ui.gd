@@ -132,4 +132,5 @@ func _on_card_selected(card: UserLoginCardUI) -> void:
 
 func _on_credits_button_pressed() -> void:
 	const CREDITS = preload("res://components/credits/credits.tscn")
-	get_tree().add_child(CREDITS.instantiate())
+	
+	add_child(CREDITS.instantiate())
