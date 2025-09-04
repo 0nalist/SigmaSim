@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dhdkwe8gkul5d" path="res://components/apps/locked_in/locked_in.gd" id="1_i15i2"]
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="2_naf07"]
 [ext_resource type="PackedScene" uid="uid://bcmpq5qvib2fb" path="res://components/apps/locked_in/locked_in_profile_ui.tscn" id="3_6ji7a"]
-[ext_resource type="PackedScene" path="res://src/locked_in/locked_in_connections_list_ui.tscn" id="4_8vpmc"]
+[ext_resource type="PackedScene" uid="uid://br6dxvjgrbq08" path="res://src/locked_in/locked_in_connections_list_ui.tscn" id="4_8vpmc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i15i2"]
 bg_color = Color(0.486275, 0.486275, 0, 1)
@@ -47,6 +47,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ConnectionsList" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_8vpmc")]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
@@ -57,4 +58,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Profile" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_6ji7a")]
+unique_name_in_owner = true
 layout_mode = 2
