@@ -51,10 +51,10 @@ const CREDIT_REQUIREMENTS := {
 	"proposal": 800,
 	"bills": 450,
 	"EarlyBird": 550,
-	"upgrades": 750,
+"upgrades": 750,
 
 }
-# attempt_spend without credit argument:
+
 
 
 

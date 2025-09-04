@@ -15,11 +15,8 @@ var app_unlock_state: Dictionary = {}
 
 # Preloaded apps
 var app_registry := {
-	#"Grinderr": preload("res://components/apps/app_scenes/grinderr.tscn"),
 	"BrokeRage": preload("res://components/apps/app_scenes/broke_rage.tscn"),
 	"SigmaMail": preload("res://components/apps/app_scenes/sigma_mail.tscn"),
-	#"WorkForce": preload("res://components/apps/app_scenes/work_force.tscn"), # OLD workforce
-	#"WorkForce": preload("res://workforce.tscn"),
 	"Minerr": preload("res://components/apps/app_scenes/minerr.tscn"),
 	"Settings": preload("res://components/apps/app_scenes/settings.tscn"),
 	"AIM": preload("res://components/apps/app_scenes/alpha_instant_messenger.tscn"),
@@ -288,6 +285,7 @@ func launch_popup(popup_scene: PackedScene, unique_key: String, setup_args: Vari
 			popup_pane.call_deferred("setup", setup_args)
 
 	call_deferred("autoposition_window", window)
+
 
 func autoposition_window(window: WindowFrame) -> void:
 	if is_instance_valid(window):
