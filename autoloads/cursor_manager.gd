@@ -6,9 +6,11 @@ var cursor: TextureRect
 const DEFAULT_CURSOR := preload("res://assets/cursors/cursor_default.png")
 const PICKAXE_CLICK_CURSOR = preload("res://assets/cursors/pickaxe2.png")
 const PICKAXE_CURSOR = preload("res://assets/cursors/pickaxe.png")
+const SMALL_CURSOR := preload("res://assets/cursors/cursor_smaller.png")
 
 var cursor_offset := Vector2.ZERO
 var enabled := false # Track toggle state
+var current_cursor: Texture = DEFAULT_CURSOR
 
 func _ready():
 	call_deferred("_initialize_cursor_scene")
@@ -36,8 +38,15 @@ func toggle():
 	set_enabled(!enabled)
 
 func _process(_delta):
-	if enabled and is_instance_valid(cursor):
-		cursor.position = get_viewport().get_mouse_position() + cursor_offset
+        if enabled and is_instance_valid(cursor):
+                cursor.position = get_viewport().get_mouse_position() + cursor_offset
+
+func _input(event):
+        if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+                if current_cursor == DEFAULT_CURSOR and event.pressed:
+                        set_cursor(SMALL_CURSOR)
+                elif current_cursor == SMALL_CURSOR and not event.pressed:
+                        set_cursor(DEFAULT_CURSOR)
 
 func warp_cursor(pos: Vector2):
 	if is_instance_valid(cursor):
@@ -47,9 +56,10 @@ func warp_cursor(pos: Vector2):
 ## Cursor setters
 
 func set_cursor(tex: Texture, offset := Vector2.ZERO):
-	if is_instance_valid(cursor):
-		cursor.texture = tex
-		cursor_offset = offset
+        if is_instance_valid(cursor):
+                cursor.texture = tex
+                cursor_offset = offset
+        current_cursor = tex
 
 func set_default_cursor():
 	set_cursor(DEFAULT_CURSOR, Vector2.ZERO)
