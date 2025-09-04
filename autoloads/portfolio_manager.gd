@@ -55,7 +55,6 @@ const CREDIT_REQUIREMENTS := {
 
 }
 # attempt_spend without credit argument:
-# components/ui/hire_popup.gd -> worker hire in _populate_hire_tab
 
 
 

@@ -60,7 +60,6 @@ func reset_managers() -> void:
 	PortfolioManager.reset()
 	PlayerManager.reset()
 	WindowManager.reset()
-	TaskManager.reset()
 	UpgradeManager.reset()
 	# Add more as systems grow
 	# Add more as systems grow
@@ -68,7 +67,7 @@ func reset_managers() -> void:
 func _on_reload_save():
 	# Avoid errors if there's no active save slot to reload
 	if SaveManager.current_slot_id <= 0:
-			return
+		return
 	SaveManager.load_from_slot(SaveManager.current_slot_id)
 
 	# Close Game Over screen
