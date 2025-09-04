@@ -21,7 +21,7 @@ func _initialize_cursor_scene():
 	get_tree().get_root().add_child(cursor_layer)
 	cursor = cursor_layer.get_node("FakeCursor")
 	set_process(true)
-	#set_enabled(true) # Start enabled
+	set_enabled(true) # Start enabled
 
 func set_enabled(value: bool):
 	enabled = value
@@ -38,15 +38,15 @@ func toggle():
 	set_enabled(!enabled)
 
 func _process(_delta):
-        if enabled and is_instance_valid(cursor):
-                cursor.position = get_viewport().get_mouse_position() + cursor_offset
+		if enabled and is_instance_valid(cursor):
+				cursor.position = get_viewport().get_mouse_position() + cursor_offset
 
 func _input(event):
-        if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
-                if current_cursor == DEFAULT_CURSOR and event.pressed:
-                        set_cursor(SMALL_CURSOR)
-                elif current_cursor == SMALL_CURSOR and not event.pressed:
-                        set_cursor(DEFAULT_CURSOR)
+		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+				if current_cursor == DEFAULT_CURSOR and event.pressed:
+						set_cursor(SMALL_CURSOR)
+				elif current_cursor == SMALL_CURSOR and not event.pressed:
+						set_cursor(DEFAULT_CURSOR)
 
 func warp_cursor(pos: Vector2):
 	if is_instance_valid(cursor):
@@ -56,10 +56,10 @@ func warp_cursor(pos: Vector2):
 ## Cursor setters
 
 func set_cursor(tex: Texture, offset := Vector2.ZERO):
-        if is_instance_valid(cursor):
-                cursor.texture = tex
-                cursor_offset = offset
-        current_cursor = tex
+		if is_instance_valid(cursor):
+				cursor.texture = tex
+				cursor_offset = offset
+		current_cursor = tex
 
 func set_default_cursor():
 	set_cursor(DEFAULT_CURSOR, Vector2.ZERO)

@@ -17,6 +17,7 @@ corner_radius_bottom_left = 2
 [node name="SoftWareItem" type="PanelContainer"]
 custom_minimum_size = Vector2(450, 0)
 size_flags_horizontal = 3
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkqde")
 script = ExtResource("1")
 
