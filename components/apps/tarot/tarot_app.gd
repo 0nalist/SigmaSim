@@ -5,6 +5,9 @@ class_name TarotApp
 @onready var cooldown_label: Label = %CooldownLabel
 @onready var draw_result: Control = %DrawResult
 @onready var pane_nav_bar: PaneNavBar = $MarginContainer/VBox/ContentHBox/PaneNavBar
+@onready var draw_tab_button: Button = pane_nav_bar.tab_bar.get_node("DrawTabButton")
+@onready var reading_tab_button: Button = pane_nav_bar.tab_bar.get_node("ReadingsTabButton")
+@onready var collection_tab_button: Button = pane_nav_bar.tab_bar.get_node("CollectionTabButton")
 @onready var draw_view: VBoxContainer = %DrawView
 @onready var readings_view: VBoxContainer = %ReadingsView
 @onready var reading_result: Control = %ReadingResult
@@ -20,12 +23,9 @@ var _active_tab: StringName = &"Draw"
 func _ready() -> void:
 	draw_button.pressed.connect(_on_draw_button_pressed)
 	reading_button.pressed.connect(_on_reading_button_pressed)
-	pane_nav_bar.add_tab(%DrawTabButton, &"Draw")
-	pane_nav_bar.add_tab(%ReadingsTabButton, &"Readings")
-	pane_nav_bar.add_tab(%CollectionTabButton, &"Collection")
-	pane_nav_bar.tabs[&"Draw"].pressed.connect(_on_draw_tab_pressed)
-	pane_nav_bar.tabs[&"Readings"].pressed.connect(_on_readings_tab_pressed)
-	pane_nav_bar.tabs[&"Collection"].pressed.connect(_on_collection_tab_pressed)
+	draw_tab_button.pressed.connect(_on_draw_tab_pressed)
+	reading_tab_button.pressed.connect(_on_readings_tab_pressed)
+	collection_tab_button.pressed.connect(_on_collection_tab_pressed)
 	TarotManager.collection_changed.connect(_on_collection_changed)
 	TimeManager.minute_passed.connect(_on_minute_passed)
 	TimeManager.hour_passed.connect(_on_hour_passed)
@@ -137,12 +137,28 @@ func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
 	_update_reading_cost_label()
 
 func _activate_tab(tab_name: StringName) -> void:
-		for name in pane_nav_bar.tabs.keys():
-				pane_nav_bar.tabs[name].set_pressed(name == tab_name)
-		draw_view.visible = tab_name == &"Draw"
-		readings_view.visible = tab_name == &"Readings"
-		collection_view.visible = tab_name == &"Collection"
-		_active_tab = tab_name
+	if tab_name == &"Draw":
+			draw_tab_button.set_pressed(true)
+			reading_tab_button.set_pressed(false)
+			collection_tab_button.set_pressed(false)
+			draw_view.visible = true
+			readings_view.visible = false
+			collection_view.visible = false
+	elif tab_name == &"Readings":
+			draw_tab_button.set_pressed(false)
+			reading_tab_button.set_pressed(true)
+			collection_tab_button.set_pressed(false)
+			draw_view.visible = false
+			readings_view.visible = true
+			collection_view.visible = false
+	else:
+			draw_tab_button.set_pressed(false)
+			reading_tab_button.set_pressed(false)
+			collection_tab_button.set_pressed(true)
+			draw_view.visible = false
+			readings_view.visible = false
+			collection_view.visible = true
+	_active_tab = tab_name
 
 func _on_draw_tab_pressed() -> void:
 	_activate_tab(&"Draw")

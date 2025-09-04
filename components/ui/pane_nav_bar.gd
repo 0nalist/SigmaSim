@@ -7,8 +7,6 @@ class_name PaneNavBar
 @onready var margin_container: MarginContainer = %MarginContainer
 @onready var tab_bar: VBoxContainer = %TabBar
 
-var tabs: Dictionary = {}
-var _button_group := ButtonGroup.new()
 var _root_control: Control
 
 func _ready() -> void:
@@ -21,10 +19,5 @@ func _ready() -> void:
 		_on_root_resized()
 
 func _on_root_resized() -> void:
-	var root_width: float = _root_control.size.x
-	custom_minimum_size.x = min(full_width, root_width * width_ratio)
-
-func add_tab(button: Button, id: StringName) -> void:
-	tabs[id] = button
-	button.toggle_mode = true
-	button.button_group = _button_group
+    var root_width: float = _root_control.size.x
+    custom_minimum_size.x = min(full_width, root_width * width_ratio)
