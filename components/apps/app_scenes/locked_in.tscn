@@ -3,7 +3,7 @@
 [ext_resource type="FontFile" uid="uid://2gcfbogatx7a" path="res://assets/fonts/GALSB.ttf" id="1_30ebf"]
 [ext_resource type="Script" uid="uid://dhdkwe8gkul5d" path="res://components/apps/locked_in/locked_in.gd" id="1_i15i2"]
 [ext_resource type="Texture2D" uid="uid://pld574giprix" path="res://assets/prof_pics/silhouette.png" id="2_naf07"]
-[ext_resource type="PackedScene" uid="uid://k41igwt4idy5" path="res://components/apps/locked_in/locked_in_profile_ui.tscn" id="3_6ji7a"]
+[ext_resource type="PackedScene" uid="uid://bcmpq5qvib2fb" path="res://components/apps/locked_in/locked_in_profile_ui.tscn" id="3_6ji7a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i15i2"]
 bg_color = Color(0.486275, 0.486275, 0, 1)

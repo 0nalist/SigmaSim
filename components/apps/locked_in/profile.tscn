@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bvitmailfuoe8"]
 
-[ext_resource type="Script" uid="uid://d4fcpf0e0ksc8" path="res://components/apps/locked_in/profile_ui.gd" id="1_4nn1u"]
+[ext_resource type="Script" uid="uid://by1inpio3n67j" path="res://components/apps/locked_in/locked_in_profile_ui.gd" id="1_4nn1u"]
 [ext_resource type="PackedScene" uid="uid://bo7jj5gh57d4n" path="res://components/greek_stats_ui.tscn" id="2_0c1jh"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="3_pv"]
 

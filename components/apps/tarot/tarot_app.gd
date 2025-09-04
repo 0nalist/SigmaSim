@@ -18,14 +18,14 @@ var card_views: Dictionary = {}
 var _active_tab: StringName = &"Draw"
 
 func _ready() -> void:
-        draw_button.pressed.connect(_on_draw_button_pressed)
-        reading_button.pressed.connect(_on_reading_button_pressed)
-        pane_nav_bar.add_tab(%DrawTabButton, &"Draw")
-        pane_nav_bar.add_tab(%ReadingsTabButton, &"Readings")
-        pane_nav_bar.add_tab(%CollectionTabButton, &"Collection")
-        pane_nav_bar.tabs[&"Draw"].pressed.connect(_on_draw_tab_pressed)
-        pane_nav_bar.tabs[&"Readings"].pressed.connect(_on_readings_tab_pressed)
-        pane_nav_bar.tabs[&"Collection"].pressed.connect(_on_collection_tab_pressed)
+	draw_button.pressed.connect(_on_draw_button_pressed)
+	reading_button.pressed.connect(_on_reading_button_pressed)
+	pane_nav_bar.add_tab(%DrawTabButton, &"Draw")
+	pane_nav_bar.add_tab(%ReadingsTabButton, &"Readings")
+	pane_nav_bar.add_tab(%CollectionTabButton, &"Collection")
+	pane_nav_bar.tabs[&"Draw"].pressed.connect(_on_draw_tab_pressed)
+	pane_nav_bar.tabs[&"Readings"].pressed.connect(_on_readings_tab_pressed)
+	pane_nav_bar.tabs[&"Collection"].pressed.connect(_on_collection_tab_pressed)
 	TarotManager.collection_changed.connect(_on_collection_changed)
 	TimeManager.minute_passed.connect(_on_minute_passed)
 	TimeManager.hour_passed.connect(_on_hour_passed)
@@ -137,12 +137,12 @@ func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
 	_update_reading_cost_label()
 
 func _activate_tab(tab_name: StringName) -> void:
-        for name in pane_nav_bar.tabs.keys():
-                pane_nav_bar.tabs[name].set_pressed(name == tab_name)
-        draw_view.visible = tab_name == &"Draw"
-        readings_view.visible = tab_name == &"Readings"
-        collection_view.visible = tab_name == &"Collection"
-        _active_tab = tab_name
+		for name in pane_nav_bar.tabs.keys():
+				pane_nav_bar.tabs[name].set_pressed(name == tab_name)
+		draw_view.visible = tab_name == &"Draw"
+		readings_view.visible = tab_name == &"Readings"
+		collection_view.visible = tab_name == &"Collection"
+		_active_tab = tab_name
 
 func _on_draw_tab_pressed() -> void:
 	_activate_tab(&"Draw")
