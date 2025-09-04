@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://k41igwt4idy5"]
+[gd_scene load_steps=6 format=3 uid="uid://k41igwt4idy5"]
 
-[ext_resource type="Script" uid="uid://d4fcpf0e0ksc8" path="res://components/apps/locked_in/profile_ui.gd" id="1_4nn1u"]
+[ext_resource type="Script" path="res://components/apps/locked_in/locked_in_profile_ui.gd" id="1_4nn1u"]
 [ext_resource type="PackedScene" uid="uid://bo7jj5gh57d4n" path="res://components/greek_stats_ui.tscn" id="2_0c1jh"]
 [ext_resource type="PackedScene" uid="uid://drm1apbdsjj5g" path="res://components/portrait/portrait_view.tscn" id="3_pv"]
+[ext_resource type="PackedScene" path="res://components/apps/locked_in/locked_in_wall_ui.tscn" id="4_jg1uy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4nn1u"]
 
@@ -112,7 +113,7 @@ size_flags_vertical = 6
 text = "Name McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnershipsName McNamerson is creating lifelong b2b partnerships"
 autowrap_mode = 3
 
-[node name="WallVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="LockedInWallUI" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_jg1uy")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3

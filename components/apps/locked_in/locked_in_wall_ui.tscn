@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://components/apps/locked_in/locked_in_wall_ui.gd" id="1"]
+[ext_resource type="PackedScene" path="res://components/apps/locked_in/locked_in_wall_post_ui.tscn" id="2"]
+
+[node name="LockedInWallUI" type="VBoxContainer"]
+script = ExtResource("1")
+wall_post_scene = ExtResource("2")
