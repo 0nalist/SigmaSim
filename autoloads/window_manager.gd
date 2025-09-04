@@ -33,7 +33,7 @@ var app_registry := {
 	"Notepad": preload("res://components/apps/app_scenes/notepad.tscn"),
 	"Terminal": preload("res://components/apps/terminal/terminal.tscn"),
 	"SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
-	"Tarot": preload("res://components/apps/app_scenes/tarot_app.tscn"),
+	"NFTarot": preload("res://components/apps/app_scenes/tarot_app.tscn"),
 	"Installer": preload("res://components/apps/app_scenes/installer.tscn"),
 }
 
