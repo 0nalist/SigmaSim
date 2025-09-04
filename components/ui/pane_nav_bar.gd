@@ -47,6 +47,7 @@ func add_nav_button(tab_id: String, text: String) -> void:
 				return
 		var btn := Button.new()
 		btn.toggle_mode = true
+		btn.focus_mode = Control.FOCUS_NONE
 		btn.text = text
 		btn.pressed.connect(func(): _on_button_pressed(tab_id))
 		box.add_child(btn)
