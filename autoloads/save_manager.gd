@@ -149,19 +149,19 @@ func save_to_slot(slot_id: int, include_rng_state := true) -> void:
 	var data := {
 			"stats": StatManager.get_save_data(),
 			"portfolio": PortfolioManager.get_save_data(),
-	                "time": TimeManager.get_save_data(),
-	                "market": MarketManager.get_save_data(),
-	                "player": PlayerManager.get_save_data(),
-	                "bills": BillManager.get_save_data(),
-	                "gpus": GPUManager.get_save_data(),
-	                "upgrades": UpgradeManager.get_save_data(),
-	                "history": HistoryManager.get_save_data(),
-	                "tarot": TarotManager.get_save_data(),
-	                "windows": WindowManager.get_save_data(),
-	                "desktop": DesktopLayoutManager.get_save_data(),
-	                #"rng": include_rng_state ? RNGManager.get_save_data() : {},
-	                "rng": RNGManager.get_save_data(),
-	                }
+					"time": TimeManager.get_save_data(),
+					"market": MarketManager.get_save_data(),
+					"player": PlayerManager.get_save_data(),
+					"bills": BillManager.get_save_data(),
+					"gpus": GPUManager.get_save_data(),
+					"upgrades": UpgradeManager.get_save_data(),
+					"history": HistoryManager.get_save_data(),
+					"tarot": TarotManager.get_save_data(),
+					"windows": WindowManager.get_save_data(),
+					"desktop": DesktopLayoutManager.get_save_data(),
+					#"rng": include_rng_state ? RNGManager.get_save_data() : {},
+					"rng": RNGManager.get_save_data(),
+					}
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "	"))
