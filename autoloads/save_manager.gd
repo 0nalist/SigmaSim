@@ -21,7 +21,7 @@ func get_slot_path(slot_id: int) -> String:
 # --- Metadata Storage ---
 func save_slot_metadata(metadata: Dictionary) -> void:
 	var file := FileAccess.open(INDEX_PATH, FileAccess.WRITE)
-	file.store_string(JSON.stringify(metadata, "\t"))
+	file.store_string(JSON.stringify(metadata, "	"))
 	file.close()
 
 
@@ -149,24 +149,22 @@ func save_to_slot(slot_id: int, include_rng_state := true) -> void:
 	var data := {
 			"stats": StatManager.get_save_data(),
 			"portfolio": PortfolioManager.get_save_data(),
-			"time": TimeManager.get_save_data(),
-			"market": MarketManager.get_save_data(),
-			"tasks": TaskManager.get_save_data(),
-			"player": PlayerManager.get_save_data(),
-			"workers": WorkerManager.get_save_data(),
-			"bills": BillManager.get_save_data(),
-			"gpus": GPUManager.get_save_data(),
-			"upgrades": UpgradeManager.get_save_data(),
-			"history": HistoryManager.get_save_data(),
-			"tarot": TarotManager.get_save_data(),
-			"windows": WindowManager.get_save_data(),
-			"desktop": DesktopLayoutManager.get_save_data(),
-			#"rng": include_rng_state ? RNGManager.get_save_data() : {},
-			"rng": RNGManager.get_save_data(),
-			}
+	                "time": TimeManager.get_save_data(),
+	                "market": MarketManager.get_save_data(),
+	                "player": PlayerManager.get_save_data(),
+	                "bills": BillManager.get_save_data(),
+	                "gpus": GPUManager.get_save_data(),
+	                "upgrades": UpgradeManager.get_save_data(),
+	                "history": HistoryManager.get_save_data(),
+	                "tarot": TarotManager.get_save_data(),
+	                "windows": WindowManager.get_save_data(),
+	                "desktop": DesktopLayoutManager.get_save_data(),
+	                #"rng": include_rng_state ? RNGManager.get_save_data() : {},
+	                "rng": RNGManager.get_save_data(),
+	                }
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
-	file.store_string(JSON.stringify(data, "\t"))
+	file.store_string(JSON.stringify(data, "	"))
 	file.close()
 
 	var metadata = load_slot_metadata()
@@ -245,27 +243,23 @@ func load_from_slot(slot_id: int) -> void:
 				print("RNGManager initialized from save with seed", seed_val)
 
 	if data.has("stats"):
-			StatManager.load_from_data(data["stats"])
+		StatManager.load_from_data(data["stats"])
 	if data.has("portfolio"):
-			PortfolioManager.load_from_data(data["portfolio"])
+		PortfolioManager.load_from_data(data["portfolio"])
 	if data.has("time"):
-			TimeManager.load_from_data(data["time"])
-			TimeManager.start_time()
+		TimeManager.load_from_data(data["time"])
+		TimeManager.start_time()
 	if data.has("upgrades"):
-			UpgradeManager.load_from_data(data["upgrades"])
-	if data.has("tasks"):
-			TaskManager.load_from_data(data["tasks"])
+		UpgradeManager.load_from_data(data["upgrades"])
 	if data.has("market"):
 		MarketManager.load_from_data(data["market"])
 
 	if data.has("history"):
-			HistoryManager.load_from_data(data["history"])
+		HistoryManager.load_from_data(data["history"])
 
 	if data.has("tarot"):
-			TarotManager.load_from_data(data["tarot"])
+		TarotManager.load_from_data(data["tarot"])
 
-	if data.has("workers"):
-		WorkerManager.load_from_data(data["workers"])
 	if data.has("gpus"):
 		GPUManager.load_from_data(data["gpus"])
 	if data.has("bills"):
@@ -306,9 +300,7 @@ func reset_game_state() -> void:
 	WindowManager.reset()
 	TimeManager.reset()
 	HistoryManager.reset()
-	TaskManager.reset()
 	UpgradeManager.reset()
-	WorkerManager.reset()
 	MarketManager.reset()
 	GPUManager.reset()
 	BillManager.reset()
@@ -324,8 +316,6 @@ func reset_managers():
 	WindowManager.reset()
 	TimeManager.reset()
 	HistoryManager.reset()
-	WorkerManager.reset()
-	TaskManager.reset()
 	UpgradeManager.reset()
 	GPUManager.reset()
 	BillManager.reset()

@@ -43,8 +43,6 @@ class FumbleManagerRNG extends RNGStream:
 class FumbleProfileStackRNG extends RNGStream:
 	pass
 
-class WorkerManagerRNG extends RNGStream:
-	pass
 
 class MarketManagerRNG extends RNGStream:
 	pass
@@ -73,8 +71,6 @@ class LockedInRNG extends RNGStream:
 class FumbleBattleLogicRNG extends RNGStream:
 	pass
 
-class TaskManagerRNG extends RNGStream:
-	pass
 
 class NPCManagerRNG extends RNGStream:
 	pass
@@ -93,7 +89,6 @@ var gpu := GPURNG.new()
 var rizz_battle_data := RizzBattleDataRNG.new()
 var fumble_manager := FumbleManagerRNG.new()
 var fumble_profile_stack := FumbleProfileStackRNG.new()
-var worker_manager := WorkerManagerRNG.new()
 var market_manager := MarketManagerRNG.new()
 var siggy := SiggyRNG.new()
 var ticker := TickerRNG.new()
@@ -103,7 +98,6 @@ var portrait_creator := PortraitCreatorRNG.new()
 var fumble_battle_ui := FumbleBattleUIRNG.new()
 var locked_in := LockedInRNG.new()
 var fumble_battle_logic := FumbleBattleLogicRNG.new()
-var task_manager := TaskManagerRNG.new()
 var npc_manager := NPCManagerRNG.new()
 var tarot_card := TarotCardRNG.new()
 var tarot_rarity := TarotRarityRNG.new()
@@ -115,7 +109,6 @@ var streams := {
 	"rizz_battle_data": rizz_battle_data,
 	"fumble_manager": fumble_manager,
 	"fumble_profile_stack": fumble_profile_stack,
-	"worker_manager": worker_manager,
 	"market_manager": market_manager,
 	"siggy": siggy,
 	"ticker": ticker,
@@ -125,7 +118,6 @@ var streams := {
 	"fumble_battle_ui": fumble_battle_ui,
 	"locked_in": locked_in,
 	"fumble_battle_logic": fumble_battle_logic,
-	"task_manager": task_manager,
 	"npc_manager": npc_manager,
 	"tarot_card": tarot_card,
 	"tarot_rarity": tarot_rarity,
@@ -151,7 +143,6 @@ func init_seed(seed_value: int) -> void:
 	NameManager.set_name_seed(_derive_seed("name_manager"))
 	fumble_manager.init_seed(_derive_seed("fumble_manager"))
 	fumble_profile_stack.init_seed(_derive_seed("fumble_profile_stack"))
-	worker_manager.init_seed(_derive_seed("worker_manager"))
 	market_manager.init_seed(_derive_seed("market_manager"))
 	siggy.init_seed(_derive_seed("siggy"))
 	ticker.init_seed(_derive_seed("ticker"))
@@ -161,13 +152,12 @@ func init_seed(seed_value: int) -> void:
 	fumble_battle_ui.init_seed(_derive_seed("fumble_battle_ui"))
 	locked_in.init_seed(_derive_seed("locked_in"))
 	fumble_battle_logic.init_seed(_derive_seed("fumble_battle_logic"))
-	task_manager.init_seed(_derive_seed("task_manager"))
 	npc_manager.init_seed(_derive_seed("npc_manager"))
 	tarot_card.init_seed(_derive_seed("tarot_card"))
 	tarot_rarity.init_seed(_derive_seed("tarot_rarity"))
 	tarot_orientation.init_seed(_derive_seed("tarot_orientation"))
 	if OS.is_debug_build():
-			print("Global RNG Seed: ", seed)
+		print("Global RNG Seed: ", seed)
 
 func get_rng() -> RandomNumberGenerator:
 	return global.get_rng()
