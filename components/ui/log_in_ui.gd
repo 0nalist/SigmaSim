@@ -128,3 +128,8 @@ func _on_card_selected(card: UserLoginCardUI) -> void:
 			child.collapse()
 	selected_card = card
 	selected_card.expand()
+
+
+func _on_credits_button_pressed() -> void:
+	const CREDITS = preload("res://components/credits/credits.tscn")
+	get_tree().add_child(CREDITS.instantiate())

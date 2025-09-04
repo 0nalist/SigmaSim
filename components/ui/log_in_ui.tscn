@@ -319,11 +319,13 @@ focus_mode = 0
 icon = ExtResource("10_yke0b")
 
 [node name="CreditsButton" type="Button" parent="AOLLogoHolder/MarginContainer/HBoxContainer"]
-visible = false
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
+size_flags_vertical = 8
 focus_mode = 0
-text = "Credits"
+text = " Cred "
 
 [connection signal="pressed" from="Panel/ProfilesContainer/ProfileRow/NewProfileButton" to="." method="_on_new_profile_button_pressed"]
 [connection signal="pressed" from="AOLLogoHolder/MarginContainer/HBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="AOLLogoHolder/MarginContainer/HBoxContainer/PowerButton" to="." method="_on_power_button_pressed"]
+[connection signal="pressed" from="AOLLogoHolder/MarginContainer/HBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]

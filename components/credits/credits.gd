@@ -62,44 +62,44 @@ Public Domain License
 
 
 Made in the Godot Game Engine
-https://godotengine.org
+godotengine.org
 """
 
 @onready var container: VBoxContainer = $VBoxContainer
 @onready var fade_rect: ColorRect = $FadeRect
 
 func _ready() -> void:
-    _populate_credits()
-    await get_tree().process_frame
-    container.position.y = size.y
-    var distance := container.size.y + size.y
-    var duration := distance / scroll_speed
-    var tween := get_tree().create_tween()
-    tween.tween_property(container, "position:y", -container.size.y, duration)
-    tween.finished.connect(_on_scroll_finished)
+	_populate_credits()
+	await get_tree().process_frame
+	container.position.y = size.y
+	var distance := container.size.y + size.y
+	var duration := distance / scroll_speed
+	var tween := get_tree().create_tween()
+	tween.tween_property(container, "position:y", -container.size.y, duration)
+	tween.finished.connect(_on_scroll_finished)
 
 func _populate_credits() -> void:
-    for raw_line in CREDITS_TEXT.strip_edges(true, true).split("\n"):
-        var line := raw_line.strip_edges()
-        if line.is_empty():
-            var spacer := Control.new()
-            spacer.custom_minimum_size.y = 20
-            container.add_child(spacer)
-            continue
-        var label := Label.new()
-        label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-        if line.contains(":"):
-            var parts := line.split(":", false, 2)
-            label.text = _dot_line(parts[0].strip_edges(), parts[1].strip_edges(), line_width)
-        else:
-            label.text = line
-        container.add_child(label)
+	for raw_line in CREDITS_TEXT.strip_edges(true, true).split("\n"):
+		var line := raw_line.strip_edges()
+		if line.is_empty():
+			var spacer := Control.new()
+			spacer.custom_minimum_size.y = 20
+			container.add_child(spacer)
+			continue
+		var label := Label.new()
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		if line.contains(":"):
+			var parts := line.split(":", false, 2)
+			label.text = _dot_line(parts[0].strip_edges(), parts[1].strip_edges(), line_width)
+		else:
+			label.text = line
+		container.add_child(label)
 
 func _dot_line(left: String, right: String, width: int) -> String:
-    var dots := max(width - left.length() - right.length(), 2)
-    return left + ".".repeat(dots) + right
+	var dots = max(width - left.length() - right.length(), 2)
+	return left + ".".repeat(dots) + right
 
 func _on_scroll_finished() -> void:
-    var tween := get_tree().create_tween()
-    tween.tween_property(fade_rect, "modulate:a", 1.0, fade_time)
-    tween.finished.connect(queue_free)
+	var tween := get_tree().create_tween()
+	tween.tween_property(fade_rect, "modulate:a", 1.0, fade_time)
+	tween.finished.connect(queue_free)
