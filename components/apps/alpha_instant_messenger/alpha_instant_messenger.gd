@@ -1,7 +1,7 @@
 extends Pane
 class_name AlphaInstantMessenger
 
-const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
+const AIM_CHAT_UI_SCENE: PackedScene = preload("res://components/apps/alpha_instant_messenger/aim_chat_ui.tscn")
 
 @onready var contacts_vbox: VBoxContainer = %ContactsVBox
 @onready var contact_button_template: Button = %ContactButtonTemplate
@@ -21,15 +21,15 @@ func _populate_contacts() -> void:
 		var btn: Button = contact_button_template.duplicate()
 		btn.visible = true
 		btn.text = "@%s" % npc.username
-		btn.pressed.connect(func() -> void:
-			_open_ex_factor_view(idx, npc)
-		)
+                btn.pressed.connect(func() -> void:
+                        _open_chat_ui(idx, npc)
+                )
 		contacts_vbox.add_child(btn)
 	contact_button_template.visible = false
 
-func _open_ex_factor_view(idx: int, npc: NPC) -> void:
-	var key: String = "ex_factor_%d" % idx
-	WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": idx})
+func _open_chat_ui(idx: int, npc: NPC) -> void:
+        var key: String = "aim_chat_%d" % idx
+        WindowManager.launch_popup(AIM_CHAT_UI_SCENE, key, {"npc": npc, "npc_idx": idx})
 
 func _on_window_close() -> void:
 	print("closegrinder")
