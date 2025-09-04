@@ -112,12 +112,12 @@ func _ready() -> void:
 	next_stage_confirm_primary_button.pressed.connect(_on_next_stage_confirm_primary_pressed)
 	next_stage_confirm_primary_button.gui_input.connect(_on_next_stage_confirm_primary_gui_input)
 	next_stage_confirm_alt_button.pressed.connect(_on_next_stage_confirm_alt_pressed)
-		next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
-		love_button.pressed.connect(_on_love_pressed)
-		exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
-		locked_in_button.pressed.connect(_on_locked_in_button_pressed)
-		StatManager.stat_changed.connect(_on_stat_changed)
-		TimeManager.minute_passed.connect(_on_minute_passed)
+	next_stage_confirm_no_button.pressed.connect(_on_next_stage_confirm_no_pressed)
+	love_button.pressed.connect(_on_love_pressed)
+	exclusivity_button.pressed.connect(_on_exclusivity_button_pressed)
+	locked_in_button.pressed.connect(_on_locked_in_button_pressed)
+	StatManager.stat_changed.connect(_on_stat_changed)
+	TimeManager.minute_passed.connect(_on_minute_passed)
 
 	await get_tree().process_frame
 	if Events.has_signal("ex_factor_talk_therapy_purchased"):
@@ -208,28 +208,28 @@ func _refresh_all() -> void:
 	_update_love_button()
 	_update_dime_status_label()
 	_update_relationship_status_label()
-		_update_exclusivity_label()
-		_update_exclusivity_button()
-		_update_next_stage_button()
-		_update_apologize_button()
-		_update_locked_in_button()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_next_stage_button()
+	_update_apologize_button()
+	_update_locked_in_button()
 	
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
 	if stage == NPCManager.RelationshipStage.MARRIED:
-			var level: int = ExFactorLogic.get_marriage_level(npc.relationship_progress)
-			relationship_stage_label.text = "Level %d Marriage" % level
-			var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, npc.relationship_progress)
-			var maxv: float = bounds.y - bounds.x
-			var val: float = npc.relationship_progress - bounds.x
-			relationship_bar.max_value = maxv
-			relationship_bar.update_value(val)
-			relationship_value_label.text = "%s / %s" % [
-					NumberFormatter.format_commas(val, 2),
-					NumberFormatter.format_commas(maxv, 2)
-			]
-			relationship_bar.set_mark_fractions([])
-			return
+		var level: int = ExFactorLogic.get_marriage_level(npc.relationship_progress)
+		relationship_stage_label.text = "Level %d Marriage" % level
+		var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, npc.relationship_progress)
+		var maxv: float = bounds.y - bounds.x
+		var val: float = npc.relationship_progress - bounds.x
+		relationship_bar.max_value = maxv
+		relationship_bar.update_value(val)
+		relationship_value_label.text = "%s / %s" % [
+			NumberFormatter.format_commas(val, 2),
+			NumberFormatter.format_commas(maxv, 2)
+		]
+		relationship_bar.set_mark_fractions([])
+		return
 
 	if stage == NPCManager.RelationshipStage.DIVORCED or stage == NPCManager.RelationshipStage.EX:
 		relationship_stage_label.text = STAGE_NAMES[stage]
@@ -369,54 +369,53 @@ func _update_exclusivity_label() -> void:
 		exclusivity_label.remove_theme_color_override("font_color")
 
 func _update_exclusivity_button() -> void:
-		var visible: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DATING and \
-						npc.relationship_stage <= NPCManager.RelationshipStage.MARRIED
-		exclusivity_button.visible = visible
-		if not visible:
-						return
-		match npc.exclusivity_core:
-						NPCManager.ExclusivityCore.MONOG: exclusivity_button.text = "Go Poly"
-						NPCManager.ExclusivityCore.POLY: exclusivity_button.text = "Go Monog"
-						NPCManager.ExclusivityCore.CHEATING: exclusivity_button.text = "Come Clean"
-						_: exclusivity_button.text = "Toggle"
+	var visible: bool = npc.relationship_stage >= NPCManager.RelationshipStage.DATING and \
+		npc.relationship_stage <= NPCManager.RelationshipStage.MARRIED
+	exclusivity_button.visible = visible
+	if not visible:
+		return
+	match npc.exclusivity_core:
+		NPCManager.ExclusivityCore.MONOG: exclusivity_button.text = "Go Poly"
+		NPCManager.ExclusivityCore.POLY: exclusivity_button.text = "Go Monog"
+		NPCManager.ExclusivityCore.CHEATING: exclusivity_button.text = "Come Clean"
+		_: exclusivity_button.text = "Toggle"
 
 func _update_next_stage_button() -> void:
-
-		var show: bool = false
-		if npc.relationship_stage < NPCManager.RelationshipStage.DIVORCED:
-				var bounds: Vector2 = ExFactorLogic.get_stage_bounds(
-						npc.relationship_stage, npc.relationship_progress
-				)
-				var at_stage_end: bool = npc.relationship_progress >= bounds.y
-				show = logic.progress_paused and at_stage_end
-		next_stage_button.visible = show
-		next_stage_button.disabled = not show
+	var show: bool = false
+	if npc.relationship_stage < NPCManager.RelationshipStage.DIVORCED:
+			var bounds: Vector2 = ExFactorLogic.get_stage_bounds(
+					npc.relationship_stage, npc.relationship_progress
+			)
+			var at_stage_end: bool = npc.relationship_progress >= bounds.y
+			show = logic.progress_paused and at_stage_end
+	next_stage_button.visible = show
+	next_stage_button.disabled = not show
 
 
 func _update_apologize_button() -> void:
-		var has_upgrade: bool = UpgradeManager.get_level("ex_factor_talk_therapy") > 0
-		var in_ex_stage: bool = npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX
-		apologize_button.visible = has_upgrade and in_ex_stage
-		if not apologize_button.visible:
-				return
-		var cost: int = logic.get_apologize_cost()
-		apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_number(cost)
-		apologize_button.disabled = StatManager.get_stat("ex", 0.0) < float(cost)
+	var has_upgrade: bool = UpgradeManager.get_level("ex_factor_talk_therapy") > 0
+	var in_ex_stage: bool = npc.relationship_stage == NPCManager.RelationshipStage.DIVORCED or npc.relationship_stage == NPCManager.RelationshipStage.EX
+	apologize_button.visible = has_upgrade and in_ex_stage
+	if not apologize_button.visible:
+			return
+	var cost: int = logic.get_apologize_cost()
+	apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_number(cost)
+	apologize_button.disabled = StatManager.get_stat("ex", 0.0) < float(cost)
 
 func _update_locked_in_button() -> void:
-		if not is_instance_valid(locked_in_button):
-				return
-		if npc.locked_in_connection:
-				locked_in_button.queue_free()
+	if not is_instance_valid(locked_in_button):
+		return
+	if npc.locked_in_connection:
+		locked_in_button.queue_free()
 
 
 # ---------------------------- Button handlers ----------------------------
 
 func _on_gift_pressed() -> void:
-		if logic.try_gift():
-				_update_affinity_bar()
-				_update_buttons_text()
-				_show_quip("gift")
+	if logic.try_gift():
+		_update_affinity_bar()
+		_update_buttons_text()
+		_show_quip("gift")
 
 func _on_gift_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
@@ -427,12 +426,11 @@ func _on_gift_button_gui_input(event: InputEvent) -> void:
 		#event.accept()
 
 func _on_date_pressed() -> void:
-
-		if logic.try_date():
-				_update_relationship_bar()
-				_update_buttons_text()
-				_update_next_stage_button()
-				_show_quip("date")
+	if logic.try_date():
+		_update_relationship_bar()
+		_update_buttons_text()
+		_update_next_stage_button()
+		_show_quip("date")
 
 func _on_date_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
@@ -445,11 +443,11 @@ func _on_date_button_gui_input(event: InputEvent) -> void:
 
 
 func _on_love_pressed() -> void:
-		var now_m: int = TimeManager.get_now_minutes()
-		logic.apply_love(now_m)
-		_update_affinity_bar()
-		_update_love_button()
-		_show_quip("love")
+	var now_m: int = TimeManager.get_now_minutes()
+	logic.apply_love(now_m)
+	_update_affinity_bar()
+	_update_love_button()
+	_show_quip("love")
 
 func _on_breakup_pressed() -> void:
 	breakup_preview = logic.preview_breakup_reward()
@@ -519,62 +517,62 @@ func _on_next_stage_confirm_alt_pressed() -> void:
 	_show_quip("next level")
 
 func _on_next_stage_confirm_no_pressed() -> void:
-		next_stage_confirm.visible = false
-		_update_next_stage_button()
+	next_stage_confirm.visible = false
+	_update_next_stage_button()
 
 func _on_exclusivity_button_pressed() -> void:
-				logic.toggle_exclusivity()
-				_update_exclusivity_label()
-				_update_exclusivity_button()
-				_update_relationship_status_label()
-				_update_affinity_bar()
+	logic.toggle_exclusivity()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_relationship_status_label()
+	_update_affinity_bar()
 
 func _on_locked_in_button_pressed() -> void:
-		npc.locked_in_connection = true
-		_persist_fields({"locked_in_connection": npc.locked_in_connection})
-		if is_instance_valid(locked_in_button):
-				locked_in_button.queue_free()
+	npc.locked_in_connection = true
+	_persist_fields({"locked_in_connection": npc.locked_in_connection})
+	if is_instance_valid(locked_in_button):
+		locked_in_button.queue_free()
 
 func _load_quips() -> void:
-		if _quips.size() == 0:
-				var file = FileAccess.open(QUIPS_PATH, FileAccess.READ)
-				if file:
-						_quips = JSON.parse_string(file.get_as_text())
+	if _quips.size() == 0:
+		var file = FileAccess.open(QUIPS_PATH, FileAccess.READ)
+		if file:
+			_quips = JSON.parse_string(file.get_as_text())
 
 func _pick_variant(text: String, rng: RandomNumberGenerator) -> String:
-		if text.is_empty():
-				return ""
-		var parts = text.split(";;")
-		return parts[rng.randi_range(0, parts.size() - 1)]
+	if text.is_empty():
+		return ""
+	var parts = text.split(";;")
+	return parts[rng.randi_range(0, parts.size() - 1)]
 
 func _select_quip(action: String) -> String:
-		_load_quips()
-		if npc == null:
-				return ""
-		var stage_str = STAGE_NAMES[npc.relationship_stage].to_lower()
-		var exclusivity_str: String
-		if npc.exclusivity_core == NPCManager.ExclusivityCore.POLY:
-			exclusivity_str = "poly"
-		else:
-			exclusivity_str = "monog"
-		var rng = RNGManager.npc_manager.get_rng()
-		var candidates: Array = []
-		for entry in _quips:
-				if entry.get("action", "") not in [action, "any"]:
-						continue
-				if entry.get("stage", "any") not in [stage_str, "any"]:
-						continue
-				if entry.get("exclusivity", "any") not in [exclusivity_str, "any"]:
-						continue
-				candidates.append(entry)
-		if candidates.is_empty():
-				return ""
-		var chosen: Dictionary = candidates[rng.randi_range(0, candidates.size() - 1)]
-		var prefix = _pick_variant(chosen.get("prefix", ""), rng)
-		var core = _pick_variant(chosen.get("core", ""), rng)
-		var suffix = _pick_variant(chosen.get("suffix", ""), rng)
-		var line = prefix + core + suffix
-		return MarkupParser.parse(line, npc)
+	_load_quips()
+	if npc == null:
+			return ""
+	var stage_str = STAGE_NAMES[npc.relationship_stage].to_lower()
+	var exclusivity_str: String
+	if npc.exclusivity_core == NPCManager.ExclusivityCore.POLY:
+		exclusivity_str = "poly"
+	else:
+		exclusivity_str = "monog"
+	var rng = RNGManager.npc_manager.get_rng()
+	var candidates: Array = []
+	for entry in _quips:
+			if entry.get("action", "") not in [action, "any"]:
+					continue
+			if entry.get("stage", "any") not in [stage_str, "any"]:
+					continue
+			if entry.get("exclusivity", "any") not in [exclusivity_str, "any"]:
+					continue
+			candidates.append(entry)
+	if candidates.is_empty():
+			return ""
+	var chosen: Dictionary = candidates[rng.randi_range(0, candidates.size() - 1)]
+	var prefix = _pick_variant(chosen.get("prefix", ""), rng)
+	var core = _pick_variant(chosen.get("core", ""), rng)
+	var suffix = _pick_variant(chosen.get("suffix", ""), rng)
+	var line = prefix + core + suffix
+	return MarkupParser.parse(line, npc)
 
 func _show_quip(action: String) -> void:
 	if _active_speech_bubble and is_instance_valid(_active_speech_bubble):
@@ -624,10 +622,10 @@ func _on_costs_changed(_gift: float, _date: float) -> void:
 	_update_buttons_text()
 
 func _on_cooldown_changed(_ready_at: int) -> void:
-		_update_love_button()
+	_update_love_button()
 
 func _on_minute_passed(_m: int) -> void:
-		_update_love_button()
+	_update_love_button()
 
 func _on_exclusivity_changed(_core: int) -> void:
 	_update_relationship_status_label()
@@ -649,47 +647,47 @@ func _on_stat_changed(stat: String, _value: Variant) -> void:
 		_update_apologize_button()
 
 func _on_npc_affinity_changed(idx: int, _value: float) -> void:
-				if idx != npc_idx:
-								return
-				_sync_from_manager()
-				_update_affinity_bar()
+	if idx != npc_idx:
+		return
+	_sync_from_manager()
+	_update_affinity_bar()
 
 func _on_npc_equilibrium_changed(idx: int, _value: float) -> void:
-								if idx != npc_idx:
-																return
-								_sync_from_manager()
-								_update_affinity_bar()
+	if idx != npc_idx:
+		return
+	_sync_from_manager()
+	_update_affinity_bar()
 
 func _on_npc_exclusivity_core_changed(idx: int, _old_core: int, _new_core: int) -> void:
-								if idx != npc_idx:
-																return
-								_sync_from_manager()
-								_update_exclusivity_label()
-								_update_exclusivity_button()
-								_update_relationship_status_label()
+	if idx != npc_idx:
+		return
+	_sync_from_manager()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_relationship_status_label()
 
 func _on_npc_stage_changed(idx: int, _old_stage: int, _new_stage: int) -> void:
-		if idx != npc_idx:
-				return
-		_sync_from_manager()
-		# Re-run all UI derived from stage.
-		_update_relationship_bar()
-		_update_love_button()
-		_update_relationship_status_label()
-		_update_exclusivity_label()
-		_update_exclusivity_button()
-		_update_next_stage_button()
-		_update_apologize_button()
+	if idx != npc_idx:
+			return
+	_sync_from_manager()
+	# Re-run all UI derived from stage.
+	_update_relationship_bar()
+	_update_love_button()
+	_update_relationship_status_label()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_next_stage_button()
+	_update_apologize_button()
 
 func _on_cheating_detected(primary_idx: int, other_idx: int) -> void:
-		# If this view’s NPC is either the one marked cheating or the “other”, refresh.
-		if primary_idx != npc_idx and other_idx != npc_idx:
-				return
-		_sync_from_manager()
-		_update_relationship_status_label()
-		_update_exclusivity_label()
-		_update_exclusivity_button()
-		_update_affinity_bar()
+	# If this view’s NPC is either the one marked cheating or the “other”, refresh.
+	if primary_idx != npc_idx and other_idx != npc_idx:
+			return
+	_sync_from_manager()
+	_update_relationship_status_label()
+	_update_exclusivity_label()
+	_update_exclusivity_button()
+	_update_affinity_bar()
 
 func _sync_from_manager() -> void:
 	if npc_idx == -1:
