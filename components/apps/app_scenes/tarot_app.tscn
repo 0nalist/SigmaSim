@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ba3fd3816f1fd"]
+[gd_scene load_steps=11 format=3 uid="uid://ba3fd3816f1fd"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://cvgwn14oqkvd5" path="res://components/apps/tarot/tarot_app.gd" id="2"]
@@ -7,7 +7,6 @@
 [ext_resource type="Shader" uid="uid://dp2anhkkaegyq" path="res://assets/shaders/constellation_shader.gdshader" id="4_8tbyh"]
 [ext_resource type="PackedScene" uid="uid://cbg1lyah31ou3" path="res://components/apps/tarot/tarot_upgrades.tscn" id="4_ye0rw"]
 [ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="5_6i816"]
-[ext_resource type="PackedScene" uid="uid://bnh3x1n0cg4qr" path="res://components/ui/pane_nav_bar.tscn" id="6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6i816"]
 shader = ExtResource("4_8tbyh")
@@ -74,32 +73,46 @@ theme_override_constants/separation = 8
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PaneNavBar" parent="MarginContainer/VBox/ContentHBox" instance=ExtResource("6")]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox/ContentHBox"]
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 2
+size_flags_stretch_ratio = 0.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tabbar")
 
-[node name="DrawTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PaneNavBar/TabBar"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/ContentHBox/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TabBar" type="VBoxContainer" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="DrawTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "Daily Draw"
 
-[node name="ReadingsTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PaneNavBar/TabBar"]
+[node name="ReadingsTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = "Readings"
 
-[node name="CollectionTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PaneNavBar/TabBar"]
+[node name="CollectionTabButton" type="Button" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer/TabBar"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 toggle_mode = true
 text = " Collection "
 
-[node name="Control" type="Control" parent="MarginContainer/VBox/ContentHBox/PaneNavBar/TabBar"]
+[node name="Control" type="Control" parent="MarginContainer/VBox/ContentHBox/PanelContainer/MarginContainer/TabBar"]
 custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 
