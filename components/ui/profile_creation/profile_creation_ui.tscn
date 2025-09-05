@@ -5,27 +5,17 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clxn6"]
 bg_color = Color(0, 0.435981, 0.736537, 1)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(0, 0.616993, 0.765051, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uqby"]
-bg_color = Color(0, 0.670588, 0.968627, 1)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.233148, 0.457125, 1, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjw8o"]
 
 [node name="ProfileCreationUI" type="Control"]
 custom_minimum_size = Vector2(800, 600)
@@ -63,7 +53,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_0uqby")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjw8o")
 
 [node name="MarginContainer" type="MarginContainer" parent="BackgroundPanel/ProfileCreationPanel"]
 layout_mode = 2

@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cj4esi0q3mf2"]
+[gd_scene load_steps=12 format=3 uid="uid://cj4esi0q3mf2"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1_8iipa"]
 [ext_resource type="Script" uid="uid://cvvi4t7jawoa5" path="res://components/apps/alpha_instant_messenger/alpha_instant_messenger.gd" id="1_44ejv"]
 [ext_resource type="Texture2D" uid="uid://dhk1m8h1q7exf" path="res://assets/logos/AIMLogoMaster.png" id="3_8iipa"]
 [ext_resource type="Texture2D" uid="uid://bt7khdre4vr0l" path="res://assets/ui/buttons/redbuttonpressed.png" id="4_bgumh"]
 [ext_resource type="Shader" uid="uid://n1vlc8cxnun0" path="res://assets/shaders/warp_shader.gdshader" id="4_eppfh"]
+[ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="5_eppfh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w0u3w"]
 shader = ExtResource("4_eppfh")
@@ -64,9 +65,23 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "ALPHA
-INSTANT
-MESSENGER"
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("5_eppfh")
+theme_override_font_sizes/font_size = 20
+text = "ALPHA"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_eppfh")
+theme_override_font_sizes/font_size = 14
+text = "INSTANT MESSENGER"
 horizontal_alignment = 1
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
@@ -85,8 +100,7 @@ size_flags_vertical = 3
 
 [node name="ContactButtonTemplate" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/ContactsVBox"]
 unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(170, 0)
+custom_minimum_size = Vector2(170, 34)
 layout_mode = 2
 focus_mode = 0
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
