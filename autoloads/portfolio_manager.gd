@@ -46,7 +46,7 @@ const CREDIT_REQUIREMENTS := {
 	"gpu": 700,
 	"pay_down_credit": 8000,
 	"stock": 800,
-	"gift": 500,
+	"gift": 600,
 	"date": 650,
 	"proposal": 800,
 	"bills": 450,
