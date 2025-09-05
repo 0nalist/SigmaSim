@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://5a565f5b9e1d"]
+
+[ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
+[ext_resource type="Script" path="res://components/apps/ever_young/ever_young.gd" id="2"]
+[ext_resource type="Script" uid="uid://bkxfxbb443cnq" path="res://components/ui/pane_nav_bar.gd" id="3"]
+[ext_resource type="PackedScene" uid="uid://c45fe481b711" path="res://components/apps/ever_young/ever_young_summary_tab.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://6de0abef65d1" path="res://components/apps/ever_young/ever_young_procedures_tab.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://7eb52a2dde5a" path="res://components/apps/ever_young/ever_young_rx_tab.tscn" id="6"]
+
+[node name="EverYoung" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1")
+script = ExtResource("2")
+window_icon = null
+app_description = "Track procedures and prescriptions"
+app_cost = 5
+window_title = "EverYoung"
+default_window_size = Vector2(500, 400)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="PaneNavBar" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3")
+
+[node name="SummaryView" parent="MarginContainer/VBoxContainer" instance=ExtResource("4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProceduresView" parent="MarginContainer/VBoxContainer" instance=ExtResource("5")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RxView" parent="MarginContainer/VBoxContainer" instance=ExtResource("6")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3

@@ -24,6 +24,7 @@ var app_registry := {
 	"OwerView": preload("res://components/apps/app_scenes/ower_view.tscn"),
 	"LifeStylist": preload("res://components/apps/app_scenes/life_stylist.tscn"),
 	"EarlyBird": preload("res://components/apps/early_bird/early_bird.tscn"),
+	"EverYoung": preload("res://components/apps/app_scenes/ever_young.tscn"),
 	"Fumble": preload("res://components/apps/fumble/fumble.tscn"),
 	"Daterbase": preload("res://components/apps/daterbase/daterbase.tscn"),
 	"NewYou": preload("res://components/apps/new_you/new_you.tscn"),
