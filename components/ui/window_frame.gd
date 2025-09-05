@@ -293,8 +293,13 @@ func _clamp_to_screen() -> void:
 		var taskbar_height = 0
 		if WindowManager and WindowManager.has_method("get_taskbar_height"):
 				taskbar_height = WindowManager.get_taskbar_height()
+		var topbar_height = 0
+		if WindowManager and WindowManager.has_method("get_topbar_height"):
+					topbar_height = WindowManager.get_topbar_height()
 
-		var min_position = Vector2(SNAP_MARGIN - size.x, SNAP_MARGIN - size.y)
+
+		var min_position = Vector2(SNAP_MARGIN - size.x, topbar_height)
+
 		var max_position = Vector2(screen_size.x - SNAP_MARGIN, screen_size.y - taskbar_height - SNAP_MARGIN)
 
 		position = position.clamp(min_position, max_position)
