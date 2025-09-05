@@ -815,14 +815,15 @@ func get_last_credit_txn_ago() -> String:
 	return "—"
 
 func get_student_loan_summary() -> Dictionary:
-	var out: Dictionary = {}
-	out["principal"] = 0.0
-	out["interest_rate"] = 0.0
-	out["accrued_interest"] = 0.0
-	out["next_due"] = ""
-	out["min_due"] = 0.0
-	out["autopay"] = false
-	return out
+       var out: Dictionary = {}
+       out["principal"] = PortfolioManager.get_student_loans()
+       # Annual percentage rate shown as a percent (e.g. 10 for 10%).
+       out["interest_rate"] = PortfolioManager.STUDENT_LOAN_INTEREST_DAILY * 365.0 * 100.0
+       out["accrued_interest"] = 0.0
+       out["next_due"] = ""
+       out["min_due"] = PortfolioManager.get_min_student_loan_payment()
+       out["autopay"] = false
+       return out
 
 func pay_student_loan(amount: float) -> void:
 	pay_debt("Student Loan", amount)
