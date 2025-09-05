@@ -6,6 +6,8 @@ signal player_broke_up
 
 const BASE_GIFT_COST: float = 1.0
 const BASE_DATE_COST: float = 10.0
+# Maximum love cooldown duration (24 hours in minutes)
+const MAX_LOVE_COOLDOWN: int = 24 * 60
 
 
 
@@ -282,12 +284,18 @@ static func from_dict(data: Dictionary) -> NPC:
 	# Older saves stored the absolute game-minute when the cooldown ended.
 	# Newer saves store only the remaining minutes. Detect which format was
 	# used and reconstruct the proper absolute timestamp.
-	var _saved_cd: int = _safe_int(data.get("love_cooldown"), 0)
-	if _saved_cd > 24 * 60:
-			npc.love_cooldown = _saved_cd
-	else:
-			var _now: int = TimeManager.get_now_minutes()
-			npc.love_cooldown = _now + _saved_cd
+        var _saved_cd: int = _safe_int(data.get("love_cooldown"), 0)
+        if Engine.has_singleton("TimeManager"):
+                var _now: int = TimeManager.get_now_minutes()
+                if _saved_cd > MAX_LOVE_COOLDOWN:
+                        npc.love_cooldown = _saved_cd
+                else:
+                        npc.love_cooldown = _now + _saved_cd
+                # Prevent values more than 24h into the future
+                npc.love_cooldown = min(npc.love_cooldown, _now + MAX_LOVE_COOLDOWN)
+        else:
+                # Without a TimeManager, treat the stored value as relative minutes
+                npc.love_cooldown = clamp(_saved_cd, 0, MAX_LOVE_COOLDOWN)
 
 	npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
 	npc.income= _safe_int(data.get("income"), 0)
@@ -332,13 +340,12 @@ func get_full_name() -> String:
 	return "%s %s. %s" % [first_name, middle_initial, last_name]
 
 func _get_love_cooldown() -> float:
-	var now_minutes: float = 0.0
-	if Engine.has_singleton("TimeManager"):
-		now_minutes = TimeManager.get_now_minutes()
-	var result: float = love_cooldown - now_minutes
-	if result < 0.0:
-		result = 0.0
-	return result
+        if Engine.has_singleton("TimeManager"):
+                var now_minutes: float = TimeManager.get_now_minutes()
+                return clamp(love_cooldown - now_minutes, 0, MAX_LOVE_COOLDOWN)
+        # If the TimeManager is unavailable, treat love_cooldown as already
+        # relative and clamp it directly.
+        return clamp(love_cooldown, 0, MAX_LOVE_COOLDOWN)
 
 
 
