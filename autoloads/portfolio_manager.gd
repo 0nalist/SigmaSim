@@ -142,11 +142,13 @@ func _ready():
 	StatManager.connect_to_stat("credit_used", self, "_on_credit_changed")
 	StatManager.connect_to_stat("credit_limit", self, "_on_credit_changed")
 	StatManager.connect_to_stat("student_loans", self, "_on_student_loans_changed")
+	StatManager.connect_to_stat("bonus_credit_score", self, "_on_bonus_credit_score_changed")
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 	TimeManager.day_passed.connect(_on_day_passed)
 	_on_cash_changed(get_cash())
 	_on_credit_changed(get_credit_used())
 	_on_student_loans_changed(get_student_loans())
+	_on_bonus_credit_score_changed(StatManager.get_stat("bonus_credit_score"))
 
 ## --- Spending Router
 func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool = false, credit_only: bool = false) -> bool:
@@ -303,9 +305,8 @@ func _recalculate_credit_score():
 	# Optional: reward low debt
 	#if get_student_loans() == 0:
 	#	base_score += 20
-	
 	#TODO: Lower score when payday loans are taken
-
+	base_score += int(StatManager.get_stat("bonus_credit_score"))
 	var new_score: int = clamp(base_score, 300, 850)
 	if new_score != credit_score:
 		credit_score = new_score
@@ -352,6 +353,9 @@ func _on_student_loans_changed(_value: float) -> void:
 		_update_student_loan_min_payment()
 		emit_signal("resource_changed", "student_loans", get_student_loans())
 		emit_signal("resource_changed", "debt", get_total_debt())
+		_recalculate_credit_score()
+
+func _on_bonus_credit_score_changed(_value: float) -> void:
 		_recalculate_credit_score()
 
 
