@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bkop7kx52hmpp"]
+[gd_scene load_steps=7 format=3 uid="uid://bkop7kx52hmpp"]
 
 [ext_resource type="Script" uid="uid://ce5ge1lmsdy7g" path="res://components/apps/ower_view/ower_view.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="2"]
 [ext_resource type="Script" uid="uid://bflpybq1kvp4a" path="res://components/apps/ower_view/credit_score_bar.gd" id="3"]
 [ext_resource type="Shader" uid="uid://cn7uadn4j8e8u" path="res://assets/shaders/brown_warp_shader.gdshader" id="3_j5hg3"]
+[ext_resource type="PackedScene" uid="uid://bg4qg6o6zj2oi" path="res://components/upgrade_scenes/owerview_upgrade_ui.tscn" id="4_owupg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_aemln"]
 shader = ExtResource("3_j5hg3")
@@ -28,6 +29,7 @@ window_title = "OwerView"
 window_icon = ExtResource("2")
 default_window_size = Vector2(600, 500)
 default_position = "left"
+upgrade_pane = ExtResource("4_owupg")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_aemln")

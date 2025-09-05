@@ -1,0 +1,19 @@
+{
+    "id": "owerview_credit_up",
+    "name": "Credit Up",
+    "description": "Raises your credit score by 10 points per level.",
+    "effects": [],
+    "systems": [
+        "OwerView"
+    ],
+    "dependencies": [],
+    "cost_per_level": {
+        "cash": 350
+    },
+    "scale_by_formula": true,
+    "cost_formula": {
+        "cash": "base_cost[\"cash\"] * pow(2, level-1)"
+    },
+    "max_level": 20,
+    "repeatable": true
+}

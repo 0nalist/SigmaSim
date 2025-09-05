@@ -51,7 +51,7 @@ const CREDIT_REQUIREMENTS := {
 	"proposal": 800,
 	"bills": 450,
 	"EarlyBird": 550,
-"upgrades": 750,
+	"upgrades": 750,
 
 }
 
@@ -144,6 +144,7 @@ func _ready():
 	StatManager.connect_to_stat("student_loans", self, "_on_student_loans_changed")
 	MarketManager.stock_price_updated.connect(_on_stock_price_updated)
 	TimeManager.day_passed.connect(_on_day_passed)
+	UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
 	_on_cash_changed(get_cash())
 	_on_credit_changed(get_credit_used())
 	_on_student_loans_changed(get_student_loans())
@@ -306,13 +307,18 @@ func _recalculate_credit_score():
 	
 	#TODO: Lower score when payday loans are taken
 
-	var new_score: int = clamp(base_score, 300, 850)
+	var bonus := UpgradeManager.get_level("owerview_credit_up") * 10
+	var new_score: int = clamp(base_score + bonus, 300, 850)
 	if new_score != credit_score:
 		credit_score = new_score
 		emit_signal("credit_score_updated", credit_score)
 		emit_signal("resource_changed", "credit_score", credit_score)
 	else:
 		credit_score = new_score
+
+func _on_upgrade_purchased(id: String, _level: int) -> void:
+	if id == "owerview_credit_up":
+		_recalculate_credit_score()
 
 func pay_down_credit(amount: float) -> bool:
 	if attempt_spend(amount, CREDIT_REQUIREMENTS["pay_down_credit"]):
@@ -418,7 +424,7 @@ func get_crypto_amount(symbol: String) -> float:
 
 func add_crypto(symbol: String, amount: float) -> void:
 	crypto_owned[symbol] = crypto_owned.get(symbol, 0.0) + amount
-	emit_signal("resource_changed", symbol, crypto_owned[symbol])
+		emit_signal("resource_changed", symbol, crypto_owned[symbol])
 
 func sell_crypto(symbol: String, amount: float = 1) -> bool:
 	var owned := get_crypto_amount(symbol)
@@ -431,7 +437,7 @@ func sell_crypto(symbol: String, amount: float = 1) -> bool:
 
 	crypto_owned[symbol] = owned - amount
 	add_cash(amount * crypto.price)
-	emit_signal("resource_changed", symbol, crypto_owned[symbol])
+		emit_signal("resource_changed", symbol, crypto_owned[symbol])
 	return true
 
 func get_crypto_total() -> float:
@@ -507,7 +513,7 @@ func reset():
 	set_credit_interest_rate(0.3)
 	set_student_loans(0.0)
 	set_passive_income(0.0)
-	credit_score = 700
+		credit_score = 700
 	student_loan_min_payment = 0.0
 
 	stocks_owned.clear()
