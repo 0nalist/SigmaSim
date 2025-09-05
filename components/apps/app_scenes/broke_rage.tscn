@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://1jylhdkewo5k"]
+[gd_scene load_steps=16 format=3 uid="uid://1jylhdkewo5k"]
 
 [ext_resource type="Texture2D" uid="uid://bx8di1m28cktr" path="res://assets/money_pixeled.png" id="1_m7phi"]
 [ext_resource type="Script" uid="uid://dvxyytygay71s" path="res://components/apps/broke_rage/broke_rage_ui.gd" id="2_o2yqo"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://b8wfu5cxh5oyw" path="res://components/ui/chart_component.gd" id="7_t3xq1"]
 [ext_resource type="PackedScene" uid="uid://m61kgxdhy7hc" path="res://components/apps/broke_rage/stock_row.tscn" id="10_htng3"]
 [ext_resource type="PackedScene" uid="uid://b86c78q3ogadc" path="res://components/upgrade_scenes/brokerage_upgrade_ui.tscn" id="11_broker"]
+[ext_resource type="Script" uid="uid://bkxfxbb443cnq" path="res://components/ui/pane_nav_bar.gd" id="12_navbar"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcm1f"]
 texture = ExtResource("1_m7phi")
@@ -107,6 +108,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="PaneNavBar" type="PanelContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("12_navbar")
+
 [node name="SummaryView" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -144,40 +150,6 @@ poll_hz = 17
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary"]
 layout_mode = 2
 
-[node name="TabsVBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer"]
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_gnfo0")
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="TabBar" type="VBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="SummaryTabButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer/MarginContainer/TabBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Summary"
-
-[node name="ChartsTabButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer/MarginContainer/TabBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Charts"
-
-[node name="Control" type="Control" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/TabsVBoxContainer/PanelContainer/MarginContainer/TabBar"]
-custom_minimum_size = Vector2(0, 6)
-layout_mode = 2
 
 [node name="BalanceLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
@@ -277,21 +249,6 @@ theme_override_constants/margin_bottom = 10
 [node name="ChartsTopBar" type="HBoxContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="SummaryTabButtonCharts" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/PanelContainer/MarginContainer/ChartsTopBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Summary"
-
-[node name="ChartsTabButtonCharts" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/PanelContainer/MarginContainer/ChartsTopBar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-text = "Charts"
-
 [node name="ChartsCashLabel" type="Label" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/PanelContainer/MarginContainer/ChartsTopBar"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -307,5 +264,3 @@ custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 
 [connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/OwerViewButton" to="." method="_on_ower_view_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/PanelContainer/MarginContainer/ChartsTopBar/SummaryTabButtonCharts" to="." method="_on_summary_tab_pressed"]
-[connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/ChartsView/PanelContainer/MarginContainer/ChartsTopBar/ChartsTabButtonCharts" to="." method="_on_charts_tab_pressed"]
