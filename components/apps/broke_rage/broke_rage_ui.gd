@@ -12,13 +12,9 @@ class_name BrokeRage
 
 @onready var passive_income_label: Label = %PassiveIncomeLabel
 
-@onready var summary_tab_button: Button = %SummaryTabButton
-@onready var charts_tab_button: Button = %ChartsTabButton
+@onready var nav_bar: PaneNavBar = %PaneNavBar
 @onready var summary_view: VBoxContainer = %SummaryView
 @onready var charts_view: VBoxContainer = %ChartsView
-
-@onready var charts_summary_tab_button: Button = %SummaryTabButtonCharts
-@onready var charts_charts_tab_button: Button = %ChartsTabButtonCharts
 @onready var charts_cash_label: Label = %ChartsCashLabel
 @onready var charts_portfolio_label: Label = %ChartsPortfolioLabel
 
@@ -26,17 +22,17 @@ class_name BrokeRage
 var stock_popup_scene: PackedScene = preload("res://components/popups/stock_popup_ui.tscn")
 
 func _ensure_charts_content() -> Control:
-		var existing: Node = charts_view.get_node_or_null("ChartsContent")
-		if existing != null and existing is Control:
-				return existing as Control
+	var existing: Node = charts_view.get_node_or_null("ChartsContent")
+	if existing != null and existing is Control:
+		return existing as Control
 
-		var content: VBoxContainer = VBoxContainer.new()
-		content.name = "ChartsContent"
-		content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		content.add_theme_constant_override("separation", 16)
-		charts_view.add_child(content)
-		return content
+	var content: VBoxContainer = VBoxContainer.new()
+	content.name = "ChartsContent"
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 16)
+	charts_view.add_child(content)
+	return content
 
 
 
@@ -60,8 +56,9 @@ func _ready() -> void:
 
 	net_worth_chart.add_series("net_worth", "Net Worth")
 
-	summary_tab_button.pressed.connect(_on_summary_tab_pressed)
-	charts_tab_button.pressed.connect(_on_charts_tab_pressed)
+	nav_bar.add_nav_button("Summary", "Summary")
+	nav_bar.add_nav_button("Charts", "Charts")
+	nav_bar.tab_selected.connect(func(tab_id: String): _activate_tab(tab_id))
 
 	await get_tree().process_frame
 	# Initial UI update
@@ -72,7 +69,7 @@ func _ready() -> void:
 	MarketManager.refresh_prices()
 
 	_build_charts_view()
-	_activate_tab(&"Summary")
+	nav_bar.set_active("Summary")
 
 func _on_cash_updated(_cash: float) -> void:
 	var cash = PortfolioManager.cash
@@ -103,9 +100,9 @@ func _on_investments_updated(amount: float):
 	#TODO: ^Fix: Invalid assignment of property or key 'text' with value of type 'String' on a base object of type 'previously freed'.
 
 	if delta > 0.01:
-			flash_invested_label(Color.GREEN)
+		flash_invested_label(Color.GREEN)
 	elif delta < -0.01:
-			flash_invested_label(Color.RED)
+		flash_invested_label(Color.RED)
 	_add_net_worth_sample()
 
 func flash_invested_label(color: Color) -> void:
@@ -123,71 +120,46 @@ func _on_resource_changed(resource: String, _value: float) -> void:
 		_on_debt_updated()
 
 func _on_debt_updated() -> void:
-		debt_label.text = "Debt: $" + NumberFormatter.format_number(PortfolioManager.get_total_debt())
-		_add_net_worth_sample()
+	debt_label.text = "Debt: $" + NumberFormatter.format_number(PortfolioManager.get_total_debt())
+	_add_net_worth_sample()
 
 
 func _on_wallet_button_pressed() -> void:
-		WindowManager.launch_app_by_name("Wallet")
+	WindowManager.launch_app_by_name("Wallet")
 
 func _on_ower_view_button_pressed() -> void:
 
-		WindowManager.launch_app_by_name("OwerView")
+	WindowManager.launch_app_by_name("OwerView")
 
 
 func _activate_tab(tab_name: StringName) -> void:
 	if tab_name == &"Summary":
-		if is_instance_valid(summary_tab_button):
-			summary_tab_button.set_pressed(true)
-		if is_instance_valid(charts_tab_button):
-			charts_tab_button.set_pressed(false)
-		if is_instance_valid(charts_summary_tab_button):
-			charts_summary_tab_button.set_pressed(true)
-		if is_instance_valid(charts_charts_tab_button):
-			charts_charts_tab_button.set_pressed(false)
-
 		summary_view.visible = true
 		charts_view.visible = false
 	else:
-		if is_instance_valid(summary_tab_button):
-			summary_tab_button.set_pressed(false)
-		if is_instance_valid(charts_tab_button):
-			charts_tab_button.set_pressed(true)
-		if is_instance_valid(charts_summary_tab_button):
-			charts_summary_tab_button.set_pressed(false)
-		if is_instance_valid(charts_charts_tab_button):
-			charts_charts_tab_button.set_pressed(true)
-
 		summary_view.visible = false
 		charts_view.visible = true
 
 	_active_tab = tab_name
 
 
-func _on_summary_tab_pressed() -> void:
-		_activate_tab(&"Summary")
-
-func _on_charts_tab_pressed() -> void:
-		_activate_tab(&"Charts")
-
-
 func _build_charts_view() -> void:
-		# Only clear dynamic chart content, not the tab buttons or labels.
-		for child: Node in charts_content.get_children():
-				child.queue_free()
+	# Only clear dynamic chart content, not the tab buttons or labels.
+	for child: Node in charts_content.get_children():
+		child.queue_free()
 
-		var symbols := MarketManager.stock_market.keys()
-		for i in range(symbols.size()):
-				var symbol: String = symbols[i]
-				var stock: Stock = MarketManager.get_stock(symbol)
-				var popup: StockPopupUI = stock_popup_scene.instantiate()
-				popup.custom_minimum_size = Vector2(350, 150)
-				popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
-				popup.setup(stock)
-				charts_content.add_child(popup)
+	var symbols := MarketManager.stock_market.keys()
+	for i in range(symbols.size()):
+		var symbol: String = symbols[i]
+		var stock: Stock = MarketManager.get_stock(symbol)
+		var popup: StockPopupUI = stock_popup_scene.instantiate()
+		popup.custom_minimum_size = Vector2(350, 150)
+		popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		popup.setup(stock)
+		charts_content.add_child(popup)
 
-				if i < symbols.size() - 1:
-						var spacer: Control = Control.new()
-						spacer.custom_minimum_size = Vector2(0, 12)
-						charts_content.add_child(spacer)
+		if i < symbols.size() - 1:
+			var spacer: Control = Control.new()
+			spacer.custom_minimum_size = Vector2(0, 12)
+			charts_content.add_child(spacer)

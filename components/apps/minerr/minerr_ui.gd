@@ -13,12 +13,9 @@ var crypto_cards: Dictionary = {}
 @onready var new_gpu_price_label: Label = %NewGPUPriceLabel
 @onready var used_gpu_price_label: Label = %UsedGPUPriceLabel
 
-@onready var mine_tab_button: Button = %MineTabButton
-@onready var charts_tab_button: Button = %ChartsTabButton
+@onready var nav_bar: PaneNavBar = %PaneNavBar
 @onready var mine_view: VBoxContainer = %MineView
 @onready var charts_view: VBoxContainer = %ChartsView
-@onready var charts_mine_tab_button: Button = %MineTabButtonCharts
-@onready var charts_charts_tab_button: Button = %ChartsTabButtonCharts
 @onready var charts_cash_label: Label = %ChartsCashLabel
 @onready var charts_crypto_label: Label = %ChartsCryptoLabel
 @onready var charts_content: Control = _ensure_charts_content()
@@ -26,16 +23,16 @@ var crypto_cards: Dictionary = {}
 var crypto_popup_scene: PackedScene = preload("res://components/popups/crypto_popup_ui.tscn")
 
 func _ensure_charts_content() -> Control:
-		var existing: Node = charts_view.get_node_or_null("ChartsContent")
-		if existing != null and existing is Control:
-				return existing as Control
-		var content: VBoxContainer = VBoxContainer.new()
-		content.name = "ChartsContent"
-		content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		content.add_theme_constant_override("separation", 16)
-		charts_view.add_child(content)
-		return content
+	var existing: Node = charts_view.get_node_or_null("ChartsContent")
+	if existing != null and existing is Control:
+		return existing as Control
+	var content: VBoxContainer = VBoxContainer.new()
+	content.name = "ChartsContent"
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 16)
+	charts_view.add_child(content)
+	return content
 
 
 var sort_property: String = "name"
@@ -44,38 +41,33 @@ var _active_tab: StringName = &"Mine"
 
 
 func _ready() -> void:
-		MarketManager.crypto_market_ready.connect(refresh_cards_from_market)
-		if not MarketManager.crypto_market.is_empty():
-				refresh_cards_from_market()
+	MarketManager.crypto_market_ready.connect(refresh_cards_from_market)
+	if not MarketManager.crypto_market.is_empty():
+		refresh_cards_from_market()
 
-		MarketManager.crypto_price_updated.connect(_on_crypto_updated)
-		PortfolioManager.resource_changed.connect(_on_resource_changed)
-		PortfolioManager.cash_updated.connect(_on_cash_updated)
-		GPUManager.gpus_changed.connect(update_gpu_label)
-		#GPUManager.crypto_mined.connect(_on_crypto_mined)
-		GPUManager.gpu_prices_changed.connect(_on_gpu_prices_changed)
-		sort_property_option.add_item("Name")
-		sort_property_option.add_item("Price")
-		sort_property_option.add_item("Power Required")
-		sort_property_option.add_item("GPUs")
-		sort_property_option.add_item("Chance")
-		sort_property_option.add_item("Owned")
-		sort_property_option.item_selected.connect(_on_sort_property_selected)
-		sort_direction_button.pressed.connect(_on_sort_direction_button_pressed)
-		if not mine_tab_button.pressed.is_connected(_on_mine_tab_pressed):
-				mine_tab_button.pressed.connect(_on_mine_tab_pressed)
-		if not charts_tab_button.pressed.is_connected(_on_charts_tab_pressed):
-				charts_tab_button.pressed.connect(_on_charts_tab_pressed)
-		if not charts_mine_tab_button.pressed.is_connected(_on_mine_tab_pressed):
-				charts_mine_tab_button.pressed.connect(_on_mine_tab_pressed)
-		if not charts_charts_tab_button.pressed.is_connected(_on_charts_tab_pressed):
-				charts_charts_tab_button.pressed.connect(_on_charts_tab_pressed)
-		sort_direction_button.text = "\u2191"
-		update_gpu_label()
-		_build_charts_view()
-		_update_charts_labels()
-		_activate_tab(&"Mine")
-		buy_new_gpu_button.gui_input.connect(_on_buy_new_gpu_button_gui_input)
+	MarketManager.crypto_price_updated.connect(_on_crypto_updated)
+	PortfolioManager.resource_changed.connect(_on_resource_changed)
+	PortfolioManager.cash_updated.connect(_on_cash_updated)
+	GPUManager.gpus_changed.connect(update_gpu_label)
+	#GPUManager.crypto_mined.connect(_on_crypto_mined)
+	GPUManager.gpu_prices_changed.connect(_on_gpu_prices_changed)
+	sort_property_option.add_item("Name")
+	sort_property_option.add_item("Price")
+	sort_property_option.add_item("Power Required")
+	sort_property_option.add_item("GPUs")
+	sort_property_option.add_item("Chance")
+	sort_property_option.add_item("Owned")
+	sort_property_option.item_selected.connect(_on_sort_property_selected)
+	sort_direction_button.pressed.connect(_on_sort_direction_button_pressed)
+	nav_bar.add_nav_button("Mine", "Mine")
+	nav_bar.add_nav_button("Charts", "Charts")
+	nav_bar.tab_selected.connect(func(tab_id: String): _activate_tab(tab_id))
+	sort_direction_button.text = "\u2191"
+	update_gpu_label()
+	_build_charts_view()
+	_update_charts_labels()
+	nav_bar.set_active("Mine")
+	buy_new_gpu_button.gui_input.connect(_on_buy_new_gpu_button_gui_input)
 
 func refresh_cards_from_market() -> void:
 	# Clear out any old cards
@@ -172,10 +164,10 @@ func _on_buy_used_gpu_button_pressed() -> void:
 
 
 func _on_buy_new_gpu_button_pressed() -> void:
-		if GPUManager.buy_gpu():
-				update_gpu_label()
-		else:
-				print("Could not purchase GPU (insufficient funds).")
+	if GPUManager.buy_gpu():
+		update_gpu_label()
+	else:
+		print("Could not purchase GPU (insufficient funds).")
 
 func _on_buy_new_gpu_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
@@ -185,20 +177,20 @@ func _on_buy_new_gpu_button_gui_input(event: InputEvent) -> void:
 			print("Could not purchase GPU (insufficient credit).")
 
 func _on_sort_property_selected(index: int) -> void:
-		match index:
-				0:
-						sort_property = "name"
-				1:
-						sort_property = "price"
-				2:
-						sort_property = "power_required"
-				3:
-						sort_property = "gpus"
-				4:
-						sort_property = "chance"
-				5:
-						sort_property = "owned"
-		_sort_cards()
+	match index:
+		0:
+			sort_property = "name"
+		1:
+			sort_property = "price"
+		2:
+			sort_property = "power_required"
+		3:
+			sort_property = "gpus"
+		4:
+			sort_property = "chance"
+		5:
+			sort_property = "owned"
+	_sort_cards()
 
 func _on_sort_direction_button_pressed() -> void:
 	sort_ascending = not sort_ascending
@@ -217,97 +209,75 @@ func _sort_cards() -> void:
 
 
 func _compare_cards(a: CryptoCard, b: CryptoCard) -> bool:
-		var val_a
-		var val_b
-		match sort_property:
-				"name":
-						val_a = a.crypto.display_name
-						val_b = b.crypto.display_name
-				"price":
-						val_a = a.crypto.price
-						val_b = b.crypto.price
-				"power_required":
-						val_a = a.crypto.power_required
-						val_b = b.crypto.power_required
-				"gpus":
-						val_a = GPUManager.get_gpu_count_for(a.crypto.symbol)
-						val_b = GPUManager.get_gpu_count_for(b.crypto.symbol)
-				"chance":
-						val_a = a.calculate_block_chance()
-						val_b = b.calculate_block_chance()
-				"owned":
-						val_a = PortfolioManager.get_crypto_amount(a.crypto.symbol)
-						val_b = PortfolioManager.get_crypto_amount(b.crypto.symbol)
-				_:
-						val_a = 0
-						val_b = 0
-		if sort_ascending:
-				return val_a < val_b
-		else:
-				return val_a > val_b
+	var val_a
+	var val_b
+	match sort_property:
+		"name":
+			val_a = a.crypto.display_name
+			val_b = b.crypto.display_name
+		"price":
+			val_a = a.crypto.price
+			val_b = b.crypto.price
+		"power_required":
+			val_a = a.crypto.power_required
+			val_b = b.crypto.power_required
+		"gpus":
+			val_a = GPUManager.get_gpu_count_for(a.crypto.symbol)
+			val_b = GPUManager.get_gpu_count_for(b.crypto.symbol)
+		"chance":
+			val_a = a.calculate_block_chance()
+			val_b = b.calculate_block_chance()
+		"owned":
+			val_a = PortfolioManager.get_crypto_amount(a.crypto.symbol)
+			val_b = PortfolioManager.get_crypto_amount(b.crypto.symbol)
+		_:
+			val_a = 0
+			val_b = 0
+	if sort_ascending:
+		return val_a < val_b
+	else:
+		return val_a > val_b
 
 func debug_dump_cards() -> void:
-		print("-- Minerr cards --")
-		for symbol in crypto_cards.keys():
-				var card: CryptoCard = crypto_cards[symbol]
-				if card.crypto != null:
-						var c: Cryptocurrency = card.crypto
-						print(symbol, ",", c.display_name, ", price=", c.price, ", id=", str(c.get_instance_id()))
-				else:
-						print(symbol, ", card without crypto, id=", str(card.get_instance_id()))
+	print("-- Minerr cards --")
+	for symbol in crypto_cards.keys():
+		var card: CryptoCard = crypto_cards[symbol]
+		if card.crypto != null:
+			var c: Cryptocurrency = card.crypto
+			print(symbol, ",", c.display_name, ", price=", c.price, ", id=", str(c.get_instance_id()))
+		else:
+			print(symbol, ", card without crypto, id=", str(card.get_instance_id()))
 
 func _on_cash_updated(_cash: float) -> void:
-		_update_charts_labels()
+	_update_charts_labels()
 
 func _update_charts_labels() -> void:
-		charts_cash_label.text = "Cash: $" + NumberFormatter.format_number(PortfolioManager.cash)
-		charts_crypto_label.text = "Crypto: $" + NumberFormatter.format_number(PortfolioManager.get_crypto_total())
+	charts_cash_label.text = "Cash: $" + NumberFormatter.format_number(PortfolioManager.cash)
+	charts_crypto_label.text = "Crypto: $" + NumberFormatter.format_number(PortfolioManager.get_crypto_total())
 
 func _activate_tab(tab_name: StringName) -> void:
-		if tab_name == &"Mine":
-				if is_instance_valid(mine_tab_button):
-						mine_tab_button.set_pressed(true)
-				if is_instance_valid(charts_tab_button):
-						charts_tab_button.set_pressed(false)
-				if is_instance_valid(charts_mine_tab_button):
-						charts_mine_tab_button.set_pressed(true)
-				if is_instance_valid(charts_charts_tab_button):
-						charts_charts_tab_button.set_pressed(false)
-				mine_view.visible = true
-				charts_view.visible = false
-		else:
-				if is_instance_valid(mine_tab_button):
-						mine_tab_button.set_pressed(false)
-				if is_instance_valid(charts_tab_button):
-						charts_tab_button.set_pressed(true)
-				if is_instance_valid(charts_mine_tab_button):
-						charts_mine_tab_button.set_pressed(false)
-				if is_instance_valid(charts_charts_tab_button):
-						charts_charts_tab_button.set_pressed(true)
-				mine_view.visible = false
-				charts_view.visible = true
-		_active_tab = tab_name
-
-func _on_mine_tab_pressed() -> void:
-		_activate_tab(&"Mine")
-
-func _on_charts_tab_pressed() -> void:
-		_activate_tab(&"Charts")
+	if tab_name == &"Mine":
+		mine_view.visible = true
+		charts_view.visible = false
+	else:
+		mine_view.visible = false
+		charts_view.visible = true
+	_active_tab = tab_name
 
 func _build_charts_view() -> void:
-		for child: Node in charts_content.get_children():
-				child.queue_free()
-		var symbols := MarketManager.crypto_market.keys()
-		for i in range(symbols.size()):
-				var symbol: String = symbols[i]
-				var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
-				var popup: CryptoPopupUI = crypto_popup_scene.instantiate()
-				popup.custom_minimum_size = Vector2(350, 150)
-				popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
-				popup.setup(crypto)
-				charts_content.add_child(popup)
-				if i < symbols.size() - 1:
-						var spacer: Control = Control.new()
-						spacer.custom_minimum_size = Vector2(0, 12)
-						charts_content.add_child(spacer)
+	for child: Node in charts_content.get_children():
+		child.queue_free()
+	var symbols := MarketManager.crypto_market.keys()
+	for i in range(symbols.size()):
+		var symbol: String = symbols[i]
+		var crypto: Cryptocurrency = MarketManager.crypto_market.get(symbol)
+		var popup: CryptoPopupUI = crypto_popup_scene.instantiate()
+		popup.custom_minimum_size = Vector2(350, 150)
+		popup.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		popup.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		popup.setup(crypto)
+		charts_content.add_child(popup)
+		if i < symbols.size() - 1:
+			var spacer: Control = Control.new()
+			spacer.custom_minimum_size = Vector2(0, 12)
+			charts_content.add_child(spacer)

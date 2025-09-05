@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=23 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
@@ -12,6 +12,7 @@
 [ext_resource type="Shader" uid="uid://b3lch55daabv3" path="res://assets/shaders/wavy_walk_shader.gdshader" id="6_s425x"]
 [ext_resource type="Shader" uid="uid://d1b6le8xdh7hg" path="res://assets/shaders/spiral_domain_mapping_shader.gdshader" id="7_sjnvm"]
 [ext_resource type="Shader" uid="uid://bskyywxubgk54" path="res://assets/shaders/beyond_jupiter_shader.gdshader" id="8_o21b0"]
+[ext_resource type="Shader" uid="uid://kgtfwt6kawx4" path="res://assets/shaders/fade_in_out_shader.gdshader" id="9_pxemu"]
 [ext_resource type="Texture2D" uid="uid://bowu041csi5ai" path="res://assets/icons/power_icon.png" id="10_yke0b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
@@ -59,6 +60,10 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ux88p"]
+shader = ExtResource("9_pxemu")
+shader_parameter/speed = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yke0b"]
 shader = ExtResource("6_s425x")
@@ -163,6 +168,27 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 18
 text = "Locking in"
 
+[node name="SIGMASIMLabel" type="Label" parent="Panel"]
+material = SubResource("ShaderMaterial_ux88p")
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -910.0
+offset_right = 910.0
+offset_bottom = 320.0
+grow_horizontal = 2
+size_flags_vertical = 8
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_font_sizes/font_size = 256
+text = "SIGMASIM"
+horizontal_alignment = 1
+
 [node name="ProfilesContainer" type="VBoxContainer" parent="Panel"]
 unique_name_in_owner = true
 layout_mode = 1
@@ -177,6 +203,16 @@ offset_right = 85.5
 offset_bottom = 83.5
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="OmegaverseLabel" type="Label" parent="Panel/ProfilesContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_yke0b")
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 88
+text = "LOCK IN"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Control" type="Control" parent="Panel/ProfilesContainer"]
 custom_minimum_size = Vector2(0, 50)
@@ -221,6 +257,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="AOLLogoHolder"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -234,23 +271,15 @@ theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
 [node name="VBoxContainer" type="VBoxContainer" parent="AOLLogoHolder/MarginContainer2"]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
 [node name="Label2" type="Label" parent="AOLLogoHolder/MarginContainer2/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Enter the"
 horizontal_alignment = 1
-
-[node name="OmegaverseLabel" type="Label" parent="AOLLogoHolder/MarginContainer2/VBoxContainer"]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_yke0b")
-layout_mode = 2
-size_flags_vertical = 2
-theme_override_font_sizes/font_size = 88
-text = "OMEGAVERSE"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="AOLLogoHolder"]
 visible = false
