@@ -282,13 +282,13 @@ func load_from_slot(slot_id: int) -> void:
 							"borrow_limit": 1000.0
 					})
 	if data.has("desktop"):
-		DesktopLayoutManager.load_from_data(data["desktop"])
-	if data.has("windows"):  # Always load windows last
-		WindowManager.load_from_data(data["windows"])
-	BillManager.is_loading = false
+			DesktopLayoutManager.load_from_data(data["desktop"])
 	NPCManager.restore_encountered_from_db()
 	NPCManager.load_daterbase_cache()
 	NPCManager.load_fumble_relationship_cache()
+	if data.has("windows"):  # Load windows after NPC data is ready
+			WindowManager.load_from_data(data["windows"])
+	BillManager.is_loading = false
 
 
 func reset_game_state() -> void:
