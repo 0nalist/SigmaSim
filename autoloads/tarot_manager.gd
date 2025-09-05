@@ -148,21 +148,23 @@ func draw_reading(count: int) -> Array:
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
 	reading_cost = max(1.0, reading_cost - 1.0)
 
-func sell_card(card_id: String, rarity: int) -> void:
-	var rarities: Dictionary = collection.get(card_id, {})
-	var count := int(rarities.get(rarity, 0))
-	if count <= 0:
-		return
-	rarities[rarity] = count - 1
-	if rarities[rarity] <= 0:
-		rarities.erase(rarity)
-	if rarities.is_empty():
-		collection.erase(card_id)
-	else:
-		collection[card_id] = rarities
-	var price := get_sell_price(rarity)
-	PortfolioManager.add_cash(price)
-	collection_changed.emit(card_id, get_card_count(card_id))
+func sell_card(card_id: String, rarity: int, upside_down: bool = false) -> void:
+		var rarities: Dictionary = collection.get(card_id, {})
+		var count := int(rarities.get(rarity, 0))
+		if count <= 0:
+				return
+		rarities[rarity] = count - 1
+		if rarities[rarity] <= 0:
+				rarities.erase(rarity)
+		if rarities.is_empty():
+				collection.erase(card_id)
+		else:
+				collection[card_id] = rarities
+		var price := get_sell_price(rarity)
+		if upside_down:
+				price *= 2.0
+		PortfolioManager.add_cash(price)
+		collection_changed.emit(card_id, get_card_count(card_id))
 
 func get_sell_price(rarity: int) -> float:
 	return RARITY_SELL_VALUES.get(rarity, 1.0)

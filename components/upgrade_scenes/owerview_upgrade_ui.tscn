@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://bg4qg6o60j2oi"]
+
+[ext_resource type="Script" uid="uid://cu0y88l5f8trf" path="res://components/upgrade_scenes/owerview_upgrade_ui.gd" id="1_w7t1k"]
+[ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2_w7t1k"]
+
+[node name="OwerViewUpgradeUI" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1_w7t1k")
+window_title = "OwerView Upgrades"
+default_window_size = Vector2(480, 480)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="SystemUpgradeUI" parent="MarginContainer" instance=ExtResource("2_w7t1k")]
+layout_mode = 2
+size_flags_vertical = 3
+system_name = "OwerView"

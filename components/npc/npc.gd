@@ -281,6 +281,7 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.gift_cost = (float(npc.attractiveness) / 10.0) * BASE_GIFT_COST * pow(2.0, npc.gift_count)
 	npc.date_cost = (float(npc.attractiveness) / 10.0) * BASE_DATE_COST * pow(2.0, npc.date_count) ##TODO: Make this easier to tweak
 
+
         # Older saves stored the absolute game-minute when the cooldown ended.
         # Newer saves store only the remaining minutes. Detect which format was
         # used and reconstruct the proper absolute timestamp. When the
@@ -299,6 +300,7 @@ static func from_dict(data: Dictionary) -> NPC:
                 # Store remaining minutes as a negative sentinel to be resolved
                 # once the TimeManager becomes available.
                 npc.love_cooldown = -clamp(_saved_cd, 0, MAX_LOVE_COOLDOWN)
+
 
 	npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
 	npc.income= _safe_int(data.get("income"), 0)
@@ -343,6 +345,7 @@ func get_full_name() -> String:
 	return "%s %s. %s" % [first_name, middle_initial, last_name]
 
 func _get_love_cooldown() -> float:
+
         if Engine.has_singleton("TimeManager"):
                 var now_minutes: float = TimeManager.get_now_minutes()
                 # A negative cooldown indicates minutes remaining that were
@@ -355,6 +358,7 @@ func _get_love_cooldown() -> float:
         # value, using its absolute value in case it still contains the negative
         # sentinel from loading.
         return clamp(abs(love_cooldown), 0, MAX_LOVE_COOLDOWN)
+
 
 
 

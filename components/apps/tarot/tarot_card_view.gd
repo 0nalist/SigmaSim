@@ -68,16 +68,18 @@ func update_count(new_count: int) -> void:
 		sell_button.text = "Sell for $%d" % int(sell_price)
 
 func update_rarity(new_rarity: int) -> void:
-	rarity = new_rarity
-	rarity_label.text = RARITY_NAMES.get(rarity, "")
-	if rarity == 5:
-		rarity_label.material = RAINBOW_MATERIAL
-		rarity_label.add_theme_color_override("font_color", Color.WHITE)
-	else:
-		rarity_label.material = null
-		rarity_label.add_theme_color_override("font_color", RARITY_COLORS.get(rarity, Color.WHITE))
-	sell_price = TarotManager.get_sell_price(rarity)
-	sell_button.text = "Sell for $%d" % int(sell_price)
+		rarity = new_rarity
+		rarity_label.text = RARITY_NAMES.get(rarity, "")
+		if rarity == 5:
+				rarity_label.material = RAINBOW_MATERIAL
+				rarity_label.add_theme_color_override("font_color", Color.WHITE)
+		else:
+				rarity_label.material = null
+				rarity_label.add_theme_color_override("font_color", RARITY_COLORS.get(rarity, Color.WHITE))
+		sell_price = TarotManager.get_sell_price(rarity)
+		if is_upside_down:
+				sell_price *= 2.0
+		sell_button.text = "Sell for $%d" % int(sell_price)
 
 func set_rarity_label_visible(is_visible: bool) -> void:
 	if not is_node_ready():
@@ -85,12 +87,12 @@ func set_rarity_label_visible(is_visible: bool) -> void:
 	rarity_label.visible = is_visible
 
 func _on_sell_pressed() -> void:
-	TarotManager.sell_card(card_id, rarity)
-	var new_count = TarotManager.get_card_rarity_count(card_id, rarity)
-	update_count(new_count)
-	if mark_sold_on_sell:
-		sell_button.text = "SOLD"
-		sell_button.disabled = true
+		TarotManager.sell_card(card_id, rarity, is_upside_down)
+		var new_count = TarotManager.get_card_rarity_count(card_id, rarity)
+		update_count(new_count)
+		if mark_sold_on_sell:
+				sell_button.text = "SOLD"
+				sell_button.disabled = true
 		sell_button.visible = true
 
 func _ready() -> void:
@@ -104,11 +106,15 @@ func _gui_input(event: InputEvent) -> void:
 		card_pressed.emit(card_id)
 
 func set_upside_down(flag: bool) -> void:
-	if not is_node_ready():
-		await ready
-	is_upside_down = flag
-	if is_upside_down:
-		texture_rect.pivot_offset = texture_rect.size * 0.5
-	else:
-		texture_rect.pivot_offset = Vector2.ZERO
-	texture_rect.rotation_degrees = 0
+		if not is_node_ready():
+				await ready
+		is_upside_down = flag
+		if is_upside_down:
+				texture_rect.pivot_offset = texture_rect.size * 0.5
+		else:
+				texture_rect.pivot_offset = Vector2.ZERO
+		texture_rect.rotation_degrees = 0
+		sell_price = TarotManager.get_sell_price(rarity)
+		if is_upside_down:
+				sell_price *= 2.0
+		sell_button.text = "Sell for $%d" % int(sell_price)
