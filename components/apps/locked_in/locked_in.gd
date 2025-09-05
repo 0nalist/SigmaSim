@@ -13,13 +13,10 @@ func _ready() -> void:
 # Test helper to seed the connections list with random NPCs.
 # Picks a few random NPCs, marks them as locked in, and repopulates the list.
 func test_seed_connections(count: int = 3) -> void:
-		var all_ids: Array = NPCManager.npcs.keys()
-		RNGManager.locked_in.shuffle(all_ids)
-		var selected := PackedInt32Array()
-		var limit = min(count, all_ids.size())
-		for i in range(limit):
-				var idx: int = int(all_ids[i])
-				var npc: NPC = NPCManager.get_npc_by_index(idx)
-				npc.locked_in_connection = true
-				selected.append(idx)
-		connections_list.populate(selected)
+                var all_ids: Array = NPCManager.npcs.keys()
+                RNGManager.locked_in.shuffle(all_ids)
+                var limit = min(count, all_ids.size())
+                for i in range(limit):
+                                var idx: int = int(all_ids[i])
+                                NPCManager.set_npc_field(idx, "locked_in_connection", true)
+                connections_list.populate(NPCManager.get_locked_in_connection_ids())

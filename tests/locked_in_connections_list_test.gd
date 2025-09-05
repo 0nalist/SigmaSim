@@ -18,13 +18,23 @@ func _ready() -> void:
 		npc_mgr.npcs[idx] = npc
 		npc_mgr.persistent_npcs[idx] = {}
 
-	var app = LockedInScene.instantiate()
-	add_child(app)
-	await get_tree().process_frame
+        var app = LockedInScene.instantiate()
+        add_child(app)
+        await get_tree().process_frame
+        assert(app.connections_list.buttons_container.get_child_count() == 0)
 
-	app.test_seed_connections(3)
+        NPCManager.set_npc_field(1000, "locked_in_connection", true)
+        await get_tree().process_frame
+        assert(app.connections_list.buttons_container.get_child_count() == 1)
 
-	assert(app.connections_list.buttons_container.get_child_count() == 3)
-	var locked := NPCManager.get_locked_in_connection_ids()
-	assert(locked.size() == 3)
-	print("locked_in_connections_list_test passed")
+        NPCManager.set_npc_field(1001, "locked_in_connection", true)
+        await get_tree().process_frame
+        assert(app.connections_list.buttons_container.get_child_count() == 2)
+
+        NPCManager.set_npc_field(1002, "locked_in_connection", true)
+        await get_tree().process_frame
+        assert(app.connections_list.buttons_container.get_child_count() == 3)
+
+        var locked := NPCManager.get_locked_in_connection_ids()
+        assert(locked.size() == 3)
+        print("locked_in_connections_list_test passed")

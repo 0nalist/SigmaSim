@@ -9,6 +9,7 @@ signal cheating_detected(primary_idx: int, other_idx: int)
 signal affinity_equilibrium_changed(idx: int, value: float)
 signal breakup_occurred(idx: int)
 signal entered_dating_stage(idx: int)
+signal locked_in_connection_changed(idx: int, locked: bool)
 
 enum RelationshipStage { STRANGER, TALKING, DATING, SERIOUS, ENGAGED, MARRIED, DIVORCED, EX }
 enum ExclusivityCore { MONOG, POLY, CHEATING }
@@ -130,10 +131,12 @@ func set_npc_field(idx: int, field: String, value) -> void:
 			if field == "portrait_config":
 					promote_to_persistent(idx)
 
-	if field == "portrait_config":
-			emit_signal("portrait_changed", idx, value)
-	if field == "affinity":
-			emit_signal("affinity_changed", idx, value)
+        if field == "portrait_config":
+                        emit_signal("portrait_changed", idx, value)
+        if field == "affinity":
+                        emit_signal("affinity_changed", idx, value)
+        if field == "locked_in_connection":
+                        emit_signal("locked_in_connection_changed", idx, value)
 
 
 
