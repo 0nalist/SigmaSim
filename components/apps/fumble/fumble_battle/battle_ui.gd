@@ -162,11 +162,12 @@ func load_battle(new_battle_id: String, new_npc: NPC, chatlog_in: Array = [], st
 	if stats_in.size() > 0:
 			battle_stats_to_use = stats_in.duplicate()
 	else:
-			battle_stats_to_use = {
-					"self_esteem": npc.self_esteem,
-					"chemistry": npc.chemistry,
-					"apprehension": npc.apprehension
-			}
+		npc.self_esteem = npc.attractiveness
+		battle_stats_to_use = {
+			"self_esteem": npc.self_esteem,
+			"chemistry": npc.chemistry,
+			"apprehension": npc.apprehension
+		}
 	
 	# Set up logic
 	if battle_logic_resource:

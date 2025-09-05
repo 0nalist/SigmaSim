@@ -1,24 +1,24 @@
 {
   "id": "earlybird_worm_yield",
   "name": "Protein Packed",
-  "description": "Each level increases worm yield by $1.",
+  "description": "Each level gives +$1 to worm clicks.",
   "effects": [
-    {
-      "target": "worm_yield",
-      "operation": "add",
-      "value": 1.0
-    }
+	{
+	  "target": "worm_yield",
+	  "operation": "add",
+	  "value": 1.0
+	}
   ],
   "systems": [
-    "earlybird"
+	"earlybird"
   ],
   "dependencies": [],
   "cost_per_level": {
-    "cash": 100
+	"cash": 100
   },
   "scale_by_formula": true,
   "cost_formula": {
-    "cash": "base_cost[\"cash\"] * pow(1.2, level-1)"
+	"cash": "base_cost[\"cash\"] * pow(1.2, level-1)"
   },
   "repeatable": true
 }

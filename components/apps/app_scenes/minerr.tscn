@@ -60,6 +60,7 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_horizontal = 4
