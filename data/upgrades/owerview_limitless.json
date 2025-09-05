@@ -1,0 +1,24 @@
+{
+    "id": "owerview_limitless",
+    "name": "Limitless",
+    "description": "Raises credit limit by $2,000 per level.",
+    "effects": [
+        {
+            "target": "credit_limit",
+            "operation": "add",
+            "value": 2000.0
+        }
+    ],
+    "systems": [
+        "OwerView"
+    ],
+    "dependencies": [],
+    "cost_per_level": {
+        "cash": 100
+    },
+    "scale_by_formula": true,
+    "cost_formula": {
+        "cash": "base_cost[\"cash\"] * pow(1.1, level-1)"
+    },
+    "repeatable": true
+}
