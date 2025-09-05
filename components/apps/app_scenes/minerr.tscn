@@ -97,6 +97,10 @@ layout_mode = 2
 size_flags_horizontal = 6
 size_flags_stretch_ratio = 0.0
 
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
 [node name="SortHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -116,7 +120,6 @@ text = " "
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MineView/HBoxContainer/LeftColumnVBox"]
 layout_mode = 2

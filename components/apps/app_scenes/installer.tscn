@@ -10,6 +10,9 @@ script = ExtResource("1")
 window_title = "Installer "
 window_icon = ExtResource("2_idbhh")
 default_window_size = Vector2(390, 300)
+window_can_close = false
+window_can_minimize = false
+window_can_maximize = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

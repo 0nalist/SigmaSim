@@ -25,12 +25,12 @@ func setup_custom(data: Dictionary) -> void:
 		ready.connect(_finalize_setup, CONNECT_ONE_SHOT)
 
 func _ready() -> void:
-        name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-        header_container.gui_input.connect(_on_header_gui_input)
-        greet_button.pressed.connect(_on_greet_pressed)
-        gift_button.pressed.connect(_on_gift_pressed)
-        date_button.pressed.connect(_on_date_pressed)
-        relationship_button.pressed.connect(_on_relationship_pressed)
+	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	header_container.gui_input.connect(_on_header_gui_input)
+	greet_button.pressed.connect(_on_greet_pressed)
+	gift_button.pressed.connect(_on_gift_pressed)
+	date_button.pressed.connect(_on_date_pressed)
+	relationship_button.pressed.connect(_on_relationship_pressed)
 
 func _finalize_setup() -> void:
 	if npc == null:
@@ -45,14 +45,14 @@ func _finalize_setup() -> void:
 		portrait_view.apply_config(npc.portrait_config)
 
 func _on_header_gui_input(event: InputEvent) -> void:
-        if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-                if _is_romantically_pursuing():
-                        var key := "ex_factor_%d" % npc_idx
-                        var existing := WindowManager.find_popup_by_key(key)
-                        if existing:
-                                WindowManager.focus_window(existing)
-                        else:
-                                WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": npc_idx})
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if _is_romantically_pursuing():
+			var key := "ex_factor_%d" % npc_idx
+			var existing := WindowManager.find_popup_by_key(key)
+			if existing:
+				WindowManager.focus_window(existing)
+			else:
+				WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": npc_idx})
 
 func _is_romantically_pursuing() -> bool:
 	if npc_idx == -1:
