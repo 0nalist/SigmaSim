@@ -165,12 +165,17 @@ text = "  Paid Reading  "
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="CollectionGrid" type="GridContainer" parent="MarginContainer/VBox/CollectionView"]
-unique_name_in_owner = true
+[node name="CollectionHBox" type="HBoxContainer" parent="MarginContainer/VBox/CollectionView"]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1
+
+[node name="CollectionGrid" type="GridContainer" parent="MarginContainer/VBox/CollectionView/CollectionHBox"]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_vertical = 3
 columns = 6
 
