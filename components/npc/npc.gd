@@ -281,21 +281,22 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.gift_cost = (float(npc.attractiveness) / 10.0) * BASE_GIFT_COST * pow(2.0, npc.gift_count)
 	npc.date_cost = (float(npc.attractiveness) / 10.0) * BASE_DATE_COST * pow(2.0, npc.date_count) ##TODO: Make this easier to tweak
 
+
 	# Older saves stored the absolute game-minute when the cooldown ended.
 	# Newer saves store only the remaining minutes. Detect which format was
 	# used and reconstruct the proper absolute timestamp.
-		var _saved_cd: int = _safe_int(data.get("love_cooldown"), 0)
-		if Engine.has_singleton("TimeManager"):
-				var _now: int = TimeManager.get_now_minutes()
-				if _saved_cd > MAX_LOVE_COOLDOWN:
-						npc.love_cooldown = _saved_cd
-				else:
-						npc.love_cooldown = _now + _saved_cd
-				# Prevent values more than 24h into the future
-				npc.love_cooldown = min(npc.love_cooldown, _now + MAX_LOVE_COOLDOWN)
-		else:
-				# Without a TimeManager, treat the stored value as relative minutes
-				npc.love_cooldown = clamp(_saved_cd, 0, MAX_LOVE_COOLDOWN)
+	var _saved_cd: int = _safe_int(data.get("love_cooldown"), 0)
+	if Engine.has_singleton("TimeManager"):
+			var _now: int = TimeManager.get_now_minutes()
+			if _saved_cd > MAX_LOVE_COOLDOWN:
+					npc.love_cooldown = _saved_cd
+			else:
+					npc.love_cooldown = _now + _saved_cd
+			# Prevent values more than 24h into the future
+			npc.love_cooldown = min(npc.love_cooldown, _now + MAX_LOVE_COOLDOWN)
+	else:
+			# Without a TimeManager, treat the stored value as relative minutes
+			npc.love_cooldown = clamp(_saved_cd, 0, MAX_LOVE_COOLDOWN)
 
 	npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
 	npc.income= _safe_int(data.get("income"), 0)
@@ -342,12 +343,16 @@ func get_full_name() -> String:
 func _get_love_cooldown() -> float:
 		if Engine.has_singleton("TimeManager"):
 				var now_minutes: float = TimeManager.get_now_minutes()
+				# A negative cooldown indicates minutes remaining that were
+				# saved before the TimeManager was initialized. Convert it to
+				# an absolute timestamp now.
+				if love_cooldown < 0:
+						love_cooldown = now_minutes + clamp(-love_cooldown, 0, MAX_LOVE_COOLDOWN)
 				return clamp(love_cooldown - now_minutes, 0, MAX_LOVE_COOLDOWN)
-		# If the TimeManager is unavailable, treat love_cooldown as already
-		# relative and clamp it directly.
-		return clamp(love_cooldown, 0, MAX_LOVE_COOLDOWN)
-
-
+		# If the TimeManager is unavailable, treat love_cooldown as a relative
+		# value, using its absolute value in case it still contains the negative
+		# sentinel from loading.
+		return clamp(abs(love_cooldown), 0, MAX_LOVE_COOLDOWN)
 
 func describe_gender() -> String:
 	var components = []
