@@ -491,10 +491,16 @@ func _prepare_next_stage_confirm() -> void:
 			next_stage_confirm_alt_button.visible = true
 		else:
 			next_stage_confirm_primary_button.text = "Get SERIOUS"
-	elif current_stage == NPCManager.RelationshipStage.SERIOUS:
-		next_stage_confirm_primary_button.text = "Propose ($%s)" % NumberFormatter.format_commas(npc.proposal_cost, 0)
-	else:
-		next_stage_confirm_primary_button.text = "Progress to %s" % next_name
+        elif current_stage == NPCManager.RelationshipStage.SERIOUS:
+                next_stage_confirm_primary_button.text = "Propose ($%s)" % NumberFormatter.format_commas(npc.proposal_cost, 0)
+                var cost: float = npc.proposal_cost
+                var has_cash: bool = PortfolioManager.can_pay_with_cash(cost)
+                var required_score: int = PortfolioManager.CREDIT_REQUIREMENTS["proposal"]
+                var has_credit: bool = PortfolioManager.can_pay_with_credit(cost) and PortfolioManager.credit_score >= required_score
+                next_stage_confirm_primary_button.disabled = not (has_cash or has_credit)
+        else:
+                next_stage_confirm_primary_button.text = "Progress to %s" % next_name
+                next_stage_confirm_primary_button.disabled = false
 
 func _on_next_stage_confirm_primary_pressed() -> void:
 	next_stage_confirm.visible = false
@@ -503,12 +509,14 @@ func _on_next_stage_confirm_primary_pressed() -> void:
 	_show_quip("next level")
 
 func _on_next_stage_confirm_primary_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		next_stage_confirm.visible = false
-		logic.request_next_stage_primary(true)
-		_refresh_all()
-		_show_quip("next level")
-		#event.accept()
+        if next_stage_confirm_primary_button.disabled:
+                return
+        if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+                next_stage_confirm.visible = false
+                logic.request_next_stage_primary(true)
+                _refresh_all()
+                _show_quip("next level")
+                #event.accept()
 
 func _on_next_stage_confirm_alt_pressed() -> void:
 	next_stage_confirm.visible = false
