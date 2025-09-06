@@ -10,7 +10,7 @@ func _ready() -> void:
 	var npc_manager = Engine.get_singleton("NPCManager")
 	npc_manager.npcs[npc_idx] = npc
 	npc_manager.persistent_npcs[npc_idx] = {}
-        npc_manager.romantic_npcs = [npc_idx]
+	npc_manager.romantic_npcs = [npc_idx]
 
 	var triggered := false
 	npc_manager.affinity_changed.connect(func(idx, _v):
