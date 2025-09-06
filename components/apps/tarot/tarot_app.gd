@@ -17,6 +17,7 @@ class_name TarotApp
 var card_views: Dictionary = {}
 var _active_tab: String = "Draw"
 
+
 func _ready() -> void:
 	draw_button.pressed.connect(_on_draw_button_pressed)
 	reading_button.pressed.connect(_on_reading_button_pressed)
@@ -62,23 +63,26 @@ func _on_collection_changed(card_id: String, count: int) -> void:
 		view.update_rarity(rarity)
 		view.update_count(count)
 
+
 func _on_draw_button_pressed() -> void:
 	var card = TarotManager.draw_card()
 	if card.is_empty():
 		print("tarot card is empty")
 		return
-	_show_last_drawn_card()
+	_show_last_drawn_card(true)
 	_update_cooldown_label()
+
 
 func _on_reading_button_pressed() -> void:
 	var count := 1 + UpgradeManager.get_level("tarot_extra_card")
 	var cards = TarotManager.draw_reading(count)
 	if cards.is_empty():
 		return
-	_show_reading_cards(cards)
+	_show_reading_cards(cards, true)
 	_update_reading_cost_label()
 
-func _show_last_drawn_card() -> void:
+
+func _show_last_drawn_card(animate: bool = false) -> void:
 	for child in draw_result.get_children():
 		child.queue_free()
 	var id = TarotManager.last_card_id
@@ -87,7 +91,7 @@ func _show_last_drawn_card() -> void:
 		return
 	var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
 	var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-	var upside_down = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+	var upside_down = TarotManager.last_card_upside_down
 	view.set_upside_down(upside_down)
 	view.show_single_count = true
 	view.modulate.a = 0.0
@@ -95,20 +99,23 @@ func _show_last_drawn_card() -> void:
 	var t = create_tween()
 	t.tween_property(view, "modulate:a", 1.0, 0.3)
 	if upside_down:
+		if animate:
 			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+		else:
+			view.texture_rect.rotation_degrees = 180
 
-func _show_reading_cards(cards: Array) -> void:
+
+func _show_reading_cards(cards: Array, animate: bool = false) -> void:
 	for child in reading_result.get_children():
 		if child != reading_button and child != reading_cost_label and child != reading_button:
 			child.queue_free()
 	var index := 0
-	var flip_rng = RNGManager.tarot_orientation.get_rng()
 	for c in cards:
 		var id: String = c.get("id", "")
 		var rarity: int = int(c.get("rarity", 1))
+		var upside_down: bool = bool(c.get("upside_down", false))
 		var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
 		var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-		var upside_down = flip_rng.randf() < 0.5
 		view.set_upside_down(upside_down)
 		view.show_single_count = true
 		view.modulate.a = 0.0
@@ -116,7 +123,10 @@ func _show_reading_cards(cards: Array) -> void:
 		var t = create_tween()
 		t.tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
 		if upside_down:
-			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+			if animate:
+				t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+			else:
+				view.texture_rect.rotation_degrees = 180
 		index += 1
 
 
@@ -131,17 +141,21 @@ func _update_cooldown_label() -> void:
 		cooldown_label.text = "%02dh %02dm" % [hours, minutes]
 		draw_button.disabled = true
 
+
 func _update_reading_cost_label() -> void:
 	var extra := UpgradeManager.get_level("tarot_extra_card")
 	var count := 1 + extra
 	var cost = TarotManager.reading_cost * count
 	reading_cost_label.text = "%d EX for %d card(s)" % [int(cost), count]
 
+
 func _on_minute_passed(_total_minutes: int) -> void:
 	_update_cooldown_label()
 
+
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
 	_update_reading_cost_label()
+
 
 func _activate_tab(tab_name: String) -> void:
 	if tab_name == "Draw":
@@ -157,6 +171,7 @@ func _activate_tab(tab_name: String) -> void:
 		readings_view.visible = false
 		collection_view.visible = true
 	_active_tab = tab_name
+
 
 func _on_upgrade_purchased(id: String, _new_level: int) -> void:
 	if id == "tarot_extra_card":
