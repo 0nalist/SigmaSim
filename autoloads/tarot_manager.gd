@@ -16,27 +16,30 @@ var last_draw_minutes: int = -COOLDOWN_MINUTES
 var last_card_id: String = ""
 var last_card_rarity: int = 0
 var reading_cost: float = 1.0
+var last_reading: Array = []
 
 func _ready() -> void:
 	deck.load_from_file(DATA_PATH)
 	TimeManager.hour_passed.connect(_on_hour_passed)
 
 func reset() -> void:
-		collection.clear()
-		last_draw_minutes = -COOLDOWN_MINUTES
-		last_card_id = ""
-		last_card_rarity = 0
-		reading_cost = 1.0
-		deck.load_from_file(DATA_PATH)
+                collection.clear()
+                last_draw_minutes = -COOLDOWN_MINUTES
+                last_card_id = ""
+                last_card_rarity = 0
+                reading_cost = 1.0
+                last_reading.clear()
+                deck.load_from_file(DATA_PATH)
 
 func get_save_data() -> Dictionary:
-		return {
-				"collection": collection,
-			"last_draw": last_draw_minutes,
-			"last_card_id": last_card_id,
-			"last_card_rarity": last_card_rarity,
-		"reading_cost": reading_cost
-		}
+                return {
+                                "collection": collection,
+                        "last_draw": last_draw_minutes,
+                        "last_card_id": last_card_id,
+                        "last_card_rarity": last_card_rarity,
+                "reading_cost": reading_cost,
+                "last_reading": last_reading
+                }
 
 func load_from_data(data: Dictionary) -> void:
 	collection.clear()
@@ -50,10 +53,11 @@ func load_from_data(data: Dictionary) -> void:
 			collection[id] = fixed_rarities
 
 	last_draw_minutes = int(data.get("last_draw", -COOLDOWN_MINUTES))
-	last_card_id = data.get("last_card_id", "")
-	last_card_rarity = int(data.get("last_card_rarity", 0))
-	reading_cost = float(data.get("reading_cost", 1.0))
-	deck.load_from_file(DATA_PATH)
+        last_card_id = data.get("last_card_id", "")
+        last_card_rarity = int(data.get("last_card_rarity", 0))
+        reading_cost = float(data.get("reading_cost", 1.0))
+        last_reading = data.get("last_reading", [])
+        deck.load_from_file(DATA_PATH)
 
 func get_card_count(id: String) -> int:
 		var rarities: Dictionary = collection.get(id, {})
@@ -128,22 +132,21 @@ func draw_reading(count: int) -> Array:
 		reading_cost *= 2.0
 	var card_rng := RNGManager.tarot_card.get_rng()
 	var rarity_rng := RNGManager.tarot_rarity.get_rng()
-	var results: Array = []
-	for i in range(count):
-			var rarity := _roll_rarity(rarity_rng)
-			var all_cards: Array = deck.cards
-			if all_cards.is_empty():
-					continue
-			var card: Dictionary = all_cards[card_rng.randi_range(0, all_cards.size() - 1)]
-			var id: String = card.get("id", "")
-			var rarities: Dictionary = collection.get(id, {})
-			rarities[rarity] = int(rarities.get(rarity, 0)) + 1
-			collection[id] = rarities
-			last_card_id = id
-			last_card_rarity = rarity
-			collection_changed.emit(id, get_card_count(id))
-			results.append({"id": id, "rarity": rarity})
-	return results
+        var results: Array = []
+        for i in range(count):
+                        var rarity := _roll_rarity(rarity_rng)
+                        var all_cards: Array = deck.cards
+                        if all_cards.is_empty():
+                                        continue
+                        var card: Dictionary = all_cards[card_rng.randi_range(0, all_cards.size() - 1)]
+                        var id: String = card.get("id", "")
+                        var rarities: Dictionary = collection.get(id, {})
+                        rarities[rarity] = int(rarities.get(rarity, 0)) + 1
+                        collection[id] = rarities
+                        collection_changed.emit(id, get_card_count(id))
+                        results.append({"id": id, "rarity": rarity})
+        last_reading = results
+        return results
 
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
 	reading_cost = max(1.0, reading_cost - 1.0)
