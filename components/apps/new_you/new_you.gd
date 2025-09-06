@@ -55,13 +55,13 @@ func setup_custom(args: Dictionary) -> void:
 
 
 func _on_portrait_applied(cfg: PortraitConfig) -> void:
-	if portrait_view:
-		portrait_view.apply_config(cfg)
-	if target_type == "player":
-		PlayerManager.user_data["portrait_config"] = cfg.to_dict()
-	elif target_type == "npc" and target_npc_idx != -1:
-		var npc = NPCManager.get_npc_by_index(target_npc_idx)
-		if npc != null:
-			npc.portrait_config = cfg
+        if portrait_view:
+                portrait_view.apply_config(cfg)
+        if target_type == "player":
+                PlayerManager.set_var("portrait_config", cfg.to_dict())
+        elif target_type == "npc" and target_npc_idx != -1:
+                var npc = NPCManager.get_npc_by_index(target_npc_idx)
+                if npc != null:
+                        npc.portrait_config = cfg
 			NPCManager.set_npc_field(target_npc_idx, "portrait_config", cfg)
 			DBManager.save_npc(target_npc_idx, npc)
