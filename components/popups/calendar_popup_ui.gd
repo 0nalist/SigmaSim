@@ -6,15 +6,19 @@ extends Pane
 @onready var grid_container: GridContainer = %GridContainer
 @export var day_panel_scene: PackedScene
 @onready var month_year_label: Label = %MonthYearLabel
+@onready var in_game_label: Label = %InGameTimeElapsedLabel
+@onready var real_time_label: Label = %RealTimeElapsedLabel
 
 func _ready():
-		hide()
-		autopay_checkbox.set_pressed_no_signal(BillManager.autopay_enabled)
-		BillManager.autopay_changed.connect(_on_autopay_changed)
-		TimeManager.day_passed.connect(_on_day_passed)
-		populate_calendar(TimeManager.current_month, TimeManager.current_year)
-		month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
-		call_deferred("move_to_front")
+	hide()
+	autopay_checkbox.set_pressed_no_signal(BillManager.autopay_enabled)
+	BillManager.autopay_changed.connect(_on_autopay_changed)
+	TimeManager.day_passed.connect(_on_day_passed)
+	TimeManager.minute_passed.connect(_on_minute_passed)
+	populate_calendar(TimeManager.current_month, TimeManager.current_year)
+	month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
+	_update_elapsed_labels()
+	call_deferred("move_to_front")
 
 func add_click_catcher() -> void:
 	click_catcher = preload("res://components/ui/click_catcher.tscn").instantiate()
@@ -39,6 +43,10 @@ func close() -> void:
 
 func _on_day_passed(_day: int, month: int, year: int):
 	populate_calendar(month, year)
+	_update_elapsed_labels()
+
+func _on_minute_passed(_total_minutes: int) -> void:
+	_update_elapsed_labels()
 
 func populate_calendar(month: int, year: int) -> void:
 	var days_in_month = TimeManager.get_days_in_month(month, year)
@@ -89,10 +97,33 @@ func populate_calendar(month: int, year: int) -> void:
 	month_year_label.text = str(TimeManager.month_names[TimeManager.current_month-1]) + " " + str(TimeManager.current_year)
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
-		BillManager.autopay_enabled = toggled_on
+	BillManager.autopay_enabled = toggled_on
 
 func _on_autopay_changed(enabled: bool) -> void:
-		autopay_checkbox.set_pressed_no_signal(enabled)
+	autopay_checkbox.set_pressed_no_signal(enabled)
 
 func _on_life_stylist_button_pressed() -> void:
 	WindowManager.launch_app_by_name("LifeStylist")
+
+func _on_ower_view_button_pressed() -> void:
+	WindowManager.launch_app_by_name("OwerView")
+
+func _update_elapsed_labels() -> void:
+	in_game_label.text = _format_elapsed(TimeManager.get_total_minutes_played())
+	var real_minutes := int(TimeManager.get_total_real_seconds_played() / 60)
+	real_time_label.text = _format_elapsed(real_minutes)
+
+func _format_elapsed(total_minutes: int) -> String:
+	var years := total_minutes / (60 * 24 * 365)
+	var rem := total_minutes % (60 * 24 * 365)
+	var days := rem / (60 * 24)
+	rem %= 60 * 24
+	var hours := rem / 60
+	var minutes := rem % 60
+	var parts: Array[String] = []
+	if years > 0:
+		parts.append(str(years))
+	if days > 0 or years > 0:
+		parts.append(str(days))
+	parts.append("%02d:%02d" % [hours, minutes])
+	return ":".join(parts)

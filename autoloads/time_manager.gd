@@ -25,6 +25,7 @@ const SETTINGS_PATH := "user://settings.cfg"
 var _total_minutes_elapsed: int = 0
 # Baseline at profile start so we can report elapsed playtime relative to a new profile
 var _start_total_minutes: int = 0
+var real_seconds_played: float = 0.0
 
 # -------- Derived / compatibility fields (kept, but driven from _total_minutes_elapsed) --------
 var in_game_minutes := 23 * 60
@@ -52,11 +53,12 @@ var month_names := [
 
 # -------- Lifecycle --------
 func _ready() -> void:
-		# Initialize from defaults and compute derived values
-		load_autosave_setting()
-		_rebuild_total_minutes_from_defaults()
-		_recompute_from_total_minutes()
-		time_ticking = false
+	# Initialize from defaults and compute derived values
+	load_autosave_setting()
+	_rebuild_total_minutes_from_defaults()
+	_recompute_from_total_minutes()
+	time_ticking = false
+
 
 # -------- Public control API (unchanged names) --------
 func start_time() -> void: # kept for compatibility
@@ -69,18 +71,19 @@ func set_time_paused(paused: bool) -> void:
 	time_ticking = not paused
 
 func sleep_for(minutes: int) -> void:
-		if minutes <= 0:
-				return
-		is_fast_forwarding = true
-		fast_forward_minutes_left = minutes
+	if minutes <= 0:
+		return
+	is_fast_forwarding = true
+	fast_forward_minutes_left = minutes
+
 
 func sleep_forever() -> void:
-		is_fast_forwarding = true
-		fast_forward_minutes_left = -1
+	is_fast_forwarding = true
+	fast_forward_minutes_left = -1
 
 func awake() -> void:
-		is_fast_forwarding = false
-		fast_forward_minutes_left = 0
+	is_fast_forwarding = false
+	fast_forward_minutes_left = 0
 
 func on_logout() -> void:
 	set_time_paused(true)
@@ -89,6 +92,8 @@ func on_logout() -> void:
 func _process(delta: float) -> void:
 	if not time_ticking:
 		return
+
+	real_seconds_played += delta
 
 	if is_fast_forwarding:
 		_advance_time(1)
@@ -204,23 +209,30 @@ func get_total_days_since_start(target_day: int, target_month: int, target_year:
 func get_total_minutes_played() -> int:
 	return total_minutes_elapsed
 
+func get_total_real_seconds_played() -> float:
+	return real_seconds_played
+
 # -------- Save / Load (keys preserved) --------
 func get_default_save_data() -> Dictionary:
-	return default_start_date_time.duplicate()
+	var data := default_start_date_time.duplicate()
+	data["real_seconds_played"] = 0.0
+	return data
 
 func get_save_data() -> Dictionary:
-		return {
-				"in_game_minutes": in_game_minutes,
-				"total_minutes_elapsed": _total_minutes_elapsed,
-				"start_total_minutes": _start_total_minutes,
-				"current_day": current_day,
-				"current_month": current_month,
-				"current_year": current_year,
+	return {
+		"in_game_minutes": in_game_minutes,
+		"total_minutes_elapsed": _total_minutes_elapsed,
+		"start_total_minutes": _start_total_minutes,
+		"real_seconds_played": real_seconds_played,
+		"current_day": current_day,
+		"current_month": current_month,
+		"current_year": current_year,
 		"day_of_week": day_of_week,
 		"is_fast_forwarding": is_fast_forwarding,
 		"fast_forward_minutes_left": fast_forward_minutes_left,
 		"autosave_enabled": autosave_enabled
 	}
+
 
 func load_from_data(data: Dictionary) -> void:
 	# Restore canonical minutes if provided; otherwise reconstruct from provided date/time
@@ -235,6 +247,7 @@ func load_from_data(data: Dictionary) -> void:
 		_total_minutes_elapsed = _days_since_epoch(restored_day, restored_month, restored_year) * 1440 + minutes_since_midnight
 
 	_start_total_minutes = int(data.get("start_total_minutes", 0))
+	real_seconds_played = float(data.get("real_seconds_played", 0.0))
 
 	# Restore fast-forward UI state
 	is_fast_forwarding = false
@@ -256,25 +269,26 @@ func load_from_data(data: Dictionary) -> void:
 	emit_signal("day_passed", current_day, current_month, current_year)
 
 func reset() -> void:
-		_rebuild_total_minutes_from_defaults()
-		_recompute_from_total_minutes()
-		_start_total_minutes = _total_minutes_elapsed
-		total_minutes_elapsed = 0
-		time_accumulator = 0.0
-		is_fast_forwarding = false
-		fast_forward_minutes_left = 0
-		autosave_hour_counter = 0
-		load_autosave_setting()
+	_rebuild_total_minutes_from_defaults()
+	_recompute_from_total_minutes()
+	_start_total_minutes = _total_minutes_elapsed
+	total_minutes_elapsed = 0
+	real_seconds_played = 0.0
+	time_accumulator = 0.0
+	is_fast_forwarding = false
+	fast_forward_minutes_left = 0
+	autosave_hour_counter = 0
+	load_autosave_setting()
 
 func load_autosave_setting() -> void:
-		var cfg := ConfigFile.new()
-		if cfg.load(SETTINGS_PATH) == OK:
-				autosave_enabled = bool(cfg.get_value("general", "autosave_enabled", autosave_enabled))
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) == OK:
+		autosave_enabled = bool(cfg.get_value("general", "autosave_enabled", autosave_enabled))
 
 func save_autosave_setting() -> void:
-		var cfg := ConfigFile.new()
-		cfg.set_value("general", "autosave_enabled", autosave_enabled)
-		cfg.save(SETTINGS_PATH)
+	var cfg := ConfigFile.new()
+	cfg.set_value("general", "autosave_enabled", autosave_enabled)
+	cfg.save(SETTINGS_PATH)
 
 # -------- Internal core (driven by _total_minutes_elapsed) --------
 func _advance_time(minutes_to_add: int) -> void:
