@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://br6dxvjgrbq08"]
+[gd_scene load_steps=3 format=3 uid="uid://br6dxvjgrbq08"]
 
 [ext_resource type="Script" uid="uid://clfs68i1j8xpo" path="res://src/locked_in/locked_in_connections_list_ui.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://cbjispsewggqv" path="res://assets/fonts/GALS.ttf" id="2_7cccb"]
 
 [node name="LockedInConnectionsListUI" type="PanelContainer"]
 script = ExtResource("1")
@@ -17,8 +18,9 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Connections"
+theme_override_fonts/font = ExtResource("2_7cccb")
 theme_override_font_sizes/font_size = 12
+text = "Connections"
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
