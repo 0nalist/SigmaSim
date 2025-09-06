@@ -53,6 +53,7 @@ var month_names := [
 
 # -------- Lifecycle --------
 func _ready() -> void:
+	set_process(true)
 	# Initialize from defaults and compute derived values
 	load_autosave_setting()
 	_rebuild_total_minutes_from_defaults()
