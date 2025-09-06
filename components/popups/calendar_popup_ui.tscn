@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://674hnm8vwbpn"]
+[gd_scene load_steps=5 format=3 uid="uid://674hnm8vwbpn"]
 
 [ext_resource type="Script" uid="uid://cj85lih8q20wk" path="res://components/popups/calendar_popup_ui.gd" id="1_4v806"]
 [ext_resource type="Texture2D" uid="uid://cgxywei8rjptj" path="res://assets/logos/monocle_man.png" id="2_35l7a"]
+[ext_resource type="Texture2D" uid="uid://bsal74mys2v4b" path="res://assets/logos/owerview_logo.png" id="3_j19n5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glnmr"]
 bg_color = Color(0.998434, 1, 0.848803, 1)
@@ -53,6 +54,18 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "Month YEAR"
 horizontal_alignment = 1
+
+[node name="InGameTimeElapsedLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+text = "In-game: 0:00"
+
+[node name="RealTimeElapsedLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+text = "Real: 0:00"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -131,6 +144,14 @@ theme_override_font_sizes/font_size = 12
 text = "LifeStylist "
 icon = ExtResource("2_35l7a")
 
+[node name="OwerViewButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "OwerView"
+icon = ExtResource("3_j19n5")
+
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
@@ -148,4 +169,5 @@ text = "Autopay Bills"
 alignment = 2
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/LifeStylistButton" to="." method="_on_life_stylist_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OwerViewButton" to="." method="_on_ower_view_button_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer2/AutopayCheckBox" to="." method="_on_autopay_check_box_toggled"]
