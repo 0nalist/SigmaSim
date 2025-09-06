@@ -89,20 +89,20 @@ func _show_last_drawn_card(animate: bool = false) -> void:
 	var rarity = TarotManager.last_card_rarity
 	if id == "" or rarity <= 0:
 		return
-	var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
-	var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-	var upside_down = TarotManager.last_card_upside_down
-	view.set_upside_down(upside_down)
-	view.show_single_count = true
-	view.modulate.a = 0.0
-	draw_result.add_child(view)
-	var t = create_tween()
-	t.tween_property(view, "modulate:a", 1.0, 0.3)
-	if upside_down:
-		if animate:
-			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
-		else:
-			view.texture_rect.rotation_degrees = 180
+        var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
+        var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+        var upside_down = TarotManager.last_card_upside_down
+        view.show_single_count = true
+        view.modulate.a = 0.0
+        draw_result.add_child(view)
+        await view.set_upside_down(upside_down)
+        var t = create_tween()
+        t.tween_property(view, "modulate:a", 1.0, 0.3)
+        if upside_down:
+                if animate:
+                        t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+                else:
+                        view.texture_rect.rotation_degrees = 180
 
 
 func _show_reading_cards(cards: Array, animate: bool = false) -> void:
@@ -110,24 +110,24 @@ func _show_reading_cards(cards: Array, animate: bool = false) -> void:
 		if child != reading_button and child != reading_cost_label and child != reading_button:
 			child.queue_free()
 	var index := 0
-	for c in cards:
-		var id: String = c.get("id", "")
-		var rarity: int = int(c.get("rarity", 1))
-		var upside_down: bool = bool(c.get("upside_down", false))
-		var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
-		var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-		view.set_upside_down(upside_down)
-		view.show_single_count = true
-		view.modulate.a = 0.0
-		reading_result.add_child(view)
-		var t = create_tween()
-		t.tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
-		if upside_down:
-			if animate:
-				t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
-			else:
-				view.texture_rect.rotation_degrees = 180
-		index += 1
+        for c in cards:
+                var id: String = c.get("id", "")
+                var rarity: int = int(c.get("rarity", 1))
+                var upside_down: bool = bool(c.get("upside_down", false))
+                var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
+                var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+                view.show_single_count = true
+                view.modulate.a = 0.0
+                reading_result.add_child(view)
+                await view.set_upside_down(upside_down)
+                var t = create_tween()
+                t.tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
+                if upside_down:
+                        if animate:
+                                t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+                        else:
+                                view.texture_rect.rotation_degrees = 180
+                index += 1
 
 
 func _update_cooldown_label() -> void:
