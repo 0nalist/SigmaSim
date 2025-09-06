@@ -36,19 +36,19 @@ func load_slot_metadata() -> Dictionary:
 
 
 func get_profile_metadata(slot_id: int) -> Dictionary:
-        var metadata = load_slot_metadata()
-        return metadata.get("slot_%d" % slot_id, {})
+		var metadata = load_slot_metadata()
+		return metadata.get("slot_%d" % slot_id, {})
 
 
 func update_current_slot_metadata(field: String, value) -> void:
-        if current_slot_id <= 0:
-                return
-        var metadata = load_slot_metadata()
-        var slot_key = "slot_%d" % current_slot_id
-        if not metadata.has(slot_key):
-                metadata[slot_key] = {}
-        metadata[slot_key][field] = value
-        save_slot_metadata(metadata)
+		if current_slot_id <= 0:
+				return
+		var metadata = load_slot_metadata()
+		var slot_key = "slot_%d" % current_slot_id
+		if not metadata.has(slot_key):
+				metadata[slot_key] = {}
+		metadata[slot_key][field] = value
+		save_slot_metadata(metadata)
 
 
 func get_next_available_slot() -> int:
