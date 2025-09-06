@@ -131,7 +131,7 @@ func initialize_new_profile(slot_id: int, user_data: Dictionary) -> void:
 	save_to_slot(slot_id, false)
 	BillManager.is_loading = false
 
-	NPCManager.load_daterbase_cache()
+        NPCManager.load_romantic_npc_cache()
 
 
 # --- Save/Load Full Game State ---
@@ -284,7 +284,7 @@ func load_from_slot(slot_id: int) -> void:
 	if data.has("desktop"):
 			DesktopLayoutManager.load_from_data(data["desktop"])
 	NPCManager.restore_encountered_from_db()
-	NPCManager.load_daterbase_cache()
+        NPCManager.load_romantic_npc_cache()
 	NPCManager.load_fumble_relationship_cache()
 	if data.has("windows"):  # Load windows after NPC data is ready
 			WindowManager.load_from_data(data["windows"])

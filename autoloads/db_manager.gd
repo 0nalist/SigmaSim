@@ -20,10 +20,13 @@ const SCHEMA: Dictionary = {
 		"relationship_status": {"data_type": "text"},
 		"locked_in_connection": {"data_type": "int"},
 		"relationship_stage": {"data_type": "int"},
-		"relationship_progress": {"data_type": "real"},
-		"exclusivity_core": {"data_type": "int"},
-		"claimed_exclusive_boost": {"data_type": "int"},
-		"claimed_serious_monog_boost": {"data_type": "int"},
+                "relationship_progress": {"data_type": "real"},
+                "exclusivity_core": {"data_type": "int"},
+                "romantic_relationship": {"data_type": "int"},
+                "personal_relationship": {"data_type": "int"},
+                "professional_relationship": {"data_type": "int"},
+                "claimed_exclusive_boost": {"data_type": "int"},
+                "claimed_serious_monog_boost": {"data_type": "int"},
 		"affinity": {"data_type": "real"},
 		"affinity_equilibrium": {"data_type": "real"},
 		"rizz": {"data_type": "int"},
@@ -128,11 +131,14 @@ func _migrate_table(table_name: String, fields: Dictionary):
 func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	var dict = npc.to_dict()
 	dict["id"] = idx
-	dict["slot_id"] = slot_id
-	if npc.claimed_exclusive_boost:
-		dict["claimed_exclusive_boost"] = 1
-	else:
-		dict["claimed_exclusive_boost"] = 0
+        dict["slot_id"] = slot_id
+        dict["romantic_relationship"] = 1 if npc.romantic_relationship else 0
+        dict["personal_relationship"] = 1 if npc.personal_relationship else 0
+        dict["professional_relationship"] = 1 if npc.professional_relationship else 0
+        if npc.claimed_exclusive_boost:
+                dict["claimed_exclusive_boost"] = 1
+        else:
+                dict["claimed_exclusive_boost"] = 0
 	if npc.claimed_serious_monog_boost:
 		dict["claimed_serious_monog_boost"] = 1
 	else:
@@ -442,20 +448,18 @@ func from_json(json_str: String) -> Variant:
 # -- Daterbase Helpers --
 
 func get_daterbase_entries(slot_id: int = SaveManager.current_slot_id) -> Array:
-	var q = "SELECT npc_id, battle_id FROM fumble_battles WHERE slot_id = %d AND outcome = 'victory'" % slot_id
-	db.query(q)
-	var rows = db.query_result
-	var latest: Dictionary = {}
-	for r in rows:
-		var npc_id = int(r.npc_id)
-		var b_id = str(r.battle_id)
-		var t = int(b_id.split("_")[0]) if "_" in b_id else 0
-		if not latest.has(npc_id) or t > latest[npc_id]:
-			latest[npc_id] = t
-	var out: Array = []
-	for n in latest.keys():
-		out.append({"npc_id": n, "timestamp": latest[n]})
-	return out
+        var ids: Array[int] = get_romantic_npc_ids(slot_id)
+        var out: Array = []
+        for id in ids:
+                out.append({"npc_id": id})
+        return out
+
+func get_romantic_npc_ids(slot_id: int = SaveManager.current_slot_id) -> Array[int]:
+        var rows = db.select_rows("npc", "slot_id = %d AND romantic_relationship = 1" % slot_id, ["id"])
+        var out: Array[int] = []
+        for r in rows:
+                out.append(int(r.id))
+        return out
 
 func execute_select(query: String) -> Array:
 	var trimmed = query.strip_edges()

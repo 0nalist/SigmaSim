@@ -21,7 +21,7 @@ var encountered_npcs_by_app: Dictionary = {}
 var active_npcs_by_app: Dictionary = {}
 var matched_npcs_by_app: Dictionary = {}
 
-var daterbase_npcs: Array[int] = []
+var romantic_npcs: Array[int] = []
 
 var relationship_status: Dictionary = {}
 var persistent_npcs: Dictionary = {}
@@ -43,14 +43,14 @@ func _ready() -> void:
 				add_child(_save_timer)
 				relationship_stage_changed.connect(func(idx, old_stage, new_stage):
 					if not (old_stage == RelationshipStage.TALKING and new_stage == RelationshipStage.DATING):
-						_recheck_daterbase_exclusivity(idx))
-				entered_dating_stage.connect(func(idx): _recheck_daterbase_exclusivity(idx))
-				exclusivity_core_changed.connect(func(idx, _o, _n): _recheck_daterbase_exclusivity(idx))
-				breakup_occurred.connect(func(idx):
-					_recheck_daterbase_exclusivity(idx)
-					_check_cheating_after_breakup()
-				)
-				load_daterbase_cache()
+                                _recheck_romantic_exclusivity(idx))
+                                entered_dating_stage.connect(func(idx): _recheck_romantic_exclusivity(idx))
+                                exclusivity_core_changed.connect(func(idx, _o, _n): _recheck_romantic_exclusivity(idx))
+                                breakup_occurred.connect(func(idx):
+                                        _recheck_romantic_exclusivity(idx)
+                                        _check_cheating_after_breakup()
+                                )
+                                load_romantic_npc_cache()
 
 func _queue_save(idx: int) -> void:
 		_save_queue[idx] = true
@@ -62,18 +62,23 @@ func _flush_save_queue() -> void:
 								DBManager.save_npc(idx, npcs[idx])
 				_save_queue.clear()
 
-func load_daterbase_cache() -> void:
-				daterbase_npcs.clear()
-				var entries: Array = DBManager.get_daterbase_entries()
-				for entry in entries:
-								daterbase_npcs.append(int(entry.npc_id))
+func load_romantic_npc_cache() -> void:
+                                romantic_npcs.clear()
+                                var ids: Array[int] = DBManager.get_romantic_npc_ids()
+                                for id in ids:
+                                                                romantic_npcs.append(int(id))
 
-func add_daterbase_npc(idx: int) -> void:
-				if not daterbase_npcs.has(idx):
-								daterbase_npcs.append(idx)
+func add_romantic_npc(idx: int) -> void:
+                                if not romantic_npcs.has(idx):
+                                                                romantic_npcs.append(idx)
+                                promote_to_persistent(idx)
+                                set_npc_field(idx, "romantic_relationship", true)
 
-func get_daterbase_npcs() -> Array[int]:
-								return daterbase_npcs
+func get_romantic_npcs() -> Array[int]:
+                                                                return romantic_npcs
+
+func has_romantic_relationship(idx: int) -> bool:
+                                return romantic_npcs.has(idx)
 
 func load_fumble_relationship_cache() -> void:
 								matched_npcs_by_app["fumble"] = []
@@ -245,7 +250,7 @@ func _load_npc_from_db(idx: int) -> NPC:
 	return npc
 
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
-		for npc_idx in daterbase_npcs:
+                for npc_idx in romantic_npcs:
 				var npc: NPC = get_npc_by_index(npc_idx)
 				var target: float = npc.affinity_equilibrium
 				var current: float = npc.affinity
@@ -314,8 +319,8 @@ func set_relationship_stage(npc_idx: int, new_stage: int) -> void:
 	persistent_npcs[npc_idx]["relationship_stage"] = npc.relationship_stage
 	persistent_npcs[npc_idx]["affinity_equilibrium"] = npc.affinity_equilibrium
 	DBManager.save_npc(npc_idx, npc)
-	if new_stage >= RelationshipStage.DATING:
-		add_daterbase_npc(npc_idx)
+        if new_stage >= RelationshipStage.DATING:
+                add_romantic_npc(npc_idx)
 	emit_signal("relationship_stage_changed", npc_idx, old_stage, npc.relationship_stage)
 	if old_equilibrium != npc.affinity_equilibrium:
 		emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
@@ -589,7 +594,7 @@ func _check_cheating_after_breakup() -> void:
 						if not still_cheating:
 								_resolve_cheating(check_idx)
 
-func _recheck_daterbase_exclusivity(changed_idx: int) -> void:
+func _recheck_romantic_exclusivity(changed_idx: int) -> void:
 	var active: Array[int] = []
 	for idx in encountered_npcs:
 			var idx_int: int = int(idx)
@@ -782,7 +787,7 @@ func reset() -> void:
 	active_npcs_by_app = {}
 	matched_npcs_by_app = {}
 
-	daterbase_npcs = []
+        romantic_npcs = []
 
 	relationship_status = {}
 	persistent_npcs = {}

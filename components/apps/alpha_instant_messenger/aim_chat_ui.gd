@@ -54,15 +54,9 @@ func _on_header_gui_input(event: InputEvent) -> void:
 				WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": npc_idx})
 
 func _is_romantically_pursuing() -> bool:
-	if npc_idx == -1:
-		return false
-	var status = DBManager.get_fumble_relationship(npc_idx)
-	if status != FumbleManager.FumbleStatus.VICTORY:
-		return false
-	for entry in DBManager.get_daterbase_entries():
-		if int(entry.npc_id) == npc_idx:
-			return true
-	return false
+        if npc_idx == -1:
+                return false
+        return NPCManager.has_romantic_relationship(npc_idx)
 
 func _on_greet_pressed() -> void:
 	pass
