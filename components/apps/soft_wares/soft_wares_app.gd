@@ -11,7 +11,7 @@ func _ready() -> void:
 
 func _populate_items() -> void:
 	var used_icons: Dictionary = {}
-	var exclude := ["SoftWares", "OwerView", "SigmaMail", "Installer", "NewYou", "Wallet", "Settings", "Notepad", "LockedIn", "LifeStylist", "AIM", "Terminal"]
+	var exclude := ["SoftWares", "OwerView", "SigmaMail", "Installer", "NewYou", "Wallet", "Settings", "Notepad", "LockedIn", "LifeStylist", "AIM", "Terminal", "EverYoung"]
 	var app_registry: Dictionary = WindowManager.get("app_registry")
 	for app_name in app_registry.keys():
 		if app_name in exclude:

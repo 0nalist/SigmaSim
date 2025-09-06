@@ -32,6 +32,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_i15i2")
 script = ExtResource("1_i15i2")
 window_title = "LockedIn"
 window_icon = ExtResource("2_naf07")
+default_window_size = Vector2(830, 600)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -58,12 +59,6 @@ theme_override_font_sizes/font_size = 32
 text = "Lockedin"
 horizontal_alignment = 1
 
-[node name="PaneNavBar" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 6
-script = ExtResource("4_txgot")
-metadata/_custom_type_script = "uid://bkxfxbb443cnq"
-
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -72,9 +67,15 @@ size_flags_vertical = 3
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
+[node name="PaneNavBar" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("4_txgot")
+metadata/_custom_type_script = "uid://bkxfxbb443cnq"
+
 [node name="ConnectionsList" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("4_8vpmc")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
