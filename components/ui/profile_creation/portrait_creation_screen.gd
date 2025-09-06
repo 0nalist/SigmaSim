@@ -21,4 +21,4 @@ func _on_portrait_applied(cfg: PortraitConfig) -> void:
 	emit_signal("step_valid", true)
 
 func save_data() -> void:
-	PlayerManager.user_data["portrait_config"] = current_config.to_dict()
+        PlayerManager.set_var("portrait_config", current_config.to_dict())
