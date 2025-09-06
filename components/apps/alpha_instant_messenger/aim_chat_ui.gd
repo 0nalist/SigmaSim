@@ -25,11 +25,11 @@ func setup_custom(data: Dictionary) -> void:
 		ready.connect(_finalize_setup, CONNECT_ONE_SHOT)
 
 func _ready() -> void:
-        header_container.gui_input.connect(_on_header_gui_input)
-        greet_button.pressed.connect(_on_greet_pressed)
-        gift_button.pressed.connect(_on_gift_pressed)
-        date_button.pressed.connect(_on_date_pressed)
-        relationship_button.pressed.connect(_on_relationship_pressed)
+	header_container.gui_input.connect(_on_header_gui_input)
+	greet_button.pressed.connect(_on_greet_pressed)
+	gift_button.pressed.connect(_on_gift_pressed)
+	date_button.pressed.connect(_on_date_pressed)
+	relationship_button.pressed.connect(_on_relationship_pressed)
 
 func _finalize_setup() -> void:
 	if npc == null:

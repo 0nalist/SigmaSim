@@ -1,14 +1,14 @@
 {
 	"id": "owerview_credit_up",
 	"name": "Credit Up",
-        "description": "Raises your credit score by 10 points per level.",
-        "effects": [
-                {
-                        "target": "bonus_credit_score",
-                        "operation": "add",
-                        "value": 10
-                }
-        ],
+		"description": "Raises your credit score by 10 points per level.",
+		"effects": [
+				{
+						"target": "bonus_credit_score",
+						"operation": "add",
+						"value": 10
+				}
+		],
 	"systems": [
 		"OwerView"
 	],
