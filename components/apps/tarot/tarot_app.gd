@@ -32,7 +32,6 @@ func _ready() -> void:
 	_update_cooldown_label()
 	_update_reading_cost_label()
 	_show_last_drawn_card()
-	_show_reading_cards(TarotManager.last_reading)
 	nav_bar.set_active("Draw")
 
 
@@ -87,33 +86,29 @@ func _show_last_drawn_card() -> void:
 		return
 	var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
 	var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-	var upside_down = TarotManager.last_card_upside_down
+	var upside_down = RNGManager.tarot_orientation.get_rng().randf() < 0.5
 	view.set_upside_down(upside_down)
-	if upside_down:
-		view.texture_rect.rotation_degrees = 0
 	view.show_single_count = true
 	view.modulate.a = 0.0
 	draw_result.add_child(view)
 	var t = create_tween()
 	t.tween_property(view, "modulate:a", 1.0, 0.3)
 	if upside_down:
-		t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+
 func _show_reading_cards(cards: Array) -> void:
 	for child in reading_result.get_children():
 		if child != reading_button and child != reading_cost_label and child != reading_button:
 			child.queue_free()
-	if cards.is_empty():
-		return
 	var index := 0
+	var flip_rng = RNGManager.tarot_orientation.get_rng()
 	for c in cards:
 		var id: String = c.get("id", "")
 		var rarity: int = int(c.get("rarity", 1))
-		var upside_down: bool = bool(c.get("upside_down", false))
 		var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
 		var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+		var upside_down = flip_rng.randf() < 0.5
 		view.set_upside_down(upside_down)
-		if upside_down:
-			view.texture_rect.rotation_degrees = 0
 		view.show_single_count = true
 		view.modulate.a = 0.0
 		reading_result.add_child(view)
@@ -122,6 +117,8 @@ func _show_reading_cards(cards: Array) -> void:
 		if upside_down:
 			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
 		index += 1
+
+
 func _update_cooldown_label() -> void:
 	var remaining = TarotManager.time_until_next_draw()
 	if remaining <= 0:

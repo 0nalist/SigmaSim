@@ -77,7 +77,7 @@ func update_rarity(new_rarity: int) -> void:
 				rarity_label.material = null
 				rarity_label.add_theme_color_override("font_color", RARITY_COLORS.get(rarity, Color.WHITE))
 		sell_price = TarotManager.get_sell_price(rarity)
-	if is_upside_down:
+		if is_upside_down:
 				sell_price *= 2.0
 		sell_button.text = "Sell for $%d" % int(sell_price)
 
@@ -100,8 +100,6 @@ func _ready() -> void:
 	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	rarity_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	count_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	if is_upside_down:
-		set_upside_down(true)
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -113,10 +111,9 @@ func set_upside_down(flag: bool) -> void:
 		is_upside_down = flag
 		if is_upside_down:
 				texture_rect.pivot_offset = texture_rect.size * 0.5
-				texture_rect.rotation_degrees = 180
 		else:
 				texture_rect.pivot_offset = Vector2.ZERO
-				texture_rect.rotation_degrees = 0
+		texture_rect.rotation_degrees = 0
 		sell_price = TarotManager.get_sell_price(rarity)
 		if is_upside_down:
 				sell_price *= 2.0
