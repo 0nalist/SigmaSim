@@ -17,7 +17,7 @@ func _ready():
         var result = TarotManager.draw_card()
         sequence_cards.append(result.get("id"))
         sequence_rarities.append(result.get("rarity"))
-        var orient = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+        var orient = result.get("upside_down")
         sequence_orientations.append(orient)
         card_counts[result.get("id")] = int(card_counts.get(result.get("id"), 0)) + 1
         rarity_counts[result.get("rarity")] = int(rarity_counts.get(result.get("rarity"), 0)) + 1
@@ -28,10 +28,9 @@ func _ready():
     TarotManager.last_draw_minutes = -TarotManager.COOLDOWN_MINUTES
     for i in range(DRAWS):
         var result = TarotManager.draw_card()
-        var orient = RNGManager.tarot_orientation.get_rng().randf() < 0.5
         assert(sequence_cards[i] == result.get("id"))
         assert(sequence_rarities[i] == result.get("rarity"))
-        assert(sequence_orientations[i] == orient)
+        assert(sequence_orientations[i] == result.get("upside_down"))
         TarotManager.last_draw_minutes = -TarotManager.COOLDOWN_MINUTES
     RNGManager.init_seed(1)
     TarotManager.reset()
@@ -40,13 +39,13 @@ func _ready():
     RNGManager.tarot_rarity.init_seed(20)
     RNGManager.tarot_orientation.init_seed(30)
     var base = TarotManager.draw_card()
-    var base_orient = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+    var base_orient = base.get("upside_down")
     TarotManager.last_draw_minutes = -TarotManager.COOLDOWN_MINUTES
     RNGManager.tarot_card.init_seed(11)
     RNGManager.tarot_rarity.init_seed(20)
     RNGManager.tarot_orientation.init_seed(30)
     var card_changed = TarotManager.draw_card()
-    var orient_same = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+    var orient_same = card_changed.get("upside_down")
     assert(base.get("id") != card_changed.get("id"))
     assert(base.get("rarity") == card_changed.get("rarity"))
     assert(base_orient == orient_same)
@@ -55,7 +54,7 @@ func _ready():
     RNGManager.tarot_rarity.init_seed(21)
     RNGManager.tarot_orientation.init_seed(30)
     var rarity_changed = TarotManager.draw_card()
-    var orient_same2 = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+    var orient_same2 = rarity_changed.get("upside_down")
     assert(base.get("id") == rarity_changed.get("id"))
     assert(base.get("rarity") != rarity_changed.get("rarity"))
     assert(base_orient == orient_same2)
@@ -64,7 +63,7 @@ func _ready():
     RNGManager.tarot_rarity.init_seed(20)
     RNGManager.tarot_orientation.init_seed(31)
     var orientation_changed = TarotManager.draw_card()
-    var orient_diff = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+    var orient_diff = orientation_changed.get("upside_down")
     assert(base.get("id") == orientation_changed.get("id"))
     assert(base.get("rarity") == orientation_changed.get("rarity"))
     assert(base_orient != orient_diff)
@@ -73,19 +72,18 @@ func _ready():
     TarotManager.last_draw_minutes = -TarotManager.COOLDOWN_MINUTES
     for i in range(10):
         TarotManager.draw_card()
-        RNGManager.tarot_orientation.get_rng().randf() < 0.5
         TarotManager.last_draw_minutes = -TarotManager.COOLDOWN_MINUTES
     var rng_state = RNGManager.get_save_data()
     var tarot_state = TarotManager.get_save_data()
     var next_expected = TarotManager.draw_card()
-    var orientation_expected = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+    var orientation_expected = next_expected.get("upside_down")
     RNGManager.init_seed(555)
     TarotManager.reset()
     RNGManager.load_from_data(rng_state)
     TarotManager.load_from_data(tarot_state)
     TarotManager.last_draw_minutes = -TarotManager.COOLDOWN_MINUTES
     var next_loaded = TarotManager.draw_card()
-    var orientation_loaded = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+    var orientation_loaded = next_loaded.get("upside_down")
     assert(next_expected.get("id") == next_loaded.get("id"))
     assert(next_expected.get("rarity") == next_loaded.get("rarity"))
     assert(orientation_expected == orientation_loaded)

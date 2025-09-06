@@ -9,21 +9,26 @@ func _ready():
     var single_rarity = single.get("rarity")
     TarotManager.last_draw_minutes = -TarotManager.COOLDOWN_MINUTES
     var reading = TarotManager.draw_reading(2)
+    var single_up = single.get("upside_down")
     assert(TarotManager.last_card_id == single_id)
     assert(TarotManager.last_card_rarity == single_rarity)
+    assert(TarotManager.last_card_upside_down == single_up)
     assert(TarotManager.last_reading.size() == reading.size())
     for i in range(reading.size()):
         assert(TarotManager.last_reading[i].get("id") == reading[i].get("id"))
         assert(TarotManager.last_reading[i].get("rarity") == reading[i].get("rarity"))
+        assert(TarotManager.last_reading[i].get("upside_down") == reading[i].get("upside_down"))
     var save = TarotManager.get_save_data()
     TarotManager.reset()
     TarotManager.load_from_data(save)
     assert(TarotManager.last_card_id == single_id)
     assert(TarotManager.last_card_rarity == single_rarity)
+    assert(TarotManager.last_card_upside_down == single_up)
     assert(TarotManager.last_reading.size() == reading.size())
     for i in range(reading.size()):
         assert(TarotManager.last_reading[i].get("id") == reading[i].get("id"))
         assert(TarotManager.last_reading[i].get("rarity") == reading[i].get("rarity"))
+        assert(TarotManager.last_reading[i].get("upside_down") == reading[i].get("upside_down"))
     print("tarot_persistence_independence_test passed")
     quit()
 
