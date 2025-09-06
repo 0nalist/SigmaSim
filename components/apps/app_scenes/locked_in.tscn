@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bt21jghoy8e7"]
+[gd_scene load_steps=10 format=3 uid="uid://bt21jghoy8e7"]
 
 [ext_resource type="FontFile" uid="uid://2gcfbogatx7a" path="res://assets/fonts/GALSB.ttf" id="1_30ebf"]
 [ext_resource type="Script" uid="uid://dhdkwe8gkul5d" path="res://components/apps/locked_in/locked_in.gd" id="1_i15i2"]
@@ -10,6 +10,17 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i15i2"]
 bg_color = Color(0.486275, 0.486275, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_txgot"]
+bg_color = Color(0.151775, 0.162645, 0.00495192, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xswks"]
 bg_color = Color(0.6, 0.5573, 0.234, 0.627451)
 border_width_left = 2
@@ -17,6 +28,10 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="LockedIn" type="PanelContainer"]
 custom_minimum_size = Vector2(460, 300)
@@ -50,6 +65,8 @@ layout_mode = 2
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(63, 63)
 layout_mode = 2
+texture = ExtResource("2_naf07")
+expand_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
@@ -67,6 +84,15 @@ size_flags_vertical = 3
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
+[node name="PaneNavBar" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_txgot")
+script = ExtResource("4_txgot")
+use_vertical = true
+metadata/_custom_type_script = "uid://bkxfxbb443cnq"
+
 [node name="ConnectionsList" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("4_8vpmc")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
@@ -80,19 +106,13 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_xswks")
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PaneNavBar" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("4_txgot")
-metadata/_custom_type_script = "uid://bkxfxbb443cnq"
-
 [node name="Profile" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_6ji7a")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Feed" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 2
 visible = false
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
