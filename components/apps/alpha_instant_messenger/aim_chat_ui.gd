@@ -44,6 +44,7 @@ func _finalize_setup() -> void:
 		portrait_view.apply_config(npc.portrait_config)
 
 func _on_header_gui_input(event: InputEvent) -> void:
+	print("header gui input")
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if _is_romantically_pursuing():
 			var key := "ex_factor_%d" % npc_idx
