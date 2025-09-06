@@ -296,7 +296,7 @@ func _load_default_entries() -> void:
 	_affinity_labels_by_npc.clear()
 	_exclusivity_labels_by_npc.clear()
 
-        var npc_indices: Array[int] = NPCManager.get_romantic_npcs()
+	var npc_indices: Array[int] = NPCManager.get_romantic_npcs()
 	if sort_column_index != -1:
 			npc_indices.sort_custom(_npc_less_than)
 			if not sort_ascending:

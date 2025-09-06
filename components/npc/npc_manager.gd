@@ -35,64 +35,66 @@ var _save_timer: Timer
 var _last_dating_notify_time_msec: int = 0
 
 func _ready() -> void:
-				TimeManager.hour_passed.connect(_on_hour_passed)
-				_save_timer = Timer.new()
-				_save_timer.wait_time = 0.5
-				_save_timer.one_shot = true
-				_save_timer.timeout.connect(_flush_save_queue)
-				add_child(_save_timer)
-				relationship_stage_changed.connect(func(idx, old_stage, new_stage):
-					if not (old_stage == RelationshipStage.TALKING and new_stage == RelationshipStage.DATING):
-                                _recheck_romantic_exclusivity(idx))
-                                entered_dating_stage.connect(func(idx): _recheck_romantic_exclusivity(idx))
-                                exclusivity_core_changed.connect(func(idx, _o, _n): _recheck_romantic_exclusivity(idx))
-                                breakup_occurred.connect(func(idx):
-                                        _recheck_romantic_exclusivity(idx)
-                                        _check_cheating_after_breakup()
-                                )
-                                load_romantic_npc_cache()
+	TimeManager.hour_passed.connect(_on_hour_passed)
+	_save_timer = Timer.new()
+	_save_timer.wait_time = 0.5
+	_save_timer.one_shot = true
+	_save_timer.timeout.connect(_flush_save_queue)
+	add_child(_save_timer)
+
+	relationship_stage_changed.connect(func(idx, old_stage, new_stage):
+		if not (old_stage == RelationshipStage.TALKING and new_stage == RelationshipStage.DATING):
+			_recheck_romantic_exclusivity(idx)
+	)
+	entered_dating_stage.connect(func(idx): _recheck_romantic_exclusivity(idx))
+	exclusivity_core_changed.connect(func(idx, _o, _n): _recheck_romantic_exclusivity(idx))
+	breakup_occurred.connect(func(idx):
+		_recheck_romantic_exclusivity(idx)
+		_check_cheating_after_breakup()
+	)
+	load_romantic_npc_cache()
 
 func _queue_save(idx: int) -> void:
-		_save_queue[idx] = true
-		if _save_timer.is_stopped():
-				_save_timer.start()
+	_save_queue[idx] = true
+	if _save_timer.is_stopped():
+		_save_timer.start()
 
 func _flush_save_queue() -> void:
-				for idx in _save_queue.keys():
-								DBManager.save_npc(idx, npcs[idx])
-				_save_queue.clear()
+	for idx in _save_queue.keys():
+		DBManager.save_npc(idx, npcs[idx])
+	_save_queue.clear()
 
 func load_romantic_npc_cache() -> void:
-                                romantic_npcs.clear()
-                                var ids: Array[int] = DBManager.get_romantic_npc_ids()
-                                for id in ids:
-                                                                romantic_npcs.append(int(id))
+	romantic_npcs.clear()
+	var ids: Array[int] = DBManager.get_romantic_npc_ids()
+	for id in ids:
+		romantic_npcs.append(int(id))
 
 func add_romantic_npc(idx: int) -> void:
-                                if not romantic_npcs.has(idx):
-                                                                romantic_npcs.append(idx)
-                                promote_to_persistent(idx)
-                                set_npc_field(idx, "romantic_relationship", true)
+	if not romantic_npcs.has(idx):
+		romantic_npcs.append(idx)
+	promote_to_persistent(idx)
+	set_npc_field(idx, "romantic_relationship", true)
 
 func get_romantic_npcs() -> Array[int]:
-                                                                return romantic_npcs
+	return romantic_npcs
 
 func has_romantic_relationship(idx: int) -> bool:
-                                return romantic_npcs.has(idx)
+	return romantic_npcs.has(idx)
 
 func load_fumble_relationship_cache() -> void:
-								matched_npcs_by_app["fumble"] = []
-								var rels: Dictionary = DBManager.get_all_fumble_relationships()
-								for idx in rels.keys():
-																var status_enum: FumbleManager.FumbleStatus = rels[idx]
-																if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
-																				matched_npcs_by_app["fumble"].append(int(idx))
+	matched_npcs_by_app["fumble"] = []
+	var rels: Dictionary = DBManager.get_all_fumble_relationships()
+	for idx in rels.keys():
+		var status_enum: FumbleManager.FumbleStatus = rels[idx]
+		if status_enum == FumbleManager.FumbleStatus.LIKED or status_enum == FumbleManager.FumbleStatus.MATCHED:
+			matched_npcs_by_app["fumble"].append(int(idx))
 
 # === MAIN API ===
 
 func get_npc_by_index(idx: int) -> NPC:
 	if npcs.has(idx):
-			return npcs[idx]
+		return npcs[idx]
 
 	var npc: NPC
 	if encountered_npcs.has(idx):
@@ -107,7 +109,6 @@ func get_npc_by_index(idx: int) -> NPC:
 
 	if npc.portrait_config == null:
 		npc.portrait_config = PortraitFactory.ensure_config_for_npc(idx, npc.full_name)
-
 
 	npcs[idx] = npc
 	return npc
@@ -250,15 +251,15 @@ func _load_npc_from_db(idx: int) -> NPC:
 	return npc
 
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
-                for npc_idx in romantic_npcs:
-				var npc: NPC = get_npc_by_index(npc_idx)
-				var target: float = npc.affinity_equilibrium
-				var current: float = npc.affinity
-				var rate: float = StatManager.get_stat("affinity_drift_rate", 1.0)
-				if current < target:
-						set_npc_field(npc_idx, "affinity", min(current + rate, target))
-				elif current > target:
-						set_npc_field(npc_idx, "affinity", max(current - rate, target))
+	for npc_idx in romantic_npcs:
+		var npc: NPC = get_npc_by_index(npc_idx)
+		var target: float = npc.affinity_equilibrium
+		var current: float = npc.affinity
+		var rate: float = StatManager.get_stat("affinity_drift_rate", 1.0)
+		if current < target:
+				set_npc_field(npc_idx, "affinity", min(current + rate, target))
+		elif current > target:
+				set_npc_field(npc_idx, "affinity", max(current - rate, target))
 
 # === RELATIONSHIP MANAGEMENT ===
 
@@ -319,8 +320,8 @@ func set_relationship_stage(npc_idx: int, new_stage: int) -> void:
 	persistent_npcs[npc_idx]["relationship_stage"] = npc.relationship_stage
 	persistent_npcs[npc_idx]["affinity_equilibrium"] = npc.affinity_equilibrium
 	DBManager.save_npc(npc_idx, npc)
-        if new_stage >= RelationshipStage.DATING:
-                add_romantic_npc(npc_idx)
+	if new_stage >= RelationshipStage.DATING:
+			add_romantic_npc(npc_idx)
 	emit_signal("relationship_stage_changed", npc_idx, old_stage, npc.relationship_stage)
 	if old_equilibrium != npc.affinity_equilibrium:
 		emit_signal("affinity_equilibrium_changed", npc_idx, npc.affinity_equilibrium)
@@ -787,7 +788,7 @@ func reset() -> void:
 	active_npcs_by_app = {}
 	matched_npcs_by_app = {}
 
-        romantic_npcs = []
+	romantic_npcs = []
 
 	relationship_status = {}
 	persistent_npcs = {}

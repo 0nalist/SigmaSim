@@ -100,8 +100,8 @@ func save_battle_state(battle_id: String, chatlog: Array, stats: Dictionary, mov
 				move_usage_counts,
 				outcome
 		)
-                if outcome == "victory":
-                        NPCManager.add_romantic_npc(npc_idx)
+		if outcome == "victory":
+				NPCManager.add_romantic_npc(npc_idx)
 
 func load_battle_state(battle_id: String) -> Dictionary:
 	var data = DBManager.load_fumble_battle(battle_id, SaveManager.current_slot_id)

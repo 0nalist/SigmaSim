@@ -172,14 +172,14 @@ func to_dict() -> Dictionary:
 		"occupation": occupation,
 		"relationship_status": relationship_status,
 		"locked_in_connection": locked_in_connection,
-                "relationship_stage": relationship_stage,
-                "relationship_progress": relationship_progress,
-                "exclusivity_core": exclusivity_core,
-                "romantic_relationship": romantic_relationship,
-                "personal_relationship": personal_relationship,
-                "professional_relationship": professional_relationship,
-                "claimed_exclusive_boost": claimed_exclusive_boost,
-                "claimed_serious_monog_boost": claimed_serious_monog_boost,
+		"relationship_stage": relationship_stage,
+		"relationship_progress": relationship_progress,
+		"exclusivity_core": exclusivity_core,
+		"romantic_relationship": romantic_relationship,
+		"personal_relationship": personal_relationship,
+		"professional_relationship": professional_relationship,
+		"claimed_exclusive_boost": claimed_exclusive_boost,
+		"claimed_serious_monog_boost": claimed_serious_monog_boost,
 		"affinity": affinity,
 		"affinity_equilibrium": affinity_equilibrium,
 		"rizz": rizz,
@@ -203,10 +203,10 @@ func to_dict() -> Dictionary:
 		"delta": delta,
 		"omega": omega,
 		"sigma": sigma,
-				"tags": tags.duplicate(),
-				"likes": likes.duplicate(),
-				"dislikes": dislikes.duplicate(),
-				"fumble_bio": fumble_bio,
+		"tags": tags.duplicate(),
+		"likes": likes.duplicate(),
+		"dislikes": dislikes.duplicate(),
+		"fumble_bio": fumble_bio,
 		"self_esteem": self_esteem,
 		"apprehension": apprehension,
 		"chemistry": chemistry,
@@ -263,18 +263,18 @@ static func from_dict(data: Dictionary) -> NPC:
 						npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
 					else:
 						npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
-        else:
-                if npc.relationship_stage >= NPCManager.RelationshipStage.SERIOUS:
-                        npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
-                else:
-                        npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
-        npc.romantic_relationship = _safe_int(data.get("romantic_relationship"), 0) != 0
-        npc.personal_relationship = _safe_int(data.get("personal_relationship"), 0) != 0
-        npc.professional_relationship = _safe_int(data.get("professional_relationship"), 0) != 0
-        npc.claimed_exclusive_boost = _safe_int(data.get("claimed_exclusive_boost"), 0) != 0
-        npc.claimed_serious_monog_boost = _safe_int(data.get("claimed_serious_monog_boost"), 0) != 0
-        npc.affinity = _safe_float(data.get("affinity"), 0.0)
-        npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 100.0)
+		else:
+				if npc.relationship_stage >= NPCManager.RelationshipStage.SERIOUS:
+						npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+				else:
+						npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+		npc.romantic_relationship = _safe_int(data.get("romantic_relationship"), 0) != 0
+		npc.personal_relationship = _safe_int(data.get("personal_relationship"), 0) != 0
+		npc.professional_relationship = _safe_int(data.get("professional_relationship"), 0) != 0
+		npc.claimed_exclusive_boost = _safe_int(data.get("claimed_exclusive_boost"), 0) != 0
+		npc.claimed_serious_monog_boost = _safe_int(data.get("claimed_serious_monog_boost"), 0) != 0
+		npc.affinity = _safe_float(data.get("affinity"), 0.0)
+		npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 100.0)
 	npc.rizz = _safe_int(data.get("rizz"), 0)
 	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
 
