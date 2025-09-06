@@ -7,7 +7,7 @@ var count: int = 0
 var sell_price: float = 0.0
 var mark_sold_on_sell: bool = false
 var show_single_count: bool = false
-var is_upside_down: bool = false
+@export var is_upside_down: bool = false
 
 signal card_pressed(card_id: String)
 
@@ -100,6 +100,12 @@ func _ready() -> void:
 	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	rarity_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	count_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	if is_upside_down:
+	        texture_rect.pivot_offset = texture_rect.size * 0.5
+	        texture_rect.rotation_degrees = 180
+	else:
+	        texture_rect.pivot_offset = Vector2.ZERO
+	        texture_rect.rotation_degrees = 0
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
