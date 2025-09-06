@@ -94,6 +94,7 @@ func _show_last_drawn_card() -> void:
 	var t = create_tween()
 	t.tween_property(view, "modulate:a", 1.0, 0.3)
 	if upside_down:
+			view.texture_rect.rotation_degrees = 0
 			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
 
 func _show_reading_cards(cards: Array) -> void:
@@ -115,6 +116,7 @@ func _show_reading_cards(cards: Array) -> void:
 		var t = create_tween()
 		t.tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
 		if upside_down:
+			view.texture_rect.rotation_degrees = 0
 			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
 		index += 1
 
