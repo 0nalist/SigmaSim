@@ -22,8 +22,8 @@ func _ready() -> void:
 		_on_root_resized()
 
 func _on_root_resized() -> void:
-    var root_width: float = _root_control.size.x
-    custom_minimum_size.x = min(full_width, root_width * width_ratio)
+	var root_width: float = _root_control.size.x
+	custom_minimum_size.x = min(full_width, root_width * width_ratio)
 "
 
 [node name="PaneNavBar" type="PanelContainer"]
