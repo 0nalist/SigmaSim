@@ -85,16 +85,17 @@ func _show_last_drawn_card() -> void:
 	if id == "" or rarity <= 0:
 		return
 	var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
-	var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-	var upside_down = RNGManager.tarot_orientation.get_rng().randf() < 0.5
-	view.set_upside_down(upside_down)
-	view.show_single_count = true
-	view.modulate.a = 0.0
-	draw_result.add_child(view)
-	var t = create_tween()
-	t.tween_property(view, "modulate:a", 1.0, 0.3)
-	if upside_down:
-			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+        var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+        var upside_down = RNGManager.tarot_orientation.get_rng().randf() < 0.5
+        view.set_upside_down(upside_down)
+        view.show_single_count = true
+        view.modulate.a = 0.0
+        draw_result.add_child(view)
+        var t = create_tween()
+        t.tween_property(view, "modulate:a", 1.0, 0.3)
+        if upside_down:
+                        view.texture_rect.rotation_degrees = 0
+                        t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
 
 func _show_reading_cards(cards: Array) -> void:
 	for child in reading_result.get_children():
@@ -106,17 +107,18 @@ func _show_reading_cards(cards: Array) -> void:
 		var id: String = c.get("id", "")
 		var rarity: int = int(c.get("rarity", 1))
 		var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
-		var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
-		var upside_down = flip_rng.randf() < 0.5
-		view.set_upside_down(upside_down)
-		view.show_single_count = true
-		view.modulate.a = 0.0
-		reading_result.add_child(view)
-		var t = create_tween()
-		t.tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
-		if upside_down:
-			t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
-		index += 1
+                var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+                var upside_down = flip_rng.randf() < 0.5
+                view.set_upside_down(upside_down)
+                view.show_single_count = true
+                view.modulate.a = 0.0
+                reading_result.add_child(view)
+                var t = create_tween()
+                t.tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
+                if upside_down:
+                        view.texture_rect.rotation_degrees = 0
+                        t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+                index += 1
 
 
 func _update_cooldown_label() -> void:
