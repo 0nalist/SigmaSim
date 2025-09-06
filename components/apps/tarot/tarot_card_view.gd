@@ -96,27 +96,25 @@ func _on_sell_pressed() -> void:
 		sell_button.visible = true
 
 func _ready() -> void:
-        texture_rect.mouse_filter = Control.MOUSE_FILTER_PASS
-        name_label.mouse_filter = Control.MOUSE_FILTER_PASS
-        rarity_label.mouse_filter = Control.MOUSE_FILTER_PASS
-        count_label.mouse_filter = Control.MOUSE_FILTER_PASS
-        set_upside_down(is_upside_down)
+	texture_rect.mouse_filter = Control.MOUSE_FILTER_PASS
+	name_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	rarity_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	count_label.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		card_pressed.emit(card_id)
 
 func set_upside_down(flag: bool) -> void:
-                if not is_node_ready():
-                                await ready
-                is_upside_down = flag
-                if is_upside_down:
-                                texture_rect.pivot_offset = texture_rect.size * 0.5
-                                texture_rect.rotation_degrees = 180
-                else:
-                                texture_rect.pivot_offset = Vector2.ZERO
-                                texture_rect.rotation_degrees = 0
-                sell_price = TarotManager.get_sell_price(rarity)
-                if is_upside_down:
-                                sell_price *= 2.0
-                sell_button.text = "Sell for $%d" % int(sell_price)
+		if not is_node_ready():
+				await ready
+		is_upside_down = flag
+		if is_upside_down:
+				texture_rect.pivot_offset = texture_rect.size * 0.5
+		else:
+				texture_rect.pivot_offset = Vector2.ZERO
+		texture_rect.rotation_degrees = 0
+		sell_price = TarotManager.get_sell_price(rarity)
+		if is_upside_down:
+				sell_price *= 2.0
+		sell_button.text = "Sell for $%d" % int(sell_price)
