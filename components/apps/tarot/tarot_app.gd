@@ -28,12 +28,12 @@ func _ready() -> void:
 	TimeManager.minute_passed.connect(_on_minute_passed)
 	TimeManager.hour_passed.connect(_on_hour_passed)
 	UpgradeManager.upgrade_purchased.connect(_on_upgrade_purchased)
-        _build_collection_view()
-        _update_cooldown_label()
-        _update_reading_cost_label()
-        _show_last_drawn_card()
-        _show_reading_cards(TarotManager.last_reading)
-        nav_bar.set_active("Draw")
+	_build_collection_view()
+	_update_cooldown_label()
+	_update_reading_cost_label()
+	_show_last_drawn_card()
+	_show_reading_cards(TarotManager.last_reading)
+	nav_bar.set_active("Draw")
 
 
 func _build_collection_view() -> void:
