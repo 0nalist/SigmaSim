@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bg4qg6o60j2oi"]
 
-[ext_resource type="Script" uid="uid://cu0y88l5f8trf" path="res://components/upgrade_scenes/owerview_upgrade_ui.gd" id="1_w7t1k"]
+[ext_resource type="Script" uid="uid://bg13p6sf4r6jm" path="res://components/upgrade_scenes/owerview_upgrade_ui.gd" id="1_w7t1k"]
 [ext_resource type="PackedScene" uid="uid://c12jraubuv28g" path="res://data/upgrades/system_upgrade_ui.tscn" id="2_w7t1k"]
 
 [node name="OwerViewUpgradeUI" type="PanelContainer"]
