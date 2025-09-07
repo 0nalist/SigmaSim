@@ -167,6 +167,30 @@ size_flags_horizontal = 4
 focus_mode = 0
 text = "  Paid Reading  "
 
+[node name="MajorsView" type="VBoxContainer" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MajorResult" type="HBoxContainer" parent="MarginContainer/VBox/MajorsView"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="MajorCostLabel" type="Label" parent="MarginContainer/VBox/MajorsView"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="MajorButton" type="Button" parent="MarginContainer/VBox/MajorsView"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "  Majors Reading  "
+
 [node name="CollectionView" type="ScrollContainer" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 visible = false
