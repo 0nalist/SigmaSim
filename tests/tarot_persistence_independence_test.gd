@@ -3,6 +3,7 @@ extends SceneTree
 func _ready():
     RNGManager.init_seed(0)
     TarotManager.reset()
+    PortfolioManager.cash = 100.0
     TarotManager.last_draw_minutes = -TarotManager.COOLDOWN_MINUTES
     var single = TarotManager.draw_card()
     var single_id = single.get("id")
