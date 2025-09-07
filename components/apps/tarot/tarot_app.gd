@@ -184,12 +184,12 @@ func _update_cooldown_label() -> void:
 
 
 func _update_reading_cost_label() -> void:
-    var extra := UpgradeManager.get_level("tarot_extra_card")
-    var count := 1 + extra
-    var reading_cost = TarotManager.reading_cost * count
-    var major_cost = TarotManager.major_reading_cost * count
-    reading_cost_label.text = "$%d for %d card(s)" % [int(reading_cost), count]
-    major_cost_label.text = "%d EX for %d card(s)" % [int(major_cost), count]
+	var extra := UpgradeManager.get_level("tarot_extra_card")
+	var count := 1 + extra
+	var reading_cost = TarotManager.reading_cost * count
+	var major_cost = TarotManager.major_reading_cost * count
+	reading_cost_label.text = "$%d for %d card(s)" % [int(reading_cost), count]
+	major_cost_label.text = "%d EX for %d card(s)" % [int(major_cost), count]
 
 
 func _on_minute_passed(_total_minutes: int) -> void:

@@ -28,30 +28,30 @@ func _ready() -> void:
 
 
 func reset() -> void:
-collection.clear()
-last_draw_minutes = -COOLDOWN_MINUTES
-last_card_id = ""
-last_card_rarity = 0
-last_card_upside_down = false
-reading_cost = 1.0
-major_reading_cost = 1.0
-last_reading.clear()
-last_major_reading.clear()
-deck.load_from_file(DATA_PATH)
+	collection.clear()
+	last_draw_minutes = -COOLDOWN_MINUTES
+	last_card_id = ""
+	last_card_rarity = 0
+	last_card_upside_down = false
+	reading_cost = 1.0
+	major_reading_cost = 1.0
+	last_reading.clear()
+	last_major_reading.clear()
+	deck.load_from_file(DATA_PATH)
 
 
 func get_save_data() -> Dictionary:
-        return {
-                "collection": collection,
-                "last_draw": last_draw_minutes,
-                "last_card_id": last_card_id,
-                "last_card_rarity": last_card_rarity,
-                "last_card_upside_down": last_card_upside_down,
-                "reading_cost": reading_cost,
-                "major_reading_cost": major_reading_cost,
-                "last_reading": last_reading,
-                "last_major_reading": last_major_reading
-        }
+		return {
+				"collection": collection,
+				"last_draw": last_draw_minutes,
+				"last_card_id": last_card_id,
+				"last_card_rarity": last_card_rarity,
+				"last_card_upside_down": last_card_upside_down,
+				"reading_cost": reading_cost,
+				"major_reading_cost": major_reading_cost,
+				"last_reading": last_reading,
+				"last_major_reading": last_major_reading
+		}
 
 
 func load_from_data(data: Dictionary) -> void:
@@ -67,13 +67,13 @@ func load_from_data(data: Dictionary) -> void:
 
 	last_draw_minutes = int(data.get("last_draw", -COOLDOWN_MINUTES))
 	last_card_id = data.get("last_card_id", "")
-        last_card_rarity = int(data.get("last_card_rarity", 0))
-        last_card_upside_down = bool(data.get("last_card_upside_down", false))
-        reading_cost = float(data.get("reading_cost", 1.0))
-        major_reading_cost = float(data.get("major_reading_cost", 1.0))
-        last_reading = data.get("last_reading", [])
-        last_major_reading = data.get("last_major_reading", [])
-        deck.load_from_file(DATA_PATH)
+		last_card_rarity = int(data.get("last_card_rarity", 0))
+		last_card_upside_down = bool(data.get("last_card_upside_down", false))
+		reading_cost = float(data.get("reading_cost", 1.0))
+		major_reading_cost = float(data.get("major_reading_cost", 1.0))
+		last_reading = data.get("last_reading", [])
+		last_major_reading = data.get("last_major_reading", [])
+		deck.load_from_file(DATA_PATH)
 
 
 func get_card_count(id: String) -> int:
@@ -153,11 +153,11 @@ func draw_card() -> Dictionary:
 
 
 func draw_reading(count: int) -> Array:
-    var total_cost := reading_cost * count
-    if total_cost > 0.0:
-        if not PortfolioManager.pay_with_cash(total_cost):
-            return []
-        reading_cost *= 2.0
+	var total_cost := reading_cost * count
+	if total_cost > 0.0:
+		if not PortfolioManager.pay_with_cash(total_cost):
+			return []
+		reading_cost *= 2.0
 	var card_rng := RNGManager.tarot_card.get_rng()
 	var rarity_rng := RNGManager.tarot_rarity.get_rng()
 	var orientation_rng := RNGManager.tarot_orientation.get_rng()
@@ -180,13 +180,13 @@ func draw_reading(count: int) -> Array:
 
 
 func draw_major_reading(count: int) -> Array:
-    var total_cost := major_reading_cost * count
-    if total_cost > 0.0:
-        var current_ex = StatManager.get_stat("ex", 0.0)
-        if current_ex < total_cost:
-            return []
-        StatManager.set_base_stat("ex", current_ex - total_cost)
-        major_reading_cost *= 2.0
+	var total_cost := major_reading_cost * count
+	if total_cost > 0.0:
+		var current_ex = StatManager.get_stat("ex", 0.0)
+		if current_ex < total_cost:
+			return []
+		StatManager.set_base_stat("ex", current_ex - total_cost)
+		major_reading_cost *= 2.0
 	var card_rng := RNGManager.tarot_card.get_rng()
 	var rarity_rng := RNGManager.tarot_rarity.get_rng()
 	var orientation_rng := RNGManager.tarot_orientation.get_rng()
@@ -212,8 +212,8 @@ func draw_major_reading(count: int) -> Array:
 
 
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
-    reading_cost = max(1.0, reading_cost - 1.0)
-    major_reading_cost = max(1.0, major_reading_cost - 1.0)
+	reading_cost = max(1.0, reading_cost - 1.0)
+	major_reading_cost = max(1.0, major_reading_cost - 1.0)
 
 
 func sell_card(card_id: String, rarity: int, upside_down: bool = false) -> void:
