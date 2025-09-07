@@ -18,6 +18,7 @@ var last_card_rarity: int = 0
 var last_card_upside_down: bool = false
 var reading_cost: float = 1.0
 var last_reading: Array = []
+var last_major_reading: Array = []
 
 
 func _ready() -> void:
@@ -33,6 +34,7 @@ func reset() -> void:
 	last_card_upside_down = false
 	reading_cost = 1.0
 	last_reading.clear()
+	last_major_reading.clear()
 	deck.load_from_file(DATA_PATH)
 
 
@@ -44,7 +46,8 @@ func get_save_data() -> Dictionary:
 		"last_card_rarity": last_card_rarity,
 		"last_card_upside_down": last_card_upside_down,
 		"reading_cost": reading_cost,
-		"last_reading": last_reading
+		"last_reading": last_reading,
+		"last_major_reading": last_major_reading
 	}
 
 
@@ -65,6 +68,7 @@ func load_from_data(data: Dictionary) -> void:
 	last_card_upside_down = bool(data.get("last_card_upside_down", false))
 	reading_cost = float(data.get("reading_cost", 1.0))
 	last_reading = data.get("last_reading", [])
+	last_major_reading = data.get("last_major_reading", [])
 	deck.load_from_file(DATA_PATH)
 
 
@@ -170,6 +174,38 @@ func draw_reading(count: int) -> Array:
 		var upside_down := orientation_rng.randf() < 0.5
 		results.append({"id": id, "rarity": rarity, "upside_down": upside_down})
 	last_reading = results
+	return results
+
+
+func draw_major_reading(count: int) -> Array:
+	var total_cost := reading_cost * count
+	if total_cost > 0.0:
+		var current_ex = StatManager.get_stat("ex", 0.0)
+		if current_ex < total_cost:
+			return []
+		StatManager.set_base_stat("ex", current_ex - total_cost)
+		reading_cost *= 2.0
+	var card_rng := RNGManager.tarot_card.get_rng()
+	var rarity_rng := RNGManager.tarot_rarity.get_rng()
+	var orientation_rng := RNGManager.tarot_orientation.get_rng()
+	var majors: Array = []
+	for c in deck.cards:
+		if c.get("suit", "") == "major":
+			majors.append(c)
+	var results: Array = []
+	for i in range(count):
+		if majors.is_empty():
+			continue
+		var rarity := _roll_rarity(rarity_rng)
+		var card: Dictionary = majors[card_rng.randi_range(0, majors.size() - 1)]
+		var id: String = card.get("id", "")
+		var rarities: Dictionary = collection.get(id, {})
+		rarities[rarity] = int(rarities.get(rarity, 0)) + 1
+		collection[id] = rarities
+		collection_changed.emit(id, get_card_count(id))
+		var upside_down := orientation_rng.randf() < 0.5
+		results.append({"id": id, "rarity": rarity, "upside_down": upside_down})
+	last_major_reading = results
 	return results
 
 

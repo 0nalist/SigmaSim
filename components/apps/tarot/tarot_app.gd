@@ -10,6 +10,10 @@ class_name TarotApp
 @onready var reading_result: Control = %ReadingResult
 @onready var reading_button: Button = %ReadingButton
 @onready var reading_cost_label: Label = %ReadingCostLabel
+@onready var majors_view: VBoxContainer = %MajorsView
+@onready var major_result: Control = %MajorResult
+@onready var major_button: Button = %MajorButton
+@onready var major_cost_label: Label = %MajorCostLabel
 @onready var collection_view: ScrollContainer = %CollectionView
 @onready var collection_grid: GridContainer = %CollectionGrid
 @onready var card_collection_examiner: CardCollectionExaminer = %CardCollectionExaminer
@@ -21,8 +25,10 @@ var _active_tab: String = "Draw"
 func _ready() -> void:
 	draw_button.pressed.connect(_on_draw_button_pressed)
 	reading_button.pressed.connect(_on_reading_button_pressed)
+	major_button.pressed.connect(_on_major_button_pressed)
 	nav_bar.add_nav_button("Draw", "Draw")
 	nav_bar.add_nav_button("Readings", "Readings")
+	nav_bar.add_nav_button("Majors", "Majors")
 	nav_bar.add_nav_button("Collection", "Collection")
 	nav_bar.tab_selected.connect(func(tab_id: String): _activate_tab(tab_id))
 	TarotManager.collection_changed.connect(_on_collection_changed)
@@ -34,6 +40,7 @@ func _ready() -> void:
 	_update_reading_cost_label()
 	_show_last_drawn_card()
 	_show_reading_cards(TarotManager.last_reading)
+	_show_major_cards(TarotManager.last_major_reading)
 	nav_bar.set_active("Draw")
 
 
@@ -79,6 +86,15 @@ func _on_reading_button_pressed() -> void:
 	if cards.is_empty():
 		return
 	_show_reading_cards(cards, true)
+	_update_reading_cost_label()
+
+
+func _on_major_button_pressed() -> void:
+	var count := 1 + UpgradeManager.get_level("tarot_extra_card")
+	var cards = TarotManager.draw_major_reading(count)
+	if cards.is_empty():
+		return
+	_show_major_cards(cards, true)
 	_update_reading_cost_label()
 
 
@@ -130,6 +146,31 @@ func _show_reading_cards(cards: Array, animate: bool = false) -> void:
 		index += 1
 
 
+func _show_major_cards(cards: Array, animate: bool = false) -> void:
+	for child in major_result.get_children():
+		if child != major_button and child != major_cost_label and child != major_button:
+			child.queue_free()
+	var index := 0
+	for c in cards:
+		var id: String = c.get("id", "")
+		var rarity: int = int(c.get("rarity", 1))
+		var upside_down: bool = bool(c.get("upside_down", false))
+		var count_for_rarity = TarotManager.get_card_rarity_count(id, rarity)
+		var view = TarotManager.instantiate_card_view(id, count_for_rarity, true, rarity)
+		view.set_upside_down(upside_down)
+		view.show_single_count = true
+		view.modulate.a = 0.0
+		major_result.add_child(view)
+		var t = create_tween()
+		t.tween_property(view, "modulate:a", 1.0, 0.3).set_delay(index * 0.2)
+		if upside_down:
+			if animate:
+				t.tween_property(view.texture_rect, "rotation_degrees", 180, 0.3)
+			else:
+				view.texture_rect.rotation_degrees = 180
+		index += 1
+
+
 func _update_cooldown_label() -> void:
 	var remaining = TarotManager.time_until_next_draw()
 	if remaining <= 0:
@@ -147,6 +188,7 @@ func _update_reading_cost_label() -> void:
 	var count := 1 + extra
 	var cost = TarotManager.reading_cost * count
 	reading_cost_label.text = "%d EX for %d card(s)" % [int(cost), count]
+	major_cost_label.text = "%d EX for %d card(s)" % [int(cost), count]
 
 
 func _on_minute_passed(_total_minutes: int) -> void:
@@ -161,14 +203,22 @@ func _activate_tab(tab_name: String) -> void:
 	if tab_name == "Draw":
 		draw_view.visible = true
 		readings_view.visible = false
+		majors_view.visible = false
 		collection_view.visible = false
 	elif tab_name == "Readings":
 		draw_view.visible = false
 		readings_view.visible = true
+		majors_view.visible = false
+		collection_view.visible = false
+	elif tab_name == "Majors":
+		draw_view.visible = false
+		readings_view.visible = false
+		majors_view.visible = true
 		collection_view.visible = false
 	else:
 		draw_view.visible = false
 		readings_view.visible = false
+		majors_view.visible = false
 		collection_view.visible = true
 	_active_tab = tab_name
 
