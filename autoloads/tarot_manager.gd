@@ -41,17 +41,17 @@ func reset() -> void:
 
 
 func get_save_data() -> Dictionary:
-		return {
-				"collection": collection,
-				"last_draw": last_draw_minutes,
-				"last_card_id": last_card_id,
-				"last_card_rarity": last_card_rarity,
-				"last_card_upside_down": last_card_upside_down,
-				"reading_cost": reading_cost,
-				"major_reading_cost": major_reading_cost,
-				"last_reading": last_reading,
-				"last_major_reading": last_major_reading
-		}
+	return {
+		"collection": collection,
+		"last_draw": last_draw_minutes,
+		"last_card_id": last_card_id,
+		"last_card_rarity": last_card_rarity,
+		"last_card_upside_down": last_card_upside_down,
+		"reading_cost": reading_cost,
+		"major_reading_cost": major_reading_cost,
+		"last_reading": last_reading,
+		"last_major_reading": last_major_reading
+	}
 
 
 func load_from_data(data: Dictionary) -> void:
@@ -67,13 +67,13 @@ func load_from_data(data: Dictionary) -> void:
 
 	last_draw_minutes = int(data.get("last_draw", -COOLDOWN_MINUTES))
 	last_card_id = data.get("last_card_id", "")
-		last_card_rarity = int(data.get("last_card_rarity", 0))
-		last_card_upside_down = bool(data.get("last_card_upside_down", false))
-		reading_cost = float(data.get("reading_cost", 1.0))
-		major_reading_cost = float(data.get("major_reading_cost", 1.0))
-		last_reading = data.get("last_reading", [])
-		last_major_reading = data.get("last_major_reading", [])
-		deck.load_from_file(DATA_PATH)
+	last_card_rarity = int(data.get("last_card_rarity", 0))
+	last_card_upside_down = bool(data.get("last_card_upside_down", false))
+	reading_cost = float(data.get("reading_cost", 1.0))
+	major_reading_cost = float(data.get("major_reading_cost", 1.0))
+	last_reading = data.get("last_reading", [])
+	last_major_reading = data.get("last_major_reading", [])
+	deck.load_from_file(DATA_PATH)
 
 
 func get_card_count(id: String) -> int:
