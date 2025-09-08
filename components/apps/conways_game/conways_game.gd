@@ -49,7 +49,8 @@ func _input(event: InputEvent) -> void:
 				var mb: InputEventMouseButton = event
 				if mb.button_index == MOUSE_BUTTON_LEFT:
 						if mb.pressed:
-								var cell: Vector2i = _screen_to_grid(mb.position)
+								var local_pos := get_local_mouse_position()
+								var cell: Vector2i = _screen_to_grid(local_pos)
 								_toggle_cell(cell)
 								dragging = true
 								last_drag_cell = cell
@@ -70,7 +71,8 @@ func _input(event: InputEvent) -> void:
 		elif event is InputEventMouseMotion:
 				var mm: InputEventMouseMotion = event
 				if dragging:
-						var cell: Vector2i = _screen_to_grid(mm.position)
+						var local_pos := get_local_mouse_position()
+						var cell: Vector2i = _screen_to_grid(local_pos)
 						if cell != last_drag_cell:
 								_toggle_cells_along_line(last_drag_cell, cell)
 								last_drag_cell = cell
