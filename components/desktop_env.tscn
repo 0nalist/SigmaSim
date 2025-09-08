@@ -588,6 +588,15 @@ size_flags_horizontal = 2
 theme_override_font_sizes/font_size = 24
 text = "$3"
 
+[node name="EXLabel" type="Label" parent="TaskbarLayer/TopBar/TopBarContainer/StatMonitorPanel/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_dag3j")
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "0 EX"
+
 [node name="TaskbarWrapper" type="Panel" parent="TaskbarLayer"]
 z_index = 1024
 anchors_preset = 12
