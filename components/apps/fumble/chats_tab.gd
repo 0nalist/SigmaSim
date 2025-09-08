@@ -27,12 +27,14 @@ func _ready() -> void:
 	matches_sort.item_selected.connect(_on_matches_sort_selected)
 	matches_sort.select(0)
 
+	chat_battles_sort.add_item("Recent")
 	chat_battles_sort.add_item("🔥 Asc")
 	chat_battles_sort.add_item("🔥 Desc")
 	chat_battles_sort.add_item("Name")
 	chat_battles_sort.add_item("Type")
 	chat_battles_sort.add_item("Status")
 	chat_battles_sort.item_selected.connect(_on_chat_battles_sort_selected)
+	chat_battles_sort.select(0)
 
 	refresh_ui()
 
@@ -124,14 +126,18 @@ func refresh_battles() -> void:
 
 	match chat_battles_sort.selected:
 		0:
-			data.sort_custom(func(a, b): return a.npc.attractiveness < b.npc.attractiveness)
+			data.sort_custom(func(a, b):
+				return int(a.battle.battle_id.get_slice("_", 0)) > int(b.battle.battle_id.get_slice("_", 0))
+			)
 		1:
-			data.sort_custom(func(a, b): return a.npc.attractiveness > b.npc.attractiveness)
+			data.sort_custom(func(a, b): return a.npc.attractiveness < b.npc.attractiveness)
 		2:
-			data.sort_custom(func(a, b): return a.npc.full_name < b.npc.full_name)
+			data.sort_custom(func(a, b): return a.npc.attractiveness > b.npc.attractiveness)
 		3:
-			data.sort_custom(func(a, b): return str(a.npc.chat_battle_type) < str(b.npc.chat_battle_type))
+			data.sort_custom(func(a, b): return a.npc.full_name < b.npc.full_name)
 		4:
+			data.sort_custom(func(a, b): return str(a.npc.chat_battle_type) < str(b.npc.chat_battle_type))
+		5:
 			var order: Dictionary = {"blocked": 0, "victory": 1, "active": 2}
 			data.sort_custom(func(a, b):
 				return (
@@ -139,7 +145,6 @@ func refresh_battles() -> void:
 					< order.get(b.battle.get("outcome", "active"), 2)
 				)
 			)
-
 	for d in data:
 		var npc = d.npc
 		var b = d.battle
