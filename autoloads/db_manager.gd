@@ -204,33 +204,11 @@ func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
 	return out
 
 func get_all_npc_ids(slot_id: int = SaveManager.current_slot_id) -> Array[int]:
-    var rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["id"])
-    var ids: Array[int] = []
-    for r in rows:
-            ids.append(int(r.id))
-    return ids
-
-# Returns random NPC ids whose attractiveness is at least `threshold`.
-# Excludes any ids listed in `exclude_ids`.
-func get_high_attractiveness_npc_ids(
-                threshold: float,
-                batch_size: int,
-                exclude_ids: Array[int] = [],
-                slot_id: int = SaveManager.current_slot_id
-        ) -> Array[int]:
-    var where: String = "slot_id = %d AND attractiveness >= %f" % [slot_id, threshold]
-    if exclude_ids.size() > 0:
-        var parts: Array[String] = []
-        for id in exclude_ids:
-            parts.append(str(int(id)))
-        where += " AND id NOT IN (%s)" % ",".join(parts)
-    var sql := "SELECT id FROM npc WHERE %s ORDER BY RANDOM() LIMIT %d" % [where, batch_size]
-    db.query(sql)
-    var rows = db.query_result
-    var out: Array[int] = []
-    for r in rows:
-        out.append(int(r.id))
-    return out
+	var rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["id"])
+	var ids: Array[int] = []
+	for r in rows:
+		ids.append(int(r.id))
+	return ids
 
 
 # -- DB Snapshots --
