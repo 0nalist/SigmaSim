@@ -4,10 +4,12 @@ class_name ConwaysGame
 
 @export var cell_size: int = 10
 @export var step_interval: float = 0.1
+@export var living_color: Color = Color.WHITE
 
 @onready var play_pause_button: Button = %PlayPauseButton
 @onready var reset_button: Button = %ResetButton
 @onready var speed_slider: HSlider = %SpeedSlider
+@onready var color_picker: ColorPickerButton = %ColorPicker
 
 var grid: Dictionary = {}
 var running: bool = false
@@ -18,11 +20,15 @@ var dragging: bool = false
 var last_drag_cell: Vector2i = Vector2i.ZERO
 
 func _ready() -> void:
+
 	play_pause_button.pressed.connect(_on_play_pause_pressed)
 	reset_button.pressed.connect(_on_reset_pressed)
 	speed_slider.value = speed_slider.max_value - step_interval
 	speed_slider.value_changed.connect(_on_speed_slider_value_changed)
+  color_picker.color = living_color
+  color_picker.color_changed.connect(_on_color_picker_color_changed)
 	_update_play_pause_text()
+
 
 func _process(delta: float) -> void:
 	if running:
@@ -45,7 +51,7 @@ func _draw() -> void:
 		if alive:
 			if cell.x >= min_x and cell.x <= max_x and cell.y >= min_y and cell.y <= max_y:
 				var pos: Vector2 = offset + Vector2(float(cell.x), float(cell.y)) * float(cell_size)
-				draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), Color.WHITE, true)
+                                draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), living_color, true)
 
 func _input(event: InputEvent) -> void:
 
@@ -168,6 +174,10 @@ func _on_reset_pressed() -> void:
 func _on_speed_slider_value_changed(value: float) -> void:
 	step_interval = speed_slider.max_value - value
 	time_accum = 0.0
+
+func _on_color_picker_color_changed(color: Color) -> void:
+       living_color = color
+       queue_redraw()
 
 func _update_play_pause_text() -> void:
 	if running:
