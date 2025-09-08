@@ -19,7 +19,7 @@ func _ready() -> void:
         for i in range(fem_ids.size() - 1):
                 npc_manager.encountered_npcs.append(fem_ids[i])
 
-        var res = npc_manager.query_npc_indices({
+        var res = await npc_manager.query_npc_indices({
                 "count": 1,
                 "gender_similarity_vector": Vector3(1,0,0),
                 "min_gender_similarity": 0.7,

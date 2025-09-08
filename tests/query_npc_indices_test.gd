@@ -8,13 +8,13 @@ func _ready() -> void:
     npc_manager.encounter_count = 0
 
     var exclude_idx = NPCCatalog.npc_catalog[0]["index"]
-    var res = npc_manager.query_npc_indices({"count": 2, "exclude": [exclude_idx]})
+    var res = await npc_manager.query_npc_indices({"count": 2, "exclude": [exclude_idx]})
     assert(res.size() == 2)
     assert(not res.has(exclude_idx))
     for idx in res:
         assert(npc_manager.encountered_npcs.has(idx))
 
-    var fem_result = npc_manager.query_npc_indices({
+    var fem_result = await npc_manager.query_npc_indices({
         "count": 1,
         "gender_similarity_vector": Vector3(1,0,0),
         "min_gender_similarity": 0.99
