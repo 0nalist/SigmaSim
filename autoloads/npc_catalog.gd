@@ -72,39 +72,39 @@ func ensure_unencountered(min_unencountered: int = extend_threshold, batch_size:
 # matching entries falls below `min_unencountered` the catalogue is
 # regenerated with an additional `batch_size` entries.
 func ensure_filtered_unencountered(filters: Dictionary, min_unencountered: int = extend_threshold, batch_size: int = extend_batch_size) -> void:
-                if min_unencountered <= 0:
-                                return
+				if min_unencountered <= 0:
+								return
 
-                var pref_gender: Vector3 = filters.get("gender_similarity_vector", Vector3.ZERO)
-                var min_gender: float = float(filters.get("min_gender_similarity", 0.0))
-                var min_attr: float = float(filters.get("min_attractiveness", 0.0))
+				var pref_gender: Vector3 = filters.get("gender_similarity_vector", Vector3.ZERO)
+				var min_gender: float = float(filters.get("min_gender_similarity", 0.0))
+				var min_attr: float = float(filters.get("min_attractiveness", 0.0))
 
-                var check_gender := pref_gender != Vector3.ZERO and min_gender > 0.0
-                var check_attr := min_attr > 0.0
-                if not check_gender and not check_attr:
-                                return
+				var check_gender := pref_gender != Vector3.ZERO and min_gender > 0.0
+				var check_attr := min_attr > 0.0
+				if not check_gender and not check_attr:
+								return
 
-                var encountered: Dictionary = {}
-                if Engine.has_singleton("NPCManager"):
-                                for idx in NPCManager.encountered_npcs:
-                                                encountered[int(idx)] = true
+				var encountered: Dictionary = {}
+				if Engine.has_singleton("NPCManager"):
+								for idx in NPCManager.encountered_npcs:
+												encountered[int(idx)] = true
 
-                var remaining := 0
-                for record in npc_catalog:
-                                var idx: int = int(record["index"])
-                                if encountered.has(idx):
-                                                continue
-                                if check_attr and float(record.get("attractiveness", 0.0)) < min_attr:
-                                                continue
-                                if check_gender:
-                                                var gv: Vector3 = record.get("gender_vector", Vector3.ZERO)
-                                                if gender_dot_similarity(pref_gender, gv) < min_gender:
-                                                                continue
-                                remaining += 1
+				var remaining := 0
+				for record in npc_catalog:
+								var idx: int = int(record["index"])
+								if encountered.has(idx):
+												continue
+								if check_attr and float(record.get("attractiveness", 0.0)) < min_attr:
+												continue
+								if check_gender:
+												var gv: Vector3 = record.get("gender_vector", Vector3.ZERO)
+												if gender_dot_similarity(pref_gender, gv) < min_gender:
+																continue
+								remaining += 1
 
-                if remaining < min_unencountered:
-                                var target := npc_catalog.size() + batch_size
-                                generate(target)
+				if remaining < min_unencountered:
+								var target := npc_catalog.size() + batch_size
+								generate(target)
 
 func get_by_attractiveness_range(min_value: float, max_value: float) -> Array:
 	var getter := func(i: int) -> float:
