@@ -11,8 +11,7 @@ class_name ConwaysGame
 @onready var speed_slider: HSlider = %SpeedSlider
 @onready var color_picker: ColorPickerButton = %ColorPicker
 
-# Packed array of currently living cells.
-var cells: PackedVector2Array = PackedVector2Array()
+var grid: Dictionary = {}
 var running: bool = false
 var time_accum: float = 0.0
 var offset: Vector2 = Vector2.ZERO
@@ -53,16 +52,17 @@ func _process(delta: float) -> void:
 							_advance_generation()
 
 func _draw() -> void:
-        var viewport_size: Vector2 = get_size()
-        var min_x: int = int(floor(-offset.x / float(cell_size)))
-        var min_y: int = int(floor(-offset.y / float(cell_size)))
-        var max_x: int = int(ceil((viewport_size.x - offset.x) / float(cell_size)))
-        var max_y: int = int(ceil((viewport_size.y - offset.y) / float(cell_size)))
-        for cell_vec in cells:
-                var cell: Vector2i = Vector2i(cell_vec)
-                if cell.x >= min_x and cell.x <= max_x and cell.y >= min_y and cell.y <= max_y:
-                        var pos: Vector2 = offset + Vector2(cell) * float(cell_size)
-                        draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), living_color, true)
+	var viewport_size: Vector2 = get_size()
+	var min_x: int = int(floor(-offset.x / float(cell_size)))
+	var min_y: int = int(floor(-offset.y / float(cell_size)))
+	var max_x: int = int(ceil((viewport_size.x - offset.x) / float(cell_size)))
+	var max_y: int = int(ceil((viewport_size.y - offset.y) / float(cell_size)))
+	for cell in grid.keys():
+		var alive: bool = grid[cell]
+		if alive:
+			if cell.x >= min_x and cell.x <= max_x and cell.y >= min_y and cell.y <= max_y:
+				var pos: Vector2 = offset + Vector2(float(cell.x), float(cell.y)) * float(cell_size)
+				draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), living_color, true)
 
 func _input(event: InputEvent) -> void:
 
@@ -109,34 +109,33 @@ func _input(event: InputEvent) -> void:
 
 
 func _advance_generation() -> void:
-        var neighbor_counts: Dictionary = {}
-        for cell_vec in cells:
-                var cell: Vector2i = Vector2i(cell_vec)
-                for offset in NEIGHBOR_OFFSETS:
-                        var n: Vector2i = cell + offset
-                        var count: int = neighbor_counts.get(n, 0)
-                        neighbor_counts[n] = count + 1
-                neighbor_counts[cell] = neighbor_counts.get(cell, 0)
-        var new_cells: PackedVector2Array = PackedVector2Array()
-        for cell in neighbor_counts.keys():
-                var count: int = neighbor_counts[cell]
-                var alive: bool = cells.has(Vector2(cell))
-                if alive:
-                        if count == 2 or count == 3:
-                                new_cells.append(Vector2(cell))
-                else:
-                        if count == 3:
-                                new_cells.append(Vector2(cell))
-        cells = new_cells
-        queue_redraw()
+	var neighbor_counts: Dictionary = {}
+	for cell in grid.keys():
+		for offset in NEIGHBOR_OFFSETS:
+			var n: Vector2i = cell + offset
+			var count: int = neighbor_counts.get(n, 0)
+			neighbor_counts[n] = count + 1
+		neighbor_counts[cell] = neighbor_counts.get(cell, 0)
+	var new_grid: Dictionary = {}
+	for cell in neighbor_counts.keys():
+		var count: int = neighbor_counts[cell]
+		var alive: bool = grid.has(cell)
+		if alive:
+			if count == 2 or count == 3:
+				new_grid[cell] = true
+		else:
+			if count == 3:
+				new_grid[cell] = true
+	grid = new_grid
+	queue_redraw()
 
 func _toggle_cell(cell: Vector2i) -> void:
-        var idx: int = cells.find(Vector2(cell))
-        if idx != -1:
-                cells.remove_at(idx)
-        else:
-                cells.append(Vector2(cell))
-        queue_redraw()
+	var alive: bool = grid.get(cell, false)
+	if alive:
+			grid.erase(cell)
+	else:
+			grid[cell] = true
+	queue_redraw()
 
 func _toggle_cells_along_line(start: Vector2i, end: Vector2i) -> void:
 	var x0: int = start.x
@@ -174,11 +173,11 @@ func _on_play_pause_pressed() -> void:
 	_update_play_pause_text()
 
 func _on_reset_pressed() -> void:
-        running = false
-        cells.clear()
-        time_accum = 0.0
-        _update_play_pause_text()
-        queue_redraw()
+	running = false
+	grid.clear()
+	time_accum = 0.0
+	_update_play_pause_text()
+	queue_redraw()
 
 func _on_speed_slider_value_changed(value: float) -> void:
 	step_interval = speed_slider.max_value - value
