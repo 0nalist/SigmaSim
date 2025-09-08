@@ -217,15 +217,10 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 					"exclude": exclude.keys(),
 	})
 
-	if new_indices.size() < num_new:
-					var needed: int = num_new - new_indices.size()
-					var fallback: Array[int] = NPCManager.get_batch_of_new_npc_indices(app_name, needed)
-					new_indices += fallback
-
-	if not NPCManager.encountered_npcs_by_app.has(app_name):
-			NPCManager.encountered_npcs_by_app[app_name] = []
-	if not NPCManager.active_npcs_by_app.has(app_name):
-			NPCManager.active_npcs_by_app[app_name] = []
+        if not NPCManager.encountered_npcs_by_app.has(app_name):
+                        NPCManager.encountered_npcs_by_app[app_name] = []
+        if not NPCManager.active_npcs_by_app.has(app_name):
+                        NPCManager.active_npcs_by_app[app_name] = []
 	var app_encountered: Array = NPCManager.encountered_npcs_by_app[app_name]
 	var app_active: Array = NPCManager.active_npcs_by_app[app_name]
 	for idx in new_indices:
