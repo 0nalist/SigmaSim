@@ -9,6 +9,11 @@ var index_by_gender: Dictionary = {
 	"nb": [],
 }
 
+# Tracks the next name index to scan when extending the catalogue. This
+# allows incremental generation without revisiting previously checked
+# names.
+var next_name_index: int = 0
+
 # When the pool of NPC records runs low we proactively extend the
 # catalogue.  These defaults provide a reasonable buffer for the game
 # but can be overridden in tests or from the editor.
@@ -50,6 +55,10 @@ func generate(count: int = -1) -> void:
 		return npc_catalog[a]["gender_vector"].y < npc_catalog[b]["gender_vector"].y)
 	index_by_gender["nb"].sort_custom(func(a, b):
 		return npc_catalog[a]["gender_vector"].z < npc_catalog[b]["gender_vector"].z)
+
+	# After a full regeneration the next name index is simply the total
+	# number of generated entries.
+	next_name_index = count
 
 # Ensures the catalogue always maintains a minimum number of
 # unencountered NPC entries.  When the remaining unencountered count
@@ -107,8 +116,49 @@ func ensure_filtered_unencountered_async(filters: Dictionary, min_unencountered:
 			start_time = Time.get_ticks_msec()
 
 	if remaining < min_unencountered:
-		var target: int = npc_catalog.size() + batch_size
-		generate(target)
+		if check_attr and min_attr > 0.0:
+			var res: Dictionary = await NPCFactory.find_high_attractiveness_indices(min_attr, next_name_index, batch_size, time_budget_msec)
+			next_name_index = int(res.get("next_index", next_name_index))
+			var start_time_ext: int = Time.get_ticks_msec()
+			for idx in res.get("indices", []):
+				var name_data = NameManager.get_npc_name_by_index(idx)
+				var full_name: String = name_data["full_name"]
+				var record: Dictionary = {
+					"index": idx,
+					"gender_vector": name_data["gender_vector"],
+					"attractiveness": NPCFactory.attractiveness_from_name(full_name),
+					"tags": NPCFactory.generate_npc_tags(full_name, NPCFactory.TAG_DATA, 3),
+				}
+				var arr_idx := npc_catalog.size()
+				npc_catalog.append(record)
+				index_by_attractiveness.append(arr_idx)
+				index_by_gender["fem"].append(arr_idx)
+				index_by_gender["masc"].append(arr_idx)
+				index_by_gender["nb"].append(arr_idx)
+				if Time.get_ticks_msec() - start_time_ext > time_budget_msec:
+					await get_tree().process_frame
+					start_time_ext = Time.get_ticks_msec()
+
+			index_by_attractiveness.sort_custom(func(a, b):
+				return npc_catalog[a]["attractiveness"] < npc_catalog[b]["attractiveness"])
+			if Time.get_ticks_msec() - start_time_ext > time_budget_msec:
+				await get_tree().process_frame
+				start_time_ext = Time.get_ticks_msec()
+			index_by_gender["fem"].sort_custom(func(a, b):
+				return npc_catalog[a]["gender_vector"].x < npc_catalog[b]["gender_vector"].x)
+			if Time.get_ticks_msec() - start_time_ext > time_budget_msec:
+				await get_tree().process_frame
+				start_time_ext = Time.get_ticks_msec()
+			index_by_gender["masc"].sort_custom(func(a, b):
+				return npc_catalog[a]["gender_vector"].y < npc_catalog[b]["gender_vector"].y)
+			if Time.get_ticks_msec() - start_time_ext > time_budget_msec:
+				await get_tree().process_frame
+				start_time_ext = Time.get_ticks_msec()
+			index_by_gender["nb"].sort_custom(func(a, b):
+				return npc_catalog[a]["gender_vector"].z < npc_catalog[b]["gender_vector"].z)
+		else:
+			var target: int = npc_catalog.size() + batch_size
+			generate(target)
 
 
 func get_by_attractiveness_range(min_value: float, max_value: float) -> Array:
