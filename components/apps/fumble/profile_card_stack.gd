@@ -96,14 +96,14 @@ func swipe_right() -> void:
 
 func _after_swipe() -> void:
 
-		if swipe_pool.size() < CARD_VISIBLE_COUNT + 2:
-				await _refill_swipe_pool_async()
+        if swipe_pool.size() < CARD_VISIBLE_COUNT + 2:
+                await _refill_swipe_pool_async()
 
-		while cards.size() < CARD_VISIBLE_COUNT:
-				var idx: int = await _fetch_next_index_from_pool()
-				if idx == -1:
-						break
-				await _add_card_at_bottom(idx)
+        while cards.size() < CARD_VISIBLE_COUNT:
+                var idx: int = await _fetch_next_index_from_pool()
+                if idx == -1:
+                        break
+                await _add_card_at_bottom(idx)
 
 
 func _on_swipe_left_complete(card: Control, idx: int) -> void:
@@ -116,12 +116,13 @@ func _on_swipe_left_complete(card: Control, idx: int) -> void:
 	is_animating = false
 
 func _on_swipe_right_complete(card: Control, idx: int) -> void:
-	emit_signal("card_swiped_right", idx)
-	card.queue_free()
-	cards.pop_back()
-	npc_indices.pop_back()
-	await _after_swipe()
-	is_animating = false
+       emit_signal("card_swiped_right", idx)
+       card.queue_free()
+       cards.pop_back()
+       npc_indices.pop_back()
+       NPCManager.mark_npc_inactive_in_app(idx, app_name)
+       await _after_swipe()
+       is_animating = false
 
 
 func clear_cards() -> void:
@@ -208,13 +209,18 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 				exclude[id] = true
 		var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
-		var new_indices: Array[int] = NPCManager.query_npc_indices({
-				"count": num_new,
-				"min_attractiveness": min_att,
-				"gender_similarity_vector": preferred_gender,
-				"min_gender_similarity": gender_similarity_threshold,
-				"exclude": exclude.keys(),
-		})
+               var new_indices: Array[int] = NPCManager.query_npc_indices({
+                               "count": num_new,
+                               "min_attractiveness": min_att,
+                               "gender_similarity_vector": preferred_gender,
+                               "min_gender_similarity": gender_similarity_threshold,
+                               "exclude": exclude.keys(),
+               })
+
+               if new_indices.size() < num_new:
+                               var needed: int = num_new - new_indices.size()
+                               var fallback: Array[int] = NPCManager.get_batch_of_new_npc_indices(app_name, needed)
+                               new_indices += fallback
 
 		if not NPCManager.encountered_npcs_by_app.has(app_name):
 				NPCManager.encountered_npcs_by_app[app_name] = []
