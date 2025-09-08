@@ -46,6 +46,8 @@ func refresh_matches(time_budget_msec: int = 8) -> void:
 	for child in matches_container.get_children():
 		child.queue_free()
 
+	await get_tree().process_frame
+
 	var matches_rows: Array = FumbleManager.get_matches_with_times()
 	var battles: Array = FumbleManager.get_active_battles()
 	var battle_lookup: Dictionary = {}
