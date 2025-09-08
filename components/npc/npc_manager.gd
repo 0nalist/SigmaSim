@@ -797,3 +797,30 @@ func reset() -> void:
 
 	persistent_by_gender = {}
 	persistent_by_wealth = {}
+
+func query_npc_indices(filters: Dictionary) -> Array[int]:
+    var count: int = int(filters.get("count", 1))
+    var min_attr: float = float(filters.get("min_attractiveness", 0.0))
+    var pref_gender: Vector3 = filters.get("gender_similarity_vector", Vector3.ZERO)
+    var min_gender_sim: float = float(filters.get("min_gender_similarity", 0.0))
+    var exclude: Array[int] = filters.get("exclude", [])
+    var candidates: Array[int] = []
+    for record in NPCCatalog.npc_catalog:
+        var idx: int = int(record["index"])
+        if encountered_npcs.has(idx) or exclude.has(idx):
+            continue
+        if float(record.get("attractiveness", 0.0)) < min_attr:
+            continue
+        if pref_gender != Vector3.ZERO:
+            var sim = gender_dot_similarity(pref_gender, record.get("gender_vector", Vector3.ZERO))
+            if sim < min_gender_sim:
+                continue
+        candidates.append(idx)
+    RNGManager.npc_manager.shuffle(candidates)
+    var result: Array[int] = candidates.slice(0, count)
+    for idx in result:
+        if not encountered_npcs.has(idx):
+            encountered_npcs.append(idx)
+        if idx >= encounter_count:
+            encounter_count = idx + 1
+    return result
