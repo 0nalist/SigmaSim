@@ -3,6 +3,7 @@ extends Panel
 @onready var timer: Timer = $TickerTimer
 @onready var text_label: RichTextLabel = %TickerTextLabel
 @onready var cash_label: Label = %CashLabel
+@onready var ex_label: Label = %EXLabel
 
 
 var current_template: String = ""
@@ -95,6 +96,7 @@ func _process(_delta):
 	if current_template != "":
 		text_label.text = format_ticker_text(current_template)
 	cash_label.text = "$" + str(NumberFormatter.format_number(PortfolioManager.cash))
+	ex_label.text = str(NumberFormatter.format_number(StatManager.get_stat("ex", 0.0))) + " EX"
 
 func _on_timer_timeout():
 	#print("ticker timeout")
