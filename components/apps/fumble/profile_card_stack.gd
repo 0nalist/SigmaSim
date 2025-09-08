@@ -241,15 +241,18 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 	for m in matched_array:
 			matched[m] = true
 	for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
-			if exclude.has(idx) or matched.has(idx):
-					continue
-			recycled_indices.append(idx)
-			exclude[idx] = true
-			if recycled_indices.size() >= num_recycled:
-					break
-			if Time.get_ticks_msec() - start_time > time_budget_msec:
-					await get_tree().process_frame
-					start_time = Time.get_ticks_msec()
+		if exclude.has(idx) or matched.has(idx):
+						continue
+		var npc = NPCManager.get_npc_by_index(idx)
+		if npc.attractiveness < min_att:
+						continue
+		recycled_indices.append(idx)
+		exclude[idx] = true
+		if recycled_indices.size() >= num_recycled:
+						break
+		if Time.get_ticks_msec() - start_time > time_budget_msec:
+						await get_tree().process_frame
+						start_time = Time.get_ticks_msec()
 
 	for idx in recycled_indices:
 			if not app_active.has(idx):
