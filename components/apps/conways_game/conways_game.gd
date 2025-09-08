@@ -19,9 +19,6 @@ var panning: bool = false
 var dragging: bool = false
 var last_drag_cell: Vector2i = Vector2i.ZERO
 
-var multimesh: MultiMesh
-var multimesh_instance: MultiMeshInstance2D
-
 const NEIGHBOR_OFFSETS: Array[Vector2i] = [
 	Vector2i(-1, -1),
 	Vector2i(0, -1),
@@ -35,14 +32,13 @@ const NEIGHBOR_OFFSETS: Array[Vector2i] = [
 
 func _ready() -> void:
 
-        play_pause_button.pressed.connect(_on_play_pause_pressed)
-        reset_button.pressed.connect(_on_reset_pressed)
-        speed_slider.value = speed_slider.max_value - step_interval
-        speed_slider.value_changed.connect(_on_speed_slider_value_changed)
-        color_picker.color = living_color
-        color_picker.color_changed.connect(_on_color_picker_color_changed)
-        _setup_multimesh()
-        _update_play_pause_text()
+	play_pause_button.pressed.connect(_on_play_pause_pressed)
+	reset_button.pressed.connect(_on_reset_pressed)
+	speed_slider.value = speed_slider.max_value - step_interval
+	speed_slider.value_changed.connect(_on_speed_slider_value_changed)
+	color_picker.color = living_color
+	color_picker.color_changed.connect(_on_color_picker_color_changed)
+	_update_play_pause_text()
 
 
 func _process(delta: float) -> void:
@@ -51,9 +47,22 @@ func _process(delta: float) -> void:
 					_advance_generation()
 			else:
 					time_accum += delta
-        while time_accum >= step_interval:
-                                                        time_accum -= step_interval
-                                                        _advance_generation()
+					while time_accum >= step_interval:
+							time_accum -= step_interval
+							_advance_generation()
+
+func _draw() -> void:
+	var viewport_size: Vector2 = get_size()
+	var min_x: int = int(floor(-offset.x / float(cell_size)))
+	var min_y: int = int(floor(-offset.y / float(cell_size)))
+	var max_x: int = int(ceil((viewport_size.x - offset.x) / float(cell_size)))
+	var max_y: int = int(ceil((viewport_size.y - offset.y) / float(cell_size)))
+	for cell in grid.keys():
+		var alive: bool = grid[cell]
+		if alive:
+			if cell.x >= min_x and cell.x <= max_x and cell.y >= min_y and cell.y <= max_y:
+				var pos: Vector2 = offset + Vector2(float(cell.x), float(cell.y)) * float(cell_size)
+				draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), living_color, true)
 
 func _input(event: InputEvent) -> void:
 
@@ -76,27 +85,27 @@ func _input(event: InputEvent) -> void:
 			cell_size += 1
 			if cell_size < 1:
 				cell_size = 1
-                        offset = mouse_pos - world_pos * float(cell_size)
-                        _update_multimesh()
-                elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
-                        var mouse_pos := get_local_mouse_position()
-                        var world_pos := (mouse_pos - offset) / float(cell_size)
-                        cell_size -= 1
-                        if cell_size < 1:
-                                cell_size = 1
-                        offset = mouse_pos - world_pos * float(cell_size)
-                        _update_multimesh()
-        elif event is InputEventMouseMotion:
-                var mm: InputEventMouseMotion = event
-                if dragging:
-                        var local_pos := get_local_mouse_position()
-                        var cell: Vector2i = _screen_to_grid(local_pos)
-                        if cell != last_drag_cell:
-                                _toggle_cells_along_line(last_drag_cell, cell)
-                                last_drag_cell = cell
-                elif panning:
-                        offset += mm.relative
-                        _update_multimesh()
+			offset = mouse_pos - world_pos * float(cell_size)
+			queue_redraw()
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
+			var mouse_pos := get_local_mouse_position()
+			var world_pos := (mouse_pos - offset) / float(cell_size)
+			cell_size -= 1
+			if cell_size < 1:
+				cell_size = 1
+			offset = mouse_pos - world_pos * float(cell_size)
+			queue_redraw()
+	elif event is InputEventMouseMotion:
+		var mm: InputEventMouseMotion = event
+		if dragging:
+			var local_pos := get_local_mouse_position()
+			var cell: Vector2i = _screen_to_grid(local_pos)
+			if cell != last_drag_cell:
+				_toggle_cells_along_line(last_drag_cell, cell)
+				last_drag_cell = cell
+		elif panning:
+			offset += mm.relative
+			queue_redraw()
 
 
 func _advance_generation() -> void:
@@ -117,16 +126,16 @@ func _advance_generation() -> void:
 		else:
 			if count == 3:
 				new_grid[cell] = true
-        grid = new_grid
-        _update_multimesh()
+	grid = new_grid
+	queue_redraw()
 
 func _toggle_cell(cell: Vector2i) -> void:
-        var alive: bool = grid.get(cell, false)
-        if alive:
-                        grid.erase(cell)
-        else:
-                        grid[cell] = true
-        _update_multimesh()
+	var alive: bool = grid.get(cell, false)
+	if alive:
+			grid.erase(cell)
+	else:
+			grid[cell] = true
+	queue_redraw()
 
 func _toggle_cells_along_line(start: Vector2i, end: Vector2i) -> void:
 	var x0: int = start.x
@@ -145,25 +154,18 @@ func _toggle_cells_along_line(start: Vector2i, end: Vector2i) -> void:
 		sy = 1
 
 	var err: int = dx + dy
-        var x: int = x0
-        var y: int = y0
+	var x: int = x0
+	var y: int = y0
 
-        while x != x1 or y != y1:
-                var e2: int = 2 * err
-                if e2 >= dy:
-                        err += dy
-                        x += sx
-                if e2 <= dx:
-                        err += dx
-                        y += sy
-                var cell := Vector2i(x, y)
-                var alive := grid.has(cell)
-                if alive:
-                        grid.erase(cell)
-                else:
-                        grid[cell] = true
-
-        _update_multimesh()
+	while x != x1 or y != y1:
+		var e2: int = 2 * err
+		if e2 >= dy:
+			err += dy
+			x += sx
+		if e2 <= dx:
+			err += dx
+			y += sy
+		_toggle_cell(Vector2i(x, y))
 
 
 func _on_play_pause_pressed() -> void:
@@ -171,19 +173,19 @@ func _on_play_pause_pressed() -> void:
 	_update_play_pause_text()
 
 func _on_reset_pressed() -> void:
-        running = false
-        grid.clear()
-        time_accum = 0.0
-        _update_play_pause_text()
-        _update_multimesh()
+	running = false
+	grid.clear()
+	time_accum = 0.0
+	_update_play_pause_text()
+	queue_redraw()
 
 func _on_speed_slider_value_changed(value: float) -> void:
 	step_interval = speed_slider.max_value - value
 	time_accum = 0.0
 
 func _on_color_picker_color_changed(color: Color) -> void:
-        living_color = color
-        _update_multimesh()
+	living_color = color
+	queue_redraw()
 
 func _update_play_pause_text() -> void:
 	if running:
@@ -192,30 +194,6 @@ func _update_play_pause_text() -> void:
 		play_pause_button.text = "PLAY"
 
 func _screen_to_grid(pos: Vector2) -> Vector2i:
-        var gx: int = int(floor((pos.x - offset.x) / float(cell_size)))
-        var gy: int = int(floor((pos.y - offset.y) / float(cell_size)))
-        return Vector2i(gx, gy)
-
-func _setup_multimesh() -> void:
-        multimesh = MultiMesh.new()
-        var quad := QuadMesh.new()
-        quad.size = Vector2.ONE
-        multimesh.mesh = quad
-        multimesh_instance = MultiMeshInstance2D.new()
-        multimesh_instance.multimesh = multimesh
-        multimesh_instance.z_index = -1
-        add_child(multimesh_instance)
-        _update_multimesh()
-
-func _update_multimesh() -> void:
-        if multimesh == null:
-                return
-        multimesh.instance_count = grid.size()
-        var i := 0
-        for cell in grid.keys():
-                var transform := Transform2D()
-                transform = transform.scaled(Vector2(cell_size, cell_size))
-                transform.origin = offset + Vector2(cell) * float(cell_size) + Vector2(float(cell_size) / 2.0, float(cell_size) / 2.0)
-                multimesh.set_instance_transform_2d(i, transform)
-                i += 1
-        multimesh_instance.modulate = living_color
+	var gx: int = int(floor((pos.x - offset.x) / float(cell_size)))
+	var gy: int = int(floor((pos.y - offset.y) / float(cell_size)))
+	return Vector2i(gx, gy)
