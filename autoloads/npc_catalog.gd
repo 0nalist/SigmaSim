@@ -58,13 +58,13 @@ func generate(count: int = -1) -> void:
 # because each NPC's data is derived from its index and the global name
 # seed, so existing indices retain their original names and traits.
 func ensure_unencountered(min_unencountered: int = extend_threshold, batch_size: int = extend_batch_size) -> void:
-        var encountered := 0
-        if Engine.has_singleton("NPCManager"):
-                encountered = NPCManager.encountered_npcs.size()
-        var remaining: int = npc_catalog.size() - encountered
-        if remaining < min_unencountered:
-                var target := npc_catalog.size() + batch_size
-                generate(target)
+		var encountered := 0
+		if Engine.has_singleton("NPCManager"):
+				encountered = NPCManager.encountered_npcs.size()
+		var remaining: int = npc_catalog.size() - encountered
+		if remaining < min_unencountered:
+				var target := npc_catalog.size() + batch_size
+				generate(target)
 
 # Ensures the catalogue keeps a buffer of unencountered NPCs that match
 # incoming query filters. Currently only gender similarity is checked,
@@ -73,31 +73,31 @@ func ensure_unencountered(min_unencountered: int = extend_threshold, batch_size:
 # `min_unencountered` the catalogue is regenerated with an additional
 # `batch_size` entries.
 func ensure_filtered_unencountered(filters: Dictionary, min_unencountered: int = extend_threshold, batch_size: int = extend_batch_size) -> void:
-        if min_unencountered <= 0:
-                return
+		if min_unencountered <= 0:
+				return
 
-        var pref_gender: Vector3 = filters.get("gender_similarity_vector", Vector3.ZERO)
-        var min_gender: float = float(filters.get("min_gender_similarity", 0.0))
-        if pref_gender == Vector3.ZERO or min_gender <= 0.0:
-                return
+		var pref_gender: Vector3 = filters.get("gender_similarity_vector", Vector3.ZERO)
+		var min_gender: float = float(filters.get("min_gender_similarity", 0.0))
+		if pref_gender == Vector3.ZERO or min_gender <= 0.0:
+				return
 
-        var encountered: Dictionary = {}
-        if Engine.has_singleton("NPCManager"):
-                for idx in NPCManager.encountered_npcs:
-                        encountered[int(idx)] = true
+		var encountered: Dictionary = {}
+		if Engine.has_singleton("NPCManager"):
+				for idx in NPCManager.encountered_npcs:
+						encountered[int(idx)] = true
 
-        var remaining := 0
-        for record in npc_catalog:
-                var idx: int = int(record["index"])
-                if encountered.has(idx):
-                        continue
-                var gv: Vector3 = record.get("gender_vector", Vector3.ZERO)
-                if gender_dot_similarity(pref_gender, gv) >= min_gender:
-                        remaining += 1
+		var remaining := 0
+		for record in npc_catalog:
+				var idx: int = int(record["index"])
+				if encountered.has(idx):
+						continue
+				var gv: Vector3 = record.get("gender_vector", Vector3.ZERO)
+				if gender_dot_similarity(pref_gender, gv) >= min_gender:
+						remaining += 1
 
-        if remaining < min_unencountered:
-                var target := npc_catalog.size() + batch_size
-                generate(target)
+		if remaining < min_unencountered:
+				var target := npc_catalog.size() + batch_size
+				generate(target)
 
 func get_by_attractiveness_range(min_value: float, max_value: float) -> Array:
 	var getter := func(i: int) -> float:
@@ -132,17 +132,17 @@ func get_by_gender_range(component: String, min_value: float, max_value: float) 
 	return result
 
 func _lower_bound(arr: Array[int], value: float, getter: Callable) -> int:
-        var lo := 0
-        var hi := arr.size()
-        while lo < hi:
-                var mid := (lo + hi) / 2
-                if getter.call(arr[mid]) < value:
-                        lo = mid + 1
-                else:
-                        hi = mid
-        return lo
+		var lo := 0
+		var hi := arr.size()
+		while lo < hi:
+				var mid := (lo + hi) / 2
+				if getter.call(arr[mid]) < value:
+						lo = mid + 1
+				else:
+						hi = mid
+		return lo
 
 func gender_dot_similarity(a: Vector3, b: Vector3) -> float:
-        if a.length() == 0 or b.length() == 0:
-                return 0.0
-        return a.dot(b) / (a.length() * b.length())
+		if a.length() == 0 or b.length() == 0:
+				return 0.0
+		return a.dot(b) / (a.length() * b.length())
