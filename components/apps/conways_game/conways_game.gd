@@ -19,6 +19,17 @@ var panning: bool = false
 var dragging: bool = false
 var last_drag_cell: Vector2i = Vector2i.ZERO
 
+const NEIGHBOR_OFFSETS: Array[Vector2i] = [
+	Vector2i(-1, -1),
+	Vector2i(0, -1),
+	Vector2i(1, -1),
+	Vector2i(-1, 0),
+	Vector2i(1, 0),
+	Vector2i(-1, 1),
+	Vector2i(0, 1),
+	Vector2i(1, 1)
+]
+
 func _ready() -> void:
 
 	play_pause_button.pressed.connect(_on_play_pause_pressed)
@@ -94,17 +105,8 @@ func _input(event: InputEvent) -> void:
 func _advance_generation() -> void:
 	var neighbor_counts: Dictionary = {}
 	for cell in grid.keys():
-		var neighbors: Array = [
-			cell + Vector2i(-1, -1),
-			cell + Vector2i(0, -1),
-			cell + Vector2i(1, -1),
-			cell + Vector2i(-1, 0),
-			cell + Vector2i(1, 0),
-			cell + Vector2i(-1, 1),
-			cell + Vector2i(0, 1),
-			cell + Vector2i(1, 1)
-		]
-		for n in neighbors:
+		for offset in NEIGHBOR_OFFSETS:
+			var n: Vector2i = cell + offset
 			var count: int = neighbor_counts.get(n, 0)
 			neighbor_counts[n] = count + 1
 		neighbor_counts[cell] = neighbor_counts.get(cell, 0)
