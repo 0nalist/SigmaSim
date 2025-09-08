@@ -202,42 +202,42 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 
 	var new_indices: Array[int] = []
 	for idx in NPCManager.get_batch_of_new_npc_indices(app_name, num_new * 3):
-			if exclude.has(idx):
-					continue
-			var npc = NPCManager.get_npc_by_index(idx)
-			if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
-					new_indices.append(idx)
-					exclude[idx] = true
-			if new_indices.size() >= num_new:
-					break
-			if Time.get_ticks_msec() - start_time > time_budget_msec:
-					await get_tree().process_frame
-					start_time = Time.get_ticks_msec()
+		if exclude.has(idx):
+			continue
+		var npc = NPCManager.get_npc_by_index(idx)
+		if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
+			new_indices.append(idx)
+			exclude[idx] = true
+		if new_indices.size() >= num_new:
+			break
+		if Time.get_ticks_msec() - start_time > time_budget_msec:
+			await get_tree().process_frame
+			start_time = Time.get_ticks_msec()
 
 	var recycled_indices: Array[int] = []
 	var matched_array: Array = NPCManager.matched_npcs_by_app.get(app_name, [])
 	var matched: Dictionary = {}
 	for m in matched_array:
-			matched[m] = true
+		matched[m] = true
 	for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
-			if exclude.has(idx) or matched.has(idx):
-					continue
-			var npc = NPCManager.get_npc_by_index(idx)
-			if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
-					recycled_indices.append(idx)
-					exclude[idx] = true
-			if recycled_indices.size() >= num_recycled:
-					break
-			if Time.get_ticks_msec() - start_time > time_budget_msec:
-					await get_tree().process_frame
-					start_time = Time.get_ticks_msec()
+		if exclude.has(idx) or matched.has(idx):
+			continue
+		var npc = NPCManager.get_npc_by_index(idx)
+		if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
+			recycled_indices.append(idx)
+			exclude[idx] = true
+		if recycled_indices.size() >= num_recycled:
+			break
+		if Time.get_ticks_msec() - start_time > time_budget_msec:
+			await get_tree().process_frame
+			start_time = Time.get_ticks_msec()
 
 	pool += new_indices
 	pool += recycled_indices
 	RNGManager.fumble_profile_stack.shuffle(pool)
 
 	while swipe_pool.size() < swipe_pool_size and not pool.is_empty():
-			swipe_pool.append(pool.pop_front())
+		swipe_pool.append(pool.pop_front())
 
 
 
