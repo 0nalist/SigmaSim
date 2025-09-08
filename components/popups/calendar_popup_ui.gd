@@ -109,9 +109,11 @@ func _on_ower_view_button_pressed() -> void:
 	WindowManager.launch_app_by_name("OwerView")
 
 func _update_elapsed_labels() -> void:
-	in_game_label.text = _format_elapsed(TimeManager.get_total_minutes_played())
-	var real_minutes := int(TimeManager.get_total_real_seconds_played() / 60)
-	real_time_label.text = _format_elapsed(real_minutes)
+       in_game_label.text = _format_elapsed(TimeManager.get_total_minutes_played())
+       var total_real_seconds := int(TimeManager.get_total_real_seconds_played())
+       var real_minutes := total_real_seconds / 60
+       var real_seconds := total_real_seconds % 60
+       real_time_label.text = "%s:%02d" % [_format_elapsed(real_minutes), real_seconds]
 
 func _format_elapsed(total_minutes: int) -> String:
 	var years := total_minutes / (60 * 24 * 365)
