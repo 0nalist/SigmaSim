@@ -14,6 +14,8 @@ var running: bool = false
 var time_accum: float = 0.0
 var offset: Vector2 = Vector2.ZERO
 var panning: bool = false
+var dragging: bool = false
+var last_drag_cell: Vector2i = Vector2i.ZERO
 
 func _ready() -> void:
         play_pause_button.pressed.connect(_on_play_pause_pressed)
@@ -43,27 +45,38 @@ func _draw() -> void:
                                 draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), Color.WHITE, true)
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		var mb: InputEventMouseButton = event
-		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
-			var cell: Vector2i = _screen_to_grid(mb.position)
-			_toggle_cell(cell)
-		elif mb.button_index == MOUSE_BUTTON_RIGHT:
-			panning = mb.pressed
-		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
-			cell_size += 1
-			if cell_size < 1:
-				cell_size = 1
-			queue_redraw()
-		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
-			cell_size -= 1
-			if cell_size < 1:
-				cell_size = 1
-			queue_redraw()
-	elif event is InputEventMouseMotion and panning:
-		var mm: InputEventMouseMotion = event
-		offset += mm.relative
-		queue_redraw()
+        if event is InputEventMouseButton:
+                var mb: InputEventMouseButton = event
+                if mb.button_index == MOUSE_BUTTON_LEFT:
+                        if mb.pressed:
+                                var cell: Vector2i = _screen_to_grid(mb.position)
+                                _toggle_cell(cell)
+                                dragging = true
+                                last_drag_cell = cell
+                        else:
+                                dragging = false
+                elif mb.button_index == MOUSE_BUTTON_RIGHT:
+                        panning = mb.pressed
+                elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
+                        cell_size += 1
+                        if cell_size < 1:
+                                cell_size = 1
+                        queue_redraw()
+                elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
+                        cell_size -= 1
+                        if cell_size < 1:
+                                cell_size = 1
+                        queue_redraw()
+        elif event is InputEventMouseMotion:
+                var mm: InputEventMouseMotion = event
+                if dragging:
+                        var cell: Vector2i = _screen_to_grid(mm.position)
+                        if cell != last_drag_cell:
+                                _toggle_cells_along_line(last_drag_cell, cell)
+                                last_drag_cell = cell
+                elif panning:
+                        offset += mm.relative
+                        queue_redraw()
 
 func _advance_generation() -> void:
 	var neighbor_counts: Dictionary = {}
@@ -102,6 +115,28 @@ func _toggle_cell(cell: Vector2i) -> void:
         else:
                 grid[cell] = true
         queue_redraw()
+
+func _toggle_cells_along_line(start: Vector2i, end: Vector2i) -> void:
+        var x0: int = start.x
+        var y0: int = start.y
+        var x1: int = end.x
+        var y1: int = end.y
+        var dx: int = abs(x1 - x0)
+        var sx: int = x0 < x1 ? 1 : -1
+        var dy: int = -abs(y1 - y0)
+        var sy: int = y0 < y1 ? 1 : -1
+        var err: int = dx + dy
+        var x: int = x0
+        var y: int = y0
+        while x != x1 or y != y1:
+                var e2: int = 2 * err
+                if e2 >= dy:
+                        err += dy
+                        x += sx
+                if e2 <= dx:
+                        err += dx
+                        y += sy
+                _toggle_cell(Vector2i(x, y))
 
 func _on_play_pause_pressed() -> void:
         running = !running
