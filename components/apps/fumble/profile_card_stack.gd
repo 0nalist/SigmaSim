@@ -96,10 +96,13 @@ func swipe_right() -> void:
 
 func _after_swipe() -> void:
 	if swipe_pool.size() < CARD_VISIBLE_COUNT + 2:
-		await _refill_swipe_pool_async()
-	var idx: int = await _fetch_next_index_from_pool()
-	if idx != -1:
-		await _add_card_at_bottom(idx)
+			await _refill_swipe_pool_async()
+
+	while cards.size() < CARD_VISIBLE_COUNT:
+			var idx: int = await _fetch_next_index_from_pool()
+			if idx == -1:
+					break
+			await _add_card_at_bottom(idx)
 
 func _on_swipe_left_complete(card: Control, idx: int) -> void:
 	card.queue_free()
