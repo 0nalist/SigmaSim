@@ -75,7 +75,9 @@ var last_npc_core_line: String = ""
 
 
 const REACTION_EMOJI = {
-	"heart": preload("res://assets/emojis/red_heart_emoji_x32.png"),
+	"heart": preload("res://assets/emojis/red_heart_twemoji_x32.png"),
+	#"heart": preload("res://assets/emojis/red_heart_emoji_x32.png"),
+	#"heart": preload("res://assets/emojis/red_heart_twemoji_x72.png"),
 	"zzz": preload("res://assets/emojis/zzz_emoji_x32.png"),
 	"thumbs_down": preload("res://assets/emojis/thumbsdown_emoji_x32.png"),
 	"cry_laugh": preload("res://assets/emojis/cry_laughing_twemoji_x32_1f602.png"),

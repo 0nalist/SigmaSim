@@ -87,13 +87,13 @@ func set_rarity_label_visible(is_visible: bool) -> void:
 	rarity_label.visible = is_visible
 
 func _on_sell_pressed() -> void:
-		TarotManager.sell_card(card_id, rarity, is_upside_down)
-		var new_count = TarotManager.get_card_rarity_count(card_id, rarity)
-		update_count(new_count)
-		if mark_sold_on_sell:
-				sell_button.text = "SOLD"
-				sell_button.disabled = true
-		sell_button.visible = true
+				TarotManager.sell_card(card_id, rarity, is_upside_down)
+				var new_count = TarotManager.get_card_rarity_count(card_id, rarity)
+				update_count(new_count)
+				if mark_sold_on_sell:
+								sell_button.text = "SOLD"
+								sell_button.disabled = true
+								sell_button.visible = true
 
 func _ready() -> void:
 	texture_rect.mouse_filter = Control.MOUSE_FILTER_PASS

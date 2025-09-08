@@ -40,8 +40,8 @@ var start_apps := {}
 
 
 func _ready() -> void:
-			_load_owned_apps()
-			print("✅ Registered apps:", app_registry.keys())
+	_load_owned_apps()
+	print("✅ Registered apps:", app_registry.keys())
 
 func _load_owned_apps() -> void:
 	app_unlock_state.clear()
