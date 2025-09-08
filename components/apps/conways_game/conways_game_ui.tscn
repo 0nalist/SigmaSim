@@ -35,15 +35,18 @@ size_flags_vertical = 8
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
+focus_mode = 0
 
 [node name="PlayPauseButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "PLAY"
 
 [node name="ResetButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 text = "RESET"
 
 [node name="SpeedSlider" type="HSlider" parent="MarginContainer/VBoxContainer/HBoxContainer"]
@@ -52,6 +55,7 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 0
 max_value = 2.0
 step = 0.1
 value = 1.9
