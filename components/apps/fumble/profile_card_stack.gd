@@ -185,59 +185,68 @@ func _ensure_card_count_async(add_at_top: bool = true) -> void:
 
 
 func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
-	var start_time: int = Time.get_ticks_msec()
-	var seen: int = NPCManager.encounter_count
-	var t: float = clamp(float(seen) / float(max_recycled_cap_index), 0.0, 1.0)
-	var percent: float = lerp(min_recycled_percent, max_recycled_percent, t)
-	var num_recycled: int = int(round(swipe_pool_size * percent))
-	var num_new: int = swipe_pool_size - num_recycled
-	var pool: Array[int] = []
+        var start_time: int = Time.get_ticks_msec()
+        var seen: int = NPCManager.encounter_count
+        var t: float = clamp(float(seen) / float(max_recycled_cap_index), 0.0, 1.0)
+        var percent: float = lerp(min_recycled_percent, max_recycled_percent, t)
+        var num_recycled: int = int(round(swipe_pool_size * percent))
+        var num_new: int = swipe_pool_size - num_recycled
+        var pool: Array[int] = []
 
-	var exclude: Dictionary = {}
-	for id in npc_indices:
-			exclude[id] = true
-	for id in swipe_pool:
-			exclude[id] = true
-	var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
+        var exclude: Dictionary = {}
+        for id in npc_indices:
+                exclude[id] = true
+        for id in swipe_pool:
+                exclude[id] = true
+        var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
-	var new_indices: Array[int] = []
-	for idx in NPCManager.get_batch_of_new_npc_indices(app_name, num_new * 3):
-		if exclude.has(idx):
-			continue
-		var npc = NPCManager.get_npc_by_index(idx)
-		if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
-			new_indices.append(idx)
-			exclude[idx] = true
-		if new_indices.size() >= num_new:
-			break
-		if Time.get_ticks_msec() - start_time > time_budget_msec:
-			await get_tree().process_frame
-			start_time = Time.get_ticks_msec()
+        var new_indices: Array[int] = NPCManager.query_npc_indices({
+                "count": num_new,
+                "min_attractiveness": min_att,
+                "gender_similarity_vector": preferred_gender,
+                "min_gender_similarity": gender_similarity_threshold,
+                "exclude": exclude.keys(),
+        })
 
-	var recycled_indices: Array[int] = []
-	var matched_array: Array = NPCManager.matched_npcs_by_app.get(app_name, [])
-	var matched: Dictionary = {}
-	for m in matched_array:
-		matched[m] = true
-	for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
-		if exclude.has(idx) or matched.has(idx):
-			continue
-		var npc = NPCManager.get_npc_by_index(idx)
-		if npc.attractiveness >= min_att and gender_dot_similarity(preferred_gender, npc.gender_vector) >= gender_similarity_threshold:
-			recycled_indices.append(idx)
-			exclude[idx] = true
-		if recycled_indices.size() >= num_recycled:
-			break
-		if Time.get_ticks_msec() - start_time > time_budget_msec:
-			await get_tree().process_frame
-			start_time = Time.get_ticks_msec()
+        if not NPCManager.encountered_npcs_by_app.has(app_name):
+                NPCManager.encountered_npcs_by_app[app_name] = []
+        if not NPCManager.active_npcs_by_app.has(app_name):
+                NPCManager.active_npcs_by_app[app_name] = []
+        var app_encountered: Array = NPCManager.encountered_npcs_by_app[app_name]
+        var app_active: Array = NPCManager.active_npcs_by_app[app_name]
+        for idx in new_indices:
+                exclude[idx] = true
+                if not app_encountered.has(idx):
+                        app_encountered.append(idx)
+                if not app_active.has(idx):
+                        app_active.append(idx)
 
-	pool += new_indices
-	pool += recycled_indices
-	RNGManager.fumble_profile_stack.shuffle(pool)
+        var recycled_indices: Array[int] = []
+        var matched_array: Array = NPCManager.matched_npcs_by_app.get(app_name, [])
+        var matched: Dictionary = {}
+        for m in matched_array:
+                matched[m] = true
+        for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
+                if exclude.has(idx) or matched.has(idx):
+                        continue
+                recycled_indices.append(idx)
+                exclude[idx] = true
+                if recycled_indices.size() >= num_recycled:
+                        break
+                if Time.get_ticks_msec() - start_time > time_budget_msec:
+                        await get_tree().process_frame
+                        start_time = Time.get_ticks_msec()
 
-	while swipe_pool.size() < swipe_pool_size and not pool.is_empty():
-		swipe_pool.append(pool.pop_front())
+        for idx in recycled_indices:
+                if not app_active.has(idx):
+                        app_active.append(idx)
+
+        pool += new_indices
+        pool += recycled_indices
+        RNGManager.fumble_profile_stack.shuffle(pool)
+
+        while swipe_pool.size() < swipe_pool_size and not pool.is_empty():
+                swipe_pool.append(pool.pop_front())
 
 
 
