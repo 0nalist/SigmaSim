@@ -798,12 +798,15 @@ func reset() -> void:
 	persistent_by_gender = {}
 	persistent_by_wealth = {}
 
-func query_npc_indices(filters: Dictionary) -> Array[int]:
+
+func query_npc_indices_async(filters: Dictionary, time_budget_msec: int = 8) -> Array[int]:
 	# Ensure the NPC catalogue has a healthy buffer of unencountered
 	# entries before we attempt to query it. This will lazily extend the
 	# catalogue in deterministic batches when we are running low.
 	NPCCatalog.ensure_unencountered()
-	await NPCCatalog.ensure_filtered_unencountered_async(filters)
+
+	await NPCCatalog.ensure_filtered_unencountered_async(filters, NPCCatalog.extend_threshold, NPCCatalog.extend_batch_size, time_budget_msec)
+
 
 	var count: int = int(filters.get("count", 1))
 	var min_attr: float = float(filters.get("min_attractiveness", 0.0))
@@ -811,6 +814,7 @@ func query_npc_indices(filters: Dictionary) -> Array[int]:
 	var min_gender_sim: float = float(filters.get("min_gender_similarity", 0.0))
 	var exclude = (filters.get("exclude", []) as Array[int])
 	var candidates: Array[int] = []
+	var start_time: int = Time.get_ticks_msec()
 	for record in NPCCatalog.npc_catalog:
 		var idx: int = int(record["index"])
 		if encountered_npcs.has(idx) or exclude.has(idx):
@@ -822,6 +826,9 @@ func query_npc_indices(filters: Dictionary) -> Array[int]:
 			if sim < min_gender_sim:
 				continue
 		candidates.append(idx)
+		if Time.get_ticks_msec() - start_time > time_budget_msec:
+			await get_tree().process_frame
+			start_time = Time.get_ticks_msec()
 	RNGManager.npc_manager.shuffle(candidates)
 	var result: Array[int] = candidates.slice(0, count)
 	for idx in result:
@@ -830,3 +837,6 @@ func query_npc_indices(filters: Dictionary) -> Array[int]:
 		if idx >= encounter_count:
 			encounter_count = idx + 1
 	return result
+
+func query_npc_indices(filters: Dictionary, time_budget_msec: int = 8) -> Array[int]:
+	return await query_npc_indices_async(filters, time_budget_msec)
