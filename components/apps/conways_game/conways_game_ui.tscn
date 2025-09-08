@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://1oii0lj1k250"]
+[gd_scene load_steps=3 format=3 uid="uid://1oii0lj1k250"]
 
 [ext_resource type="Script" uid="uid://baqg8r261xiu" path="res://components/apps/conways_game/conways_game.gd" id="1_mytmk"]
+[ext_resource type="Texture2D" uid="uid://du1y34qyf4tt8" path="res://assets/logos/conwaysgamelogo.png" id="2_whslj"]
 
 [node name="ConwaysGameUi" type="PanelContainer"]
 anchors_preset = 15
@@ -13,6 +14,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_mytmk")
 window_title = "Conway's Game"
+window_icon = ExtResource("2_whslj")
 app_description = "Waste time futzing around with the teeniest little life simulation ever imagined. A faithful recreation of John Conway's Game of Life."
 default_window_size = Vector2(500, 500)
 

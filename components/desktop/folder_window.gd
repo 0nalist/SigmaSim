@@ -7,11 +7,12 @@ class_name FolderWindow
 @onready var scroll: ScrollContainer = %Scroll
 
 func _ready() -> void:
-		call_deferred("_update_grid_columns")
+	await get_tree().process_frame
+	call_deferred("_update_grid_columns")
 
 func _notification(what: int) -> void:
-		if what == NOTIFICATION_RESIZED:
-				_update_grid_columns()
+	if what == NOTIFICATION_RESIZED:
+			_update_grid_columns()
 
 
 func setup_custom(id: int) -> void:
