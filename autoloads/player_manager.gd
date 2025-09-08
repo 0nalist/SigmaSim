@@ -56,15 +56,15 @@ var default_user_data: Dictionary = {
 	"portrait_config": {},
 	"background_path": "",
 	"education_level": "",
-		"starting_student_debt": 0.0,
-		"starting_credit_limit": 0.0,
-		"bio": "",
-		"friend1_npc_index": -1,
+	"starting_student_debt": 0.0,
+	"starting_credit_limit": 0.0,
+	"bio": "",
+	"friend1_npc_index": -1,
 
-		# Core Stats
-		"alpha": 0.0,
-		"beta": 0.0,
-		"delta": 0.0,
+	# Core Stats
+	"alpha": 0.0,
+	"beta": 0.0,
+	"delta": 0.0,
 	"gamma": 0.0,
 	"omega": 0.0,
 	"sigma": 0.0,
@@ -87,30 +87,30 @@ var default_user_data: Dictionary = {
 	"mbti": "",
 
 # Fumble preferences
-		"fumble_pref_x": 0.0,
-		"fumble_pref_y": 0.0,
-				"fumble_pref_z": 0.0,
-			   "fumble_curiosity": 50.0,
-			   "fumble_fugly_filter_threshold": 0.0,
-				   "fumble_type": "",
-				   "fumble_like": "",
-				   "fumble_dislike": "",
-				   "fumble_type_cd": 0,
-								   "fumble_like_cd": 0,
-								   "fumble_dislike_cd": 0,
+	"fumble_pref_x": 0.0,
+	"fumble_pref_y": 0.0,
+	"fumble_pref_z": 0.0,
+	"fumble_curiosity": 50.0,
+	"fumble_fugly_filter_threshold": 0.0,
+	"fumble_type": "",
+	"fumble_like": "",
+	"fumble_dislike": "",
+	"fumble_type_cd": 0,
+	"fumble_like_cd": 0,
+	"fumble_dislike_cd": 0,
 
-		# Daterbase Headhunters
-		"hh_open_fumble_cost": 10,
+	# Daterbase Headhunters
+	"hh_open_fumble_cost": 10,
 
-				# Flags and progression
-						   "unlocked_perks": [],
-						   "seen_dialogue_ids": [],
-						   "owned_apps": ["SoftWares", "OwerView", "SigmaMail"],
-						   "global_rng_seed": 0,
-						   "using_random_seed": false,
-				# Background shader settings
-				"background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
-				}
+# Flags and progression
+	"unlocked_perks": [],
+	"seen_dialogue_ids": [],
+	"owned_apps": ["SoftWares", "OwerView", "SigmaMail", "AIM"],
+	"global_rng_seed": 0,
+	"using_random_seed": false,
+	# Background shader settings
+	"background_shaders": DEFAULT_BACKGROUND_SHADERS.duplicate(true),
+}
 
 var user_data: Dictionary = default_user_data.duplicate(true)
 
