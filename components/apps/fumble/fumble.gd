@@ -218,14 +218,12 @@ func _on_fugly_spinbox_value_changed(value: float) -> void:
 	PlayerManager.set_var("fumble_fugly_filter_threshold", value)
 	if card_stack:
 		await card_stack.apply_fugly_filter()
-	chats_tab.refresh_matches()
 
 
 func _on_fugly_filter_purchased(_level: int) -> void:
 	_update_fugly_filter_ui()
 	if card_stack:
 		await card_stack.apply_fugly_filter()
-	chats_tab.refresh_matches()
 
 
 func _update_fugly_filter_ui() -> void:
