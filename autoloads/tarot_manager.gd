@@ -19,9 +19,13 @@ var last_card_upside_down: bool = false
 @export var reading_cost_base: float = 1.0
 @export var reading_cost_increase: float = 1.1 # Multiplier
 @export var reading_cost_decrease: float = 1.0 # Decreases by this much per hour
+@export var reading_cost_decrease_rate: float = 1.0 # Multiplier for decrease amount per hour
+@export var reading_cost_min_increase: float = 0.0 # Minimum absolute increase after a reading
 @export var major_reading_cost_base: float = 1.0
 @export var major_reading_cost_increase: float = 1.1
 @export var major_reading_cost_decrease: float = 1.0
+@export var major_reading_cost_decrease_rate: float = 1.0
+@export var major_reading_cost_min_increase: float = 0.0
 var reading_cost: float = 1.0
 var major_reading_cost: float = 1.0
 var last_reading: Array = []
@@ -161,9 +165,12 @@ func draw_card() -> Dictionary:
 func draw_reading(count: int) -> Array:
 	var total_cost := reading_cost * count
 	if total_cost > 0.0:
-			if not PortfolioManager.pay_with_cash(total_cost):
-					return []
-			reading_cost *= reading_cost_increase
+		if not PortfolioManager.pay_with_cash(total_cost):
+			return []
+		var previous_cost := reading_cost
+		reading_cost *= reading_cost_increase
+		if reading_cost < previous_cost + reading_cost_min_increase:
+			reading_cost = previous_cost + reading_cost_min_increase
 	var card_rng := RNGManager.tarot_card.get_rng()
 	var rarity_rng := RNGManager.tarot_rarity.get_rng()
 	var orientation_rng := RNGManager.tarot_orientation.get_rng()
@@ -188,11 +195,14 @@ func draw_reading(count: int) -> Array:
 func draw_major_reading(count: int) -> Array:
 	var total_cost := major_reading_cost * count
 	if total_cost > 0.0:
-			var current_ex = StatManager.get_stat("ex", 0.0)
-			if current_ex < total_cost:
-					return []
-			StatManager.set_base_stat("ex", current_ex - total_cost)
-			major_reading_cost *= major_reading_cost_increase
+		var current_ex = StatManager.get_stat("ex", 0.0)
+		if current_ex < total_cost:
+			return []
+		StatManager.set_base_stat("ex", current_ex - total_cost)
+		var previous_cost := major_reading_cost
+		major_reading_cost *= major_reading_cost_increase
+		if major_reading_cost < previous_cost + major_reading_cost_min_increase:
+			major_reading_cost = previous_cost + major_reading_cost_min_increase
 	var card_rng := RNGManager.tarot_card.get_rng()
 	var rarity_rng := RNGManager.tarot_rarity.get_rng()
 	var orientation_rng := RNGManager.tarot_orientation.get_rng()
@@ -218,8 +228,8 @@ func draw_major_reading(count: int) -> Array:
 
 
 func _on_hour_passed(_current_hour: int, _total_minutes: int) -> void:
-		reading_cost = max(reading_cost_base, reading_cost - reading_cost_decrease)
-		major_reading_cost = max(major_reading_cost_base, major_reading_cost - major_reading_cost_decrease)
+	reading_cost = max(reading_cost_base, reading_cost - reading_cost_decrease * reading_cost_decrease_rate)
+	major_reading_cost = max(major_reading_cost_base, major_reading_cost - major_reading_cost_decrease * major_reading_cost_decrease_rate)
 
 
 func sell_card(card_id: String, rarity: int, upside_down: bool = false) -> void:
