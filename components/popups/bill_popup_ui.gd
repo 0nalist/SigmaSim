@@ -45,12 +45,12 @@ func update_amount_display() -> void:
 	_update_display()
 
 func close() -> void:
-	WindowManager.close_window(get_parent().get_parent().get_parent())
+	WindowManager.close_window(window_frame)
 
 func _on_pay_now_button_pressed() -> void:
 	if PortfolioManager.pay_with_cash(amount):
 		if bill_name == "Payday Loan":
-			BillManager.reduce_debt_balance("Payday Loan", amount)
+				BillManager.reduce_debt_balance("Payday Loan", amount)
 		BillManager.mark_bill_paid(bill_name, date_key)
 		close()
 	else:
@@ -59,20 +59,20 @@ func _on_pay_now_button_pressed() -> void:
 func _on_pay_by_credit_button_pressed() -> void:
 	var required_score = PortfolioManager.CREDIT_REQUIREMENTS.get("bills", 0)
 	if PortfolioManager.credit_score < required_score:
-			print("❌ Credit score too low")
-			WindowManager.focus_window(get_parent().get_parent().get_parent())
-			WindowManager.launch_app_by_name("OwerView")
-			return
+		print("❌ Credit score too low")
+		WindowManager.focus_window(window_frame)
+		WindowManager.launch_app_by_name("OwerView")
+		return
 
 	if PortfolioManager.pay_with_credit(amount):
 			if bill_name == "Payday Loan":
-					BillManager.reduce_debt_balance("Payday Loan", amount)
-			BillManager.mark_bill_paid(bill_name, date_key)
-			close()
+				BillManager.reduce_debt_balance("Payday Loan", amount)
+		BillManager.mark_bill_paid(bill_name, date_key)
+		close()
 	else:
-			print("❌ Not enough credit")
-			WindowManager.focus_window(get_parent().get_parent().get_parent())
-			WindowManager.launch_app_by_name("OwerView")
+		print("❌ Not enough credit")
+		WindowManager.focus_window(window_frame)
+		WindowManager.launch_app_by_name("OwerView")
 
 func _on_autopay_check_box_toggled(toggled_on: bool) -> void:
 		BillManager.autopay_enabled = toggled_on
@@ -100,7 +100,7 @@ func load_custom_save_data(data: Dictionary) -> void:
 
 	BillManager.register_popup(self, date_key)
 	await ready
-	var window = get_parent().get_parent().get_parent() as WindowFrame
+	var window: WindowFrame = window_frame
 	if window:
 		window.window_can_close = false
 		window.refresh_window_controls()
