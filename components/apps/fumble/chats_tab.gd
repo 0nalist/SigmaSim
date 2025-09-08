@@ -46,6 +46,8 @@ func refresh_matches(time_budget_msec: int = 8) -> void:
 	for child in matches_container.get_children():
 		child.queue_free()
 
+	await get_tree().process_frame
+
 	var matches_rows: Array = FumbleManager.get_matches_with_times()
 	var battles: Array = FumbleManager.get_active_battles()
 	var battle_lookup: Dictionary = {}
@@ -57,24 +59,24 @@ func refresh_matches(time_budget_msec: int = 8) -> void:
 
 	var start_time: int = Time.get_ticks_msec()
 	for b in battles:
-			battle_lookup[b.npc_idx] = NPCManager.get_npc_by_index(b.npc_idx)
-			if Time.get_ticks_msec() - start_time > time_budget_msec:
-					await get_tree().process_frame
-					start_time = Time.get_ticks_msec()
+		battle_lookup[b.npc_idx] = NPCManager.get_npc_by_index(b.npc_idx)
+		if Time.get_ticks_msec() - start_time > time_budget_msec:
+			await get_tree().process_frame
+			start_time = Time.get_ticks_msec()
 
 	for row in matches_rows:
-			var idx: int = row.npc_id
-			if battle_lookup.has(idx):
-					continue
-			var npc = NPCManager.get_npc_by_index(idx)
-			if npc.attractiveness < min_att:
-					continue
-			total_attractiveness += npc.attractiveness
-			match_count += 1
-			data.append({"npc": npc, "idx": idx, "created_at": row.created_at})
-			if Time.get_ticks_msec() - start_time > time_budget_msec:
-					await get_tree().process_frame
-					start_time = Time.get_ticks_msec()
+		var idx: int = row.npc_id
+		if battle_lookup.has(idx):
+			continue
+		var npc = NPCManager.get_npc_by_index(idx)
+		if npc.attractiveness < min_att:
+			continue
+		total_attractiveness += npc.attractiveness
+		match_count += 1
+		data.append({"npc": npc, "idx": idx, "created_at": row.created_at})
+		if Time.get_ticks_msec() - start_time > time_budget_msec:
+			await get_tree().process_frame
+			start_time = Time.get_ticks_msec()
 
 	match matches_sort.selected:
 		0:
@@ -98,10 +100,10 @@ func refresh_matches(time_budget_msec: int = 8) -> void:
 			start_time = Time.get_ticks_msec()
 
 	for npc in battle_lookup.values():
-			total_attractiveness += npc.attractiveness
-			if Time.get_ticks_msec() - start_time > time_budget_msec:
-					await get_tree().process_frame
-					start_time = Time.get_ticks_msec()
+		total_attractiveness += npc.attractiveness
+		if Time.get_ticks_msec() - start_time > time_budget_msec:
+			await get_tree().process_frame
+			start_time = Time.get_ticks_msec()
 
 	var total_count: int = match_count + battles.size()
 	matches_label.text = "Matches: %d" % total_count
