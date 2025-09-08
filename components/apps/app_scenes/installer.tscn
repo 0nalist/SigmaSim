@@ -50,6 +50,7 @@ text = "Create desktop shortcut"
 [node name="ShortcutCheckBox" type="CheckBox" parent="MarginContainer/VBox/MarginContainer/VBoxContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -62,6 +63,7 @@ text = "Open when finished"
 [node name="OpenCheckBox" type="CheckBox" parent="MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
 
 [node name="InstallButton" type="Button" parent="MarginContainer/VBox"]
 unique_name_in_owner = true

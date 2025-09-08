@@ -103,12 +103,12 @@ func refresh_matches(time_budget_msec: int = 8) -> void:
 			start_time = Time.get_ticks_msec()
 
 	var total_count: int = match_count + battles.size()
-	matches_label.text = "Matches: %d" % total_count
+	matches_label.text = "%d" % total_count
 
 	var avg_att: float = 0.0
 	if total_count > 0:
 		avg_att = float(total_attractiveness) / total_count
-	average_match_label.text = "Avg: 🔥 %.1f/10" % (avg_att / 10.0)
+	average_match_label.text = "%.1f/10" % (avg_att / 10.0)
 
 
 func refresh_battles() -> void:

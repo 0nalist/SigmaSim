@@ -79,11 +79,59 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 4
 theme_override_constants/shadow_outline_size = 6
 theme_override_fonts/font = ExtResource("6_qddv1")
 theme_override_font_sizes/font_size = 18
-text = "Matches"
+text = "Matches:"
+horizontal_alignment = 1
+
+[node name="MatchesLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("6_qddv1")
+theme_override_font_sizes/font_size = 14
+text = "0"
+horizontal_alignment = 1
+
+[node name="Control2" type="Control" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 4
+theme_override_fonts/font = ExtResource("6_qddv1")
+theme_override_font_sizes/font_size = 18
+text = "Avg 🔥:"
+horizontal_alignment = 1
+
+[node name="AverageMatchLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("6_qddv1")
+theme_override_font_sizes/font_size = 18
+text = "5.0"
+horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox"]
 custom_minimum_size = Vector2(0, 156)
@@ -102,16 +150,6 @@ custom_minimum_size = Vector2(128, 96)
 layout_mode = 2
 size_flags_vertical = 4
 expand_icon = false
-
-[node name="MatchesLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Matches: 0"
-
-[node name="AverageMatchLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Average Match: 0"
 
 [node name="ChatBattlesVBox" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
