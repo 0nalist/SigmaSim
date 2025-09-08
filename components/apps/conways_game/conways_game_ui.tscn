@@ -13,6 +13,7 @@ size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_mytmk")
 window_title = "Conway's Game"
+app_description = "Waste time futzing around with the teeniest little life simulation ever imagined. A faithful recreation of John Conway's Game of Life."
 default_window_size = Vector2(500, 500)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -42,8 +43,11 @@ text = "RESET"
 
 [node name="SpeedSlider" type="HSlider" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 min_value = 0.1
 max_value = 2.0
 step = 0.1
-size_flags_horizontal = 4
+value = 0.1
