@@ -799,11 +799,11 @@ func reset() -> void:
 	persistent_by_wealth = {}
 
 func query_npc_indices(filters: Dictionary) -> Array[int]:
-	# Ensure the NPC catalogue has a healthy buffer of unencountered
-	# entries before we attempt to query it. This will lazily extend the
-	# catalogue in deterministic batches when we are running low.
-	NPCCatalog.ensure_unencountered()
-	NPCCatalog.ensure_filtered_unencountered(filters)
+        # Ensure the NPC catalogue has a healthy buffer of unencountered
+        # entries before we attempt to query it. This will lazily extend the
+        # catalogue in deterministic batches when we are running low.
+        NPCCatalog.ensure_unencountered()
+        await NPCCatalog.ensure_filtered_unencountered_async(filters)
 
 	var count: int = int(filters.get("count", 1))
 	var min_attr: float = float(filters.get("min_attractiveness", 0.0))

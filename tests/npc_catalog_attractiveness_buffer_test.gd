@@ -24,7 +24,7 @@ func _ready() -> void:
         for i in range(high_ids.size() - 1):
                 npc_manager.encountered_npcs.append(high_ids[i])
 
-        var res = npc_manager.query_npc_indices({
+        var res = await npc_manager.query_npc_indices({
                 "count": 1,
                 "min_attractiveness": threshold,
         })

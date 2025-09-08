@@ -209,7 +209,7 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 			exclude[id] = true
 	var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
-	var new_indices: Array[int] = NPCManager.query_npc_indices({
+    var new_indices: Array[int] = await NPCManager.query_npc_indices({
 					"count": num_new,
 					"min_attractiveness": min_att,
 					"gender_similarity_vector": preferred_gender,
@@ -255,7 +255,7 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 	var total_needed: int = swipe_pool_size - swipe_pool.size()
 	var needed: int = max(total_needed - (new_indices.size() + recycled_indices.size()), 0)
 	if needed > 0:
-		var extra_new: Array[int] = NPCManager.query_npc_indices({
+            var extra_new: Array[int] = await NPCManager.query_npc_indices({
 			"count": needed,
 			"min_attractiveness": min_att,
 			"gender_similarity_vector": preferred_gender,
