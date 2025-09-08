@@ -65,8 +65,8 @@ func _on_pay_by_credit_button_pressed() -> void:
 		return
 
 	if PortfolioManager.pay_with_credit(amount):
-			if bill_name == "Payday Loan":
-				BillManager.reduce_debt_balance("Payday Loan", amount)
+		if bill_name == "Payday Loan":
+			BillManager.reduce_debt_balance("Payday Loan", amount)
 		BillManager.mark_bill_paid(bill_name, date_key)
 		close()
 	else:
