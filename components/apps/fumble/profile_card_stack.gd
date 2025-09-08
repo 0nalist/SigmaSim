@@ -37,19 +37,19 @@ func load_initial_cards() -> void:
 
 
 func _add_card_at_top(idx: int) -> void:
-		var card = profile_card_scene.instantiate()
-		card.set("npc_idx", idx)
-		var npc = NPCManager.get_npc_by_index(idx)
-		add_child(card)
-		card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		card.call_deferred("load_npc", npc)
-		cards.append(card)
-		npc_indices.append(idx)
-		_update_card_positions()
+	var card = profile_card_scene.instantiate()
+	card.set("npc_idx", idx)
+	var npc = NPCManager.get_npc_by_index(idx)
+	add_child(card)
+	card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	card.call_deferred("load_npc", npc)
+	cards.append(card)
+	npc_indices.append(idx)
+	_update_card_positions()
 
 
 func add_card_to_top(idx: int) -> void:
-		_add_card_at_top(idx)
+	_add_card_at_top(idx)
 
 
 func _add_card_at_bottom(idx: int) -> void:
@@ -62,6 +62,7 @@ func _add_card_at_bottom(idx: int) -> void:
 	cards.insert(0, card)
 	npc_indices.insert(0, idx)
 	_update_card_positions()
+	await get_tree().process_frame
 
 
 func _update_card_positions() -> void:
@@ -75,15 +76,7 @@ func swipe_left() -> void:
 	is_animating = true
 	var card = cards[cards.size() - 1]
 	var idx = npc_indices[npc_indices.size() - 1]
-	card.animate_swipe_left(func():
-		card.queue_free()
-		cards.pop_back()
-		npc_indices.pop_back()
-		NPCManager.mark_npc_inactive_in_app(idx, app_name)
-		emit_signal("card_swiped_left", idx)
-		_after_swipe()
-		is_animating = false
-	)
+	card.animate_swipe_left(Callable(self, "_on_swipe_left_complete").bind(card, idx))
 
 
 func swipe_left_and_wait() -> void:
@@ -98,14 +91,7 @@ func swipe_right() -> void:
 	is_animating = true
 	var card = cards[cards.size() - 1]
 	var idx = npc_indices[npc_indices.size() - 1]
-	card.animate_swipe_right(func():
-		emit_signal("card_swiped_right", idx)
-		card.queue_free()
-		cards.pop_back()
-		npc_indices.pop_back()
-		_after_swipe()
-		is_animating = false
-	)
+	card.animate_swipe_right(Callable(self, "_on_swipe_right_complete").bind(card, idx))
 
 
 func _after_swipe() -> void:
@@ -113,7 +99,24 @@ func _after_swipe() -> void:
 		await _refill_swipe_pool_async()
 	var idx: int = await _fetch_next_index_from_pool()
 	if idx != -1:
-		_add_card_at_bottom(idx)
+		await _add_card_at_bottom(idx)
+
+func _on_swipe_left_complete(card: Control, idx: int) -> void:
+	card.queue_free()
+	cards.pop_back()
+	npc_indices.pop_back()
+	NPCManager.mark_npc_inactive_in_app(idx, app_name)
+	emit_signal("card_swiped_left", idx)
+	await _after_swipe()
+	is_animating = false
+
+func _on_swipe_right_complete(card: Control, idx: int) -> void:
+	emit_signal("card_swiped_right", idx)
+	card.queue_free()
+	cards.pop_back()
+	npc_indices.pop_back()
+	await _after_swipe()
+	is_animating = false
 
 
 func clear_cards() -> void:
@@ -168,7 +171,7 @@ func _populate_cards_over_frames(count: int, add_at_top: bool = true) -> void:
 		if add_at_top:
 			_add_card_at_top(idx)
 		else:
-			_add_card_at_bottom(idx)
+			await _add_card_at_bottom(idx)
 		await get_tree().process_frame  # Spread out the work
 
 func _ensure_card_count_async(add_at_top: bool = true) -> void:
@@ -180,7 +183,7 @@ func _ensure_card_count_async(add_at_top: bool = true) -> void:
 		if add_at_top:
 			_add_card_at_top(idx)
 		else:
-			_add_card_at_bottom(idx)
+			await _add_card_at_bottom(idx)
 		await get_tree().process_frame
 
 
