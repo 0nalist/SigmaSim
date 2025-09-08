@@ -347,23 +347,23 @@ func pay_debt(name: String, amount: float) -> void:
 								debt_resources_changed.emit()
 
 func take_payday_loan(amount: float) -> void:
-       var res: Dictionary = _get_debt_resource("Payday Loan")
-       if res.is_empty():
-                       return
+	var res: Dictionary = _get_debt_resource("Payday Loan")
+	if res.is_empty():
+					return
 
-       var limit: float = float(res.get("borrow_limit", 1000.0))
-       var bal: float = float(res.get("balance", 0.0))
-       if bal >= limit:
-                       return
-       var available: float = min(amount, limit - bal)
-       if available <= 0.0:
-                       return
+	var limit: float = float(res.get("borrow_limit", 1000.0))
+	var bal: float = float(res.get("balance", 0.0))
+	if bal >= limit:
+					return
+	var available: float = min(amount, limit - bal)
+	if available <= 0.0:
+					return
 
-       var rate: float = float(res.get("interest_rate", 0.0))
-       var total := available * (1.0 + rate)
-       res["balance"] = bal + total
-       debt_resources_changed.emit()
-       PortfolioManager.add_cash(available)
+	var rate: float = float(res.get("interest_rate", 0.0))
+	var total := available * (1.0 + rate)
+	res["balance"] = bal + total
+	debt_resources_changed.emit()
+	PortfolioManager.add_cash(available)
 
 func apply_debt_interest() -> void:
 	var changed := false
