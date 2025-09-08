@@ -313,6 +313,7 @@ func apply_fugly_filter() -> void:
 		var npc = NPCManager.get_npc_by_index(idx)
 		if npc.attractiveness < min_att:
 			swipe_pool.remove_at(i)
+			#NPCManager.mark_npc_inactive_in_app(idx, app_name)
 
 	while true:
 		var removed: bool = false

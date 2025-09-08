@@ -554,13 +554,14 @@ vertical_alignment = 1
 
 [node name="TickerTimer" type="Timer" parent="TaskbarLayer/TopBar/TopBarContainer/Ticker"]
 
-[node name="Panel" type="Panel" parent="TaskbarLayer/TopBar/TopBarContainer"]
+[node name="StatMonitorPanel" type="Panel" parent="TaskbarLayer/TopBar/TopBarContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 24)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_bnui0")
 
-[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TopBar/TopBarContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="TaskbarLayer/TopBar/TopBarContainer/StatMonitorPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -570,21 +571,22 @@ grow_vertical = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TopBar/TopBarContainer/Panel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TaskbarLayer/TopBar/TopBarContainer/StatMonitorPanel/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TaskbarLayer/TopBar/TopBarContainer/Panel/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="TaskbarLayer/TopBar/TopBarContainer/StatMonitorPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Cash:"
 
-[node name="CashLabel" type="Label" parent="TaskbarLayer/TopBar/TopBarContainer/Panel/MarginContainer/HBoxContainer"]
+[node name="CashLabel" type="Label" parent="TaskbarLayer/TopBar/TopBarContainer/StatMonitorPanel/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_dag3j")
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_font_sizes/font_size = 24
-text = "$"
+text = "$3"
 
 [node name="TaskbarWrapper" type="Panel" parent="TaskbarLayer"]
 z_index = 1024

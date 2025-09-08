@@ -55,6 +55,7 @@ func _on_death() -> void:
 		if pane:
 			pane.pivot_offset = pane.size / 2
 		TraumaManager.hit_pane(trauma_target, 1.8)
+		#TraumaManager.hit_window_frame(trauma_target, 1.8)
 		await get_tree().create_timer(.1).timeout
 		if pane:
 			pane.pivot_offset = pane.size / 2

@@ -33,7 +33,7 @@ class_name EarlyBird
 var current_speed: float = 0.0
 var speed_timer := 0.0
 
-var window_frame: WindowFrame = null
+#var window_frame: WindowFrame = null
 
 var game_active: bool = false
 

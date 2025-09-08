@@ -51,8 +51,8 @@ var window_frame: WindowFrame = null
 #signal title_updated(title: String) #unused, for now
 
 func _ready() -> void:
-        if window_frame:
-                window_frame.call_deferred("set", "windowless_mode", request_windowless_mode)
+		if window_frame:
+				window_frame.call_deferred("set", "windowless_mode", request_windowless_mode)
 
 
 func get_drag_handle() -> Control:

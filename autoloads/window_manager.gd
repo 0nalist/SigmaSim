@@ -62,25 +62,25 @@ func is_app_unlocked(app_id: String) -> bool:
 func unlock_app(app_id: String, app_title: String = "") -> void:
 	app_unlock_state[app_id] = true
 	if app_title == "":
-					for title in app_registry.keys():
-									if title.to_lower() == app_id:
-													app_title = title
-													break
+		for title in app_registry.keys():
+			if title.to_lower() == app_id:
+				app_title = title
+				break
 	if app_title == "":
-					app_title = app_id.capitalize()
+		app_title = app_id.capitalize()
 	var owned: Array = PlayerManager.get_var("owned_apps", [])
 	if not owned.has(app_title):
-					owned.append(app_title)
-					PlayerManager.set_var("owned_apps", owned)
-					register_start_app(app_title)
+		owned.append(app_title)
+		PlayerManager.set_var("owned_apps", owned)
+		register_start_app(app_title)
 	app_unlocked.emit(app_id)
 
 func register_start_app(app_name: String) -> void:
-				var scene: PackedScene = app_registry.get(app_name)
-				if scene and not start_apps.has(app_name):
-								start_apps[app_name] = scene
-								if start_panel and start_panel.has_method("add_app_button"):
-												start_panel.add_app_button(app_name)
+	var scene: PackedScene = app_registry.get(app_name)
+	if scene and not start_apps.has(app_name):
+		start_apps[app_name] = scene
+		if start_panel and start_panel.has_method("add_app_button"):
+			start_panel.add_app_button(app_name)
 
 # --- Main window functions --- #
 
@@ -125,7 +125,7 @@ func focus_window(window: WindowFrame) -> void:
 
 	bring_to_top(window)
 
-	# ✨ SMART: Only reassert stay_on_top windows if necessary
+	# Only reassert stay_on_top windows if necessary
 	var focused_index = root.get_children().find(window)
 
 	for win in open_windows.keys():
@@ -183,14 +183,14 @@ func close_window(window: WindowFrame) -> void:
 # --- Launchers --- #
 
 func launch_app(app_id: String) -> void:
-			var app_name := ""
-			for title in app_registry.keys():
-							if title.to_lower() == app_id:
-											app_name = title
-											break
-			if app_name == "":
-							app_name = app_id
-			launch_app_by_name(app_name)
+	var app_name := ""
+	for title in app_registry.keys():
+		if title.to_lower() == app_id:
+			app_name = title
+			break
+	if app_name == "":
+					app_name = app_id
+	launch_app_by_name(app_name)
 
 func launch_app_by_name(app_name: String, setup_args: Variant = null) -> void:
 	var scene: PackedScene = app_registry.get(app_name)
@@ -200,7 +200,8 @@ func launch_app_by_name(app_name: String, setup_args: Variant = null) -> void:
 			if not pane:
 				push_error("Scene does not extend Pane!")
 				return
-			# ð· Prevent duplicate installer popups for the same app
+			
+			#Prevent duplicate installer popups for the same app
 			if pane is Installer and setup_args is Dictionary:
 				var app_title: String = setup_args.get("app_title", "")
 				var app_id: String = setup_args.get("app_id", "")
