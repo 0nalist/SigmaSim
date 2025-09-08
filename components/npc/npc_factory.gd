@@ -472,13 +472,13 @@ static func box_muller(seed_a: String, seed_b: String) -> float:
 	return z0
 
 static func attractiveness_from_name(full_name: String) -> float:
-        var u1 = deterministic_randf(full_name + "A")
-        var u2 = deterministic_randf(full_name + "B")
-        if u1 <= 0.0:
-                u1 = 0.000001
-        var z0 = sqrt(-2.0 * log(u1)) * cos(2.0 * PI * u2)
-        var bounded = clamp(z0, -3.0, 3.0)
-        return ((bounded + 3.0) / 6.0) * 100.0
+	var u1 = deterministic_randf(full_name + "A")
+	var u2 = deterministic_randf(full_name + "B")
+	if u1 <= 0.0:
+			u1 = 0.000001
+	var z0 = sqrt(-2.0 * log(u1)) * cos(2.0 * PI * u2)
+	var bounded = clamp(z0, -3.0, 3.0)
+	return ((bounded + 3.0) / 6.0) * 100.0
 
 # Walks name indices deterministically, collecting those whose
 # attractiveness meets or exceeds `min_attr`. The search yields whenever
@@ -486,23 +486,23 @@ static func attractiveness_from_name(full_name: String) -> float:
 # dictionary containing the matching `indices` and the `next_index` to
 # resume searching from on subsequent calls.
 static func find_high_attractiveness_indices(min_attr: float, start_idx: int, limit: int, time_budget_msec: int = 8) -> Dictionary:
-        var total := NameManager.get_unique_name_count()
-        var indices: Array[int] = []
-        var idx := start_idx
-        var start_time := Time.get_ticks_msec()
-        while idx < total and indices.size() < limit:
-                var name_data = NameManager.get_npc_name_by_index(idx)
-                var full_name: String = name_data["full_name"]
-                if attractiveness_from_name(full_name) >= min_attr:
-                        indices.append(idx)
-                idx += 1
-                if Time.get_ticks_msec() - start_time > time_budget_msec:
-                        await Engine.get_main_loop().process_frame
-                        start_time = Time.get_ticks_msec()
-        return {
-                "indices": indices,
-                "next_index": idx,
-        }
+	var total := NameManager.get_unique_name_count()
+	var indices: Array[int] = []
+	var idx := start_idx
+	var start_time := Time.get_ticks_msec()
+	while idx < total and indices.size() < limit:
+		var name_data = NameManager.get_npc_name_by_index(idx)
+		var full_name: String = name_data["full_name"]
+		if attractiveness_from_name(full_name) >= min_attr:
+			indices.append(idx)
+		idx += 1
+		if Time.get_ticks_msec() - start_time > time_budget_msec:
+			await Engine.get_main_loop().process_frame
+			start_time = Time.get_ticks_msec()
+	return {
+		"indices": indices,
+		"next_index": idx,
+	}
 
 
 # --- Placeholder for pet names/username ---
