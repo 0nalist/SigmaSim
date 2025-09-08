@@ -28,6 +28,14 @@ var commands := {
 		"args": "",
 		"description": "Opens every app in the app registry at once.",
 	},
+	"launch": {
+		"args": "<app_name>",
+		"description": "Launches the specified app by name.",
+	},
+	"list_apps": {
+		"args": "",
+		"description": "Lists all apps in the app registry.",
+	},
 	"add_cash": {
 		"args": "<amount>",
 		"description": "Adds the given amount of cash to your portfolio.",
@@ -324,6 +332,36 @@ func process_command(command: String) -> bool:
 						wm.call("launch_app_by_name", app_name)
 			return true
 		
+		
+		"launch":
+			if parts.size() < 2:
+				_set_feedback("Usage: launch <app_name>", false)
+				return false
+			var app_name := command.substr(command.find(" ") + 1).strip_edges()
+			var wm := get_tree().root.get_node("WindowManager")
+			if wm:
+				var registry = wm.get("app_registry")
+				if registry is Dictionary:
+					for name in registry.keys():
+						if name.to_lower() == app_name.to_lower():
+							wm.call("launch_app_by_name", name)
+							return true
+			_set_feedback("no app exists with name %s" % app_name, false)
+			return false
+		
+		"list_apps":
+			var wm := get_tree().root.get_node("WindowManager")
+			if wm:
+				var registry = wm.get("app_registry")
+				if registry is Dictionary:
+					var names := registry.keys()
+					names.sort()
+					for name in names:
+						var label := Label.new()
+						label.text = name
+						command_log_container.add_child(label)
+					return true
+			return false
 		
 		"run_tests":
 			return _run_tests()
