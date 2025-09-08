@@ -354,7 +354,7 @@ func process_command(command: String) -> bool:
 			if wm:
 				var registry = wm.get("app_registry")
 				if registry is Dictionary:
-					var names := registry.keys()
+					var names = registry.keys()
 					names.sort()
 					for name in names:
 						var label := Label.new()

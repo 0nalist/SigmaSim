@@ -16,104 +16,104 @@ var offset: Vector2 = Vector2.ZERO
 var panning: bool = false
 
 func _ready() -> void:
-    play_button.pressed.connect(_on_play_pressed)
-    pause_button.pressed.connect(_on_pause_pressed)
-    reset_button.pressed.connect(_on_reset_pressed)
+	play_button.pressed.connect(_on_play_pressed)
+	pause_button.pressed.connect(_on_pause_pressed)
+	reset_button.pressed.connect(_on_reset_pressed)
 
 func _process(delta: float) -> void:
-    if running:
-        time_accum += delta
-        while time_accum >= step_interval:
-            time_accum -= step_interval
-            _advance_generation()
+	if running:
+		time_accum += delta
+		while time_accum >= step_interval:
+			time_accum -= step_interval
+			_advance_generation()
 
 func _draw() -> void:
-    var viewport_size: Vector2 = get_size()
-    var min_x: int = int(floor(-offset.x / float(cell_size)))
-    var min_y: int = int(floor(-offset.y / float(cell_size)))
-    var max_x: int = int(ceil((viewport_size.x - offset.x) / float(cell_size)))
-    var max_y: int = int(ceil((viewport_size.y - offset.y) / float(cell_size)))
-    for cell in grid.keys():
-        var alive: bool = grid[cell]
-        if alive:
-            if cell.x >= min_x and cell.x <= max_x and cell.y >= min_y and cell.y <= max_y:
-                var pos: Vector2 = offset + Vector2(float(cell.x), float(cell.y)) * float(cell_size)
-                draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), Color.BLACK, true)
+	var viewport_size: Vector2 = get_size()
+	var min_x: int = int(floor(-offset.x / float(cell_size)))
+	var min_y: int = int(floor(-offset.y / float(cell_size)))
+	var max_x: int = int(ceil((viewport_size.x - offset.x) / float(cell_size)))
+	var max_y: int = int(ceil((viewport_size.y - offset.y) / float(cell_size)))
+	for cell in grid.keys():
+		var alive: bool = grid[cell]
+		if alive:
+			if cell.x >= min_x and cell.x <= max_x and cell.y >= min_y and cell.y <= max_y:
+				var pos: Vector2 = offset + Vector2(float(cell.x), float(cell.y)) * float(cell_size)
+				draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), Color.BLACK, true)
 
 func _input(event: InputEvent) -> void:
-    if event is InputEventMouseButton:
-        var mb: InputEventMouseButton = event
-        if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
-            var cell: Vector2i = _screen_to_grid(mb.position)
-            _toggle_cell(cell)
-        elif mb.button_index == MOUSE_BUTTON_RIGHT:
-            panning = mb.pressed
-        elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
-            cell_size += 1
-            if cell_size < 1:
-                cell_size = 1
-            queue_redraw()
-        elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
-            cell_size -= 1
-            if cell_size < 1:
-                cell_size = 1
-            queue_redraw()
-    elif event is InputEventMouseMotion and panning:
-        var mm: InputEventMouseMotion = event
-        offset += mm.relative
-        queue_redraw()
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event
+		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
+			var cell: Vector2i = _screen_to_grid(mb.position)
+			_toggle_cell(cell)
+		elif mb.button_index == MOUSE_BUTTON_RIGHT:
+			panning = mb.pressed
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
+			cell_size += 1
+			if cell_size < 1:
+				cell_size = 1
+			queue_redraw()
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
+			cell_size -= 1
+			if cell_size < 1:
+				cell_size = 1
+			queue_redraw()
+	elif event is InputEventMouseMotion and panning:
+		var mm: InputEventMouseMotion = event
+		offset += mm.relative
+		queue_redraw()
 
 func _advance_generation() -> void:
-    var neighbor_counts: Dictionary = {}
-    for cell in grid.keys():
-        var neighbors: Array = [
-            cell + Vector2i(-1, -1),
-            cell + Vector2i(0, -1),
-            cell + Vector2i(1, -1),
-            cell + Vector2i(-1, 0),
-            cell + Vector2i(1, 0),
-            cell + Vector2i(-1, 1),
-            cell + Vector2i(0, 1),
-            cell + Vector2i(1, 1)
-        ]
-        for n in neighbors:
-            var count: int = neighbor_counts.get(n, 0)
-            neighbor_counts[n] = count + 1
-        neighbor_counts[cell] = neighbor_counts.get(cell, 0)
-    var new_grid: Dictionary = {}
-    for cell in neighbor_counts.keys():
-        var count: int = neighbor_counts[cell]
-        var alive: bool = grid.has(cell)
-        if alive:
-            if count == 2 or count == 3:
-                new_grid[cell] = true
-        else:
-            if count == 3:
-                new_grid[cell] = true
-    grid = new_grid
-    queue_redraw()
+	var neighbor_counts: Dictionary = {}
+	for cell in grid.keys():
+		var neighbors: Array = [
+			cell + Vector2i(-1, -1),
+			cell + Vector2i(0, -1),
+			cell + Vector2i(1, -1),
+			cell + Vector2i(-1, 0),
+			cell + Vector2i(1, 0),
+			cell + Vector2i(-1, 1),
+			cell + Vector2i(0, 1),
+			cell + Vector2i(1, 1)
+		]
+		for n in neighbors:
+			var count: int = neighbor_counts.get(n, 0)
+			neighbor_counts[n] = count + 1
+		neighbor_counts[cell] = neighbor_counts.get(cell, 0)
+	var new_grid: Dictionary = {}
+	for cell in neighbor_counts.keys():
+		var count: int = neighbor_counts[cell]
+		var alive: bool = grid.has(cell)
+		if alive:
+			if count == 2 or count == 3:
+				new_grid[cell] = true
+		else:
+			if count == 3:
+				new_grid[cell] = true
+	grid = new_grid
+	queue_redraw()
 
 func _toggle_cell(cell: Vector2i) -> void:
-    var alive: bool = grid.get(cell, false)
-    if alive:
-        grid.erase(cell)
-    else:
-        grid[cell] = true
-    queue_redraw()
+	var alive: bool = grid.get(cell, false)
+	if alive:
+		grid.erase(cell)
+	else:
+		grid[cell] = true
+	queue_redraw()
 
 func _on_play_pressed() -> void:
-    running = true
+	running = true
 
 func _on_pause_pressed() -> void:
-    running = false
+	running = false
 
 func _on_reset_pressed() -> void:
-    running = false
-    grid.clear()
-    time_accum = 0.0
-    queue_redraw()
+	running = false
+	grid.clear()
+	time_accum = 0.0
+	queue_redraw()
 
 func _screen_to_grid(pos: Vector2) -> Vector2i:
-    var gx: int = int(floor((pos.x - offset.x) / float(cell_size)))
-    var gy: int = int(floor((pos.y - offset.y) / float(cell_size)))
-    return Vector2i(gx, gy)
+	var gx: int = int(floor((pos.x - offset.x) / float(cell_size)))
+	var gy: int = int(floor((pos.y - offset.y) / float(cell_size)))
+	return Vector2i(gx, gy)

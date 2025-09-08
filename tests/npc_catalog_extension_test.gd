@@ -9,10 +9,10 @@ func _ready() -> void:
 	npc_manager.encountered_npcs = []
 	npc_manager.encounter_count = 0
 
-        var first = await npc_manager.query_npc_indices({"count": 4})
+	var first = await npc_manager.query_npc_indices({"count": 4})
 	assert(first.size() == 4)
 
-        var second = await npc_manager.query_npc_indices({"count": 1})
+	var second = await npc_manager.query_npc_indices({"count": 1})
 	assert(second.size() == 1)
 	assert(NPCCatalog.npc_catalog.size() == 10)
 
