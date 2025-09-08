@@ -4,6 +4,8 @@ class_name Pane
 signal window_title_changed(new_title: String)
 signal window_icon_changed(new_icon)
 
+var window_frame: WindowFrame = null
+
 @export var window_title: String = "Window" :
 	set(value):
 		window_title = value
@@ -49,10 +51,8 @@ signal window_icon_changed(new_icon)
 #signal title_updated(title: String) #unused, for now
 
 func _ready() -> void:
-	#get_parent().get_parent().get_parent().window_can_close = window_can_close
-	#window_icon_changed.emit(window_icon)
-	var window = get_parent().get_parent().get_parent()
-	window.call_deferred("set", "windowless_mode", request_windowless_mode)
+        if window_frame:
+                window_frame.call_deferred("set", "windowless_mode", request_windowless_mode)
 
 
 func get_drag_handle() -> Control:

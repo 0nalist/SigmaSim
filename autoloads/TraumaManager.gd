@@ -158,18 +158,32 @@ func _hit_canvas_item(target: CanvasItem, amount: float, respect_container: bool
 
 
 func hit_pane(target: CanvasItem, amount: float) -> void:
-		_hit_canvas_item(target, amount, true)
+        _hit_canvas_item(target, amount, true)
 
 
 func hit_item(target: CanvasItem, amount: float) -> void:
-		_hit_canvas_item(target, amount, false)
+        _hit_canvas_item(target, amount, false)
+
+
+func hit_window_frame(target: Pane, amount: float) -> void:
+        if target == null:
+                return
+        var frame: CanvasItem = target.window_frame
+        if frame == null:
+                return
+        _hit_canvas_item(frame, amount, false)
+        var id: int = frame.get_instance_id()
+        if _pane_states.has(id):
+                var s: PaneShakeState = _pane_states[id]
+                s.rotation_deg = 0.0
+                s.rotation_mult = 0.0
 
 
 func hit_group(group: StringName, amount: float) -> void:
-	var list: Array[Node] = get_tree().get_nodes_in_group(group)
-	for n: Node in list:
-		if n is CanvasItem:
-			hit_pane(n as CanvasItem, amount)
+        var list: Array[Node] = get_tree().get_nodes_in_group(group)
+        for n: Node in list:
+                if n is CanvasItem:
+                        hit_pane(n as CanvasItem, amount)
 
 
 func set_pane_params(
@@ -320,8 +334,8 @@ func _restore_pane(state: PaneShakeState) -> void:
 
 
 func _on_pane_tree_exiting(id: int) -> void:
-	if _pane_states.has(id):
-		_pane_states.erase(id)
+        if _pane_states.has(id):
+                _pane_states.erase(id)
 
 
 # ------------------ Safe Control transforms ------------------
