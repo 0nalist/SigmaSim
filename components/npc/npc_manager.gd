@@ -690,18 +690,43 @@ func get_batch_of_new_npc_indices(app_name: String, count: int) -> Array[int]:
 	return result
 
 func get_batch_of_recycled_npc_indices(app_name: String, count: int) -> Array[int]:
-	var pool: Array[int] = []
-	var encountered = encountered_npcs_by_app.get(app_name, [])
-	var active = active_npcs_by_app.get(app_name, [])
-	var matched = matched_npcs_by_app.get(app_name, {})
-	for idx in encountered:
-			if not active.has(idx) and not persistent_npcs.has(idx) and not matched.has(idx):
-					pool.append(idx)
-	RNGManager.npc_manager.shuffle(pool)
-	var result: Array[int] = []
-	for idx in pool.slice(0, count):
-		result.append(idx)
-	return result
+        var pool: Array[int] = []
+        var encountered = encountered_npcs_by_app.get(app_name, [])
+        var active = active_npcs_by_app.get(app_name, [])
+        var matched = matched_npcs_by_app.get(app_name, {})
+        for idx in encountered:
+                        if not active.has(idx) and not persistent_npcs.has(idx) and not matched.has(idx):
+                                        pool.append(idx)
+        RNGManager.npc_manager.shuffle(pool)
+        var result: Array[int] = []
+        for idx in pool.slice(0, count):
+                result.append(idx)
+        return result
+
+func get_high_attractiveness_npc_indices_from_db(app_name: String, threshold: float, count: int) -> Array[int]:
+        var encountered = encountered_npcs_by_app.get(app_name, [])
+        var matched = matched_npcs_by_app.get(app_name, [])
+        var exclude: Array[int] = []
+        exclude.append_array(encountered)
+        exclude.append_array(matched)
+        var ids: Array[int] = DBManager.get_high_attractiveness_npc_ids(threshold, count, exclude)
+        var result: Array[int] = []
+        for id in ids:
+                var idx: int = int(id)
+                if not encountered_npcs_by_app.has(app_name):
+                        encountered_npcs_by_app[app_name] = []
+                if not encountered_npcs_by_app[app_name].has(idx):
+                        encountered_npcs_by_app[app_name].append(idx)
+                if not active_npcs_by_app.has(app_name):
+                        active_npcs_by_app[app_name] = []
+                if not active_npcs_by_app[app_name].has(idx):
+                        active_npcs_by_app[app_name].append(idx)
+                if not encountered_npcs.has(idx):
+                        encountered_npcs.append(idx)
+                if idx >= encounter_count:
+                        encounter_count = idx + 1
+                result.append(idx)
+        return result
 
 func get_recyclable_npc_index_for_app(app_name: String) -> int:
 	var encountered = encountered_npcs_by_app.get(app_name, [])
