@@ -92,13 +92,16 @@ func update_slider() -> void:
 		pay_button.disabled = max_pay <= 0.0
 
 func update_borrow_slider() -> void:
-		if not _is_ready or not bool(resource_data.get("can_borrow", false)):
-				return
-		var limit: float = float(resource_data.get("borrow_limit", 0.0))
-		borrow_slider.max_value = limit
-		if borrow_slider.value > limit:
-				borrow_slider.value = limit
-		borrow_label.text = "$%.2f" % borrow_slider.value
+               if not _is_ready or not bool(resource_data.get("can_borrow", false)):
+                               return
+               var limit: float = float(resource_data.get("borrow_limit", 0.0))
+               var balance: float = float(resource_data.get("balance", 0.0))
+               var remaining: float = max(limit - balance, 0.0)
+               borrow_slider.max_value = remaining
+               if borrow_slider.value > remaining:
+                               borrow_slider.value = remaining
+               borrow_label.text = "$%.2f" % borrow_slider.value
+               borrow_button.disabled = remaining <= 0.0
 
 func _on_slider_changed(value: float) -> void:
 		if not _is_ready:
