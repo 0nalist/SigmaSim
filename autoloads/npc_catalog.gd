@@ -9,6 +9,12 @@ var index_by_gender: Dictionary = {
 	"nb": [],
 }
 
+# When the pool of NPC records runs low we proactively extend the
+# catalogue.  These defaults provide a reasonable buffer for the game
+# but can be overridden in tests or from the editor.
+var extend_threshold: int = 100
+var extend_batch_size: int = 100
+
 func generate(count: int = -1) -> void:
 	npc_catalog.clear()
 	index_by_attractiveness.clear()
@@ -44,6 +50,21 @@ func generate(count: int = -1) -> void:
 		return npc_catalog[a]["gender_vector"].y < npc_catalog[b]["gender_vector"].y)
 	index_by_gender["nb"].sort_custom(func(a, b):
 		return npc_catalog[a]["gender_vector"].z < npc_catalog[b]["gender_vector"].z)
+
+# Ensures the catalogue always maintains a minimum number of
+# unencountered NPC entries.  When the remaining unencountered count
+# falls below `min_unencountered` we regenerate the catalogue with an
+# additional `batch_size` entries.  Regeneration is deterministic
+# because each NPC's data is derived from its index and the global name
+# seed, so existing indices retain their original names and traits.
+func ensure_unencountered(min_unencountered: int = extend_threshold, batch_size: int = extend_batch_size) -> void:
+	var encountered := 0
+	if Engine.has_singleton("NPCManager"):
+		encountered = NPCManager.encountered_npcs.size()
+	var remaining: int = npc_catalog.size() - encountered
+	if remaining < min_unencountered:
+		var target := npc_catalog.size() + batch_size
+		generate(target)
 
 func get_by_attractiveness_range(min_value: float, max_value: float) -> Array:
 	var getter := func(i: int) -> float:
