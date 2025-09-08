@@ -18,18 +18,21 @@ var dragging: bool = false
 var last_drag_cell: Vector2i = Vector2i.ZERO
 
 func _ready() -> void:
-	play_pause_button.pressed.connect(_on_play_pause_pressed)
-	reset_button.pressed.connect(_on_reset_pressed)
-	speed_slider.value = step_interval
-	speed_slider.value_changed.connect(_on_speed_slider_value_changed)
-	_update_play_pause_text()
+       play_pause_button.pressed.connect(_on_play_pause_pressed)
+       reset_button.pressed.connect(_on_reset_pressed)
+       speed_slider.value = speed_slider.max_value - step_interval
+       speed_slider.value_changed.connect(_on_speed_slider_value_changed)
+       _update_play_pause_text()
 
 func _process(delta: float) -> void:
-	if running:
-		time_accum += delta
-		while time_accum >= step_interval:
-			time_accum -= step_interval
-			_advance_generation()
+       if running:
+               if step_interval <= 0.0:
+                       _advance_generation()
+               else:
+                       time_accum += delta
+                       while time_accum >= step_interval:
+                               time_accum -= step_interval
+                               _advance_generation()
 
 func _draw() -> void:
 	var viewport_size: Vector2 = get_size()
@@ -163,7 +166,8 @@ func _on_reset_pressed() -> void:
 	queue_redraw()
 
 func _on_speed_slider_value_changed(value: float) -> void:
-	step_interval = value
+       step_interval = speed_slider.max_value - value
+       time_accum = 0.0
 
 func _update_play_pause_text() -> void:
 	if running:
