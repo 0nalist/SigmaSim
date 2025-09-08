@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://buvfo6k8fhu53"]
+[gd_scene load_steps=7 format=3 uid="uid://buvfo6k8fhu53"]
 
 [ext_resource type="Script" uid="uid://dqm2ovrgiyvhg" path="res://components/apps/fumble/chats_tab.gd" id="1_yrnk8"]
 [ext_resource type="PackedScene" uid="uid://3e434irx0gng" path="res://components/apps/fumble/match_button.tscn" id="2_qddv1"]
 [ext_resource type="PackedScene" uid="uid://c02crnsc8wbvh" path="res://components/apps/fumble/chat_battle_button.tscn" id="3_3cmco"]
 [ext_resource type="PackedScene" uid="uid://cndhqbvwm63oq" path="res://components/apps/fumble/fumble_match_profile.tscn" id="4_wpqnj"]
 [ext_resource type="PackedScene" uid="uid://cel7rmg2pea12" path="res://components/apps/fumble/fumble_battle/battle_ui.tscn" id="5_xasxk"]
+[ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="6_qddv1"]
 
 [node name="ChatsTab" type="Control"]
 layout_mode = 3
@@ -62,10 +63,27 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MatchesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox"]
+layout_mode = 2
+
+[node name="MatchesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 12
+
+[node name="Control" type="Control" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/VBoxContainer"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 6
+theme_override_fonts/font = ExtResource("6_qddv1")
+theme_override_font_sizes/font_size = 18
+text = "Matches"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/MatchesHBox"]
 custom_minimum_size = Vector2(0, 156)
@@ -100,10 +118,27 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ChatBattlesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 6
+theme_override_fonts/font = ExtResource("6_qddv1")
+theme_override_font_sizes/font_size = 18
+text = "Chats"
+
+[node name="Control2" type="Control" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox/HBoxContainer"]
+custom_minimum_size = Vector2(20, 15)
+layout_mode = 2
+
+[node name="ChatBattlesSort" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
+theme_override_font_sizes/font_size = 12
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ChatBattlesVBox"]
 layout_mode = 2
