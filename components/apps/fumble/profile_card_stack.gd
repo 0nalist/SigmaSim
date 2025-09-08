@@ -95,6 +95,7 @@ func swipe_right() -> void:
 
 
 func _after_swipe() -> void:
+
         if swipe_pool.size() < CARD_VISIBLE_COUNT + 2:
                 await _refill_swipe_pool_async()
 
@@ -103,6 +104,7 @@ func _after_swipe() -> void:
                 if idx == -1:
                         break
                 await _add_card_at_bottom(idx)
+
 
 func _on_swipe_left_complete(card: Control, idx: int) -> void:
 	card.queue_free()
