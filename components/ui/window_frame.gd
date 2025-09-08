@@ -114,8 +114,9 @@ func _finalize_window_size():
 		#min_size = default_size
 
 func load_pane(new_pane: Pane) -> void:
-	print("loading pane: " + str(new_pane))
-	pane = new_pane
+        print("loading pane: " + str(new_pane))
+        pane = new_pane
+        pane.window_frame = self
 	if new_pane.window_icon:
 		icon = new_pane.window_icon
 	window_title = new_pane.window_title
