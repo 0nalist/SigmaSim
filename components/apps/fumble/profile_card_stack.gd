@@ -95,14 +95,16 @@ func swipe_right() -> void:
 
 
 func _after_swipe() -> void:
-	if swipe_pool.size() < CARD_VISIBLE_COUNT + 2:
-			await _refill_swipe_pool_async()
 
-	while cards.size() < CARD_VISIBLE_COUNT:
-			var idx: int = await _fetch_next_index_from_pool()
-			if idx == -1:
-					break
-			await _add_card_at_bottom(idx)
+        if swipe_pool.size() < CARD_VISIBLE_COUNT + 2:
+                await _refill_swipe_pool_async()
+
+        while cards.size() < CARD_VISIBLE_COUNT:
+                var idx: int = await _fetch_next_index_from_pool()
+                if idx == -1:
+                        break
+                await _add_card_at_bottom(idx)
+
 
 func _on_swipe_left_complete(card: Control, idx: int) -> void:
 	card.queue_free()
@@ -246,6 +248,24 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 		for idx in recycled_indices:
 				if not app_active.has(idx):
 						app_active.append(idx)
+		var total_needed: int = swipe_pool_size - swipe_pool.size()
+		var needed: int = max(total_needed - (new_indices.size() + recycled_indices.size()), 0)
+		if needed > 0:
+			var extra_new: Array[int] = NPCManager.query_npc_indices({
+				"count": needed,
+				"min_attractiveness": min_att,
+				"gender_similarity_vector": preferred_gender,
+				"min_gender_similarity": gender_similarity_threshold,
+				"exclude": exclude.keys(),
+			})
+			for idx in extra_new:
+				exclude[idx] = true
+				if not app_encountered.has(idx):
+					app_encountered.append(idx)
+				if not app_active.has(idx):
+					app_active.append(idx)
+			new_indices += extra_new
+
 
 		pool += new_indices
 		pool += recycled_indices
