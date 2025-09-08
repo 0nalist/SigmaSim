@@ -209,7 +209,9 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 			exclude[id] = true
 	var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
-    var new_indices: Array[int] = await NPCManager.query_npc_indices_async({
+
+	var new_indices: Array[int] = await NPCManager.query_npc_indices_async({
+
 					"count": num_new,
 					"min_attractiveness": min_att,
 					"gender_similarity_vector": preferred_gender,
@@ -255,12 +257,14 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 	var total_needed: int = swipe_pool_size - swipe_pool.size()
 	var needed: int = max(total_needed - (new_indices.size() + recycled_indices.size()), 0)
 	if needed > 0:
-            var extra_new: Array[int] = await NPCManager.query_npc_indices_async({
-			"count": needed,
-			"min_attractiveness": min_att,
-			"gender_similarity_vector": preferred_gender,
-			"min_gender_similarity": gender_similarity_threshold,
-			"exclude": exclude.keys(),
+
+		var extra_new: Array[int] = await NPCManager.query_npc_indices_async({
+		"count": needed,
+		"min_attractiveness": min_att,
+		"gender_similarity_vector": preferred_gender,
+		"min_gender_similarity": gender_similarity_threshold,
+		"exclude": exclude.keys(),
+
 		})
 		for idx in extra_new:
 			exclude[idx] = true

@@ -798,12 +798,15 @@ func reset() -> void:
 	persistent_by_gender = {}
 	persistent_by_wealth = {}
 
+
 func query_npc_indices_async(filters: Dictionary, time_budget_msec: int = 8) -> Array[int]:
 	# Ensure the NPC catalogue has a healthy buffer of unencountered
 	# entries before we attempt to query it. This will lazily extend the
 	# catalogue in deterministic batches when we are running low.
 	NPCCatalog.ensure_unencountered()
+
 	await NPCCatalog.ensure_filtered_unencountered_async(filters, NPCCatalog.extend_threshold, NPCCatalog.extend_batch_size, time_budget_msec)
+
 
 	var count: int = int(filters.get("count", 1))
 	var min_attr: float = float(filters.get("min_attractiveness", 0.0))
