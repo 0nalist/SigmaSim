@@ -37,19 +37,19 @@ func load_initial_cards() -> void:
 
 
 func _add_card_at_top(idx: int) -> void:
-	var card = profile_card_scene.instantiate()
-	card.set("npc_idx", idx)
-	var npc = NPCManager.get_npc_by_index(idx)
-	add_child(card)
-	card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	card.call_deferred("load_npc", npc)
-	cards.append(card)
-	npc_indices.append(idx)
-	_update_card_positions()
+		var card = profile_card_scene.instantiate()
+		card.set("npc_idx", idx)
+		var npc = NPCManager.get_npc_by_index(idx)
+		add_child(card)
+		card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		card.call_deferred("load_npc", npc)
+		cards.append(card)
+		npc_indices.append(idx)
+		_update_card_positions()
 
 
 func add_card_to_top(idx: int) -> void:
-	_add_card_at_top(idx)
+		_add_card_at_top(idx)
 
 
 func _add_card_at_bottom(idx: int) -> void:
@@ -62,7 +62,6 @@ func _add_card_at_bottom(idx: int) -> void:
 	cards.insert(0, card)
 	npc_indices.insert(0, idx)
 	_update_card_positions()
-	await get_tree().process_frame
 
 
 func _update_card_positions() -> void:
@@ -76,7 +75,15 @@ func swipe_left() -> void:
 	is_animating = true
 	var card = cards[cards.size() - 1]
 	var idx = npc_indices[npc_indices.size() - 1]
-	card.animate_swipe_left(Callable(self, "_on_swipe_left_complete").bind(card, idx))
+	card.animate_swipe_left(func():
+		card.queue_free()
+		cards.pop_back()
+		npc_indices.pop_back()
+		NPCManager.mark_npc_inactive_in_app(idx, app_name)
+		emit_signal("card_swiped_left", idx)
+		_after_swipe()
+		is_animating = false
+	)
 
 
 func swipe_left_and_wait() -> void:
@@ -91,7 +98,14 @@ func swipe_right() -> void:
 	is_animating = true
 	var card = cards[cards.size() - 1]
 	var idx = npc_indices[npc_indices.size() - 1]
-	card.animate_swipe_right(Callable(self, "_on_swipe_right_complete").bind(card, idx))
+	card.animate_swipe_right(func():
+		emit_signal("card_swiped_right", idx)
+		card.queue_free()
+		cards.pop_back()
+		npc_indices.pop_back()
+		_after_swipe()
+		is_animating = false
+	)
 
 
 func _after_swipe() -> void:
@@ -99,24 +113,7 @@ func _after_swipe() -> void:
 		await _refill_swipe_pool_async()
 	var idx: int = await _fetch_next_index_from_pool()
 	if idx != -1:
-		await _add_card_at_bottom(idx)
-
-func _on_swipe_left_complete(card: Control, idx: int) -> void:
-	card.queue_free()
-	cards.pop_back()
-	npc_indices.pop_back()
-	NPCManager.mark_npc_inactive_in_app(idx, app_name)
-	emit_signal("card_swiped_left", idx)
-	await _after_swipe()
-	is_animating = false
-
-func _on_swipe_right_complete(card: Control, idx: int) -> void:
-	emit_signal("card_swiped_right", idx)
-	card.queue_free()
-	cards.pop_back()
-	npc_indices.pop_back()
-	await _after_swipe()
-	is_animating = false
+		_add_card_at_bottom(idx)
 
 
 func clear_cards() -> void:
@@ -171,7 +168,7 @@ func _populate_cards_over_frames(count: int, add_at_top: bool = true) -> void:
 		if add_at_top:
 			_add_card_at_top(idx)
 		else:
-			await _add_card_at_bottom(idx)
+			_add_card_at_bottom(idx)
 		await get_tree().process_frame  # Spread out the work
 
 func _ensure_card_count_async(add_at_top: bool = true) -> void:
@@ -183,53 +180,53 @@ func _ensure_card_count_async(add_at_top: bool = true) -> void:
 		if add_at_top:
 			_add_card_at_top(idx)
 		else:
-			await _add_card_at_bottom(idx)
+			_add_card_at_bottom(idx)
 		await get_tree().process_frame
 
 
 func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
-	var start_time: int = Time.get_ticks_msec()
-	var seen: int = NPCManager.encounter_count
-	var t: float = clamp(float(seen) / float(max_recycled_cap_index), 0.0, 1.0)
-	var percent: float = lerp(min_recycled_percent, max_recycled_percent, t)
-	var num_recycled: int = int(round(swipe_pool_size * percent))
-	var num_new: int = swipe_pool_size - num_recycled
-	var pool: Array[int] = []
+		var start_time: int = Time.get_ticks_msec()
+		var seen: int = NPCManager.encounter_count
+		var t: float = clamp(float(seen) / float(max_recycled_cap_index), 0.0, 1.0)
+		var percent: float = lerp(min_recycled_percent, max_recycled_percent, t)
+		var num_recycled: int = int(round(swipe_pool_size * percent))
+		var num_new: int = swipe_pool_size - num_recycled
+		var pool: Array[int] = []
 
-	var exclude: Dictionary = {}
-	for id in npc_indices:
+		var exclude: Dictionary = {}
+		for id in npc_indices:
 				exclude[id] = true
-	for id in swipe_pool:
+		for id in swipe_pool:
 				exclude[id] = true
-	var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
+		var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
-	var new_indices: Array[int] = NPCManager.query_npc_indices({
+		var new_indices: Array[int] = NPCManager.query_npc_indices({
 				"count": num_new,
 				"min_attractiveness": min_att,
 				"gender_similarity_vector": preferred_gender,
 				"min_gender_similarity": gender_similarity_threshold,
 				"exclude": exclude.keys(),
-	})
+		})
 
-	if not NPCManager.encountered_npcs_by_app.has(app_name):
+		if not NPCManager.encountered_npcs_by_app.has(app_name):
 				NPCManager.encountered_npcs_by_app[app_name] = []
-	if not NPCManager.active_npcs_by_app.has(app_name):
+		if not NPCManager.active_npcs_by_app.has(app_name):
 				NPCManager.active_npcs_by_app[app_name] = []
-	var app_encountered: Array = NPCManager.encountered_npcs_by_app[app_name]
-	var app_active: Array = NPCManager.active_npcs_by_app[app_name]
-	for idx in new_indices:
+		var app_encountered: Array = NPCManager.encountered_npcs_by_app[app_name]
+		var app_active: Array = NPCManager.active_npcs_by_app[app_name]
+		for idx in new_indices:
 				exclude[idx] = true
 				if not app_encountered.has(idx):
 						app_encountered.append(idx)
 				if not app_active.has(idx):
 						app_active.append(idx)
 
-	var recycled_indices: Array[int] = []
-	var matched_array: Array = NPCManager.matched_npcs_by_app.get(app_name, [])
-	var matched: Dictionary = {}
-	for m in matched_array:
+		var recycled_indices: Array[int] = []
+		var matched_array: Array = NPCManager.matched_npcs_by_app.get(app_name, [])
+		var matched: Dictionary = {}
+		for m in matched_array:
 				matched[m] = true
-	for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
+		for idx in NPCManager.get_batch_of_recycled_npc_indices(app_name, num_recycled * 3):
 				if exclude.has(idx) or matched.has(idx):
 						continue
 				recycled_indices.append(idx)
@@ -240,15 +237,15 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 						await get_tree().process_frame
 						start_time = Time.get_ticks_msec()
 
-	for idx in recycled_indices:
+		for idx in recycled_indices:
 				if not app_active.has(idx):
 						app_active.append(idx)
 
-	pool += new_indices
-	pool += recycled_indices
-	RNGManager.fumble_profile_stack.shuffle(pool)
+		pool += new_indices
+		pool += recycled_indices
+		RNGManager.fumble_profile_stack.shuffle(pool)
 
-	while swipe_pool.size() < swipe_pool_size and not pool.is_empty():
+		while swipe_pool.size() < swipe_pool_size and not pool.is_empty():
 				swipe_pool.append(pool.pop_front())
 
 
@@ -256,7 +253,7 @@ func _refill_swipe_pool_async(time_budget_msec: int = 8) -> void:
 # Helper function for dot similarity
 func gender_dot_similarity(a: Vector3, b: Vector3) -> float:
 	if a.length() == 0 or b.length() == 0:
-	return 0.0
+		return 0.0
 	return a.dot(b) / (a.length() * b.length())
 
 
@@ -266,21 +263,21 @@ func set_curiosity(threshold: float) -> void:
 func apply_gender_filter(gender_vec: Vector3, threshold: float = -1.0) -> void:
 	preferred_gender = gender_vec
 	if threshold > 0:
-	gender_similarity_threshold = threshold
+		gender_similarity_threshold = threshold
 
 	for i in range(swipe_pool.size() - 1, -1, -1):
-	var idx = swipe_pool[i]
-	var npc = NPCManager.get_npc_by_index(idx)
-	if gender_dot_similarity(preferred_gender, npc.gender_vector) < gender_similarity_threshold:
+		var idx = swipe_pool[i]
+		var npc = NPCManager.get_npc_by_index(idx)
+		if gender_dot_similarity(preferred_gender, npc.gender_vector) < gender_similarity_threshold:
 			swipe_pool.remove_at(i)
 
 	while is_animating:
-	await get_tree().process_frame
+		await get_tree().process_frame
 
 	while true:
-	var removed: bool = false
+		var removed: bool = false
 
-	if cards.size() > 0:
+		if cards.size() > 0:
 			var top_idx: int = npc_indices[npc_indices.size() - 1]
 			var top_npc = NPCManager.get_npc_by_index(top_idx)
 			if gender_dot_similarity(preferred_gender, top_npc.gender_vector) < gender_similarity_threshold:
@@ -294,7 +291,7 @@ func apply_gender_filter(gender_vec: Vector3, threshold: float = -1.0) -> void:
 				await _after_swipe()
 				removed = true
 
-	if not removed and cards.size() > 1:
+		if not removed and cards.size() > 1:
 			var bottom_idx: int = npc_indices[0]
 			var bottom_npc = NPCManager.get_npc_by_index(bottom_idx)
 			if gender_dot_similarity(preferred_gender, bottom_npc.gender_vector) < gender_similarity_threshold:
@@ -308,11 +305,11 @@ func apply_gender_filter(gender_vec: Vector3, threshold: float = -1.0) -> void:
 				await _after_swipe()
 				removed = true
 
-	if not removed:
+		if not removed:
 			break
 
-	await _refill_swipe_pool_async()
-	if cards.size() < CARD_VISIBLE_COUNT:
+		await _refill_swipe_pool_async()
+		if cards.size() < CARD_VISIBLE_COUNT:
 			await _populate_cards_over_frames(CARD_VISIBLE_COUNT - cards.size(), true)
 
 # Removes NPCs below the fugly filter threshold without refreshing the entire stack.
@@ -321,25 +318,25 @@ func apply_fugly_filter() -> void:
 
 	# Filter out existing entries in the swipe_pool that no longer meet the requirement
 	for i in range(swipe_pool.size() - 1, -1, -1):
-	var idx: int = swipe_pool[i]
-	var npc = NPCManager.get_npc_by_index(idx)
-	if npc.attractiveness < min_att:
+		var idx: int = swipe_pool[i]
+		var npc = NPCManager.get_npc_by_index(idx)
+		if npc.attractiveness < min_att:
 			swipe_pool.remove_at(i)
 			#NPCManager.mark_npc_inactive_in_app(idx, app_name)
 
 	while true:
-	var removed: bool = false
+		var removed: bool = false
 
-	# Check the top card first so that it animates properly
-	if cards.size() > 0:
+		# Check the top card first so that it animates properly
+		if cards.size() > 0:
 			var top_idx: int = npc_indices[npc_indices.size() - 1]
 			var top_npc = NPCManager.get_npc_by_index(top_idx)
 			if top_npc.attractiveness < min_att:
 				await swipe_left_and_wait()
 				removed = true
 
-	# Then check the bottom card
-	if not removed and cards.size() > 1:
+		# Then check the bottom card
+		if not removed and cards.size() > 1:
 			var bottom_idx: int = npc_indices[0]
 			var bottom_npc = NPCManager.get_npc_by_index(bottom_idx)
 			if bottom_npc.attractiveness < min_att:
@@ -353,6 +350,6 @@ func apply_fugly_filter() -> void:
 				await _after_swipe()
 				removed = true
 
-	if not removed:
+		if not removed:
 			break
 	await _ensure_card_count_async(false)
