@@ -237,14 +237,14 @@ func can_pay_with_cash(amount: float) -> bool:
 	return get_cash() >= amount
 
 func pay_with_cash(amount: float) -> bool:
-		if can_pay_with_cash(amount):
-				set_cash(get_cash() - amount)
-				emit_signal("cash_updated", get_cash())
-				emit_signal("resource_changed", "cash", get_cash())
-				Events.focus_wallet_card("brag")
-				Events.flash_wallet_value("brag", -amount)
-				return true
-		return false
+	if can_pay_with_cash(amount):
+			set_cash(get_cash() - amount)
+			emit_signal("cash_updated", get_cash())
+			emit_signal("resource_changed", "cash", get_cash())
+			Events.focus_wallet_card("brag")
+			Events.flash_wallet_value("brag", -amount)
+			return true
+	return false
 
 
 
