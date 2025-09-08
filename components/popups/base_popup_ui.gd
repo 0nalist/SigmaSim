@@ -1,8 +1,10 @@
 extends Control
 class_name BasePopupUI
 
+var window_frame: WindowFrame = null
+
 func get_window_title() -> String:
-	return "Popup"
+        return "Popup"
 
 @export var default_window_size: Vector2 = Vector2(360, 280)
 @export var unique_popup_key: String = ""
@@ -13,4 +15,5 @@ func get_window_title() -> String:
 @export var window_can_maximize: bool = true
 
 func _ready() -> void:
-	get_parent().get_parent().get_parent().window_can_close = window_can_close
+        if window_frame:
+                window_frame.window_can_close = window_can_close

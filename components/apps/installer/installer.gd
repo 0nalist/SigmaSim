@@ -54,7 +54,7 @@ func _complete_install() -> void:
 			WindowManager.launch_app(app_id)
 		if shortcut_checkbox.button_pressed:
 			DesktopLayoutManager.create_app_shortcut(app_title, app_title, icon_path, Vector2.ZERO)
-	var window = get_parent().get_parent().get_parent()
+	var window := window_frame
 	if WindowManager:
 		WindowManager.close_window(window)
 	else:

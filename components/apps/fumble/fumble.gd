@@ -340,13 +340,13 @@ func _on_tag_option_selected(index: int, which: int) -> void:
 				_update_tag_cooldowns()
 
 func _on_resize_x_requested(pixels):
-		var window_frame = get_parent().get_parent().get_parent()
-		if window_frame.size.x < 800:
-				request_resize_x_to.emit(pixels)
+	var window_frame = self.window_frame
+	if window_frame.size.x < 800:
+		request_resize_x_to.emit(pixels)
 
 
 func _on_resize_y_requested(pixels):
-	var window_frame = get_parent().get_parent().get_parent()
+	var window_frame = self.window_frame
 	if window_frame.size.y < 666:
 		request_resize_y_to.emit(pixels)
 
