@@ -18,11 +18,11 @@ var dragging: bool = false
 var last_drag_cell: Vector2i = Vector2i.ZERO
 
 func _ready() -> void:
-		play_pause_button.pressed.connect(_on_play_pause_pressed)
-		reset_button.pressed.connect(_on_reset_pressed)
-		speed_slider.value = step_interval
-		speed_slider.value_changed.connect(_on_speed_slider_value_changed)
-		_update_play_pause_text()
+	play_pause_button.pressed.connect(_on_play_pause_pressed)
+	reset_button.pressed.connect(_on_reset_pressed)
+	speed_slider.value = step_interval
+	speed_slider.value_changed.connect(_on_speed_slider_value_changed)
+	_update_play_pause_text()
 
 func _process(delta: float) -> void:
 	if running:
@@ -41,10 +41,11 @@ func _draw() -> void:
 		var alive: bool = grid[cell]
 		if alive:
 			if cell.x >= min_x and cell.x <= max_x and cell.y >= min_y and cell.y <= max_y:
-								var pos: Vector2 = offset + Vector2(float(cell.x), float(cell.y)) * float(cell_size)
-								draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), Color.WHITE, true)
+				var pos: Vector2 = offset + Vector2(float(cell.x), float(cell.y)) * float(cell_size)
+				draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), Color.WHITE, true)
 
 func _input(event: InputEvent) -> void:
+
 		if event is InputEventMouseButton:
 				var mb: InputEventMouseButton = event
 				if mb.button_index == MOUSE_BUTTON_LEFT:
@@ -80,6 +81,7 @@ func _input(event: InputEvent) -> void:
 						offset += mm.relative
 						queue_redraw()
 
+
 func _advance_generation() -> void:
 	var neighbor_counts: Dictionary = {}
 	for cell in grid.keys():
@@ -111,12 +113,12 @@ func _advance_generation() -> void:
 	queue_redraw()
 
 func _toggle_cell(cell: Vector2i) -> void:
-		var alive: bool = grid.get(cell, false)
-		if alive:
-				grid.erase(cell)
-		else:
-				grid[cell] = true
-		queue_redraw()
+	var alive: bool = grid.get(cell, false)
+	if alive:
+			grid.erase(cell)
+	else:
+			grid[cell] = true
+	queue_redraw()
 
 func _toggle_cells_along_line(start: Vector2i, end: Vector2i) -> void:
 	var x0: int = start.x
@@ -150,24 +152,24 @@ func _toggle_cells_along_line(start: Vector2i, end: Vector2i) -> void:
 
 
 func _on_play_pause_pressed() -> void:
-		running = !running
-		_update_play_pause_text()
+	running = !running
+	_update_play_pause_text()
 
 func _on_reset_pressed() -> void:
-		running = false
-		grid.clear()
-		time_accum = 0.0
-		_update_play_pause_text()
-		queue_redraw()
+	running = false
+	grid.clear()
+	time_accum = 0.0
+	_update_play_pause_text()
+	queue_redraw()
 
 func _on_speed_slider_value_changed(value: float) -> void:
-		step_interval = value
+	step_interval = value
 
 func _update_play_pause_text() -> void:
-		if running:
-				play_pause_button.text = "PAUSE"
-		else:
-				play_pause_button.text = "PLAY"
+	if running:
+		play_pause_button.text = "PAUSE"
+	else:
+		play_pause_button.text = "PLAY"
 
 func _screen_to_grid(pos: Vector2) -> Vector2i:
 	var gx: int = int(floor((pos.x - offset.x) / float(cell_size)))
