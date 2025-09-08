@@ -55,7 +55,6 @@ func refresh_matches(time_budget_msec: int = 8) -> void:
 	var total_attractiveness: int = 0
 	var match_count: int = 0
 	var data: Array = []
-	var min_att: float = PlayerManager.get_var("fumble_fugly_filter_threshold", 0.0) * 10.0
 
 	var start_time: int = Time.get_ticks_msec()
 	for b in battles:
@@ -69,8 +68,6 @@ func refresh_matches(time_budget_msec: int = 8) -> void:
 		if battle_lookup.has(idx):
 			continue
 		var npc = NPCManager.get_npc_by_index(idx)
-		if npc.attractiveness < min_att:
-			continue
 		total_attractiveness += npc.attractiveness
 		match_count += 1
 		data.append({"npc": npc, "idx": idx, "created_at": row.created_at})
