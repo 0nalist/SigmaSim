@@ -808,7 +808,7 @@ func query_npc_indices(filters: Dictionary) -> Array[int]:
 	var min_attr: float = float(filters.get("min_attractiveness", 0.0))
 	var pref_gender: Vector3 = filters.get("gender_similarity_vector", Vector3.ZERO)
 	var min_gender_sim: float = float(filters.get("min_gender_similarity", 0.0))
-	var exclude: Array[int] = filters.get("exclude", [])
+	var exclude = (filters.get("exclude", []) as Array[int])
 	var candidates: Array[int] = []
 	for record in NPCCatalog.npc_catalog:
 		var idx: int = int(record["index"])
