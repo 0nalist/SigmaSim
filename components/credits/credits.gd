@@ -30,6 +30,7 @@ Lead Artist: Sam Payne
 Lead Writer: Sam Payne
 
 
+Spiritual Consultant: Sophia Maniscalco
 
 
 Quality Assurance
