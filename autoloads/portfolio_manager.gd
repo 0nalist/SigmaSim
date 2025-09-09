@@ -521,10 +521,9 @@ func load_from_data(data: Dictionary) -> void:
 	stocks_owned = data.get("stocks_owned", {})
 	crypto_owned = data.get("crypto_owned", {})
 	emit_investment_update()
-	_on_cash_changed(get_cash())
+	_on_cash_changed(StatManager.get_cash())
 	_on_credit_changed(get_credit_used())
 	_on_student_loans_changed(get_student_loans())
-
 
 func reset():
 	set_cash(0.0)
