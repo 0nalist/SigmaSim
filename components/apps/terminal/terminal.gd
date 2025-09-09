@@ -276,12 +276,16 @@ func process_command(command: String) -> bool:
 				return false
 
 			var expected_type := typeof(current_value)
+			var is_flex := current_value is FlexNumber
 
 			# --- parse attempted new value ---
 			var new_value = null
 			var parsed_number = _parse_number(value_str)
 			if parsed_number != null:
-				new_value = parsed_number
+				if is_flex:
+					new_value = FlexNumber.new(parsed_number)
+				else:
+					new_value = parsed_number
 			else:
 				new_value = value_str
 
@@ -289,8 +293,9 @@ func process_command(command: String) -> bool:
 			var new_type := typeof(new_value)
 			var type_ok := false
 
-			# Allow int/float interchange if stat is numeric
-			if (expected_type == TYPE_FLOAT or expected_type == TYPE_INT) and (new_type == TYPE_FLOAT or new_type == TYPE_INT):
+			if is_flex:
+				type_ok = new_value is FlexNumber
+			elif (expected_type == TYPE_FLOAT or expected_type == TYPE_INT) and (new_type == TYPE_FLOAT or new_type == TYPE_INT):
 				type_ok = true
 			elif expected_type == new_type:
 				type_ok = true
@@ -389,7 +394,7 @@ func _purchase_all_upgrades() -> void:
 func _parse_number(s: String) -> Variant:
 	s = s.strip_edges()
 	var regex := RegEx.new()
-	regex.compile("^[-+]?[0-9]+(\\.[0-9]+)?$")
+	regex.compile("^[-+]?(?:\\d+\\.\\d*|\\.\\d+|\\d+)$")
 	if not regex.search(s):
 		return null
 	return s.to_float()
