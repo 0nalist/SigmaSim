@@ -195,10 +195,11 @@ func draw_reading(count: int) -> Array:
 func draw_major_reading(count: int) -> Array:
 	var total_cost := major_reading_cost * count
 	if total_cost > 0.0:
-		var current_ex = StatManager.get_stat("ex", 0.0)
-		if current_ex < total_cost:
+		var current_ex: FlexNumber = StatManager.get_stat("ex")
+		if current_ex.to_float() < total_cost:
 			return []
-		StatManager.set_base_stat("ex", current_ex - total_cost)
+		current_ex.subtract(total_cost)
+		StatManager.set_base_stat("ex", current_ex)
 		var previous_cost := major_reading_cost
 		major_reading_cost *= major_reading_cost_increase
 		if major_reading_cost < previous_cost + major_reading_cost_min_increase:

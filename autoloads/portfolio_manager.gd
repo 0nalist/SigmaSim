@@ -2,11 +2,16 @@ extends Node
 #Autoload name PortfolioManager
 
 ## --- Basic numeric resources
-var cash: float:
+var _cash: FlexNumber = FlexNumber.new()
+var cash:
 	get:
-		return get_cash()
+		return _cash.to_float()
 	set(value):
-		set_cash(value)
+		if value is FlexNumber:
+			_cash = value
+		else:
+			_cash = FlexNumber.new(float(value))
+		StatManager.set_base_stat("cash", _cash)
 
 var rent: float:
 	get:
@@ -95,11 +100,15 @@ signal resource_changed(name: String, value: float)
 signal investments_updated(amount: float)
 
 ## --- Stat Helpers
-func get_cash() -> float:
-	return StatManager.get_stat("cash")
+func get_cash() -> FlexNumber:
+	return _cash
 
-func set_cash(value: float) -> void:
-	StatManager.set_base_stat("cash", snapped(value, 0.01))
+func set_cash(value) -> void:
+	if value is FlexNumber:
+		_cash = value
+	else:
+		_cash = FlexNumber.new(float(value))
+	StatManager.set_base_stat("cash", _cash)
 
 func get_rent() -> float:
 	return StatManager.get_stat("rent")
@@ -179,7 +188,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 				StatpopManager.spawn("-$" + str(NumberFormatter.format_number(amount)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 			return true
 
-		var current_cash := get_cash()
+		var current_cash := get_cash().to_float()
 		var remainder = max(amount - current_cash, 0.0)
 
 		# Check if cash + credit is enough
@@ -217,9 +226,11 @@ func add_cash(amount: float):
 		if amount < 0.0:
 				printerr("Tried to add negative cash")
 				return
-		set_cash(get_cash() + amount)
-		emit_signal("cash_updated", get_cash())
-		emit_signal("resource_changed", "cash", get_cash())
+		var cash_val = get_cash()
+		cash_val.add(amount)
+		set_cash(cash_val)
+		emit_signal("cash_updated", cash_val.to_float())
+		emit_signal("resource_changed", "cash", cash_val.to_float())
 		Events.focus_wallet_card("brag")
 		Events.flash_wallet_value("brag", amount)
 
@@ -227,20 +238,24 @@ func spend_cash(amount: float):
 		if amount < 0.0:
 				printerr("Tried to spend negative cash")
 				return
-		set_cash(get_cash() - amount)
-		emit_signal("cash_updated", get_cash())
-		emit_signal("resource_changed", "cash", get_cash())
+		var cash_val = get_cash()
+		cash_val.subtract(amount)
+		set_cash(cash_val)
+		emit_signal("cash_updated", cash_val.to_float())
+		emit_signal("resource_changed", "cash", cash_val.to_float())
 		Events.focus_wallet_card("brag")
 		Events.flash_wallet_value("brag", -amount)
 
 func can_pay_with_cash(amount: float) -> bool:
-	return get_cash() >= amount
+	return get_cash().to_float() >= amount
 
 func pay_with_cash(amount: float) -> bool:
 	if can_pay_with_cash(amount):
-			set_cash(get_cash() - amount)
-			emit_signal("cash_updated", get_cash())
-			emit_signal("resource_changed", "cash", get_cash())
+			var cash_val = get_cash()
+			cash_val.subtract(amount)
+			set_cash(cash_val)
+			emit_signal("cash_updated", cash_val.to_float())
+			emit_signal("resource_changed", "cash", cash_val.to_float())
 			Events.focus_wallet_card("brag")
 			Events.flash_wallet_value("brag", -amount)
 			return true
@@ -279,7 +294,7 @@ func get_credit_score() -> int:
 func try_spend_cash(amount: float) -> bool:
 		if amount <= 0.0:
 				return false
-		if get_cash() < amount:
+		if get_cash().to_float() < amount:
 				return false
 		spend_cash(amount)
 		return true
@@ -340,9 +355,16 @@ func get_min_student_loan_payment() -> float:
 
 
 # -- Stat change callbacks
-func _on_cash_changed(new_value: float) -> void:
-		emit_signal("cash_updated", new_value)
-		emit_signal("resource_changed", "cash", new_value)
+func _on_cash_changed(new_value) -> void:
+		if new_value is FlexNumber:
+				_cash = new_value
+				var v = new_value.to_float()
+				emit_signal("cash_updated", v)
+				emit_signal("resource_changed", "cash", v)
+		else:
+				_cash = FlexNumber.new(float(new_value))
+				emit_signal("cash_updated", _cash.to_float())
+				emit_signal("resource_changed", "cash", _cash.to_float())
 
 func _on_credit_changed(_value: float) -> void:
 		emit_signal("credit_updated", get_credit_used(), get_credit_limit())
@@ -362,10 +384,12 @@ func _on_bonus_credit_score_changed(_value: float) -> void:
 ## -- Balance functions
 
 func get_balance() -> float:
-		return snapped(get_cash() + get_total_investments() - get_total_debt(), 0.01)
+		return snapped(get_cash().to_float() + get_total_investments() - get_total_debt(), 0.01)
 
 func halve_assets() -> void:
-	set_cash(get_cash() / 2.0)
+	var cash_val = get_cash()
+	cash_val.multiply(0.5)
+	set_cash(cash_val)
 	for symbol in stocks_owned.keys():
 			var owned: int = stocks_owned[symbol]
 			stocks_owned[symbol] = int(floor(owned / 2.0))

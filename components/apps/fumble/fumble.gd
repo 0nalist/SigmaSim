@@ -110,7 +110,7 @@ func _setup_over_frames() -> void:
 	_update_fugly_filter_ui()
 
 	confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
-	ex_progress_bar.update_value(StatManager.get_stat("ex"))
+	ex_progress_bar.update_value(StatManager.get_stat("ex").to_float())
 
 	_on_gender_slider_changed(0)
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)

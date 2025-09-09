@@ -64,7 +64,11 @@ func _load_stats_file(path: String) -> void:
 	var data = JSON.parse_string(text)
 	if typeof(data) == TYPE_DICTIONARY:
 		for stat_key in data.keys():
-			base_stats[stat_key] = float(data[stat_key])
+			var val = data[stat_key]
+			if stat_key == "cash" or stat_key == "ex":
+				base_stats[stat_key] = FlexNumber.new(float(val))
+			else:
+				base_stats[stat_key] = float(val)
 
 
 # -- Public API --------------------------------------------------------------
@@ -109,9 +113,13 @@ func set_base_stat(stat_name: String, value: Variant) -> void:
 					_recalculate_stat_and_dependents(stat_name)
 			return
 
+	if stat_name == "cash" or stat_name == "ex":
+		if typeof(value) != TYPE_OBJECT:
+			value = FlexNumber.new(float(value))
+
 	var previous = base_stats.get(stat_name, NAN)
 	base_stats[stat_name] = value
-	if previous != value:
+	if previous != value or typeof(value) == TYPE_OBJECT:
 		_recalculate_stat_and_dependents(stat_name)
 
 
@@ -154,7 +162,14 @@ func reset() -> void:
 
 
 func get_save_data() -> Dictionary:
-	return base_stats.duplicate(true)
+	var result: Dictionary = {}
+	for key in base_stats.keys():
+		var val = base_stats[key]
+		if val is FlexNumber:
+			result[key] = val.to_float()
+		else:
+			result[key] = val
+	return result
 
 
 func load_from_data(data: Dictionary) -> void:
@@ -162,7 +177,11 @@ func load_from_data(data: Dictionary) -> void:
 	_load_base_stats()
 	if typeof(data) == TYPE_DICTIONARY:
 		for key in data.keys():
-			base_stats[key] = float(data[key])
+			var val = data[key]
+			if key == "cash" or key == "ex":
+				base_stats[key] = FlexNumber.new(float(val))
+			else:
+				base_stats[key] = float(val)
 	_build_upgrade_cache()
 	_build_dependents_map()
 	recalculate_all_stats_once()

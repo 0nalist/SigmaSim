@@ -192,8 +192,9 @@ func preview_breakup_reward() -> float:
 
 func confirm_breakup() -> void:
 	var reward: float = preview_breakup_reward()
-	var current_ex: float = StatManager.get_stat("ex", 0.0)
-	StatManager.set_base_stat("ex", current_ex + reward)
+	var current_ex: FlexNumber = StatManager.get_stat("ex")
+	current_ex.add(reward)
+	StatManager.set_base_stat("ex", current_ex)
 
 	if npc.relationship_stage == NPCManager.RelationshipStage.MARRIED:
 		npc.relationship_stage = NPCManager.RelationshipStage.DIVORCED
@@ -222,11 +223,12 @@ func confirm_breakup() -> void:
 
 func apologize_try() -> bool:
 	var cost: int = APOLOGIZE_COST
-	var current_ex: float = StatManager.get_stat("ex", 0.0)
-	if current_ex < float(cost):
+	var current_ex: FlexNumber = StatManager.get_stat("ex")
+	if current_ex.to_float() < float(cost):
 			return false
 
-	StatManager.set_base_stat("ex", current_ex - float(cost))
+	current_ex.subtract(float(cost))
+	StatManager.set_base_stat("ex", current_ex)
 
 	npc.relationship_stage = NPCManager.RelationshipStage.TALKING
 	npc.relationship_progress = 0.0
