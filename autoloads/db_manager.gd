@@ -20,7 +20,7 @@ const SCHEMA: Dictionary = {
 		"relationship_status": {"data_type": "text"},
 		"locked_in_connection": {"data_type": "int"},
 		"relationship_stage": {"data_type": "int"},
-		"relationship_progress": {"data_type": "real"},
+		"relationship_progress": {"data_type": "text"},
 		"exclusivity_core": {"data_type": "int"},
 		"romantic_relationship": {"data_type": "int"},
 		"personal_relationship": {"data_type": "int"},
@@ -154,6 +154,7 @@ func save_npc(idx: int, npc: NPC, slot_id: int = SaveManager.current_slot_id):
 	dict["dislikes"] = to_json(dict.get("dislikes", []))
 	dict["preferred_pet_names"] = to_json(dict.get("preferred_pet_names", []))
 	dict["player_pet_names"] = to_json(dict.get("player_pet_names", []))
+	dict["relationship_progress"] = to_json(dict.get("relationship_progress", {"mantissa":0.0,"exponent":0}))
 	dict["ocean"] = to_json(dict.get("ocean", {}))
 	dict["wall_posts"] = to_json(dict.get("wall_posts", []))
 	var pc = dict.get("portrait_config", null)
@@ -176,6 +177,7 @@ func load_npc(idx: int, slot_id: int = SaveManager.current_slot_id) -> NPC:
 		return null
 	var row = result[0]
 	# Deserialize JSON fields safely
+	row["relationship_progress"] = _safe_from_json(row.get("relationship_progress", null), '{"mantissa":0,"exponent":0}')
 	row["gender_vector"] = _safe_from_json(row.get("gender_vector", null), '{"x":0,"y":0,"z":1}')
 	row["tags"] = _safe_from_json(row.get("tags", null), "[]")
 	row["likes"] = _safe_from_json(row.get("likes", null), "[]")
@@ -191,6 +193,7 @@ func get_all_npcs_for_slot(slot_id: int = SaveManager.current_slot_id) -> Array:
 	var raw_rows = db.select_rows("npc", "slot_id = %d" % slot_id, ["*"])
 	var out: Array = []
 	for row in raw_rows:
+		row["relationship_progress"] = _safe_from_json(row.get("relationship_progress", null), '{"mantissa":0,"exponent":0}')
 		row["gender_vector"] = _safe_from_json(row.get("gender_vector", null), '{"x":0,"y":0,"z":1}')
 		row["tags"] = _safe_from_json(row.get("tags", null), "[]")
 		row["likes"] = _safe_from_json(row.get("likes", null), "[]")

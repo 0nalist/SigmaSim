@@ -132,7 +132,7 @@ func _process(delta: float) -> void:
 	if npc_idx != -1 and npc.relationship_progress.to_float() != last_saved_progress:
 		progress_save_elapsed += delta
 		if progress_save_elapsed >= PROGRESS_SAVE_INTERVAL and abs(npc.relationship_progress.to_float() - last_saved_progress) >= PROGRESS_MIN_DELTA:
-			_persist_fields({"relationship_progress": npc.relationship_progress.to_float()})
+			_persist_fields({"relationship_progress": npc.relationship_progress})
 			last_saved_progress = npc.relationship_progress.to_float()
 			progress_save_elapsed = 0.0
 
@@ -154,7 +154,7 @@ func _exit_tree() -> void:
 			NPCManager.cheating_detected.disconnect(_on_cheating_detected)
 
 	if npc.relationship_progress.to_float() != last_saved_progress:
-		_persist_fields({"relationship_progress": npc.relationship_progress.to_float()})
+		_persist_fields({"relationship_progress": npc.relationship_progress})
 
 
 
