@@ -212,37 +212,54 @@ func clear_temp_override(stat_name: String) -> void:
 
 
 func reset() -> void:
-	temporary_overrides.clear()
-	_load_base_stats()
-	_build_upgrade_cache()
-	_build_dependents_map()
-	recalculate_all_stats_once()
+        temporary_overrides.clear()
+        _load_base_stats()
+        _build_upgrade_cache()
+        _build_dependents_map()
+        recalculate_all_stats_once()
+
+
+static func _flex_to_dict(fn: FlexNumber) -> Dictionary:
+       if fn._is_big:
+               return {"mantissa": fn._mantissa, "exponent": fn._exponent}
+       return {"mantissa": fn.to_float(), "exponent": 0}
+
+static func _flex_from_variant(val: Variant) -> FlexNumber:
+       if typeof(val) == TYPE_DICTIONARY:
+               var d: Dictionary = val
+               var fn := FlexNumber.new()
+               fn._is_big = true
+               fn._mantissa = float(d.get("mantissa", 0.0))
+               fn._exponent = int(d.get("exponent", 0))
+               fn._normalize()
+               return fn
+       return FlexNumber.new(float(val))
 
 
 func get_save_data() -> Dictionary:
-	var result: Dictionary = {}
-	for key in base_stats.keys():
-		var val = base_stats[key]
-		if val is FlexNumber:
-			result[key] = val.to_float()
-		else:
-			result[key] = val
-	return result
+        var result: Dictionary = {}
+        for key in base_stats.keys():
+                var val = base_stats[key]
+               if val is FlexNumber:
+                       result[key] = _flex_to_dict(val)
+               else:
+                       result[key] = val
+       return result
 
 
 func load_from_data(data: Dictionary) -> void:
-	temporary_overrides.clear()
-	_load_base_stats()
-	if typeof(data) == TYPE_DICTIONARY:
-		for key in data.keys():
-			var val = data[key]
-			if key == "cash" or key == "ex":
-				base_stats[key] = FlexNumber.new(float(val))
-			else:
-				base_stats[key] = float(val)
-	_build_upgrade_cache()
-	_build_dependents_map()
-	recalculate_all_stats_once()
+        temporary_overrides.clear()
+        _load_base_stats()
+        if typeof(data) == TYPE_DICTIONARY:
+                for key in data.keys():
+                       var val = data[key]
+                       if key == "cash" or key == "ex":
+                               base_stats[key] = _flex_from_variant(val)
+                       else:
+                               base_stats[key] = float(val)
+        _build_upgrade_cache()
+        _build_dependents_map()
+        recalculate_all_stats_once()
 
 
 func connect_to_stat(stat: String, target: Object, method: String) -> void:
