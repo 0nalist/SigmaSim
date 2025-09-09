@@ -89,8 +89,33 @@ func get_cash() -> FlexNumber:
 	return get_stat("cash") as FlexNumber
 
 func get_ex() -> FlexNumber:
-	return get_stat("ex") as FlexNumber
+        return get_stat("ex") as FlexNumber
 
+
+func get_stat_float(stat_name: String, default_value: float = 0.0) -> float:
+        return to_float(get_stat(stat_name, default_value), default_value)
+
+
+static func to_float(value: Variant, default_value: float = 0.0) -> float:
+        var t: int = typeof(value)
+        if t == TYPE_FLOAT:
+                return float(value)
+        if t == TYPE_INT:
+                return float(value)
+        if t == TYPE_OBJECT:
+                if value == null:
+                        return default_value
+                if value is FlexNumber:
+                        var fn: FlexNumber = value
+                        return fn.to_float()
+                var obj: Object = value
+                if obj.has_method("to_float"):
+                        var out_val: Variant = obj.call("to_float")
+                        var ot: int = typeof(out_val)
+                        if ot == TYPE_FLOAT or ot == TYPE_INT:
+                                return float(out_val)
+                return default_value
+        return default_value
 
 
 func get_all_stats() -> Dictionary:
