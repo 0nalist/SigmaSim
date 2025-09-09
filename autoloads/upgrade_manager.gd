@@ -32,6 +32,7 @@ const EXPECTED_KEYS: Array = [
 ]
 
 func _ready() -> void:
+	StatManager.register_flex_stat("ex")
 	load_all_upgrades()
 
 # --- Helper ---------------------------------------------------------
@@ -332,9 +333,9 @@ func _get_base_cost(upgrade: Dictionary, level: int) -> Dictionary:
 func _get_currency_amount(currency: String) -> float:
 	if currency == "cash":
 		return float(PortfolioManager.cash)
-	if currency == "ex":
-		var ex_val: Variant = StatManager.get_stat("ex")
-		return _as_float(ex_val, 0.0)
+	if StatManager.FLEX_STATS.has(currency):
+		var val: Variant = StatManager.get_stat(currency)
+		return _as_float(val, 0.0)
 	return float(PortfolioManager.get_crypto_amount(currency))
 
 func _deduct_currency(currency: String, amount: float, credit_only: bool = false) -> bool:
@@ -346,23 +347,23 @@ func _deduct_currency(currency: String, amount: float, credit_only: bool = false
 			credit_only
 		)
 
-	if currency == "ex":
-		var ex_val: Variant = StatManager.get_stat("ex")
-		if typeof(ex_val) == TYPE_OBJECT and ex_val is FlexNumber:
-			var ex_stat: FlexNumber = ex_val
-			if ex_stat.to_float() < amount:
+	if StatManager.FLEX_STATS.has(currency):
+		var val: Variant = StatManager.get_stat(currency)
+		if typeof(val) == TYPE_OBJECT and val is FlexNumber:
+			var fn: FlexNumber = val
+			if fn.to_float() < amount:
 				return false
-			ex_stat.subtract(amount)
-			StatManager.set_base_stat("ex", ex_stat)
+			fn.subtract(amount)
+			StatManager.set_base_stat(currency, fn)
 		else:
-			var ex_float: float = _as_float(ex_val, 0.0)
-			if ex_float < amount:
+			var f: float = _as_float(val, 0.0)
+			if f < amount:
 				return false
-			ex_float -= amount
-			StatManager.set_base_stat("ex", ex_float)
+			f -= amount
+			StatManager.set_base_stat(currency, f)
 
 		StatpopManager.spawn(
-			"-%s EX" % NumberFormatter.smart_format(amount),
+			"-%s %s" % [NumberFormatter.smart_format(amount), currency.to_upper()],
 			get_viewport().get_mouse_position(),
 			"click",
 			Color.YELLOW
@@ -410,9 +411,9 @@ func can_purchase(id: String) -> bool:
 			if not PortfolioManager.can_pay_with_credit(remainder):
 				return false
 
-		elif currency == "ex":
-			var ex_val: Variant = StatManager.get_stat("ex")
-			if _as_float(ex_val, 0.0) < amount:
+		elif StatManager.FLEX_STATS.has(currency):
+			var val: Variant = StatManager.get_stat(currency)
+			if _as_float(val, 0.0) < amount:
 				return false
 
 		else:
