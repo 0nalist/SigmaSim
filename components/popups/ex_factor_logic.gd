@@ -99,11 +99,11 @@ func process(delta: float) -> void:
 	if progress_paused:
 		return
 	if state != null:
-		var before: float = npc.relationship_progress
+		var before: float = npc.relationship_progress.to_float()
 		state.update(delta)
-		if npc.relationship_progress != before:
-			emit_signal("progress_changed", npc.relationship_progress)
-			emit_signal("request_persist", {"relationship_progress": npc.relationship_progress})
+		if npc.relationship_progress.to_float() != before:
+			emit_signal("progress_changed", npc.relationship_progress.to_float())
+			emit_signal("request_persist", {"relationship_progress": npc.relationship_progress.to_float()})
 
 # ---------------------------- User actions ----------------------------
 
@@ -135,22 +135,24 @@ func try_date(credit_only: bool = false) -> bool:
 	# date should clear that pause so the state machine can continue.
 	progress_paused = false
 
-	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
+	var prog_f: float = npc.relationship_progress.to_float()
+	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, prog_f)
 	var boost: float = npc.date_cost / 10.0
 	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED:
-					npc.relationship_progress = min(npc.relationship_progress + boost, bounds.y)
+			var new_val: float = min(prog_f + boost, bounds.y)
+			npc.relationship_progress.set_value(new_val)
 	else:
-			npc.relationship_progress += boost
+			npc.relationship_progress.add(boost)
 
 	emit_signal("costs_changed", npc.gift_cost, npc.date_cost)
-	emit_signal("progress_changed", npc.relationship_progress)
+	emit_signal("progress_changed", npc.relationship_progress.to_float())
 	emit_signal("request_persist", {
-		"relationship_progress": npc.relationship_progress,
+		"relationship_progress": npc.relationship_progress.to_float(),
 		"date_count": npc.date_count
 	})
 
 	# Let state machine enforce gates.
-	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
+	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED and npc.relationship_progress.to_float() >= bounds.y:
 		progress_paused = true
 		emit_signal("stage_gate_reached")
 
@@ -176,17 +178,18 @@ func apply_love(now_minutes: int) -> void:
 	emit_signal("request_persist", {"love_cooldown": npc.love_cooldown, "affinity": npc.affinity})
 
 func preview_breakup_reward() -> float:
-	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, npc.relationship_progress)
+	var prog_f: float = npc.relationship_progress.to_float()
+	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, prog_f)
 	var denom: float = bounds.y - bounds.x
 	var fraction: float = 0.0
 	if denom > 0.0:
-		fraction = (npc.relationship_progress - bounds.x) / denom
+		fraction = (prog_f - bounds.x) / denom
 	var stage_idx: int = max(1, npc.relationship_stage)
 	var base: float
 	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED:
 		base = pow(10.0, float(stage_idx - 1))
 	else:
-		var level: int = get_marriage_level(npc.relationship_progress)
+		var level: int = get_marriage_level(prog_f)
 		base = 10000.0 * pow(1.5, float(level - 1))
 	return (0.1 + fraction * 0.9) * base
 
@@ -202,16 +205,16 @@ func confirm_breakup() -> void:
 	else:
 		npc.relationship_stage = NPCManager.RelationshipStage.EX
 
-	npc.relationship_progress = 0.0
+	npc.relationship_progress.set_value(0.0)
 	npc.affinity *= 0.2
 
 	progress_paused = true
 	change_state(npc.relationship_stage)
 
 	emit_signal("affinity_changed", npc.affinity)
-	emit_signal("progress_changed", npc.relationship_progress)
+	emit_signal("progress_changed", npc.relationship_progress.to_float())
 	emit_signal("request_persist", {
-		"relationship_progress": npc.relationship_progress,
+		"relationship_progress": npc.relationship_progress.to_float(),
 		"affinity": npc.affinity
 	})
 
@@ -231,7 +234,7 @@ func apologize_try() -> bool:
 	StatManager.set_base_stat("ex", current_ex)
 
 	npc.relationship_stage = NPCManager.RelationshipStage.TALKING
-	npc.relationship_progress = 0.0
+	npc.relationship_progress.set_value(0.0)
 	npc.affinity = 1.0
 	npc.gift_count = 0
 	npc.date_count = 0
@@ -241,9 +244,9 @@ func apologize_try() -> bool:
 	change_state(npc.relationship_stage)
 
 	emit_signal("affinity_changed", npc.affinity)
-	emit_signal("progress_changed", npc.relationship_progress)
+	emit_signal("progress_changed", npc.relationship_progress.to_float())
 	emit_signal("request_persist", {
-			"relationship_progress": npc.relationship_progress,
+			"relationship_progress": npc.relationship_progress.to_float(),
 			"affinity": npc.affinity,
 			"gift_count": npc.gift_count,
 			"date_count": npc.date_count
@@ -409,27 +412,29 @@ class PreMarriageState extends SuitorState:
 		stage = stage_id
 
 	func update(delta: float) -> void:
-		var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, npc.relationship_progress)
+		var prog_f: float = npc.relationship_progress.to_float()
+		var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, prog_f)
 		var rate: float = max(npc.affinity, 0.0) * 0.1
-		npc.relationship_progress += rate * delta
+		npc.relationship_progress.add(rate * delta)
 
+		prog_f = npc.relationship_progress.to_float()
 		var range_size: float = bounds.y - bounds.x
 		var frac: float = 0.0
 		if range_size > 0.0:
-			frac = (npc.relationship_progress - bounds.x) / range_size
+			frac = (prog_f - bounds.x) / range_size
 
 		var stops: Array = ExFactorLogic.get_stop_points(stage)
 		for stop in stops:
 			var f: float = stop["fraction"]
 			var req: int = stop["required"]
 			if frac >= f and npc.date_count < req:
-				npc.relationship_progress = bounds.x + f * range_size
+				npc.relationship_progress.set_value(bounds.x + f * range_size)
 				machine.progress_paused = true
 				machine.emit_signal("stage_gate_reached")
 				return
 
-		if stage < NPCManager.RelationshipStage.MARRIED and npc.relationship_progress >= bounds.y:
-			npc.relationship_progress = bounds.y
+		if stage < NPCManager.RelationshipStage.MARRIED and npc.relationship_progress.to_float() >= bounds.y:
+			npc.relationship_progress.set_value(bounds.y)
 			machine.progress_paused = true
 			machine.emit_signal("stage_gate_reached")
 
@@ -466,7 +471,7 @@ class EngagedState extends PreMarriageState:
 class MarriedState extends SuitorState:
 	func update(delta: float) -> void:
 		var rate: float = max(npc.affinity, 0.0) * 0.1
-		npc.relationship_progress += rate * delta
+		npc.relationship_progress.add(rate * delta)
 
 class DivorcedState extends SuitorState:
 	pass
