@@ -48,7 +48,8 @@ func _apply_profile_data() -> void:
 	username_label.text = "@%s" % pending_data.get("username", "user")
 
 	var net: float = float(pending_data.get("net_worth", 0.0))
-	net_worth_label.text = "$" + NumberFormatter.format_commas(net, 2, true)
+	#net_worth_label.text = "$" + NumberFormatter.format_commas(net, 2, true)
+	net_worth_label.text = "$" + NumberFormatter.smart_format(net)
 
 	var using_random_seed: bool = bool(pending_data.get("using_random_seed", false))
 	if using_random_seed:
