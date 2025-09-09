@@ -105,6 +105,7 @@ func process(now_minutes: int, asset) -> void:
 				asset.price_history.append(asset.price)
 		asset.all_time_high = max(asset.all_time_high, asset.price)
 
+		'''
 		print("market event pumping:",
 			" symbol=", target_symbol,
 			" prev_price=", prev,
@@ -112,8 +113,7 @@ func process(now_minutes: int, asset) -> void:
 			" target=", target_price,
 			" t=", t,
 			" time=", now_minutes
-		)
-
+		)'''
 		if now_minutes >= _pump_end_time:
 			_state = State.DUMPING
 			print("market event peak:",
