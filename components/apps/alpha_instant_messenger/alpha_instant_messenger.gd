@@ -16,19 +16,19 @@ func _populate_contacts() -> void:
 			child.queue_free()
 		var entries: Array[int] = NPCManager.get_romantic_npcs()
 		for idx in entries:
-				var npc: NPC = NPCManager.get_npc_by_index(int(idx))
-				var btn: Button = contact_button_template.duplicate()
-				btn.visible = true
-				btn.text = "@%s" % npc.username
-				btn.pressed.connect(func() -> void:
-								_open_chat_ui(int(idx), npc)
-				)
-				contacts_vbox.add_child(btn)
+			var npc: NPC = NPCManager.get_npc_by_index(int(idx))
+			var btn: Button = contact_button_template.duplicate()
+			btn.visible = true
+			btn.text = "@%s" % npc.username
+			btn.pressed.connect(func() -> void:
+							_open_chat_ui(int(idx), npc)
+			)
+			contacts_vbox.add_child(btn)
 	contact_button_template.visible = false
 
 func _open_chat_ui(idx: int, npc: NPC) -> void:
-		var key: String = "aim_chat_%d" % idx
-		WindowManager.launch_popup(AIM_CHAT_UI_SCENE, key, {"npc": npc, "npc_idx": idx})
+	var key: String = "aim_chat_%d" % idx
+	WindowManager.launch_popup(AIM_CHAT_UI_SCENE, key, {"npc": npc, "npc_idx": idx})
 
 func _on_window_close() -> void:
 	print("closegrinder")
