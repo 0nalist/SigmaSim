@@ -1,4 +1,6 @@
-extends RefCounted
+# Autoload script with formatting helpers.
+# Must inherit from Node to be used as an autoload singleton.
+extends Node
 # Autoload NumberFormatter
 
 const SHORT_UNITS: Array[String] = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"]

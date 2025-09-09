@@ -83,7 +83,13 @@ func get_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 		return computed_stats[stat_name]
 
 	# Fallback to player-specific data stored in PlayerManager
-	return PlayerManager.user_data.get(stat_name, default)
+        return PlayerManager.user_data.get(stat_name, default)
+
+func get_cash() -> FlexNumber:
+        return get_stat("cash")
+
+func get_ex() -> FlexNumber:
+        return get_stat("ex")
 
 
 func get_all_stats() -> Dictionary:
