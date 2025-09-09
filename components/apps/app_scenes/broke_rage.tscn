@@ -192,18 +192,15 @@ theme = ExtResource("5_n67s2")
 text = "Passive Income: $0"
 horizontal_alignment = 2
 
-[node name="OwerViewButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary"]
+[node name="OwerViewButton" type="Button" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 focus_mode = 0
 theme_override_font_sizes/font_size = 12
-text = " Manage your debt 
-with OwerView "
+text = "OwerView "
 icon = ExtResource("6_m7phi")
-icon_alignment = 1
-vertical_icon_alignment = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView"]
 custom_minimum_size = Vector2(0, 150)
@@ -263,4 +260,4 @@ text = "Stocks: $"
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 
-[connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/OwerViewButton" to="." method="_on_ower_view_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/Panel/MarginContainer/MainHBox/ContentArea/SummaryView/MarginContainer/Summary/VBoxContainer/OwerViewButton" to="." method="_on_ower_view_button_pressed"]

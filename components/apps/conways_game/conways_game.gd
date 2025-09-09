@@ -65,57 +65,68 @@ func _draw() -> void:
 				draw_rect(Rect2(pos, Vector2(float(cell_size), float(cell_size))), living_color, true)
 
 func _input(event: InputEvent) -> void:
-        # Only handle input if this pane is focused and under the mouse
-        if window_frame != WindowManager.focused_window:
-                return
+	# Only handle input if this pane is focused and under the mouse
+	if window_frame != WindowManager.focused_window:
+		return
 
-        var hovered: Control = get_viewport().gui_get_hovered_control()
-        var mouse_inside: bool = hovered == self or self.is_ancestor_of(hovered)
+	var hovered: Control = get_viewport().gui_get_hovered_control()
+	var mouse_inside: bool = false
+	if hovered == self:
+		mouse_inside = true
+	elif hovered != null:
+		mouse_inside = self.is_ancestor_of(hovered)
+	else:
+		# Fallback: treat as inside only if the cursor is within this Control's rect
+		var local_pos_fallback: Vector2 = get_local_mouse_position()
+		mouse_inside = get_rect().has_point(local_pos_fallback)
 
-        if event is InputEventMouseButton:
-                var mb: InputEventMouseButton = event
-                if mb.button_index == MOUSE_BUTTON_LEFT:
-                        if mb.pressed and mouse_inside:
-                                var local_pos := get_local_mouse_position()
-                                var cell: Vector2i = _screen_to_grid(local_pos)
-                                _toggle_cell(cell)
-                                dragging = true
-                                last_drag_cell = cell
-                        elif not mb.pressed:
-                                dragging = false
-                elif mb.button_index == MOUSE_BUTTON_RIGHT:
-                        if mouse_inside:
-                                panning = mb.pressed
-                elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
-                        if mouse_inside:
-                                var mouse_pos := get_local_mouse_position()
-                                var world_pos := (mouse_pos - offset) / float(cell_size)
-                                cell_size += 1
-                                if cell_size < 1:
-                                        cell_size = 1
-                                offset = mouse_pos - world_pos * float(cell_size)
-                                queue_redraw()
-                elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
-                        if mouse_inside:
-                                var mouse_pos := get_local_mouse_position()
-                                var world_pos := (mouse_pos - offset) / float(cell_size)
-                                cell_size -= 1
-                                if cell_size < 1:
-                                        cell_size = 1
-                                offset = mouse_pos - world_pos * float(cell_size)
-                                queue_redraw()
-        elif event is InputEventMouseMotion:
-                var mm: InputEventMouseMotion = event
-                if dragging:
-                        var local_pos := get_local_mouse_position()
-                        var cell: Vector2i = _screen_to_grid(local_pos)
-                        if cell != last_drag_cell:
-                                _toggle_cells_along_line(last_drag_cell, cell)
-                                last_drag_cell = cell
-                elif panning:
-                        offset += mm.relative
-                        queue_redraw()
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event
+		if mb.button_index == MOUSE_BUTTON_LEFT:
+			if mb.pressed and mouse_inside:
+				var local_pos: Vector2 = get_local_mouse_position()
+				var cell: Vector2i = _screen_to_grid(local_pos)
+				_toggle_cell(cell)
+				dragging = true
+				last_drag_cell = cell
+			elif not mb.pressed:
+				dragging = false
 
+		elif mb.button_index == MOUSE_BUTTON_RIGHT:
+			if mouse_inside:
+				panning = mb.pressed
+
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
+			if mouse_inside:
+				var mouse_pos: Vector2 = get_local_mouse_position()
+				var world_pos: Vector2 = (mouse_pos - offset) / float(cell_size)
+				cell_size += 1
+				if cell_size < 1:
+					cell_size = 1
+				offset = mouse_pos - world_pos * float(cell_size)
+				queue_redraw()
+
+		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
+			if mouse_inside:
+				var mouse_pos: Vector2 = get_local_mouse_position()
+				var world_pos: Vector2 = (mouse_pos - offset) / float(cell_size)
+				cell_size -= 1
+				if cell_size < 1:
+					cell_size = 1
+				offset = mouse_pos - world_pos * float(cell_size)
+				queue_redraw()
+
+	elif event is InputEventMouseMotion:
+		var mm: InputEventMouseMotion = event
+		if dragging:
+			var local_pos: Vector2 = get_local_mouse_position()
+			var cell: Vector2i = _screen_to_grid(local_pos)
+			if cell != last_drag_cell:
+				_toggle_cells_along_line(last_drag_cell, cell)
+				last_drag_cell = cell
+		elif panning:
+			offset += mm.relative
+			queue_redraw()
 
 func _advance_generation() -> void:
 	var neighbor_counts: Dictionary = {}

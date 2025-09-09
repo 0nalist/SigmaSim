@@ -14,6 +14,7 @@ mouse_filter = 1
 script = ExtResource("1")
 window_title = "NetSerf"
 app_description = "Serf the real world wide web (at your own risk)"
+stay_on_top = true
 
 [node name="Root" type="VBoxContainer" parent="."]
 unique_name_in_owner = true

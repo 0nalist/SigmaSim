@@ -1,7 +1,42 @@
-[gd_scene load_steps=3 format=3 uid="uid://57160437ef3d"]
+[gd_scene load_steps=9 format=3 uid="uid://57160437ef3d"]
 
 [ext_resource type="Script" uid="uid://3eebce104ca" path="res://components/apps/installer/installer.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://br02o6jmoyila" path="res://assets/logos/wizard_hat.png" id="2_idbhh"]
+[ext_resource type="Shader" uid="uid://ebuvi8kf08n6" path="res://assets/shaders/starfield_shader.gdshader" id="3_xgogt"]
+[ext_resource type="Shader" uid="uid://c2vxjrgenvo6a" path="res://assets/shaders/simple_starfield_zoom_out_shader.gdshader" id="4_kjdy3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kjdy3"]
+shader = ExtResource("3_xgogt")
+shader_parameter/mouse = Vector2(0, 0)
+shader_parameter/time = 0.0
+shader_parameter/speed2 = 0.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nxo1l"]
+shader = ExtResource("4_kjdy3")
+shader_parameter/speed = 0.071
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_idbhh"]
+bg_color = Color(0.347817, 0.347817, 0.347817, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xgogt"]
+bg_color = Color(0.11289, 0.0923, 0.71, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="Installer" type="PanelContainer"]
 size_flags_horizontal = 3
@@ -13,6 +48,14 @@ default_window_size = Vector2(390, 300)
 window_can_close = false
 window_can_minimize = false
 window_can_maximize = false
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_kjdy3")
+layout_mode = 2
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_nxo1l")
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -74,3 +117,5 @@ text = "Install"
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_idbhh")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xgogt")

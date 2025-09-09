@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://c4tt0mgxvgw5g"]
+[gd_scene load_steps=25 format=3 uid="uid://c4tt0mgxvgw5g"]
 
 [ext_resource type="Theme" uid="uid://dyhdr7sojcl5h" path="res://assets/themes/windows_xp_theme.tres" id="1_6fwkw"]
 [ext_resource type="Script" uid="uid://digyskaas76gd" path="res://components/ui/log_in_ui.gd" id="2_eyvdy"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shader" uid="uid://d1b6le8xdh7hg" path="res://assets/shaders/spiral_domain_mapping_shader.gdshader" id="7_sjnvm"]
 [ext_resource type="Shader" uid="uid://bskyywxubgk54" path="res://assets/shaders/beyond_jupiter_shader.gdshader" id="8_o21b0"]
 [ext_resource type="Shader" uid="uid://kgtfwt6kawx4" path="res://assets/shaders/fade_in_out_shader.gdshader" id="9_pxemu"]
+[ext_resource type="Shader" uid="uid://bmjumca06eq5w" path="res://assets/shaders/happy_accidents_mirror_shader.gdshader" id="9_ux88p"]
 [ext_resource type="Texture2D" uid="uid://bowu041csi5ai" path="res://assets/icons/power_icon.png" id="10_yke0b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
@@ -33,6 +34,17 @@ shader_parameter/brightness = 5.0
 shader_parameter/balance = 0.5
 shader_parameter/octaves = 4.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o21b0"]
+shader = ExtResource("7_sjnvm")
+shader_parameter/sigma_thickness = 0.12
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3amh1"]
+shader = ExtResource("9_ux88p")
+shader_parameter/speed = 0.08
+shader_parameter/iterations = 77
+shader_parameter/normal_eps = 0.0011
+shader_parameter/spec_power = 63.331
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s425x"]
 shader = ExtResource("5_wmdi4")
 shader_parameter/stretch = 0.8
@@ -41,10 +53,6 @@ shader_parameter/thing2 = 0.6
 shader_parameter/thing3 = 0.8
 shader_parameter/scale = 1.0
 shader_parameter/speed = 0.03
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o21b0"]
-shader = ExtResource("7_sjnvm")
-shader_parameter/sigma_thickness = 0.12
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pxemu"]
 shader = ExtResource("8_o21b0")
@@ -108,8 +116,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Panel"]
-material = SubResource("ShaderMaterial_s425x")
+[node name="ColorRect3" type="ColorRect" parent="Panel"]
+visible = false
+material = SubResource("ShaderMaterial_o21b0")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -117,9 +126,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect3" type="ColorRect" parent="Panel"]
+[node name="ColorRect5" type="ColorRect" parent="Panel"]
 visible = false
-material = SubResource("ShaderMaterial_o21b0")
+material = SubResource("ShaderMaterial_3amh1")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Panel"]
+material = SubResource("ShaderMaterial_s425x")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
