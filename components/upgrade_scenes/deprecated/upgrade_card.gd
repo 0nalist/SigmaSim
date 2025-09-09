@@ -14,10 +14,10 @@ var is_hovered := false
 var is_selected := false
 
 func set_upgrade(upg: Dictionary):
-		upgrade = upg
-		upgrade_queued = true
-		if is_inside_tree():
-				_refresh_upgrade()
+	upgrade = upg
+	upgrade_queued = true
+	if is_inside_tree():
+			_refresh_upgrade()
 
 func _ready():
 	if upgrade_queued:
