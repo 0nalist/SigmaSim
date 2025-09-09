@@ -75,9 +75,9 @@ func _on_cash_updated(_cash: float) -> void:
 	var cash = PortfolioManager.cash
 	var balance = PortfolioManager.get_balance()
 
-	cash_label.text = "Cash: $" + NumberFormatter.format_number(cash)
-	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(balance))
-	charts_cash_label.text = "Cash: $" + NumberFormatter.format_number(cash)
+	cash_label.text = "Cash: $" + NumberFormatter.smart_format(cash)
+	balance_label.text = "Net Worth: $" + str(NumberFormatter.smart_format(balance))
+	charts_cash_label.text = "Cash: $" + NumberFormatter.smart_format(cash)
 
 	HistoryManager.add_sample("cash", TimeManager.get_now_minutes() / 1000.0, cash)
 	_add_net_worth_sample()
@@ -94,9 +94,9 @@ func _on_investments_updated(amount: float):
 	var delta = amount - last_invested
 	last_invested = amount
 
-	invested_label.text = "Invested: $" + str(NumberFormatter.format_number(amount))
-	balance_label.text = "Net Worth: $" + str(NumberFormatter.format_number(PortfolioManager.get_balance()))
-	charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.format_number(amount))
+	invested_label.text = "Invested: $" + str(NumberFormatter.smart_format(amount))
+	balance_label.text = "Net Worth: $" + str(NumberFormatter.smart_format(PortfolioManager.get_balance()))
+	charts_portfolio_label.text = "Stocks: $" + str(NumberFormatter.smart_format(amount))
 	#TODO: ^Fix: Invalid assignment of property or key 'text' with value of type 'String' on a base object of type 'previously freed'.
 
 	if delta > 0.01:
@@ -120,7 +120,7 @@ func _on_resource_changed(resource: String, _value: float) -> void:
 		_on_debt_updated()
 
 func _on_debt_updated() -> void:
-	debt_label.text = "Debt: $" + NumberFormatter.format_number(PortfolioManager.get_total_debt())
+	debt_label.text = "Debt: $" + NumberFormatter.smart_format(PortfolioManager.get_total_debt())
 	_add_net_worth_sample()
 
 

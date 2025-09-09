@@ -14,8 +14,8 @@ func _build() -> void:
 				cash = PortfolioManager.cash
 				balance = PortfolioManager.get_balance()
 		var rows1: Array = []
-		rows1.append({"label": "Cash", "value": "$" + NumberFormatter.format_number(cash)})
-		rows1.append({"label": "Net Worth", "value": "$" + NumberFormatter.format_number(balance)})
+		rows1.append({"label": "Cash", "value": "$" + NumberFormatter.smart_format(cash)})
+		rows1.append({"label": "Net Worth", "value": "$" + NumberFormatter.smart_format(balance)})
 		add_group("totals", rows1)
 
 		var ex_score: float = _get_ex_factor_score()

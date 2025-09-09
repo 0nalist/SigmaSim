@@ -252,8 +252,8 @@ func _on_cash_updated(_cash: float) -> void:
 	_update_charts_labels()
 
 func _update_charts_labels() -> void:
-	charts_cash_label.text = "Cash: $" + NumberFormatter.format_number(PortfolioManager.cash)
-	charts_crypto_label.text = "Crypto: $" + NumberFormatter.format_number(PortfolioManager.get_crypto_total())
+	charts_cash_label.text = "Cash: $" + NumberFormatter.smart_format(PortfolioManager.cash)
+	charts_crypto_label.text = "Crypto: $" + NumberFormatter.smart_format(PortfolioManager.get_crypto_total())
 
 func _activate_tab(tab_name: StringName) -> void:
 	if tab_name == &"Mine":

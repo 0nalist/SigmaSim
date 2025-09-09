@@ -81,7 +81,7 @@ func format_cost(upgrade: Dictionary) -> String:
 		var cost = UpgradeManager.get_cost_for_next_level(upgrade.get("id"))
 		var parts: Array[String] = []
 		for currency in cost.keys():
-				var amount = NumberFormatter.format_number(cost[currency])
+				var amount = NumberFormatter.smart_format(cost[currency])
 				if currency == "cash":
 						parts.append("💰 $%s" % amount)
 				else:

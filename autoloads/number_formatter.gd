@@ -93,12 +93,24 @@ static func format_sci(number: float, decimals: int = 2) -> String:
 
 # Mantissa/exponent formatting helpers for FlexNumber
 static func format_mantissa_exponent(mantissa: float, exponent: int, decimals: int = 2) -> String:
-	return "%.*fe%d" % [decimals, mantissa, exponent]
+		return "%.*fe%d" % [decimals, mantissa, exponent]
 
 static func format_flex(number: FlexNumber, decimals: int = 2, style: String = "commas") -> String:
-	if number.is_big():
-		return format_mantissa_exponent(number._mantissa, number._exponent, decimals)
-	return format_number(number.to_float(), style, decimals)
+		if number.is_big():
+				return format_mantissa_exponent(number._mantissa, number._exponent, decimals)
+		return format_number(number.to_float(), style, decimals)
+
+static func smart_format(number: Variant, decimals: int = 2) -> String:
+	if number is FlexNumber:
+		if number.is_big():
+			return format_mantissa_exponent(number._mantissa, number._exponent, decimals)
+		return format_commas(number.to_float(), decimals)
+
+	var n: float = float(number)
+	if abs(n) >= FlexNumber.THRESHOLD:
+		var fn := FlexNumber.new(n)
+		return format_mantissa_exponent(fn._mantissa, fn._exponent, decimals)
+	return format_commas(n, decimals)
 
 # Main interface (now static so it can be called from static helpers)
 static func format_number(number: Variant, style: String = "commas", decimals: int = 2) -> String:

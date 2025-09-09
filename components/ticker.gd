@@ -95,8 +95,8 @@ func _ready():
 func _process(_delta):
 	if current_template != "":
 		text_label.text = format_ticker_text(current_template)
-	cash_label.text = "$" + str(NumberFormatter.format_number(PortfolioManager.cash))
-	ex_label.text = str(NumberFormatter.format_number(StatManager.get_stat("ex"))) + " EX"
+	cash_label.text = "$" + str(NumberFormatter.smart_format(PortfolioManager.cash))
+	ex_label.text = str(NumberFormatter.smart_format(StatManager.get_stat("ex"))) + " EX"
 
 func _on_timer_timeout():
 	#print("ticker timeout")
