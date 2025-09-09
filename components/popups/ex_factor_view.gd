@@ -60,7 +60,7 @@ func setup_custom(data: Dictionary) -> void:
 	logic.setup(npc, npc_idx)
 	_connect_logic_signals()
 
-	last_saved_progress = npc.relationship_progress
+	last_saved_progress = npc.relationship_progress.to_float()
 
 	if is_node_ready():
 		_finalize_setup()
@@ -129,11 +129,11 @@ func _process(delta: float) -> void:
 	logic.process(delta)
 
 	# Throttle progress autosave.
-	if npc_idx != -1 and npc.relationship_progress != last_saved_progress:
+	if npc_idx != -1 and npc.relationship_progress.to_float() != last_saved_progress:
 		progress_save_elapsed += delta
-		if progress_save_elapsed >= PROGRESS_SAVE_INTERVAL and abs(npc.relationship_progress - last_saved_progress) >= PROGRESS_MIN_DELTA:
-			_persist_fields({"relationship_progress": npc.relationship_progress})
-			last_saved_progress = npc.relationship_progress
+		if progress_save_elapsed >= PROGRESS_SAVE_INTERVAL and abs(npc.relationship_progress.to_float() - last_saved_progress) >= PROGRESS_MIN_DELTA:
+			_persist_fields({"relationship_progress": npc.relationship_progress.to_float()})
+			last_saved_progress = npc.relationship_progress.to_float()
 			progress_save_elapsed = 0.0
 
 func _exit_tree() -> void:
@@ -153,8 +153,8 @@ func _exit_tree() -> void:
 		if NPCManager.cheating_detected.is_connected(_on_cheating_detected):
 			NPCManager.cheating_detected.disconnect(_on_cheating_detected)
 
-	if npc.relationship_progress != last_saved_progress:
-		_persist_fields({"relationship_progress": npc.relationship_progress})
+	if npc.relationship_progress.to_float() != last_saved_progress:
+		_persist_fields({"relationship_progress": npc.relationship_progress.to_float()})
 
 
 
@@ -216,17 +216,18 @@ func _refresh_all() -> void:
 	
 func _update_relationship_bar() -> void:
 	var stage: int = npc.relationship_stage
+	var progress_f: float = npc.relationship_progress.to_float()
 	if stage == NPCManager.RelationshipStage.MARRIED:
-		var level: int = ExFactorLogic.get_marriage_level(npc.relationship_progress)
+		var level: int = ExFactorLogic.get_marriage_level(progress_f)
 		relationship_stage_label.text = "Level %d Marriage" % level
-		var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, npc.relationship_progress)
+		var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, progress_f)
 		var maxv: float = bounds.y - bounds.x
-		var val: float = npc.relationship_progress - bounds.x
+		var val: float = progress_f - bounds.x
 		relationship_bar.max_value = maxv
 		relationship_bar.update_value(val)
 		relationship_value_label.text = "%s / %s" % [
-			NumberFormatter.format_commas(val, 2),
-			NumberFormatter.format_commas(maxv, 2)
+			NumberFormatter.smart_format(val, 2),
+			NumberFormatter.smart_format(maxv, 2)
 		]
 		relationship_bar.set_mark_fractions([])
 		return
@@ -240,14 +241,14 @@ func _update_relationship_bar() -> void:
 	var next_stage: int = stage + 1
 	relationship_stage_label.text = "%s -> %s" % [STAGE_NAMES[stage], STAGE_NAMES[next_stage]]
 
-	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, npc.relationship_progress)
+	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, progress_f)
 	var maxv: float = bounds.y - bounds.x
-	var val: float = npc.relationship_progress - bounds.x
+	var val: float = progress_f - bounds.x
 	relationship_bar.max_value = maxv
 	relationship_bar.update_value(val)
 	relationship_value_label.text = "%s / %s" % [
-		NumberFormatter.format_commas(val, 2),
-		NumberFormatter.format_commas(maxv, 2)
+		NumberFormatter.smart_format(val, 2),
+		NumberFormatter.smart_format(maxv, 2)
 	]
 	relationship_bar.set_mark_fractions(logic.get_stop_marks())
 
@@ -383,10 +384,11 @@ func _update_exclusivity_button() -> void:
 func _update_next_stage_button() -> void:
 	var show: bool = false
 	if npc.relationship_stage < NPCManager.RelationshipStage.DIVORCED:
+			var prog_f: float = npc.relationship_progress.to_float()
 			var bounds: Vector2 = ExFactorLogic.get_stage_bounds(
-					npc.relationship_stage, npc.relationship_progress
+					npc.relationship_stage, prog_f
 			)
-			var at_stage_end: bool = npc.relationship_progress >= bounds.y
+			var at_stage_end: bool = prog_f >= bounds.y
 			show = logic.progress_paused and at_stage_end
 	next_stage_button.visible = show
 	next_stage_button.disabled = not show
@@ -398,9 +400,9 @@ func _update_apologize_button() -> void:
 	apologize_button.visible = has_upgrade and in_ex_stage
 	if not apologize_button.visible:
 			return
-        var cost: int = logic.get_apologize_cost()
-        apologize_button.text = "Apologize (%s EX)" % NumberFormatter.smart_format(cost)
-        apologize_button.disabled = StatManager.get_stat_float("ex") < float(cost)
+	var cost: int = logic.get_apologize_cost()
+	apologize_button.text = "Apologize (%s EX)" % NumberFormatter.smart_format(cost)
+	apologize_button.disabled = StatManager.get_stat_float("ex") < float(cost)
 
 func _update_locked_in_button() -> void:
 	if not is_instance_valid(locked_in_button):

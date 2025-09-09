@@ -27,7 +27,7 @@ const MAX_LOVE_COOLDOWN: int = 24 * 60
 @export var locked_in_connection: bool = false
 
 @export var relationship_stage: int = NPCManager.RelationshipStage.STRANGER
-@export_range(0, 1000000000, 1) var relationship_progress: float = 0.0
+@export var relationship_progress: FlexNumber = FlexNumber.new()
 
 @export var exclusivity_core: int = NPCManager.ExclusivityCore.POLY
 
@@ -173,7 +173,7 @@ func to_dict() -> Dictionary:
 		"relationship_status": relationship_status,
 		"locked_in_connection": locked_in_connection,
 		"relationship_stage": relationship_stage,
-		"relationship_progress": relationship_progress,
+		"relationship_progress": relationship_progress.to_float(),
 		"exclusivity_core": exclusivity_core,
 		"romantic_relationship": romantic_relationship,
 		"personal_relationship": personal_relationship,
@@ -243,7 +243,7 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
 	npc.locked_in_connection = _safe_int(data.get("locked_in_connection"), 0) != 0
 	npc.relationship_stage = _safe_int(data.get("relationship_stage"), NPCManager.RelationshipStage.STRANGER)
-	npc.relationship_progress = _safe_float(data.get("relationship_progress"))
+	npc.relationship_progress = FlexNumber.new(_safe_float(data.get("relationship_progress")))
 	npc.exclusivity_core = _safe_int(data.get("exclusivity_core"), NPCManager.ExclusivityCore.POLY)
 	if not data.has("exclusivity_core"):
 		var legacy_ex: Variant = data.get("exclusivity")
@@ -375,7 +375,7 @@ func describe_gender() -> String:
 	return ", ".join(components) if components.size() > 0 else "ambiguous"
 
 func get_marriage_level() -> int:
-	var n: int = int(floor(relationship_progress))
+	var n: int = int(floor(relationship_progress.to_float()))
 	if n < 100000:
 		return 0
 	var digits: int = 0
