@@ -148,6 +148,7 @@ theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_w0u3w")
 theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")

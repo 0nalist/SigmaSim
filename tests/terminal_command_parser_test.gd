@@ -18,7 +18,7 @@ func _ready() -> void:
 
 	assert(terminal.process_command("clear_log"))
 	assert(terminal.process_command("clearlog"))
-	var starting_cash := PortfolioManager.cash
+	var starting_cash = PortfolioManager.cash
 	assert(terminal.process_command("add_cash 1.5"))
 	assert(is_equal_approx(PortfolioManager.cash, starting_cash + 1.5))
 	assert(terminal.process_command("set_stat cash 2.25"))
