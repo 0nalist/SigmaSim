@@ -178,20 +178,25 @@ func apply_love(now_minutes: int) -> void:
 	emit_signal("request_persist", {"love_cooldown": npc.love_cooldown, "affinity": npc.affinity})
 
 func preview_breakup_reward() -> float:
-	var prog_f: float = npc.relationship_progress.to_float()
-	var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, prog_f)
-	var denom: float = bounds.y - bounds.x
-	var fraction: float = 0.0
-	if denom > 0.0:
-		fraction = (prog_f - bounds.x) / denom
-	var stage_idx: int = max(1, npc.relationship_stage)
-	var base: float
-	if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED:
-		base = pow(10.0, float(stage_idx - 1))
-	else:
-		var level: int = get_marriage_level(prog_f)
-		base = 10000.0 * pow(1.5, float(level - 1))
-	return (0.1 + fraction * 0.9) * base
+        var prog_f: float = npc.relationship_progress.to_float()
+        var bounds: Vector2 = ExFactorLogic.get_stage_bounds(npc.relationship_stage, prog_f)
+        var denom: float = bounds.y - bounds.x
+        var fraction: float = 0.0
+        if denom > 0.0:
+                fraction = (prog_f - bounds.x) / denom
+        var stage_idx: int = max(1, npc.relationship_stage)
+        if npc.relationship_stage < NPCManager.RelationshipStage.MARRIED:
+                var base: float = pow(10.0, float(stage_idx - 1))
+                return (0.1 + fraction * 0.9) * base
+        else:
+                var level: int = get_marriage_level(prog_f)
+                var base: float = 10000.0 * pow(1.5, float(level - 1))
+                var prev_base: float
+                if level == 1:
+                        prev_base = pow(10.0, float(NPCManager.RelationshipStage.ENGAGED - 1))
+                else:
+                        prev_base = 10000.0 * pow(1.5, float(level - 2))
+                return prev_base + fraction * (base - prev_base)
 
 func confirm_breakup() -> void:
 	var reward: float = preview_breakup_reward()
