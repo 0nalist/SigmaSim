@@ -83,27 +83,16 @@ static func format_flex(number: FlexNumber, decimals: int = 2, style: String = "
 
 # Main interface
 func format_number(number: Variant, style: String = "commas", decimals: int = 2) -> String:
-        if number is FlexNumber:
-                return format_flex(number, decimals, style)
-        match style:
-                "commas":
-                        return format_commas(number, decimals)
-                "short":
-                        return format_short(number, decimals)
-                "long":
-                        return format_long(number, decimals)
-                "sci", "scientific":
-                        return format_sci(number, decimals)
-                _:
-                        return str(number)
-
-# Smart format: commas below 1B, scientific above
-func smart_format(number: Variant, decimals: int = 2, hide_trailing_zeroes: bool = false) -> String:
-        if number is FlexNumber:
-                if number.is_big():
-                        return format_mantissa_exponent(number._mantissa, number._exponent, decimals)
-                number = number.to_float()
-        var n: float = float(number)
-        if abs(n) >= 1_000_000_000.0:
-                return format_sci(n, decimals)
-        return format_commas(n, decimals, hide_trailing_zeroes)
+	if number is FlexNumber:
+		return format_flex(number, decimals, style)
+	match style:
+		"commas":
+			return format_commas(number, decimals)
+		"short":
+			return format_short(number, decimals)
+		"long":
+			return format_long(number, decimals)
+		"sci", "scientific":
+			return format_sci(number, decimals)
+		_:
+			return str(number)
