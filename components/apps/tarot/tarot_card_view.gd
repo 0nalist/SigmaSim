@@ -56,7 +56,7 @@ func setup(data: Dictionary, owned: int) -> void:
 	if tex:
 		texture_rect.texture = tex
 	update_count(owned)
-	sell_button.text = "Sell for $%d" % int(sell_price)
+       sell_button.text = "Sell for $%s" % NumberFormatter.smart_format(sell_price, 0)
 	sell_button.pressed.connect(_on_sell_pressed)
 
 func update_count(new_count: int) -> void:
@@ -67,7 +67,7 @@ func update_count(new_count: int) -> void:
 	texture_rect.modulate = Color(1,1,1,1) if count > 0 else Color(0.5,0.5,0.5,1)
 	if count > 0:
 		sell_button.disabled = false
-		sell_button.text = "Sell for $%d" % int(sell_price)
+               sell_button.text = "Sell for $%s" % NumberFormatter.smart_format(sell_price, 0)
 	update_divine_film()
 
 func update_rarity(new_rarity: int) -> void:
@@ -82,7 +82,7 @@ func update_rarity(new_rarity: int) -> void:
 	sell_price = TarotManager.get_sell_price(rarity)
 	if is_upside_down:
 			sell_price *= 2.0
-	sell_button.text = "Sell for $%d" % int(sell_price)
+       sell_button.text = "Sell for $%s" % NumberFormatter.smart_format(sell_price, 0)
 	update_divine_film()
 
 func update_divine_film() -> void:
@@ -124,4 +124,4 @@ func set_upside_down(flag: bool) -> void:
 		sell_price = TarotManager.get_sell_price(rarity)
 		if is_upside_down:
 				sell_price *= 2.0
-		sell_button.text = "Sell for $%d" % int(sell_price)
+               sell_button.text = "Sell for $%s" % NumberFormatter.smart_format(sell_price, 0)
