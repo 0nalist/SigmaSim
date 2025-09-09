@@ -66,6 +66,12 @@ layout_mode = 2
 focus_mode = 0
 text = "RESET"
 
+[node name="RulesButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "RULES"
+
 [node name="SpeedSlider" type="HSlider" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
@@ -76,3 +82,12 @@ focus_mode = 0
 max_value = 2.0
 step = 0.1
 value = 1.9
+
+[node name="RulesPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="RulesLabel" type="Label" parent="MarginContainer/VBoxContainer/RulesPanel"]
+layout_mode = 2
+text = "1. Any live cell with fewer than two live neighbors dies.\n2. Any live cell with two or three live neighbors lives.\n3. Any live cell with more than three live neighbors dies.\n4. Any dead cell with exactly three live neighbors becomes a live cell."
