@@ -59,9 +59,9 @@ func _on_resource_changed(name: String, _value: float) -> void:
 		_refresh_all()
 
 func _get_ex_factor_score() -> float:
-                if Engine.has_singleton("StatManager"):
-                                return StatManager.get_stat_float("ex")
-                return 0.0
+				if Engine.has_singleton("StatManager"):
+								return StatManager.get_stat_float("ex")
+				return 0.0
 
 func _fmt_minutes(total: int) -> String:
 	# D:HH:MM
