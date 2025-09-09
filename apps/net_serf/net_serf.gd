@@ -166,3 +166,4 @@ func _inject_url_hook() -> void:
 func _on_url_field_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		url_field.grab_focus()
+		url_field.accept_event()
