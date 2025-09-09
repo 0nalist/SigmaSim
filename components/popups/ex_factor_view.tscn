@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dim0nwjmfwi3g"]
+[gd_scene load_steps=15 format=3 uid="uid://dim0nwjmfwi3g"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="Script" uid="uid://d1rk5ob1oyitb" path="res://components/popups/ex_factor_view.gd" id="2"]
@@ -21,6 +21,53 @@ shader_parameter/speed = 0.03
 shader_parameter/color_low = Color(1, 0, 0.941176, 1)
 shader_parameter/color_mid = Color(0.463319, 0.00196373, 0.715449, 1)
 shader_parameter/color_high = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41or5"]
+bg_color = Color(0.162066, 0.162066, 0.162065, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eqimk"]
+bg_color = Color(0.886968, 0.303402, 0.917828, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4najn"]
+bg_color = Color(0.147672, 0.147672, 0.147672, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_46o0c"]
+bg_color = Color(0.565326, 0.32854, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edh50"]
 bg_color = Color(0.0846899, 0.0846899, 0.0846899, 1)
@@ -142,6 +189,8 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_41or5")
+theme_override_styles/fill = SubResource("StyleBoxFlat_eqimk")
 show_percentage = false
 script = ExtResource("5")
 
@@ -178,6 +227,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 17)
 layout_mode = 2
 tooltip_text = " Increases the rate of Relationship Progress "
+theme_override_styles/background = SubResource("StyleBoxFlat_4najn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_46o0c")
 show_percentage = false
 script = ExtResource("3")
 tooltip_name = "Affinity"

@@ -101,26 +101,26 @@ static func format_flex(number: FlexNumber, decimals: int = 2, style: String = "
 		return format_number(number.to_float(), style, decimals)
 
 static func smart_format(number: Variant, decimals: int = 2, fallback: String = "∞") -> String:
-        var num_type := typeof(number)
-        if num_type == TYPE_FLOAT or num_type == TYPE_INT:
-                if not is_finite(number):
-                        return fallback
+		var num_type := typeof(number)
+		if num_type == TYPE_FLOAT or num_type == TYPE_INT:
+				if not is_finite(number):
+						return fallback
 
-        if number is FlexNumber:
-                if number.is_big():
-                        return format_mantissa_exponent(number._mantissa, number._exponent, decimals)
-                var f := number.to_float()
-                if not is_finite(f):
-                        return fallback
-                return format_commas(f, decimals)
+		if number is FlexNumber:
+				if number.is_big():
+						return format_mantissa_exponent(number._mantissa, number._exponent, decimals)
+				var f = number.to_float()
+				if not is_finite(f):
+						return fallback
+				return format_commas(f, decimals)
 
-        var n: float = float(number)
-        if not is_finite(n):
-                return fallback
-        if abs(n) >= FlexNumber.THRESHOLD:
-                var fn := FlexNumber.new(n)
-                return format_mantissa_exponent(fn._mantissa, fn._exponent, decimals)
-        return format_commas(n, decimals)
+		var n: float = float(number)
+		if not is_finite(n):
+				return fallback
+		if abs(n) >= FlexNumber.THRESHOLD:
+				var fn := FlexNumber.new(n)
+				return format_mantissa_exponent(fn._mantissa, fn._exponent, decimals)
+		return format_commas(n, decimals)
 
 # Main interface (now static so it can be called from static helpers)
 static func format_number(number: Variant, style: String = "commas", decimals: int = 2) -> String:

@@ -375,17 +375,17 @@ func describe_gender() -> String:
 	return ", ".join(components) if components.size() > 0 else "ambiguous"
 
 func get_marriage_level() -> int:
-        var progress: float = relationship_progress.to_float()
-        if progress < 100000.0:
-                return 0
+		var progress: float = relationship_progress.to_float()
+		if progress < 100000.0:
+				return 0
 
-        var level: int
-        if is_finite(progress):
-                level = int(floor(log(progress) / log(10.0))) - 4
-        else:
-                # When the value overflows to infinity, fall back to FlexNumber's exponent.
-                level = relationship_progress._exponent - 4
-        return max(level, 0)
+		var level: int
+		if is_finite(progress):
+				level = int(floor(log(progress) / log(10.0))) - 4
+		else:
+				# When the value overflows to infinity, fall back to FlexNumber's exponent.
+				level = relationship_progress._exponent - 4
+		return max(level, 0)
 
 func is_in_dating() -> bool:
 	return relationship_stage == NPCManager.RelationshipStage.DATING
