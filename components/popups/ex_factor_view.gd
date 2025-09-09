@@ -258,15 +258,15 @@ func _update_affinity_bar() -> void:
 	affinity_value_label.text = "%s / 100" % NumberFormatter.format_commas(npc.affinity, 0)
 
 func _update_buttons_text() -> void:
-	gift_button.text = "Gift ($%s)" % NumberFormatter.format_commas(npc.gift_cost)
-	date_button.text = "Date ($%s)" % NumberFormatter.format_commas(npc.date_cost)
-	# breakup button label uses preview:
-	breakup_preview = logic.preview_breakup_reward()
-	if npc.relationship_stage >= NPCManager.RelationshipStage.DIVORCED:
-		breakup_button.disabled = true
-	else:
-		breakup_button.disabled = false
-		breakup_button.text = "Breakup & gain " + NumberFormatter.format_commas(breakup_preview) + " EX"
+        gift_button.text = "Gift ($%s)" % NumberFormatter.smart_format(npc.gift_cost)
+        date_button.text = "Date ($%s)" % NumberFormatter.smart_format(npc.date_cost)
+        # breakup button label uses preview:
+        breakup_preview = logic.preview_breakup_reward()
+        if npc.relationship_stage >= NPCManager.RelationshipStage.DIVORCED:
+                breakup_button.disabled = true
+        else:
+                breakup_button.disabled = false
+                breakup_button.text = "Breakup & gain " + NumberFormatter.smart_format(breakup_preview) + " EX"
 
 func _update_love_button() -> void:
 	if npc.relationship_stage < NPCManager.RelationshipStage.DATING:
@@ -492,7 +492,7 @@ func _prepare_next_stage_confirm() -> void:
 		else:
 			next_stage_confirm_primary_button.text = "Get SERIOUS"
 	elif current_stage == NPCManager.RelationshipStage.SERIOUS:
-		next_stage_confirm_primary_button.text = "Propose ($%s)" % NumberFormatter.format_commas(npc.proposal_cost, 0)
+                next_stage_confirm_primary_button.text = "Propose ($%s)" % NumberFormatter.smart_format(npc.proposal_cost, 0)
 	else:
 		next_stage_confirm_primary_button.text = "Progress to %s" % next_name
 
