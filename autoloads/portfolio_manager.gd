@@ -174,7 +174,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 						var total_with_interest := amount * (1.0 + get_credit_interest_rate())
 						set_credit_used(get_credit_used() + total_with_interest)
 						if not silent:
-								StatpopManager.spawn("-$" + str(NumberFormatter.format_number(amount)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
+								StatpopManager.spawn("-$" + str(NumberFormatter.smart_format(amount)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
 						WindowManager.launch_app_by_name("OwerView")
 						return true
 				if not silent:
@@ -185,7 +185,7 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 		if can_pay_with_cash(amount):
 			spend_cash(amount)
 			if not silent:
-				StatpopManager.spawn("-$" + str(NumberFormatter.format_number(amount)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
+				StatpopManager.spawn("-$" + str(NumberFormatter.smart_format(amount)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 			return true
 
 		var current_cash := get_cash().to_float()
@@ -202,13 +202,13 @@ func attempt_spend(amount: float, credit_required_score: int = 0, silent: bool =
 			if current_cash > 0.0:
 				spend_cash(current_cash)
 				if not silent:
-					StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
+					StatpopManager.spawn("-$" + str(NumberFormatter.smart_format(remainder)), get_viewport().get_mouse_position(), "click", Color.YELLOW)
 
 			if can_pay_with_credit(remainder):
 				var total_with_interest = remainder * (1.0 + get_credit_interest_rate())
 				set_credit_used(get_credit_used() + total_with_interest)
 				if not silent:
-					StatpopManager.spawn("-$" + str(NumberFormatter.format_number(remainder)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
+					StatpopManager.spawn("-$" + str(NumberFormatter.smart_format(remainder)), get_viewport().get_mouse_position(), "click", Color.ORANGE)
 				WindowManager.launch_app_by_name("OwerView")
 				return true
 		# Failed to pay
@@ -424,7 +424,7 @@ func sell_stock(symbol: String, amount: int = 1) -> bool:
 
 	var stock = stock_data.get(symbol)
 	add_cash(stock.price * amount)
-	StatpopManager.spawn("+$" + str(NumberFormatter.format_number(stock.price*amount)), get_viewport().get_mouse_position(), "click", Color.GREEN)
+	StatpopManager.spawn("+$" + str(NumberFormatter.smart_format(stock.price*amount)), get_viewport().get_mouse_position(), "click", Color.GREEN)
 	stocks_owned[symbol] -= amount
 	MarketManager.apply_stock_transaction(symbol, -amount)
 	return true

@@ -297,7 +297,7 @@ func _deduct_currency(currency: String, amount: float, credit_only: bool = false
 		ex_stat.subtract(amount)
 		StatManager.set_base_stat("ex", ex_stat)
 		StatpopManager.spawn(
-			"-%s EX" % NumberFormatter.format_number(amount),
+			"-%s EX" % NumberFormatter.smart_format(amount),
 			get_viewport().get_mouse_position(),
 			"click",
 			Color.YELLOW,
@@ -307,7 +307,7 @@ func _deduct_currency(currency: String, amount: float, credit_only: bool = false
 		return false
 	PortfolioManager.add_crypto(currency, -amount)
 	StatpopManager.spawn(
-		"-%s %s" % [NumberFormatter.format_number(amount), currency],
+		"-%s %s" % [NumberFormatter.smart_format(amount), currency],
 		get_viewport().get_mouse_position(),
 		"click",
 		Color.YELLOW

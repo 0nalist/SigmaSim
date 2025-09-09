@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func _build() -> void:
 	var rows1: Array = []
-	rows1.append({"label": "Principal", "value": "$" + NumberFormatter.format_number(_principal)})
+	rows1.append({"label": "Principal", "value": "$" + NumberFormatter.smart_format(_principal)})
 	rows1.append({"label": "Accrued Interest", "value": "$" + String.num(_accrued_interest, 2)})
 	add_group("balance", rows1)
 
