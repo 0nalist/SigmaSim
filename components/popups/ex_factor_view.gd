@@ -400,7 +400,7 @@ func _update_apologize_button() -> void:
 			return
 	var cost: int = logic.get_apologize_cost()
 	apologize_button.text = "Apologize (%s EX)" % NumberFormatter.format_number(cost)
-	apologize_button.disabled = StatManager.get_stat("ex", 0.0) < float(cost)
+	apologize_button.disabled = StatManager.get_stat("ex").to_float() < float(cost)
 
 func _update_locked_in_button() -> void:
 	if not is_instance_valid(locked_in_button):

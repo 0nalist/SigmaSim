@@ -652,7 +652,9 @@ func end_battle(success: bool, npc: NPC) -> void:
 	_disable_all_action_buttons()
 
 	if success:
-		StatManager.set_base_stat("ex", StatManager.get_stat("ex") + ex_award)
+	    var current_ex: FlexNumber = StatManager.get_stat("ex")
+	    current_ex.add(ex_award)
+	    StatManager.set_base_stat("ex", current_ex)
 		var new_conf = clamp(StatManager.get_stat("confidence") + confidence_award, 0.0, 100.0)
 		StatManager.set_base_stat("confidence", new_conf)
 		#StatManager.set_base_stat("ex", StatManager.get_stat("ex") + 0.002)

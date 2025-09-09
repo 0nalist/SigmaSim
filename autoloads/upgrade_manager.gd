@@ -284,16 +284,18 @@ func _get_currency_amount(currency: String) -> float:
 	if currency == "cash":
 		return PortfolioManager.cash
 	if currency == "ex":
-		return StatManager.get_stat("ex")
+		return StatManager.get_stat("ex").to_float()
 	return PortfolioManager.get_crypto_amount(currency)
 
 func _deduct_currency(currency: String, amount: float, credit_only: bool = false) -> bool:
 	if currency == "cash":
 			return PortfolioManager.attempt_spend(amount, PortfolioManager.CREDIT_REQUIREMENTS["upgrades"], false, credit_only)
 	if currency == "ex":
-		if StatManager.get_stat("ex") < amount:
+		var ex_stat: FlexNumber = StatManager.get_stat("ex")
+		if ex_stat.to_float() < amount:
 			return false
-		StatManager.set_base_stat("ex", StatManager.get_stat("ex") - amount)
+		ex_stat.subtract(amount)
+		StatManager.set_base_stat("ex", ex_stat)
 		StatpopManager.spawn(
 			"-%s EX" % NumberFormatter.format_number(amount),
 			get_viewport().get_mouse_position(),
@@ -338,7 +340,7 @@ func can_purchase(id: String) -> bool:
 			if not PortfolioManager.can_pay_with_credit(remainder):
 				return false
 		elif currency == "ex":
-			if StatManager.get_stat("ex") < amount:
+			if StatManager.get_stat("ex").to_float() < amount:
 				return false
 		else:
 			if PortfolioManager.get_crypto_amount(currency) < amount:

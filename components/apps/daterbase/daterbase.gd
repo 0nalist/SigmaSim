@@ -183,7 +183,7 @@ func _on_upgrade_purchased(id: String, _level: int) -> void:
 func _refresh_hh_open_fumble_button() -> void:
 				var cost: float = PlayerManager.get_var("hh_open_fumble_cost", 10)
 				hh_open_fumble_button.text = "Open in Fumble (%d EX)" % int(cost)
-				hh_open_fumble_button.disabled = hh_current_npc == null or StatManager.get_stat("ex", 0.0) < cost
+				hh_open_fumble_button.disabled = hh_current_npc == null or StatManager.get_stat("ex").to_float() < cost
 
 # =========================================
 # Buttons
@@ -259,10 +259,11 @@ func _on_hh_open_fumble_button_pressed() -> void:
 				if hh_current_npc == null:
 								return
 				var cost: float = PlayerManager.get_var("hh_open_fumble_cost", 10)
-				var current_ex: float = StatManager.get_stat("ex", 0.0)
-				if current_ex < cost:
+				var current_ex: FlexNumber = StatManager.get_stat("ex")
+				if current_ex.to_float() < cost:
 								return
-				StatManager.set_base_stat("ex", current_ex - cost)
+				current_ex.subtract(cost)
+				StatManager.set_base_stat("ex", current_ex)
 				PlayerManager.set_var("hh_open_fumble_cost", cost * 2)
 				_refresh_hh_open_fumble_button()
 				var idx = NPCManager.get_batch_of_new_npc_indices("fumble", 1)[0]

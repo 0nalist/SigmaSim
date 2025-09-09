@@ -72,8 +72,19 @@ static func format_sci(number: float, decimals: int = 2) -> String:
 	var mantissa = n / pow(10, exponent)
 	return "%s%.*fe%d" % [sign, decimals, mantissa, exponent]
 
+# Mantissa/exponent formatting helpers for FlexNumber
+static func format_mantissa_exponent(mantissa: float, exponent: int, decimals: int = 2) -> String:
+	return "%.*fe%d" % [decimals, mantissa, exponent]
+
+static func format_flex(number: FlexNumber, decimals: int = 2, style: String = "commas") -> String:
+	if number.is_big():
+		return format_mantissa_exponent(number._mantissa, number._exponent, decimals)
+	return format_number(number.to_float(), style, decimals)
+
 # Main interface
-func format_number(number: float, style: String = "commas", decimals: int = 2) -> String:
+func format_number(number: Variant, style: String = "commas", decimals: int = 2) -> String:
+	if number is FlexNumber:
+		return format_flex(number, decimals, style)
 	match style:
 		"commas":
 			return format_commas(number, decimals)
