@@ -9,7 +9,7 @@ class_name NetSerf
 @onready var url_field: LineEdit = %UrlField
 @onready var web_view: Control = %WebView  # class is WebView from godot_wry
 
-var _home_url: String = "https://www.wikipedia.org"
+var _home_url: String = "https://www.youtube.com/watch?v=ueNY30Cs8Lk&list=RDueNY30Cs8Lk&start_radio=1"
 var _last_committed_url: String = ""
 
 func _ready() -> void:
@@ -125,4 +125,4 @@ func _is_valid_url(url: String) -> bool:
 
 func _on_webview_ipc_message(message: String) -> void:
 	# For future interop with page JS; keep a simple debug log for now.
-        print("[NetSerf] IPC:", message)
+		print("[NetSerf] IPC:", message)

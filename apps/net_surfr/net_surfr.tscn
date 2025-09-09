@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://dus8rrq8fgajo"]
+
+[ext_resource type="Script" uid="uid://dgo5ut43gk0qm" path="res://apps/net_serf/net_serf.gd" id="1"]
+
+[node name="NetSurfr" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1")
+window_title = "NetSerf"
+app_description = "Serf the real world wide web (at your own risk)"
+
+[node name="Root" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Toolbar" type="HBoxContainer" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BackButton" type="Button" parent="Root/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "◀"
+
+[node name="ForwardButton" type="Button" parent="Root/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "▶"
+
+[node name="UrlField" type="LineEdit" parent="Root/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter URL…"
+
+[node name="GoButton" type="Button" parent="Root/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Go"
+
+[node name="ReloadButton" type="Button" parent="Root/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "⟳"
+
+[node name="DevtoolsButton" type="Button" parent="Root/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DevTools"
+
+[node name="WebView" type="WebView" parent="Root"]
+full_window_size = false
+url = "https://www.wikipedia.org"
+zoom_hotkeys = true
+focused_when_created = false
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
