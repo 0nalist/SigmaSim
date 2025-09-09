@@ -11,6 +11,30 @@ class_name NetSerf
 
 var _home_url: String = "https://www.youtube.com/watch?v=ueNY30Cs8Lk&list=RDueNY30Cs8Lk&start_radio=1"
 var _last_committed_url: String = ""
+const URL_HOOK_JS: String = """
+(function() {
+	if (window.__godot_url_hook_installed) return;
+	window.__godot_url_hook_installed = true;
+	const report = url => window.ipc.postMessage("URL:" + url);
+	report(window.location.href);
+	document.addEventListener("click", e => {
+		const a = e.target.closest("a");
+		if (a && a.href) report(a.href);
+	}, true);
+	window.addEventListener("hashchange", () => report(window.location.href));
+	window.addEventListener("popstate", () => report(window.location.href));
+	const pushState = history.pushState;
+	history.pushState = function(state, title, url) {
+		pushState.call(this, state, title, url);
+		report(window.location.href);
+	};
+	const replaceState = history.replaceState;
+	history.replaceState = function(state, title, url) {
+		replaceState.call(this, state, title, url);
+		report(window.location.href);
+	};
+})();
+"""
 
 func _ready() -> void:
 	# Toolbar wiring
@@ -20,6 +44,7 @@ func _ready() -> void:
 	reload_button.pressed.connect(_on_reload_pressed)
 	devtools_button.pressed.connect(_on_devtools_pressed)
 	url_field.text_submitted.connect(_on_url_submitted)
+	url_field.gui_input.connect(_on_url_field_gui_input)
 
 	# WebView initial state
 	if _is_valid_url(_home_url):
@@ -28,6 +53,7 @@ func _ready() -> void:
 	else:
 		_set_url_field("https://www.wikipedia.org")
 		_load_url_normalized("https://www.wikipedia.org")
+	call_deferred("_inject_url_hook")
 
 	# Optional: listen for IPC messages from page JS
 	if web_view.has_signal("ipc_message"):
@@ -74,6 +100,7 @@ func _load_url_normalized(raw: String) -> void:
 	_set_url_field(normalized)
 	_last_committed_url = normalized
 	web_view.call("load_url", normalized)
+	call_deferred("_inject_url_hook")
 
 func _set_url_field(text: String) -> void:
 	# Avoid triggering text_submitted accidentally
@@ -124,5 +151,18 @@ func _is_valid_url(url: String) -> bool:
 	return ok_scheme and url.find(".") >= 0
 
 func _on_webview_ipc_message(message: String) -> void:
-	# For future interop with page JS; keep a simple debug log for now.
+	if message.begins_with("URL:"):
+		var current: String = message.substr(4)
+		_set_url_field(current)
+		_last_committed_url = current
+		call_deferred("_inject_url_hook")
+	else:
+		# For future interop with page JS; keep a simple debug log for now.
 		print("[NetSerf] IPC:", message)
+
+func _inject_url_hook() -> void:
+	web_view.call("eval", URL_HOOK_JS)
+
+func _on_url_field_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		url_field.grab_focus()
