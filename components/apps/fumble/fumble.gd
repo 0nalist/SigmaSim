@@ -107,10 +107,10 @@ func _setup_over_frames() -> void:
 	bio_text_edit.text = PlayerManager.get_var("bio", "")
 	bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
 
-	_update_fugly_filter_ui()
+        _update_fugly_filter_ui()
 
-	confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
-	ex_progress_bar.update_value(StatManager.get_stat("ex").to_float())
+        confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
+        ex_progress_bar.update_value(StatManager.get_stat_float("ex"))
 
 	_on_gender_slider_changed(0)
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)

@@ -13,7 +13,7 @@ func _ready():
 	assert(not majors.is_empty())
 	assert(TarotManager.reading_cost == 2.0)
 	assert(TarotManager.major_reading_cost == 2.0)
-	assert(StatManager.get_stat("ex").to_float() == 99.0)
+        assert(StatManager.get_stat_float("ex") == 99.0)
 	TarotManager._on_hour_passed(0, 0)
 	assert(TarotManager.reading_cost == 1.0)
 	assert(TarotManager.major_reading_cost == 1.0)

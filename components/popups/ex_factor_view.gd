@@ -398,9 +398,9 @@ func _update_apologize_button() -> void:
 	apologize_button.visible = has_upgrade and in_ex_stage
 	if not apologize_button.visible:
 			return
-	var cost: int = logic.get_apologize_cost()
-	apologize_button.text = "Apologize (%s EX)" % NumberFormatter.smart_format(cost)
-	apologize_button.disabled = StatManager.get_stat("ex").to_float() < float(cost)
+        var cost: int = logic.get_apologize_cost()
+        apologize_button.text = "Apologize (%s EX)" % NumberFormatter.smart_format(cost)
+        apologize_button.disabled = StatManager.get_stat_float("ex") < float(cost)
 
 func _update_locked_in_button() -> void:
 	if not is_instance_valid(locked_in_button):

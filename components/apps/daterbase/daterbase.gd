@@ -183,7 +183,7 @@ func _on_upgrade_purchased(id: String, _level: int) -> void:
 func _refresh_hh_open_fumble_button() -> void:
 				var cost: float = PlayerManager.get_var("hh_open_fumble_cost", 10)
 				hh_open_fumble_button.text = "Open in Fumble (%d EX)" % int(cost)
-				hh_open_fumble_button.disabled = hh_current_npc == null or StatManager.get_stat("ex").to_float() < cost
+				hh_open_fumble_button.disabled = hh_current_npc == null or StatManager.get_stat_float("ex") < cost
 
 # =========================================
 # Buttons
