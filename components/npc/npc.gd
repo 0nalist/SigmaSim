@@ -375,15 +375,11 @@ func describe_gender() -> String:
 	return ", ".join(components) if components.size() > 0 else "ambiguous"
 
 func get_marriage_level() -> int:
-	var n: int = int(floor(relationship_progress.to_float()))
-	if n < 100000:
+	var progress: float = relationship_progress.to_float()
+	if progress < 100000.0:
 		return 0
-	var digits: int = 0
-	var tmp: int = n
-	while tmp > 0:
-		tmp = tmp / 10
-		digits += 1
-	return digits - 5
+	var level: int = int(floor(log10(progress))) - 4
+	return max(level, 0)
 
 func is_in_dating() -> bool:
 	return relationship_stage == NPCManager.RelationshipStage.DATING
