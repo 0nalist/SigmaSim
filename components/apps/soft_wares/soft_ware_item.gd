@@ -38,10 +38,10 @@ func _prepare_icon(source: Texture2D) -> Texture2D:
 	return ImageTexture.create_from_image(img)
 
 func _update_action_button() -> void:
-        if WindowManager.is_app_unlocked(app_id):
-                action_button.text = "Launch"
-        else:
-                action_button.text = "Buy App for $" + NumberFormatter.smart_format(app_cost, 0)
+	if WindowManager.is_app_unlocked(app_id):
+		action_button.text = "Launch"
+	else:
+		action_button.text = "Buy App for $" + str(app_cost)
 
 func _on_action_button_pressed() -> void:
 	feedback_label.text = ""
