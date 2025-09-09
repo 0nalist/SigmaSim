@@ -117,3 +117,23 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="ContactButtonTemplate" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/ContactsVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 34)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_w0u3w")
+theme_override_styles/hover = SubResource("StyleBoxFlat_8iipa")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_bgumh")
+theme_override_styles/normal = SubResource("StyleBoxFlat_eppfh")
+text = "@username"
+icon = ExtResource("4_bgumh")
+alignment = 0
+text_overrun_behavior = 3
