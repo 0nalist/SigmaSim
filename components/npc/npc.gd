@@ -173,7 +173,7 @@ func to_dict() -> Dictionary:
 		"relationship_status": relationship_status,
 		"locked_in_connection": locked_in_connection,
 		"relationship_stage": relationship_stage,
-		"relationship_progress": relationship_progress.to_float(),
+		"relationship_progress": StatManager._flex_to_dict(relationship_progress),
 		"exclusivity_core": exclusivity_core,
 		"romantic_relationship": romantic_relationship,
 		"personal_relationship": personal_relationship,
@@ -243,7 +243,7 @@ static func from_dict(data: Dictionary) -> NPC:
 	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
 	npc.locked_in_connection = _safe_int(data.get("locked_in_connection"), 0) != 0
 	npc.relationship_stage = _safe_int(data.get("relationship_stage"), NPCManager.RelationshipStage.STRANGER)
-	npc.relationship_progress = FlexNumber.new(_safe_float(data.get("relationship_progress")))
+	npc.relationship_progress = StatManager._flex_from_variant(data.get("relationship_progress"))
 	npc.exclusivity_core = _safe_int(data.get("exclusivity_core"), NPCManager.ExclusivityCore.POLY)
 	if not data.has("exclusivity_core"):
 		var legacy_ex: Variant = data.get("exclusivity")

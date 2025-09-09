@@ -103,7 +103,7 @@ func process(delta: float) -> void:
 		state.update(delta)
 		if npc.relationship_progress.to_float() != before:
 			emit_signal("progress_changed", npc.relationship_progress.to_float())
-			emit_signal("request_persist", {"relationship_progress": npc.relationship_progress.to_float()})
+			emit_signal("request_persist", {"relationship_progress": npc.relationship_progress})
 
 # ---------------------------- User actions ----------------------------
 
@@ -147,7 +147,7 @@ func try_date(credit_only: bool = false) -> bool:
 	emit_signal("costs_changed", npc.gift_cost, npc.date_cost)
 	emit_signal("progress_changed", npc.relationship_progress.to_float())
 	emit_signal("request_persist", {
-		"relationship_progress": npc.relationship_progress.to_float(),
+		"relationship_progress": npc.relationship_progress,
 		"date_count": npc.date_count
 	})
 
@@ -219,7 +219,7 @@ func confirm_breakup() -> void:
 	emit_signal("affinity_changed", npc.affinity)
 	emit_signal("progress_changed", npc.relationship_progress.to_float())
 	emit_signal("request_persist", {
-		"relationship_progress": npc.relationship_progress.to_float(),
+		"relationship_progress": npc.relationship_progress,
 		"affinity": npc.affinity
 	})
 
@@ -251,7 +251,7 @@ func apologize_try() -> bool:
 	emit_signal("affinity_changed", npc.affinity)
 	emit_signal("progress_changed", npc.relationship_progress.to_float())
 	emit_signal("request_persist", {
-			"relationship_progress": npc.relationship_progress.to_float(),
+			"relationship_progress": npc.relationship_progress,
 			"affinity": npc.affinity,
 			"gift_count": npc.gift_count,
 			"date_count": npc.date_count
