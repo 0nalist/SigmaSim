@@ -72,20 +72,21 @@ func _update_ui() -> void:
 	label_owned.text = str(PortfolioManager.stocks_owned.get(stock.symbol, 0))
 
 func _on_buy_pressed() -> void:
-	if not stock:
-		return
-	var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
-	var quantity: int
-	if sel_text == "MAX":
-		quantity = int(floor(PortfolioManager.get_cash() / stock.price))
-	else:
-		quantity = int(sel_text)
-	var price := stock.price * quantity
-	if PortfolioManager.get_cash() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
-		print("Credit purchase requires Pattern Day Trader upgrade")
-		return
-	if PortfolioManager.buy_stock(stock.symbol, quantity):
-		_update_ui()
+        if not stock:
+                return
+        var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
+        var quantity: int
+        var cash: FlexNumber = PortfolioManager.get_cash()
+        if sel_text == "MAX":
+                quantity = int(floor(cash.to_float() / stock.price))
+        else:
+                quantity = int(sel_text)
+        var price := stock.price * quantity
+        if cash.to_float() < price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
+                print("Credit purchase requires Pattern Day Trader upgrade")
+                return
+        if PortfolioManager.buy_stock(stock.symbol, quantity):
+                _update_ui()
 
 func _on_sell_pressed() -> void:
 	if stock:
