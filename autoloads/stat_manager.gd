@@ -248,19 +248,22 @@ func get_save_data() -> Dictionary:
 
 
 func load_from_data(data: Dictionary) -> void:
-		temporary_overrides.clear()
-		_load_base_stats()
-		if typeof(data) == TYPE_DICTIONARY:
-				for key in data.keys():
-					var val = data[key]
-					if key == "cash" or key == "ex":
-							base_stats[key] = _flex_from_variant(val)
-					else:
-							base_stats[key] = float(val)
-		_build_upgrade_cache()
-		_build_dependents_map()
-		recalculate_all_stats_once()
-
+	temporary_overrides.clear()
+	_load_base_stats()
+	_build_upgrade_cache()
+	_build_dependents_map()
+	computed_stats.clear()
+	if typeof(data) == TYPE_DICTIONARY:
+		for key in data.keys():
+			var val = data[key]
+			if key == "cash" or key == "ex":
+				base_stats[key] = _flex_from_variant(val)
+			else:
+				base_stats[key] = float(val)
+			_recalculate_stat_and_dependents(key)
+	for key in base_stats.keys():
+		if typeof(data) != TYPE_DICTIONARY or not data.has(key):
+			_recalculate_stat_and_dependents(key)
 
 func connect_to_stat(stat: String, target: Object, method: String) -> void:
 	if !_stat_signal_map.has(stat):
