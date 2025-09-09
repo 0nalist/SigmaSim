@@ -221,12 +221,12 @@ func _get_autopilot_cost() -> float:
 		return autopilot_cost
 
 func _update_autopilot_button_text() -> void:
-	autopilot_button.button_pressed = autopilot.enabled
-	var cost := _get_autopilot_cost()
-	if not autopilot.enabled and cost > 0.0:
-		autopilot_button.text = "Autopilot: $" + NumberFormatter.format_commas(cost, 2, true)
-	else:
-		autopilot_button.text = "Autopilot"
+        autopilot_button.button_pressed = autopilot.enabled
+        var cost := _get_autopilot_cost()
+        if not autopilot.enabled and cost > 0.0:
+                autopilot_button.text = "Autopilot: $" + NumberFormatter.smart_format(cost)
+        else:
+                autopilot_button.text = "Autopilot"
 
 func _on_upgrade_purchased(id: String, _level: int) -> void:
 	if id == "earlybird_autopilot_free":
