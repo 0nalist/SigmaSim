@@ -26,6 +26,7 @@ func show_card(card_id: String) -> void:
 		var count = TarotManager.get_card_rarity_count(card_id, rarity)
 		var view: TarotCardView = CARD_VIEW_SCENE.instantiate()
 		view.show_single_count = true
+		view.hide_divine_film_if_unowned = true
 		view.setup(data, count)
 		card_holder.add_child(view)
 	show()

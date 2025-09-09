@@ -8,6 +8,7 @@ var sell_price: float = 0.0
 var mark_sold_on_sell: bool = false
 var show_single_count: bool = false
 var is_upside_down: bool = false
+var hide_divine_film_if_unowned: bool = false
 
 signal card_pressed(card_id: String)
 
@@ -16,6 +17,7 @@ signal card_pressed(card_id: String)
 @onready var rarity_label: Label = %RarityLabel
 @onready var count_label: Label = %CountLabel
 @onready var sell_button: Button = %SellButton
+@onready var divine_film: ColorRect = %DivineFilm
 
 const RARITY_NAMES := {
 	1: "Paper",
@@ -66,6 +68,7 @@ func update_count(new_count: int) -> void:
 	if count > 0:
 		sell_button.disabled = false
 		sell_button.text = "Sell for $%d" % int(sell_price)
+	update_divine_film()
 
 func update_rarity(new_rarity: int) -> void:
 		rarity = new_rarity
@@ -80,6 +83,10 @@ func update_rarity(new_rarity: int) -> void:
 		if is_upside_down:
 				sell_price *= 2.0
 		sell_button.text = "Sell for $%d" % int(sell_price)
+	update_divine_film()
+
+func update_divine_film() -> void:
+	divine_film.visible = rarity == 5 and (count > 0 or not hide_divine_film_if_unowned)
 
 func set_rarity_label_visible(is_visible: bool) -> void:
 	if not is_node_ready():
