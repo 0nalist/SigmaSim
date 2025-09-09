@@ -593,9 +593,10 @@ unique_name_in_owner = true
 material = SubResource("ShaderMaterial_dag3j")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 10
 theme_override_font_sizes/font_size = 24
 text = "0 EX"
+horizontal_alignment = 2
 
 [node name="TaskbarWrapper" type="Panel" parent="TaskbarLayer"]
 z_index = 1024
