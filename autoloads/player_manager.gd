@@ -77,11 +77,10 @@ var default_user_data: Dictionary = {
 	# Chat Battle Stats
 	"attractiveness": 50,
 	"rizz": 1,
-	"confidence": 100.0,
-	"confidence_regen_rate": 1.0,
-	"ex": 0.00,
-	
-	# Other Traits
+        "confidence": 100.0,
+        "confidence_regen_rate": 1.0,
+
+        # Other Traits
 
 	"zodiac_sign": "",
 	"mbti": "",
@@ -243,14 +242,17 @@ func get_save_data() -> Dictionary:
 		return data
 
 func load_from_data(data: Dictionary) -> void:
-		user_data = data.duplicate(true)
-		for key in user_data.keys():
-				var val = user_data[key]
-				if typeof(val) == TYPE_DICTIONARY and val.has("mantissa") and val.has("exponent"):
-						user_data[key] = StatManager._flex_from_variant(val)
-		ensure_default_stats()
-		if user_data.has("confidence"):
-				user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
+
+        user_data = data.duplicate(true)
+        for key in user_data.keys():
+                var val = user_data[key]
+                if typeof(val) == TYPE_DICTIONARY and val.has("mantissa") and val.has("exponent"):
+                        user_data[key] = StatManager._flex_from_variant(val)
+        user_data.erase("ex")
+        ensure_default_stats()
+        if user_data.has("confidence"):
+                user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
+
 
 
 

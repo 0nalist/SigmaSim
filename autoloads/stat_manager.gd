@@ -134,29 +134,26 @@ func get_base_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 
 
 func set_base_stat(stat_name: String, value: Variant) -> void:
-	# Route to PlayerManager if it's a player-only field
-	if not base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
-		var previous: Variant = PlayerManager.user_data.get(stat_name, NAN)
-		# Normalize cash/ex to FlexNumber
-		if stat_name == "cash" or stat_name == "ex":
-			if typeof(value) != TYPE_OBJECT or not (value is FlexNumber):
-				value = FlexNumber.new(float(value))
-		PlayerManager.user_data[stat_name] = value
-		if not _variant_equal(previous, value):
-			_recalculate_stat_and_dependents(stat_name)
-		return
+        var is_special := stat_name == "cash" or stat_name == "ex"
+        # Route to PlayerManager if it's a player-only field
+        if not is_special and not base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
+                var previous: Variant = PlayerManager.user_data.get(stat_name, NAN)
+                PlayerManager.user_data[stat_name] = value
+                if not _variant_equal(previous, value):
+                        _recalculate_stat_and_dependents(stat_name)
+                return
 
-	# Normalize cash/ex stored in base_stats to FlexNumber
-	if stat_name == "cash" or stat_name == "ex":
-		if typeof(value) != TYPE_OBJECT or not (value is FlexNumber):
-			value = FlexNumber.new(float(value))
+        # Normalize cash/ex stored in base_stats to FlexNumber
+        if is_special:
+                if typeof(value) != TYPE_OBJECT or not (value is FlexNumber):
+                        value = FlexNumber.new(float(value))
 
-	var previous: Variant = base_stats.get(stat_name, NAN)
-	base_stats[stat_name] = value
+        var previous: Variant = base_stats.get(stat_name, NAN)
+        base_stats[stat_name] = value
 
-	# Recalculate if changed or if the new value is an Object (e.g., FlexNumber)
-	if not _variant_equal(previous, value) or typeof(value) == TYPE_OBJECT:
-		_recalculate_stat_and_dependents(stat_name)
+        # Recalculate if changed or if the new value is an Object (e.g., FlexNumber)
+        if not _variant_equal(previous, value) or typeof(value) == TYPE_OBJECT:
+                _recalculate_stat_and_dependents(stat_name)
 
 # --- Helpers -----------------------------------------------------------------
 
@@ -212,11 +209,13 @@ func clear_temp_override(stat_name: String) -> void:
 
 
 func reset() -> void:
-		temporary_overrides.clear()
-		_load_base_stats()
-		_build_upgrade_cache()
-		_build_dependents_map()
-		recalculate_all_stats_once()
+                temporary_overrides.clear()
+                _load_base_stats()
+                if not base_stats.has("ex"):
+                        base_stats["ex"] = FlexNumber.new(0.0)
+                _build_upgrade_cache()
+                _build_dependents_map()
+                recalculate_all_stats_once()
 
 
 static func _flex_to_dict(fn: FlexNumber) -> Dictionary:
