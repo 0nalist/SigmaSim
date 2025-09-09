@@ -18,9 +18,22 @@ func _ready() -> void:
 
 	assert(terminal.process_command("clear_log"))
 	assert(terminal.process_command("clearlog"))
-	assert(terminal.process_command("set_stat foo 1"))
-	assert(terminal.process_command("setstat foo 2"))
-	assert(StatManager.get_stat("foo") == 2)
+	var starting_cash := PortfolioManager.cash
+	assert(terminal.process_command("add_cash 1.5"))
+	assert(is_equal_approx(PortfolioManager.cash, starting_cash + 1.5))
+	assert(terminal.process_command("set_stat cash 2.25"))
+	assert(is_equal_approx(PortfolioManager.cash, 2.25))
+	PortfolioManager.cash = starting_cash
+
+	var starting_ex := StatManager.get_ex().to_float()
+	assert(terminal.process_command("set_stat ex 3.5"))
+	assert(is_equal_approx(StatManager.get_ex().to_float(), 3.5))
+	StatManager.set_base_stat("ex", starting_ex)
+
+	assert(terminal.process_command("set_stat foo 1.5"))
+	assert(is_equal_approx(StatManager.get_stat("foo"), 1.5))
+	assert(terminal.process_command("setstat foo 2.5"))
+	assert(is_equal_approx(StatManager.get_stat("foo"), 2.5))
 
 	print("terminal_command_parser_test passed")
 	quit()
