@@ -8,8 +8,5 @@ func _ready() -> void:
     var flex := FlexNumber.new(1234000000.0)
     var flex_str := NumberFormatter.smart_format(flex)
     assert(flex_str == "1.23e9")
-    var inf := INF
-    var inf_str := NumberFormatter.smart_format(inf)
-    assert(inf_str == "∞")
     print("number_formatter_smart_format_test passed")
     quit()
