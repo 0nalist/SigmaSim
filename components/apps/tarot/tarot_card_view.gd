@@ -71,18 +71,18 @@ func update_count(new_count: int) -> void:
 	update_divine_film()
 
 func update_rarity(new_rarity: int) -> void:
-		rarity = new_rarity
-		rarity_label.text = RARITY_NAMES.get(rarity, "")
-		if rarity == 5:
-				rarity_label.material = RAINBOW_MATERIAL
-				rarity_label.add_theme_color_override("font_color", Color.WHITE)
-		else:
-				rarity_label.material = null
-				rarity_label.add_theme_color_override("font_color", RARITY_COLORS.get(rarity, Color.WHITE))
-		sell_price = TarotManager.get_sell_price(rarity)
-		if is_upside_down:
-				sell_price *= 2.0
-		sell_button.text = "Sell for $%d" % int(sell_price)
+	rarity = new_rarity
+	rarity_label.text = RARITY_NAMES.get(rarity, "")
+	if rarity == 5:
+			rarity_label.material = RAINBOW_MATERIAL
+			rarity_label.add_theme_color_override("font_color", Color.WHITE)
+	else:
+			rarity_label.material = null
+			rarity_label.add_theme_color_override("font_color", RARITY_COLORS.get(rarity, Color.WHITE))
+	sell_price = TarotManager.get_sell_price(rarity)
+	if is_upside_down:
+			sell_price *= 2.0
+	sell_button.text = "Sell for $%d" % int(sell_price)
 	update_divine_film()
 
 func update_divine_film() -> void:

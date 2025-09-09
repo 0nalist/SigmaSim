@@ -364,6 +364,8 @@ text = "Curiosity"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
 
 [node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/CuriosityHContainer"]
 custom_minimum_size = Vector2(25, 0)
@@ -379,7 +381,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
 layout_mode = 2
-text = "Min 🔥"
+text = "Filter out 🔥 below"
 
 [node name="FuglyLabel" type="Label" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
 layout_mode = 2
@@ -387,7 +389,7 @@ layout_mode = 2
 [node name="FuglyFilterSpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/SelfTab/MarginContainer/ScrollContainer/VBoxContainer2/VBoxContainer/FumbleSearchCriteriaContainer/FuglyFilterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 max_value = 10.0
 step = 0.1
 
@@ -581,6 +583,7 @@ layout_mode = 2
 
 [node name="ConfidenceProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -664,6 +667,7 @@ layout_mode = 2
 
 [node name="ExProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MenuTabContainer"]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 size_flags_horizontal = 3
