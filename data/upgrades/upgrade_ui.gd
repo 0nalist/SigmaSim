@@ -83,7 +83,7 @@ func _refresh_cost() -> void:
 				cost_strs.append("$" + formatted)
 		else:
 			var currency_display: String
-			if currency == "ex":
+			if StatManager.FLEX_STATS.has(currency):
 				currency_display = currency.to_upper()
 			else:
 				currency_display = currency.capitalize()

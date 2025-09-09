@@ -7,6 +7,12 @@ extends Node
 
 signal stat_changed(stat: String, value: Variant)
 
+const FLEX_STATS: Array[String] = ["cash", "ex"]
+
+func register_flex_stat(stat_name: String) -> void:
+	if not FLEX_STATS.has(stat_name):
+		FLEX_STATS.append(stat_name)
+
 # -- Stored data --------------------------------------------------------------
 
 ## Base values loaded from json files and mod overrides
@@ -65,7 +71,7 @@ func _load_stats_file(path: String) -> void:
 	if typeof(data) == TYPE_DICTIONARY:
 		for stat_key in data.keys():
 			var val = data[stat_key]
-			if stat_key == "cash" or stat_key == "ex":
+			if FLEX_STATS.has(stat_key):
 				base_stats[stat_key] = FlexNumber.new(float(val))
 			else:
 				base_stats[stat_key] = float(val)
@@ -89,11 +95,11 @@ func get_cash() -> FlexNumber:
 	return get_stat("cash") as FlexNumber
 
 func get_ex() -> FlexNumber:
-		return get_stat("ex") as FlexNumber
+	return get_stat("ex") as FlexNumber
 
 
 func get_stat_float(stat_name: String, default_value: float = 0.0) -> float:
-		return to_float(get_stat(stat_name, default_value), default_value)
+	return to_float(get_stat(stat_name, default_value), default_value)
 
 
 static func to_float(value: Variant, default_value: float = 0.0) -> float:
@@ -134,7 +140,7 @@ func get_base_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 
 
 func set_base_stat(stat_name: String, value: Variant) -> void:
-		var is_special := stat_name == "cash" or stat_name == "ex"
+		var is_special := FLEX_STATS.has(stat_name)
 		# Route to PlayerManager if it's a player-only field
 		if not is_special and not base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
 				var previous: Variant = PlayerManager.user_data.get(stat_name, NAN)
@@ -143,7 +149,7 @@ func set_base_stat(stat_name: String, value: Variant) -> void:
 						_recalculate_stat_and_dependents(stat_name)
 				return
 
-		# Normalize cash/ex stored in base_stats to FlexNumber
+		# Normalize flex stats stored in base_stats to FlexNumber
 		if is_special:
 				if typeof(value) != TYPE_OBJECT or not (value is FlexNumber):
 						value = FlexNumber.new(float(value))
@@ -209,13 +215,14 @@ func clear_temp_override(stat_name: String) -> void:
 
 
 func reset() -> void:
-				temporary_overrides.clear()
-				_load_base_stats()
-				if not base_stats.has("ex"):
-						base_stats["ex"] = FlexNumber.new(0.0)
-				_build_upgrade_cache()
-				_build_dependents_map()
-				recalculate_all_stats_once()
+	temporary_overrides.clear()
+	_load_base_stats()
+	for flex_stat in FLEX_STATS:
+		if not base_stats.has(flex_stat):
+			base_stats[flex_stat] = FlexNumber.new(0.0)
+	_build_upgrade_cache()
+	_build_dependents_map()
+	recalculate_all_stats_once()
 
 
 static func _flex_to_dict(fn: FlexNumber) -> Dictionary:
@@ -239,10 +246,10 @@ func get_save_data() -> Dictionary:
 	var result: Dictionary = {}
 	for key in base_stats.keys():
 		var val = base_stats[key]
-		if val is FlexNumber:
-				result[key] = _flex_to_dict(val)
+		if FLEX_STATS.has(key) and val is FlexNumber:
+			result[key] = _flex_to_dict(val)
 		else:
-				result[key] = val
+			result[key] = val
 	return result
 
 
@@ -255,7 +262,7 @@ func load_from_data(data: Dictionary) -> void:
 	if typeof(data) == TYPE_DICTIONARY:
 		for key in data.keys():
 			var val = data[key]
-			if key == "cash" or key == "ex":
+			if FLEX_STATS.has(key):
 				base_stats[key] = _flex_from_variant(val)
 			else:
 				base_stats[key] = float(val)

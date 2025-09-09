@@ -147,6 +147,7 @@ func set_passive_income(value: float) -> void:
 	StatManager.set_base_stat("passive_income", value)
 
 func _ready():
+	StatManager.register_flex_stat("cash")
 	StatManager.connect_to_stat("cash", self, "_on_cash_changed")
 	StatManager.connect_to_stat("credit_used", self, "_on_credit_changed")
 	StatManager.connect_to_stat("credit_limit", self, "_on_credit_changed")
