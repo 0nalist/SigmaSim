@@ -27,7 +27,7 @@ const MAX_LOVE_COOLDOWN: int = 24 * 60
 @export var locked_in_connection: bool = false
 
 @export var relationship_stage: int = NPCManager.RelationshipStage.STRANGER
-@export var relationship_progress: FlexNumber = FlexNumber.new()
+var relationship_progress: FlexNumber = FlexNumber.new()
 
 @export var exclusivity_core: int = NPCManager.ExclusivityCore.POLY
 
