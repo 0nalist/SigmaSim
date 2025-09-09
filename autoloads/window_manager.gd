@@ -34,7 +34,7 @@ var app_registry := {
 	"SoftWares": preload("res://components/apps/app_scenes/soft_wares_app.tscn"),
 	"NFTarot": preload("res://components/apps/app_scenes/tarot_app.tscn"),
 	"Installer": preload("res://components/apps/app_scenes/installer.tscn"),
-	"ConwaysGame": preload("res://components/apps/conways_game/conways_game_ui.tscn"),
+	"Conway's Game": preload("res://components/apps/conways_game/conways_game_ui.tscn"),
 }
 
 var start_apps := {}
