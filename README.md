@@ -2,6 +2,6 @@
 
 ## Data Serialization
 
-- `StatManager` now saves `FlexNumber` values as `{mantissa, exponent}` dictionaries to preserve extremely large numbers.
+ - `StatManager` saves `FlexNumber` stats as dictionaries using the schema `{mantissa: float, exponent: int}` so even extremely large values serialize and deserialize automatically.
 - `SaveManager` sanitizes non‑finite numbers before writing JSON, replacing `NaN` with `null` and clamping infinities to a large finite value.
 

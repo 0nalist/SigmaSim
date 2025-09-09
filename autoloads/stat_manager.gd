@@ -64,17 +64,19 @@ func _load_base_stats() -> void:
 
 
 func _load_stats_file(path: String) -> void:
-	if not FileAccess.file_exists(path):
-		return
-	var text := FileAccess.get_file_as_string(path)
-	var data = JSON.parse_string(text)
-	if typeof(data) == TYPE_DICTIONARY:
-		for stat_key in data.keys():
-			var val = data[stat_key]
-			if FLEX_STATS.has(stat_key):
-				base_stats[stat_key] = FlexNumber.new(float(val))
-			else:
-				base_stats[stat_key] = float(val)
+        if not FileAccess.file_exists(path):
+                return
+        var text := FileAccess.get_file_as_string(path)
+        var data = JSON.parse_string(text)
+        if typeof(data) == TYPE_DICTIONARY:
+                for stat_key in data.keys():
+                        var val = data[stat_key]
+                        if typeof(val) == TYPE_DICTIONARY and val.has("mantissa") and val.has("exponent"):
+                                base_stats[stat_key] = _flex_from_variant(val)
+                        elif FLEX_STATS.has(stat_key):
+                                base_stats[stat_key] = _flex_from_variant(val)
+                        else:
+                                base_stats[stat_key] = float(val)
 
 
 # -- Public API --------------------------------------------------------------
@@ -243,14 +245,14 @@ static func _flex_from_variant(val: Variant) -> FlexNumber:
 
 
 func get_save_data() -> Dictionary:
-	var result: Dictionary = {}
-	for key in base_stats.keys():
-		var val = base_stats[key]
-		if FLEX_STATS.has(key) and val is FlexNumber:
-			result[key] = _flex_to_dict(val)
-		else:
-			result[key] = val
-	return result
+        var result: Dictionary = {}
+        for key in base_stats.keys():
+                var val = base_stats[key]
+                if typeof(val) == TYPE_OBJECT and val is FlexNumber:
+                        result[key] = _flex_to_dict(val)
+                else:
+                        result[key] = val
+        return result
 
 
 func load_from_data(data: Dictionary) -> void:
@@ -259,14 +261,16 @@ func load_from_data(data: Dictionary) -> void:
 	_build_upgrade_cache()
 	_build_dependents_map()
 	computed_stats.clear()
-	if typeof(data) == TYPE_DICTIONARY:
-		for key in data.keys():
-			var val = data[key]
-			if FLEX_STATS.has(key):
-				base_stats[key] = _flex_from_variant(val)
-			else:
-				base_stats[key] = float(val)
-			_recalculate_stat_and_dependents(key)
+        if typeof(data) == TYPE_DICTIONARY:
+                for key in data.keys():
+                        var val = data[key]
+                        if typeof(val) == TYPE_DICTIONARY and val.has("mantissa") and val.has("exponent"):
+                                base_stats[key] = _flex_from_variant(val)
+                        elif FLEX_STATS.has(key):
+                                base_stats[key] = _flex_from_variant(val)
+                        else:
+                                base_stats[key] = float(val)
+                        _recalculate_stat_and_dependents(key)
 	for key in base_stats.keys():
 		if typeof(data) != TYPE_DICTIONARY or not data.has(key):
 			_recalculate_stat_and_dependents(key)
