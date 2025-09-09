@@ -1,5 +1,5 @@
 extends Pane
-class_name NetSurfr
+class_name NetSerf
 
 @onready var back_button: Button = %BackButton
 @onready var forward_button: Button = %ForwardButton
@@ -125,4 +125,4 @@ func _is_valid_url(url: String) -> bool:
 
 func _on_webview_ipc_message(message: String) -> void:
 	# For future interop with page JS; keep a simple debug log for now.
-	print("[NetSurfr] IPC:", message)
+        print("[NetSerf] IPC:", message)
