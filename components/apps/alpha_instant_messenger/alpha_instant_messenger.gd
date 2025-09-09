@@ -11,6 +11,7 @@ func _ready() -> void:
 
 func _populate_contacts() -> void:
 	for child in contacts_vbox.get_children():
+
 		child.queue_free()
 	var entries: Array[int] = NPCManager.get_romantic_npcs()
 	for idx in entries:
@@ -21,6 +22,7 @@ func _populate_contacts() -> void:
 			_open_chat_ui(int(idx), npc)
 		)
 		contacts_vbox.add_child(btn)
+
 
 func _open_chat_ui(idx: int, npc: NPC) -> void:
 	var key: String = "aim_chat_%d" % idx
