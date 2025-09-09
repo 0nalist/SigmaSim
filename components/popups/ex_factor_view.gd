@@ -645,7 +645,7 @@ func _on_talk_therapy_purchased(_level: int) -> void:
 
 
 func _on_stat_changed(stat: String, _value: Variant) -> void:
-	if stat == "ex":
+	if StatManager.FLEX_STATS.has(stat):
 		_update_apologize_button()
 
 func _on_npc_affinity_changed(idx: int, _value: float) -> void:
