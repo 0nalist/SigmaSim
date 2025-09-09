@@ -10,6 +10,8 @@ class_name ConwaysGame
 @onready var reset_button: Button = %ResetButton
 @onready var speed_slider: HSlider = %SpeedSlider
 @onready var color_picker: ColorPickerButton = %ColorPicker
+@onready var generation_label: Label = %GenerationLabel
+@onready var population_label: Label = %PopulationLabel
 
 var grid: Dictionary = {}
 var running: bool = false
@@ -18,6 +20,7 @@ var offset: Vector2 = Vector2.ZERO
 var panning: bool = false
 var dragging: bool = false
 var last_drag_cell: Vector2i = Vector2i.ZERO
+var generation: int = 0
 
 const NEIGHBOR_OFFSETS: Array[Vector2i] = [
 	Vector2i(-1, -1),
@@ -39,6 +42,7 @@ func _ready() -> void:
 	color_picker.color = living_color
 	color_picker.color_changed.connect(_on_color_picker_color_changed)
 	_update_play_pause_text()
+	_update_labels()
 
 
 func _process(delta: float) -> void:
@@ -147,14 +151,18 @@ func _advance_generation() -> void:
 			if count == 3:
 				new_grid[cell] = true
 	grid = new_grid
+	generation += 1
+	_update_labels()
 	queue_redraw()
 
-func _toggle_cell(cell: Vector2i) -> void:
+func _toggle_cell(cell: Vector2i, update_labels: bool = true) -> void:
 	var alive: bool = grid.get(cell, false)
 	if alive:
-			grid.erase(cell)
+		grid.erase(cell)
 	else:
-			grid[cell] = true
+		grid[cell] = true
+	if update_labels:
+		_update_labels()
 	queue_redraw()
 
 func _toggle_cells_along_line(start: Vector2i, end: Vector2i) -> void:
@@ -185,7 +193,8 @@ func _toggle_cells_along_line(start: Vector2i, end: Vector2i) -> void:
 		if e2 <= dx:
 			err += dx
 			y += sy
-		_toggle_cell(Vector2i(x, y))
+		_toggle_cell(Vector2i(x, y), false)
+	_update_labels()
 
 
 func _on_play_pause_pressed() -> void:
@@ -196,7 +205,9 @@ func _on_reset_pressed() -> void:
 	running = false
 	grid.clear()
 	time_accum = 0.0
+	generation = 0
 	_update_play_pause_text()
+	_update_labels()
 	queue_redraw()
 
 func _on_speed_slider_value_changed(value: float) -> void:
@@ -212,6 +223,10 @@ func _update_play_pause_text() -> void:
 		play_pause_button.text = "PAUSE"
 	else:
 		play_pause_button.text = "PLAY"
+
+func _update_labels() -> void:
+	generation_label.text = "Generation: %d" % generation
+	population_label.text = "Population: %d" % grid.size()
 
 func _screen_to_grid(pos: Vector2) -> Vector2i:
 	var gx: int = int(floor((pos.x - offset.x) / float(cell_size)))
