@@ -174,7 +174,7 @@ func save_to_slot(slot_id: int, include_rng_state := true) -> void:
 					#"rng": include_rng_state ? RNGManager.get_save_data() : {},
 					"rng": RNGManager.get_save_data(),
 					}
-		_sanitize_non_finite(data)
+	_sanitize_non_finite(data)
 
 	var file := FileAccess.open(get_slot_path(slot_id), FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "	"))
@@ -356,27 +356,27 @@ func vector2_to_dict(v: Vector2) -> Dictionary:
 
 
 func dict_to_vector2(d: Dictionary, default := Vector2.ZERO) -> Vector2:
-        if typeof(d) != TYPE_DICTIONARY:
-                return default
-        return Vector2(d.get("x", default.x), d.get("y", default.y))
+		if typeof(d) != TYPE_DICTIONARY:
+				return default
+		return Vector2(d.get("x", default.x), d.get("y", default.y))
 
 
 func _sanitize_non_finite(value):
-       var t := typeof(value)
-       if t == TYPE_FLOAT:
-               if value != value:
-                       return null
-               if value == INF:
-                       return NONFINITE_CLAMP
-               if value == -INF:
-                       return -NONFINITE_CLAMP
-               return value
-       if t == TYPE_DICTIONARY:
-               for k in value.keys():
-                       value[k] = _sanitize_non_finite(value[k])
-               return value
-       if t == TYPE_ARRAY:
-               for i in range(value.size()):
-                       value[i] = _sanitize_non_finite(value[i])
-               return value
-       return value
+	var t := typeof(value)
+	if t == TYPE_FLOAT:
+			if value != value:
+					return null
+			if value == INF:
+					return NONFINITE_CLAMP
+			if value == -INF:
+					return -NONFINITE_CLAMP
+			return value
+	if t == TYPE_DICTIONARY:
+			for k in value.keys():
+					value[k] = _sanitize_non_finite(value[k])
+			return value
+	if t == TYPE_ARRAY:
+			for i in range(value.size()):
+					value[i] = _sanitize_non_finite(value[i])
+			return value
+	return value
