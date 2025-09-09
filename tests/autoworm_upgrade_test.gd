@@ -3,7 +3,7 @@ extends Node
 func _ready() -> void:
 	var id := "earlybird_autoworm"
 	var prev_level := UpgradeManager.get_level(id)
-	var prev_cash := PortfolioManager.cash
+	var prev_cash = PortfolioManager.cash
 	UpgradeManager.player_levels[id] = 10
 	PortfolioManager.cash = 0
 	StatManager.recalculate_all_stats_once()

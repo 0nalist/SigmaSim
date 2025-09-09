@@ -33,8 +33,8 @@ func _build() -> void:
 
 	# Section: account
 	var rows1: Array = []
-	rows1.append({"label": "Balance", "value": "$" + NumberFormatter.format_number(_balance)})
-	rows1.append({"label": "Limit", "value": "$" + NumberFormatter.format_number(_limit)})
+	rows1.append({"label": "Balance", "value": "$" + NumberFormatter.smart_format(_balance)})
+	rows1.append({"label": "Limit", "value": "$" + NumberFormatter.smart_format(_limit)})
 	add_group("account", rows1)
 
 	# Utilization meter

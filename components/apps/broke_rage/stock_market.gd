@@ -31,13 +31,14 @@ func refresh_rows_from_market():
 
 
 func _on_buy_button_pressed(symbol: String, quantity: int) -> void:
-	var stock = PortfolioManager.stock_data.get(symbol)
-	var total_price = stock.price * quantity if stock else 0.0
-	if stock and PortfolioManager.get_cash() < total_price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
-		print("Credit purchase requires Pattern Day Trader upgrade")
-		return
-	if !PortfolioManager.buy_stock(symbol, quantity):
-		print("Failed to buy stock:", symbol)
+		var stock = PortfolioManager.stock_data.get(symbol)
+		var total_price = stock.price * quantity if stock else 0.0
+		var cash: FlexNumber = PortfolioManager.get_cash()
+		if stock and cash.to_float() < total_price and UpgradeManager.get_level("brokerage_pattern_day_trader") <= 0:
+				print("Credit purchase requires Pattern Day Trader upgrade")
+				return
+		if !PortfolioManager.buy_stock(symbol, quantity):
+				print("Failed to buy stock:", symbol)
 
 func _on_sell_button_pressed(symbol: String, quantity: int) -> void:
 	if !PortfolioManager.sell_stock(symbol, quantity):

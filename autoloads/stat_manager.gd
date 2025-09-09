@@ -85,6 +85,13 @@ func get_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 	# Fallback to player-specific data stored in PlayerManager
 	return PlayerManager.user_data.get(stat_name, default)
 
+func get_cash() -> FlexNumber:
+	return get_stat("cash") as FlexNumber
+
+func get_ex() -> FlexNumber:
+	return get_stat("ex") as FlexNumber
+
+
 
 func get_all_stats() -> Dictionary:
 	var result = PlayerManager.user_data.duplicate(true)
@@ -102,47 +109,73 @@ func get_base_stat(stat_name: String, default: Variant = 0.0) -> Variant:
 
 
 func set_base_stat(stat_name: String, value: Variant) -> void:
-	# If the stat exists in PlayerManager.user_data but not in base_stats,
-	# update the player data directly instead of creating a new base stat,
-	# but still ensure the computed stat is recalculated so listeners see
-	# the updated value immediately.
-	if !base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
-			var previous = PlayerManager.user_data.get(stat_name, NAN)
-			PlayerManager.user_data[stat_name] = value
-			if previous != value:
-					_recalculate_stat_and_dependents(stat_name)
-			return
+	# Route to PlayerManager if it's a player-only field
+	if not base_stats.has(stat_name) and PlayerManager.user_data.has(stat_name):
+		var previous: Variant = PlayerManager.user_data.get(stat_name, NAN)
+		# Normalize cash/ex to FlexNumber
+		if stat_name == "cash" or stat_name == "ex":
+			if typeof(value) != TYPE_OBJECT or not (value is FlexNumber):
+				value = FlexNumber.new(float(value))
+		PlayerManager.user_data[stat_name] = value
+		if not _variant_equal(previous, value):
+			_recalculate_stat_and_dependents(stat_name)
+		return
 
+	# Normalize cash/ex stored in base_stats to FlexNumber
 	if stat_name == "cash" or stat_name == "ex":
-		if typeof(value) != TYPE_OBJECT:
+		if typeof(value) != TYPE_OBJECT or not (value is FlexNumber):
 			value = FlexNumber.new(float(value))
 
-	var previous = base_stats.get(stat_name, NAN)
+	var previous: Variant = base_stats.get(stat_name, NAN)
 	base_stats[stat_name] = value
-	if previous != value or typeof(value) == TYPE_OBJECT:
+
+	# Recalculate if changed or if the new value is an Object (e.g., FlexNumber)
+	if not _variant_equal(previous, value) or typeof(value) == TYPE_OBJECT:
 		_recalculate_stat_and_dependents(stat_name)
 
+# --- Helpers -----------------------------------------------------------------
+
+func _variant_equal(a: Variant, b: Variant) -> bool:
+	var ta: int = typeof(a)
+	var tb: int = typeof(b)
+
+	# FlexNumber vs FlexNumber
+	if (a is FlexNumber) and (b is FlexNumber):
+		return is_equal_approx((a as FlexNumber).to_float(), (b as FlexNumber).to_float())
+
+	# FlexNumber vs numeric
+	if (a is FlexNumber) and (tb == TYPE_FLOAT or tb == TYPE_INT):
+		return is_equal_approx((a as FlexNumber).to_float(), float(b))
+	if (b is FlexNumber) and (ta == TYPE_FLOAT or ta == TYPE_INT):
+		return is_equal_approx(float(a), (b as FlexNumber).to_float())
+
+	# Numeric vs numeric
+	if (ta == TYPE_FLOAT or ta == TYPE_INT) and (tb == TYPE_FLOAT or tb == TYPE_INT):
+		return is_equal_approx(float(a), float(b))
+
+	# Fallback
+	return a == b
 
 func set_override(stat_name: String, value: Variant) -> void:
-	var old_value = get_stat(stat_name)
+	var old_value: Variant = get_stat(stat_name)
 	temporary_overrides[stat_name] = value
-	if old_value != value:
+	if not _variant_equal(old_value, value):
 		stat_changed.emit(stat_name, value)
 		_emit_stat_callbacks(stat_name, value)
 		_propagate_stat_changes(stat_name)
 
-
 func clear_override(stat_name: String) -> void:
 	if not temporary_overrides.has(stat_name):
 		return
-	var old_value = temporary_overrides[stat_name]
+	var old_value: Variant = temporary_overrides[stat_name]
 	temporary_overrides.erase(stat_name)
 	_recalculate_stat(stat_name, false)
 	_propagate_stat_changes(stat_name)
-	var new_value = get_stat(stat_name)
-	if old_value != new_value:
+	var new_value: Variant = get_stat(stat_name)
+	if not _variant_equal(old_value, new_value):
 		stat_changed.emit(stat_name, new_value)
 		_emit_stat_callbacks(stat_name, new_value)
+
 
 
 func apply_temp_override(stat_name: String, value: Variant) -> void:
@@ -256,13 +289,26 @@ func _recalculate_stat_and_dependents(stat_name: String) -> void:
 	_propagate_stat_changes(stat_name)
 
 
-func _recalculate_stat(stat: String, emit := true) -> void:
+
+func _recalculate_stat(stat: String, emit: bool = true) -> void:
 	if temporary_overrides.has(stat):
 		return
-	var previous = computed_stats.get(stat)
-	var base_value = get_base_stat(stat, 0.0)
-	var value: float = base_value
-	var applied := false
+	var previous: Variant = computed_stats.get(stat)
+	var base_value: Variant = get_base_stat(stat, 0.0)
+
+	# Handle FlexNumber separately
+	if base_value is FlexNumber:
+		# Don’t try to run numeric upgrade math here, just store the object
+		computed_stats[stat] = base_value
+		if emit and not _variant_equal(previous, base_value):
+			stat_changed.emit(stat, base_value)
+			_emit_stat_callbacks(stat, base_value)
+		return
+
+	# Safe numeric path
+	var value: float = float(base_value)
+	var applied: bool = false
+
 	if stat_to_upgrades.has(stat):
 		for effect_data in stat_to_upgrades[stat]:
 			var upgrade_id = effect_data.get("id")
@@ -280,7 +326,7 @@ func _recalculate_stat(stat: String, emit := true) -> void:
 					applied = true
 				"mul":
 					if not applied:
-						value = get_base_stat(stat, 1.0)
+						value = float(get_base_stat(stat, 1.0))
 						applied = true
 					value *= eff_value
 				"set":
@@ -289,9 +335,7 @@ func _recalculate_stat(stat: String, emit := true) -> void:
 				"add_formula":
 					var formula: String = effect.get("value_formula", "")
 					if formula == "":
-						push_warning(
-							"StatManager: missing value_formula for add_formula on stat '%s'" % stat
-						)
+						push_warning("StatManager: missing value_formula for add_formula on stat '%s'" % stat)
 					else:
 						var vars: Dictionary = {
 							"level": float(level),
@@ -307,33 +351,26 @@ func _recalculate_stat(stat: String, emit := true) -> void:
 							vals.append(vars[k])
 						var expr := Expression.new()
 						if expr.parse(formula, names) != OK:
-							push_warning(
-								(
-									"StatManager: bad value_formula '%s' for stat '%s'"
-									% [formula, stat]
-								)
-							)
+							push_warning("StatManager: bad value_formula '%s' for stat '%s'" % [formula, stat])
 						else:
 							var result = expr.execute(vals)
 							if typeof(result) in [TYPE_FLOAT, TYPE_INT]:
 								value += float(result)
 								applied = true
 							else:
-								push_warning(
-									(
-										"StatManager: value_formula for stat '%s' did not return number"
-										% stat
-									)
-								)
+								push_warning("StatManager: value_formula for stat '%s' did not return number" % stat)
 				_:
 					push_warning("StatManager: unknown operation '%s' for stat '%s'" % [op, stat])
-	if value != previous:
+
+	# Write back
+	if not _variant_equal(previous, value):
 		computed_stats[stat] = value
 		if emit:
 			stat_changed.emit(stat, value)
 			_emit_stat_callbacks(stat, value)
 	else:
 		computed_stats[stat] = value
+
 
 
 func _recalculate_derived_stat(stat: String, emit := true) -> void:

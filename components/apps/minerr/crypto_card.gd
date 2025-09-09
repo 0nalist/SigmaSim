@@ -162,7 +162,7 @@ func update_display() -> void:
 
 	symbol_label.text = crypto.symbol
 	display_name_label.text = crypto.display_name
-	price_label.text = "$" + NumberFormatter.format_number(crypto.price)
+	price_label.text = "$" + NumberFormatter.smart_format(crypto.price)
 	block_size_label.text = "Block size: %.1f" % crypto.block_size
 
 	var owned: float = PortfolioManager.get_crypto_amount(crypto.symbol)

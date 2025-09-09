@@ -71,16 +71,17 @@ func _update_ui() -> void:
 	label_owned.text = "%.4f" % PortfolioManager.get_crypto_amount(crypto.symbol)
 
 func _on_buy_pressed() -> void:
-	if crypto:
-		var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
-		var amount: float
-		if sel_text == "MAX":
-			amount = PortfolioManager.get_cash() / crypto.price
-		else:
-			amount = float(sel_text)
-		if PortfolioManager.attempt_spend(crypto.price * amount):
-			PortfolioManager.add_crypto(crypto.symbol, amount)
-			_update_ui()
+		if crypto:
+				var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
+				var amount: float
+				var cash: FlexNumber = PortfolioManager.get_cash()
+				if sel_text == "MAX":
+						amount = cash.to_float() / crypto.price
+				else:
+						amount = float(sel_text)
+				if PortfolioManager.attempt_spend(crypto.price * amount):
+						PortfolioManager.add_crypto(crypto.symbol, amount)
+						_update_ui()
 
 func _on_sell_pressed() -> void:
 	if crypto:
@@ -97,14 +98,15 @@ func _on_buy_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and crypto:
 		var sel_text := quantity_option.get_item_text(quantity_option.get_selected_id())
 		var amount: float
+		var cash: FlexNumber = PortfolioManager.get_cash()
 		if sel_text == "MAX":
-			amount = PortfolioManager.get_cash() / crypto.price
+				amount = cash.to_float() / crypto.price
 		else:
-			amount = float(sel_text)
+				amount = float(sel_text)
 		if PortfolioManager.attempt_spend(crypto.price * amount, 0, false, true):
-			PortfolioManager.add_crypto(crypto.symbol, amount)
-			_update_ui()
-		buy_button.accept_event()
+				PortfolioManager.add_crypto(crypto.symbol, amount)
+				_update_ui()
+				buy_button.accept_event()
 
 
 func get_custom_save_data() -> Dictionary:
