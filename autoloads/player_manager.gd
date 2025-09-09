@@ -231,26 +231,26 @@ func mark_seen(id: String) -> void:
 ## -- SAVE LOAD
 
 func get_save_data() -> Dictionary:
-        user_data["global_rng_seed"] = RNGManager.seed
-        var data := user_data.duplicate(true)
-        for key in data.keys():
-                var val = data[key]
-                if typeof(val) == TYPE_OBJECT and val.get_class() == "FlexNumber":
-                        if val._is_big:
-                                data[key] = {"mantissa": val._mantissa, "exponent": val._exponent}
-                        else:
-                                data[key] = {"mantissa": val.to_float(), "exponent": 0}
-        return data
+		user_data["global_rng_seed"] = RNGManager.seed
+		var data := user_data.duplicate(true)
+		for key in data.keys():
+				var val = data[key]
+				if typeof(val) == TYPE_OBJECT and val.get_class() == "FlexNumber":
+						if val._is_big:
+								data[key] = {"mantissa": val._mantissa, "exponent": val._exponent}
+						else:
+								data[key] = {"mantissa": val.to_float(), "exponent": 0}
+		return data
 
 func load_from_data(data: Dictionary) -> void:
-        user_data = data.duplicate(true)
-        for key in user_data.keys():
-                var val = user_data[key]
-                if typeof(val) == TYPE_DICTIONARY and val.has("mantissa") and val.has("exponent"):
-                        user_data[key] = StatManager._flex_from_variant(val)
-        ensure_default_stats()
-        if user_data.has("confidence"):
-                user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
+		user_data = data.duplicate(true)
+		for key in user_data.keys():
+				var val = user_data[key]
+				if typeof(val) == TYPE_DICTIONARY and val.has("mantissa") and val.has("exponent"):
+						user_data[key] = StatManager._flex_from_variant(val)
+		ensure_default_stats()
+		if user_data.has("confidence"):
+				user_data["confidence"] = clamp(user_data["confidence"], 0.0, 100.0)
 
 
 
