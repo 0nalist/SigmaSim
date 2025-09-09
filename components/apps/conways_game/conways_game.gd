@@ -12,6 +12,8 @@ class_name ConwaysGame
 @onready var color_picker: ColorPickerButton = %ColorPicker
 @onready var generation_label: Label = %GenerationLabel
 @onready var population_label: Label = %PopulationLabel
+@onready var rules_button: Button = %RulesButton
+@onready var rules_panel: PanelContainer = %RulesPanel
 
 var grid: Dictionary = {}
 var running: bool = false
@@ -34,26 +36,25 @@ const NEIGHBOR_OFFSETS: Array[Vector2i] = [
 ]
 
 func _ready() -> void:
-
 	play_pause_button.pressed.connect(_on_play_pause_pressed)
 	reset_button.pressed.connect(_on_reset_pressed)
 	speed_slider.value = speed_slider.max_value - step_interval
 	speed_slider.value_changed.connect(_on_speed_slider_value_changed)
 	color_picker.color = living_color
 	color_picker.color_changed.connect(_on_color_picker_color_changed)
+	rules_button.pressed.connect(_on_rules_pressed)
 	_update_play_pause_text()
 	_update_labels()
 
-
 func _process(delta: float) -> void:
 	if running:
-			if step_interval <= 0.0:
-					_advance_generation()
-			else:
-					time_accum += delta
-					while time_accum >= step_interval:
-							time_accum -= step_interval
-							_advance_generation()
+		if step_interval <= 0.0:
+			_advance_generation()
+		else:
+			time_accum += delta
+			while time_accum >= step_interval:
+				time_accum -= step_interval
+				_advance_generation()
 
 func _draw() -> void:
 	var viewport_size: Vector2 = get_size()
@@ -217,6 +218,9 @@ func _on_speed_slider_value_changed(value: float) -> void:
 func _on_color_picker_color_changed(color: Color) -> void:
 	living_color = color
 	queue_redraw()
+
+func _on_rules_pressed() -> void:
+	rules_panel.visible = !rules_panel.visible
 
 func _update_play_pause_text() -> void:
 	if running:
