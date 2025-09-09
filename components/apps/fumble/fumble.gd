@@ -96,21 +96,21 @@ func _setup_over_frames() -> void:
 	if Events.has_signal("fumble_fugly_filter_purchased"):
 		Events.connect("fumble_fugly_filter_purchased", _on_fugly_filter_purchased)
 
-		for i in range(tag_option_buttons.size()):
-				tag_option_buttons[i].item_selected.connect(_on_tag_option_selected.bind(i))
+	for i in range(tag_option_buttons.size()):
+			tag_option_buttons[i].item_selected.connect(_on_tag_option_selected.bind(i))
 
-				await get_tree().process_frame
+			await get_tree().process_frame
 
-		_populate_tag_dropdowns()
-		_load_preferences()
-		_load_tag_cooldowns()
+	_populate_tag_dropdowns()
+	_load_preferences()
+	_load_tag_cooldowns()
 	bio_text_edit.text = PlayerManager.get_var("bio", "")
 	bio_text_edit.text_changed.connect(_on_bio_text_edit_text_changed)
 
-        _update_fugly_filter_ui()
+	_update_fugly_filter_ui()
 
-        confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
-        ex_progress_bar.update_value(StatManager.get_stat_float("ex"))
+	confidence_progress_bar.update_value(StatManager.get_stat("confidence"))
+	ex_progress_bar.update_value(StatManager.get_stat_float("ex"))
 
 	_on_gender_slider_changed(0)
 	_on_curiosity_h_slider_value_changed(curiosity_slider.value)

@@ -89,33 +89,33 @@ func get_cash() -> FlexNumber:
 	return get_stat("cash") as FlexNumber
 
 func get_ex() -> FlexNumber:
-        return get_stat("ex") as FlexNumber
+		return get_stat("ex") as FlexNumber
 
 
 func get_stat_float(stat_name: String, default_value: float = 0.0) -> float:
-        return to_float(get_stat(stat_name, default_value), default_value)
+		return to_float(get_stat(stat_name, default_value), default_value)
 
 
 static func to_float(value: Variant, default_value: float = 0.0) -> float:
-        var t: int = typeof(value)
-        if t == TYPE_FLOAT:
-                return float(value)
-        if t == TYPE_INT:
-                return float(value)
-        if t == TYPE_OBJECT:
-                if value == null:
-                        return default_value
-                if value is FlexNumber:
-                        var fn: FlexNumber = value
-                        return fn.to_float()
-                var obj: Object = value
-                if obj.has_method("to_float"):
-                        var out_val: Variant = obj.call("to_float")
-                        var ot: int = typeof(out_val)
-                        if ot == TYPE_FLOAT or ot == TYPE_INT:
-                                return float(out_val)
-                return default_value
-        return default_value
+		var t: int = typeof(value)
+		if t == TYPE_FLOAT:
+				return float(value)
+		if t == TYPE_INT:
+				return float(value)
+		if t == TYPE_OBJECT:
+				if value == null:
+						return default_value
+				if value is FlexNumber:
+						var fn: FlexNumber = value
+						return fn.to_float()
+				var obj: Object = value
+				if obj.has_method("to_float"):
+						var out_val: Variant = obj.call("to_float")
+						var ot: int = typeof(out_val)
+						if ot == TYPE_FLOAT or ot == TYPE_INT:
+								return float(out_val)
+				return default_value
+		return default_value
 
 
 func get_all_stats() -> Dictionary:
@@ -449,10 +449,18 @@ func _emit_stat_callbacks(stat: String, value: Variant) -> void:
 	if value == null:
 		push_warning("StatManager: Tried to emit callback for '%s' with null value" % stat)
 		return
-	var param = value
-	var t := typeof(value)
+
+	var param: Variant = value
+	var t: int = typeof(value)
+
+	# Always emit plain float for numeric-like values so UI callbacks (e.g. ProgressBar)
+	# never receive Objects such as FlexNumber.
 	if t == TYPE_INT or t == TYPE_FLOAT:
 		param = float(value)
+	elif t == TYPE_OBJECT:
+		# Coerce FlexNumber or any object exposing to_float() into a float.
+		param = to_float(value, 0.0)
+
 	if _stat_signal_map.has(stat):
 		var callbacks: Array = _stat_signal_map[stat]
 		for cb in callbacks.duplicate():
