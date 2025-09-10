@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://d1mbcnikqm2s8"]
 
-[ext_resource type="Script" path="res://components/apps/alpha_instant_messenger/aim_chat_log.gd" id="1"]
+[ext_resource type="Script" uid="uid://bsbh3f3fpbov1" path="res://components/apps/alpha_instant_messenger/aim_chat_log.gd" id="1"]
+
 
 [node name="AimChatLog" type="VBoxContainer"]
 script = ExtResource("1")
+

@@ -385,7 +385,7 @@ func add_chat_line(text: String, is_player: bool, is_victory_number := false, re
 	if is_victory_number:
 		chat = victory_number_chat_box_scene.instantiate()
 	else:
-                chat = fumble_chat_box_scene.instantiate()
+				chat = fumble_chat_box_scene.instantiate()
 
 	chat.is_npc_message = not is_player
 
@@ -469,7 +469,7 @@ func do_move(move_type: String) -> void:
 	var full_line: String = prefix + core + suffix
 
 	# --- Animate player line ---
-    var player_chat: FumbleChatBox = add_chat_line(full_line, true)
+	var player_chat: FumbleChatBox = add_chat_line(full_line, true)
 	player_chat.clear_reaction()
 	await animate_chat_text(player_chat, full_line)
 	await get_tree().create_timer(0.5).timeout
@@ -477,7 +477,7 @@ func do_move(move_type: String) -> void:
 	# Edge case response if number already given
 	if victorious:
 		var response_text: String = "You already have my number, text me!"
-            var chat: FumbleChatBox = add_chat_line(response_text, false)
+		var chat: FumbleChatBox = add_chat_line(response_text, false)
 		await animate_chat_text(chat, response_text)
 		update_action_buttons()
 		return
@@ -553,7 +553,7 @@ func do_move(move_type: String) -> void:
 	await get_tree().create_timer(0.25).timeout
 
 	# Prepare for NPC reply
-var npc_chat: FumbleChatBox = null
+	var npc_chat: FumbleChatBox = null
 	if not (result.success and reaction == "haha" and move_type != "catch"):
 		npc_chat = await process_npc_response(move_type, chosen_line.get("response_id", null), result.success)
 
@@ -603,7 +603,7 @@ var npc_chat: FumbleChatBox = null
 	if battle_stats.get("apprehension", 0) >= 90 and not result.success:
 		var warning_text: String = RizzBattleData.get_random_block_warning()
 		if warning_text != "":
-                    var warning_chat: FumbleChatBox = add_chat_line(warning_text, false)
+			var warning_chat: FumbleChatBox = add_chat_line(warning_text, false)
 			await animate_chat_text(warning_chat, warning_text)
 			update_action_buttons()
 		block_warning_active = true
@@ -709,31 +709,29 @@ func _reveal_chat_effects_and_results(player_chat: FumbleChatBox, player_result:
 
 
 
-
-
-func animate_success_or_fail(success: bool):
-	var player_result = "success"
-	var npc_result = "success"
+func animate_success_or_fail(success: bool) -> void:
+	var player_result: String = "success"
+	var npc_result: String = "success"
 	if not success:
 		player_result = "fail"
 		npc_result = "fail"
 
-    var last_player_chat: FumbleChatBox = null
-    var last_npc_chat: FumbleChatBox = null
+	var last_player_chat: FumbleChatBox = null
+	var last_npc_chat: FumbleChatBox = null
 
 	# Find last player and npc chat
 	for i in range(chat_container.get_child_count() - 1, -1, -1):
-		var hbox = chat_container.get_child(i)
+		var hbox: Node = chat_container.get_child(i)
 		if hbox.get_child_count() >= 2:
-			var left = hbox.get_child(0)
-			var right = hbox.get_child(1)
-                    if left is FumbleChatBox and last_player_chat == null:
+			var left: Node = hbox.get_child(0)
+			var right: Node = hbox.get_child(1)
+			if left is FumbleChatBox and last_player_chat == null:
 				last_player_chat = left
-                    if right is FumbleChatBox and last_npc_chat == null:
+			if right is FumbleChatBox and last_npc_chat == null:
 				last_npc_chat = right
 		else:
-			var chat = hbox.get_child(0)
-                    if chat is FumbleChatBox:
+			var chat: Node = hbox.get_child(0)
+			if chat is FumbleChatBox:
 				if last_player_chat == null:
 					last_player_chat = chat
 				elif last_npc_chat == null:
@@ -745,7 +743,6 @@ func animate_success_or_fail(success: bool):
 		last_player_chat.set_result_and_flash(player_result)
 	if last_npc_chat:
 		last_npc_chat.set_result_and_flash(npc_result)
-
 
 
 func _on_npc_profile_button_pressed() -> void:
@@ -853,7 +850,7 @@ func process_npc_response(move_type, response_id, success: bool) -> FumbleChatBo
 
 	last_npc_core_line = core
 
-    var chat: FumbleChatBox = add_chat_line(response_text, false)
+	var chat: FumbleChatBox = add_chat_line(response_text, false)
 	await animate_chat_text(chat, response_text)
 	update_action_buttons()
 	return chat
@@ -878,7 +875,7 @@ func persist_battle_stats_to_npc():
 
 
 func animate_chat_text(fumble_chat_box: Control, text: String) -> void:
-    var label = fumble_chat_box.text_label
+	var label = fumble_chat_box.text_label
 	label.text = text
 	label.visible_ratio = 0.0
 	

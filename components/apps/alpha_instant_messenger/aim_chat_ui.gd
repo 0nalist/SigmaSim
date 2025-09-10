@@ -29,8 +29,8 @@ func _ready() -> void:
 	greet_button.pressed.connect(_on_greet_pressed)
 	gift_button.pressed.connect(_on_gift_pressed)
 	date_button.pressed.connect(_on_date_pressed)
-        relationship_button.pressed.connect(_on_relationship_pressed)
-        line_edit.text_submitted.connect(_on_line_edit_submitted)
+	relationship_button.pressed.connect(_on_relationship_pressed)
+	line_edit.text_submitted.connect(_on_line_edit_submitted)
 
 func _finalize_setup() -> void:
 	if npc == null:
@@ -70,11 +70,13 @@ func _on_date_pressed() -> void:
 	pass
 
 func _on_relationship_pressed() -> void:
-        pass
+		pass
 
 func _on_line_edit_submitted(new_text: String) -> void:
+
         var text = new_text.strip_edges()
         if text == "":
                 return
         chat_log.add_message(text, true)
         line_edit.clear()
+
