@@ -2,6 +2,7 @@ extends Pane
 class_name AimChatUI
 
 const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
+const CONVERSATION_CHOICE_SCENE: PackedScene = preload("res://components/apps/alpha_instant_messenger/conversation_choice.tscn")
 
 @onready var header_container: PanelContainer = %HeaderContainer
 @onready var name_label: Label = %NameLabel
@@ -12,6 +13,7 @@ const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_fa
 @onready var gift_button: Button = %GiftButton
 @onready var date_button: Button = %DateButton
 @onready var relationship_button: Button = %RelationshipButton
+@onready var choices_vbox: VBoxContainer = %ChoicesVBox
 
 var npc: NPC
 var npc_idx: int = -1
@@ -43,6 +45,21 @@ func _finalize_setup() -> void:
 		portrait_view.subject_npc_idx = npc_idx
 	if npc.portrait_config and portrait_view.has_method("apply_config"):
 		portrait_view.apply_config(npc.portrait_config)
+	_populate_conversation_choices()
+
+func _populate_conversation_choices() -> void:
+	if ConversationManager == null:
+		return
+	for child in choices_vbox.get_children():
+		child.queue_free()
+	var convo_ids: Array = ConversationManager.get_available_conversations(npc_idx, "CHATBOX_OPEN")
+	for convo_id in convo_ids:
+		var choice: ConversationChoice = CONVERSATION_CHOICE_SCENE.instantiate()
+		choice.conv_id = convo_id
+		choice.set_npc_idx(npc_idx)
+		var meta: Dictionary = ConversationManager.conversation_registry.get(convo_id, {})
+		choice.text = meta.get("name", convo_id)
+		choices_vbox.add_child(choice)
 
 func _on_header_gui_input(event: InputEvent) -> void:
 	print("header gui input")
@@ -56,9 +73,9 @@ func _on_header_gui_input(event: InputEvent) -> void:
 				WindowManager.launch_popup(EX_FACTOR_VIEW_SCENE, key, {"npc": npc, "npc_idx": npc_idx})
 
 func _is_romantically_pursuing() -> bool:
-		if npc_idx == -1:
-				return false
-		return NPCManager.has_romantic_relationship(npc_idx)
+	if npc_idx == -1:
+		return false
+	return NPCManager.has_romantic_relationship(npc_idx)
 
 func _on_greet_pressed() -> void:
 	pass
@@ -70,11 +87,11 @@ func _on_date_pressed() -> void:
 	pass
 
 func _on_relationship_pressed() -> void:
-		pass
+	pass
 
 func _on_line_edit_submitted(new_text: String) -> void:
 	var text = new_text.strip_edges()
 	if text == "":
-			return
+		return
 	chat_log.add_message(text, true)
 	line_edit.clear()
