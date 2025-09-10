@@ -53,6 +53,7 @@ SoundManager="*res://autoloads/sound_manager.gd"
 TraumaManager="*res://autoloads/TraumaManager.gd"
 TarotManager="*res://autoloads/tarot_manager.gd"
 NPCCatalog="*res://autoloads/npc_catalog.gd"
+ConversationManager="*res://autoloads/conversation_manager.gd"
 
 [display]
 
