@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://c0twe7ewldtve"]
 
 [ext_resource type="PackedScene" uid="uid://bvpjxuug60bse" path="res://components/ui/custom_button.tscn" id="1"]
-[ext_resource type="Script" uid="uid://c0l1fb8st3rhk" path="res://components/apps/alpha_instant_messenger/conversation_choice.gd" id="2"]
+[ext_resource type="Script" uid="uid://c0l1fb8st3rhk" path="res://components/apps/alpha_instant_messenger/aim_choice.gd" id="2"]
 
-[node name="ConversationChoice" instance=ExtResource("1")]
+[node name="AimChoice" instance=ExtResource("1")]
 custom_minimum_size = Vector2(170, 34)
 size_flags_horizontal = 3
 mouse_filter = 1

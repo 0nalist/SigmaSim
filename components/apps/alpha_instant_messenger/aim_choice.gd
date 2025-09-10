@@ -1,5 +1,5 @@
 extends CustomButton
-class_name ConversationChoice
+class_name AimChoice
 
 @export var conv_id: String = "":
 	set(value):
