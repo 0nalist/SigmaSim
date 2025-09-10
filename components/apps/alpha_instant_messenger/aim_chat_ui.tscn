@@ -71,6 +71,7 @@ layout_mode = 2
 
 [node name="ButtonsGrid" type="GridContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 columns = 2
 
@@ -93,3 +94,18 @@ text = "Date"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Discuss Relationship"
+
+[node name="ChoicesContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ChoicesContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/ChoicesContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ChoicesVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ChoicesContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2

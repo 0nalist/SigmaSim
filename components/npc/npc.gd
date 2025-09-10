@@ -10,7 +10,6 @@ const BASE_DATE_COST: float = 10.0
 const MAX_LOVE_COOLDOWN: int = 24 * 60
 
 
-
 # === Basic Info ===
 @export var full_name: String
 @export var first_name: String
