@@ -1,5 +1,5 @@
 extends MarginContainer
-class_name ChatBox
+class_name FumbleChatBox
 
 var is_npc_message: bool = false
 var resolved: bool = false

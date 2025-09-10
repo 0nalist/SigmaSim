@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dyv7bmgfriqht"]
 
-[ext_resource type="Script" uid="uid://bem114rcr3lcc" path="res://components/apps/fumble/fumble_battle/chat_box.gd" id="1_i1vjr"]
+[ext_resource type="Script" uid="uid://bem114rcr3lcc" path="res://components/apps/fumble/fumble_battle/fumble_chat_box.gd" id="1_i1vjr"]
 [ext_resource type="Texture2D" uid="uid://b8piqndlfnolp" path="res://assets/early_bird/wojak_bird_1.png" id="2_ugbyc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i1vjr"]
@@ -10,7 +10,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="ChatBox" type="MarginContainer"]
+[node name="FumbleChatBox" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
