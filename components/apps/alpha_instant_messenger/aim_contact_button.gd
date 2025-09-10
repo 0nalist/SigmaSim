@@ -31,8 +31,9 @@ func _update_portrait() -> void:
 	if pv == null:
 		var scene: PackedScene = preload("res://components/portrait/portrait_view.tscn")
 		pv = scene.instantiate()
-		pv.portrait_creator_enabled = false
-		portrait_viewport.add_child(pv)
-		pv.size = portrait_viewport.size
+	pv.portrait_creator_enabled = false
+	pv.custom_minimum_size = Vector2(32, 32)
+	pv.portrait_scale = 1.0
+	pv.size = portrait_viewport.size
 	pv.apply_config(npc.portrait_config)
 	icon_texture = portrait_viewport.get_texture()
