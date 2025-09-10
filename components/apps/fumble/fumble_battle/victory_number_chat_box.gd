@@ -1,4 +1,4 @@
-extends ChatBox
+extends FumbleChatBox
 class_name VictoryNumberChatBox
 
 signal victory_number_clicked

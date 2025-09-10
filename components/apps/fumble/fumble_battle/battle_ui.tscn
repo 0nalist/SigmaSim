@@ -5,7 +5,7 @@
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="2_ctqjn"]
 [ext_resource type="PackedScene" uid="uid://5esyyyvfivml" path="res://components/apps/fumble/fumble_battle/victory_number_chat_box.tscn" id="3_an8fo"]
 [ext_resource type="Script" uid="uid://ryyas7jb3kgr" path="res://components/apps/fumble/fumble_battle/battle_logic.gd" id="3_clyoa"]
-[ext_resource type="PackedScene" uid="uid://dyv7bmgfriqht" path="res://components/apps/fumble/fumble_battle/chat_box.tscn" id="4_34iuq"]
+[ext_resource type="PackedScene" uid="uid://dyv7bmgfriqht" path="res://components/apps/fumble/fumble_battle/fumble_chat_box.tscn" id="4_34iuq"]
 [ext_resource type="Shader" uid="uid://crp3wav80j3i" path="res://assets/moonbound.gdshader" id="5_7gtst"]
 [ext_resource type="Script" uid="uid://qeyobl0rg2cy" path="res://components/apps/fumble/stat_progress_bar.gd" id="6_d7cye"]
 [ext_resource type="PackedScene" uid="uid://cwin011rx52n7" path="res://components/apps/fumble/fumble_profile_ui.tscn" id="6_g0e31"]
@@ -172,7 +172,7 @@ size_flags_vertical = 4
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_6oduf")
 script = ExtResource("1_ctqjn")
-chat_box_scene = ExtResource("4_34iuq")
+fumble_chat_box_scene = ExtResource("4_34iuq")
 victory_number_chat_box_scene = ExtResource("3_an8fo")
 battle_logic_resource = ExtResource("3_clyoa")
 

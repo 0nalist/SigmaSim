@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/apps/alpha_instant_messenger/aim_chat_log.gd" id="1"]
+
+[node name="AimChatLog" type="HBoxContainer"]
+script = ExtResource("1")
+
+[node name="MessageLabel" type="Label" parent="."]
+unique_name_in_owner = true
+autowrap_mode = 3
