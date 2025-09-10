@@ -23,6 +23,7 @@ var _style_disabled: StyleBox
 @onready var _hbox: HBoxContainer = %HBox
 @onready var _icon_margin_node: MarginContainer = %IconMargin
 @onready var _icon_rect: TextureRect = %Icon
+
 @onready var _label: Label = %Label
 var _button: Button
 
