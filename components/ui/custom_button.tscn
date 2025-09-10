@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/ui/custom_button.gd" id="1"]
+
+[node name="CustomButton" type="PanelContainer"]
+script = ExtResource("1")
+
+[node name="ContentMargin" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+
+[node name="HBox" type="HBoxContainer" parent="ContentMargin"]
+unique_name_in_owner = true
+
+[node name="IconMargin" type="MarginContainer" parent="ContentMargin/HBox"]
+unique_name_in_owner = true
+
+[node name="Icon" type="TextureRect" parent="ContentMargin/HBox/IconMargin"]
+unique_name_in_owner = true
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="ContentMargin/HBox"]
+unique_name_in_owner = true
+text = "Button"
