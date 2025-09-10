@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dejdylbhc8d22"]
+[gd_scene load_steps=3 format=3 uid="uid://dejdylbhc8d22"]
 
 [ext_resource type="PackedScene" path="res://components/ui/custom_button.tscn" id="1"]
 [ext_resource type="Script" uid="uid://bema2a8mtfbin" path="res://components/apps/alpha_instant_messenger/aim_contact_button.gd" id="2"]
-[ext_resource type="PackedScene" path="res://components/portrait/portrait_view.tscn" id="3"]
 
 [node name="AimContactButton" instance=ExtResource("1")]
 custom_minimum_size = Vector2(170, 34)
@@ -21,13 +20,12 @@ layout_mode = 2
 
 [node name="Icon" parent="ContentMargin/HBox/IconMargin" index="0"]
 layout_mode = 2
-custom_minimum_size = Vector2(32, 32)
-
-[node name="Portrait" parent="ContentMargin/HBox/IconMargin/Icon" instance=ExtResource("3") index="0"]
-custom_minimum_size = Vector2(32, 32)
-portrait_scale = 1.0
-portrait_creator_enabled = false
 
 [node name="Label" parent="ContentMargin/HBox" index="1"]
 layout_mode = 2
 
+[node name="PortraitViewport" type="SubViewport" parent="." index="1"]
+unique_name_in_owner = true
+disable_3d = true
+size = Vector2i(32, 32)
+render_target_update_mode = 3
