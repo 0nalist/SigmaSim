@@ -73,10 +73,8 @@ func _on_relationship_pressed() -> void:
 		pass
 
 func _on_line_edit_submitted(new_text: String) -> void:
-
-        var text = new_text.strip_edges()
-        if text == "":
-                return
-        chat_log.add_message(text, true)
-        line_edit.clear()
-
+	var text = new_text.strip_edges()
+	if text == "":
+			return
+	chat_log.add_message(text, true)
+	line_edit.clear()
