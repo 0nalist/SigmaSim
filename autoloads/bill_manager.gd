@@ -59,56 +59,56 @@ func _ready() -> void:
 
 
 func _on_day_passed(new_day: int, new_month: int, new_year: int) -> void:
-        if is_loading:
-                return
+	if is_loading:
+		return
 
-        var yesterday = _get_yesterday()
-        auto_resolve_bills_for_date(_format_date_key(yesterday))
+	var yesterday = _get_yesterday()
+	auto_resolve_bills_for_date(_format_date_key(yesterday))
 
-        var today := {"day": new_day, "month": new_month, "year": new_year}
-        var today_key = _format_date_key(today)
-        if not active_bills.has(today_key):
-                active_bills[today_key] = []
-        if not pending_bill_data.has(today_key):
-                pending_bill_data[today_key] = []
+	var today := {"day": new_day, "month": new_month, "year": new_year}
+	var today_key = _format_date_key(today)
+	if not active_bills.has(today_key):
+		active_bills[today_key] = []
+	if not pending_bill_data.has(today_key):
+		pending_bill_data[today_key] = []
 
-        var bills_today: Array = get_due_bills_for_date(new_day, new_month, new_year)
-        var already_paid: Array = paid_bills.get(today_key, [])
+	var bills_today: Array = get_due_bills_for_date(new_day, new_month, new_year)
+	var already_paid: Array = paid_bills.get(today_key, [])
 
-        for bill_name in bills_today:
-                if bill_name in already_paid:
-                        continue
+	for bill_name in bills_today:
+		if bill_name in already_paid:
+			continue
 
-                # 🧠 Check if this bill popup already exists or is pending for today
-                var already_open: bool = false
-                for existing in active_bills[today_key]:
-                        if is_instance_valid(existing) and existing.bill_name == bill_name:
-                                already_open = true
-                                break
-                if not already_open:
-                        for pending in pending_bill_data.get(today_key, []):
-                                if pending.get("bill_name", "") == bill_name:
-                                        already_open = true
-                                        break
+		# 🧠 Check if this bill popup already exists or is pending for today
+		var already_open: bool = false
+		for existing in active_bills[today_key]:
+			if is_instance_valid(existing) and existing.bill_name == bill_name:
+				already_open = true
+				break
+		if not already_open:
+			for pending in pending_bill_data.get(today_key, []):
+				if pending.get("bill_name", "") == bill_name:
+					already_open = true
+					break
 
-                if already_open:
-                        continue  # ✅ Skip duplicate
+		if already_open:
+			continue  # ✅ Skip duplicate
 
-                var amount: float = get_bill_amount(bill_name)
-                if amount <= 0.0:
-                        print("Skipping %s bill (amount is 0)" % bill_name)
-                        continue
+		var amount: float = get_bill_amount(bill_name)
+		if amount <= 0.0:
+			print("Skipping %s bill (amount is 0)" % bill_name)
+			continue
 
-                if autopay_enabled and attempt_to_autopay(bill_name):
-                        mark_bill_paid(bill_name, today_key)
-                        continue
+		if autopay_enabled and attempt_to_autopay(bill_name):
+			mark_bill_paid(bill_name, today_key)
+			continue
 
-                # Queue bill popup for display
-                pending_bill_data[today_key].append({"bill_name": bill_name, "amount": amount})
+		# Queue bill popup for display
+		pending_bill_data[today_key].append({"bill_name": bill_name, "amount": amount})
 
-        _tick_down_compound_timers(1440)
-        apply_debt_interest()
-        show_due_popups()
+	_tick_down_compound_timers(1440)
+	apply_debt_interest()
+	show_due_popups()
 
 
 func _on_credit_updated(used: float, limit: float) -> void:
