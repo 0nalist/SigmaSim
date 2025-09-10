@@ -124,9 +124,9 @@ func _ready() -> void:
 		Events.connect("ex_factor_talk_therapy_purchased", _on_talk_therapy_purchased)
 
 func _process(delta: float) -> void:
-       if npc == null:
-               return
-       logic.process(delta)
+	if npc == null or not TimeManager.time_ticking:
+			return
+	logic.process(delta)
 
 	# Throttle progress autosave.
 	if npc_idx != -1 and npc.relationship_progress.to_float() != last_saved_progress:

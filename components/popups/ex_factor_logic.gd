@@ -96,16 +96,16 @@ func change_state(stage: int) -> void:
 	_emit_blocked()
 
 func process(delta: float) -> void:
-       if npc == null:
-               return
-       if progress_paused:
-               return
-       if state != null:
-               var before: float = npc.relationship_progress.to_float()
-               state.update(delta)
-               if npc.relationship_progress.to_float() != before:
-                       emit_signal("progress_changed", npc.relationship_progress.to_float())
-                       emit_signal("request_persist", {"relationship_progress": npc.relationship_progress})
+	if npc == null:
+			return
+	if progress_paused:
+			return
+	if state != null:
+			var before: float = npc.relationship_progress.to_float()
+			state.update(delta)
+			if npc.relationship_progress.to_float() != before:
+					emit_signal("progress_changed", npc.relationship_progress.to_float())
+					emit_signal("request_persist", {"relationship_progress": npc.relationship_progress})
 
 # ---------------------------- User actions ----------------------------
 
@@ -421,8 +421,8 @@ class PreMarriageState extends SuitorState:
 	func update(delta: float) -> void:
 		var prog_f: float = npc.relationship_progress.to_float()
 		var bounds: Vector2 = ExFactorLogic.get_stage_bounds(stage, prog_f)
-               var rate: float = machine.relationship_progress_speed * npc.affinity * machine.affinity_modifier
-               npc.relationship_progress.add(rate * delta)
+		var rate: float = machine.relationship_progress_speed * npc.affinity * machine.affinity_modifier
+		npc.relationship_progress.add(rate * delta)
 
 		prog_f = npc.relationship_progress.to_float()
 		var range_size: float = bounds.y - bounds.x
@@ -476,9 +476,9 @@ class EngagedState extends PreMarriageState:
 		super._init(machine_ref, NPCManager.RelationshipStage.ENGAGED)
 
 class MarriedState extends SuitorState:
-        func update(delta: float) -> void:
-               var rate: float = machine.relationship_progress_speed * npc.affinity * machine.affinity_modifier
-               npc.relationship_progress.add(rate * delta)
+		func update(delta: float) -> void:
+			var rate: float = machine.relationship_progress_speed * npc.affinity * machine.affinity_modifier
+			npc.relationship_progress.add(rate * delta)
 
 class DivorcedState extends SuitorState:
 	pass
