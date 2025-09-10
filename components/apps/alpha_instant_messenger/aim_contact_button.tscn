@@ -10,21 +10,6 @@ mouse_filter = 1
 script = ExtResource("2")
 npc_path = ""
 
-[node name="ContentMargin" parent="." index="0"]
-layout_mode = 2
-
-[node name="HBox" parent="ContentMargin" index="0"]
-layout_mode = 2
-
-[node name="IconMargin" parent="ContentMargin/HBox" index="0"]
-layout_mode = 2
-
-[node name="Icon" parent="ContentMargin/HBox/IconMargin" index="0"]
-layout_mode = 2
-
 [node name="Portrait" parent="ContentMargin/HBox/IconMargin" index="1" instance=ExtResource("3")]
 unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Label" parent="ContentMargin/HBox" index="1"]
 layout_mode = 2
