@@ -27,6 +27,7 @@ func set_npc(new_npc: NPC) -> void:
 		_update_portrait()
 
 func _update_portrait() -> void:
+
         if npc == null:
                 return
         portrait_view.portrait_creator_enabled = false
@@ -34,3 +35,4 @@ func _update_portrait() -> void:
         portrait_view.portrait_scale = 1.0
         if npc.portrait_config and portrait_view.has_method("apply_config"):
                 portrait_view.apply_config(npc.portrait_config)
+
