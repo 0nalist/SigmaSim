@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://components/ui/custom_button.tscn" id="1"]
+[ext_resource type="Script" path="res://components/apps/alpha_instant_messenger/conversation_choice.gd" id="2"]
+
+[node name="ConversationChoice" instance=ExtResource("1")]
+custom_minimum_size = Vector2(170, 34)
+mouse_filter = 1
+script = ExtResource("2")
+conv_id = ""
