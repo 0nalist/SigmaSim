@@ -2,12 +2,11 @@ extends Pane
 class_name AimChatUI
 
 const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
-const AIM_CHAT_LOG_SCENE: PackedScene = preload("res://components/apps/alpha_instant_messenger/aim_chat_log.tscn")
 
 @onready var header_container: PanelContainer = %HeaderContainer
 @onready var name_label: Label = %NameLabel
 @onready var portrait_view: PortraitView = %Portrait
-@onready var messages_container: VBoxContainer = %MessagesContainer
+@onready var chat_log: AimChatLog = %AimChatLog
 @onready var line_edit: LineEdit = %PlayerLineEdit
 @onready var greet_button: Button = %GreetButton
 @onready var gift_button: Button = %GiftButton
@@ -74,10 +73,10 @@ func _on_relationship_pressed() -> void:
 		pass
 
 func _on_line_edit_submitted(new_text: String) -> void:
-	var text = new_text.strip_edges()
-	if text == "":
-			return
-	var log: AimChatLog = AIM_CHAT_LOG_SCENE.instantiate()
-	messages_container.add_child(log)
-	log.set_message(text, true)
-	line_edit.clear()
+
+        var text = new_text.strip_edges()
+        if text == "":
+                return
+        chat_log.add_message(text, true)
+        line_edit.clear()
+

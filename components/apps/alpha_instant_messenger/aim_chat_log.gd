@@ -1,11 +1,9 @@
-extends HBoxContainer
+extends VBoxContainer
 class_name AimChatLog
 
-@onready var message_label: Label = %MessageLabel
+const AIM_CHAT_MESSAGE_SCENE: PackedScene = preload("res://components/apps/alpha_instant_messenger/aim_chat_message.tscn")
 
-var is_npc_message: bool = false
-
-func set_message(text: String, from_player: bool) -> void:
-    is_npc_message = not from_player
-    message_label.text = text
-    alignment = BoxContainer.ALIGNMENT_END if from_player else BoxContainer.ALIGNMENT_BEGIN
+func add_message(text: String, from_player: bool) -> void:
+    var message: AimChatMessage = AIM_CHAT_MESSAGE_SCENE.instantiate()
+    add_child(message)
+    message.set_message(text, from_player)
