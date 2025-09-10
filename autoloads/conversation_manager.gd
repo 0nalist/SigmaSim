@@ -23,7 +23,8 @@ func _load_data() -> void:
 	_choices_load()
 
 func _conversation_registry_load() -> void:
-	var path: String = "res://autoloads/conversations.json"
+	var path: String = "res://data/npc_data/conversations_data/conversations.json"
+	#"res://autoloads/conversations.json"
 	if FileAccess.file_exists(path):
 		var text: String = FileAccess.get_file_as_string(path)
 		var parsed = JSON.parse_string(text)
@@ -31,7 +32,7 @@ func _conversation_registry_load() -> void:
 			conversation_registry = parsed
 
 func _nodes_load() -> void:
-	var path: String = "res://autoloads/nodes.json"
+	var path: String = "res://data/npc_data/conversations_data/nodes.json"
 	if FileAccess.file_exists(path):
 		var text: String = FileAccess.get_file_as_string(path)
 		var parsed = JSON.parse_string(text)
@@ -39,7 +40,7 @@ func _nodes_load() -> void:
 			nodes = parsed
 
 func _choices_load() -> void:
-	var path: String = "res://autoloads/choices.json"
+	var path: String = "res://data/npc_data/conversations_data/choices.json"
 	if FileAccess.file_exists(path):
 		var text: String = FileAccess.get_file_as_string(path)
 		var parsed = JSON.parse_string(text)
