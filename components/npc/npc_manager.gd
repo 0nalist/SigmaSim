@@ -65,20 +65,20 @@ func _flush_save_queue() -> void:
 	_save_queue.clear()
 
 func load_romantic_npc_cache() -> void:
-       romantic_npcs.clear()
-       var ids: Array[int] = DBManager.get_romantic_npc_ids()
-       for id in ids:
-               var idx: int = int(id)
-               romantic_npcs.append(idx)
-               if not persistent_npcs.has(idx):
-                       promote_to_persistent(idx)
+	romantic_npcs.clear()
+	var ids: Array[int] = DBManager.get_romantic_npc_ids()
+	for id in ids:
+			var idx: int = int(id)
+			romantic_npcs.append(idx)
+			if not persistent_npcs.has(idx):
+					promote_to_persistent(idx)
 
 func add_romantic_npc(idx: int) -> void:
-       if not npcs.has(idx):
-               get_npc_by_index(idx)
-       if not romantic_npcs.has(idx):
-               romantic_npcs.append(idx)
-       set_npc_field(idx, "romantic_relationship", true)
+	if not npcs.has(idx):
+			get_npc_by_index(idx)
+	if not romantic_npcs.has(idx):
+			romantic_npcs.append(idx)
+	set_npc_field(idx, "romantic_relationship", true)
 
 	if persistent_npcs.has(idx):
 		DBManager.save_npc(idx, npcs[idx])

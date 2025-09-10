@@ -636,16 +636,16 @@ var ex_award: float
 var confidence_award: float = 25.0
 
 func show_victory_screen():
-		_reset_auto_checkboxes()
-		ex_award = npc.attractiveness / 100.0
-		victory_ex_label.text = "You earned " + str(ex_award) + " EX"
-		victory_confidence_label.text = "Confidence +" + str(confidence_award)
-		victory_name_label.text = npc.first_name + " has been added to"
-		end_battle_screen_container.show()
-		end_battle(victorious, npc)
-		FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "victory")
-		DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
-		persist_battle_stats_to_npc()
+	_reset_auto_checkboxes()
+	ex_award = npc.attractiveness / 100.0
+	victory_ex_label.text = "You earned " + str(ex_award) + " EX"
+	victory_confidence_label.text = "Confidence +" + str(confidence_award)
+	victory_name_label.text = npc.first_name + " has been added to"
+	end_battle_screen_container.show()
+	end_battle(victorious, npc)
+	FumbleManager.save_battle_state(battle_id, chatlog, battle_stats, move_usage_counts, "victory")
+	DBManager.save_fumble_relationship(npc_idx, FumbleManager.FumbleStatus.LIKED)
+	persist_battle_stats_to_npc()
 
 func end_battle(success: bool, npc: NPC) -> void:
 	# Lock out further player interaction
