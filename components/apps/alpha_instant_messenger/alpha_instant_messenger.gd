@@ -12,22 +12,20 @@ func _ready() -> void:
 	_populate_contacts()
 
 func _populate_contacts() -> void:
-        for child in contacts_vbox.get_children():
-                if child != contact_button_template:
-                        child.queue_free()
-        var entries: Array[int] = NPCManager.get_romantic_npcs()
-        for idx in entries:
-                var npc: NPC = NPCManager.get_npc_by_index(int(idx))
-                var btn: AimContactButton = AIM_CONTACT_BUTTON_SCENE.instantiate()
-                contacts_vbox.add_child(btn)
-                btn.text = "@%s" % npc.username
-                btn.set_npc(npc)
-                var npc_idx := int(idx)
-                var npc_ref := npc
-                btn.pressed.connect(func() -> void:
-                                _open_chat_ui(npc_idx, npc_ref)
-                )
-        contact_button_template.visible = false
+	for child in contacts_vbox.get_children():
+		if child != contact_button_template:
+			child.queue_free()
+	var entries: Array[int] = NPCManager.get_romantic_npcs()
+	for idx in entries:
+		var npc: NPC = NPCManager.get_npc_by_index(int(idx))
+		var btn: AimContactButton = AIM_CONTACT_BUTTON_SCENE.instantiate()
+		contacts_vbox.add_child(btn)
+		btn.text = "@%s" % npc.username
+		btn.set_npc(npc)
+		btn.pressed.connect(func() -> void:
+				_open_chat_ui(int(idx), npc)
+		)
+	contact_button_template.visible = false
 
 func _open_chat_ui(idx: int, npc: NPC) -> void:
 		var key: String = "aim_chat_%d" % idx
