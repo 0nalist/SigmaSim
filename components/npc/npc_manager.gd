@@ -71,10 +71,15 @@ func load_romantic_npc_cache() -> void:
 		romantic_npcs.append(int(id))
 
 func add_romantic_npc(idx: int) -> void:
-	if not romantic_npcs.has(idx):
-		romantic_npcs.append(idx)
-	promote_to_persistent(idx)
-	set_npc_field(idx, "romantic_relationship", true)
+        if not romantic_npcs.has(idx):
+                romantic_npcs.append(idx)
+        set_npc_field(idx, "romantic_relationship", true)
+
+        if persistent_npcs.has(idx):
+                DBManager.save_npc(idx, npcs[idx])
+                _save_queue.erase(idx)
+        else:
+                promote_to_persistent(idx)
 
 func get_romantic_npcs() -> Array[int]:
 	return romantic_npcs
