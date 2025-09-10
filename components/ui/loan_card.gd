@@ -26,7 +26,7 @@ func init(title: String, get_balance: Callable, pay: Callable):
 
 func update_ui():
 	var owed = get_balance_func.call()
-	var cash := PortfolioManager.cash
+	var cash = PortfolioManager.cash
 	var max_val = min(owed, cash)
 
 	amount_label.text = "Owed: $%.2f" % owed

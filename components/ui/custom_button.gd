@@ -109,6 +109,11 @@ func _ready() -> void:
 	_button.mouse_exited.connect(_update_style)
 	_button.focus_entered.connect(_update_style)
 	_button.focus_exited.connect(_update_style)
+	call_deferred("update_label")
+
+func update_label():
+	_label.text = _text
+
 
 func _get_button_stylebox(name: String) -> StyleBox:
 	var theme: Theme = get_theme()

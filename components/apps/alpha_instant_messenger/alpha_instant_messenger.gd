@@ -19,12 +19,12 @@ func _populate_contacts() -> void:
 	for idx in entries:
 		var npc: NPC = NPCManager.get_npc_by_index(int(idx))
 		var btn: AimContactButton = AIM_CONTACT_BUTTON_SCENE.instantiate()
+		contacts_vbox.add_child(btn)
 		btn.text = "@%s" % npc.username
 		btn.set_npc(npc)
 		btn.pressed.connect(func() -> void:
 				_open_chat_ui(int(idx), npc)
 		)
-		contacts_vbox.add_child(btn)
 	contact_button_template.visible = false
 
 func _open_chat_ui(idx: int, npc: NPC) -> void:
