@@ -2,7 +2,7 @@ extends Pane
 class_name AimChatUI
 
 const EX_FACTOR_VIEW_SCENE: PackedScene = preload("res://components/popups/ex_factor_view.tscn")
-const CONVERSATION_CHOICE_SCENE: PackedScene = preload("res://components/apps/alpha_instant_messenger/conversation_choice.tscn")
+const AIM_CHOICE_SCENE: PackedScene = preload("res://components/apps/alpha_instant_messenger/aim_choice.tscn")
 
 @onready var header_container: PanelContainer = %HeaderContainer
 @onready var name_label: Label = %NameLabel
@@ -45,16 +45,16 @@ func _finalize_setup() -> void:
 		portrait_view.subject_npc_idx = npc_idx
 	if npc.portrait_config and portrait_view.has_method("apply_config"):
 		portrait_view.apply_config(npc.portrait_config)
-	_populate_conversation_choices()
+	_populate_aim_choices()
 
-func _populate_conversation_choices() -> void:
+func _populate_aim_choices() -> void:
 	if ConversationManager == null:
 		return
 	for child in choices_vbox.get_children():
 		child.queue_free()
 	var convo_ids: Array = ConversationManager.get_available_conversations(npc_idx, "CHATBOX_OPEN")
 	for convo_id in convo_ids:
-		var choice: ConversationChoice = CONVERSATION_CHOICE_SCENE.instantiate()
+		var choice: AimChoice = AIM_CHOICE_SCENE.instantiate()
 		choice.conv_id = convo_id
 		choice.set_npc_idx(npc_idx)
 		var meta: Dictionary = ConversationManager.conversation_registry.get(convo_id, {})
