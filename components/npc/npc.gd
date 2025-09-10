@@ -225,26 +225,28 @@ func to_dict() -> Dictionary:
 				"portrait_config": portrait_config.to_dict() if portrait_config != null else null,
 }
 
+
 static func from_dict(data: Dictionary) -> NPC:
 	var npc = NPC.new()
-	npc.full_name= _safe_string(data.get("full_name"))
-	npc.first_name  = _safe_string(data.get("first_name"))
+	npc.full_name = _safe_string(data.get("full_name"))
+	npc.first_name = _safe_string(data.get("first_name"))
 	npc.middle_initial = _safe_string(data.get("middle_initial"))
-	npc.last_name= _safe_string(data.get("last_name"))
+	npc.last_name = _safe_string(data.get("last_name"))
 
-	var gv = data.get("gender_vector", {"x":0,"y":0,"z":1})
+	var gv = data.get("gender_vector", {"x": 0, "y": 0, "z": 1})
 	if typeof(gv) == TYPE_DICTIONARY and gv.has("x") and gv.has("y") and gv.has("z"):
 		npc.gender_vector = Vector3(float(gv.x), float(gv.y), float(gv.z))
 	else:
-		npc.gender_vector = Vector3(0,0,1)
+		npc.gender_vector = Vector3(0, 0, 1)
 
 	npc.username = _safe_string(data.get("username"))
-	npc.occupation  = _safe_string(data.get("occupation"), "Funemployed")
+	npc.occupation = _safe_string(data.get("occupation"), "Funemployed")
 	npc.relationship_status = _safe_string(data.get("relationship_status"), "Single")
 	npc.locked_in_connection = _safe_int(data.get("locked_in_connection"), 0) != 0
 	npc.relationship_stage = _safe_int(data.get("relationship_stage"), NPCManager.RelationshipStage.STRANGER)
 	npc.relationship_progress = StatManager._flex_from_variant(data.get("relationship_progress"))
 	npc.exclusivity_core = _safe_int(data.get("exclusivity_core"), NPCManager.ExclusivityCore.POLY)
+
 	if not data.has("exclusivity_core"):
 		var legacy_ex: Variant = data.get("exclusivity")
 		if legacy_ex != null:
@@ -264,17 +266,18 @@ static func from_dict(data: Dictionary) -> NPC:
 					else:
 						npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
 		else:
-				if npc.relationship_stage >= NPCManager.RelationshipStage.SERIOUS:
-						npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
-				else:
-						npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
-		npc.romantic_relationship = _safe_int(data.get("romantic_relationship"), 0) != 0
-		npc.personal_relationship = _safe_int(data.get("personal_relationship"), 0) != 0
-		npc.professional_relationship = _safe_int(data.get("professional_relationship"), 0) != 0
-		npc.claimed_exclusive_boost = _safe_int(data.get("claimed_exclusive_boost"), 0) != 0
-		npc.claimed_serious_monog_boost = _safe_int(data.get("claimed_serious_monog_boost"), 0) != 0
-		npc.affinity = _safe_float(data.get("affinity"), 0.0)
-		npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 100.0)
+			if npc.relationship_stage >= NPCManager.RelationshipStage.SERIOUS:
+				npc.exclusivity_core = NPCManager.ExclusivityCore.MONOG
+			else:
+				npc.exclusivity_core = NPCManager.ExclusivityCore.POLY
+
+	npc.romantic_relationship = _safe_int(data.get("romantic_relationship"), 0) != 0
+	npc.personal_relationship = _safe_int(data.get("personal_relationship"), 0) != 0
+	npc.professional_relationship = _safe_int(data.get("professional_relationship"), 0) != 0
+	npc.claimed_exclusive_boost = _safe_int(data.get("claimed_exclusive_boost"), 0) != 0
+	npc.claimed_serious_monog_boost = _safe_int(data.get("claimed_serious_monog_boost"), 0) != 0
+	npc.affinity = _safe_float(data.get("affinity"), 0.0)
+	npc.affinity_equilibrium = _safe_float(data.get("affinity_equilibrium"), 100.0)
 	npc.rizz = _safe_int(data.get("rizz"), 0)
 	npc.attractiveness = _safe_int(data.get("attractiveness"), 0)
 
@@ -282,40 +285,39 @@ static func from_dict(data: Dictionary) -> NPC:
 	var saved_date_cost: float = _safe_float(data.get("date_cost"), BASE_DATE_COST)
 	npc.date_count = _safe_int(data.get("date_count"), -1)
 	if npc.date_count < 0:
-			npc.date_count = _safe_int(data.get("dates_paid"), -1)
+		npc.date_count = _safe_int(data.get("dates_paid"), -1)
 	npc.gift_count = _safe_int(data.get("gift_count"), -1)
 	if npc.date_count < 0:
-			npc.date_count = int(log(max(saved_date_cost, BASE_DATE_COST) / BASE_DATE_COST) / log(2.0))
+		npc.date_count = int(log(max(saved_date_cost, BASE_DATE_COST) / BASE_DATE_COST) / log(2.0))
 	if npc.gift_count < 0:
-			npc.gift_count = int(log(max(saved_gift_cost, BASE_GIFT_COST) / BASE_GIFT_COST) / log(2.0))
+		npc.gift_count = int(log(max(saved_gift_cost, BASE_GIFT_COST) / BASE_GIFT_COST) / log(2.0))
 	npc.gift_cost = (float(npc.attractiveness) / 10.0) * BASE_GIFT_COST * pow(2.0, npc.gift_count)
-	npc.date_cost = (float(npc.attractiveness) / 10.0) * BASE_DATE_COST * pow(2.0, npc.date_count) ##TODO: Make this easier to tweak
-
+	npc.date_cost = (float(npc.attractiveness) / 10.0) * BASE_DATE_COST * pow(2.0, npc.date_count) ## TODO: Make this easier to tweak
 
 	# Older saves stored the absolute game-minute when the cooldown ended.
 	# Newer saves store only the remaining minutes. Detect which format was
 	# used and reconstruct the proper absolute timestamp.
 	var _saved_cd: int = _safe_int(data.get("love_cooldown"), 0)
 	if Engine.has_singleton("TimeManager"):
-			var _now: int = TimeManager.get_now_minutes()
-			if _saved_cd > MAX_LOVE_COOLDOWN:
-					npc.love_cooldown = _saved_cd
-			else:
-					npc.love_cooldown = _now + _saved_cd
-			# Prevent values more than 24h into the future
-			npc.love_cooldown = min(npc.love_cooldown, _now + MAX_LOVE_COOLDOWN)
+		var _now: int = TimeManager.get_now_minutes()
+		if _saved_cd > MAX_LOVE_COOLDOWN:
+			npc.love_cooldown = _saved_cd
+		else:
+			npc.love_cooldown = _now + _saved_cd
+		# Prevent values more than 24h into the future
+		npc.love_cooldown = min(npc.love_cooldown, _now + MAX_LOVE_COOLDOWN)
 	else:
-			# Without a TimeManager, treat the stored value as relative minutes
-			npc.love_cooldown = clamp(_saved_cd, 0, MAX_LOVE_COOLDOWN)
+		# Without a TimeManager, treat the stored value as relative minutes
+		npc.love_cooldown = clamp(_saved_cd, 0, MAX_LOVE_COOLDOWN)
 
 	npc.proposal_cost = _safe_float(data.get("proposal_cost"), 25000.0)
-	npc.income= _safe_int(data.get("income"), 0)
-	npc.wealth= _safe_int(data.get("wealth"), 0)
+	npc.income = _safe_int(data.get("income"), 0)
+	npc.wealth = _safe_int(data.get("wealth"), 0)
 
 	_assign_string_array(npc.preferred_pet_names, data.get("preferred_pet_names"))
 	_assign_string_array(npc.player_pet_names, data.get("player_pet_names"))
 	npc.alpha = _safe_float(data.get("alpha"))
-	npc.beta  = _safe_float(data.get("beta"))
+	npc.beta = _safe_float(data.get("beta"))
 	npc.gamma = _safe_float(data.get("gamma"))
 	npc.delta = _safe_float(data.get("delta"))
 	npc.omega = _safe_float(data.get("omega"))
@@ -323,28 +325,31 @@ static func from_dict(data: Dictionary) -> NPC:
 	_assign_string_array(npc.tags, data.get("tags"), ["alive"])
 	_assign_string_array(npc.likes, data.get("likes"))
 	_assign_string_array(npc.dislikes, data.get("dislikes"))
-	npc.fumble_bio  = _safe_string(data.get("fumble_bio"))
+	npc.fumble_bio = _safe_string(data.get("fumble_bio"))
 	npc.self_esteem = _safe_int(data.get("self_esteem"), 70)
-	npc.apprehension= _safe_int(data.get("apprehension"), 50)
-	npc.chemistry= _safe_int(data.get("chemistry"), 0)
-	npc.chat_battle_type  = _safe_string(data.get("chat_battle_type"))
+	npc.apprehension = _safe_int(data.get("apprehension"), 50)
+	npc.chemistry = _safe_int(data.get("chemistry"), 0)
+	npc.chat_battle_type = _safe_string(data.get("chat_battle_type"))
 	npc.ocean = _safe_dict(data.get("ocean"))
 	npc.openness = _safe_float(data.get("openness"))
 	npc.conscientiousness = _safe_float(data.get("conscientiousness"))
-	npc.extraversion= _safe_float(data.get("extraversion"))
-	npc.agreeableness  = _safe_float(data.get("agreeableness"))
+	npc.extraversion = _safe_float(data.get("extraversion"))
+	npc.agreeableness = _safe_float(data.get("agreeableness"))
 	npc.neuroticism = _safe_float(data.get("neuroticism"))
-	npc.mbti  = _safe_string(data.get("mbti"))
+	npc.mbti = _safe_string(data.get("mbti"))
 	npc.zodiac_sun = _safe_string(data.get("zodiac_sun"))
 	npc.zodiac_moon = _safe_string(data.get("zodiac_moon"))
 	npc.zodiac_rising = _safe_string(data.get("zodiac_rising"))
+
 	var pc_src = data.get("portrait_config")
 	if typeof(pc_src) == TYPE_DICTIONARY and pc_src.size() > 0:
 		npc.portrait_config = PortraitConfig.from_dict(pc_src)
 	else:
 		npc.portrait_config = null
+
 	_assign_string_array(npc.wall_posts, data.get("wall_posts"), ["hello world"])
 	return npc
+
 
 # === Misc Methods ===
 func get_full_name() -> String:

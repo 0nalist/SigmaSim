@@ -68,12 +68,12 @@ func load_romantic_npc_cache() -> void:
 	romantic_npcs.clear()
 	var ids: Array[int] = DBManager.get_romantic_npc_ids()
 	for id in ids:
-			var idx: int = int(id)
-			romantic_npcs.append(idx)
-			if not encountered_npcs.has(idx):
-					encountered_npcs.append(idx)
-			if not persistent_npcs.has(idx):
-					promote_to_persistent(idx)
+		var idx: int = int(id)
+		romantic_npcs.append(idx)
+		if not encountered_npcs.has(idx):
+				encountered_npcs.append(idx)
+		if not persistent_npcs.has(idx):
+				promote_to_persistent(idx)
 
 func add_romantic_npc(idx: int) -> void:
 	if not npcs.has(idx):
