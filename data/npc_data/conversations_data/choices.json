@@ -1,0 +1,8 @@
+[
+  {
+    "conv_id,choice_id,option_id,text,success_chance,show_success_pct,conditions_json,on_success_next,on_failure_next,effects_success_json,effects_failure_json": "first_date_ask_out,restaurant_choice,cheap_dinner,Somewhere easy -$20,0.5,TRUE,\"[{\"\"type\"\":\"\"cash_at_least\"\",\"\"value\"\":20}]\",player_choice_cheap_success,player_choice_cheap_fail,\"[{\"\"type\"\":\"\"add_cash\"\",\"\"value\"\":-20}]\",[]"
+  },
+  {
+    "conv_id,choice_id,option_id,text,success_chance,show_success_pct,conditions_json,on_success_next,on_failure_next,effects_success_json,effects_failure_json": "first_date_ask_out,restaurant_choice,fancy_dinner,Somewhere fancy -$300,1,TRUE,\"[{\"\"type\"\":\"\"cash_at_least\"\",\"\"value\"\":300}]\",player_choice_fancy_success,player_choice_fancy_fail,\"[{\"\"type\"\":\"\"add_cash\"\",\"\"value\"\":-300}]\",[]"
+  }
+]

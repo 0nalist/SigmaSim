@@ -513,8 +513,8 @@ func _on_stock_price_updated(symbol: String, stock: Stock) -> void:
 
 func get_save_data() -> Dictionary:
 	return {
-			"stocks_owned": stocks_owned.duplicate(),
-			"crypto_owned": crypto_owned.duplicate(),
+		"stocks_owned": stocks_owned.duplicate(),
+		"crypto_owned": crypto_owned.duplicate(),
 	}
 
 

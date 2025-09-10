@@ -1,0 +1,8 @@
+[
+  {
+    "conv_id,name,trigger_type,trigger_args_json,conditions_json,priority,repeatable,cooldown_days,weight,tags": "hi,Greetings,CHATBOX_OPEN,{},[],1,TRUE,0,1,greeting"
+  },
+  {
+    "conv_id,name,trigger_type,trigger_args_json,conditions_json,priority,repeatable,cooldown_days,weight,tags": "first_date_ask_out,Ask Out First Date,CHATBOX_OPEN,{},\"[{\"\"type\"\":\"\"relationship_stage_at_least\"\",\"\"npc_idx\"\":\"\"context\"\",\"\"stage\"\":\"\"TALKING\"\"}]\",5,FALSE,0,1,romance"
+  }
+]

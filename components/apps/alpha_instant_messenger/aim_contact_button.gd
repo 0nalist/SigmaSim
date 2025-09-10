@@ -12,7 +12,7 @@ var npc: NPC
 			if res is NPC:
 				set_npc(res)
 	get:
-	return npc_path
+		return npc_path
 
 func _ready() -> void:
 	if npc:
