@@ -16,21 +16,21 @@ func _populate_contacts() -> void:
 		if child != contact_button_template:
 			child.queue_free()
 	var entries: Array[int] = NPCManager.get_romantic_npcs()
-        for idx in entries:
-                var npc: NPC = NPCManager.get_npc_by_index(int(idx))
-                var btn: AimContactButton = AIM_CONTACT_BUTTON_SCENE.instantiate()
-                contacts_vbox.add_child(btn)
-                btn.text = "@%s" % npc.username
-                btn.set_npc(npc)
-                # Use bind to capture the current NPC and index for each button.
-                # Otherwise, the loop variables would be shared and every button
-                # would open the chat for the last NPC in the list.
-                btn.pressed.connect(_open_chat_ui.bind(int(idx), npc))
-        contact_button_template.visible = false
+	for idx in entries:
+			var npc: NPC = NPCManager.get_npc_by_index(int(idx))
+			var btn: AimContactButton = AIM_CONTACT_BUTTON_SCENE.instantiate()
+			contacts_vbox.add_child(btn)
+			btn.text = "@%s" % npc.username
+			btn.set_npc(npc)
+			# Use bind to capture the current NPC and index for each button.
+			# Otherwise, the loop variables would be shared and every button
+			# would open the chat for the last NPC in the list.
+			btn.pressed.connect(_open_chat_ui.bind(int(idx), npc))
+	contact_button_template.visible = false
 
 func _open_chat_ui(idx: int, npc: NPC) -> void:
-		var key: String = "aim_chat_%d" % idx
-		WindowManager.launch_popup(AIM_CHAT_UI_SCENE, key, {"npc": npc, "npc_idx": idx})
+	var key: String = "aim_chat_%d" % idx
+	WindowManager.launch_popup(AIM_CHAT_UI_SCENE, key, {"npc": npc, "npc_idx": idx})
 
 func _on_window_close() -> void:
 	print("closegrinder")

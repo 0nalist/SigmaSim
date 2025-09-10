@@ -15,6 +15,7 @@ var npc: NPC
 		return npc_path
 
 func _ready() -> void:
+	super._ready()
 	if npc:
 		_update_portrait()
 

@@ -49,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_filter = 1
+mouse_filter = 2
 theme = ExtResource("1_8iipa")
 script = ExtResource("1_44ejv")
 window_title = "AIM"
@@ -119,6 +119,7 @@ size_flags_vertical = 3
 
 [node name="ContactButtonTemplate" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/ContactsVBox"]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(170, 34)
 layout_mode = 2
 focus_mode = 0
