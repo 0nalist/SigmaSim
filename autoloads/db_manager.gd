@@ -220,8 +220,14 @@ func _snapshot_path(slot_id: int) -> String:
 	return SNAPSHOT_DIR + "db_snapshot_slot_%d.db" % slot_id
 
 func snapshot_slot_data(slot_id: int) -> void:
-	var path = _snapshot_path(slot_id)
-	DirAccess.copy_absolute(DB_PATH, path)
+        var path = _snapshot_path(slot_id)
+        if db != null and db.has_method("close_db"):
+                db.close_db()
+        DirAccess.copy_absolute(DB_PATH, path)
+        db = SQLite.new()
+        db.path = DB_PATH
+        db.open_db()
+        _init_schema()
 
 func restore_slot_data(slot_id: int) -> void:
 	var path = _snapshot_path(slot_id)
