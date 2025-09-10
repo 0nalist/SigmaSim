@@ -81,6 +81,14 @@ func add_romantic_npc(idx: int) -> void:
 	else:
 		promote_to_persistent(idx)
 
+func persist_romantic_npcs() -> void:
+	for id in romantic_npcs:
+		var idx: int = int(id)
+		if not persistent_npcs.has(idx):
+			promote_to_persistent(idx)
+		var npc: NPC = get_npc_by_index(idx)
+		DBManager.save_npc(idx, npc)
+
 func get_romantic_npcs() -> Array[int]:
 	return romantic_npcs
 

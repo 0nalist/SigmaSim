@@ -155,6 +155,7 @@ func save_to_slot(slot_id: int, include_rng_state := true) -> void:
 
 # Ensure any pending NPC updates (like gift/date cost changes) are written to the database before saving the slot.
 	if NPCManager != null:
+		NPCManager.persist_romantic_npcs()
 		NPCManager._flush_save_queue()
 
 
@@ -200,6 +201,7 @@ func save_to_slot(slot_id: int, include_rng_state := true) -> void:
 
 	save_slot_metadata(metadata)
 	if DBManager != null:
+		NPCManager.persist_romantic_npcs()
 		DBManager.snapshot_slot_data(slot_id)
 
 func load_from_slot(slot_id: int) -> void:
