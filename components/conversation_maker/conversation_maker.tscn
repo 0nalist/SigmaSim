@@ -32,13 +32,6 @@ offset_left = -184.0
 offset_bottom = 213.0
 grow_horizontal = 0
 
-[node name="IdLabel" type="Label" parent="Sidebar/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="TextEdit" type="TextEdit" parent="Sidebar/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
 
 [node name="NewConversationButton" type="Button" parent="Sidebar/VBoxContainer"]
 unique_name_in_owner = true
