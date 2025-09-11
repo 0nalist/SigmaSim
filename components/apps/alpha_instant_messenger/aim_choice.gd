@@ -31,7 +31,9 @@ func _on_pressed() -> void:
 		choice_selected.emit(choice_id, option_id, text)
 
 func _update_label() -> void:
-	var meta: Dictionary = {}
+	if conv_id == "":
+		return
+	var conversation_metadata: Dictionary = {}
 	if ConversationManager != null:
-		meta = ConversationManager.conversation_registry.get(conv_id, {})
-	text = meta.get("name", conv_id)
+		conversation_metadata = ConversationManager.conversation_registry.get(conv_id, {})
+	text = conversation_metadata.get("name", conv_id)
