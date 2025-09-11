@@ -79,17 +79,18 @@ func _on_choice_presented(choice_id: String, options: Array) -> void:
 	for child in choices_vbox.get_children():
 		child.queue_free()
 	for option_data in options:
-		var option_id: String = option_data.get("id", "")
-		var option_text: String = option_data.get("text", "")
-		var choice_button: Button = Button.new()
+		var option_id: String = option_data.get('id', '')
+		var option_text: String = option_data.get('text', '')
+		var choice_button: AimChoice = AIM_CHOICE_SCENE.instantiate()
+		choice_button.choice_id = choice_id
+		choice_button.option_id = option_id
 		choice_button.text = option_text
 		choices_vbox.add_child(choice_button)
-		choice_button.pressed.connect(func():
-			line_edit.text = option_text
+		choice_button.choice_selected.connect(func(selected_choice_id: String, selected_option_id: String, selected_text: String):
+			line_edit.text = selected_text
 			if ConversationManager != null:
-				ConversationManager.choose(choice_id, option_id, npc_idx)
+				ConversationManager.choose(selected_choice_id, selected_option_id, npc_idx)
 		)
-
 func _on_conversation_ended(conv_id: String, npc_id: int) -> void:
 	if npc_id != npc_idx:
 		return

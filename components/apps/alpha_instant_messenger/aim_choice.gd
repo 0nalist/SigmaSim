@@ -1,6 +1,10 @@
 extends CustomButton
 class_name AimChoice
 
+signal choice_selected(choice_id: String, option_id: String, text: String)
+
+@export var choice_id: String = ""
+@export var option_id: String = ""
 @export var conv_id: String = "":
 	set(value):
 		conv_id = value
@@ -20,8 +24,11 @@ func set_npc_idx(idx: int) -> void:
 	npc_idx = idx
 
 func _on_pressed() -> void:
-	if ConversationManager != null:
-		ConversationManager.start(conv_id, npc_idx, "player")
+	if conv_id != "":
+		if ConversationManager != null:
+			ConversationManager.start(conv_id, npc_idx, "player")
+	else:
+		choice_selected.emit(choice_id, option_id, text)
 
 func _update_label() -> void:
 	var meta: Dictionary = {}
