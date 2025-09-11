@@ -17,6 +17,7 @@ const AIM_CHOICE_SCENE: PackedScene = preload("res://components/apps/alpha_insta
 
 var npc: NPC
 var npc_idx: int = -1
+var current_node_id: String = ""
 
 func setup_custom(data: Dictionary) -> void:
 	npc = data.get("npc")
@@ -33,6 +34,10 @@ func _ready() -> void:
 	date_button.pressed.connect(_on_date_pressed)
 	relationship_button.pressed.connect(_on_relationship_pressed)
 	line_edit.text_submitted.connect(_on_line_edit_submitted)
+	if ConversationManager != null:
+		ConversationManager.node_entered.connect(_on_node_entered)
+		ConversationManager.choice_presented.connect(_on_choice_presented)
+		ConversationManager.conversation_ended.connect(_on_conversation_ended)
 
 func _finalize_setup() -> void:
 	if npc == null:
@@ -60,6 +65,37 @@ func _populate_aim_choices() -> void:
 		var meta: Dictionary = ConversationManager.conversation_registry.get(convo_id, {})
 		choice.text = meta.get("name", convo_id)
 		choices_vbox.add_child(choice)
+
+func _on_node_entered(conv_id: String, node_id: String, speaker: String, text: String) -> void:
+	current_node_id = node_id
+	if speaker == "player":
+		line_edit.text = text
+	else:
+		chat_log.add_message(text, false)
+		if ConversationManager != null:
+			ConversationManager.progress(node_id, npc_idx)
+
+func _on_choice_presented(choice_id: String, options: Array) -> void:
+	for child in choices_vbox.get_children():
+		child.queue_free()
+	for option_data in options:
+		var option_id: String = option_data.get("id", "")
+		var option_text: String = option_data.get("text", "")
+		var choice_button: Button = Button.new()
+		choice_button.text = option_text
+		choices_vbox.add_child(choice_button)
+		choice_button.pressed.connect(func():
+			line_edit.text = option_text
+			if ConversationManager != null:
+				ConversationManager.choose(choice_id, option_id, npc_idx)
+		)
+
+func _on_conversation_ended(conv_id: String, npc_id: int) -> void:
+	if npc_id != npc_idx:
+		return
+	current_node_id = ""
+	line_edit.clear()
+	_populate_aim_choices()
 
 func _on_header_gui_input(event: InputEvent) -> void:
 	print("header gui input")
@@ -95,3 +131,5 @@ func _on_line_edit_submitted(new_text: String) -> void:
 		return
 	chat_log.add_message(text, true)
 	line_edit.clear()
+	if ConversationManager != null and current_node_id != "":
+		ConversationManager.progress(current_node_id, npc_idx)
