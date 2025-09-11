@@ -60,12 +60,19 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		gnode.position_offset_changed.connect(_on_node_moved.bind(gnode))
 
 		var vbox: VBoxContainer = VBoxContainer.new()
+		vbox.custom_minimum_size = Vector2(300, 0)
+		vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		gnode.add_child(vbox)
 
 		# Speaker option
+		var speaker_label: Label = Label.new()
+		speaker_label.text = "Speaker"
+		speaker_label.tooltip_text = "Syntax: \"PLAYER\" | \"NPC\""
+		vbox.add_child(speaker_label)
 		var speaker_option: OptionButton = OptionButton.new()
 		speaker_option.add_item("PLAYER")
 		speaker_option.add_item("NPC")
+		speaker_option.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if speaker == "PLAYER":
 			speaker_option.select(0)
 		else:
@@ -74,42 +81,73 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		speaker_option.item_selected.connect(_on_node_speaker_selected.bind(node_id, gnode))
 
 		# Dialogue text
+		var text_label: Label = Label.new()
+		text_label.text = "Text"
+		text_label.tooltip_text = "Syntax: String"
+		vbox.add_child(text_label)
 		var text_edit: TextEdit = TextEdit.new()
 		text_edit.text = String(data.get("text", ""))
+		text_edit.custom_minimum_size = Vector2(250, 80)
+		text_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(text_edit)
 		text_edit.text_changed.connect(_on_node_text_changed.bind(node_id, text_edit))
 
 		# Conditions
+		var conditions_label: Label = Label.new()
+		conditions_label.text = "Conditions"
+		conditions_label.tooltip_text = "Syntax: JSON Array"
+		vbox.add_child(conditions_label)
 		var conditions_edit: TextEdit = TextEdit.new()
-		conditions_edit.text = JSON.stringify(data.get("conditions_json", []), "\t")
+		conditions_edit.text = JSON.stringify(data.get("conditions_json", []), \"	\")
+		conditions_edit.custom_minimum_size = Vector2(250, 80)
+		conditions_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(conditions_edit)
 		conditions_edit.text_changed.connect(_on_node_conditions_changed.bind(node_id, conditions_edit))
 
 		# Effects
+		var effects_label: Label = Label.new()
+		effects_label.text = "Effects"
+		effects_label.tooltip_text = "Syntax: JSON Array"
+		vbox.add_child(effects_label)
 		var effects_edit: TextEdit = TextEdit.new()
-		effects_edit.text = JSON.stringify(data.get("effects_json", []), "\t")
+		effects_edit.text = JSON.stringify(data.get("effects_json", []), \"	\")
+		effects_edit.custom_minimum_size = Vector2(250, 80)
+		effects_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(effects_edit)
 		effects_edit.text_changed.connect(_on_node_effects_changed.bind(node_id, effects_edit))
 
 		# Tags
+		var tags_label: Label = Label.new()
+		tags_label.text = "Tags"
+		tags_label.tooltip_text = "Syntax: comma-separated"
+		vbox.add_child(tags_label)
 		var tags_edit: LineEdit = LineEdit.new()
 		tags_edit.text = String(data.get("tags", ""))
+		tags_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(tags_edit)
 		tags_edit.text_changed.connect(_on_node_tags_changed.bind(node_id))
 
 		# Start / End checkboxes
 		var start_check: CheckBox = CheckBox.new()
 		start_check.text = "Start"
+		start_check.tooltip_text = "Syntax: bool"
 		start_check.button_pressed = bool(data.get("start", false))
 		vbox.add_child(start_check)
 		start_check.toggled.connect(_on_node_start_toggled.bind(node_id))
 
 		var end_check: CheckBox = CheckBox.new()
 		end_check.text = "End"
+		end_check.tooltip_text = "Syntax: bool"
 		end_check.button_pressed = bool(data.get("end", false))
 		vbox.add_child(end_check)
 		end_check.toggled.connect(_on_node_end_toggled.bind(node_id))
 
+		var add_option_button: Button = Button.new()
+		add_option_button.text = "Add Option"
+		add_option_button.tooltip_text = "Add a choice option for this node"
+		add_option_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		vbox.add_child(add_option_button)
+		add_option_button.pressed.connect(_on_node_add_option_pressed.bind(node_id))
 		# Ports
 		var ports: Array = []
 		var next_ref: String = data.get("next", "")
@@ -340,6 +378,23 @@ func _on_node_start_toggled(pressed: bool, node_id: String) -> void:
 
 func _on_node_end_toggled(pressed: bool, node_id: String) -> void:
 	set_node_property(current_conv_id, node_id, "end", pressed)
+
+func _on_node_add_option_pressed(node_id: String) -> void:
+	var conv_nodes: Dictionary = nodes.get(current_conv_id, {})
+	var node_data: Dictionary = conv_nodes.get(node_id, {})
+	var next_ref: String = node_data.get("next", "")
+	var choice_id: String
+	if next_ref.begins_with("choice:"):
+		choice_id = next_ref.substr(7)
+	else:
+		choice_id = "choice_%s" % node_id
+		node_data["next"] = "choice:%s" % choice_id
+		conv_nodes[node_id] = node_data
+	var conv_choices: Dictionary = choices.get(current_conv_id, {})
+	var choice_def: Dictionary = conv_choices.get(choice_id, {})
+	var new_option_index: int = choice_def.size() + 1
+	var option_id: String = "option_%d" % new_option_index
+	add_choice(current_conv_id, choice_id, option_id)
 
 func _on_new_conversation_pressed() -> void:
 	var conv_id: String = "conversation_%d" % conversation_registry.size()
