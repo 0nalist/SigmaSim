@@ -30,64 +30,87 @@ func _ready() -> void:
 	new_conversation_button.pressed.connect(_on_new_conversation_pressed)
 	add_node_button.pressed.connect(_on_add_node_pressed)
 	delete_node_button.pressed.connect(_on_delete_node_pressed)
-add_choice_button.pressed.connect(_on_add_choice_pressed)
-save_button.pressed.connect(_on_save_pressed)
-load_button.pressed.connect(_on_load_pressed)
+	add_choice_button.pressed.connect(_on_add_choice_pressed)
+	save_button.pressed.connect(_on_save_pressed)
+	load_button.pressed.connect(_on_load_pressed)
 
 func load_conversations() -> void:
 	conversation_registry = _load_json(CONVERSATIONS_PATH)
 	nodes = _load_json(NODES_PATH)
 	choices = _load_json(CHOICES_PATH)
 
+
 func build_graph_for_conversation(conv_id: String) -> void:
 	graph_edit.clear_connections()
 	for child: Node in graph_edit.get_children():
 		child.queue_free()
 	current_conv_id = conv_id
+
 	var conv_nodes: Dictionary = nodes.get(conv_id, {})
 	for node_id: String in conv_nodes.keys():
 		var data: Dictionary = conv_nodes.get(node_id, {})
 		var gnode: GraphNode = GraphNode.new()
 		gnode.name = node_id
+
 		var speaker: String = data.get("speaker", "")
 		gnode.title = "%s: %s" % [speaker, node_id]
 		gnode.position_offset = Vector2(float(data.get("layout_x", 0.0)), float(data.get("layout_y", 0.0)))
 		graph_edit.add_child(gnode)
+
 		gnode.position_offset_changed.connect(_on_node_moved.bind(gnode))
+
 		var vbox: VBoxContainer = VBoxContainer.new()
 		gnode.add_child(vbox)
+
+		# Speaker option
 		var speaker_option: OptionButton = OptionButton.new()
 		speaker_option.add_item("PLAYER")
 		speaker_option.add_item("NPC")
-		speaker_option.select(speaker == "PLAYER" ? 0 : 1)
+		if speaker == "PLAYER":
+			speaker_option.select(0)
+		else:
+			speaker_option.select(1)
 		vbox.add_child(speaker_option)
 		speaker_option.item_selected.connect(_on_node_speaker_selected.bind(node_id, gnode))
+
+		# Dialogue text
 		var text_edit: TextEdit = TextEdit.new()
 		text_edit.text = String(data.get("text", ""))
 		vbox.add_child(text_edit)
 		text_edit.text_changed.connect(_on_node_text_changed.bind(node_id, text_edit))
+
+		# Conditions
 		var conditions_edit: TextEdit = TextEdit.new()
-		conditions_edit.text = JSON.stringify(data.get("conditions_json", []), "	")
+		conditions_edit.text = JSON.stringify(data.get("conditions_json", []), "\t")
 		vbox.add_child(conditions_edit)
 		conditions_edit.text_changed.connect(_on_node_conditions_changed.bind(node_id, conditions_edit))
+
+		# Effects
 		var effects_edit: TextEdit = TextEdit.new()
-		effects_edit.text = JSON.stringify(data.get("effects_json", []), "	")
+		effects_edit.text = JSON.stringify(data.get("effects_json", []), "\t")
 		vbox.add_child(effects_edit)
 		effects_edit.text_changed.connect(_on_node_effects_changed.bind(node_id, effects_edit))
+
+		# Tags
 		var tags_edit: LineEdit = LineEdit.new()
 		tags_edit.text = String(data.get("tags", ""))
 		vbox.add_child(tags_edit)
 		tags_edit.text_changed.connect(_on_node_tags_changed.bind(node_id))
+
+		# Start / End checkboxes
 		var start_check: CheckBox = CheckBox.new()
 		start_check.text = "Start"
 		start_check.button_pressed = bool(data.get("start", false))
 		vbox.add_child(start_check)
 		start_check.toggled.connect(_on_node_start_toggled.bind(node_id))
+
 		var end_check: CheckBox = CheckBox.new()
 		end_check.text = "End"
 		end_check.button_pressed = bool(data.get("end", false))
 		vbox.add_child(end_check)
 		end_check.toggled.connect(_on_node_end_toggled.bind(node_id))
+
+		# Ports
 		var ports: Array = []
 		var next_ref: String = data.get("next", "")
 		if next_ref.begins_with("choice:"):
@@ -104,7 +127,9 @@ func build_graph_for_conversation(conv_id: String) -> void:
 			gnode.set_slot(0, false, 0, Color.WHITE, true, 0, Color.WHITE)
 			gnode.set_slot_name(0, "next")
 			ports.append("next")
+
 		gnode.set_meta("ports", ports)
+
 
 func add_node(conv_id: String, speaker: String, node_id: String, text: String = "", conditions_json: Variant = [], effects_json: Variant = [], tags: String = "", start: bool = false, end: bool = false) -> void:
 	if not nodes.has(conv_id):
@@ -280,12 +305,19 @@ func _get_port_name(node_name: String, port_idx: int) -> String:
 	return ""
 
 func _on_node_selected(node: Node) -> void:
-selected_node_id = node.name
+	selected_node_id = node.name
+
 
 func _on_node_speaker_selected(index: int, node_id: String, gnode: GraphNode) -> void:
-	var value: String = index == 0 ? "PLAYER" : "NPC"
+	var value: String
+	if index == 0:
+		value = "PLAYER"
+	else:
+		value = "NPC"
+
 	set_node_property(current_conv_id, node_id, "speaker", value)
 	gnode.title = "%s: %s" % [value, node_id]
+
 
 func _on_node_text_changed(node_id: String, text_edit: TextEdit) -> void:
 	set_node_property(current_conv_id, node_id, "text", text_edit.text)
@@ -293,12 +325,12 @@ func _on_node_text_changed(node_id: String, text_edit: TextEdit) -> void:
 func _on_node_conditions_changed(node_id: String, edit: TextEdit) -> void:
 	var parsed: Variant = JSON.parse_string(edit.text)
 	if typeof(parsed) == TYPE_ARRAY or typeof(parsed) == TYPE_DICTIONARY:
-	set_node_property(current_conv_id, node_id, "conditions_json", parsed)
+		set_node_property(current_conv_id, node_id, "conditions_json", parsed)
 
 func _on_node_effects_changed(node_id: String, edit: TextEdit) -> void:
 	var parsed: Variant = JSON.parse_string(edit.text)
 	if typeof(parsed) == TYPE_ARRAY or typeof(parsed) == TYPE_DICTIONARY:
-	set_node_property(current_conv_id, node_id, "effects_json", parsed)
+		set_node_property(current_conv_id, node_id, "effects_json", parsed)
 
 func _on_node_tags_changed(new_text: String, node_id: String) -> void:
 	set_node_property(current_conv_id, node_id, "tags", new_text)
