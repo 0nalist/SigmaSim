@@ -8,4 +8,6 @@ custom_minimum_size = Vector2(170, 34)
 size_flags_horizontal = 3
 mouse_filter = 1
 script = ExtResource("2")
+choice_id = ""
+option_id = ""
 conv_id = ""
