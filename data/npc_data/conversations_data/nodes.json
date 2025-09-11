@@ -1,53 +1,63 @@
-[
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "hi,player_start,PLAYER,Hey!;;Hi there!;;Yo!,npc_reply,[],[],greeting,100,100,TRUE,FALSE,PLAYER"
+{
+  "hi": {
+	"player_start": {
+	  "speaker": "PLAYER",
+	  "text": "Hey!;;Hi there!;;Yo!",
+	  "next": "npc_reply",
+	  "conditions_json": [],
+	  "effects_json": [],
+	  "tags": "greeting"
+	},
+	"npc_start": {
+	  "speaker": "NPC",
+	  "text": "[cond:{\"type\":\"flag_true\",\"key\":\"met_before\"}]Hey again!;;Nice to meet you!",
+	  "next": "player_reply",
+	  "conditions_json": [],
+	  "effects_json": [],
+	  "tags": "greeting"
+	},
+	"npc_reply": {
+	  "speaker": "NPC",
+	  "text": "Howdy!;;Sup!",
+	  "next": "END",
+	  "conditions_json": [],
+	  "effects_json": [],
+	  "tags": "greeting"
+	},
+	"player_reply": {
+	  "speaker": "PLAYER",
+	  "text": "Hey yourself!;;Yo yo",
+	  "next": "END",
+	  "conditions_json": [],
+	  "effects_json": [],
+	  "tags": "greeting"
+	}
   },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "hi,npc_start,NPC,\"[cond:{\"\"type\"\":\"\"flag_true\"\",\"\"key\"\":\"\"met_before\"\"}]Hey again!;;Nice to meet you!\",player_reply,[],[],greeting,100,200,TRUE,FALSE,NPC"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "hi,npc_reply,NPC,Howdy!;;Sup!,END,[],[],greeting,200,100,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "hi,player_reply,PLAYER,Hey yourself!;;Yo yo,END,[],[],greeting,200,200,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": ",,,,,,,,,,,,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,player_start,PLAYER,Want to go out sometime?,npc_reply,[],[],intro,100,100,TRUE,FALSE,PLAYER"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,npc_start,NPC,Hey\u2026 I was wondering if you want to go out?,choice:restaurant_choice,[],[],intro,100,200,TRUE,FALSE,NPC"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,npc_reply,NPC,What were you thinking?,choice:restaurant_choice,[],[],branch,200,100,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": ",,,,,,,,,,,,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,player_choice_cheap_success,PLAYER,Let\u2019s just do something simple and cheap.,cheap_accept,[],[],player_line,300,80,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,player_choice_cheap_fail,PLAYER,Maybe something easy\u2026?,cheap_decline,[],[],player_line,300,120,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,player_choice_fancy_success,PLAYER,Let\u2019s go somewhere really fancy!,fancy_accept,[],[],player_line,300,200,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,player_choice_fancy_fail,PLAYER,How about a fancy place?,fancy_accept,[],[],player_line,300,240,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": ",,,,,,,,,,,,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,cheap_accept,NPC,\"Sure, something simple works!\",END,[],\"[{\"\"type\"\":\"\"increment_npc_stat\"\",\"\"key\"\":\"\"date_count\"\",\"\"value\"\":1}]\",outcome,450,80,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,cheap_decline,NPC,\"Mmm\u2026 rain check, maybe.\",END,[],\"[{\"\"type\"\":\"\"set_flag\"\",\"\"key\"\":\"\"rejected_cheap_date\"\",\"\"value\"\":true}]\",outcome,450,120,FALSE,FALSE,"
-  },
-  {
-    "conv_id,node_id,speaker,text,next,conditions_json,effects_json,tags,layout_x,layout_y,start,end,start_type": "first_date_ask_out,fancy_accept,NPC,\"Wow, that sounds amazing. I'm in!\",END,[],\"[{\"\"type\"\":\"\"increment_npc_stat\"\",\"\"key\"\":\"\"date_count\"\",\"\"value\"\":1}]\",outcome,450,200,FALSE,FALSE,"
+  "first_date_ask_out": {
+	"player_start": {
+	  "speaker": "PLAYER",
+	  "text": "Want to go out sometime?",
+	  "next": "npc_reply",
+	  "conditions_json": [],
+	  "effects_json": [],
+	  "tags": "intro"
+	},
+	"npc_reply": {
+	  "speaker": "NPC",
+	  "text": "What were you thinking?",
+	  "next": "choice:restaurant_choice",
+	  "conditions_json": [],
+	  "effects_json": [],
+	  "tags": "branch"
+	},
+	"cheap_accept": {
+	  "speaker": "NPC",
+	  "text": "Sure, something simple works!",
+	  "next": "END",
+	  "conditions_json": [],
+	  "effects_json": [{"type": "increment_npc_stat","key":"date_count","value":1}],
+	  "tags": "outcome"
+	}
+	
   }
-]
+}

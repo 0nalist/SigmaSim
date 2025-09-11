@@ -34,10 +34,10 @@ func _ready() -> void:
 	date_button.pressed.connect(_on_date_pressed)
 	relationship_button.pressed.connect(_on_relationship_pressed)
 	line_edit.text_submitted.connect(_on_line_edit_submitted)
-	if ConversationManager != null:
-		ConversationManager.node_entered.connect(_on_node_entered)
-		ConversationManager.choice_presented.connect(_on_choice_presented)
-		ConversationManager.conversation_ended.connect(_on_conversation_ended)
+
+	ConversationManager.node_entered.connect(_on_node_entered)
+	ConversationManager.choice_presented.connect(_on_choice_presented)
+	ConversationManager.conversation_ended.connect(_on_conversation_ended)
 
 func _finalize_setup() -> void:
 	if npc == null:
@@ -131,5 +131,5 @@ func _on_line_edit_submitted(new_text: String) -> void:
 		return
 	chat_log.add_message(text, true)
 	line_edit.clear()
-	if ConversationManager != null and current_node_id != "":
+	if current_node_id != "":
 		ConversationManager.progress(current_node_id, npc_idx)
