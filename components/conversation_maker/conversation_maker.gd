@@ -18,12 +18,6 @@ const CHOICES_PATH: String = "res://autoloads/choices.json"
 @onready var load_button: Button = %LoadButton
 @onready var id_label: Label = %IdLabel
 @onready var text_edit: TextEdit = %TextEdit
-@onready var speaker_option: OptionButton = %SpeakerOptionButton
-@onready var conditions_edit: TextEdit = %ConditionsJsonEdit
-@onready var effects_edit: TextEdit = %EffectsJsonEdit
-@onready var tags_edit: LineEdit = %TagsLineEdit
-@onready var start_check: CheckBox = %StartCheckBox
-@onready var end_check: CheckBox = %EndCheckBox
 
 var conversation_registry: Dictionary = {}
 var nodes: Dictionary = {}
@@ -32,26 +26,16 @@ var current_conv_id: String = ""
 var selected_node_id: String = ""
 
 func _ready() -> void:
-load_conversations()
-graph_edit.connection_request.connect(_on_connection_request)
-graph_edit.disconnection_request.connect(_on_disconnection_request)
-graph_edit.node_selected.connect(_on_node_selected)
-new_conversation_button.pressed.connect(_on_new_conversation_pressed)
-add_node_button.pressed.connect(_on_add_node_pressed)
-delete_node_button.pressed.connect(_on_delete_node_pressed)
-add_choice_button.pressed.connect(_on_add_choice_pressed)
-save_button.pressed.connect(_on_save_pressed)
-load_button.pressed.connect(_on_load_pressed)
-speaker_option.clear()
-speaker_option.add_item("NPC")
-speaker_option.add_item("PLAYER")
-speaker_option.item_selected.connect(_on_speaker_selected)
-text_edit.text_changed.connect(_on_text_changed)
-conditions_edit.text_changed.connect(_on_conditions_json_changed)
-effects_edit.text_changed.connect(_on_effects_json_changed)
-tags_edit.text_changed.connect(_on_tags_changed)
-start_check.toggled.connect(_on_start_toggled)
-end_check.toggled.connect(_on_end_toggled)
+	load_conversations()
+	graph_edit.connection_request.connect(_on_connection_request)
+	graph_edit.disconnection_request.connect(_on_disconnection_request)
+	graph_edit.node_selected.connect(_on_node_selected)
+	new_conversation_button.pressed.connect(_on_new_conversation_pressed)
+	add_node_button.pressed.connect(_on_add_node_pressed)
+	delete_node_button.pressed.connect(_on_delete_node_pressed)
+	add_choice_button.pressed.connect(_on_add_choice_pressed)
+	save_button.pressed.connect(_on_save_pressed)
+	load_button.pressed.connect(_on_load_pressed)
 
 func load_conversations() -> void:
 	conversation_registry = _load_json(CONVERSATIONS_PATH)
@@ -102,8 +86,6 @@ func add_node(conv_id: String, speaker: String, node_id: String) -> void:
 		"conditions_json": [],
 		"effects_json": [],
 		"tags": "",
-		"start": false,
-		"end": false,
 		"layout_x": 0,
 		"layout_y": 0
 	}
@@ -274,76 +256,7 @@ func _update_sidebar() -> void:
 	var conv_nodes: Dictionary = nodes.get(current_conv_id, {})
 	var data: Dictionary = conv_nodes.get(selected_node_id, {})
 	id_label.text = selected_node_id
-	speaker_option.block_signals = true
-	var speaker_val: String = String(data.get("speaker", "NPC"))
-	if speaker_val == "PLAYER":
-		speaker_option.select(1)
-	else:
-		speaker_option.select(0)
-	speaker_option.block_signals = false
-	text_edit.block_signals = true
 	text_edit.text = String(data.get("text", ""))
-	text_edit.block_signals = false
-	conditions_edit.block_signals = true
-	conditions_edit.text = JSON.stringify(data.get("conditions_json", []), "\t")
-	conditions_edit.block_signals = false
-	effects_edit.block_signals = true
-	effects_edit.text = JSON.stringify(data.get("effects_json", []), "\t")
-	effects_edit.block_signals = false
-	tags_edit.block_signals = true
-	tags_edit.text = String(data.get("tags", ""))
-	tags_edit.block_signals = false
-	start_check.block_signals = true
-	start_check.button_pressed = bool(data.get("start", false))
-	start_check.block_signals = false
-	end_check.block_signals = true
-	end_check.button_pressed = bool(data.get("end", false))
-	end_check.block_signals = false
-
-func _on_speaker_selected(index: int) -> void:
-	if current_conv_id == "" or selected_node_id == "":
-		return
-	var new_speaker: String = index == 1 ? "PLAYER" : "NPC"
-	set_node_property(current_conv_id, selected_node_id, "speaker", new_speaker)
-	var gnode: GraphNode = graph_edit.get_node_or_null(selected_node_id)
-	if gnode != null:
-		gnode.title = "%s: %s" % [new_speaker, selected_node_id]
-
-func _on_text_changed() -> void:
-	if current_conv_id == "" or selected_node_id == "":
-		return
-	set_node_property(current_conv_id, selected_node_id, "text", text_edit.text)
-
-func _on_conditions_json_changed() -> void:
-	if current_conv_id == "" or selected_node_id == "":
-		return
-	var parsed = JSON.parse_string(conditions_edit.text)
-	if typeof(parsed) == TYPE_NIL:
-		parsed = []
-	set_node_property(current_conv_id, selected_node_id, "conditions_json", parsed)
-
-func _on_effects_json_changed() -> void:
-	if current_conv_id == "" or selected_node_id == "":
-		return
-	var parsed = JSON.parse_string(effects_edit.text)
-	if typeof(parsed) == TYPE_NIL:
-		parsed = []
-	set_node_property(current_conv_id, selected_node_id, "effects_json", parsed)
-
-func _on_tags_changed(new_text: String) -> void:
-	if current_conv_id == "" or selected_node_id == "":
-		return
-	set_node_property(current_conv_id, selected_node_id, "tags", new_text)
-
-func _on_start_toggled(pressed: bool) -> void:
-	if current_conv_id == "" or selected_node_id == "":
-		return
-	set_node_property(current_conv_id, selected_node_id, "start", pressed)
-
-func _on_end_toggled(pressed: bool) -> void:
-	if current_conv_id == "" or selected_node_id == "":
-		return
-	set_node_property(current_conv_id, selected_node_id, "end", pressed)
 
 func _on_new_conversation_pressed() -> void:
 	var conv_id: String = "conversation_%d" % conversation_registry.size()
