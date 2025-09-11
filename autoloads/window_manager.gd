@@ -36,6 +36,7 @@ var app_registry := {
 	"Installer": preload("res://components/apps/app_scenes/installer.tscn"),
 	"ConwaysGame": preload("res://components/apps/conways_game/conways_game_ui.tscn"),
 	"NetSerf": preload("res://apps/net_serf/net_serf.tscn"),
+	"ConversationMaker": preload("res://components/conversation_maker/conversation_maker.tscn"),
 }
 
 var start_apps := {}

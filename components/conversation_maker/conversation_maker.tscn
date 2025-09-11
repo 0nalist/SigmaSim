@@ -1,33 +1,71 @@
-[gd_scene format=3 load_steps=2]
+[gd_scene load_steps=2 format=3 uid="uid://duc46hjn8hasl"]
 
-[ext_resource path="res://components/conversation_maker/conversation_maker.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://components/conversation_maker/conversation_maker.gd" id="1"]
 
-[node name="ConversationMaker" type="Pane"]
-script = ExtResource(1)
+[node name="ConversationMaker" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1")
 
 [node name="GraphEdit" type="GraphEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Sidebar" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
 
-[node name="IdLabel" type="Label" parent="Sidebar"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Sidebar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -184.0
+offset_bottom = 213.0
+grow_horizontal = 0
 
-[node name="TextEdit" type="TextEdit" parent="Sidebar"]
+[node name="IdLabel" type="Label" parent="Sidebar/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 
-[node name="NewConversationButton" type="Button" parent="."]
+[node name="TextEdit" type="TextEdit" parent="Sidebar/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NewConversationButton" type="Button" parent="Sidebar/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "New Conversation"
 
-[node name="AddNodeButton" type="Button" parent="."]
+[node name="AddNodeButton" type="Button" parent="Sidebar/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "Add Node"
 
-[node name="DeleteNodeButton" type="Button" parent="."]
+[node name="DeleteNodeButton" type="Button" parent="Sidebar/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "Delete Node"
 
-[node name="AddChoiceButton" type="Button" parent="."]
+[node name="AddChoiceButton" type="Button" parent="Sidebar/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "Add Choice"
 
-[node name="SaveButton" type="Button" parent="."]
+[node name="SaveButton" type="Button" parent="Sidebar/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "Save"
 
-[node name="LoadButton" type="Button" parent="."]
+[node name="LoadButton" type="Button" parent="Sidebar/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "Load"
-
