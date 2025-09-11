@@ -43,7 +43,8 @@ func load_conversations() -> void:
 func build_graph_for_conversation(conv_id: String) -> void:
 	graph_edit.clear_connections()
 	for child: Node in graph_edit.get_children():
-		child.queue_free()
+		if child is GraphNode:
+			child.queue_free()
 	current_conv_id = conv_id
 
 	var conv_nodes: Dictionary = nodes.get(conv_id, {})
@@ -98,7 +99,7 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		conditions_label.tooltip_text = "Syntax: JSON Array"
 		vbox.add_child(conditions_label)
 		var conditions_edit: TextEdit = TextEdit.new()
-		conditions_edit.text = JSON.stringify(data.get("conditions_json", []), \"	\")
+		conditions_edit.text = JSON.stringify(data.get("conditions_json", []), "\t")
 		conditions_edit.custom_minimum_size = Vector2(250, 80)
 		conditions_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(conditions_edit)
@@ -110,11 +111,12 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		effects_label.tooltip_text = "Syntax: JSON Array"
 		vbox.add_child(effects_label)
 		var effects_edit: TextEdit = TextEdit.new()
-		effects_edit.text = JSON.stringify(data.get("effects_json", []), \"	\")
+		effects_edit.text = JSON.stringify(data.get("effects_json", []), "\t")
 		effects_edit.custom_minimum_size = Vector2(250, 80)
 		effects_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(effects_edit)
 		effects_edit.text_changed.connect(_on_node_effects_changed.bind(node_id, effects_edit))
+
 
 		# Tags
 		var tags_label: Label = Label.new()
@@ -158,12 +160,10 @@ func build_graph_for_conversation(conv_id: String) -> void:
 			var port_index: int = 0
 			for option_id: String in choice_def.keys():
 				gnode.set_slot(port_index, false, 0, Color.WHITE, true, 0, Color.WHITE)
-				gnode.set_slot_name(port_index, option_id)
 				ports.append(option_id)
 				port_index += 1
 		else:
 			gnode.set_slot(0, false, 0, Color.WHITE, true, 0, Color.WHITE)
-			gnode.set_slot_name(0, "next")
 			ports.append("next")
 
 		gnode.set_meta("ports", ports)
