@@ -65,10 +65,24 @@ func _populate_aim_choices() -> void:
 		var meta: Dictionary = ConversationManager.conversation_registry.get(convo_id, {})
 		choice.text = meta.get("name", convo_id)
 		choices_vbox.add_child(choice)
+		choice.pressed.connect(func(c_id = convo_id, c_meta := meta) -> void:
+			if ConversationManager == null:
+				return
+			var conversation_nodes: Dictionary = ConversationManager.nodes.get(c_id, {})
+			var start_node_id: String = c_meta.get("player_start", "player_start")
+			var node_definition: Dictionary = conversation_nodes.get(start_node_id, {})
+			var raw_text: String = node_definition.get("text", "")
+			var resolved_text: String = ConversationManager._resolve_text(raw_text, npc_idx)
+			line_edit.text = resolved_text
+			current_node_id = start_node_id
+		)
+
+
+
 
 func _on_node_entered(conv_id: String, node_id: String, speaker: String, text: String) -> void:
 	current_node_id = node_id
-	if speaker == "player":
+	if speaker.to_lower() == "player":
 		line_edit.text = text
 	else:
 		chat_log.add_message(text, false)

@@ -108,54 +108,57 @@ func progress(node_id: String, npc_id: int) -> void:
 		return
 	_enter_node(conv_id, next_id, npc_id)
 
+
 func _present_choice(choice_id: String, npc_id: int) -> void:
 	var state: Dictionary = _get_state(npc_id)
 	var conv_id: String = state.active_conv_id
 	var conv_choices: Dictionary = choices.get(conv_id, {})
 	var choice_def: Dictionary = conv_choices.get(choice_id, {})
-	var options_def: Array = choice_def.get("options", [])
 	var options_out: Array = []
-	for opt in options_def:
-		var conditions: Array = opt.get("conditions", [])
+
+	for option_id in choice_def.keys():
+		var opt: Dictionary = choice_def[option_id]
+		var conditions: Array = opt.get("conditions_json", [])
 		if not _conditions_met(conditions, npc_id):
 			continue
 		var text: String = _resolve_text(opt.get("text", ""), npc_id)
 		var entry: Dictionary = {
-			"id": opt.get("id", ""),
+			"id": option_id,
 			"text": text
 		}
 		options_out.append(entry)
+
 	emit_signal("choice_presented", choice_id, options_out)
+
 
 func choose(choice_id: String, option_id: String, npc_id: int) -> void:
 	var state: Dictionary = _get_state(npc_id)
 	var conv_id: String = state.active_conv_id
 	var conv_choices: Dictionary = choices.get(conv_id, {})
 	var choice_def: Dictionary = conv_choices.get(choice_id, {})
-	var options_def: Array = choice_def.get("options", [])
-	var selected: Dictionary = {}
-	for opt in options_def:
-		if opt.get("id", "") == option_id:
-			selected = opt
-			break
+	var selected: Dictionary = choice_def.get(option_id, {})
+
 	if selected.is_empty():
 		return
-	var rng: RandomNumberGenerator
+
+	var rng: RandomNumberGenerator = null
 	if RNGManager != null:
 		rng = RNGManager.global.get_rng()
 	else:
 		rng = RandomNumberGenerator.new()
+
 	var chance: float = float(selected.get("success_chance", 1.0))
 	var roll: float = rng.randf()
 	var success: bool = roll <= chance
+
 	if success:
-		_apply_effects(selected.get("effects_success", []), npc_id)
-		var next_node_s: String = selected.get("success_node", "")
+		_apply_effects(selected.get("effects_success_json", []), npc_id)
+		var next_node_s: String = selected.get("on_success_next", "")
 		if next_node_s != "":
 			_enter_node(conv_id, next_node_s, npc_id)
 	else:
-		_apply_effects(selected.get("effects_failure", []), npc_id)
-		var next_node_f: String = selected.get("failure_node", "")
+		_apply_effects(selected.get("effects_failure_json", []), npc_id)
+		var next_node_f: String = selected.get("on_failure_next", "")
 		if next_node_f != "":
 			_enter_node(conv_id, next_node_f, npc_id)
 

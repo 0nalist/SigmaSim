@@ -37,24 +37,30 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HeaderContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HeaderContainer"]
+layout_mode = 2
+
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HeaderContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Portrait" parent="MarginContainer/VBoxContainer/HeaderContainer/HeaderHBox" instance=ExtResource("2")]
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderContainer/VBoxContainer/HeaderHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "@username"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Portrait" parent="MarginContainer/VBoxContainer/HeaderContainer/VBoxContainer/HeaderHBox" instance=ExtResource("2")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+size_flags_horizontal = 8
 mouse_filter = 2
 portrait_scale = 1.0
 portrait_creator_enabled = false
-
-[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderContainer/HeaderHBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "@username"
-vertical_alignment = 1
 
 [node name="MessagesContainer" type="Control" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

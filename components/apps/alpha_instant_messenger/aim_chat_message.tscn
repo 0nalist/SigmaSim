@@ -1,18 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://bocwsai1yh1fj"]
+[gd_scene load_steps=4 format=3 uid="uid://bocwsai1yh1fj"]
 
 [ext_resource type="Script" uid="uid://cpu57qxss27bp" path="res://components/apps/alpha_instant_messenger/aim_chat_message.gd" id="1"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iow5l"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iow5l"]
-bg_color = Color(0.00227157, 0.329561, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+bg_color = Color(0.3549, 0.613947, 0.91, 0.894118)
 
 [node name="AimChatMessage" type="PanelContainer"]
 anchors_preset = 15
@@ -22,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_iow5l")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_iow5l")
 script = ExtResource("1")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -45,7 +38,20 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.25
 
-[node name="MessageLabel" type="Label" parent="MarginContainer/MessageBox"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MessageBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_iow5l")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MessageBox/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="MessageLabel" type="Label" parent="MarginContainer/MessageBox/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
