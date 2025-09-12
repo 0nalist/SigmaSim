@@ -1,26 +1,46 @@
 {
-  "first_date_ask_out": {
-	"restaurant_choice": {
-	  "cheap_dinner": {
-		"text": "Somewhere easy -$20",
-		"success_chance": 0.5,
-		"show_success_pct": true,
-		"conditions_json": [{"type": "cash_at_least","value":20}],
-		"on_success_next": "player_choice_cheap_success",
-		"on_failure_next": "player_choice_cheap_fail",
-		"effects_success_json": [{"type":"add_cash","value":-20}],
-		"effects_failure_json": []
-	  },
-	  "fancy_dinner": {
-		"text": "Somewhere fancy -$300",
-		"success_chance": 1,
-		"show_success_pct": true,
-		"conditions_json": [{"type":"cash_at_least","value":300}],
-		"on_success_next": "player_choice_fancy_success",
-		"on_failure_next": "player_choice_fancy_fail",
-		"effects_success_json": [{"type":"add_cash","value":-300}],
-		"effects_failure_json": []
-	  }
+	"first_date_ask_out": {
+		"restaurant_choice": {
+			"cheap_dinner": {
+				"conditions_json": [
+					{
+						"type": "cash_at_least",
+						"value": 20.0
+					}
+				],
+				"effects_failure_json": [],
+				"effects_success_json": [
+					{
+						"type": "add_cash",
+						"value": -20.0
+					}
+				],
+				"on_failure_next": "player_choice_cheap_fail",
+				"on_success_next": "player_choice_cheap_success",
+				"show_success_pct": true,
+				"success_chance": 0.5,
+				"text": "Somewhere easy -$20"
+			},
+			"fancy_dinner": {
+				"conditions_json": [
+					{
+						"type": "cash_at_least",
+						"value": 300.0
+					}
+				],
+				"effects_failure_json": [],
+				"effects_success_json": [
+					{
+						"type": "add_cash",
+						"value": -300.0
+					}
+				],
+				"on_failure_next": "player_choice_fancy_fail",
+				"on_success_next": "player_choice_fancy_success",
+				"show_success_pct": true,
+				"success_chance": 1.0,
+				"text": "Somewhere fancy -$300"
+			}
+		}
 	}
-  }
 }
