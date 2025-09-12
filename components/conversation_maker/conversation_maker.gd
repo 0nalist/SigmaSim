@@ -186,48 +186,41 @@ func _refresh_ports_for_node(conv_id: String, node_id: String, gnode: GraphNode)
 	var next_ref: String = String(data.get("next", ""))
 	var is_start: bool = bool(data.get("start", false))
 	var is_end: bool = bool(data.get("end", false))
+	var is_choice: bool = next_ref.begins_with("choice:")
 
 	var ports_meta: Array = []
-	var output_base: int = 0
+	var slot_index: int = 0
 
-	# Input port (left) if node is *not* start
+
 	if not is_start:
-		print(" → adding input slot at index 0")
-		gnode.set_slot(0, true, 0, Color.WHITE, false, 0, Color.WHITE)
-		ports_meta.push_back("")  # placeholder
-		output_base = 1
-	else:
-		output_base = 0
+		if not is_end and not is_choice:
+			gnode.set_slot(slot_index, true, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+			ports_meta.push_back("next")
+			slot_index += 1
+		else:
+			gnode.set_slot(slot_index, true, 0, Color.WHITE, false, 0, Color.WHITE, null, null)
+			ports_meta.push_back("")
+			slot_index += 1
 
-	# Output ports if node is *not* end
+
 	if not is_end:
-		if next_ref.begins_with("choice:"):
+		if is_choice:
 			var choice_id: String = next_ref.substr(7)
-			var choice_def: Dictionary = choices.get(conv_id, {}).get(choice_id, {})
+
+			var conv_choices: Dictionary = choices.get(conv_id, {})
+			var choice_def: Dictionary = conv_choices.get(choice_id, {})
+
 			var option_ids: Array = choice_def.keys()
 			option_ids.sort()
-			for i in range(option_ids.size()):
-				var option_id: String = String(option_ids[i])
-				var slot_idx: int = output_base + i
-				print(" → adding output slot for option '", option_id, "' at index ", slot_idx)
-				gnode.set_slot(slot_idx,
-					false, 0, Color.WHITE,  # no input
-					true, 0, Color.WHITE)   # enable output
-				while ports_meta.size() <= slot_idx:
-					ports_meta.push_back("")
-				ports_meta[slot_idx] = option_id
-		else:
-			# Single next
-			var slot_idx: int = output_base
-			print(" → adding single output 'next' at index ", slot_idx)
-			gnode.set_slot(slot_idx,
-				false, 0, Color.WHITE,
-				true, 0, Color.WHITE)
-			while ports_meta.size() <= slot_idx:
-				ports_meta.push_back("")
-			ports_meta[slot_idx] = "next"
-	else:
-		print(" Node is end, skipping outputs")
+
+			for option_id_val in option_ids:
+				var option_id: String = String(option_id_val)
+				gnode.set_slot(slot_index, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+				ports_meta.push_back(option_id)
+				slot_index += 1
+		elif is_start:
+			gnode.set_slot(slot_index, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+			ports_meta.push_back("next")
 
 	gnode.set_meta("ports", ports_meta)
 
