@@ -19,9 +19,12 @@ func _ready() -> void:
 	super._ready()
 	pressed.connect(_on_pressed)
 	_update_label()
+	if TimeManager != null:
+		TimeManager.minute_passed.connect(_on_minute_passed)
 
 func set_npc_idx(idx: int) -> void:
 	npc_idx = idx
+	_update_label()
 
 func _on_pressed() -> void:
 	if conv_id != "":
@@ -36,4 +39,18 @@ func _update_label() -> void:
 	var conversation_metadata: Dictionary = {}
 	if ConversationManager != null:
 		conversation_metadata = ConversationManager.conversation_registry.get(conv_id, {})
-	text = conversation_metadata.get("name", conv_id)
+	var base_text: String = conversation_metadata.get("name", conv_id)
+	var remaining: int = 0
+	if ConversationManager != null:
+		remaining = ConversationManager.get_cooldown_remaining(conv_id, npc_idx)
+	if remaining > 0:
+		disabled = true
+		var hours: int = remaining / 60
+		var minutes: int = remaining % 60
+		text = "%s (%02dh %02dm)" % [base_text, hours, minutes]
+	else:
+		disabled = false
+		text = base_text
+
+func _on_minute_passed(_total_minutes: int) -> void:
+	_update_label()

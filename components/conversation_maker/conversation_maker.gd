@@ -517,7 +517,7 @@ func _on_new_conversation_pressed() -> void:
 		"conditions_json": [],
 		"priority": 0,
 		"repeatable": false,
-		"cooldown_days": 0,
+		"cooldown_mins": 0,
 		"weight": 1,
 		"tags": ""
 	}

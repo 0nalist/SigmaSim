@@ -170,9 +170,10 @@ func _end_conversation(npc_id: int) -> void:
 	if not state.history.has(conv_id):
 		state.history.append(conv_id)
 	var meta: Dictionary = conversation_registry.get(conv_id, {})
-	var cooldown: int = int(meta.get("cooldown", 0))
+	var cooldown: int = int(meta.get("cooldown_mins", 0))
 	if cooldown > 0:
-		state.cooldowns[conv_id] = Time.get_unix_time_from_system() + cooldown
+		var now_minutes: int = TimeManager.get_now_minutes() if TimeManager != null else 0
+		state.cooldowns[conv_id] = now_minutes + cooldown
 	if DBManager != null and DBManager.has_method("log_completed_conversation"):
 		DBManager.log_completed_conversation(conv_id, npc_id, Time.get_unix_time_from_system())
 	if DBManager != null and DBManager.has_method("set_npc_conversation_outcomes"):
@@ -288,7 +289,6 @@ func _resolve_text(raw: String, npc_id: int) -> String:
 func get_available_conversations(npc_id: int, trigger: String) -> Array:
 	var available: Array = []
 	var state: Dictionary = _get_state(npc_id)
-	var now: int = Time.get_unix_time_from_system()
 	for conv_id in conversation_registry.keys():
 		var meta: Dictionary = conversation_registry.get(conv_id, {})
 		if meta.get("trigger_type", "") != trigger:
@@ -296,11 +296,6 @@ func get_available_conversations(npc_id: int, trigger: String) -> Array:
 		var conds: Array = meta.get("conditions", [])
 		if not _conditions_met(conds, npc_id):
 			continue
-		var cool: Dictionary = state.cooldowns
-		if cool.has(conv_id):
-			var ready: int = int(cool.get(conv_id, 0))
-			if now < ready:
-				continue
 		var repeatable: bool = bool(meta.get("repeatable", false))
 		if not repeatable and state.history.has(conv_id):
 			continue
@@ -317,3 +312,10 @@ func load_from_data(data: Dictionary) -> void:
 			npc_conversation_state = db_state
 			return
 	npc_conversation_state = data.get("npc_conversation_state", {}).duplicate(true)
+
+func get_cooldown_remaining(conv_id: String, npc_id: int) -> int:
+	var state: Dictionary = _get_state(npc_id)
+	var cool: Dictionary = state.cooldowns
+	var ready: int = int(cool.get(conv_id, 0))
+	var now: int = TimeManager.get_now_minutes() if TimeManager != null else 0
+	return max(ready - now, 0)
