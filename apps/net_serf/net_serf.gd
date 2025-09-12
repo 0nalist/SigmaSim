@@ -62,6 +62,8 @@ func _ready() -> void:
 		window_frame.resized.connect(_update_webview_rect)
 		if window_frame.has_signal("position_changed"):
 			window_frame.position_changed.connect(_update_webview_rect)
+	var root_viewport: Viewport = get_tree().root
+	root_viewport.size_changed.connect(_update_webview_rect)
 	_update_webview_rect()
 
 func open_url(url: String) -> void:
