@@ -166,10 +166,18 @@ func _on_webview_ipc_message(message: String) -> void:
 		print("[NetSerf] IPC:", message)
 
 func _update_webview_rect() -> void:
-	var pixel_scale := DisplayServer.window_get_size() / get_viewport().get_visible_rect().size
-	var rect := Rect2(global_position * pixel_scale, size * pixel_scale)
+	var window_size: Vector2 = Vector2(DisplayServer.window_get_size())
+	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+	var dpi_scale: float = DisplayServer.screen_get_scale()
+	
+	# Scale the window size down to logical pixels
+	var logical_window_size: Vector2 = window_size / dpi_scale
+	var pixel_scale: Vector2 = logical_window_size / viewport_size
+
+	var rect: Rect2 = Rect2(global_position * pixel_scale, size * pixel_scale)
 	web_view.set_position(rect.position)
 	web_view.set_size(rect.size)
+
 
 func _inject_url_hook() -> void:
 	web_view.call("eval", URL_HOOK_JS)
