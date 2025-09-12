@@ -1,26 +1,30 @@
 {
-  "hi": {
-	"name": "Greetings",
-	"trigger_type": "CHATBOX_OPEN",
-	"trigger_args_json": {},
-	"conditions_json": [],
-	"priority": 1,
-	"repeatable": true,
-	"cooldown_days": 0,
-	"weight": 1,
-	"tags": "greeting"
-  },
-  "first_date_ask_out": {
-	"name": "Ask Out First Date",
-	"trigger_type": "CHATBOX_OPEN",
-	"trigger_args_json": {},
-	"conditions_json": [
-	  {"type": "relationship_stage_at_least", "npc_idx": "context", "stage": "TALKING"}
-	],
-	"priority": 5,
-	"repeatable": false,
-	"cooldown_days": 0,
-	"weight": 1,
-	"tags": "romance"
-  }
+	"hi": {
+		"name": "Greetings",
+		"trigger_type": "CHATBOX_OPEN",
+		"trigger_args_json": {},
+		"conditions_json": [],
+		"priority": 1,
+		"repeatable": true,
+		"cooldown_mins": 720,
+		"weight": 1,
+		"tags": "greeting"
+	},
+	"first_date_ask_out": {
+		"name": "Ask Out First Date",
+		"trigger_type": "CHATBOX_OPEN",
+		"trigger_args_json": {},
+		"conditions_json": [
+			{
+				"type": "relationship_stage_at_least",
+				"npc_idx": "context",
+				"stage": "TALKING"
+			}
+		],
+		"priority": 5,
+		"repeatable": false,
+		"cooldown_mins": 0,
+		"weight": 1,
+		"tags": "romance"
+	}
 }
