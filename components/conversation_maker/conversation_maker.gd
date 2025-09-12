@@ -181,49 +181,40 @@ func _refresh_ports_for_node(conv_id: String, node_id: String, gnode: GraphNode)
 	var next_ref: String = String(data.get("next", ""))
 	var is_start: bool = bool(data.get("start", false))
 	var is_end: bool = bool(data.get("end", false))
+	var is_choice: bool = next_ref.begins_with("choice:")
 
-	# ports_meta matches slot indexes, so _get_port_name works
 	var ports_meta: Array = []
-	var output_base: int = 0
+	var slot_index: int = 0
 
-	# Add input unless start
 	if not is_start:
-		gnode.set_slot(0, true, 0, Color.WHITE, false, 0, Color.WHITE, null, null)
-		ports_meta.push_back("")  # placeholder for input
-		output_base = 1
-	else:
-		output_base = 0
+		if not is_end and not is_choice:
+			gnode.set_slot(slot_index, true, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+			ports_meta.push_back("next")
+			slot_index += 1
+		else:
+			gnode.set_slot(slot_index, true, 0, Color.WHITE, false, 0, Color.WHITE, null, null)
+			ports_meta.push_back("")
+			slot_index += 1
 
-	# Add outputs unless end
 	if not is_end:
-		if next_ref.begins_with("choice:"):
+		if is_choice:
 			var choice_id: String = next_ref.substr(7)
 			var conv_choices: Dictionary = choices.get(conv_id, {})
 			var choice_def: Dictionary = conv_choices.get(choice_id, {})
 
-			# Stable order
 			var option_ids: Array = choice_def.keys()
 			option_ids.sort()
 
-			var port_index: int = 0
 			for option_id_val in option_ids:
 				var option_id: String = String(option_id_val)
-				var slot_idx: int = output_base + port_index
-				gnode.set_slot(slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
-				while ports_meta.size() <= slot_idx:
-					ports_meta.push_back("")
-				ports_meta[slot_idx] = option_id
-				port_index += 1
-		else:
-			var slot_idx: int = output_base
-			gnode.set_slot(slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
-			while ports_meta.size() <= slot_idx:
-				ports_meta.push_back("")
-			ports_meta[slot_idx] = "next"
+				gnode.set_slot(slot_index, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+				ports_meta.push_back(option_id)
+				slot_index += 1
+		elif is_start:
+			gnode.set_slot(slot_index, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+			ports_meta.push_back("next")
 
 	gnode.set_meta("ports", ports_meta)
-
-
 func add_node(conv_id: String, speaker: String, node_id: String, text: String = "", conditions_json: Variant = [], effects_json: Variant = [], tags: String = "", start: bool = false, end: bool = false) -> void:
 	if not nodes.has(conv_id):
 		nodes[conv_id] = {}
