@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bkl8rjfijy6mf"]
+[gd_scene load_steps=9 format=3 uid="uid://bkl8rjfijy6mf"]
 
 [ext_resource type="Theme" uid="uid://cesgvqexxaqev" path="res://assets/themes/windows_95_theme.tres" id="1"]
 [ext_resource type="FontFile" uid="uid://qkke0n4qf5vs" path="res://assets/fonts/Chicago.ttf" id="2"]
 [ext_resource type="Texture2D" uid="uid://c8phbkv60p2pa" path="res://assets/logos/mycog.png" id="3"]
 [ext_resource type="PackedScene" uid="uid://5euld8tsq4yj" path="res://components/siggy/siggy.tscn" id="4"]
 [ext_resource type="Script" uid="uid://cmmevgi7d0n3h" path="res://components/start_panel_window.gd" id="5"]
+[ext_resource type="Texture2D" uid="uid://dnjw2se72h5ix" path="res://assets/logos/soft_wares_logo.png" id="5_36qn4"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
 bg_color = Color(0.0705882, 0, 0.407843, 0.815686)
@@ -19,7 +20,6 @@ border_color = Color(0, 0, 0, 1)
 
 [node name="StartPanel" type="Panel"]
 unique_name_in_owner = true
-visible = false
 offset_right = 328.0
 offset_bottom = 340.0
 grow_vertical = 0
@@ -102,6 +102,12 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 alignment = 2
 
+[node name="SoftWaresButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("5_36qn4")
+icon_alignment = 1
+
 [node name="SiggyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites"]
 layout_mode = 2
 focus_mode = 0
@@ -167,6 +173,7 @@ theme = ExtResource("1")
 icon = ExtResource("3")
 
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SoftWaresButton" to="." method="_on_soft_wares_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SiggyButton" to="." method="_on_siggy_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Favorites/SaveButton" to="." method="_on_save_button_pressed"]

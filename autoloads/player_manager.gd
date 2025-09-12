@@ -104,7 +104,7 @@ var default_user_data: Dictionary = {
 # Flags and progression
 	"unlocked_perks": [],
 	"seen_dialogue_ids": [],
-	"owned_apps": ["SoftWares", "OwerView", "SigmaMail", "AIM"],
+	"owned_apps": ["OwerView", "SigmaMail", "AIM"],
 	"global_rng_seed": 0,
 	"using_random_seed": false,
 	# Background shader settings

@@ -173,3 +173,7 @@ func _on_save_button_pressed() -> void:
 
 func _on_load_button_pressed() -> void:
 	load_pressed.emit()
+
+
+func _on_soft_wares_button_pressed() -> void:
+	WindowManager.launch_app_by_name("SoftWares")

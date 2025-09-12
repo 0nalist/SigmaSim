@@ -50,7 +50,6 @@ func _populate_load_menu() -> void:
 		load_menu.set_item_metadata(idx, conv_id)
 		idx += 1
 
-
 func build_graph_for_conversation(conv_id: String) -> void:
 	graph_edit.clear_connections()
 	for child: Node in graph_edit.get_children():
@@ -59,31 +58,36 @@ func build_graph_for_conversation(conv_id: String) -> void:
 	current_conv_id = conv_id
 
 	var conv_nodes: Dictionary = nodes.get(conv_id, {})
-	for node_id: String in conv_nodes.keys():
+	for node_id_val in conv_nodes.keys():
+		var node_id: String = String(node_id_val)
 		var data: Dictionary = conv_nodes.get(node_id, {})
+
 		var gnode: GraphNode = GraphNode.new()
 		gnode.name = node_id
 
-		var speaker: String = data.get("speaker", "")
+		var speaker: String = String(data.get("speaker", ""))
 		gnode.title = "%s: %s" % [speaker, node_id]
 		gnode.position_offset = Vector2(float(data.get("layout_x", 0.0)), float(data.get("layout_y", 0.0)))
 		graph_edit.add_child(gnode)
 
+		# Track position changes
 		gnode.position_offset_changed.connect(_on_node_moved.bind(gnode))
 
+		# CONTENT UI -----------------------------------------------------------
 		var vbox: VBoxContainer = VBoxContainer.new()
-		vbox.custom_minimum_size = Vector2(300, 0)
+		vbox.custom_minimum_size = Vector2(300.0, 0.0)
 		vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		gnode.add_child(vbox)
 
-		# Speaker option
+		# Speaker
 		var speaker_label: Label = Label.new()
 		speaker_label.text = "Speaker"
 		speaker_label.tooltip_text = "Syntax: \"PLAYER\" | \"NPC\""
 		vbox.add_child(speaker_label)
+
 		var speaker_option: OptionButton = OptionButton.new()
-		speaker_option.add_item("PLAYER")
-		speaker_option.add_item("NPC")
+		speaker_option.add_item("PLAYER") # index 0
+		speaker_option.add_item("NPC")    # index 1
 		speaker_option.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if speaker == "PLAYER":
 			speaker_option.select(0)
@@ -92,14 +96,15 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		vbox.add_child(speaker_option)
 		speaker_option.item_selected.connect(_on_node_speaker_selected.bind(node_id, gnode))
 
-		# Dialogue text
+		# Text
 		var text_label: Label = Label.new()
 		text_label.text = "Text"
 		text_label.tooltip_text = "Syntax: String"
 		vbox.add_child(text_label)
+
 		var text_edit: TextEdit = TextEdit.new()
 		text_edit.text = String(data.get("text", ""))
-		text_edit.custom_minimum_size = Vector2(250, 80)
+		text_edit.custom_minimum_size = Vector2(250.0, 80.0)
 		text_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(text_edit)
 		text_edit.text_changed.connect(_on_node_text_changed.bind(node_id, text_edit))
@@ -109,9 +114,10 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		conditions_label.text = "Conditions"
 		conditions_label.tooltip_text = "Syntax: JSON Array"
 		vbox.add_child(conditions_label)
+
 		var conditions_edit: TextEdit = TextEdit.new()
 		conditions_edit.text = JSON.stringify(data.get("conditions_json", []), "\t")
-		conditions_edit.custom_minimum_size = Vector2(250, 80)
+		conditions_edit.custom_minimum_size = Vector2(250.0, 80.0)
 		conditions_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(conditions_edit)
 		conditions_edit.text_changed.connect(_on_node_conditions_changed.bind(node_id, conditions_edit))
@@ -121,63 +127,105 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		effects_label.text = "Effects"
 		effects_label.tooltip_text = "Syntax: JSON Array"
 		vbox.add_child(effects_label)
+
 		var effects_edit: TextEdit = TextEdit.new()
 		effects_edit.text = JSON.stringify(data.get("effects_json", []), "\t")
-		effects_edit.custom_minimum_size = Vector2(250, 80)
+		effects_edit.custom_minimum_size = Vector2(250.0, 80.0)
 		effects_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(effects_edit)
 		effects_edit.text_changed.connect(_on_node_effects_changed.bind(node_id, effects_edit))
-
 
 		# Tags
 		var tags_label: Label = Label.new()
 		tags_label.text = "Tags"
 		tags_label.tooltip_text = "Syntax: comma-separated"
 		vbox.add_child(tags_label)
+
 		var tags_edit: LineEdit = LineEdit.new()
 		tags_edit.text = String(data.get("tags", ""))
 		tags_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(tags_edit)
 		tags_edit.text_changed.connect(_on_node_tags_changed.bind(node_id))
 
-		# Start / End checkboxes
+		# Start / End
 		var start_check: CheckBox = CheckBox.new()
 		start_check.text = "Start"
 		start_check.tooltip_text = "Syntax: bool"
 		start_check.button_pressed = bool(data.get("start", false))
 		vbox.add_child(start_check)
-		start_check.toggled.connect(_on_node_start_toggled.bind(node_id))
+		start_check.toggled.connect(_on_node_start_toggled.bind(node_id, gnode))
 
 		var end_check: CheckBox = CheckBox.new()
 		end_check.text = "End"
 		end_check.tooltip_text = "Syntax: bool"
 		end_check.button_pressed = bool(data.get("end", false))
 		vbox.add_child(end_check)
-		end_check.toggled.connect(_on_node_end_toggled.bind(node_id))
+		end_check.toggled.connect(_on_node_end_toggled.bind(node_id, gnode))
 
+		# Add Option button (only meaningful if not end)
 		var add_option_button: Button = Button.new()
 		add_option_button.text = "Add Option"
 		add_option_button.tooltip_text = "Add a choice option for this node"
 		add_option_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		vbox.add_child(add_option_button)
 		add_option_button.pressed.connect(_on_node_add_option_pressed.bind(node_id))
-		# Ports
-		var ports: Array = []
-		var next_ref: String = data.get("next", "")
+
+		# PORTS ---------------------------------------------------------------
+		_refresh_ports_for_node(conv_id, node_id, gnode)
+
+func _refresh_ports_for_node(conv_id: String, node_id: String, gnode: GraphNode) -> void:
+	# Clear existing slots
+	gnode.clear_all_slots()
+
+	var conv_nodes: Dictionary = nodes.get(conv_id, {})
+	var data: Dictionary = conv_nodes.get(node_id, {})
+	var next_ref: String = String(data.get("next", ""))
+	var is_start: bool = bool(data.get("start", false))
+	var is_end: bool = bool(data.get("end", false))
+
+	# ports_meta is aligned to actual slot indexes:
+	# - If there is an input, index 0 is an empty placeholder "".
+	# - Output names ("next" or option ids) occupy their real slot indexes.
+	var ports_meta: Array = []
+	var output_base: int = 0
+
+	if not is_start:
+		# Create input on slot 0
+		gnode.set_slot(0, true, 0, Color.WHITE, false, 0, Color.WHITE, null, null)
+		ports_meta.push_back("")  # placeholder for input
+		output_base = 1
+
+	if not is_end:
 		if next_ref.begins_with("choice:"):
 			var choice_id: String = next_ref.substr(7)
 			var conv_choices: Dictionary = choices.get(conv_id, {})
 			var choice_def: Dictionary = conv_choices.get(choice_id, {})
+
+			# Stable order: sort keys to avoid random order causing port shuffles
+			var option_ids: Array = choice_def.keys()
+			option_ids.sort()
+
 			var port_index: int = 0
-			for option_id: String in choice_def.keys():
-				gnode.set_slot(port_index, false, 0, Color.WHITE, true, 0, Color.WHITE)
-				ports.append(option_id)
+			for option_id_val in option_ids:
+				var option_id: String = String(option_id_val)
+				var slot_idx: int = output_base + port_index
+				gnode.set_slot(slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+				# Grow ports_meta up to slot_idx
+				while ports_meta.size() <= slot_idx:
+					ports_meta.push_back("")
+				ports_meta[slot_idx] = option_id
 				port_index += 1
 		else:
-			gnode.set_slot(0, false, 0, Color.WHITE, true, 0, Color.WHITE)
-			ports.append("next")
+			# Single "next" output
+			var slot_idx: int = output_base
+			gnode.set_slot(slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+			while ports_meta.size() <= slot_idx:
+				ports_meta.push_back("")
+			ports_meta[slot_idx] = "next"
 
-		gnode.set_meta("ports", ports)
+	# Save aligned ports meta so _get_port_name(from_port) works directly
+	gnode.set_meta("ports", ports_meta)
+
 
 
 func add_node(conv_id: String, speaker: String, node_id: String, text: String = "", conditions_json: Variant = [], effects_json: Variant = [], tags: String = "", start: bool = false, end: bool = false) -> void:
@@ -384,16 +432,28 @@ func _on_node_effects_changed(node_id: String, edit: TextEdit) -> void:
 func _on_node_tags_changed(new_text: String, node_id: String) -> void:
 	set_node_property(current_conv_id, node_id, "tags", new_text)
 
-func _on_node_start_toggled(pressed: bool, node_id: String) -> void:
+func _on_node_start_toggled(pressed: bool, node_id: String, gnode: GraphNode) -> void:
 	set_node_property(current_conv_id, node_id, "start", pressed)
+	_refresh_ports_for_node(current_conv_id, node_id, gnode)
 
-func _on_node_end_toggled(pressed: bool, node_id: String) -> void:
+func _on_node_end_toggled(pressed: bool, node_id: String, gnode: GraphNode) -> void:
 	set_node_property(current_conv_id, node_id, "end", pressed)
+	_refresh_ports_for_node(current_conv_id, node_id, gnode)
+
 
 func _on_node_add_option_pressed(node_id: String) -> void:
+	if current_conv_id == "":
+		return
+
 	var conv_nodes: Dictionary = nodes.get(current_conv_id, {})
 	var node_data: Dictionary = conv_nodes.get(node_id, {})
-	var next_ref: String = node_data.get("next", "")
+
+	# If this is an end node, do nothing (no outputs allowed)
+	if bool(node_data.get("end", false)):
+		return
+
+	# Ensure there is a choice id referenced by node_data["next"]
+	var next_ref: String = String(node_data.get("next", ""))
 	var choice_id: String
 	if next_ref.begins_with("choice:"):
 		choice_id = next_ref.substr(7)
@@ -401,11 +461,41 @@ func _on_node_add_option_pressed(node_id: String) -> void:
 		choice_id = "choice_%s" % node_id
 		node_data["next"] = "choice:%s" % choice_id
 		conv_nodes[node_id] = node_data
+
+	# Ensure the choice dictionary exists
+	if not choices.has(current_conv_id):
+		choices[current_conv_id] = {}
 	var conv_choices: Dictionary = choices.get(current_conv_id, {})
+	if not conv_choices.has(choice_id):
+		conv_choices[choice_id] = {}
 	var choice_def: Dictionary = conv_choices.get(choice_id, {})
-	var new_option_index: int = choice_def.size() + 1
-	var option_id: String = "option_%d" % new_option_index
-	add_choice(current_conv_id, choice_id, option_id)
+
+	# Create a unique option id (option_1, option_2, ...)
+	var new_index: int = choice_def.size() + 1
+	var option_id: String = "option_%d" % new_index
+	while choice_def.has(option_id):
+		new_index += 1
+		option_id = "option_%d" % new_index
+
+	choice_def[option_id] = {
+		"text": "",
+		"success_chance": 1.0,
+		"show_success_pct": false,
+		"conditions_json": [],
+		"on_success_next": "",
+		"on_failure_next": "",
+		"effects_success_json": [],
+		"effects_failure_json": []
+	}
+
+	# Update the ports on the existing GraphNode (no rebuild, keep position)
+	var gnode: GraphNode = graph_edit.get_node_or_null(node_id)
+	if gnode != null:
+		_refresh_ports_for_node(current_conv_id, node_id, gnode)
+
+	emit_signal("graph_dirty")
+	conversation_edited.emit(current_conv_id)
+
 
 func _on_new_conversation_pressed() -> void:
 	var conv_id: String = "conversation_%d" % conversation_registry.size()
