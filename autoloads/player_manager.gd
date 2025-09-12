@@ -114,7 +114,6 @@ var default_user_data: Dictionary = {
 var user_data: Dictionary = default_user_data.duplicate(true)
 
 
-
 func get_var(key: String, default_value = null):
 	return user_data.get(key, default_value)
 

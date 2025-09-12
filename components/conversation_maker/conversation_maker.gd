@@ -174,7 +174,6 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		_refresh_ports_for_node(conv_id, node_id, gnode)
 
 func _refresh_ports_for_node(conv_id: String, node_id: String, gnode: GraphNode) -> void:
-	# Clear existing slots
 	gnode.clear_all_slots()
 
 	var conv_nodes: Dictionary = nodes.get(conv_id, {})
@@ -183,25 +182,26 @@ func _refresh_ports_for_node(conv_id: String, node_id: String, gnode: GraphNode)
 	var is_start: bool = bool(data.get("start", false))
 	var is_end: bool = bool(data.get("end", false))
 
-	# ports_meta is aligned to actual slot indexes:
-	# - If there is an input, index 0 is an empty placeholder "".
-	# - Output names ("next" or option ids) occupy their real slot indexes.
+	# ports_meta matches slot indexes, so _get_port_name works
 	var ports_meta: Array = []
 	var output_base: int = 0
 
+	# Add input unless start
 	if not is_start:
-		# Create input on slot 0
 		gnode.set_slot(0, true, 0, Color.WHITE, false, 0, Color.WHITE, null, null)
 		ports_meta.push_back("")  # placeholder for input
 		output_base = 1
+	else:
+		output_base = 0
 
+	# Add outputs unless end
 	if not is_end:
 		if next_ref.begins_with("choice:"):
 			var choice_id: String = next_ref.substr(7)
 			var conv_choices: Dictionary = choices.get(conv_id, {})
 			var choice_def: Dictionary = conv_choices.get(choice_id, {})
 
-			# Stable order: sort keys to avoid random order causing port shuffles
+			# Stable order
 			var option_ids: Array = choice_def.keys()
 			option_ids.sort()
 
@@ -210,22 +210,18 @@ func _refresh_ports_for_node(conv_id: String, node_id: String, gnode: GraphNode)
 				var option_id: String = String(option_id_val)
 				var slot_idx: int = output_base + port_index
 				gnode.set_slot(slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
-				# Grow ports_meta up to slot_idx
 				while ports_meta.size() <= slot_idx:
 					ports_meta.push_back("")
 				ports_meta[slot_idx] = option_id
 				port_index += 1
 		else:
-			# Single "next" output
 			var slot_idx: int = output_base
 			gnode.set_slot(slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
 			while ports_meta.size() <= slot_idx:
 				ports_meta.push_back("")
 			ports_meta[slot_idx] = "next"
 
-	# Save aligned ports meta so _get_port_name(from_port) works directly
 	gnode.set_meta("ports", ports_meta)
-
 
 
 func add_node(conv_id: String, speaker: String, node_id: String, text: String = "", conditions_json: Variant = [], effects_json: Variant = [], tags: String = "", start: bool = false, end: bool = false) -> void:
