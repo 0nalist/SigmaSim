@@ -16,7 +16,6 @@ class_name EarlyBird
 @onready var disable_flaps_checkbox: CheckBox = %DisableManualFlaps
 
 @export var base_width: float = 440.0
-@export var max_width: float = 1920.0
 @export var fixed_height: float = 600.0
 
 @onready var high_clouds: Parallax2D = $Parallax/HighClouds
@@ -97,10 +96,11 @@ func _physics_process(delta: float) -> void:
 
 func _adjust_window_size() -> void:
 	if window_frame == null:
-			return
+		return
 	var speed_ratio = (current_speed - base_speed) / (max_speed - base_speed)
-	var target_width = lerp(base_width, max_width, speed_ratio)
-
+	var viewport_width = get_viewport().size.x
+	var target_width = lerp(base_width, viewport_width, speed_ratio)
+	
 	var new_size = window_frame.size
 	new_size.x = lerp(window_frame.size.x, target_width, 0.1)
 	new_size.y = fixed_height
