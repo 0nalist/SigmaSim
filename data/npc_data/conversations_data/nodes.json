@@ -1,206 +1,206 @@
 {
-  "hi": {
-	"player_start": {
-	  "speaker": "PLAYER",
-	  "text": "Hey!;;Hi there!;;Yo!",
-	  "next": "npc_reply",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "greeting",
-	  "layout_x": 100,
-	  "layout_y": 100,
-	  "start": true,
-	  "end": false,
-	  "start_type": "PLAYER"
+	"first_date_ask_out": {
+		"cheap_accept": {
+			"conditions_json": [],
+			"effects_json": [
+				{
+					"key": "date_count",
+					"type": "increment_npc_stat",
+					"value": 1.0
+				}
+			],
+			"end": false,
+			"layout_x": 450.0,
+			"layout_y": 80.0,
+			"next": "END",
+			"speaker": "NPC",
+			"start": false,
+			"start_type": "",
+			"tags": "outcome",
+			"text": "Sure, something simple works!"
+		},
+		"cheap_decline": {
+			"conditions_json": [],
+			"effects_json": [
+				{
+					"key": "rejected_cheap_date",
+					"type": "set_flag",
+					"value": true
+				}
+			],
+			"end": false,
+			"layout_x": 450.0,
+			"layout_y": 120.0,
+			"next": "END",
+			"speaker": "NPC",
+			"start": false,
+			"start_type": "",
+			"tags": "outcome",
+			"text": "Mmm… rain check, maybe."
+		},
+		"fancy_accept": {
+			"conditions_json": [],
+			"effects_json": [
+				{
+					"key": "date_count",
+					"type": "increment_npc_stat",
+					"value": 1.0
+				}
+			],
+			"end": false,
+			"layout_x": 450.0,
+			"layout_y": 200.0,
+			"next": "END",
+			"speaker": "NPC",
+			"start": false,
+			"start_type": "",
+			"tags": "outcome",
+			"text": "Wow, that sounds amazing. I'm in!"
+		},
+		"npc_reply": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": 200.0,
+			"layout_y": 100.0,
+			"next": "choice:restaurant_choice",
+			"speaker": "NPC",
+			"start": false,
+			"start_type": "",
+			"tags": "branch",
+			"text": "What were you thinking?"
+		},
+		"npc_start": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": 100.0,
+			"layout_y": 200.0,
+			"next": "choice:restaurant_choice",
+			"speaker": "NPC",
+			"start": true,
+			"start_type": "NPC",
+			"tags": "intro",
+			"text": "Hey… I was wondering if you want to go out?"
+		},
+		"player_choice_cheap_fail": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": 300.0,
+			"layout_y": 120.0,
+			"next": "cheap_decline",
+			"speaker": "PLAYER",
+			"start": false,
+			"start_type": "",
+			"tags": "player_line",
+			"text": "Maybe something easy…?"
+		},
+		"player_choice_cheap_success": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": 300.0,
+			"layout_y": 80.0,
+			"next": "cheap_accept",
+			"speaker": "PLAYER",
+			"start": false,
+			"start_type": "",
+			"tags": "player_line",
+			"text": "Let’s just do something simple and cheap."
+		},
+		"player_choice_fancy_fail": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": 300.0,
+			"layout_y": 240.0,
+			"next": "fancy_accept",
+			"speaker": "PLAYER",
+			"start": false,
+			"start_type": "",
+			"tags": "player_line",
+			"text": "How about a fancy place?"
+		},
+		"player_choice_fancy_success": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": 300.0,
+			"layout_y": 200.0,
+			"next": "fancy_accept",
+			"speaker": "PLAYER",
+			"start": false,
+			"start_type": "",
+			"tags": "player_line",
+			"text": "Let’s go somewhere really fancy!"
+		},
+		"player_start": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": 100.0,
+			"layout_y": 100.0,
+			"next": "npc_reply",
+			"speaker": "PLAYER",
+			"start": true,
+			"start_type": "PLAYER",
+			"tags": "intro",
+			"text": "Want to go out sometime?"
+		}
 	},
-	"npc_start": {
-	  "speaker": "NPC",
-	  "text": "[cond:{\"type\":\"flag_true\",\"key\":\"met_before\"}]Hey again!;;Nice to meet you!",
-	  "next": "player_reply",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "greeting",
-	  "layout_x": 100,
-	  "layout_y": 200,
-	  "start": true,
-	  "end": false,
-	  "start_type": "NPC"
-	},
-	"npc_reply": {
-	  "speaker": "NPC",
-	  "text": "Howdy!;;Sup!",
-	  "next": "END",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "greeting",
-	  "layout_x": 200,
-	  "layout_y": 100,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	},
-	"player_reply": {
-	  "speaker": "PLAYER",
-	  "text": "Hey yourself!;;Yo yo",
-	  "next": "END",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "greeting",
-	  "layout_x": 200,
-	  "layout_y": 200,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
+	"hi": {
+		"npc_reply": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": true,
+			"layout_x": 320.0,
+			"layout_y": -200.0,
+			"next": "END",
+			"speaker": "NPC",
+			"start": false,
+			"start_type": "",
+			"tags": "greeting",
+			"text": "Howdy!;;Sup!"
+		},
+		"npc_start": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": -220.0,
+			"layout_y": 380.0,
+			"next": "player_reply",
+			"speaker": "NPC",
+			"start": true,
+			"start_type": "NPC",
+			"tags": "greeting",
+			"text": "[cond:{\"type\":\"flag_true\",\"key\":\"met_before\"}]Hey again!;;Nice to meet you!"
+		},
+		"player_reply": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": true,
+			"layout_x": 340.0,
+			"layout_y": 400.0,
+			"next": "END",
+			"speaker": "PLAYER",
+			"start": false,
+			"start_type": "",
+			"tags": "greeting",
+			"text": "Hey yourself!;;Yo yo"
+		},
+		"player_start": {
+			"conditions_json": [],
+			"effects_json": [],
+			"end": false,
+			"layout_x": -240.0,
+			"layout_y": -200.0,
+			"next": "npc_reply",
+			"speaker": "PLAYER",
+			"start": true,
+			"start_type": "PLAYER",
+			"tags": "greeting",
+			"text": "Hey!;;Hi there!;;Yo!"
+		}
 	}
-  },
-  "first_date_ask_out": {
-	"player_start": {
-	  "speaker": "PLAYER",
-	  "text": "Want to go out sometime?",
-	  "next": "npc_reply",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "intro",
-	  "layout_x": 100,
-	  "layout_y": 100,
-	  "start": true,
-	  "end": false,
-	  "start_type": "PLAYER"
-	},
-	"npc_start": {
-	  "speaker": "NPC",
-	  "text": "Hey\u2026 I was wondering if you want to go out?",
-	  "next": "choice:restaurant_choice",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "intro",
-	  "layout_x": 100,
-	  "layout_y": 200,
-	  "start": true,
-	  "end": false,
-	  "start_type": "NPC"
-	},
-	"npc_reply": {
-	  "speaker": "NPC",
-	  "text": "What were you thinking?",
-	  "next": "choice:restaurant_choice",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "branch",
-	  "layout_x": 200,
-	  "layout_y": 100,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	},
-	"player_choice_cheap_success": {
-	  "speaker": "PLAYER",
-	  "text": "Let\u2019s just do something simple and cheap.",
-	  "next": "cheap_accept",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "player_line",
-	  "layout_x": 300,
-	  "layout_y": 80,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	},
-	"player_choice_cheap_fail": {
-	  "speaker": "PLAYER",
-	  "text": "Maybe something easy\u2026?",
-	  "next": "cheap_decline",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "player_line",
-	  "layout_x": 300,
-	  "layout_y": 120,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	},
-	"player_choice_fancy_success": {
-	  "speaker": "PLAYER",
-	  "text": "Let\u2019s go somewhere really fancy!",
-	  "next": "fancy_accept",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "player_line",
-	  "layout_x": 300,
-	  "layout_y": 200,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	},
-	"player_choice_fancy_fail": {
-	  "speaker": "PLAYER",
-	  "text": "How about a fancy place?",
-	  "next": "fancy_accept",
-	  "conditions_json": [],
-	  "effects_json": [],
-	  "tags": "player_line",
-	  "layout_x": 300,
-	  "layout_y": 240,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	},
-	"cheap_accept": {
-	  "speaker": "NPC",
-	  "text": "Sure, something simple works!",
-	  "next": "END",
-	  "conditions_json": [],
-	  "effects_json": [
-		{
-		  "type": "increment_npc_stat",
-		  "key": "date_count",
-		  "value": 1
-		}
-	  ],
-	  "tags": "outcome",
-	  "layout_x": 450,
-	  "layout_y": 80,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	},
-	"cheap_decline": {
-	  "speaker": "NPC",
-	  "text": "Mmm\u2026 rain check, maybe.",
-	  "next": "END",
-	  "conditions_json": [],
-	  "effects_json": [
-		{
-		  "type": "set_flag",
-		  "key": "rejected_cheap_date",
-		  "value": true
-		}
-	  ],
-	  "tags": "outcome",
-	  "layout_x": 450,
-	  "layout_y": 120,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	},
-	"fancy_accept": {
-	  "speaker": "NPC",
-	  "text": "Wow, that sounds amazing. I'm in!",
-	  "next": "END",
-	  "conditions_json": [],
-	  "effects_json": [
-		{
-		  "type": "increment_npc_stat",
-		  "key": "date_count",
-		  "value": 1
-		}
-	  ],
-	  "tags": "outcome",
-	  "layout_x": 450,
-	  "layout_y": 200,
-	  "start": false,
-	  "end": false,
-	  "start_type": ""
-	}
-  }
 }
