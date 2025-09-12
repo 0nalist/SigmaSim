@@ -13,7 +13,7 @@
 [ext_resource type="Shader" uid="uid://d1b6le8xdh7hg" path="res://assets/shaders/spiral_domain_mapping_shader.gdshader" id="7_sjnvm"]
 [ext_resource type="Shader" uid="uid://bskyywxubgk54" path="res://assets/shaders/beyond_jupiter_shader.gdshader" id="8_o21b0"]
 [ext_resource type="Shader" uid="uid://kgtfwt6kawx4" path="res://assets/shaders/fade_in_out_shader.gdshader" id="9_pxemu"]
-[ext_resource type="Shader" uid="uid://bmjumca06eq5w" path="res://assets/shaders/happy_accidents_mirror_shader.gdshader" id="9_ux88p"]
+[ext_resource type="Shader" uid="uid://bmhluol21emcm" path="res://assets/shaders/happy_accidents_mirror_shader.gdshader" id="9_ux88p"]
 [ext_resource type="Texture2D" uid="uid://bowu041csi5ai" path="res://assets/icons/power_icon.png" id="10_yke0b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfsrt"]
