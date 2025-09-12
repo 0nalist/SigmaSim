@@ -174,55 +174,62 @@ func build_graph_for_conversation(conv_id: String) -> void:
 		_refresh_ports_for_node(conv_id, node_id, gnode)
 
 func _refresh_ports_for_node(conv_id: String, node_id: String, gnode: GraphNode) -> void:
+	# Debug prints
+	print("Refreshing ports for node: ", node_id, " start=", nodes[conv_id][node_id].get("start", false), " end=", nodes[conv_id][node_id].get("end", false))
+
+	# Make sure gnode has at least one Control-derived child
+	# You already add VBoxContainer etc, so this should be fine.
+
 	gnode.clear_all_slots()
 
-	var conv_nodes: Dictionary = nodes.get(conv_id, {})
-	var data: Dictionary = conv_nodes.get(node_id, {})
+	var data: Dictionary = nodes.get(conv_id, {}).get(node_id, {})
 	var next_ref: String = String(data.get("next", ""))
 	var is_start: bool = bool(data.get("start", false))
 	var is_end: bool = bool(data.get("end", false))
 
-	# ports_meta matches slot indexes, so _get_port_name works
 	var ports_meta: Array = []
 	var output_base: int = 0
 
-	# Add input unless start
+	# Input port (left) if node is *not* start
 	if not is_start:
-		gnode.set_slot(0, true, 0, Color.WHITE, false, 0, Color.WHITE, null, null)
-		ports_meta.push_back("")  # placeholder for input
+		print(" → adding input slot at index 0")
+		gnode.set_slot(0, true, 0, Color.WHITE, false, 0, Color.WHITE)
+		ports_meta.push_back("")  # placeholder
 		output_base = 1
 	else:
 		output_base = 0
 
-	# Add outputs unless end
+	# Output ports if node is *not* end
 	if not is_end:
 		if next_ref.begins_with("choice:"):
 			var choice_id: String = next_ref.substr(7)
-			var conv_choices: Dictionary = choices.get(conv_id, {})
-			var choice_def: Dictionary = conv_choices.get(choice_id, {})
-
-			# Stable order
+			var choice_def: Dictionary = choices.get(conv_id, {}).get(choice_id, {})
 			var option_ids: Array = choice_def.keys()
 			option_ids.sort()
-
-			var port_index: int = 0
-			for option_id_val in option_ids:
-				var option_id: String = String(option_id_val)
-				var slot_idx: int = output_base + port_index
-				gnode.set_slot(slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+			for i in range(option_ids.size()):
+				var option_id: String = String(option_ids[i])
+				var slot_idx: int = output_base + i
+				print(" → adding output slot for option '", option_id, "' at index ", slot_idx)
+				gnode.set_slot(slot_idx,
+					false, 0, Color.WHITE,  # no input
+					true, 0, Color.WHITE)   # enable output
 				while ports_meta.size() <= slot_idx:
 					ports_meta.push_back("")
 				ports_meta[slot_idx] = option_id
-				port_index += 1
 		else:
+			# Single next
 			var slot_idx: int = output_base
-			gnode.set_slot(slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE, null, null)
+			print(" → adding single output 'next' at index ", slot_idx)
+			gnode.set_slot(slot_idx,
+				false, 0, Color.WHITE,
+				true, 0, Color.WHITE)
 			while ports_meta.size() <= slot_idx:
 				ports_meta.push_back("")
 			ports_meta[slot_idx] = "next"
+	else:
+		print(" Node is end, skipping outputs")
 
 	gnode.set_meta("ports", ports_meta)
-
 
 func add_node(conv_id: String, speaker: String, node_id: String, text: String = "", conditions_json: Variant = [], effects_json: Variant = [], tags: String = "", start: bool = false, end: bool = false) -> void:
 	if not nodes.has(conv_id):
@@ -436,7 +443,6 @@ func _on_node_end_toggled(pressed: bool, node_id: String, gnode: GraphNode) -> v
 	set_node_property(current_conv_id, node_id, "end", pressed)
 	_refresh_ports_for_node(current_conv_id, node_id, gnode)
 
-
 func _on_node_add_option_pressed(node_id: String) -> void:
 	if current_conv_id == "":
 		return
@@ -444,11 +450,9 @@ func _on_node_add_option_pressed(node_id: String) -> void:
 	var conv_nodes: Dictionary = nodes.get(current_conv_id, {})
 	var node_data: Dictionary = conv_nodes.get(node_id, {})
 
-	# If this is an end node, do nothing (no outputs allowed)
 	if bool(node_data.get("end", false)):
-		return
+		return  # end nodes never get outputs
 
-	# Ensure there is a choice id referenced by node_data["next"]
 	var next_ref: String = String(node_data.get("next", ""))
 	var choice_id: String
 	if next_ref.begins_with("choice:"):
@@ -458,7 +462,7 @@ func _on_node_add_option_pressed(node_id: String) -> void:
 		node_data["next"] = "choice:%s" % choice_id
 		conv_nodes[node_id] = node_data
 
-	# Ensure the choice dictionary exists
+	# Ensure choice dictionary exists
 	if not choices.has(current_conv_id):
 		choices[current_conv_id] = {}
 	var conv_choices: Dictionary = choices.get(current_conv_id, {})
@@ -466,7 +470,7 @@ func _on_node_add_option_pressed(node_id: String) -> void:
 		conv_choices[choice_id] = {}
 	var choice_def: Dictionary = conv_choices.get(choice_id, {})
 
-	# Create a unique option id (option_1, option_2, ...)
+	# Create unique option id
 	var new_index: int = choice_def.size() + 1
 	var option_id: String = "option_%d" % new_index
 	while choice_def.has(option_id):
@@ -484,10 +488,28 @@ func _on_node_add_option_pressed(node_id: String) -> void:
 		"effects_failure_json": []
 	}
 
-	# Update the ports on the existing GraphNode (no rebuild, keep position)
+	# Update GraphNode ports in place
 	var gnode: GraphNode = graph_edit.get_node_or_null(node_id)
 	if gnode != null:
-		_refresh_ports_for_node(current_conv_id, node_id, gnode)
+		var ports: Array = gnode.get_meta("ports", [])
+		var is_start: bool = bool(node_data.get("start", false))
+		var output_base: int = 0
+		if not is_start:
+			output_base = 1
+
+		# Count existing outputs (ignore input placeholder "")
+		var output_count: int = 0
+		for p in ports:
+			if p != "":
+				output_count += 1
+
+		var new_slot_idx: int = output_base + output_count
+		gnode.set_slot(new_slot_idx, false, 0, Color.WHITE, true, 0, Color.WHITE)
+
+		while ports.size() <= new_slot_idx:
+			ports.push_back("")
+		ports[new_slot_idx] = option_id
+		gnode.set_meta("ports", ports)
 
 	emit_signal("graph_dirty")
 	conversation_edited.emit(current_conv_id)
