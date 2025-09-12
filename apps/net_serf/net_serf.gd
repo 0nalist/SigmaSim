@@ -58,6 +58,11 @@ func _ready() -> void:
 	# Optional: listen for IPC messages from page JS
 	if web_view.has_signal("ipc_message"):
 		web_view.connect("ipc_message", Callable(self, "_on_webview_ipc_message"))
+	if window_frame:
+		window_frame.resized.connect(_update_webview_rect)
+		if window_frame.has_signal("position_changed"):
+			window_frame.position_changed.connect(_update_webview_rect)
+	_update_webview_rect()
 
 func open_url(url: String) -> void:
 	_load_url_normalized(url)
@@ -159,6 +164,12 @@ func _on_webview_ipc_message(message: String) -> void:
 	else:
 		# For future interop with page JS; keep a simple debug log for now.
 		print("[NetSerf] IPC:", message)
+
+func _update_webview_rect() -> void:
+	var pixel_scale := DisplayServer.window_get_size() / get_viewport().get_visible_rect().size
+	var rect := Rect2(global_position * pixel_scale, size * pixel_scale)
+	web_view.set_position(rect.position)
+	web_view.set_size(rect.size)
 
 func _inject_url_hook() -> void:
 	web_view.call("eval", URL_HOOK_JS)
