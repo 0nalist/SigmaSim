@@ -19,7 +19,7 @@ var _style_hover: StyleBox
 var _style_pressed: StyleBox
 var _style_disabled: StyleBox
 
-var disabled: bool = false
+var _disabled: bool = false
 
 
 @onready var _content_margin_node: MarginContainer = %ContentMargin
@@ -29,6 +29,15 @@ var disabled: bool = false
 
 @onready var _label: Label = %Label
 var _button: Button
+
+@export var disabled: bool = false:
+	set(value):
+		_disabled = value
+		if _button:
+			_button.disabled = value
+			_update_style()
+	get:
+		return _disabled
 
 @export var text: String:
 	set(value):
@@ -100,13 +109,22 @@ func _ready() -> void:
 	for style in ["normal", "hover", "pressed", "disabled", "focus", "hover_pressed"]:
 		_button.add_theme_stylebox_override(style, StyleBoxEmpty.new())
 	add_child(_button)
+	_button.disabled = _disabled
 	_style_normal = _get_button_stylebox("normal")
 	_style_hover = _get_button_stylebox("hover")
 	_style_pressed = _get_button_stylebox("pressed")
 	_style_disabled = _get_button_stylebox("disabled")
 	_update_style()
-	_button.pressed.connect(func(): emit_signal("pressed"))
-	_button.toggled.connect(func(t): emit_signal("toggled", t))
+	_button.pressed.connect(func():
+		if _button.disabled:
+			return
+		emit_signal("pressed")
+	)
+	_button.toggled.connect(func(t):
+		if _button.disabled:
+			return
+		emit_signal("toggled", t)
+	)
 	_button.button_down.connect(_update_style)
 	_button.button_up.connect(_update_style)
 	_button.mouse_entered.connect(_update_style)
