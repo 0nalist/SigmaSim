@@ -61,3 +61,6 @@ text = "Save"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Load"
+
+[node name="LoadMenu" type="PopupMenu" parent="Sidebar"]
+unique_name_in_owner = true

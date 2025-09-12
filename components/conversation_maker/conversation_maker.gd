@@ -4,9 +4,9 @@ class_name ConversationMaker
 signal conversation_edited(conv_id: String)
 signal graph_dirty
 
-const CONVERSATIONS_PATH: String = "res://autoloads/conversations.json"
-const NODES_PATH: String = "res://autoloads/nodes.json"
-const CHOICES_PATH: String = "res://autoloads/choices.json"
+const CONVERSATIONS_PATH: String = "res://data/npc_data/conversations_data/conversations.json"
+const NODES_PATH: String = "res://data/npc_data/conversations_data/nodes.json"
+const CHOICES_PATH: String = "res://data/npc_data/conversations_data/choices.json"
 
 @onready var graph_edit: GraphEdit = %GraphEdit
 @onready var new_conversation_button: Button = %NewConversationButton
@@ -15,6 +15,7 @@ const CHOICES_PATH: String = "res://autoloads/choices.json"
 @onready var add_choice_button: Button = %AddChoiceButton
 @onready var save_button: Button = %SaveButton
 @onready var load_button: Button = %LoadButton
+@onready var load_menu: PopupMenu = %LoadMenu
 
 var conversation_registry: Dictionary = {}
 var nodes: Dictionary = {}
@@ -24,6 +25,7 @@ var selected_node_id: String = ""
 
 func _ready() -> void:
 	load_conversations()
+	_populate_load_menu()
 	graph_edit.connection_request.connect(_on_connection_request)
 	graph_edit.disconnection_request.connect(_on_disconnection_request)
 	graph_edit.node_selected.connect(_on_node_selected)
@@ -33,11 +35,20 @@ func _ready() -> void:
 	add_choice_button.pressed.connect(_on_add_choice_pressed)
 	save_button.pressed.connect(_on_save_pressed)
 	load_button.pressed.connect(_on_load_pressed)
+	load_menu.id_pressed.connect(_on_load_menu_id_pressed)
 
 func load_conversations() -> void:
 	conversation_registry = _load_json(CONVERSATIONS_PATH)
 	nodes = _load_json(NODES_PATH)
 	choices = _load_json(CHOICES_PATH)
+
+func _populate_load_menu() -> void:
+	load_menu.clear()
+	var idx: int = 0
+	for conv_id: String in conversation_registry.keys():
+		load_menu.add_item(conv_id, idx)
+		load_menu.set_item_metadata(idx, conv_id)
+		idx += 1
 
 
 func build_graph_for_conversation(conv_id: String) -> void:
@@ -415,6 +426,7 @@ func _on_new_conversation_pressed() -> void:
 	build_graph_for_conversation(conv_id)
 	emit_signal("graph_dirty")
 	conversation_edited.emit(conv_id)
+	_populate_load_menu()
 
 func _on_add_node_pressed() -> void:
 	if current_conv_id == "":
@@ -447,8 +459,14 @@ func _on_save_pressed() -> void:
 
 func _on_load_pressed() -> void:
 	load_conversations()
-	if current_conv_id != "":
-		build_graph_for_conversation(current_conv_id)
+	_populate_load_menu()
+	load_menu.position = load_button.global_position
+	load_menu.popup()
+
+func _on_load_menu_id_pressed(id: int) -> void:
+	var conv_id: String = String(load_menu.get_item_metadata(id))
+	if conv_id != "":
+		build_graph_for_conversation(conv_id)
 
 func _load_json(path: String) -> Dictionary:
 	if FileAccess.file_exists(path):
