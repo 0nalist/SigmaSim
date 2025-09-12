@@ -19,6 +19,9 @@ var _style_hover: StyleBox
 var _style_pressed: StyleBox
 var _style_disabled: StyleBox
 
+var disabled: bool = false
+
+
 @onready var _content_margin_node: MarginContainer = %ContentMargin
 @onready var _hbox: HBoxContainer = %HBox
 @onready var _icon_margin_node: MarginContainer = %IconMargin
