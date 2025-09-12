@@ -4,7 +4,7 @@ class_name EarlyBirdPipeManager
 
 @export var pipe_pair_scene: PackedScene
 @export var spawn_interval: float = 2
-const SPAWN_POSITION_FACTOR := 2.0
+@export var spawn_x_offset: float = 1920.0
 
 var spawn_timer: Timer
 var cached_viewport_size: Vector2
@@ -42,7 +42,7 @@ func _on_spawn_pipe_pair() -> void:
 	
 
 	pipe_pair.position = Vector2(
-	cached_viewport_size.x * SPAWN_POSITION_FACTOR,
+	cached_viewport_size.x + spawn_x_offset,
 	0
 	)
 	pipe_pair.player = %EarlyBirdPlayer
