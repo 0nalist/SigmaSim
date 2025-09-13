@@ -65,6 +65,8 @@ func _ready() -> void:
 	var root_viewport: Viewport = get_tree().root
 	root_viewport.size_changed.connect(_update_webview_rect)
 	_update_webview_rect()
+	await get_tree().process_frame
+	_update_webview_rect()
 
 func open_url(url: String) -> void:
 	_load_url_normalized(url)
@@ -168,8 +170,9 @@ func _on_webview_ipc_message(message: String) -> void:
 		print("[NetSerf] IPC:", message)
 
 func _update_webview_rect() -> void:
-	var root_viewport: Viewport = get_tree().root
-	var screen_transform: Transform2D = root_viewport.get_screen_transform()
+	var root_window: Window = get_tree().root
+	var screen_transform: Transform2D = root_window.get_screen_transform()
+	screen_transform.origin -= Vector2(root_window.position) # make coordinates window-relative
 	var scale: Vector2 = screen_transform.get_scale()
 	var offset: Vector2 = screen_transform.origin
 
@@ -185,3 +188,7 @@ func _on_url_field_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		url_field.grab_focus()
 		url_field.accept_event()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_SIZE_CHANGED:
+		_update_webview_rect()
