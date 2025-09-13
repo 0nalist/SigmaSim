@@ -18,20 +18,34 @@ var pending_data: Dictionary = {}
 var pending_slot_id: int = -1
 var slot_id: int = -1
 
-var expanded_height: float = 260.0
-var collapsed_height: float = 190.0
+const BASE_CARD_WIDTH: float = 180.0
+const BASE_COLLAPSED_HEIGHT: float = 190.0
+const BASE_EXPANDED_HEIGHT: float = 260.0
+const BASE_PROFILE_SIZE: float = 128.0
+const BASE_PASSWORD_HEIGHT: float = 35.0
+const BASE_LABEL_HEIGHT: float = 20.0
+
+var expanded_height: float = BASE_EXPANDED_HEIGHT
+var collapsed_height: float = BASE_COLLAPSED_HEIGHT
 var tween: Tween = null
 var expanded: bool = false
 
 func _ready() -> void:
-		custom_minimum_size = Vector2(180, collapsed_height)
-		size.y = collapsed_height
-		log_in_button.hide()
-		net_worth_label.hide()
-		password_hbox.hide()
-		show_password_button.toggled.connect(_on_show_password_button_toggled)
-		if not pending_data.is_empty():
-				_apply_profile_data()
+	var base_res := Vector2(1280.0, 720.0)
+	var scale := get_window().size.y / base_res.y
+	collapsed_height = BASE_COLLAPSED_HEIGHT * scale
+	expanded_height = BASE_EXPANDED_HEIGHT * scale
+	custom_minimum_size = Vector2(BASE_CARD_WIDTH * scale, collapsed_height)
+	size = custom_minimum_size
+	password_line_edit.custom_minimum_size = Vector2(0.0, BASE_PASSWORD_HEIGHT * scale)
+	rainbow_password_label.custom_minimum_size = Vector2(0.0, BASE_LABEL_HEIGHT * scale)
+	profile_pic.custom_minimum_size = Vector2(BASE_PROFILE_SIZE * scale, BASE_PROFILE_SIZE * scale)
+	log_in_button.hide()
+	net_worth_label.hide()
+	password_hbox.hide()
+	show_password_button.toggled.connect(_on_show_password_button_toggled)
+	if not pending_data.is_empty():
+		_apply_profile_data()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -73,8 +87,6 @@ func _apply_profile_data() -> void:
 	if cfg_dict is Dictionary:
 		var cfg: PortraitConfig = PortraitConfig.from_dict(cfg_dict)
 		profile_pic.apply_config(cfg)
-		profile_pic.custom_minimum_size = Vector2(128, 128)
-		profile_pic.size = Vector2(128, 128)
 		profile_pic.size_flags_horizontal = Control.SIZE_FILL
 		profile_pic.size_flags_vertical = Control.SIZE_FILL
 
