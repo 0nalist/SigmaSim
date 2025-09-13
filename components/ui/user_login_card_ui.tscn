@@ -89,7 +89,7 @@ layout_mode = 2
 
 [node name="PasswordLineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PasswordHBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 35)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
@@ -111,7 +111,7 @@ vertical_icon_alignment = 2
 
 [node name="RainbowPasswordLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PasswordHBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(128, 20)
+custom_minimum_size = Vector2(128, 24)
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
