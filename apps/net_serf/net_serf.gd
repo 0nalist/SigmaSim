@@ -63,8 +63,9 @@ func _ready() -> void:
 		if window_frame.has_signal("position_changed"):
 			window_frame.position_changed.connect(_update_webview_rect)
 	var root_viewport: Viewport = get_tree().root
-	root_viewport.size_changed.connect(_update_webview_rect)
+	root_viewport.size_changed.connect(_update_webview_rect_deferred)
 	_update_webview_rect()
+	_update_webview_rect_deferred()
 
 func open_url(url: String) -> void:
 	_load_url_normalized(url)
@@ -169,14 +170,16 @@ func _on_webview_ipc_message(message: String) -> void:
 
 func _update_webview_rect() -> void:
 	var root_viewport: Viewport = get_tree().root
-	var screen_transform: Transform2D = root_viewport.get_screen_transform()
-	var scale: Vector2 = screen_transform.get_scale()
-	var offset: Vector2 = screen_transform.origin
+	var visible_rect: Rect2 = root_viewport.get_visible_rect()
+	var scale: Vector2 = visible_rect.size / root_viewport.size
+	var position: Vector2 = (global_position * scale) + visible_rect.position
+	var scaled_size: Vector2 = size * scale
+	web_view.set_position(position)
+	web_view.set_size(scaled_size)
 
-	var rect: Rect2 = Rect2((global_position * scale) + offset, size * scale)
-	web_view.set_position(rect.position)
-	web_view.set_size(rect.size)
-
+func _update_webview_rect_deferred() -> void:
+	await get_tree().process_frame
+	_update_webview_rect()
 
 func _inject_url_hook() -> void:
 	web_view.call("eval", URL_HOOK_JS)
@@ -185,3 +188,7 @@ func _on_url_field_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		url_field.grab_focus()
 		url_field.accept_event()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_SIZE_CHANGED:
+		_update_webview_rect_deferred()
