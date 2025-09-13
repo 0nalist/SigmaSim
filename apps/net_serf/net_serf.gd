@@ -171,11 +171,16 @@ func _on_webview_ipc_message(message: String) -> void:
 func _update_webview_rect() -> void:
 	var root_viewport: Viewport = get_tree().root
 	var visible_rect: Rect2 = root_viewport.get_visible_rect()
-	var scale: Vector2 = visible_rect.size / root_viewport.size
+
+	# Convert to Vector2 so both operands match
+	var scale: Vector2 = visible_rect.size / Vector2(root_viewport.size)
+
 	var position: Vector2 = (global_position * scale) + visible_rect.position
 	var scaled_size: Vector2 = size * scale
+
 	web_view.set_position(position)
 	web_view.set_size(scaled_size)
+
 
 func _update_webview_rect_deferred() -> void:
 	await get_tree().process_frame

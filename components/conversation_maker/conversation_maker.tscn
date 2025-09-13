@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://duc46hjn8hasl"]
 
-[ext_resource type="Script" uid="uid://dxq045vd6dm6s" path="res://components/conversation_maker/conversation_maker.gd" id="1"]
+[ext_resource type="Script" uid="uid://bufk5oigm7wt0" path="res://components/conversation_maker/conversation_maker.gd" id="1"]
 
 [node name="ConversationMaker" type="PanelContainer"]
 anchors_preset = 15
@@ -11,6 +11,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1")
+window_title = "ConversationMaker"
 
 [node name="GraphEdit" type="GraphEdit" parent="."]
 unique_name_in_owner = true
