@@ -62,11 +62,9 @@ func _ready() -> void:
 		window_frame.resized.connect(_update_webview_rect)
 		if window_frame.has_signal("position_changed"):
 			window_frame.position_changed.connect(_update_webview_rect)
-	var root_window: Window = get_window()
-	root_window.size_changed.connect(_update_webview_rect_deferred)
-	root_window.position_changed.connect(_update_webview_rect_deferred)
+	var root_viewport: Viewport = get_tree().root
+	root_viewport.size_changed.connect(_update_webview_rect)
 	_update_webview_rect()
-	_update_webview_rect_deferred()
 
 func open_url(url: String) -> void:
 	_load_url_normalized(url)
@@ -179,9 +177,6 @@ func _update_webview_rect() -> void:
 	web_view.set_position(rect.position)
 	web_view.set_size(rect.size)
 
-func _update_webview_rect_deferred() -> void:
-	await get_tree().process_frame
-	_update_webview_rect()
 
 func _inject_url_hook() -> void:
 	web_view.call("eval", URL_HOOK_JS)
@@ -190,7 +185,3 @@ func _on_url_field_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		url_field.grab_focus()
 		url_field.accept_event()
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_SIZE_CHANGED:
-		_update_webview_rect_deferred()
