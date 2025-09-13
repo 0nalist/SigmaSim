@@ -65,6 +65,8 @@ func _ready() -> void:
 	var root_viewport: Viewport = get_tree().root
 	root_viewport.size_changed.connect(_update_webview_rect)
 	_update_webview_rect()
+	await get_tree().process_frame
+	_update_webview_rect()
 
 func open_url(url: String) -> void:
 	_load_url_normalized(url)
@@ -185,3 +187,7 @@ func _on_url_field_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		url_field.grab_focus()
 		url_field.accept_event()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_SIZE_CHANGED:
+		_update_webview_rect()
