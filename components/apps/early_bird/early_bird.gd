@@ -97,14 +97,15 @@ func _physics_process(delta: float) -> void:
 func _adjust_window_size() -> void:
 	if window_frame == null:
 		return
-	var speed_ratio = (current_speed - base_speed) / (max_speed - base_speed)
-	var viewport_width = get_viewport().size.x
-	var target_width = lerp(base_width, viewport_width, speed_ratio)
+	var speed_ratio: float = (current_speed - base_speed) / (max_speed - base_speed)
+	var viewport_width: int = get_viewport().size.x
+	var target_width: float = lerp(base_width, float(viewport_width), speed_ratio)
 	
-	var new_size = window_frame.size
-	new_size.x = lerp(window_frame.size.x, target_width, 0.1)
+	var new_size: Vector2 = window_frame.size
+	new_size.x = lerp(float(window_frame.size.x), target_width, 0.1)
 	new_size.y = fixed_height
 	window_frame.size = new_size
+
 
 func start_game() -> void:
 	_update_cash_per_score()
