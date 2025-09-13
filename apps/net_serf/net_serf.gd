@@ -11,8 +11,6 @@ class_name NetSerf
 
 var _home_url: String = "https://www.youtube.com/watch?v=ueNY30Cs8Lk&list=RDueNY30Cs8Lk&start_radio=1"
 var _last_committed_url: String = ""
-var _previous_window_size: Vector2i = Vector2i.ZERO
-var _previous_window_position: Vector2i = Vector2i.ZERO
 const URL_HOOK_JS: String = """
 (function() {
 	if (window.__godot_url_hook_installed) return;
@@ -66,18 +64,7 @@ func _ready() -> void:
 			window_frame.position_changed.connect(_update_webview_rect)
 	var root_viewport: Viewport = get_tree().root
 	root_viewport.size_changed.connect(_update_webview_rect)
-	_previous_window_size = DisplayServer.window_get_size()
-	_previous_window_position = DisplayServer.window_get_position()
-	set_process(true)
 	_update_webview_rect()
-
-func _process(_delta: float) -> void:
-	var current_window_size: Vector2i = DisplayServer.window_get_size()
-	var current_window_position: Vector2i = DisplayServer.window_get_position()
-	if current_window_size != _previous_window_size or current_window_position != _previous_window_position:
-		_previous_window_size = current_window_size
-		_previous_window_position = current_window_position
-		_update_webview_rect()
 
 func open_url(url: String) -> void:
 	_load_url_normalized(url)
