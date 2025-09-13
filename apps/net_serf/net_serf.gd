@@ -37,6 +37,11 @@ const URL_HOOK_JS: String = """
 """
 
 func _ready() -> void:
+	var visible_rect: Rect2 = get_viewport().get_visible_rect()
+	default_window_size = visible_rect.size * 0.8
+	if window_frame:
+		window_frame.default_size = default_window_size
+		window_frame.size = default_window_size
 	# Toolbar wiring
 	back_button.pressed.connect(_on_back_pressed)
 	forward_button.pressed.connect(_on_forward_pressed)
