@@ -72,7 +72,6 @@ func open_url(url: String) -> void:
 	web_view.call("focus")
 
 func _on_back_pressed() -> void:
-	# There is no native back() method in WebView; use JS history.
 	web_view.call("eval", "history.back()")
 
 func _on_forward_pressed() -> void:
@@ -89,7 +88,6 @@ func _on_reload_pressed() -> void:
 	web_view.call("reload")
 
 func _on_devtools_pressed() -> void:
-	# Toggle DevTools window
 	var is_open: bool = bool(web_view.call("is_devtools_open"))
 	if is_open:
 		web_view.call("close_devtools")
@@ -111,7 +109,6 @@ func _load_url_normalized(raw: String) -> void:
 	call_deferred("_inject_url_hook")
 
 func _set_url_field(text: String) -> void:
-	# Avoid triggering text_submitted accidentally
 	url_field.text = text
 
 func _normalize_url(raw: String) -> String:
@@ -120,12 +117,10 @@ func _normalize_url(raw: String) -> String:
 		return raw
 	if raw.find(".") >= 0:
 		return "https://" + raw
-	# Treat as search query if no dot; use DuckDuckGo by default
 	var encoded: String = _url_encode(raw)
 	return "https://duckduckgo.com/?q=" + encoded
 
 func _url_encode(s: String) -> String:
-	# Minimal URL encoding for spaces and a few common chars
 	var result: PackedByteArray = s.to_utf8_buffer()
 	var out: String = ""
 	var i: int = 0
@@ -141,7 +136,6 @@ func _url_encode(s: String) -> String:
 	return out
 
 func _is_unreserved_char(ch: String) -> bool:
-	# RFC 3986 unreserved = ALPHA / DIGIT / "-" / "." / "_" / "~"
 	if ch.length() != 1:
 		return false
 	var code: int = int(ch.unicode_at(0))
@@ -165,22 +159,14 @@ func _on_webview_ipc_message(message: String) -> void:
 		_last_committed_url = current
 		call_deferred("_inject_url_hook")
 	else:
-		# For future interop with page JS; keep a simple debug log for now.
 		print("[NetSerf] IPC:", message)
 
 func _update_webview_rect() -> void:
-	var root_viewport: Viewport = get_tree().root
-	var visible_rect: Rect2 = root_viewport.get_visible_rect()
-
-	# Convert to Vector2 so both operands match
-	var scale: Vector2 = visible_rect.size / Vector2(root_viewport.size)
-
-	var position: Vector2 = (global_position * scale) + visible_rect.position
-	var scaled_size: Vector2 = size * scale
-
-	web_view.set_position(position)
-	web_view.set_size(scaled_size)
-
+	if window_frame == null:
+		return
+	var rect: Rect2 = Rect2(window_frame.global_position, window_frame.size)
+	web_view.set_position(rect.position.round())
+	web_view.set_size(rect.size.round())
 
 func _update_webview_rect_deferred() -> void:
 	await get_tree().process_frame
@@ -189,10 +175,12 @@ func _update_webview_rect_deferred() -> void:
 func _inject_url_hook() -> void:
 	web_view.call("eval", URL_HOOK_JS)
 
+
 func _on_url_field_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		url_field.grab_focus()
 		url_field.accept_event()
+
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_SIZE_CHANGED:
