@@ -1,15 +1,42 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj64x4p02aqcs"]
+[gd_scene load_steps=5 format=3 uid="uid://cj64x4p02aqcs"]
 
 [ext_resource type="Script" uid="uid://dkttcateb02sf" path="res://components/apps/ower_view/debt_card_ui.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y5aud"]
 bg_color = Color(0.249486, 0.607444, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 shadow_size = 4
 shadow_offset = Vector2(2, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jfs6m"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmx0e"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5754, 0.5754, 0.5754, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="DebtCardUI" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 120)
@@ -26,38 +53,49 @@ theme_override_constants/margin_bottom = 10
 [node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jfs6m")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/PanelContainer3"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBox/PanelContainer3/MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBox/PanelContainer3/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="MarginContainer/VBox/PanelContainer3/MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Debt"
 
-[node name="AmountLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer"]
+[node name="AmountLabel" type="Label" parent="MarginContainer/VBox/PanelContainer3/MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "$0"
 
-[node name="LimitLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer"]
+[node name="LimitLabel" type="Label" parent="MarginContainer/VBox/PanelContainer3/MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Limit: $0"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBox/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBox/PanelContainer3/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="InterestLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer2"]
+[node name="InterestLabel" type="Label" parent="MarginContainer/VBox/PanelContainer3/MarginContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Interest: 0%"
 
-[node name="CompoundLabel" type="Label" parent="MarginContainer/VBox/HBoxContainer/VBoxContainer2"]
+[node name="CompoundLabel" type="Label" parent="MarginContainer/VBox/PanelContainer3/MarginContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Compounds in: 0 days"
@@ -67,40 +105,62 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qmx0e")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="PaySlider" type="HSlider" parent="MarginContainer/VBox/HBox"]
+[node name="PaySlider" type="HSlider" parent="MarginContainer/VBox/PanelContainer/MarginContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="SliderLabel" type="Label" parent="MarginContainer/VBox/HBox"]
+[node name="SliderLabel" type="Label" parent="MarginContainer/VBox/PanelContainer/MarginContainer/HBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "$0.00"
 vertical_alignment = 2
 
-[node name="PayButton" type="Button" parent="MarginContainer/VBox/HBox"]
+[node name="PayButton" type="Button" parent="MarginContainer/VBox/PanelContainer/MarginContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 14
 text = "Pay Off Debt"
 
-[node name="BorrowHBox" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qmx0e")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBox/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="BorrowHBox" type="HBoxContainer" parent="MarginContainer/VBox/PanelContainer2/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="BorrowButton" type="Button" parent="MarginContainer/VBox/BorrowHBox"]
+[node name="BorrowButton" type="Button" parent="MarginContainer/VBox/PanelContainer2/MarginContainer/BorrowHBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Borrow"
 
-[node name="BorrowLabel" type="Label" parent="MarginContainer/VBox/BorrowHBox"]
+[node name="BorrowLabel" type="Label" parent="MarginContainer/VBox/PanelContainer2/MarginContainer/BorrowHBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
@@ -108,7 +168,7 @@ text = "$0.00"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="BorrowSlider" type="HSlider" parent="MarginContainer/VBox/BorrowHBox"]
+[node name="BorrowSlider" type="HSlider" parent="MarginContainer/VBox/PanelContainer2/MarginContainer/BorrowHBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
