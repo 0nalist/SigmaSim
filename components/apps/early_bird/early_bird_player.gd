@@ -10,6 +10,7 @@ signal scored_point
 @export var terminal_velocity: float = 1200.0
 
 @onready var early_bird_player_sprite: Sprite2D = %EarlyBirdPlayerSprite
+@onready var early_bird_player_flap_sprite: Sprite2D = %EarlyBirdPlayerFlapSprite
 
 
 var velocity: Vector2 = Vector2.ZERO
@@ -18,6 +19,8 @@ var score: int = 0
 
 func _ready() -> void:
 	connect("area_entered", Callable(self, "_on_area_entered"))
+	early_bird_player_flap_sprite.hide()
+	early_bird_player_sprite.show()
 
 func _physics_process(delta: float) -> void:
 	if not is_alive:
@@ -35,6 +38,15 @@ func _physics_process(delta: float) -> void:
 func flap() -> void:
 	if is_alive:
 		velocity.y = -jump_strength
+	animate_flap()
+
+
+func animate_flap():
+	early_bird_player_flap_sprite.show()
+	early_bird_player_sprite.hide()
+	await get_tree().create_timer(.2).timeout
+	early_bird_player_flap_sprite.hide()
+	early_bird_player_sprite.show()
 
 func _on_area_entered(area: Area2D) -> void:
 	if not is_alive:
