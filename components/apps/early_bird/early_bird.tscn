@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dsbd5ymiyhx0x"]
+[gd_scene load_steps=32 format=3 uid="uid://dsbd5ymiyhx0x"]
 
 [ext_resource type="Script" uid="uid://cume0ig00mdyh" path="res://components/apps/early_bird/early_bird.gd" id="1_ye6sa"]
 [ext_resource type="Texture2D" uid="uid://rrhcii81tisb" path="res://assets/early_bird/sky.png" id="2_3mf2d"]
@@ -18,6 +18,7 @@
 [ext_resource type="Shader" uid="uid://dpkrwbqp1ct8w" path="res://assets/shaders/pixel_perfect.gdshader" id="12_35jdd"]
 [ext_resource type="Script" uid="uid://cvkmxe30l4wqr" path="res://components/apps/early_bird/worm.gd" id="12_im8xc"]
 [ext_resource type="Texture2D" uid="uid://bfrkf7nmil0hd" path="res://assets/early_bird/worm1.png" id="13_8hmpk"]
+[ext_resource type="Texture2D" uid="uid://cf2n36t32mecy" path="res://assets/early_bird/wojak_bird_2.png" id="16_bx04g"]
 [ext_resource type="FontFile" uid="uid://cb6nxrsvpxlk1" path="res://assets/fonts/LuckiestGuy.ttf" id="17_5sugq"]
 [ext_resource type="Shader" uid="uid://b3lch55daabv3" path="res://assets/shaders/wavy_walk_shader.gdshader" id="18_gnrao"]
 [ext_resource type="Shader" uid="uid://cn4kauxg0sbo4" path="res://components/apps/early_bird/random_displacement_shader.gdshader" id="20_tgvyg"]
@@ -225,6 +226,15 @@ use_parent_material = true
 position = Vector2(-4.50611e-05, -4.17233e-06)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("9_y10ql")
+
+[node name="EarlyBirdPlayerFlapSprite" type="Sprite2D" parent="EarlyBirdPlayer"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_eegpt")
+use_parent_material = true
+position = Vector2(-4.50611e-05, -4.17233e-06)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("16_bx04g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EarlyBirdPlayer"]
 shape = SubResource("CircleShape2D_jcpj0")
